@@ -1,8 +1,29 @@
 ﻿<Window x:Class="AdminClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Workflow Engine - Admin Client" Height="400" Width="600">
     <Grid>
-        
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <Button x:Name="addElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="+" Width="40" Height="25" Margin="10" />
+                <Button x:Name="removeLastElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-" Width="40" Height="25" Margin="10" />
+            </DockPanel>
+            
+            <ListView DockPanel.Dock="Top" Margin="10">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns >
+                            <GridViewColumn Width="130" Header="Typ" />
+                            <GridViewColumn Width="305" Header="Name" />
+                            <GridViewColumn Width="130" Header="Nutzer" />
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            
+            <DockPanel DockPanel.Dock="Bottom" Height="45" VerticalAlignment="Bottom">
+                <Button x:Name="saveWorkflow" HorizontalAlignment="Right" Content="Workflow speichern/veröffentlichen" Height="25" Margin="10"/>
+            </DockPanel>
+        </DockPanel>
     </Grid>
 </Window>
