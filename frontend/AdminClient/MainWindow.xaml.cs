@@ -24,5 +24,16 @@ namespace AdminClient
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// This method opens the popup window to choose and element to add for the current workflow.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenAddElementWindow(object sender, RoutedEventArgs e)
+        {
+            AddElementWindow addElementWindow = new AddElementWindow();
+            addElementWindow.Show();
+        }
     }
 }
