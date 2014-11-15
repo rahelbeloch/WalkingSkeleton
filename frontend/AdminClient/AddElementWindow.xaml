@@ -1,0 +1,31 @@
+﻿<Window x:Class="AdminClient.AddElementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Neues Element hinzufügen" Height="200" Width="320">
+    <Grid>
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top" Height="40">
+                <Label Content="Typ:" />
+                <ComboBox Height="25" Width="120" HorizontalAlignment="Left">
+                    <ComboBoxItem IsSelected="True">Startzustand</ComboBoxItem>
+                    <ComboBoxItem>Aktion</ComboBoxItem>
+                    <ComboBoxItem>Endzustand</ComboBoxItem>
+                </ComboBox>
+            </DockPanel>
+            
+            <DockPanel DockPanel.Dock="Top" Height="40" HorizontalAlignment="Left">
+                <Label Content="Nutzer: " />
+                <TextBox Width="120" Height="25"/>
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Top" Height="40" HorizontalAlignment="Left">
+                <Label Content="Beschreibung: " />
+                <TextBox Width="180" Height="25"/>
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Bottom" Height="45" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Content="Element hinzufügen" Height="25" Margin="10"/>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Window>
