@@ -30,7 +30,7 @@ public class StartProcessor {
 		currentItem = new Item();
 		
 		for (Step s: workflow.getStep()){
-			if (s instanceof Action){ //TODO Problem: Acion erbt nicht von step, wegen serialisierung
+			if (s instanceof Action){ 
 				currentItem.getMetadata().getKey().add(s.getId());
 				currentItem.getMetadata().getValue().add(MetaState.INACTIVE);
 			}
