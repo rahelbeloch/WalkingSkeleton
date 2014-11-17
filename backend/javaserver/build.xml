@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="xmlkram-Demo" default="all">
 	<description>
-      Erzeugung der Java-Klassen über das xfc-Tool und XML-Schema
+      Ant-Build-Script for building Java/C#-Classes, based on a xsd-file
     </description>
 	
 	<property name="doxygenhtmldir" value="html"/>
 
-	<target name="all" depends="clean,classgen,doxygen" />
+	<target name="all" depends="clean,classgen" />
 
-	<target name="clean" description="Projekt aufraeumen">
+	<target name="clean" description="Clean Project">
 		<delete includeemptydirs="true" failonerror="false">
 			<fileset dir="bin">
 				<include name="**/*" />
 			</fileset>
 		</delete>
 		<delete dir="src/beans" failonerror="false"/>
-		<delete file="datei_aus_java.xml" failonerror="false"/>
+		<delete file="output.xml" failonerror="false"/>
 		<delete dir="${doxygenhtmldir}" failonerror="false"/>
 	</target>
 
-	<target name="classgen" description="Java_Klassen aus XML-Schema generieren">
+	<target name="classgen" description="Generate Java-classes">
 		<exec executable="c:\opt\Java\jdk1.7.0_67\bin\xjc">
-			<arg line="-d src/ -p beans Datenstruktur.xsd" />
+			<arg line="-d src/ -p beans beans.xsd" />
 		</exec>
-	</target>
-	
-	<target name="doxygen" depends="classgen" description="Doxygen-Doku erzeugen">
-		<exec executable="doxygen"/>
 	</target>
 </project>
