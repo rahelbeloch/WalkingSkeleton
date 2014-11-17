@@ -16,11 +16,10 @@
 		</sequence>
 	</complexType>
 	
-	<complexType name="Trigger">
+	<complexType name="Start-Trigger">
 		<sequence>
-			<element name="StepId" type="int"></element>
-			<element name="Name" type="string"></element>
-			<element name="isStart" type="boolean"></element>
+			<element name="Id" type="int"></element>
+			<element name="Workflow" type="tns:Workflow"></element>
 		</sequence>
 	</complexType>
 	
@@ -48,7 +47,7 @@
 	
 	<complexType name="Map">
 		<sequence>
-			<element name="key" type="string" maxOccurs="unbounded"></element>
+			<element name="key" type="int" maxOccurs="unbounded"></element>
 			<element name="value" type="tns:MetaState" maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
