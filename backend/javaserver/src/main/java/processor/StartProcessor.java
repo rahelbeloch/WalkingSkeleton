@@ -30,13 +30,13 @@ public class StartProcessor {
 		currentItem = new Item();
 		
 		for (Step s: workflow.getStep()){
-			if (s instanceof Action){ //??Problem: Acion erbt nicht von step, wegen serialisierung
+			if (s instanceof Action){ //TODO Problem: Acion erbt nicht von step, wegen serialisierung
 				currentItem.getMetadata().getKey().add(s.getId());
 				currentItem.getMetadata().getValue().add(MetaState.INACTIVE);
 			}
 		}
-		currentItem.getMetadata().getValue().get(0).setValue(MetaState.OPEN); //??keine setter vorhanden
-		//??erstelltes item in der persistenz abspeichern
+		currentItem.getMetadata().getValue().get(0).setValue(MetaState.OPEN); //TODO keine setter vorhanden
+		//TODO erstelltes item in der persistenz abspeichern
 	}
 
 
