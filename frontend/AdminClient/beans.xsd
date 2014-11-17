@@ -1,33 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Datenstruktur"
-	xmlns:tns="http://www.example.org/Datenstruktur" elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Beans"
+	xmlns:tns="http://www.example.org/Beans" elementFormDefault="qualified">
 
-	<complexType name = "Action">
+	<element name="Test" type="tns:Action"/>
+
+	<complexType name="Step">
+		<sequence>
+			<element name="Id" type="int"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="Action">
+		<complexContent>
+			<extension base = "tns:Step">
+				<sequence>
+					<element name="StepId" type="int"></element>
+					<element name="Name" type="string"></element>
+					<element name="UserName" type="string"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	
+	<complexType name="User">
 		<sequence>
 			<element name="Id" type="int"></element>
 			<element name="Name" type="string"></element>
-			<element name = "UserName" type="string"></element>
 		</sequence>
 	</complexType>
 	
-	<complexType name = "Step">
-		<sequence>
-			<element name="Id" type="int"></element>
-		</sequence>
-	</complexType>
-	
-	<complexType name = "User">
-		<sequence>
-			<element name="Id" type="int"></element>
-			<element name="Name" type="string"></element>
-		</sequence>
-	</complexType>
-	
-	<complexType name = "Workflow">
+	<complexType name="Workflow">
 		<sequence>
 			<element name="Id" type="int"></element>
 			<element name="Step" type="tns:Step" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="Item" type="tns:Item" minOccurs="0" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name ="Item">
+		<sequence>
+			<element name="WorkflowId" type="int"></element>
+			<element name="Metadata" type="tns:Map"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="Map">
+		<sequence>
+			<element name="key" type="int" maxOccurs="unbounded"></element>
+			<element name="value" type="tns:MetaState" maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
 	
@@ -39,19 +59,5 @@
 			<enumeration value="DONE"></enumeration>
 		</restriction>
 	</simpleType>
-	
-	<complexType name ="Item">
-		<sequence>
-			<element name="Id" type="int"></element>
-			<element name="Metadata" type="tns:Map" minOccurs="0" maxOccurs="unbounded"></element>
-		</sequence>
-	</complexType>
-	
-	<complexType name="Map">
-		<sequence>
-			<element name="key" type="string" maxOccurs="unbounded"></element>
-			<element name="value" type="tns:MetaState" maxOccurs="unbounded"></element>
-		</sequence>
-	</complexType>
 	
 </schema>
