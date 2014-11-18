@@ -56,6 +56,8 @@
     <Compile Include="AddElementWindow.xaml.cs">
       <DependentUpon>AddElementWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="util\ActionCommand.cs" />
+    <Compile Include="util\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
