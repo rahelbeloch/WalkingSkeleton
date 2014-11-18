@@ -17,9 +17,9 @@ namespace AdminClient
     /// <summary>
     /// Interaktionslogik für Window1.xaml
     /// </summary>
-    public partial class AddElementWindow : Window
+    public partial class AddStepWindow : Window
     {
-        public AddElementWindow()
+        public AddStepWindow()
         {
             InitializeComponent();
         }

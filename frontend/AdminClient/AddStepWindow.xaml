@@ -1,15 +1,18 @@
-﻿<Window x:Class="AdminClient.AddElementWindow"
+﻿<Window x:Class="AdminClient.AddStepWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AdminClient.viewmodel"
         Title="Neues Element hinzufügen" Height="200" Width="320">
-    <Grid>
+    
+    <Window.Resources>
+        <vm:ViewModel x:Key="ViewModel" />
+    </Window.Resources>
+
+    <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Height="40">
                 <Label Content="Typ:" />
-                <ComboBox Height="25" Width="120" HorizontalAlignment="Left">
-                    <ComboBoxItem IsSelected="True">Startzustand</ComboBoxItem>
-                    <ComboBoxItem>Aktion</ComboBoxItem>
-                    <ComboBoxItem>Endzustand</ComboBoxItem>
+                <ComboBox Height="25" Width="120" HorizontalAlignment="Left" ItemsSource="{Binding choosableSteps}" DisplayMemberPath="type">
                 </ComboBox>
             </DockPanel>
             

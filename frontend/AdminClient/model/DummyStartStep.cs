@@ -8,9 +8,11 @@ namespace AdminClient.model
 {
     class DummyStartStep : DummyStep
     {
+        public DummyStartStep() : this("") { }
+
         public DummyStartStep(string user)
         {
-            type = "Start";
+            type = "Startzustand";
             this.user = user;
         }
     }
