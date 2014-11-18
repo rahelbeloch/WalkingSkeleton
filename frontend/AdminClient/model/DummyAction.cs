@@ -8,6 +8,8 @@ namespace AdminClient.model
 {
     class DummyAction : DummyStep
     {
+        public DummyAction() : this("", "") { }
+
         public DummyAction(string description, string user)
         {
             this.type = "Aktion";

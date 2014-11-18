@@ -53,8 +53,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddElementWindow.xaml.cs">
-      <DependentUpon>AddElementWindow.xaml</DependentUpon>
+    <Compile Include="AddStepWindow.xaml.cs">
+      <DependentUpon>AddStepWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="model\DummyAction.cs" />
     <Compile Include="model\DummyFinalStep.cs" />
@@ -79,7 +79,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="AddElementWindow.xaml">
+    <Page Include="AddStepWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

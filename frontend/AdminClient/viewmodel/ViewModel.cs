@@ -15,11 +15,7 @@ namespace AdminClient.viewmodel
     {
         private DummyWorkflow _dummyWorkflowModel = new DummyWorkflow();
 
-        /// <summary>
-        /// Property dummyWorkflow fills list view with dummySteps.
-        /// </summary>
-        private ObservableCollection<DummyStep> _dummyWorkflow = new ObservableCollection<DummyStep>();
-        public ObservableCollection<DummyStep> dummyWorkflow { get { return _dummyWorkflow; } }
+        
 
         public ViewModel()
         {
@@ -27,6 +23,41 @@ namespace AdminClient.viewmodel
             foreach (var step in _dummyWorkflowModel.steps)
             {
                 _dummyWorkflow.Add(step);
+            }
+        }
+
+        #region properties
+
+        /// <summary>
+        /// Property _dummyWorkflow fills list view with dummySteps.
+        /// </summary>
+        private ObservableCollection<DummyStep> _dummyWorkflow = new ObservableCollection<DummyStep>();
+        public ObservableCollection<DummyStep> dummyWorkflow { get { return _dummyWorkflow; } }
+
+        private ObservableCollection<DummyStep> _choosableSteps = new ObservableCollection<DummyStep>();
+        public ObservableCollection<DummyStep> choosableSteps { get { return _choosableSteps; } }
+
+        #endregion
+
+        #region commands
+
+        /// <summary>
+        /// Command to open window to add a step to the current workflow.
+        /// </summary>
+        private ICommand _openAddStepWindow;
+        public ICommand openAddStepWindow
+        {
+            get
+            {
+                if (_openAddStepWindow == null)
+                {
+                    _openAddStepWindow = new ActionCommand(func =>
+                    {
+                        AddStepWindow addElementWindow = new AddStepWindow();
+                        addElementWindow.Show();
+                    }, func => (_dummyWorkflow.Count == 0) || (_dummyWorkflow.Count > 0 && !(_dummyWorkflow[_dummyWorkflow.Count - 1] is DummyFinalStep)));
+                }
+                return _openAddStepWindow;
             }
         }
 
@@ -64,12 +95,17 @@ namespace AdminClient.viewmodel
                 {
                     _submitWorkflowCommand = new ActionCommand(func =>
                     {
-                        // update model AND viewmodel, because the model is not observable
                         Console.WriteLine("TODO: send workflow to server");
-                    }, func => _dummyWorkflow[_dummyWorkflow.Count - 1] is DummyFinalStep);
+                        // remove steps from workflow
+                        // update model AND viewmodel, because the model is not observable
+                        _dummyWorkflowModel.steps.Clear();
+                        _dummyWorkflow.Clear();
+                    }, func => _dummyWorkflow.Count > 0 && _dummyWorkflow[_dummyWorkflow.Count - 1] is DummyFinalStep);
                 }
                 return _submitWorkflowCommand;
             }
         }
-    }
+
+        #endregion
+    }   
 }
