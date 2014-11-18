@@ -1,5 +1,6 @@
 package processor;
 
+import de.hsrm.mi.gruppe02.javaserver.beans.FinalStep;
 import de.hsrm.mi.gruppe02.javaserver.beans.Item;
 import de.hsrm.mi.gruppe02.javaserver.beans.MetaState;
 import de.hsrm.mi.gruppe02.javaserver.beans.Step;
@@ -31,12 +32,16 @@ public class ActionProcessor implements StepProcessor {
 		item.getMetadata().getValue(step.getId()).setValue(MetaState.BUSY);//TODO: Jerome will noch eine methode schreiben die das passende objekt zurueck gibt
 		//funktion irrelevant für walking skeleton
 		item.getMetadata().getValue(step.getId()).setValue(MetaState.DONE);
-		if(next != ende){ //TODO waerst du so nett, EZ? xD Man muss noch den Next-aufruf schreiben sowie den "Endzustand" abfangen
-			//TODO rufe handle-methode von nachfolgenden step auf
 		
-		}else{
-			//TODO setze finish-flag in workflow
+		for(Step s : step.getNextSteps()){
+			if(!(s instanceof FinalStep)){ 
+				
+				
+			}else{
+				//TODO setze finish-flag in workflow
+			}	
 		}
+		
 	}
 
 

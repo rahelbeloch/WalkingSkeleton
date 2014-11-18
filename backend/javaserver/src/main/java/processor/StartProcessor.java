@@ -35,7 +35,8 @@ public class StartProcessor {
 				currentItem.getMetadata().getValue().add(MetaState.INACTIVE);
 			}
 		}
-		currentItem.getMetadata().getValue().get(0).setValue(MetaState.OPEN); //TODO keine setter vorhanden
+		currentItem.getMetadata().getValue().get(0).setValue(MetaState.OPEN); 
+		//TODO keine setter vorhanden
 		//TODO erstelltes item in der persistenz abspeichern
 	}
 
