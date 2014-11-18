@@ -9,15 +9,16 @@ namespace AdminClient.model
     class DummyWorkflow
     {
         private IList<DummyStep> _steps;
+        public IList<DummyStep> steps { get { return _steps; } }
 
         public DummyWorkflow()
         {
             _steps = new List<DummyStep>();
 
             // init with default values for testing purposes
-            AddStep(new DummyStartStep("michel"));
-            AddStep(new DummyAction("aktion 1", "klaus"));
-            AddStep(new DummyAction("aktion zwei", "michel"));
+            AddStep(new DummyStartStep("Klaus"));
+            AddStep(new DummyAction("Müll produzieren", "Klaus"));
+            AddStep(new DummyAction("Müll rausbringen", "Michel"));
             AddStep(new DummyFinalStep());
         }
 

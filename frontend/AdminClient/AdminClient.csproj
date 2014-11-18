@@ -63,6 +63,7 @@
     <Compile Include="model\DummyWorkflow.cs" />
     <Compile Include="util\ActionCommand.cs" />
     <Compile Include="util\ViewModelBase.cs" />
+    <Compile Include="viewmodel\ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
