@@ -19,6 +19,8 @@ namespace AdminClient.viewmodel
 
         public ViewModel()
         {
+            _dummyWorkflow.CollectionChanged += OnWorkflowChanged;
+
             // fill model with initial default values
             foreach (var step in _dummyWorkflowModel.steps)
             {
@@ -38,6 +40,15 @@ namespace AdminClient.viewmodel
         public ObservableCollection<DummyStep> choosableSteps { get { return _choosableSteps; } }
 
         #endregion
+
+        void OnWorkflowChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Console.WriteLine(_dummyWorkflow.Count);
+            Console.WriteLine("add...");
+            //_choosableSteps.Clear();
+            _choosableSteps.Add(new DummyAction());
+            Console.WriteLine(_choosableSteps.Count);
+        }
 
         #region commands
 

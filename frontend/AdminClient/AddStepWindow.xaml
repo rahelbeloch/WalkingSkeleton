@@ -12,7 +12,7 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Height="40">
                 <Label Content="Typ:" />
-                <ComboBox Height="25" Width="120" HorizontalAlignment="Left" ItemsSource="{Binding choosableSteps}" DisplayMemberPath="type">
+                <ComboBox Height="25" Width="120" HorizontalAlignment="Left"  ItemsSource="{Binding Path=choosableSteps, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="type">
                 </ComboBox>
             </DockPanel>
             
