@@ -1,12 +1,12 @@
 ﻿<Window x:Class="UserClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:UserClient.ViewModel"
+        xmlns:vm="clr-namespace:UserClient.MainViewModel"
         Title="User Client" Height="300" Width="300">
     <Window.Resources>
-        <vm:MainViewModel x:Key="MainViewModel" />
+        <vm:ViewModel x:Key="MainViewModel" />
     </Window.Resources>
-    <Grid  DataContext="{Binding Source={StaticResource ViewModel}}">
+    <Grid  DataContext="{Binding Source={StaticResource MainViewModel}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="26*"/>
