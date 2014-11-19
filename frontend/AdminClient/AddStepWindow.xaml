@@ -11,7 +11,8 @@
                 <Label Content="Typ:" />
                 <ComboBox Height="25" Width="120" HorizontalAlignment="Left"  
                           ItemsSource="{Binding Path=choosableSteps, UpdateSourceTrigger=PropertyChanged}" 
-                          DisplayMemberPath="type" />
+                          DisplayMemberPath="type" 
+                          SelectedItem="{Binding selectedStep}" />
             </DockPanel>
             
             <DockPanel DockPanel.Dock="Top" Height="40" HorizontalAlignment="Left">
@@ -21,7 +22,7 @@
 
             <DockPanel DockPanel.Dock="Top" Height="40" HorizontalAlignment="Left">
                 <Label Content="Beschreibung: " />
-                <TextBox Width="180" Height="25"/>
+                <TextBox Width="180" Height="25" IsEnabled="{Binding enableDescriptionTextBox, UpdateSourceTrigger=PropertyChanged}" />
             </DockPanel>
 
             <DockPanel DockPanel.Dock="Bottom" Height="45" HorizontalAlignment="Right" VerticalAlignment="Bottom">
