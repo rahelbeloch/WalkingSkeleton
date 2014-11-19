@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Action = AdminClient.model.Action;
+using System.Text.RegularExpressions;
 
 namespace AdminClient.viewmodel
 {
@@ -104,6 +105,40 @@ namespace AdminClient.viewmodel
                     enableUserTextBox = true;
                     enableDescriptionTextBox = true;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Property for input from userId text box.
+        /// </summary>
+        private string _userId = "";
+        public string userId
+        {
+            get
+            {
+                return _userId;
+            }
+            set
+            {
+                _userId = value;
+                OnChanged("userId");
+            }
+        }
+
+        /// <summary>
+        /// Property for input from step description text box.
+        /// </summary>
+        private string _stepDescription = "";
+        public string stepDescription
+        {
+            get
+            {
+                return _stepDescription;
+            }
+            set
+            {
+                _stepDescription = value;
+                OnChanged("stepDescription");
             }
         }
 
@@ -209,6 +244,9 @@ namespace AdminClient.viewmodel
             }
         }
 
+        /// <summary>
+        /// Command to add a selected step to current workflow.
+        /// </summary>
         private ICommand _addStepCommand;
         public ICommand addStepCommand
         {
@@ -218,32 +256,60 @@ namespace AdminClient.viewmodel
                 {
                     _addStepCommand = new ActionCommand(func =>
                     {
-                        Console.WriteLine("add step "+ _selectedStep.GetType());
                         // add step to workflow
                         // update model AND viewmodel, because the model is not observable
                         if (_selectedStep is StartStep)
                         {
                             StartStep startStep = new StartStep();
                             startStep.Id = 1;
-                            startStep.UserId = 17;
+                            startStep.UserId = int.Parse(userId);
+
                             _workflow.Add(startStep);
+                            _workflowModel.Step.Add(startStep);
                         }
                         else if (_selectedStep is Action)
                         {
                             Action action = new Action();
                             action.Id = 2;
-                            action.UserId = 17;
-                            action.Name = "beschreibung";
+                            action.UserId = int.Parse(userId);
+                            action.Name = stepDescription;
+
                             _workflow.Add(action);
+                            _workflowModel.Step.Add(action);
                         }
                         else if (_selectedStep is FinalStep)
                         {
                             FinalStep finalStep = new FinalStep();
                             finalStep.Id = 3;
                             finalStep.Name = "Endzustand";
+
                             _workflow.Add(finalStep);
+                            _workflowModel.Step.Add(finalStep);
                         }
-                    }, func => true);
+
+                        userId = "";
+                        stepDescription = "";
+                    }, func =>
+                    {
+                        if (selectedStep == null)
+                        {
+                            return false;
+                        }
+                        else if (selectedStep is Action && Regex.IsMatch(userId, @"^\d+$") && stepDescription.Length > 0)
+                        {
+                            return true;
+                        }
+                        else if (selectedStep is StartStep && Regex.IsMatch(userId, @"^\d+$"))
+                        {
+                            return true;
+                        }
+                        else if (selectedStep is FinalStep)
+                        {
+                            return true;
+                        }
+
+                        return false;
+                    });
                 }
 
                 return _addStepCommand;
