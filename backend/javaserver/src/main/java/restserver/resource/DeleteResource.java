@@ -16,7 +16,7 @@ import persistence.Persistence;
 @Path("delete")
 public class DeleteResource {
 
-	//Persistence db = new Persistence();
+	Persistence db = new Persistence();
 	
 	/**
 	 * 
@@ -25,7 +25,7 @@ public class DeleteResource {
 	 */
 	@DELETE @Path("workflow/{workflowid}")
 	public Response deleteWorkflow (@PathParam("workflowid") int workflowid) {
-		//remove workflow
+		db.deleteWorkflow(workflowid);
 		System.out.println("DELETE -> " + workflowid);
 		return Response.status(200).build();
 	}
