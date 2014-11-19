@@ -11,7 +11,7 @@ namespace AdminClient.util
     /// Default base class for ViewModels in the MVVM pattern
     /// with boilerplate-clode for property changes.
     /// </summary>
-    class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
