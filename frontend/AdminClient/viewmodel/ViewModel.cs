@@ -58,6 +58,7 @@ namespace AdminClient.viewmodel
             set
             {
                 _enableUserTextBox = value;
+                Console.WriteLine("TEEST");
                 OnChanged("enableUserTextBox");
             }
         }
@@ -76,6 +77,40 @@ namespace AdminClient.viewmodel
             {
                 _enableDescriptionTextBox = value;
                 OnChanged("enableDescriptionTextBox");
+            }
+        }
+
+        /// <summary>
+        /// Property for currently selected step from combo box.
+        /// </summary>
+        private DummyStep _selectedStep = new DummyStep();
+        public DummyStep selectedStep
+        {
+            get
+            {
+                return _selectedStep;
+            }
+            set
+            {
+                _selectedStep = value;
+                
+                if (_selectedStep is DummyStartStep)
+                {
+                    enableUserTextBox = true;
+                    enableDescriptionTextBox = false;
+                }
+                else if (_selectedStep is DummyFinalStep)
+                {
+                    enableUserTextBox = false;
+                    enableDescriptionTextBox = false;
+                    Console.WriteLine("final step ausgewähle");
+                }
+                else if (_selectedStep is DummyAction)
+                {
+                    enableUserTextBox = true;
+                    enableDescriptionTextBox = true;
+                    Console.WriteLine("action ausgewählt");
+                }
             }
         }
 
