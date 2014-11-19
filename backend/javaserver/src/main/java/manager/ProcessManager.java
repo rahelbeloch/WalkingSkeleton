@@ -2,6 +2,7 @@ package manager;
 
 import backingbeans.Action;
 import backingbeans.Item;
+import backingbeans.User;
 import processors.ActionProcessor;
 import abstractbeans.AbstractAction;
 import abstractbeans.AbstractStep;
@@ -19,7 +20,9 @@ public class ProcessManager {
 	 * Default-Constructor
 	 */
 	public ProcessManager (){
+		
 	}
+	
 	
 	/**
 	 * This method checks if the user who wishes to edit a step is the responsible user who is allowed to execute the step.
@@ -38,17 +41,17 @@ public class ProcessManager {
 		return false;
 	}
 	
+	
 	/**
 	 * This method selects the processor of a step and executes it.
 	 * @param step which is to be edited
 	 * @param item which is currently active
 	 * @param user who started interaction
 	 */
-	public void selectProcessor(AbstractStep step, Item item){
+	public void selectProcessor(AbstractStep step, Item item, User user){
 		if(step instanceof Action){
 			ActionProcessor actionProcessor = new ActionProcessor();
-			actionProcessor.handle(item, step);
+			actionProcessor.handle(item, step, user);
 		}
 	}
-
 }

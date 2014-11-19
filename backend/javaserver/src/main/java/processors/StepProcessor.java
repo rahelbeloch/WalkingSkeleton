@@ -2,6 +2,7 @@ package processors;
 
 import abstractbeans.AbstractStep;
 import backingbeans.Item;
+import backingbeans.User;
 
 
 /**
@@ -16,6 +17,6 @@ public interface StepProcessor {
 	 * @param step which an user wishes to edit
 	 * @param user who sent an edit request
 	 */
-	void handle (Item item, AbstractStep step);
+	void handle (Item item, AbstractStep step, User user);
 
 }
