@@ -64,8 +64,8 @@
     <Compile Include="model\DummyStartStep.cs" />
     <Compile Include="model\DummyStep.cs" />
     <Compile Include="model\DummyWorkflow.cs" />
-    <Compile Include="util\ActionCommand.cs" />
-    <Compile Include="util\ViewModelBase.cs" />
+    <Compile Include="viewmodel\ActionCommand.cs" />
+    <Compile Include="viewmodel\ViewModelBase.cs" />
     <Compile Include="viewmodel\ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
