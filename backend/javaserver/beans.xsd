@@ -55,6 +55,7 @@
 	
 	<complexType name ="Item">
 		<sequence>
+			<element name="Id" type="int"></element>
 			<element name="WorkflowId" type="int"></element>
 			<element name="Metadata" type="tns:Map"></element>
 			<element name="finished" type="boolean"></element>
