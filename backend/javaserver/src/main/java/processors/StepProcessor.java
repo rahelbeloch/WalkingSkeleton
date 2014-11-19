@@ -1,4 +1,4 @@
-package processor;
+package processors;
 
 import beans.Item;
 import beans.Step;
@@ -16,6 +16,6 @@ public interface StepProcessor {
 	 * @param step which an user wishes to edit
 	 * @param user who sent an edit request
 	 */
-	void handle (Item item, Step step, User user);
+	void handle (Item item, Step step);
 
 }
