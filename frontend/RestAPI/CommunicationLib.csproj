@@ -42,12 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="abstractbeans.cs">
+      <DependentUpon>abstractbeans.xsd</DependentUpon>
+    </Compile>
     <Compile Include="CommunicationManager.cs" />
     <Compile Include="RegistrationWrapper.cs" />
     <Compile Include="RestAPI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="abstractbeans.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
