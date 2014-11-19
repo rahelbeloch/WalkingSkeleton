@@ -48,7 +48,7 @@ namespace AdminClient.viewmodel
         /// <summary>
         /// Property to enable textbox for username input.
         /// </summary>
-        private bool _enableUserTextBox = true;
+        private bool _enableUserTextBox = false;
         public bool enableUserTextBox 
         { 
             get 
@@ -59,6 +59,23 @@ namespace AdminClient.viewmodel
             {
                 _enableUserTextBox = value;
                 OnChanged("enableUserTextBox");
+            }
+        }
+
+        /// <summary>
+        /// Property to enable textbox for description input.
+        /// </summary>
+        private bool _enableDescriptionTextBox = false;
+        public bool enableDescriptionTextBox
+        {
+            get
+            {
+                return _enableDescriptionTextBox;
+            }
+            set
+            {
+                _enableDescriptionTextBox = value;
+                OnChanged("enableDescriptionTextBox");
             }
         }
 
