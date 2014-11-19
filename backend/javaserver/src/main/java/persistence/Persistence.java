@@ -13,24 +13,47 @@ public class Persistence {
 	private List<User> users = new LinkedList<User>();
 	private List<Item> items = new LinkedList<Item>();
 	
+	/*
+	 * store functions for items, users, workflows
+	 */
 	public void storeItem(Item item) {
 		for(Item i: items) {
 			if(i.getId() == item.getId()) {
-				i = item;
-			} else {
-				items.add(item);
+				items.remove(i);
 			}
 		}
+		items.add(item);
 	}
 	
 	public void storeUser(User user) {
 		for(User u: users) {
 			if(u.getId() == user.getId()) {
-				u = user;
-			} else {
-				users.add(user);
+				users.remove(u);
 			}
 		}
+		users.add(user);
+	}
+	
+	public void storeWorkflow(Workflow workflow) {
+		for(Workflow wf: workflows) {
+			if (wf.getId() == workflow.getId()) {
+				workflows.remove(wf);
+			}
+		}
+		workflows.add(workflow);
+	}
+
+	/*
+	 * load functions for items, users, workflows
+	 */
+	public Item loadItem(int id) {
+		Item item = null;
+		for(Item i: items) {
+			if(i.getId() == id) {
+				item = i;
+			}
+		}
+		return item;
 	}
 	
 	public User loadUser(int id) {
@@ -41,17 +64,6 @@ public class Persistence {
 			}
 		}
 		return user;
-	}
-	
-	public void storeWorkflow(Workflow workflow) {
-		for(Workflow wf: workflows) {
-			if (wf.getId() == workflow.getId()) {
-				wf = workflow;
-			} else {
-				workflows.add(workflow);
-			}
-		}
-		workflows.add(workflow);
 	}
 	
 	public Workflow loadWorkflow(int id) {
