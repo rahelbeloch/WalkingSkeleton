@@ -71,6 +71,7 @@
     <Compile Include="model\MetaState.cs" />
     <Compile Include="model\StartStep.cs" />
     <Compile Include="model\Step.cs" />
+    <Compile Include="model\User.cs" />
     <Compile Include="viewmodel\ActionCommand.cs" />
     <Compile Include="viewmodel\ViewModelBase.cs" />
     <Compile Include="viewmodel\ViewModel.cs" />
