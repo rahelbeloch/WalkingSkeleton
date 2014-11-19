@@ -1,5 +1,6 @@
-package processor;
+package manager;
 
+import processors.ActionProcessor;
 import beans.Action;
 import beans.Item;
 import beans.Step;
@@ -11,13 +12,12 @@ import beans.User;
  * @author jvanh001
  *
  */
-public class ProcessorManager {
-	
+public class ProcessManager {
 	
 	/**
 	 * Default-Constructor
 	 */
-	public ProcessorManager (){
+	public ProcessManager (){
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class ProcessorManager {
 	public void selectProcessor(Step step, Item item, User user){
 		if(step instanceof Action){
 			ActionProcessor actionProcessor = new ActionProcessor();
-			actionProcessor.handle(item, step, user);
+			actionProcessor.handle(item, step);
 		}
 	}
 

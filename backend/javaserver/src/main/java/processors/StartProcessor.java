@@ -1,4 +1,4 @@
-package processor;
+package processors;
 
 import beans.Action;
 import beans.Item;
