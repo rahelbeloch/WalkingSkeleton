@@ -25,7 +25,7 @@ namespace CommunicationLib
     {
     }
 
-    class CommunicationManager
+    public class CommunicationManager
     {
         private static Dictionary<string, Type> dataStructure;
         private static Dictionary<string, string> funcMapping;
@@ -77,7 +77,7 @@ namespace CommunicationLib
             if (msg is ITextMessage)
             {
                 ITextMessage tm = msg as ITextMessage;
-                //HandleRequest(tm.Text);
+                HandleRequest(tm.Text);
                 //Logging on Console
                 Console.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
             }
