@@ -8,42 +8,37 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Action = AdminClient.model.Action;
 
 namespace AdminClient.viewmodel
 {
     class ViewModel : ViewModelBase
     {
-        private DummyWorkflow _dummyWorkflowModel = new DummyWorkflow();
+        private Workflow _workflowModel = new Workflow();
 
         public ViewModel()
         {
-            _dummyWorkflow.CollectionChanged += OnWorkflowChanged;
-
-            // fill model with initial default values
-            foreach (var step in _dummyWorkflowModel.steps)
-            {
-                _dummyWorkflow.Add(step);
-            }
+            _workflow.CollectionChanged += OnWorkflowChanged;
 
             // fill choosable steps with default values
-            _choosableSteps.Add(new DummyStartStep());
-            _choosableSteps.Add(new DummyAction());
-            _choosableSteps.Add(new DummyFinalStep());
+            _choosableSteps.Add(new StartStep());
         }
 
         #region properties
 
         /// <summary>
-        /// Property _dummyWorkflow fills list view with dummySteps.
+        /// Property _dummyWorkflow fills list view with steps.
+        /// TODO: change AbstractStep to Step (not possible at the moment)
         /// </summary>
-        private ObservableCollection<DummyStep> _dummyWorkflow = new ObservableCollection<DummyStep>();
-        public ObservableCollection<DummyStep> dummyWorkflow { get { return _dummyWorkflow; } }
+        private ObservableCollection<AbstractStep> _workflow = new ObservableCollection<AbstractStep>();
+        public ObservableCollection<AbstractStep> workflow { get { return _workflow; } }
 
         /// <summary>
         /// Property to fill combox box with choosable steps.
+        /// TODO: change AbstractStep to Step (not possible at the moment)
         /// </summary>
-        private ObservableCollection<DummyStep> _choosableSteps = new ObservableCollection<DummyStep>();
-        public ObservableCollection<DummyStep> choosableSteps { get { return _choosableSteps; } }
+        private ObservableCollection<AbstractStep> _choosableSteps = new ObservableCollection<AbstractStep>();
+        public ObservableCollection<AbstractStep> choosableSteps { get { return _choosableSteps; } }
 
         /// <summary>
         /// Property to enable textbox for username input.
@@ -58,7 +53,6 @@ namespace AdminClient.viewmodel
             set
             {
                 _enableUserTextBox = value;
-                Console.WriteLine("TEEST");
                 OnChanged("enableUserTextBox");
             }
         }
@@ -82,9 +76,10 @@ namespace AdminClient.viewmodel
 
         /// <summary>
         /// Property for currently selected step from combo box.
+        /// TODO: change AbstractStep to Step (not possible at the moment)
         /// </summary>
-        private DummyStep _selectedStep = new DummyStep();
-        public DummyStep selectedStep
+        private AbstractStep _selectedStep = new AbstractStep();
+        public AbstractStep selectedStep
         {
             get
             {
@@ -94,22 +89,20 @@ namespace AdminClient.viewmodel
             {
                 _selectedStep = value;
                 
-                if (_selectedStep is DummyStartStep)
+                if (_selectedStep is StartStep)
                 {
                     enableUserTextBox = true;
                     enableDescriptionTextBox = false;
                 }
-                else if (_selectedStep is DummyFinalStep)
+                else if (_selectedStep is FinalStep)
                 {
                     enableUserTextBox = false;
                     enableDescriptionTextBox = false;
-                    Console.WriteLine("final step ausgewähle");
                 }
-                else if (_selectedStep is DummyAction)
+                else if (_selectedStep is Action)
                 {
                     enableUserTextBox = true;
                     enableDescriptionTextBox = true;
-                    Console.WriteLine("action ausgewählt");
                 }
             }
         }
@@ -125,18 +118,27 @@ namespace AdminClient.viewmodel
         {
             _choosableSteps.Clear();
 
-            if (_dummyWorkflow.Count == 0)
+            if (_workflow.Count == 0)
             {
-                _choosableSteps.Add(new DummyStartStep());
+                StartStep startStep = new StartStep();
+                startStep.Id = 0;
+                _choosableSteps.Add(startStep);
             }
-            else if (_dummyWorkflow[_dummyWorkflow.Count - 1] is DummyStartStep)
+            else if (_workflow[_workflow.Count - 1] is StartStep)
             {
-                _choosableSteps.Add(new DummyAction());
+                Action action = new Action();
+                action.Id = 1;
+                _choosableSteps.Add(action);
             }
-            else if (_dummyWorkflow.Count >= 2)
+            else if (_workflow.Count >= 2 && !(_workflow[_workflow.Count - 1] is FinalStep))
             {
-                _choosableSteps.Add(new DummyAction());
-                _choosableSteps.Add(new DummyFinalStep());
+                Action action = new Action();
+                action.Id = 1;
+
+                FinalStep finalStep = new FinalStep();
+                finalStep.Id = 2;
+                _choosableSteps.Add(action);
+                _choosableSteps.Add(finalStep);
             }
         }
 
@@ -156,7 +158,7 @@ namespace AdminClient.viewmodel
                     {
                         AddStepWindow addElementWindow = new AddStepWindow();
                         addElementWindow.Show();
-                    }, func => (_dummyWorkflow.Count == 0) || (_dummyWorkflow.Count > 0 && !(_dummyWorkflow[_dummyWorkflow.Count - 1] is DummyFinalStep)));
+                    }, func => (_workflow.Count == 0) || (_workflow.Count > 0 && !(_workflow[_workflow.Count - 1] is FinalStep)));
                 }
                 return _openAddStepWindow;
             }
@@ -175,9 +177,9 @@ namespace AdminClient.viewmodel
                     _removeLastStepCommand = new ActionCommand(func =>
                     {
                         // update model AND viewmodel, because the model is not observable
-                        _dummyWorkflowModel.RemoveLastStep();
-                        _dummyWorkflow.RemoveAt(_dummyWorkflow.Count - 1);
-                    }, func => _dummyWorkflow.Count > 0);
+                        _workflowModel.Step.RemoveAt(_workflowModel.Step.Count - 1);
+                        _workflow.RemoveAt(_workflow.Count - 1);
+                    }, func => _workflow.Count > 0);
                     
                 }
                 return _removeLastStepCommand;
@@ -199,11 +201,52 @@ namespace AdminClient.viewmodel
                         Console.WriteLine("TODO: send workflow to server");
                         // remove steps from workflow
                         // update model AND viewmodel, because the model is not observable
-                        _dummyWorkflowModel.steps.Clear();
-                        _dummyWorkflow.Clear();
-                    }, func => _dummyWorkflow.Count > 0 && _dummyWorkflow[_dummyWorkflow.Count - 1] is DummyFinalStep);
+                        _workflowModel.Step.Clear();
+                        _workflow.Clear();
+                    }, func => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
                 }
                 return _submitWorkflowCommand;
+            }
+        }
+
+        private ICommand _addStepCommand;
+        public ICommand addStepCommand
+        {
+            get
+            {
+                if (_addStepCommand == null)
+                {
+                    _addStepCommand = new ActionCommand(func =>
+                    {
+                        Console.WriteLine("add step "+ _selectedStep.GetType());
+                        // add step to workflow
+                        // update model AND viewmodel, because the model is not observable
+                        if (_selectedStep is StartStep)
+                        {
+                            StartStep startStep = new StartStep();
+                            startStep.Id = 1;
+                            startStep.UserId = 17;
+                            _workflow.Add(startStep);
+                        }
+                        else if (_selectedStep is Action)
+                        {
+                            Action action = new Action();
+                            action.Id = 2;
+                            action.UserId = 17;
+                            action.Name = "beschreibung";
+                            _workflow.Add(action);
+                        }
+                        else if (_selectedStep is FinalStep)
+                        {
+                            FinalStep finalStep = new FinalStep();
+                            finalStep.Id = 3;
+                            finalStep.Name = "Endzustand";
+                            _workflow.Add(finalStep);
+                        }
+                    }, func => true);
+                }
+
+                return _addStepCommand;
             }
         }
 

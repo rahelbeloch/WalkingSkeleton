@@ -61,11 +61,6 @@
       <DependentUpon>abstractbeans.xsd</DependentUpon>
     </Compile>
     <Compile Include="model\backingbeans\Action.cs" />
-    <Compile Include="model\DummyAction.cs" />
-    <Compile Include="model\DummyFinalStep.cs" />
-    <Compile Include="model\DummyStartStep.cs" />
-    <Compile Include="model\DummyStep.cs" />
-    <Compile Include="model\DummyWorkflow.cs" />
     <Compile Include="model\backingbeans\FinalStep.cs" />
     <Compile Include="model\backingbeans\Item.cs" />
     <Compile Include="model\backingbeans\StartStep.cs" />
