@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RestAPI;
 using System.Reflection;
 
+using Apache.NMS;
+using Apache.NMS.ActiveMQ;
+using Apache.NMS.ActiveMQ.Commands;
+using RestAPI;
 
 namespace CommunicationLib
 {
@@ -29,6 +32,18 @@ namespace CommunicationLib
         //TODO: Client referenz
         //private Client myClient;
 
+        //default topic for server information
+        const string DEFAULT_TOPIC = "NEW_WORKFLOW_DEF";
+
+        //jms attributes
+        private IConnection connection;
+        private IConnectionFactory connectionFactory;
+        private ISession session;
+        //TODO: Lists of consumers for multiple subscribtions
+        private IMessageConsumer messageConsumer;
+        //'localhost' is for testing only  
+        private const string BROKER_URL = "tcp://localhost:61616";
+
         public CommunicationManager()
         {
             //Type Mapping
@@ -44,6 +59,36 @@ namespace CommunicationLib
             funcMapping.Add("upd", "updateObject");
             funcMapping.Add("del", "deleteObject");
 
+            //build connection to message broker
+            connectionFactory = new ConnectionFactory();
+            connection = connectionFactory.CreateConnection();
+            session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
+            //default topic subscription
+            messageConsumer = session.CreateConsumer(new ActiveMQTopic(DEFAULT_TOPIC));
+            messageConsumer.Listener += OnMessageReceived;
+            connection.Start();
+        }
+
+        /* Call-back method
+         * Is invoked when the messageConsumer receives a new Message.
+         */
+        public void OnMessageReceived(IMessage msg)
+        {
+            if (msg is ITextMessage)
+            {
+                ITextMessage tm = msg as ITextMessage;
+                //HandleRequest(tm.Text);
+                //Logging on Console
+                Console.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
+            }
+            else if (msg is IMapMessage)
+            {
+                // ...there is no need for this(not yet)
+            }
+            else
+            {
+                Console.WriteLine("\ndifferent message-Type: " + msg + "\n");
+            }
         }
 
         private void HandleRequest(string requestMsg)
@@ -79,5 +124,17 @@ namespace CommunicationLib
 
         }
 
+        /*
+         * for testing
+         */
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                CommunicationManager manager = new CommunicationManager();
+                Console.WriteLine("Communication-Manager waiting for messages...\n-- press ENTER to stop --\n");
+                Console.ReadKey();
+            }
+        }
     }
 }
