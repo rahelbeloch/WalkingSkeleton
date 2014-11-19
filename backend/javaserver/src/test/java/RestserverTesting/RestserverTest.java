@@ -36,7 +36,7 @@ public class RestserverTest {
 	@Test
 	public void deleteTest() {
 		Client client = ClientBuilder.newClient();
-		Response resp = client.target("http://localhost:8080").path("items/workflow/17").request().delete();
-		assertEquals(resp,Response.status(200));
+		Response resp = client.target("http://localhost:8080").path("delete/workflow/17").request().delete();
+		assertEquals(resp.getStatus(),200);
 	}
 }

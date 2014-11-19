@@ -20,6 +20,7 @@ import abstractbeans.AbstractWorkflow;
 public class RequestResource {
 	
 	Persistence db = new Persistence();
+	AbstractWorkflow workflow = new AbstractWorkflow();
 	
 	/**
 	 * 
@@ -29,6 +30,8 @@ public class RequestResource {
 	@GET @Path("workflow/{workflowid}")
 	@Produces(MediaType.APPLICATION_XML)
 	public AbstractWorkflow getWorkflowAsXML (@PathParam("workflowid") int workflowid) {
+		workflow.setId(17);
+		db.storeWorkflow(workflow);
 		System.out.println("GET ->" + workflowid);
 		return db.loadWorkflow(workflowid);
 	}
