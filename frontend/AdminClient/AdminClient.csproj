@@ -56,23 +56,22 @@
     <Compile Include="AddStepWindow.xaml.cs">
       <DependentUpon>AddStepWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="model\abstractbeans.cs">
+    <Compile Include="model\abstractbeans\abstractbeans.designer.cs" />
+    <Compile Include="model\oldabstractbeans\abstractbeans.cs">
       <DependentUpon>abstractbeans.xsd</DependentUpon>
     </Compile>
-    <Compile Include="model\Action.cs" />
+    <Compile Include="model\backingbeans\Action.cs" />
     <Compile Include="model\DummyAction.cs" />
     <Compile Include="model\DummyFinalStep.cs" />
     <Compile Include="model\DummyStartStep.cs" />
     <Compile Include="model\DummyStep.cs" />
     <Compile Include="model\DummyWorkflow.cs" />
-    <Compile Include="model\FinalStep.cs" />
-    <Compile Include="model\Item.cs" />
-    <Compile Include="model\Map.cs" />
-    <Compile Include="model\MetaState.cs" />
-    <Compile Include="model\StartStep.cs" />
-    <Compile Include="model\Step.cs" />
-    <Compile Include="model\User.cs" />
-    <Compile Include="model\Workflow.cs" />
+    <Compile Include="model\backingbeans\FinalStep.cs" />
+    <Compile Include="model\backingbeans\Item.cs" />
+    <Compile Include="model\backingbeans\StartStep.cs" />
+    <Compile Include="model\backingbeans\Step.cs" />
+    <Compile Include="model\backingbeans\User.cs" />
+    <Compile Include="model\backingbeans\Workflow.cs" />
     <Compile Include="viewmodel\ActionCommand.cs" />
     <Compile Include="viewmodel\ViewModelBase.cs" />
     <Compile Include="viewmodel\ViewModel.cs" />
@@ -111,7 +110,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="model\abstractbeans.xsd">
+    <None Include="model\abstractbeans\abstractbeans.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="model\oldabstractbeans\abstractbeans.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Settings.settings">
