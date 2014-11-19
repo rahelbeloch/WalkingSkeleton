@@ -17,12 +17,20 @@
             
             <DockPanel DockPanel.Dock="Top" Height="40" HorizontalAlignment="Left">
                 <Label Content="Nutzer: " />
-                <TextBox Width="120" Height="25" IsEnabled="{Binding enableUserTextBox, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Width="120" Height="25" IsEnabled="{Binding enableUserTextBox, UpdateSourceTrigger=PropertyChanged}" >
+                    <TextBox.Text>
+                        <Binding Path="userId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                    </TextBox.Text>
+                </TextBox>
             </DockPanel>
 
             <DockPanel DockPanel.Dock="Top" Height="40" HorizontalAlignment="Left">
                 <Label Content="Beschreibung: " />
-                <TextBox Width="180" Height="25" IsEnabled="{Binding enableDescriptionTextBox, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Width="180" Height="25" IsEnabled="{Binding enableDescriptionTextBox, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Text>
+                        <Binding Path="stepDescription" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                    </TextBox.Text>
+                </TextBox>
             </DockPanel>
 
             <DockPanel DockPanel.Dock="Bottom" Height="45" HorizontalAlignment="Right" VerticalAlignment="Bottom">
