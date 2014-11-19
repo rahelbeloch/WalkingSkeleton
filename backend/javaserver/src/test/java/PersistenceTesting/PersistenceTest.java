@@ -6,9 +6,9 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
 
 import persistence.Persistence;
-import beans.Item;
-import beans.User;
-import beans.Workflow;
+import abstractbeans.AbstractUser;
+import backingbeans.Item;
+import backingbeans.Workflow;
 
 public class PersistenceTest {
 
@@ -81,9 +81,9 @@ public class PersistenceTest {
 	
 	@Test
 	public void testUserStorage() {
-		User user001 = new User();
-		User user002 = new User();
-		User user003 = new User();
+		AbstractUser user001 = new AbstractUser();
+		AbstractUser user002 = new AbstractUser();
+		AbstractUser user003 = new AbstractUser();
 		user001.setId(1);
 		user002.setId(2);
 		user003.setId(3);
@@ -99,8 +99,8 @@ public class PersistenceTest {
 	
 	@Test
 	public void testDuplicateUserStorage() {
-		User user001 = new User();
-		User user002 = new User();
+		AbstractUser user001 = new AbstractUser();
+		AbstractUser user002 = new AbstractUser();
 		user001.setId(17);
 		user002.setId(17);
 		
@@ -109,6 +109,21 @@ public class PersistenceTest {
 		
 		assertNotEquals(user001,db.loadUser(17));
 		assertEquals(user002,db.loadUser(17));
+	}
+	
+	@Test
+	public void testUserDeletion() {
+		AbstractUser user001 = new AbstractUser();
+		AbstractUser user002 = new AbstractUser();
+		user001.setId(1);
+		user002.setId(2);
+		db.storeUser(user001);
+		db.storeUser(user002);
+		
+		db.deleteUser(1);
+		
+		assertEquals(db.loadUser(1), null);
+		assertEquals(db.loadUser(2), user002);
 	}
 
 
