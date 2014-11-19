@@ -1,10 +1,10 @@
 package processors;
 
-import backingbeans.BbItem;
-import beans.FinalStep;
-import beans.Item;
-import beans.MetaState;
-import beans.Step;
+import abstractbeans.AbstractFinalStep;
+import abstractbeans.AbstractMetaState;
+import abstractbeans.AbstractStep;
+import backingbeans.Item;
+
 
 /**
  * This class executes "Action" step-objects.
@@ -12,7 +12,7 @@ import beans.Step;
  *
  */
 public class ActionProcessor implements StepProcessor {
-	private BbItem currentItem;
+	private Item currentItem;
 
 	/**
 	 * Default-Constructor
@@ -27,27 +27,28 @@ public class ActionProcessor implements StepProcessor {
 	 * After successfully executing the Action-function the current step's state will be set on "DONE".
 	 * If the next step isn't an end state, this processor calls the next step's processor etc. until it reaches an end state.
 	 */
-	public void handle(Item item, Step step) {
-		currentItem = (BbItem)item;
+	public void handle(Item item, AbstractStep step) {
+		currentItem = (Item)item;
 		
-		currentItem.setMetaState(step.getId(), MetaState.BUSY);
+		currentItem.setMetaState(step.getId(), AbstractMetaState.BUSY);
 		//funktion irrelevant für walking skeleton
-		currentItem.setMetaState(step.getId(), MetaState.DONE);
+		currentItem.setMetaState(step.getId(), AbstractMetaState.DONE);
 		
-		for(Step s : step.getNextSteps()){
-			if(!(s instanceof FinalStep)){ 
+		for(AbstractStep s : step.getNextSteps()){
+			if(!(s instanceof AbstractFinalStep)){ 
 				//TODO aktuelles item persiztieren
-				currentItem.setMetaState(s.getId(), MetaState.OPEN);
+				currentItem.setMetaState(s.getId(), AbstractMetaState.OPEN);
 				
 			}else{
 				//TODO setze finish-flag in item
 				//zweite loesung
-				currentItem.setMetaState(s.getId(), MetaState.DONE);
+				currentItem.setMetaState(s.getId(), AbstractMetaState.DONE);
 				currentItem.setFinished(true);
 			}	
 		}
 		
 	}
+
 
 
 
