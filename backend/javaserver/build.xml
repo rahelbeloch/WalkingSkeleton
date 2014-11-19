@@ -14,14 +14,18 @@
 				<include name="**/*" />
 			</fileset>
 		</delete>
-		<delete dir="src/main/java/de/hsrm/mi/gruppe02/javaserver" failonerror="false"/>
+		<delete dir="c:\opt\Java\jdk1.7.0_67\bin\xjc" failonerror="false"/>
+		<!--<delete dir="src/main/java/de/hsrm/mi/gruppe02/javaserver" failonerror="false"/>-->
 		<delete file="output.xml" failonerror="false"/>
 		<delete dir="${doxygenhtmldir}" failonerror="false"/>
 	</target>
 
 	<target name="classgen" description="Generate Java-classes">
-		<exec executable="/opt/jdk1.8.0_20/bin/xjc">
-			<arg line="-d src/main/java/ -p de.hsrm.mi.gruppe02.javaserver.beans beans.xsd" />
+		<exec executable="c:\opt\Java\jdk1.7.0_67\bin\xjc">
+			<arg line="-d src/main/java/ -p beans beans.xsd" />
 		</exec>
+		<!--<exec executable="src/main/java/de/hsrm/mi/gruppe02/javaserver">
+					<arg line="-d src/main/java/ -p beans beans.xsd" />
+		</exec>-->
 	</target>
 </project>
