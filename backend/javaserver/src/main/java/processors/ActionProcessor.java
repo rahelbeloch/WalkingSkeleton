@@ -30,19 +30,19 @@ public class ActionProcessor implements StepProcessor {
 	public void handle(Item item, Step step) {
 		currentItem = (BbItem)item;
 		
-		currentItem.setMetaState(step, MetaState.BUSY);
+		currentItem.setMetaState(step.getId(), MetaState.BUSY);
 		//funktion irrelevant für walking skeleton
-		currentItem.setMetaState(step, MetaState.DONE);
+		currentItem.setMetaState(step.getId(), MetaState.DONE);
 		
 		for(Step s : step.getNextSteps()){
 			if(!(s instanceof FinalStep)){ 
 				//TODO aktuelles item persiztieren
-				currentItem.setMetaState(s, MetaState.OPEN);
+				currentItem.setMetaState(s.getId(), MetaState.OPEN);
 				
 			}else{
 				//TODO setze finish-flag in item
 				//zweite loesung
-				currentItem.setMetaState(s, MetaState.DONE);
+				currentItem.setMetaState(s.getId(), MetaState.DONE);
 				currentItem.setFinished(true);
 			}	
 		}

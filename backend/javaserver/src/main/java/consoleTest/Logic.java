@@ -1,9 +1,13 @@
 package consoleTest;
 
 
+import processors.StartTrigger;
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 
 import beans.Action;
 import beans.FinalStep;
@@ -11,8 +15,9 @@ import beans.Item;
 import beans.Step;
 import beans.User;
 import beans.Workflow;
-import processor.ProcessorManager;
-import processor.StartTrigger;
+import manager.ProcessManager;
+import processors.StartTrigger;
+
 
 
 public class Logic {
@@ -29,7 +34,7 @@ public class Logic {
 		User benni = new User();
 		benni.setName("benni");
 		
-		ProcessorManager manager = new ProcessorManager();
+		ProcessManager manager = new ProcessManager();
 		
 		Item item = myWorkflow.getItem().get(0);
 		Step step = myWorkflow.getStep().get(0);

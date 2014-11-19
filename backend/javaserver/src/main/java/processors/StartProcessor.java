@@ -1,7 +1,7 @@
 package processors;
 
+import backingbeans.BbItem;
 import beans.Action;
-import beans.Item;
 import beans.MetaState;
 import beans.Step;
 import beans.Workflow;
@@ -12,7 +12,7 @@ import beans.Workflow;
  */
 public class StartProcessor {
 
-	private Item currentItem;
+	private BbItem currentItem;
 	
 	/**
 	 * Default-Constructor
@@ -26,7 +26,7 @@ public class StartProcessor {
 	 * @param workflow
 	 */
 	public void createItem(Workflow workflow){
-		currentItem = new Item();
+		currentItem = new BbItem();
 		//irgendetwas passiert hier noch
 		initiateItem(workflow, currentItem);
 	}
@@ -37,14 +37,13 @@ public class StartProcessor {
 	 * @param workflow
 	 * @param item
 	 */
-	public void initiateItem(Workflow workflow, Item item){
+	public void initiateItem(Workflow workflow, BbItem item){
 		for (Step s: workflow.getStep()){
 			if (s instanceof Action){ 
-				currentItem.getMetadata().getKey().add(s.getId());
-				currentItem.getMetadata().getValue().add(MetaState.INACTIVE);
+				item.add(s.getId(), MetaState.INACTIVE);
 			}
 		}
-		currentItem.getMetadata().getValue().set(0,MetaState.OPEN); 
+		item.setMetaState(item.getMetaData().getKey().get(0), MetaState.OPEN);
 		//TODO erstelltes item in der persistenz abspeichern
 	}
 
