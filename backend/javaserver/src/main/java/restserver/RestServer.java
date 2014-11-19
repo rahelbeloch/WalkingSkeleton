@@ -8,16 +8,24 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import com.sun.net.httpserver.HttpServer;
 
+/**
+ * 
+ * @author akoen001
+ * 
+ * REST-Server, located on localhost:8080
+ */
 public class RestServer {
 
 	public static final String BASE_URI = "http://0.0.0.0:8080/";
 	public static final int WARTEZEIT = 5;
 	
+	/**
+	 * Creates a new http server to run REST on
+	 * @return the instance of the new server
+	 */
 	public static HttpServer startServer() {
         ResourceConfig rc = new ResourceConfig();
-    	// hier werden Resource-Klassen gesucht
-        rc.packages("restserver");
-        //rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,true);
+        rc.packages("restserver.resource");
         return JdkHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 	
