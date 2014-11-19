@@ -83,4 +83,14 @@
 		</sequence>
 	</complexType>
 	
+	<simpleType name="AbstractMetaState"> 
+		<restriction base="string"> 
+			<enumeration value="INACTIVE"></enumeration>
+			<enumeration value="OPEN"></enumeration>
+			<enumeration value="BUSY"></enumeration>
+			<enumeration value="DONE">
+			</enumeration>
+		</restriction>
+	</simpleType> 
+	
 </schema>
