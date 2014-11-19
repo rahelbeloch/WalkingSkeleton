@@ -3,7 +3,6 @@ package backingbeans;
 import beans.Item;
 
 import beans.MetaState;
-import beans.Step;
 
 public class BbItem extends Item{
 	
@@ -11,9 +10,20 @@ public class BbItem extends Item{
 		metadata = new BbMap();
 	}
 	
-	public void setMetaState(Step step, MetaState state){
-		((BbMap) metadata).setValue(step.getId(), state);
+	
+	public BbMap getMetaData(){
+		return (BbMap) metadata;
 	}
+	
+	public void add(int stepId, MetaState state){
+		((BbMap) metadata).getMap().put(stepId, state);
+	}
+	
+	public void setMetaState(int stepId, MetaState state){
+		((BbMap) metadata).setValue(stepId, state);
+	}
+	
+	
 	
 
 }
