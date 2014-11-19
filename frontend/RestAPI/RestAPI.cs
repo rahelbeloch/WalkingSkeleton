@@ -33,32 +33,40 @@ namespace RestAPI
         /*
          * Public supported methods by this API.
          */
-        public void getObject<O>(int id) where O : new()
+        public static O getObject<O>(int id) where O : new()
         {
             String url = "/" + typeof(O).FullName + "/" + id.ToString();
             O request = sendRequest<O>(url, Method.GET);
+
+            return request;
         }
 
-        public void updateObject<O>(int id) where O : new()
+        public static O updateObject<O>(int id) where O : new()
         {
             String url = "/" + typeof(O).FullName + "/" + id.ToString();
             O request = sendRequest<O>(url, Method.PUT);
+
+            return request;
         }
 
-        public void postObject<O>(int id) where O : new()
+        public static O postObject<O>(int id) where O : new()
         {
             String url = "/" + typeof(O).FullName + "/" + id.ToString();
             O request = sendRequest<O>(url, Method.POST);
+
+            return request;
         }
 
-        public void deleteObject<O>(int id) where O : new()
+        public static O deleteObject<O>(int id) where O : new()
         {
             String url = "/" + typeof(O).FullName + "/" + id.ToString();
             O request = sendRequest<O>(url, Method.DELETE);
+
+            return request;
         }
 
 
-        private O sendRequest<O>(String url, RestSharp.Method method) where O : new()
+        private static O sendRequest<O>(String url, RestSharp.Method method) where O : new()
         {
             var request = new RestRequest(restserverurl + url, method);
             
