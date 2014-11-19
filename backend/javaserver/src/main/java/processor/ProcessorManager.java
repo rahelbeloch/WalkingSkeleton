@@ -18,7 +18,6 @@ public class ProcessorManager {
 	 * Default-Constructor
 	 */
 	public ProcessorManager (){
-	
 	}
 	
 	/**
