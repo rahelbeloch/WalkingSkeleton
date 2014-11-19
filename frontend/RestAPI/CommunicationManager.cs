@@ -13,18 +13,6 @@ using RestAPI;
 namespace CommunicationLib
 {
 
-    class WorkflowTestKlasse
-    {
-    }
-
-    class ItemTestKlasse
-    {
-    }
-
-    class UserTestKlasse
-    {
-    }
-
     public class CommunicationManager
     {
         private static Dictionary<string, Type> dataStructure;
@@ -48,9 +36,9 @@ namespace CommunicationLib
         {
             //Type Mapping
             dataStructure = new Dictionary<string, Type>();
-            dataStructure.Add("workflow", typeof(WorkflowTestKlasse));
-            dataStructure.Add("item", typeof(ItemTestKlasse));
-            dataStructure.Add("user", typeof(UserTestKlasse));
+            dataStructure.Add("workflow", typeof(AbstractWorkflow));
+            dataStructure.Add("item", typeof(AbstractItem));
+            dataStructure.Add("user", typeof(AbstractUser));
             
             //Funktion Mapping
             funcMapping = new Dictionary<string, string>();
