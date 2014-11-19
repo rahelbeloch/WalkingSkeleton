@@ -68,25 +68,17 @@
 		<sequence>
 			<element name="Id" type="int"></element>
 			<element name="WorkflowId" type="int"></element>
-			<element name="Metadata" type="tns:AbstractMap"></element>
+			<element name="Metadata" type="tns:AbstractMetaEntry" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="finished" type="boolean"></element>
 		</sequence>
 	</complexType>
 	
-	<complexType name="AbstractMap">
+	<complexType name="AbstractMetaEntry">
 		<sequence>
-			<element name="key" type="int" maxOccurs="unbounded"></element>
-			<element name="value" type="tns:AbstractMetaState" maxOccurs="unbounded"></element>
+			<element name="key" type="string"></element>
+			<element name="value" type="string"></element>
+			<element name="groupId" type="string"></element>
 		</sequence>
 	</complexType>
-	
-	<simpleType name="AbstractMetaState">
-		<restriction base="string">
-			<enumeration value="INACTIVE"></enumeration>
-			<enumeration value="OPEN"></enumeration>
-			<enumeration value="BUSY"></enumeration>
-			<enumeration value="DONE"></enumeration>
-		</restriction>
-	</simpleType>
 	
 </schema>
