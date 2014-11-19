@@ -18,15 +18,17 @@ namespace RestAPI
         }
     }
 
-
+    /*
+     * 
+     */
     public class RestRequester
     {
-
-        static String restserverurl = "http://172.26.38.109:8080/";
+        static String restserverurl;
         static RestClient client;
 
         public static void init()
         {
+            restserverurl = "http://172.26.38.109:8080/";
             client = new RestClient(restserverurl);
         }
 
@@ -84,6 +86,27 @@ namespace RestAPI
                 throw response.Data;
             }
         }
+
+        class Workflow
+        {
+            
+
+        }
+
+        static void Main(string[] args)
+        {
+
+            RestRequester.init();
+
+            Console.WriteLine("*** REST-Service ist " + RestRequester.restserverurl + " ***\n");
+
+
+            Workflow result = RestRequester.getObject<Workflow>(1);
+
+
+
+        }
+
 
     }
 }

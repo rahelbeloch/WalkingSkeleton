@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserClient", "UserClient\Us
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminClient", "AdminClient\AdminClient.csproj", "{89070A29-F7F1-4D33-9A57-8EFDBFC6AA64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestAPI", "RestAPI\RestAPI.csproj", "{C383C56D-200C-418D-B13B-6AD50AD1CF52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicationLib", "RestAPI\CommunicationLib.csproj", "{C383C56D-200C-418D-B13B-6AD50AD1CF52}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
