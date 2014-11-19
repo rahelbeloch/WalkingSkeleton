@@ -1,10 +1,14 @@
 package processors;
 
-import backingbeans.BbItem;
-import beans.Action;
-import beans.MetaState;
-import beans.Step;
-import beans.Workflow;
+import abstractbeans.AbstractAction;
+import abstractbeans.AbstractMetaState;
+import abstractbeans.AbstractStep;
+import abstractbeans.AbstractWorkflow;
+import backingbeans.Item;
+
+
+
+
 /**
  * 
  * @author jvanh001
@@ -12,7 +16,7 @@ import beans.Workflow;
  */
 public class StartProcessor {
 
-	private BbItem currentItem;
+	private Item currentItem;
 	
 	/**
 	 * Default-Constructor
@@ -25,8 +29,8 @@ public class StartProcessor {
 	 * according to the workflow's initialized steps. The item consists of pairs of step IDs and its MetaState. 
 	 * @param workflow
 	 */
-	public void createItem(Workflow workflow){
-		currentItem = new BbItem();
+	public void createItem(AbstractWorkflow workflow){
+		currentItem = new Item();
 		//irgendetwas passiert hier noch
 		initiateItem(workflow, currentItem);
 	}
@@ -37,13 +41,13 @@ public class StartProcessor {
 	 * @param workflow
 	 * @param item
 	 */
-	public void initiateItem(Workflow workflow, BbItem item){
-		for (Step s: workflow.getStep()){
-			if (s instanceof Action){ 
-				item.add(s.getId(), MetaState.INACTIVE);
+	public void initiateItem(AbstractWorkflow workflow, Item item){
+		for (AbstractStep s: workflow.getStep()){
+			if (s instanceof AbstractAction){ 
+				item.add(s.getId(), AbstractMetaState.INACTIVE);
 			}
 		}
-		item.setMetaState(item.getMetaData().getKey().get(0), MetaState.OPEN);
+		item.setMetaState(item.getMetaData().getKey().get(0), AbstractMetaState.OPEN);
 		//TODO erstelltes item in der persistenz abspeichern
 	}
 

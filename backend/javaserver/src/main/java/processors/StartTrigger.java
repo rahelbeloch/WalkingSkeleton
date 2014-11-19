@@ -1,6 +1,6 @@
 package processors;
 
-import beans.Workflow;
+import abstractbeans.AbstractWorkflow;
 
 /**
  * This class initializes the execution of a workflow.
@@ -9,14 +9,14 @@ import beans.Workflow;
  */
 public class StartTrigger {
 	
-	private Workflow currentWorkflow;
+	private AbstractWorkflow currentWorkflow;
 	private StartProcessor startProcessor;
 	
 	/**
 	 * Constructor of StartTrigger
 	 * @param workflow which was initialized by an admin
 	 */
-	public StartTrigger(Workflow workflow){
+	public StartTrigger(AbstractWorkflow workflow){
 		currentWorkflow = workflow;
 		startProcessor = new StartProcessor();
 	}

@@ -1,8 +1,7 @@
 package processors;
 
-import beans.Item;
-import beans.Step;
-import beans.User;
+import abstractbeans.AbstractStep;
+import backingbeans.Item;
 
 /**
  * This is the interface of the StepProcessor.
@@ -16,6 +15,6 @@ public interface StepProcessor {
 	 * @param step which an user wishes to edit
 	 * @param user who sent an edit request
 	 */
-	void handle (Item item, Step step);
+	void handle (Item item, AbstractStep step);
 
 }

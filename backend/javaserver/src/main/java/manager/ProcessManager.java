@@ -1,10 +1,10 @@
 package manager;
 
+import backingbeans.Item;
 import processors.ActionProcessor;
-import beans.Action;
-import beans.Item;
-import beans.Step;
-import beans.User;
+import abstractbeans.AbstractAction;
+import abstractbeans.AbstractStep;
+import abstractbeans.AbstractUser;
 
 /**
  * This class handles the processing of Steps. (For now) it provides methods for checking whether an user can execute a step and selecting
@@ -26,9 +26,9 @@ public class ProcessManager {
 	 * @param step which user wants to edit
 	 * @return true if user is "owner" of step and false if not
 	 */
-	public boolean checkUser(User user, Step step){
-		if (step instanceof Action){
-			if (user.getId() == ((Action) step).getUserId()){
+	public boolean checkUser(AbstractUser user, AbstractStep step){
+		if (step instanceof AbstractAction){
+			if (user.getId() == ((AbstractAction) step).getUserId()){
 				return true;
 			}else{
 				return false;
@@ -43,8 +43,8 @@ public class ProcessManager {
 	 * @param item which is currently active
 	 * @param user who started interaction
 	 */
-	public void selectProcessor(Step step, Item item, User user){
-		if(step instanceof Action){
+	public void selectProcessor(AbstractStep step, Item item, AbstractUser user){
+		if(step instanceof AbstractAction){
 			ActionProcessor actionProcessor = new ActionProcessor();
 			actionProcessor.handle(item, step);
 		}
