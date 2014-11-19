@@ -7,7 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import persistence.Persistence;
-import beans.Workflow;
+import abstractbeans.AbstractWorkflow;
 
 
 /**
@@ -28,7 +28,8 @@ public class RequestResource {
 	 */
 	@GET @Path("workflow/{workflowid}")
 	@Produces(MediaType.APPLICATION_XML)
-	public Workflow getWorkflowAsXML (@PathParam("workflowid") int workflowid) {
+	public AbstractWorkflow getWorkflowAsXML (@PathParam("workflowid") int workflowid) {
+		System.out.println("GET ->" + workflowid);
 		return db.loadWorkflow(workflowid);
 	}
 }
