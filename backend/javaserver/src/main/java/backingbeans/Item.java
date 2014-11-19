@@ -30,7 +30,8 @@ public class Item extends AbstractItem{
 		((Map) metadata).setValue(stepId, state);
 	}
 	
+	public Map getMetadata() {
+		return (Map)metadata; // Casting an dieser Stelle nötig?
+	}
 	
-	
-
 }
