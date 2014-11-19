@@ -64,6 +64,7 @@
     <Compile Include="model\DummyStartStep.cs" />
     <Compile Include="model\DummyStep.cs" />
     <Compile Include="model\DummyWorkflow.cs" />
+    <Compile Include="model\FinalStep.cs" />
     <Compile Include="viewmodel\ActionCommand.cs" />
     <Compile Include="viewmodel\ViewModelBase.cs" />
     <Compile Include="viewmodel\ViewModel.cs" />
