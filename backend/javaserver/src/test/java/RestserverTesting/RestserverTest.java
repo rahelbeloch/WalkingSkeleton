@@ -1,4 +1,4 @@
-package de.hsrm.mi.gruppe02.javaserver;
+package RestserverTesting;
 
 import static org.junit.Assert.*;
 
@@ -21,15 +21,20 @@ public class RestserverTest {
 	
 	@BeforeClass
 	public static void setUp() {
-		RestServer server = new RestServer();
-		final HttpServer restserver = server.startServer();
+		final HttpServer restserver = RestServer.startServer();
+		restserver.toString();
 	}
 	
 	@Test
-	public void serverTest () {
+	public void reqeustTest () {
 		Client client = ClientBuilder.newClient();
 		Workflow workflow = client.target("http://localhost:8080").path("items/workflow/17").request(MediaType.APPLICATION_XML).get(Workflow.class);
 		assertEquals(workflow.getId(),17);
+	}
+	
+	@Test
+	public void postTest () {
+		
 	}
 	
 }
