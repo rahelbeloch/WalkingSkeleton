@@ -28,7 +28,6 @@ Global
 		{C383C56D-200C-418D-B13B-6AD50AD1CF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C383C56D-200C-418D-B13B-6AD50AD1CF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C383C56D-200C-418D-B13B-6AD50AD1CF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C383C56D-200C-418D-B13B-6AD50AD1CF52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
