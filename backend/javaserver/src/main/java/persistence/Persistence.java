@@ -1,32 +1,63 @@
 package persistence;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
-import beans.Item;
-import beans.User;
-import beans.Workflow;
+import abstractbeans.AbstractItem;
+import abstractbeans.AbstractMap;
+import abstractbeans.AbstractStep;
+import abstractbeans.AbstractUser;
+import abstractbeans.AbstractWorkflow;
 
 public class Persistence {
 	
-	private List<Workflow> workflows = new LinkedList<Workflow>();
-	private List<User> users = new LinkedList<User>();
-	private List<Item> items = new LinkedList<Item>();
-	
 	/*
-	 * store functions for items, users, workflows
+	 * Abstraktion einer Datenbank, die Obejekte in der Form Abstract-* persistiert
 	 */
-	public void storeItem(Item item) {
-		for(Item i: items) {
+	private List<AbstractWorkflow> workflows = new LinkedList<AbstractWorkflow>();
+	private List<AbstractUser> users = new LinkedList<AbstractUser>();
+	private List<AbstractItem> items = new LinkedList<AbstractItem>();
+	private List<AbstractStep> steps = new LinkedList<AbstractStep>();
+	
+
+//	public AbstractItem resolveMap(Item item) {
+//		AbstractItem tempItem = null;
+//		AbstractMap tempMap = null;
+//		
+//		/*
+//		 * following code does not work because structure will be redefined by Jerome/Jane
+//		 * tempMap.getKey().addAll(item.getMetaData().getKeys());
+//		 * tempMap.getValue().addAll(item.getMetaData().getValues());
+//		 */
+//		tempItem.setMetadata(tempMap);
+//		return tempItem;
+//	}
+	
+
+	/*
+	 * store functions for steps, items, users, workflows
+	 */	
+	public void storeStep(AbstractStep step) {
+		for(AbstractStep s: steps) {
+			if(s.getId() == step.getId()) {
+				steps.remove(s);
+			}
+		}
+		steps.add(step);
+	}
+	
+	public void storeItem(AbstractItem item) {
+		for(AbstractItem i: items) {
 			if(i.getId() == item.getId()) {
 				items.remove(i);
 			}
 		}
+		// items includes a HashMap that has to be transfered into lists (Map)
 		items.add(item);
 	}
 	
-	public void storeUser(User user) {
-		for(User u: users) {
+	public void storeUser(AbstractUser user) {
+		for(AbstractUser u: users) {
 			if(u.getId() == user.getId()) {
 				users.remove(u);
 			}
@@ -34,21 +65,32 @@ public class Persistence {
 		users.add(user);
 	}
 	
-	public void storeWorkflow(Workflow workflow) {
-		for(Workflow wf: workflows) {
+	public void storeWorkflow(AbstractWorkflow workflow) {
+		for(AbstractWorkflow wf: workflows) {
 			if (wf.getId() == workflow.getId()) {
 				workflows.remove(wf);
 			}
 		}
-		workflows.add(workflow);
+		workflows.add((AbstractWorkflow)workflow);
 	}
 
 	/*
-	 * load functions for items, users, workflows
+	 * load functions for steps, items, users, workflows
 	 */
-	public Item loadItem(int id) {
-		Item item = null;
-		for(Item i: items) {
+	
+	public AbstractStep loadStep(int id) {
+		AbstractStep step = null;
+		for(AbstractStep s: steps) {
+			if(s.getId() == id) {
+				step = s;
+			}
+		}
+		return step;
+	}
+	
+	public AbstractItem loadItem(int id) {
+		AbstractItem item = null;
+		for(AbstractItem i: items) {
 			if(i.getId() == id) {
 				item = i;
 			}
@@ -56,9 +98,9 @@ public class Persistence {
 		return item;
 	}
 	
-	public User loadUser(int id) {
-		User user = null;
-		for(User u: users) {
+	public AbstractUser loadUser(int id) {
+		AbstractUser user = null;
+		for(AbstractUser u: users) {
 			if(u.getId() == id) {
 				user = u;
 			}
@@ -66,14 +108,49 @@ public class Persistence {
 		return user;
 	}
 	
-	public Workflow loadWorkflow(int id) {
-		Workflow workflow = null;
-		for(Workflow wf: workflows){
+	public AbstractWorkflow loadWorkflow(int id) {
+		AbstractWorkflow workflow = null;
+		for(AbstractWorkflow wf: workflows){
 			if(wf.getId() == id) {
 				workflow = wf;
 			}
 		}
 		return workflow;
+	}
+	
+	/*
+	 * delete functions for steps, items, users, workflows
+	 */
+	public void deleteStep(int id) {
+		for(AbstractStep s: steps) {
+			if(s.getId() == id) {
+				steps.remove(s);
+			}
+		}
+	}
+	
+	public void deleteItem(int id) {
+		for(AbstractItem i: items) {
+			if(i.getId() == id) {
+				items.remove(i);
+			}
+		}
+	}
+	
+	public void deleteUser(int id) {
+		for(AbstractUser u: users) {
+			if(u.getId() == id) {
+				users.remove(u);
+			}
+		}
+	}
+	
+	public void deleteWorkflow(int id) {
+		for(AbstractWorkflow wf: workflows) {
+			if(wf.getId() == id) {
+				workflows.remove(wf);
+			}
+		}
 	}
 
 }
