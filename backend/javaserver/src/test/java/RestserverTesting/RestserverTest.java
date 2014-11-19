@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import beans.Workflow;
+import abstractbeans.AbstractWorkflow;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -28,13 +28,8 @@ public class RestserverTest {
 	@Test
 	public void reqeustTest () {
 		Client client = ClientBuilder.newClient();
-		Workflow workflow = client.target("http://localhost:8080").path("items/workflow/17").request(MediaType.APPLICATION_XML).get(Workflow.class);
+		AbstractWorkflow workflow = client.target("http://localhost:8080").path("items/workflow/17").request(MediaType.APPLICATION_XML).get(AbstractWorkflow.class);
 		assertEquals(workflow.getId(),17);
-	}
-	
-	@Test
-	public void postTest () {
-		
 	}
 	
 }
