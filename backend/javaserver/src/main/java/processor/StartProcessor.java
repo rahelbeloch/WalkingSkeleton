@@ -1,10 +1,10 @@
 package processor;
 
-import de.hsrm.mi.gruppe02.javaserver.beans.Action;
-import de.hsrm.mi.gruppe02.javaserver.beans.Item;
-import de.hsrm.mi.gruppe02.javaserver.beans.MetaState;
-import de.hsrm.mi.gruppe02.javaserver.beans.Step;
-import de.hsrm.mi.gruppe02.javaserver.beans.Workflow;
+import beans.Action;
+import beans.Item;
+import beans.MetaState;
+import beans.Step;
+import beans.Workflow;
 /**
  * 
  * @author jvanh001
@@ -35,8 +35,7 @@ public class StartProcessor {
 				currentItem.getMetadata().getValue().add(MetaState.INACTIVE);
 			}
 		}
-		currentItem.getMetadata().getValue().get(0).setValue(MetaState.OPEN); 
-		//TODO keine setter vorhanden
+		currentItem.getMetadata().getValue().set(0,MetaState.OPEN); 
 		//TODO erstelltes item in der persistenz abspeichern
 	}
 

@@ -1,8 +1,8 @@
 package processor;
 
-import de.hsrm.mi.gruppe02.javaserver.beans.Item;
-import de.hsrm.mi.gruppe02.javaserver.beans.Step;
-import de.hsrm.mi.gruppe02.javaserver.beans.User;
+import beans.Item;
+import beans.Step;
+import beans.User;
 
 /**
  * This is the interface of the StepProcessor.
