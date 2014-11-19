@@ -1,11 +1,12 @@
 package consoleTest;
 
+import beans.Action;
+import beans.FinalStep;
+import beans.Step;
+import beans.User;
+import beans.Workflow;
 import processor.StartTrigger;
-import de.hsrm.mi.gruppe02.javaserver.beans.Action;
-import de.hsrm.mi.gruppe02.javaserver.beans.FinalStep;
-import de.hsrm.mi.gruppe02.javaserver.beans.Step;
-import de.hsrm.mi.gruppe02.javaserver.beans.User;
-import de.hsrm.mi.gruppe02.javaserver.beans.Workflow;
+
 
 public class Logic {
 	
