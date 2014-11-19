@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserClient.util
+namespace UserClient.ViewModel
 {
     /// <summary>
     /// Default base class for ViewModels in the MVVM pattern

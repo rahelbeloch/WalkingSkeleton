@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace UserClient.util
+namespace UserClient.ViewModel
 {
     /// <summary>
     /// Default base class for action commands in the MVVM pattern.
