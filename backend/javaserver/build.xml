@@ -14,8 +14,7 @@
 				<include name="**/*" />
 			</fileset>
 		</delete>
-		<delete dir="c:\opt\Java\jdk1.7.0_67\bin\xjc" failonerror="false"/>
-		<!--<delete dir="src/main/java/de/hsrm/mi/gruppe02/javaserver" failonerror="false"/>-->
+		<delete dir="src/main/java/beans" failonerror="false"/>
 		<delete file="output.xml" failonerror="false"/>
 		<delete dir="${doxygenhtmldir}" failonerror="false"/>
 	</target>
