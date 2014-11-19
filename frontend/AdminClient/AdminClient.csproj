@@ -56,6 +56,9 @@
     <Compile Include="AddStepWindow.xaml.cs">
       <DependentUpon>AddStepWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="beans.cs">
+      <DependentUpon>beans.xsd</DependentUpon>
+    </Compile>
     <Compile Include="model\DummyAction.cs" />
     <Compile Include="model\DummyFinalStep.cs" />
     <Compile Include="model\DummyStartStep.cs" />
@@ -71,9 +74,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="beans.cs">
-      <DependentUpon>beans.xsd</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

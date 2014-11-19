@@ -2,19 +2,35 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Beans"
 	xmlns:tns="http://www.example.org/Beans" elementFormDefault="qualified">
 
-	<element name="Test" type="tns:Action"/>
+	<element name="TestStep" type="tns:Step"/>
+	<element name="TestFinalStep" type="tns:FinalStep"/>
+	<element name="TestAction" type="tns:Action"/>
+	<element name="TestUser" type="tns:User"/>
+	<element name="TestWorkflow" type="tns:Workflow"/>
+	<element name="TestItem" type="tns:Item"/>
+	<element name="TestMap" type="tns:Map"/>
 
 	<complexType name="Step">
 		<sequence>
 			<element name="Id" type="int"></element>
+			<element name="nextSteps" type="tns:Step" minOccurs="1" maxOccurs="unbounded"></element>
 		</sequence>
+	</complexType>
+	
+	<complexType name="FinalStep">
+		<complexContent>
+			<extension base="tns:Step">
+				<sequence>
+					<element name="Name" type="string"></element>
+				</sequence>
+			</extension>
+		</complexContent>
 	</complexType>
 	
 	<complexType name="Action">
 		<complexContent>
 			<extension base = "tns:Step">
 				<sequence>
-					<element name="StepId" type="int"></element>
 					<element name="Name" type="string"></element>
 					<element name="UserName" type="string"></element>
 				</sequence>
