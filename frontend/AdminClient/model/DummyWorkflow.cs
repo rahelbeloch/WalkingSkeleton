@@ -17,8 +17,8 @@ namespace AdminClient.model
 
             // init with default values for testing purposes
             AddStep(new DummyStartStep("Klaus"));
-            AddStep(new DummyAction("Müll produzieren", "Klaus"));
-            AddStep(new DummyAction("Müll rausbringen", "Michel"));
+            AddStep(new DummyAction("Aktion 1", "Klaus"));
+            AddStep(new DummyAction("Aktion zwei", "Michel"));
             AddStep(new DummyFinalStep());
         }
 

@@ -15,8 +15,6 @@ namespace AdminClient.viewmodel
     {
         private DummyWorkflow _dummyWorkflowModel = new DummyWorkflow();
 
-        
-
         public ViewModel()
         {
             _dummyWorkflow.CollectionChanged += OnWorkflowChanged;
@@ -26,6 +24,11 @@ namespace AdminClient.viewmodel
             {
                 _dummyWorkflow.Add(step);
             }
+
+            // fill choosable steps with default values
+            _choosableSteps.Add(new DummyStartStep());
+            _choosableSteps.Add(new DummyAction());
+            _choosableSteps.Add(new DummyFinalStep());
         }
 
         #region properties
@@ -36,18 +39,53 @@ namespace AdminClient.viewmodel
         private ObservableCollection<DummyStep> _dummyWorkflow = new ObservableCollection<DummyStep>();
         public ObservableCollection<DummyStep> dummyWorkflow { get { return _dummyWorkflow; } }
 
+        /// <summary>
+        /// Property to fill combox box with choosable steps.
+        /// </summary>
         private ObservableCollection<DummyStep> _choosableSteps = new ObservableCollection<DummyStep>();
         public ObservableCollection<DummyStep> choosableSteps { get { return _choosableSteps; } }
 
+        /// <summary>
+        /// Property to enable textbox for username input.
+        /// </summary>
+        private bool _enableUserTextBox = true;
+        public bool enableUserTextBox 
+        { 
+            get 
+            { 
+                return _enableUserTextBox; 
+            }
+            set
+            {
+                _enableUserTextBox = value;
+                OnChanged("enableUserTextBox");
+            }
+        }
+
         #endregion
 
+        /// <summary>
+        /// When the workflow is changed, reconfigure choosable steps for combobox (depending on currently allowed steps).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void OnWorkflowChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Console.WriteLine(_dummyWorkflow.Count);
-            Console.WriteLine("add...");
-            //_choosableSteps.Clear();
-            _choosableSteps.Add(new DummyAction());
-            Console.WriteLine(_choosableSteps.Count);
+            _choosableSteps.Clear();
+
+            if (_dummyWorkflow.Count == 0)
+            {
+                _choosableSteps.Add(new DummyStartStep());
+            }
+            else if (_dummyWorkflow[_dummyWorkflow.Count - 1] is DummyStartStep)
+            {
+                _choosableSteps.Add(new DummyAction());
+            }
+            else if (_dummyWorkflow.Count >= 2)
+            {
+                _choosableSteps.Add(new DummyAction());
+                _choosableSteps.Add(new DummyFinalStep());
+            }
         }
 
         #region commands
