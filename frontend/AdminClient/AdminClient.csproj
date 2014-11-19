@@ -66,6 +66,7 @@
     <Compile Include="model\DummyWorkflow.cs" />
     <Compile Include="model\FinalStep.cs" />
     <Compile Include="model\Map.cs" />
+    <Compile Include="model\MetaState.cs" />
     <Compile Include="model\Step.cs" />
     <Compile Include="viewmodel\ActionCommand.cs" />
     <Compile Include="viewmodel\ViewModelBase.cs" />
