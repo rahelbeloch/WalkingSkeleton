@@ -10,13 +10,13 @@
                 <Button x:Name="removeLastElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-" Width="40" Height="25" Margin="10" Command="{Binding removeLastStepCommand}"/>
             </DockPanel>
             
-            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding dummyWorkflow}">
+            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflow}">
                 <ListView.View>
                     <GridView>
                         <GridView.Columns >
-                            <GridViewColumn Width="130" Header="Typ" DisplayMemberBinding="{Binding type}"/>
-                            <GridViewColumn Width="290" Header="Beschreibung" DisplayMemberBinding="{Binding description}"/>
-                            <GridViewColumn Width="130" Header="Nutzer" DisplayMemberBinding="{Binding user}"/>
+                            <GridViewColumn Width="130" Header="Typ" DisplayMemberBinding="{Binding Id}"/>
+                            <GridViewColumn Width="290" Header="Beschreibung" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Width="130" Header="Nutzer" DisplayMemberBinding="{Binding UserId}"/>
                         </GridView.Columns>
                     </GridView>
                 </ListView.View>
