@@ -9,9 +9,10 @@ import javax.ws.rs.core.MediaType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import beans.Workflow;
+
 import com.sun.net.httpserver.HttpServer;
 
-import de.hsrm.mi.gruppe02.javaserver.beans.Workflow;
 import restserver.RestServer;
 
 
