@@ -19,7 +19,6 @@ namespace AdminClient.util
         {
             if (PropertyChanged != null)
             {
-                Console.WriteLine("OnChanged: "+ propertyName);
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
