@@ -85,7 +85,7 @@ public partial class Action : Step {
     
     private string nameField;
     
-    private string userNameField;
+    private int userIdField;
     
     /// <remarks/>
     public string Name {
@@ -98,12 +98,12 @@ public partial class Action : Step {
     }
     
     /// <remarks/>
-    public string UserName {
+    public int UserId {
         get {
-            return this.userNameField;
+            return this.userIdField;
         }
         set {
-            this.userNameField = value;
+            this.userIdField = value;
         }
     }
 }
@@ -199,9 +199,23 @@ public partial class Workflow {
 [System.Xml.Serialization.XmlRootAttribute("TestItem", Namespace="http://www.example.org/Beans", IsNullable=false)]
 public partial class Item {
     
+    private int idField;
+    
     private int workflowIdField;
     
     private Map metadataField;
+    
+    private bool finishedField;
+    
+    /// <remarks/>
+    public int Id {
+        get {
+            return this.idField;
+        }
+        set {
+            this.idField = value;
+        }
+    }
     
     /// <remarks/>
     public int WorkflowId {
@@ -220,6 +234,16 @@ public partial class Item {
         }
         set {
             this.metadataField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public bool finished {
+        get {
+            return this.finishedField;
+        }
+        set {
+            this.finishedField = value;
         }
     }
 }
