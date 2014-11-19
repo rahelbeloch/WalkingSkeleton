@@ -16,29 +16,76 @@ using System.Xml.Serialization;
 
 
 /// <remarks/>
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(Action))]
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(FinalStep))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
-[System.Xml.Serialization.XmlRootAttribute("Test", Namespace="http://www.example.org/Beans", IsNullable=false)]
-public partial class Action : Step {
+[System.Xml.Serialization.XmlRootAttribute("TestStep", Namespace="http://www.example.org/Beans", IsNullable=false)]
+public partial class Step {
     
-    private int stepIdField;
+    private int idField;
+    
+    private Step[] nextStepsField;
+    
+    /// <remarks/>
+    public int Id {
+        get {
+            return this.idField;
+        }
+        set {
+            this.idField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("nextSteps")]
+    public Step[] nextSteps {
+        get {
+            return this.nextStepsField;
+        }
+        set {
+            this.nextStepsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
+[System.Xml.Serialization.XmlRootAttribute("TestFinalStep", Namespace="http://www.example.org/Beans", IsNullable=false)]
+public partial class FinalStep : Step {
+    
+    private string nameField;
+    
+    /// <remarks/>
+    public string Name {
+        get {
+            return this.nameField;
+        }
+        set {
+            this.nameField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
+[System.Xml.Serialization.XmlRootAttribute("TestAction", Namespace="http://www.example.org/Beans", IsNullable=false)]
+public partial class Action : Step {
     
     private string nameField;
     
     private string userNameField;
-    
-    /// <remarks/>
-    public int StepId {
-        get {
-            return this.stepIdField;
-        }
-        set {
-            this.stepIdField = value;
-        }
-    }
     
     /// <remarks/>
     public string Name {
@@ -62,15 +109,17 @@ public partial class Action : Step {
 }
 
 /// <remarks/>
-[System.Xml.Serialization.XmlIncludeAttribute(typeof(Action))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
-public partial class Step {
+[System.Xml.Serialization.XmlRootAttribute("TestUser", Namespace="http://www.example.org/Beans", IsNullable=false)]
+public partial class User {
     
     private int idField;
+    
+    private string nameField;
     
     /// <remarks/>
     public int Id {
@@ -81,4 +130,151 @@ public partial class Step {
             this.idField = value;
         }
     }
+    
+    /// <remarks/>
+    public string Name {
+        get {
+            return this.nameField;
+        }
+        set {
+            this.nameField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
+[System.Xml.Serialization.XmlRootAttribute("TestWorkflow", Namespace="http://www.example.org/Beans", IsNullable=false)]
+public partial class Workflow {
+    
+    private int idField;
+    
+    private Step[] stepField;
+    
+    private Item[] itemField;
+    
+    /// <remarks/>
+    public int Id {
+        get {
+            return this.idField;
+        }
+        set {
+            this.idField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("Step")]
+    public Step[] Step {
+        get {
+            return this.stepField;
+        }
+        set {
+            this.stepField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("Item")]
+    public Item[] Item {
+        get {
+            return this.itemField;
+        }
+        set {
+            this.itemField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
+[System.Xml.Serialization.XmlRootAttribute("TestItem", Namespace="http://www.example.org/Beans", IsNullable=false)]
+public partial class Item {
+    
+    private int workflowIdField;
+    
+    private Map metadataField;
+    
+    /// <remarks/>
+    public int WorkflowId {
+        get {
+            return this.workflowIdField;
+        }
+        set {
+            this.workflowIdField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public Map Metadata {
+        get {
+            return this.metadataField;
+        }
+        set {
+            this.metadataField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
+[System.Xml.Serialization.XmlRootAttribute("TestMap", Namespace="http://www.example.org/Beans", IsNullable=false)]
+public partial class Map {
+    
+    private int[] keyField;
+    
+    private MetaState[] valueField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("key")]
+    public int[] key {
+        get {
+            return this.keyField;
+        }
+        set {
+            this.keyField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("value")]
+    public MetaState[] value {
+        get {
+            return this.valueField;
+        }
+        set {
+            this.valueField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
+public enum MetaState {
+    
+    /// <remarks/>
+    INACTIVE,
+    
+    /// <remarks/>
+    OPEN,
+    
+    /// <remarks/>
+    BUSY,
+    
+    /// <remarks/>
+    DONE,
 }
