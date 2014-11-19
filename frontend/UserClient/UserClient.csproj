@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="ApplicationController.cs" />
     <Compile Include="Model\ApplicationPage.cs" />
+    <Compile Include="Model\Authentication.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="View\MainWindow.xaml">

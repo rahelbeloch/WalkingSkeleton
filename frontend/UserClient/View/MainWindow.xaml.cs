@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UserClient.ViewModel;
+using UserClient.Model;
 
 namespace UserClient
 {
@@ -23,6 +25,14 @@ namespace UserClient
         public MainWindow()
         {
             InitializeComponent();
+        }
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            LoginLayer.Visibility = Model.Authentication.Authenticate1(txtName.Text, txtPassword.SecurePassword) ? Visibility.Collapsed : Visibility.Visible;
+        }
+        private void Log_Out(object sender, RoutedEventArgs e)
+        {
+            LoginLayer.Visibility = Visibility.Visible;
         }
     }
 }

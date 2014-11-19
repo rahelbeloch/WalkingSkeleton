@@ -8,9 +8,11 @@ namespace UserClient.ViewModel
 {
     class MainViewModel
     {
+        public AuthenticationViewModel AuthVM { get; set; }
+
         public MainViewModel()
         {
-            
+            AuthVM = new AuthenticationViewModel();
         }
     }
 }
