@@ -237,6 +237,40 @@ public partial class AbstractAction : AbstractStep {
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.example.org/Beans")]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="http://www.example.org/Beans", IsNullable=false)]
+public partial class AbstractUser {
+    
+    private int idField;
+    
+    private string nameField;
+    
+    /// <remarks/>
+    public int Id {
+        get {
+            return this.idField;
+        }
+        set {
+            this.idField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string Name {
+        get {
+            return this.nameField;
+        }
+        set {
+            this.nameField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.example.org/Beans")]
+[System.Xml.Serialization.XmlRootAttribute(Namespace="http://www.example.org/Beans", IsNullable=false)]
 public partial class AbstractWorkflow {
     
     private int idField;
