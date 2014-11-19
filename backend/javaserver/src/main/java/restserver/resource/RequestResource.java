@@ -6,6 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import persistence.Persistence;
 import beans.Workflow;
 
 
@@ -18,17 +19,16 @@ import beans.Workflow;
 @Path("items")
 public class RequestResource {
 	
-	@GET @Path("workflow/{workflowid}")
-	@Produces(MediaType.APPLICATION_XML)
+	Persistence db = new Persistence();
+	
 	/**
 	 * 
 	 * @param workflowid
 	 * @return the requested workflow
 	 */
+	@GET @Path("workflow/{workflowid}")
+	@Produces(MediaType.APPLICATION_XML)
 	public Workflow getWorkflowAsXML (@PathParam("workflowid") int workflowid) {
-		Workflow workflow = new Workflow();
-		workflow.setId(workflowid);
-		return workflow;
+		return db.loadWorkflow(workflowid);
 	}
-
 }
