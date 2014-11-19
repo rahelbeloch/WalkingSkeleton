@@ -14,10 +14,10 @@ public class Persistence {
 	/*
 	 * Abstraktion einer Datenbank, die Obejekte in der Form Abstract-* persistiert
 	 */
-	private List<AbstractWorkflow> workflows = new LinkedList<AbstractWorkflow>();
-	private List<AbstractUser> users = new LinkedList<AbstractUser>();
-	private List<AbstractItem> items = new LinkedList<AbstractItem>();
-	private List<AbstractStep> steps = new LinkedList<AbstractStep>();
+	private List<AbstractWorkflow> workflows = new LinkedList<>();
+	private List<AbstractUser> users = new LinkedList<>();
+	private List<AbstractItem> items = new LinkedList<>();
+	private List<AbstractStep> steps = new LinkedList<>();
 	
 
 //	public AbstractItem resolveMap(Item item) {
