@@ -1,6 +1,8 @@
 package restserver.resource;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -16,7 +18,8 @@ import beans.Workflow;
  * REST Service, providing workflows selected by ID
  */
 @Path("items")
-public class Resource {
+public class RequestResource {
+	
 	@GET @Path("workflow/{workflowid}")
 	@Produces(MediaType.APPLICATION_XML)
 	/**
@@ -29,4 +32,5 @@ public class Resource {
 		workflow.setId(workflowid);
 		return workflow;
 	}
+
 }
