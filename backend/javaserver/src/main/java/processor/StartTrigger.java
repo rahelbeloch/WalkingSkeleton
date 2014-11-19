@@ -1,6 +1,6 @@
 package processor;
 
-import de.hsrm.mi.gruppe02.javaserver.beans.Workflow;
+import beans.Workflow;
 
 /**
  * This class initializes the execution of a workflow.

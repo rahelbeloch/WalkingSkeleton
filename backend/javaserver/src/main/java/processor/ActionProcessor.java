@@ -1,10 +1,10 @@
 package processor;
 
-import de.hsrm.mi.gruppe02.javaserver.beans.FinalStep;
-import de.hsrm.mi.gruppe02.javaserver.beans.Item;
-import de.hsrm.mi.gruppe02.javaserver.beans.MetaState;
-import de.hsrm.mi.gruppe02.javaserver.beans.Step;
-import de.hsrm.mi.gruppe02.javaserver.beans.User;
+import beans.FinalStep;
+import beans.Item;
+import beans.MetaState;
+import beans.Step;
+import beans.User;
 
 /**
  * This class executes "Action" step-objects.
@@ -29,16 +29,19 @@ public class ActionProcessor implements StepProcessor {
 	public void handle(Item item, Step step, User user) {
 		currentItem = item;
 		
-		item.getMetadata().getValue(step.getId()).setValue(MetaState.BUSY);//TODO: Jerome will noch eine methode schreiben die das passende objekt zurueck gibt
+		item.getMetadata().getValue().set(item.getMetadata().getKey().indexOf(step.getId()), MetaState.BUSY);
 		//funktion irrelevant für walking skeleton
-		item.getMetadata().getValue(step.getId()).setValue(MetaState.DONE);
+		item.getMetadata().getValue().set(item.getMetadata().getKey().indexOf(step.getId()), MetaState.DONE);
 		
 		for(Step s : step.getNextSteps()){
 			if(!(s instanceof FinalStep)){ 
-				
+				//TODO aktuelles item persiztieren
+				item.getMetadata().getValue().set(item.getMetadata().getKey().indexOf(s.getId()), MetaState.OPEN);
 				
 			}else{
-				//TODO setze finish-flag in workflow
+				//TODO setze finish-flag in item
+				//zweite loesung
+				item.getMetadata().getValue().set(item.getMetadata().getKey().indexOf(s.getId()), MetaState.DONE);
 			}	
 		}
 		
