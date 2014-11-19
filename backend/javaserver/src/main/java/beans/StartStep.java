@@ -15,16 +15,15 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for Action complex type.
+ * <p>Java class for StartStep complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="Action">
+ * &lt;complexType name="StartStep">
  *   &lt;complexContent>
  *     &lt;extension base="{http://www.example.org/Beans}Step">
  *       &lt;sequence>
- *         &lt;element name="Name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="UserId" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/extension>
@@ -35,42 +34,15 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Action", propOrder = {
-    "name",
+@XmlType(name = "StartStep", propOrder = {
     "userId"
 })
-public class Action
+public class StartStep
     extends Step
 {
 
-    @XmlElement(name = "Name", required = true)
-    protected String name;
     @XmlElement(name = "UserId")
     protected int userId;
-
-    /**
-     * Gets the value of the name property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets the value of the name property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
 
     /**
      * Gets the value of the userId property.

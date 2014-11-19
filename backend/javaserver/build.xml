@@ -20,8 +20,11 @@
 	</target>
 
 	<target name="classgen" description="Generate Java-classes">
-		<exec executable="xjc">
+		<exec executable="c:\opt\Java\jdk1.7.0_67\bin\xjc">
 			<arg line="-d src/main/java/ -p beans beans.xsd" />
 		</exec>
+		<!--<exec executable="/opt/jdk1.8.0_20/bin/xjc">
+			<arg line="-d src/main/java/ -p beans beans.xsd" />
+		</exec>-->
 	</target>
 </project>
