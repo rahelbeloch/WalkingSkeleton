@@ -1,11 +1,25 @@
 ﻿<Window x:Class="UserClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="300" Width="300">
-    <Grid x:Name="LayoutRoot" Background="White" Margin="0,0,2,5.333">
+        xmlns:vm="clr-namespace:UserClient.ViewModel"
+        Title="User Client" Height="300" Width="300">
+    <Window.Resources>
+        <vm:MainViewModel x:Key="MainViewModel" />
+    </Window.Resources>
+    <Grid  DataContext="{Binding Source={StaticResource ViewModel}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="26*"/>
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="Log out" Click="Log_Out"></MenuItem>
+        </Menu>
+        <Border x:Name="Stage" Grid.Row="1"/>
+        <Grid x:Name="LoginLayer" Background="White" Margin="0,0,2,5.333">
         <Label Content="Login" HorizontalAlignment="Left" Margin="46,24.666,0,0" VerticalAlignment="Top" Width="97" FontWeight="Bold" FontSize="26.667"/>
-        <PasswordBox x:Name="password" HorizontalAlignment="Left" Margin="46,135.666,0,0" VerticalAlignment="Top" Width="210" IsEnabled="False"/>
-        <TextBox FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}" x:Name="userName" HorizontalAlignment="Left" Height="23" Margin="46,96.47,0,0" TextWrapping="Wrap" Text="Nutzername" VerticalAlignment="Top" Width="210" ForceCursor="True"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="46,174.666,0,0" VerticalAlignment="Top" Width="97"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="46,135.666,0,0" VerticalAlignment="Top" Width="210" IsEnabled="False"/>
+        <TextBox x:Name="txtName"  HorizontalAlignment="Left" Height="23" Margin="46,96.47,0,0" TextWrapping="Wrap" Text="Nutzername" VerticalAlignment="Top" Width="210"/>
+        <Button Click="Login_Click" Content="Login" HorizontalAlignment="Left" Margin="46,174.666,0,0" VerticalAlignment="Top" Width="97"/>
+        </Grid>
     </Grid>
 </Window>
