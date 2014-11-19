@@ -77,15 +77,16 @@ public partial class AbstractStep {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
-public partial class AbstractMap {
+public partial class AbstractMetaEntry {
     
-    private int[] keyField;
+    private string keyField;
     
-    private AbstractMetaState[] valueField;
+    private string valueField;
+    
+    private string groupIdField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("key")]
-    public int[] key {
+    public string key {
         get {
             return this.keyField;
         }
@@ -95,8 +96,7 @@ public partial class AbstractMap {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("value")]
-    public AbstractMetaState[] value {
+    public string value {
         get {
             return this.valueField;
         }
@@ -104,25 +104,16 @@ public partial class AbstractMap {
             this.valueField = value;
         }
     }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
-[System.SerializableAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace="http://www.example.org/Beans")]
-public enum AbstractMetaState {
     
     /// <remarks/>
-    INACTIVE,
-    
-    /// <remarks/>
-    OPEN,
-    
-    /// <remarks/>
-    BUSY,
-    
-    /// <remarks/>
-    DONE,
+    public string groupId {
+        get {
+            return this.groupIdField;
+        }
+        set {
+            this.groupIdField = value;
+        }
+    }
 }
 
 /// <remarks/>
@@ -137,7 +128,7 @@ public partial class AbstractItem {
     
     private int workflowIdField;
     
-    private AbstractMap metadataField;
+    private AbstractMetaEntry[] metadataField;
     
     private bool finishedField;
     
@@ -162,7 +153,8 @@ public partial class AbstractItem {
     }
     
     /// <remarks/>
-    public AbstractMap Metadata {
+    [System.Xml.Serialization.XmlElementAttribute("Metadata")]
+    public AbstractMetaEntry[] Metadata {
         get {
             return this.metadataField;
         }
@@ -234,40 +226,6 @@ public partial class AbstractAction : AbstractStep {
         }
         set {
             this.userIdField = value;
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.example.org/Beans")]
-[System.Xml.Serialization.XmlRootAttribute(Namespace="http://www.example.org/Beans", IsNullable=false)]
-public partial class AbstractUser {
-    
-    private int idField;
-    
-    private string nameField;
-    
-    /// <remarks/>
-    public int Id {
-        get {
-            return this.idField;
-        }
-        set {
-            this.idField = value;
-        }
-    }
-    
-    /// <remarks/>
-    public string Name {
-        get {
-            return this.nameField;
-        }
-        set {
-            this.nameField = value;
         }
     }
 }
