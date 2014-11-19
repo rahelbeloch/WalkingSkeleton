@@ -59,6 +59,7 @@
     <Compile Include="model\abstractbeans.cs">
       <DependentUpon>abstractbeans.xsd</DependentUpon>
     </Compile>
+    <Compile Include="model\Action.cs" />
     <Compile Include="model\DummyAction.cs" />
     <Compile Include="model\DummyFinalStep.cs" />
     <Compile Include="model\DummyStartStep.cs" />
