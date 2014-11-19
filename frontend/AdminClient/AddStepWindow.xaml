@@ -7,6 +7,10 @@
 
     <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
         <DockPanel>
+            <DockPanel.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding addStepCommand}" />
+            </DockPanel.InputBindings>
+            
             <DockPanel DockPanel.Dock="Top" Height="40">
                 <Label Content="Typ:" />
                 <ComboBox Height="25" Width="120" HorizontalAlignment="Left"  
