@@ -1,9 +1,10 @@
 package processors;
 
-import abstractbeans.AbstractFinalStep;
 import abstractbeans.AbstractMetaState;
 import abstractbeans.AbstractStep;
+import backingbeans.FinalStep;
 import backingbeans.Item;
+
 
 
 /**
@@ -31,11 +32,11 @@ public class ActionProcessor implements StepProcessor {
 		currentItem = (Item)item;
 		
 		currentItem.setMetaState(step.getId(), AbstractMetaState.BUSY);
-		//funktion irrelevant für walking skeleton
+		//funktion irrelevant fuer walking skeleton
 		currentItem.setMetaState(step.getId(), AbstractMetaState.DONE);
 		
 		for(AbstractStep s : step.getNextSteps()){
-			if(!(s instanceof AbstractFinalStep)){ 
+			if(!(s instanceof FinalStep)){ 
 				//TODO aktuelles item persiztieren
 				currentItem.setMetaState(s.getId(), AbstractMetaState.OPEN);
 				

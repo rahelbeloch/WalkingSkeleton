@@ -1,5 +1,6 @@
 package manager;
 
+import backingbeans.Action;
 import backingbeans.Item;
 import processors.ActionProcessor;
 import abstractbeans.AbstractAction;
@@ -43,8 +44,8 @@ public class ProcessManager {
 	 * @param item which is currently active
 	 * @param user who started interaction
 	 */
-	public void selectProcessor(AbstractStep step, Item item, AbstractUser user){
-		if(step instanceof AbstractAction){
+	public void selectProcessor(AbstractStep step, Item item){
+		if(step instanceof Action){
 			ActionProcessor actionProcessor = new ActionProcessor();
 			actionProcessor.handle(item, step);
 		}
