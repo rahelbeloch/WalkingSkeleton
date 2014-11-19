@@ -20,23 +20,25 @@ namespace UserClient.ViewModel
         {
             AuthVM.Authenticate();
         }
-        /*
-        private ICommand _openAddStepWindow;
-        public ICommand openAddStepWindow
+        
+        private ActionCommand _doLogin;
+        
+        public ActionCommand doLogin
         {
             get
             {
-                if (_openAddStepWindow == null)
+                if (_doLogin == null)
                 {
-                    _openAddStepWindow = new ActionCommand(func =>
-                    {
-                        AddStepWindow addElementWindow = new AddStepWindow();
-                        addElementWindow.Show();
-                    }, func => (_dummyWorkflow.Count == 0) || (_dummyWorkflow.Count > 0 && !(_dummyWorkflow[_dummyWorkflow.Count - 1] is DummyFinalStep)));
+                    _doLogin = new ActionCommand(func => DoLogin());
                 }
-                return _openAddStepWindow;
+                return _doLogin;
             }
         }
-         */
+
+        private void DoLogin()
+        {
+            AuthVM.Authenticate();
+        }
+         
     }
 }
