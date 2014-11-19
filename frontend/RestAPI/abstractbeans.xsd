@@ -46,12 +46,14 @@
 		</complexType>
 	</element>
 	
-	<complexType name="AbstractUser">
-		<sequence>
-			<element name="Id" type="int"></element>
-			<element name="Name" type="string"></element>
-		</sequence>
-	</complexType>
+	<element name="AbstractUser">
+		<complexType>
+			<sequence>
+				<element name="Id" type="int"></element>
+				<element name="Name" type="string"></element>
+			</sequence>
+		</complexType>
+	</element>
 	
 	
 	<element name="AbstractWorkflow">
