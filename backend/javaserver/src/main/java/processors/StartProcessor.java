@@ -1,8 +1,11 @@
 package processors;
 
+import com.sun.istack.internal.FinalArrayList;
+
 import abstractbeans.AbstractAction;
 import abstractbeans.AbstractMetaState;
 import abstractbeans.AbstractStep;
+import backingbeans.FinalStep;
 import backingbeans.Item;
 import backingbeans.Workflow;
 
@@ -33,6 +36,9 @@ public class StartProcessor {
 		currentItem = new Item();
 		currentItem.setId(workflow.getId()*1000 + workflow.getStep().size());
 		currentItem.setWorkflowId(workflow.getId());
+		
+		System.out.println("Item ID " + currentItem.getId());
+		System.out.println("Item Metadata: " + currentItem.getMetadata());
 		initiateItem(workflow, currentItem);
 	}
 	
@@ -46,11 +52,18 @@ public class StartProcessor {
 	public void initiateItem(Workflow workflow, Item item){
 		
 		for (AbstractStep s: workflow.getStep()){
-			if (s instanceof AbstractAction){ 
+			if (s instanceof AbstractAction || s instanceof FinalStep){ 
 				item.set(s.getId()+"",  "step", AbstractMetaState.INACTIVE.toString());
 			}
 		}
-		item.setStepState(0, AbstractMetaState.OPEN);
+		
+		item.getForGroup("step").get(0).setValue(AbstractMetaState.OPEN.toString());
+		
+		workflow.getItem().add(item);
+		
+		System.out.println(item.getForGroup("step"));
+		System.out.println(item.getForGroup("step").get(0).getKey());
+		System.out.println(item.getForGroup("step").get(0).getValue());
 		//TODO erstelltes item in der persistenz abspeichern
 	}
 }
