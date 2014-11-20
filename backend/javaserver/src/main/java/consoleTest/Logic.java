@@ -3,27 +3,28 @@ package consoleTest;
 
 import processors.StartTrigger;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import backingbeans.Action;
+import backingbeans.FinalStep;
+import backingbeans.Item;
 
-import beans.Action;
-import beans.FinalStep;
-import beans.Item;
-import beans.Step;
-import beans.User;
-import beans.Workflow;
+import abstractbeans.AbstractStep;
+import backingbeans.User;
+import backingbeans.Workflow;
 import manager.ProcessManager;
-import processors.StartTrigger;
+
 
 
 
 public class Logic {
 	
 	public static void main(String args[]){
+		
 		Workflow myWorkflow = createWorkflow();
+		
 		myWorkflow.setId(1);
 		System.out.println("In der Logic="+myWorkflow.getStep());
 		
@@ -33,11 +34,13 @@ public class Logic {
 		
 		User benni = new User();
 		benni.setName("benni");
+		benni.setId(23);
 		
 		ProcessManager manager = new ProcessManager();
 		
-		Item item = myWorkflow.getItem().get(0);
-		Step step = myWorkflow.getStep().get(0);
+		System.out.println(myWorkflow.getItem());
+		Item item = (Item)myWorkflow.getItem();
+		AbstractStep step = myWorkflow.getStep().get(0);
 		
 		BufferedReader inputSteam = new  BufferedReader(new InputStreamReader(System.in));
 
@@ -65,12 +68,11 @@ public class Logic {
 			
 			
 			
-			manager.selectProcessor(step,item, benni);
-		
+			manager.selectProcessor(step, (Item)item, benni);		
 			System.out.println("nach dem ersten Schritt "+ myWorkflow.getId());
 			System.out.println("Das Item heißt: "+ item.getId());
-			System.out.println(item.getMetadata().getKey());
-			System.out.println(item.getMetadata().getValue());
+			System.out.println(item.getMetadata());
+			
 			
 			step = step.getNextSteps().get(0);
 		
@@ -80,7 +82,7 @@ public class Logic {
 	public static Workflow createWorkflow(){
 		Workflow myWorkflow= new Workflow();
 		
-		Step [] steps = new Step[4];
+		AbstractStep [] steps = new AbstractStep[4];
 		
 		//create Steps
 		for(int i=0; i<3; i++ ){

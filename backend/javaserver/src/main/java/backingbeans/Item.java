@@ -18,7 +18,7 @@ public class Item extends AbstractItem{
 	 * Default-Constructor
 	 */
 	public Item (){
-		
+		metadata= new ArrayList<AbstractMetaEntry>();
 	}
 	
 	
