@@ -11,12 +11,14 @@ import backingbeans.Action;
 import backingbeans.FinalStep;
 import backingbeans.Item;
 
+
+
+import abstractbeans.AbstractItem;
+import abstractbeans.AbstractMetaEntry;
 import abstractbeans.AbstractStep;
 import backingbeans.User;
 import backingbeans.Workflow;
 import manager.ProcessManager;
-
-
 
 
 public class Logic {
@@ -26,7 +28,10 @@ public class Logic {
 		Workflow myWorkflow = createWorkflow();
 		
 		myWorkflow.setId(1);
-		System.out.println("In der Logic="+myWorkflow.getStep());
+		//System.out.println("In der Logic="+myWorkflow.getStep());
+		for (AbstractStep s : myWorkflow.getStep()){
+			System.out.println(s.getId());
+		}
 		
 		
 		StartTrigger start = new StartTrigger(myWorkflow);
@@ -38,17 +43,19 @@ public class Logic {
 		
 		ProcessManager manager = new ProcessManager();
 		
-		System.out.println(myWorkflow.getItem());
-		Item item = (Item)myWorkflow.getItem();
+		//System.out.println(myWorkflow.getItem());
+		for (AbstractItem ai : myWorkflow.getItem()){
+			System.out.println(ai.getId());
+		}
+		
+		Item item = (Item)myWorkflow.getItem().get(0);
 		AbstractStep step = myWorkflow.getStep().get(0);
 		
 		BufferedReader inputSteam = new  BufferedReader(new InputStreamReader(System.in));
 
-
-		
 		boolean work = true;
 		while(work){
-			System.out.println("Nehmen Sie den Step an?" + benni);
+			System.out.println("Nehmen Sie den Step an?" + benni.getName().toString());
 			
 			
 			String input;
@@ -67,16 +74,25 @@ public class Logic {
 			}
 			
 			
-			
 			manager.selectProcessor(step, (Item)item, benni);		
 			System.out.println("nach dem ersten Schritt "+ myWorkflow.getId());
 			System.out.println("Das Item heißt: "+ item.getId());
-			System.out.println(item.getMetadata());
+			//System.out.println(item.getMetadata());
+			for(AbstractMetaEntry ame : item.getMetadata()){
+				System.out.print("1: " + ame.getGroupId() +" " +ame.getKey()+" " + ame.getValue() +"\n");
+				System.out.println();
+			}
 			
+			if(step.getNextSteps().size() != 0){
+				step = step.getNextSteps().get(0);
+			}
+			else{
+				work = false;
+			}
 			
-			step = step.getNextSteps().get(0);
 		
 		}
+		System.out.println("ende");
 	}
 	
 	public static Workflow createWorkflow(){
