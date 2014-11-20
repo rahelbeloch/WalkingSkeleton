@@ -47,7 +47,7 @@ public class Item extends AbstractItem{
 	 */
 	public String getEntryValue(String key, String group){
 		
-		AbstractMetaEntry ame = getEntry(group, key);
+		AbstractMetaEntry ame = getEntry(key, group);
 		
 		if (ame != null) {
 			return ame.getValue();
@@ -93,7 +93,7 @@ public class Item extends AbstractItem{
 	 */
 	public void set(String key, String group, String value){
 		
-		AbstractMetaEntry ame  = getEntry(group, key);
+		AbstractMetaEntry ame  = getEntry(key, group);
 		
 		if (ame != null) {
 			ame.setValue(value);
@@ -110,12 +110,16 @@ public class Item extends AbstractItem{
 	/**
 	 * This method sets specifically the metastate of an step entry.
 	 * @param key is the id of an entry
-	 * @param state is the new state of an entry
+	 * @param value is the new state of an entry
 	 */
-	public void setStepState(int key, AbstractMetaState state) {
+	public void setStepState(int key, String value) {
 		
-		String searchId = Integer.toString(id);
-		set("step", searchId, state.toString());
+		set(Integer.toString(key), "step", value);
+	}
+	
+	
+	public void setFirstStepState(String value){
+		getForGroup("step").get(0).setValue(value);
 	}
 }
 
