@@ -1,9 +1,6 @@
 package processors;
 
-import com.sun.istack.internal.FinalArrayList;
-
 import abstractbeans.AbstractAction;
-import abstractbeans.AbstractMetaEntry;
 import abstractbeans.AbstractMetaState;
 import abstractbeans.AbstractStep;
 import backingbeans.FinalStep;
@@ -43,7 +40,8 @@ public class StartProcessor {
 	
 	/**
 	 * This method instantiates an item's Metadata. The default MetaState is INACTIVE. 
-	 * Only "Action" step-objects are considered. The state of the very first step is set to "OPEN".
+	 * Only "Action" step-objects are considered. After successfully creating and initializing the item, add it to workflow.
+	 * The state of the very first step is set to "OPEN".
 	 * @param workflow provides a step list, which will be transformed into Metadatas
 	 * @param item is the freshly created item for a workflow
 	 */
@@ -54,12 +52,8 @@ public class StartProcessor {
 				item.set(s.getId()+"",  "step", AbstractMetaState.INACTIVE.toString());
 			}
 		}
-		
 		workflow.getItem().add(item);
-		
 		item.setFirstStepState(AbstractMetaState.OPEN.toString());
-		
-
 		//TODO erstelltes item in der persistenz abspeichern
 	}
 }
