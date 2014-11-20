@@ -1,6 +1,5 @@
 package processors;
 
-import abstractbeans.AbstractMetaEntry;
 import abstractbeans.AbstractMetaState;
 import abstractbeans.AbstractStep;
 import backingbeans.FinalStep;

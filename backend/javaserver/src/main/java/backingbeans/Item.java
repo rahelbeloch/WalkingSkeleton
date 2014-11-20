@@ -118,6 +118,10 @@ public class Item extends AbstractItem{
 	}
 	
 	
+	/**
+	 * This methods is just for the initial state setting of an step.
+	 * @param value has to be OPEN, for enabling very first Step
+	 */
 	public void setFirstStepState(String value){
 		getForGroup("step").get(0).setValue(value);
 	}

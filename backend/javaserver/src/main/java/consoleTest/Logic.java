@@ -27,13 +27,12 @@ public class Logic {
 		
 		Workflow myWorkflow = createWorkflow();
 		
-		myWorkflow.setId(1);
-		//System.out.println("In der Logic="+myWorkflow.getStep());
+		//Output of all steps in a workflow
 		for (AbstractStep s : myWorkflow.getStep()){
 			System.out.println(s.getId());
 		}
 		
-		
+		//This object will be assigned to a specific user who can execute the workflow (startWorkflow)
 		StartTrigger start = new StartTrigger(myWorkflow);
 		start.startWorkflow();
 		
@@ -41,9 +40,10 @@ public class Logic {
 		benni.setName("benni");
 		benni.setId(23);
 		
+		//This manager calls the appropriate processor for an step
 		ProcessManager manager = new ProcessManager();
 		
-		//System.out.println(myWorkflow.getItem());
+		//Output of all items in a workflow
 		for (AbstractItem ai : myWorkflow.getItem()){
 			System.out.println(ai.getId());
 		}
@@ -96,29 +96,16 @@ public class Logic {
 	}
 	
 	public static Workflow createWorkflow(){
-		Workflow myWorkflow= new Workflow();
+		Workflow myWorkflow= new Workflow(1);
 		
-		AbstractStep [] steps = new AbstractStep[4];
-		
-		//create Steps
-		for(int i=0; i<3; i++ ){
-			Action a = new Action();
-			steps[i] = a;
-			a.setUserId(i*100);
-			a.setName(i+"Schritt");
-			a.setId(i*1000);
-			
-		}
-		steps[3]= new FinalStep();
-		steps[3].setId(4000);
-		//connecting steps
-		for(int i=0; i<3; i++){
-			steps[i].getNextSteps().add(steps[i+1]);
-		}
-		for(int i=0; i<4; i++){
-			myWorkflow.getStep().add(steps[i]);
-		}
-		
+		//adding steps in workflow
+		myWorkflow.addStep(new Action(0*1000, 0*100, 0 + " Schritt"));
+		myWorkflow.addStep(new Action(1*1000, 1*100, 1 + " Schritt"));
+		myWorkflow.addStep(new FinalStep());
+		myWorkflow.getStepByPos(2).setId(9999);
+
+		//this method generates straight neighbors for steps in steplist
+		myWorkflow.connectSteps();
 		
 		return myWorkflow;
 	}
