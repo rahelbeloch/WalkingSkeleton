@@ -65,6 +65,7 @@
     <Compile Include="model\backingbeans\User.cs" />
     <Compile Include="model\backingbeans\Workflow.cs" />
     <Compile Include="viewmodel\ActionCommand.cs" />
+    <Compile Include="viewmodel\UserViewModel.cs" />
     <Compile Include="viewmodel\ViewModelBase.cs" />
     <Compile Include="viewmodel\WorkflowViewModel.cs" />
     <Page Include="MainWindow.xaml">
