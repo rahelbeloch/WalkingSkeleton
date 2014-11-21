@@ -13,11 +13,12 @@
                 <Label Content="Typ:" />
                 <ComboBox Height="25" Width="120" HorizontalAlignment="Left"  
                           ItemsSource="{Binding Path=choosableSteps, UpdateSourceTrigger=PropertyChanged}" 
+                          DisplayMemberPath="label"
                           SelectedItem="{Binding selectedStep}" />
             </DockPanel>
             
             <DockPanel DockPanel.Dock="Top" Height="40" HorizontalAlignment="Left">
-                <Label Content="Nutzer: " />
+                <Label Content="Nutzer ID: " />
                 <TextBox Width="120" Height="25" IsEnabled="{Binding enableUserTextBox, UpdateSourceTrigger=PropertyChanged}" >
                     <TextBox.Text>
                         <Binding Path="userId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
@@ -26,7 +27,7 @@
             </DockPanel>
 
             <DockPanel DockPanel.Dock="Top" Height="40" HorizontalAlignment="Left">
-                <Label Content="Beschreibung: " />
+                <Label Content="Beschreibung: " Margin="0,0,0,10" />
                 <TextBox Width="180" Height="25" IsEnabled="{Binding enableDescriptionTextBox, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.Text>
                         <Binding Path="stepDescription" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
