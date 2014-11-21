@@ -11,5 +11,7 @@ namespace AdminClient.model
     /// </summary>
     class FinalStep : AbstractFinalStep
     {
+        private string _label = "Endzustand";
+        public string label { get { return _label; } set { } }
     }
 }

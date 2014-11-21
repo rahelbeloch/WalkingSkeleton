@@ -11,5 +11,7 @@ namespace AdminClient.model
     /// </summary>
     class Action : AbstractAction
     {
+        private string _label = "Aktion";
+        public string label { get { return _label; } set { } }
     }
 }

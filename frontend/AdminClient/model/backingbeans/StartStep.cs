@@ -11,5 +11,7 @@ namespace AdminClient.model
     /// </summary>
     class StartStep : AbstractStartStep
     {
+        private string _label = "Startzustand";
+        public string label { get { return _label; } set { } }
     }
 }
