@@ -17,6 +17,7 @@ public class Workflow extends AbstractWorkflow {
 	 * @return searched step object if found
 	 */
 	public AbstractStep getStepByPos(int pos){
+		
 		return getStep().get(pos);
 	}
 	
@@ -27,6 +28,7 @@ public class Workflow extends AbstractWorkflow {
 	 * @return searched step object if found, else return null
 	 */
 	public AbstractStep getStepById(int stepId){
+		
 		for(AbstractStep as : getStep()){
 			if(as.getId() == stepId){
 				return as;
@@ -37,10 +39,37 @@ public class Workflow extends AbstractWorkflow {
 	
 	
 	/**
+	 * This method returns an item object by its position in the workflow item list.
+	 * @param pos states the index of searched item object
+	 * @return searched item object if found
+	 */
+	public AbstractItem getItemByPos(int pos){
+		
+		return getItem().get(pos);
+	}
+	
+	
+	/**
+	 * This method returns an item object by its id.
+	 * @param itemId states which certain object is looked for
+	 * @return searched item object if found, else return null
+	 */
+	public AbstractItem getItemById(int itemId){
+		
+		for(AbstractItem ai : getItem()){
+			if(ai.getId() == itemId){
+				return ai;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * This method adds single steps to a workflow.
 	 * @param step which will be added to the step list of a workflow
 	 */
 	public void addStep(AbstractStep step){
+		
 		getStep().add(step);
 	}
 	
@@ -50,6 +79,7 @@ public class Workflow extends AbstractWorkflow {
 	 * @param stepId states which step should be removed
 	 */
 	public void removeStep(int stepId){
+		
 		for(AbstractStep as : getStep()){
 			if(as.getId() == stepId){
 				getStep().remove(as);
@@ -63,6 +93,7 @@ public class Workflow extends AbstractWorkflow {
 	 * @param item which will be added to the item lsit of a workflow
 	 */
 	public void addItem(AbstractItem item){
+		
 		getItem().add(item);
 	}
 	
@@ -72,6 +103,7 @@ public class Workflow extends AbstractWorkflow {
 	 * @param itemId states which item should be removed
 	 */
 	public void removeItem(int itemId){
+		
 		for(AbstractItem ai : getItem()){
 			if(ai.getId() == itemId){
 				getItem().remove(ai);
@@ -84,6 +116,7 @@ public class Workflow extends AbstractWorkflow {
 	 * This method connects steps with its straight neighbor. The last step has no neighbor.
 	 */
 	public void connectSteps(){
+		
 		for(int i = 0; i < getStep().size() - 1; i++){
 			getStep().get(i).getNextSteps().add(getStep().get(i+1));
 		}

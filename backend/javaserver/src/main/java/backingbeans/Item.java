@@ -18,7 +18,7 @@ public class Item extends AbstractItem{
 	 * Default-Constructor
 	 */
 	public Item (){
-		metadata= new ArrayList<AbstractMetaEntry>();
+		metadata = getMetadata();
 	}
 	
 	
@@ -123,6 +123,7 @@ public class Item extends AbstractItem{
 	 * @param value has to be OPEN, for enabling very first Step
 	 */
 	public void setFirstStepState(String value){
+		
 		getForGroup("step").get(0).setValue(value);
 	}
 }

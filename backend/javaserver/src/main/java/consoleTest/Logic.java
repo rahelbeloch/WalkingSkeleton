@@ -48,8 +48,8 @@ public class Logic {
 			System.out.println(ai.getId());
 		}
 		
-		Item item = (Item)myWorkflow.getItem().get(0);
-		AbstractStep step = myWorkflow.getStep().get(0);
+		Item item = (Item)myWorkflow.getItemByPos(0);
+		AbstractStep step = myWorkflow.getStepByPos(0);
 		
 		BufferedReader inputSteam = new  BufferedReader(new InputStreamReader(System.in));
 
