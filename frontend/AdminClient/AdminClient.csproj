@@ -64,9 +64,9 @@
     <Compile Include="model\backingbeans\Step.cs" />
     <Compile Include="model\backingbeans\User.cs" />
     <Compile Include="model\backingbeans\Workflow.cs" />
-    <Compile Include="viewmodel\ActionCommand.cs" />
-    <Compile Include="viewmodel\ViewModelBase.cs" />
-    <Compile Include="viewmodel\ViewModel.cs" />
+    <Compile Include="ViewModel\ActionCommand.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
