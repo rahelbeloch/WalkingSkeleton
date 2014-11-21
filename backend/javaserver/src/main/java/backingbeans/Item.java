@@ -63,7 +63,7 @@ public class Item extends AbstractItem{
 	 */
 	public String getStepState(int key) {
 		
-		return AbstractMetaState.fromValue(getEntryValue("steps", id + "")).toString();
+		return AbstractMetaState.fromValue(getEntryValue(key + "", "step")).toString();
 	}
 	
 	
