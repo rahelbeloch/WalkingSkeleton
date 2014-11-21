@@ -57,9 +57,6 @@
       <DependentUpon>AddStepWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="model\abstractbeans\abstractbeans.designer.cs" />
-    <Compile Include="model\oldabstractbeans\abstractbeans.cs">
-      <DependentUpon>abstractbeans.xsd</DependentUpon>
-    </Compile>
     <Compile Include="model\backingbeans\Action.cs" />
     <Compile Include="model\backingbeans\FinalStep.cs" />
     <Compile Include="model\backingbeans\Item.cs" />
@@ -106,9 +103,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="model\abstractbeans\abstractbeans.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="model\oldabstractbeans\abstractbeans.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Settings.settings">
