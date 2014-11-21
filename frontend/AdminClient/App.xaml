@@ -4,6 +4,6 @@
              xmlns:vm="clr-namespace:AdminClient.viewmodel" 
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <vm:WorkflowViewModel x:Key="ViewModel" />
+        <vm:WorkflowViewModel x:Key="WorkflowViewModel" />
     </Application.Resources>
 </Application>

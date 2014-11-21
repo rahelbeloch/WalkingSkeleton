@@ -3,28 +3,35 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Workflow Engine - Admin Client" Height="400" Width="600" ResizeMode="NoResize">
 
-    <Grid DataContext="{Binding Source={StaticResource ViewModel}}">
-        <DockPanel>
-            <DockPanel DockPanel.Dock="Top">
-                <Button x:Name="chooseElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="+" Width="40" Height="25" Margin="10" Command="{Binding openAddStepWindow}"/>
-                <Button x:Name="removeLastElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-" Width="40" Height="25" Margin="10" Command="{Binding removeLastStepCommand}"/>
-            </DockPanel>
+    <TabControl>
+        <TabItem Header="Workflow Verwaltung">
+            <Grid DataContext="{Binding Source={StaticResource WorkflowViewModel}}">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top">
+                        <Button x:Name="chooseElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="+" Width="40" Height="25" Margin="10" Command="{Binding openAddStepWindow}"/>
+                        <Button x:Name="removeLastElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-" Width="40" Height="25" Margin="10" Command="{Binding removeLastStepCommand}"/>
+                    </DockPanel>
+
+                    <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflow}">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns >
+                                    <GridViewColumn Width="130" Header="Typ" DisplayMemberBinding="{Binding label}"/>
+                                    <GridViewColumn Width="290" Header="Beschreibung" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Width="130" Header="Nutzer" DisplayMemberBinding="{Binding UserId}"/>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <DockPanel DockPanel.Dock="Bottom" Height="45" VerticalAlignment="Bottom">
+                        <Button x:Name="saveWorkflow" HorizontalAlignment="Right" Content="Workflow speichern/veröffentlichen" Height="25" Margin="10" Command="{Binding submitWorkflowCommand}"/>
+                    </DockPanel>
+                </DockPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="User Verwaltung">
             
-            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflow}">
-                <ListView.View>
-                    <GridView>
-                        <GridView.Columns >
-                            <GridViewColumn Width="130" Header="Typ" DisplayMemberBinding="{Binding label}"/>
-                            <GridViewColumn Width="290" Header="Beschreibung" DisplayMemberBinding="{Binding Name}"/>
-                            <GridViewColumn Width="130" Header="Nutzer" DisplayMemberBinding="{Binding UserId}"/>
-                        </GridView.Columns>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            
-            <DockPanel DockPanel.Dock="Bottom" Height="45" VerticalAlignment="Bottom">
-                <Button x:Name="saveWorkflow" HorizontalAlignment="Right" Content="Workflow speichern/veröffentlichen" Height="25" Margin="10" Command="{Binding submitWorkflowCommand}"/>
-            </DockPanel>
-        </DockPanel>
-    </Grid>
+        </TabItem>
+    </TabControl>
 </Window>
