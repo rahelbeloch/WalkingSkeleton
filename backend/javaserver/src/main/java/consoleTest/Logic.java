@@ -23,7 +23,7 @@ import manager.ProcessManager;
 
 public class Logic {
 	
-	public static void main(String args[]){
+	public static void main(String args[]) throws InterruptedException{
 		
 		Workflow myWorkflow = createWorkflow();
 		
@@ -32,8 +32,10 @@ public class Logic {
 			System.out.println(s.getId());
 		}
 		
+		ProcessManager manager = new ProcessManager();
+		
 		//This object will be assigned to a specific user who can execute the workflow (startWorkflow)
-		StartTrigger start = new StartTrigger(myWorkflow);
+		StartTrigger start = new StartTrigger(myWorkflow, manager);
 		start.startWorkflow();
 		
 		User benni = new User();
@@ -41,7 +43,7 @@ public class Logic {
 		benni.setId(23);
 		
 		//This manager calls the appropriate processor for an step
-		ProcessManager manager = new ProcessManager();
+		
 		
 		//Output of all items in a workflow
 		for (AbstractItem ai : myWorkflow.getItem()){

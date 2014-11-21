@@ -49,6 +49,7 @@ public class ServerPublisher {
 		TextMessage msg = session.createTextMessage(content);
 		
 		//send and close
+		System.out.println("INHALT: " + msg.getText());
 		publisher.send(msg);
 		session.close();
 		connection.close();
@@ -62,6 +63,7 @@ public class ServerPublisher {
 		try {
 			broker.addConnector("tcp://0.0.0.0:61616");
 			broker.start();
+			System.out.println("Broker started...");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			//Error: No Broker available
@@ -74,6 +76,7 @@ public class ServerPublisher {
 	public void stopBroker(){
 		try {
 			broker.stop();
+			System.out.println("Broker stopped...");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
