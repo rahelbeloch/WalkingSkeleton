@@ -21,7 +21,7 @@ namespace CommunicationLib
         //private Client myClient;
 
         //default topic for server information
-        const string DEFAULT_TOPIC = "NEW_WORKFLOW_DEF";
+        const string DEFAULT_TOPIC = "WORKFLOW_INFO";
 
         //jms attributes
         private IConnection connection;
