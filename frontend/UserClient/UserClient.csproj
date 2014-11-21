@@ -53,9 +53,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="abstractbeans.cs">
-      <DependentUpon>abstractbeans.xsd</DependentUpon>
-    </Compile>
     <Compile Include="ApplicationController.cs" />
     <Compile Include="Model\abstractbeans\abstractbeans.designer.cs" />
     <Compile Include="Model\ApplicationPage.cs" />
@@ -102,9 +99,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="abstractbeans.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Model\abstractbeans\abstractbeans.xsd">
       <SubType>Designer</SubType>
     </None>
