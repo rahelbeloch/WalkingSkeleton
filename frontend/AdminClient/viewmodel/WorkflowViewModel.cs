@@ -261,7 +261,6 @@ namespace AdminClient.viewmodel
                         if (_selectedStep is StartStep)
                         {
                             StartStep startStep = new StartStep();
-                            startStep.Id = 1;
                             startStep.UserId = int.Parse(userId);
 
                             _workflow.Add(startStep);
@@ -270,7 +269,6 @@ namespace AdminClient.viewmodel
                         else if (_selectedStep is Action)
                         {
                             Action action = new Action();
-                            action.Id = 2;
                             action.UserId = int.Parse(userId);
                             action.Name = stepDescription;
 
@@ -280,8 +278,7 @@ namespace AdminClient.viewmodel
                         else if (_selectedStep is FinalStep)
                         {
                             FinalStep finalStep = new FinalStep();
-                            finalStep.Id = 3;
-                            finalStep.Name = "Endzustand";
+ 
 
                             _workflow.Add(finalStep);
                             _workflowModel.Step.Add(finalStep);
