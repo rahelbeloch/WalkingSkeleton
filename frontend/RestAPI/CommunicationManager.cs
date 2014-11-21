@@ -48,7 +48,7 @@ namespace CommunicationLib
             funcMapping.Add("del", "deleteObject");
 
             //build connection to message broker
-            connectionFactory = new ConnectionFactory();
+            connectionFactory = new ConnectionFactory(BROKER_URL);
             connection = connectionFactory.CreateConnection();
             session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
             //default topic subscription
@@ -65,9 +65,9 @@ namespace CommunicationLib
             if (msg is ITextMessage)
             {
                 ITextMessage tm = msg as ITextMessage;
-                HandleRequest(tm.Text);
-                //Logging on Console
+                //Logging on Console 
                 Console.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
+                HandleRequest(tm.Text);  
             }
             else if (msg is IMapMessage)
             {
@@ -79,6 +79,7 @@ namespace CommunicationLib
             }
         }
 
+        // Testing does not work, if the message doesn't follow the protocol definition
         private void HandleRequest(string requestMsg)
         {
             int id;
@@ -92,7 +93,7 @@ namespace CommunicationLib
             genericType = dataStructure[options[0]];
             methodName = funcMapping[options[1]];
             Int32.TryParse(options[2], out id);
-            
+
             // Reflection: generic method can not be called with dynamic generics (means deciding during runtime which generic is placed in)
             MethodInfo method = typeof( RestRequester ).GetMethod( methodName );
             MethodInfo generic = method.MakeGenericMethod( genericType );
