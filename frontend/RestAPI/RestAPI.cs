@@ -39,7 +39,7 @@ namespace RestAPI
 
         /**
          * Method to test the Connection
-         */
+         **/
         public static void Main(string[] args)
         {
             RestRequester.init();
@@ -50,6 +50,7 @@ namespace RestAPI
             Workflow deleteRes = RestRequester.deleteObject<Workflow>(1);
             Console.ReadKey();
         }
+        
     }
 
     /*

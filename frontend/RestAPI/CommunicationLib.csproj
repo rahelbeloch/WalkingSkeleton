@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>RestAPI.Programm</StartupObject>
+    <StartupObject>CommunicationLib.CommunicationManager.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Apache.NMS">
