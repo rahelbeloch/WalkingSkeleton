@@ -1,5 +1,7 @@
 package processors;
 
+import java.util.Observable;
+
 import manager.ProcessManager;
 import abstractbeans.AbstractAction;
 import abstractbeans.AbstractMetaState;
@@ -14,14 +16,16 @@ import backingbeans.Workflow;
  * @author jvanh001
  * This class implements the function of StartTrigger. It creates a new item and saves it.
  */
-public class StartProcessor extends ProcessManager{
+public class StartProcessor extends Observable{
 
 	private Item currentItem;
+
 	
 	/**
 	 * Default-Constructor
 	 */
-	public StartProcessor(){
+	public StartProcessor(ProcessManager pm){
+		addObserver(pm);
 	}
 	
 	
@@ -55,11 +59,8 @@ public class StartProcessor extends ProcessManager{
 		}
 		workflow.getItem().add(item);
 		item.setFirstStepState(AbstractMetaState.OPEN.toString());
-//		try {
-//			sp.publish("<Datenstruktur>=<Operation>=<ID>", "NEW_WORKFLOW_DEF");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		setChanged();
+		notifyObservers(item);
 		//TODO erstelltes item in der persistenz abspeichern
 	}
 }

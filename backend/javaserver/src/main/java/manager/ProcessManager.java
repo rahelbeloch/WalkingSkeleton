@@ -1,5 +1,8 @@
 package manager;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import messaging.ServerPublisher;
 import backingbeans.Action;
 import backingbeans.Item;
@@ -15,17 +18,16 @@ import abstractbeans.AbstractUser;
  * @author jvanh001
  *
  */
-public class ProcessManager {
+public class ProcessManager implements Observer{
 	
-	protected ServerPublisher sp;
+	private ServerPublisher sp;
 	
 	/**
-	 * Default-Constructor
+	 * Constructor
 	 */
 	public ProcessManager (){
-		
-//		sp = new ServerPublisher();
-//		sp.startBroker();
+		sp = new ServerPublisher();
+		sp.startBroker();
 	}
 	
 	
@@ -57,8 +59,19 @@ public class ProcessManager {
 	public void selectProcessor(AbstractStep step, Item item, User user){
 		
 		if(step instanceof Action){
-			ActionProcessor actionProcessor = new ActionProcessor();
+			ActionProcessor actionProcessor = new ActionProcessor(this);
 			actionProcessor.handle(item, step, user);
 		}
+	}
+	
+
+	public void update(Observable o, Object arg) {
+		try {
+			//TODO extracting necessary information of object arg (for now <Datenstruktur>, <Operation>, <Id>
+			sp.publish("<Datenstruktur>=<Operation>=<Id>", "WORKFLOW_INFO");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

@@ -1,5 +1,7 @@
 package processors;
 
+import java.util.Observable;
+
 import manager.ProcessManager;
 import abstractbeans.AbstractMetaState;
 import abstractbeans.AbstractStep;
@@ -14,15 +16,15 @@ import backingbeans.User;
  * @author jvanh001
  *
  */
-public class ActionProcessor extends ProcessManager implements StepProcessor {
+public class ActionProcessor extends Observable implements StepProcessor {
 	
 	private Item currentItem;
-
+	
 	/**
 	 * Default-Constructor
 	 */
-	public ActionProcessor (){
-
+	public ActionProcessor (ProcessManager pm){
+		addObserver(pm);
 	}
 	
 	
@@ -36,37 +38,24 @@ public class ActionProcessor extends ProcessManager implements StepProcessor {
 		
 		currentItem = item;
 		currentItem.setStepState(step.getId(), AbstractMetaState.BUSY.toString());
+		setChanged();
+		notifyObservers(currentItem);
 		
-//		try {
-//			sp.publish("<Datenstruktur>=<Operation>=<ID>", "NEW_WORKFLOW_DEF");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 		//funktion irrelevant fuer walking skeleton
 		currentItem.setStepState(step.getId(), AbstractMetaState.DONE.toString());
-		
-//		try {
-//			sp.publish("<Datenstruktur>=<Operation>=<ID>", "NEW_WORKFLOW_DEF");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		setChanged();
+		notifyObservers(currentItem);
 		
 		for(AbstractStep s : step.getNextSteps()){
 			if(!(s instanceof FinalStep)){ 
 				//TODO aktuelles item persiztieren
 				currentItem.setStepState(s.getId(), AbstractMetaState.OPEN.toString());
-//				try {
-//					sp.publish("<Datenstruktur>=<Operation>=<ID>", "NEW_WORKFLOW_DEF");
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
+				setChanged();
+				notifyObservers(currentItem);
 			}else{
 				currentItem.setStepState(s.getId(), AbstractMetaState.DONE.toString());
-//				try {
-//					sp.publish("<Datenstruktur>=<Operation>=<ID>", "NEW_WORKFLOW_DEF");
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
+				setChanged();
+				notifyObservers(currentItem);
 				currentItem.setFinished(true);
 			}	
 		}

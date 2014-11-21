@@ -1,5 +1,6 @@
 package processors;
 
+import manager.ProcessManager;
 import backingbeans.Workflow;
 
 /**
@@ -17,9 +18,9 @@ public class StartTrigger {
 	 * Constructor of StartTrigger
 	 * @param workflow which was initialized by an admin
 	 */
-	public StartTrigger(Workflow workflow){
+	public StartTrigger(Workflow workflow, ProcessManager pm){
 		currentWorkflow = workflow;
-		startProcessor = new StartProcessor();
+		startProcessor = new StartProcessor(pm);
 	}
 	
 	
