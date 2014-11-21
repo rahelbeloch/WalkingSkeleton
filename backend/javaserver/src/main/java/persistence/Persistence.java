@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import abstractbeans.AbstractItem;
-import abstractbeans.AbstractMap;
 import abstractbeans.AbstractStep;
 import abstractbeans.AbstractUser;
 import abstractbeans.AbstractWorkflow;

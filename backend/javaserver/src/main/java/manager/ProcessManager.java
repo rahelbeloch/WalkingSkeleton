@@ -1,5 +1,6 @@
 package manager;
 
+import messaging.ServerPublisher;
 import backingbeans.Action;
 import backingbeans.Item;
 import backingbeans.User;
@@ -16,11 +17,15 @@ import abstractbeans.AbstractUser;
  */
 public class ProcessManager {
 	
+	protected ServerPublisher sp;
+	
 	/**
 	 * Default-Constructor
 	 */
 	public ProcessManager (){
 		
+//		sp = new ServerPublisher();
+//		sp.startBroker();
 	}
 	
 	
@@ -31,6 +36,7 @@ public class ProcessManager {
 	 * @return true if user is "owner" of step and false if not
 	 */
 	public boolean checkUser(AbstractUser user, AbstractStep step){
+		
 		if (step instanceof AbstractAction){
 			if (user.getId() == ((AbstractAction) step).getUserId()){
 				return true;
@@ -49,6 +55,7 @@ public class ProcessManager {
 	 * @param user who started interaction
 	 */
 	public void selectProcessor(AbstractStep step, Item item, User user){
+		
 		if(step instanceof Action){
 			ActionProcessor actionProcessor = new ActionProcessor();
 			actionProcessor.handle(item, step, user);

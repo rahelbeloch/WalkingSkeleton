@@ -27,7 +27,7 @@ public class ServerPublisher {
 	final private String BROKER_URL = "vm://localhost";
 	
 	public ServerPublisher() {
-
+		
 	}
 	
 	/**Publishes a String-content on a specified topic.
