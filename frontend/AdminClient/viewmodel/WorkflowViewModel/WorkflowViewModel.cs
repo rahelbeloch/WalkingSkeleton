@@ -13,11 +13,11 @@ using System.Text.RegularExpressions;
 
 namespace AdminClient.viewmodel
 {
-    class ViewModel : ViewModelBase
+    class WorkflowViewModel : ViewModelBase
     {
         private Workflow _workflowModel = new Workflow();
 
-        public ViewModel()
+        public WorkflowViewModel()
         {
             _workflow.CollectionChanged += OnWorkflowChanged;
 
