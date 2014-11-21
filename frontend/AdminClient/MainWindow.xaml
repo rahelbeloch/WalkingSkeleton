@@ -14,8 +14,8 @@
                 <ListView.View>
                     <GridView>
                         <GridView.Columns >
-                            <GridViewColumn Width="130" Header="Typ" DisplayMemberBinding="{Binding Id}"/>
-                            <GridViewColumn Width="290" Header="Beschreibung" DisplayMemberBinding="{Binding label}"/>
+                            <GridViewColumn Width="130" Header="Typ" DisplayMemberBinding="{Binding label}"/>
+                            <GridViewColumn Width="290" Header="Beschreibung" DisplayMemberBinding="{Binding Name}"/>
                             <GridViewColumn Width="130" Header="Nutzer" DisplayMemberBinding="{Binding UserId}"/>
                         </GridView.Columns>
                     </GridView>
