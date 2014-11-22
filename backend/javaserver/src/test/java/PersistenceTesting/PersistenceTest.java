@@ -16,28 +16,23 @@ public class PersistenceTest {
 	
 	@Test
 	public void testWorkflowStorage() {
-		Workflow workflow007 = new Workflow();
-		Workflow workflow006 = new Workflow();
-		Workflow workflow005 = new Workflow();
-		workflow005.setId(005);
-		workflow006.setId(006);
-		workflow007.setId(007);
+		Workflow workflow007 = new Workflow(7);
+		Workflow workflow006 = new Workflow(6);
+		Workflow workflow005 = new Workflow(5);
 		
 		db.storeWorkflow(workflow005);
 		db.storeWorkflow(workflow006);
 		db.storeWorkflow(workflow007);
 		
-		assertEquals(db.loadWorkflow(005), workflow005);
-		assertEquals(db.loadWorkflow(006), workflow006);
-		assertEquals(db.loadWorkflow(007), workflow007);
+		assertEquals(db.loadWorkflow(5), workflow005);
+		assertEquals(db.loadWorkflow(6), workflow006);
+		assertEquals(db.loadWorkflow(7), workflow007);
 	}
 	
 	@Test
 	public void testDuplicateWorkflowStorage() {
-		Workflow workflow001 = new Workflow();
-		Workflow workflow002 = new Workflow();
-		workflow001.setId(17);
-		workflow002.setId(17);
+		Workflow workflow001 = new Workflow(17);
+		Workflow workflow002 = new Workflow(17);
 		
 		db.storeWorkflow(workflow001);
 		db.storeWorkflow(workflow002);
@@ -45,6 +40,19 @@ public class PersistenceTest {
 		assertNotEquals(workflow001,db.loadWorkflow(17));
 		assertEquals(workflow002,db.loadWorkflow(17));
 		//assertSame(workflow002,db.loadWorkflow(17));
+	}
+	
+	@Test
+	public void testWorkflowDeletion() {
+		Workflow wf001 = new Workflow(1);
+		Workflow wf002 = new Workflow(2);
+		db.storeWorkflow(wf001);
+		db.storeWorkflow(wf002);
+		
+		db.deleteWorkflow(1);
+		
+		assertEquals(db.loadWorkflow(1), null);
+		assertEquals(db.loadWorkflow(2), wf002);
 	}
 	
 	@Test
@@ -125,6 +133,4 @@ public class PersistenceTest {
 		assertEquals(db.loadUser(1), null);
 		assertEquals(db.loadUser(2), user002);
 	}
-
-
 }

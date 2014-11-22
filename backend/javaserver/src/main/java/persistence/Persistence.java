@@ -11,13 +11,12 @@ import abstractbeans.AbstractWorkflow;
 public class Persistence {
 	
 	/*
-	 * Abstraktion einer Datenbank, die Obejekte in der Form Abstract-* persistiert
+	 * Abstraktion einer Datenbank, die Objekte in der Form Abstract-* persistiert
 	 */
 	private List<AbstractWorkflow> workflows = new LinkedList<>();
 	private List<AbstractUser> users = new LinkedList<>();
 	private List<AbstractItem> items = new LinkedList<>();
 	private List<AbstractStep> steps = new LinkedList<>();
-	
 
 //	public AbstractItem resolveMap(Item item) {
 //		AbstractItem tempItem = null;
@@ -42,7 +41,7 @@ public class Persistence {
 				steps.remove(s);
 			}
 		}
-		steps.add(step);
+		steps.add((AbstractStep)step);
 	}
 	
 	public void storeItem(AbstractItem item) {
@@ -52,7 +51,7 @@ public class Persistence {
 			}
 		}
 		// items includes a HashMap that has to be transfered into lists (Map)
-		items.add(item);
+		items.add((AbstractItem)item);
 	}
 	
 	public void storeUser(AbstractUser user) {
@@ -61,7 +60,7 @@ public class Persistence {
 				users.remove(u);
 			}
 		}
-		users.add(user);
+		users.add((AbstractUser)user);
 	}
 	
 	public void storeWorkflow(AbstractWorkflow workflow) {
