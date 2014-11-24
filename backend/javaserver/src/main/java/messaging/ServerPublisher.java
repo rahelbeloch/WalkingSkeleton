@@ -21,7 +21,7 @@ public class ServerPublisher {
 	private MessageProducer publisher;
 	private BrokerService broker;
 	
-	//broker will run in the same VM (embeded)
+	//broker will run in the same VM (embedded)
 	final private String BROKER_URL = "vm://localhost";
 	final private String CONNECTOR_URL = "tcp://0.0.0.0:61616";
 	
