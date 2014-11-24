@@ -61,7 +61,7 @@ public class PersistenceImpl_depr {
 	/*
 	 * load functions for steps, items, users, workflows
 	 */
-	
+
 	public AbstractStep loadStep(int id) {
 		AbstractStep step = null;
 		for(AbstractStep s: steps) {
