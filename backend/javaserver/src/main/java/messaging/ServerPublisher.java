@@ -70,7 +70,7 @@ public class ServerPublisher {
 			}	
 		}
 		else {
-			System.err.println("Broker allready running! (" + CONNECTOR_URL + ")");
+			System.out.println("Broker allready running! (" + CONNECTOR_URL + ")");
 		}
 	}
 	
