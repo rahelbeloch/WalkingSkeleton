@@ -10,42 +10,42 @@ namespace CommunicationLib.model.backingbeans
 {
     class BackingBeanFactory : IBackingBeanFactory
     {
-        public Action createAction()
+        public static Action createAction()
         {
             return new Action(new AbstractAction());
         }
 
-        public Action createAction(AbstractAction abstractAction)
+        public static Action createAction(AbstractAction abstractAction)
         {
             return new Action(abstractAction);
         }
 
-        public FinalStep createFinalStep()
+        public static FinalStep createFinalStep()
         {
             return new FinalStep(new AbstractFinalStep());
         }
 
-        public FinalStep createFinalStep(AbstractFinalStep abstractFinalStep)
+        public static FinalStep createFinalStep(AbstractFinalStep abstractFinalStep)
         {
             return new FinalStep(abstractFinalStep);
         }
 
-        public StartStep createStartStep()
+        public static StartStep createStartStep()
         {
             return new StartStep(new AbstractStartStep());
         }
 
-        public StartStep createStartStep(AbstractStartStep abstractStartStep)
+        public static StartStep createStartStep(AbstractStartStep abstractStartStep)
         {
             return new StartStep(abstractStartStep);
         }
 
-        public Step createStep()
+        public static Step createStep()
         {
             return new Step(new AbstractStep());
         }
 
-        public Step createStep(AbstractStep abstractStep)
+        public static Step createStep(AbstractStep abstractStep)
         {
             return new Step(abstractStep);
         }
