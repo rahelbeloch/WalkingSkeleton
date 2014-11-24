@@ -1,5 +1,4 @@
-﻿using AdminClient.model;
-using AdminClient.util;
+﻿using AdminClient.util;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunicationLib.Model;
 
 namespace AdminClient.viewmodel
 {

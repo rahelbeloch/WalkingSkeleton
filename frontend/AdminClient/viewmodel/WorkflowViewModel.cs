@@ -1,5 +1,4 @@
 ﻿using AdminClient.util;
-using AdminClient.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +7,16 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Action = AdminClient.model.Action;
 using System.Text.RegularExpressions;
+using CommunicationLib.Model;
+using Action = CommunicationLib.Model.Action;
 
 namespace AdminClient.viewmodel
 {
     class WorkflowViewModel : ViewModelBase
     {
         private Workflow _workflowModel = new Workflow();
-
+        
         public WorkflowViewModel()
         {
             _workflow.CollectionChanged += OnWorkflowChanged;
@@ -212,7 +212,7 @@ namespace AdminClient.viewmodel
                     _removeLastStepCommand = new ActionCommand(func =>
                     {
                         // update model AND viewmodel, because the model is not observable
-                        _workflowModel.Step.RemoveAt(_workflowModel.Step.Count - 1);
+                        //_workflowModel.Step.RemoveAt(_workflowModel.Step.Count - 1);
                         _workflow.RemoveAt(_workflow.Count - 1);
                     }, func => _workflow.Count > 0);
                     
@@ -236,7 +236,7 @@ namespace AdminClient.viewmodel
                         Console.WriteLine("TODO: send workflow to server");
                         // remove steps from workflow
                         // update model AND viewmodel, because the model is not observable
-                        _workflowModel.Step.Clear();
+                        //_workflowModel.Step.Clear();
                         _workflow.Clear();
                     }, func => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
                 }
@@ -264,7 +264,7 @@ namespace AdminClient.viewmodel
                             startStep.UserId = int.Parse(userId);
 
                             _workflow.Add(startStep);
-                            _workflowModel.Step.Add(startStep);
+                            //_workflowModel.Step.Add(startStep);
                         }
                         else if (_selectedStep is Action)
                         {
@@ -273,7 +273,7 @@ namespace AdminClient.viewmodel
                             action.Name = stepDescription;
 
                             _workflow.Add(action);
-                            _workflowModel.Step.Add(action);
+                            //_workflowModel.Step.Add(action);
                         }
                         else if (_selectedStep is FinalStep)
                         {
@@ -281,7 +281,7 @@ namespace AdminClient.viewmodel
  
 
                             _workflow.Add(finalStep);
-                            _workflowModel.Step.Add(finalStep);
+                            //_workflowModel.Step.Add(finalStep);
                         }
 
                         userId = "";
