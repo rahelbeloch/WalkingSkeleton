@@ -17,6 +17,7 @@ public class StartTrigger {
 	/**
 	 * Constructor of StartTrigger
 	 * @param workflow which was initialized by an admin
+	 * @param pm is the observer and manager of the processor
 	 */
 	public StartTrigger(Workflow workflow, ProcessManager pm){
 		currentWorkflow = workflow;

@@ -21,7 +21,8 @@ public class ActionProcessor extends Observable implements StepProcessor {
 	private Item currentItem;
 	
 	/**
-	 * Default-Constructor
+	 * Constructor of ActionProcessor
+	 * @param pm is the observer and manager of the processor
 	 */
 	public ActionProcessor (ProcessManager pm){
 		addObserver(pm);
