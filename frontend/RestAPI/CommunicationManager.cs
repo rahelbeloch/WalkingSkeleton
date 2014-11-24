@@ -83,7 +83,10 @@ namespace CommunicationLib
             }
         }
 
-        // Testing does not work, if the message doesn't follow the protocol definition
+        /// <summary>
+        /// Uses reflection for dynamic rest requests.
+        /// </summary>
+        /// <param name="requestMsg">information string for rest-request</param>
         private void HandleRequest(string requestMsg)
         {
             int id;
@@ -106,7 +109,7 @@ namespace CommunicationLib
             resultType = genericMethod.Invoke(null, new object[] { id });
 
             //wrapping
-            rWrapInstance = wrap(genericType, resultType);
+            rWrapInstance = Wrap(genericType, resultType);
 
             //send wrapper-Instance to Client
             if(genericType == typeof(AbstractWorkflow))
@@ -132,7 +135,7 @@ namespace CommunicationLib
         /// <param name="genericType">generic type for the RegistrationWrapper</param>
         /// <param name="o">object to pack</param>
         /// <returns>Wrapped object</returns>
-        private object wrap(Type genericType, object o)
+        private object Wrap(Type genericType, object o)
         {
             var wrap = typeof(RegistrationWrapper<>);
             Type[] typeArgs = { genericType, typeof(CommunicationManager) };
@@ -142,14 +145,34 @@ namespace CommunicationLib
             return rWrapInstance;
         }
 
-        /*
-         * Task to subscribe to messaging topic which affects the given object/instance.
-         *  @ rw - object of interest
-         *  @ callback - function in the client to call by update of rw
-         */
+        /// <summary>
+        /// Subscribes to messaging topic which affects the given object/instance.
+        /// </summary>
+        /// <param name="rw">object of interest</param>
+        /// <param name="callback">function in the client to call by update of rw</param>
         public void Register(Object rw, Func<Object> callback)
         {
+            // gibt es nur den Fall, dass Register auf einem Workflow aufgerufen wird?
+            // --> andernfalls viel mehr Topics; für jede Änderung eigene Topics --> viel mehr Threads
 
+            int id;
+            string topicName;
+            AbstractWorkflow currWorkflow;
+
+            // find out which object type DataModel is
+            if(rw.GetType() ==  typeof(AbstractWorkflow))
+            {
+                currWorkflow = (AbstractWorkflow)rw;
+                id = currWorkflow.Id;
+                // Create fitting topic
+                topicName = "ITEMS_FROM_" + id;
+                IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(topicName));
+                messageConsumer.Listener += OnMessageReceived;
+                _messageSubs.Add(topicName, messageConsumer);
+                   
+                // try out with testing if this line is needed
+                //_connection.Start();
+            }
         }
 
         /*
