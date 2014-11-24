@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Action = CommunicationLib.Model.Action;
 
-namespace CommunicationLib.model.backingbeans
+namespace CommunicationLib.Model
 {
     class BackingBeanFactory : IBackingBeanFactory
     {
