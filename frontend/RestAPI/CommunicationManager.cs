@@ -88,9 +88,10 @@ namespace CommunicationLib
         {
             int id;
             Type genericType;
-            Object resultType; 
+            object resultType; 
             string methodName;
             IList<string> options = new List<string>();
+            object rWrapInstance;
             
             // options[0] --> requested Type; options[1] --> server operation; options[2] --> object identifier
             options = requestMsg.Split('=');
@@ -104,17 +105,41 @@ namespace CommunicationLib
             // Call the dynamic generic generated method with parameterlist (2. param); parent of called method is static, not an instance (1.param)
             resultType = genericMethod.Invoke(null, new object[] { id });
 
-            // Create an instance of RegistrationWrapper with dynamic generic type
+            //wrapping
+            rWrapInstance = wrap(genericType, resultType);
+
+            //send wrapper-Instance to Client
+            if(genericType == typeof(AbstractWorkflow))
+            {
+                RegistrationWrapper<AbstractWorkflow> workflowWrap = (RegistrationWrapper<AbstractWorkflow>)rWrapInstance;
+                myClient.WorkflowUpdate(workflowWrap);
+            }
+            else if (genericType == typeof(AbstractItem))
+            {
+                RegistrationWrapper<AbstractItem> itemWrap = (RegistrationWrapper<AbstractItem>)rWrapInstance;
+                myClient.ItemUpdate(itemWrap);
+            }
+            else if (genericType == typeof(AbstractUser))
+            {
+                RegistrationWrapper<AbstractUser> userWrap = (RegistrationWrapper<AbstractUser>)rWrapInstance;
+                myClient.UserUpdate(userWrap);
+            }
+        }
+
+        /// <summary>
+        /// Creates an instance of RegistrationWrapper with dynamic generic type
+        /// </summary>
+        /// <param name="genericType">generic type for the RegistrationWrapper</param>
+        /// <param name="o">object to pack</param>
+        /// <returns>Wrapped object</returns>
+        private object wrap(Type genericType, object o)
+        {
             var wrap = typeof(RegistrationWrapper<>);
             Type[] typeArgs = { genericType, typeof(CommunicationManager) };
             var makeme = wrap.MakeGenericType(typeArgs);
             object rWrapInstance = Activator.CreateInstance(makeme);
 
-            // Test the code above
-            ((RegistrationWrapper<Object>)rWrapInstance).GetMyObject();
-
-            //TODO: rWrapInstance an Client senden
-            //myClient.dataUpdate(rWrapInstance);
+            return rWrapInstance;
         }
 
         /*
