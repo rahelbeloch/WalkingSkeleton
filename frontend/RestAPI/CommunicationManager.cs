@@ -32,12 +32,10 @@ namespace CommunicationLib
             {"del", "deleteObject"}
         };
 
-        //TODO: Client referenz
-        //private Client myClient;
-
+        //client referenz
+        IDataReceiver myClient;
         //default topic for server information
         const string DEFAULT_TOPIC = "WORKFLOW_INFO";
-
         //jms attributes
         private IConnection _connection;
         private IConnectionFactory _connectionFactory;
@@ -102,9 +100,9 @@ namespace CommunicationLib
 
             // Reflection: generic method can not be called with dynamic generics (means deciding during runtime which generic is placed in)
             MethodInfo method = typeof( RestRequester ).GetMethod( methodName );
-            MethodInfo generic = method.MakeGenericMethod( genericType );
+            MethodInfo genericMethod = method.MakeGenericMethod( genericType );
             // Call the dynamic generic generated method with parameterlist (2. param); parent of called method is static, not an instance (1.param)
-            resultType = generic.Invoke(null, new object[] { id });
+            resultType = genericMethod.Invoke(null, new object[] { id });
 
             // Create an instance of RegistrationWrapper with dynamic generic type
             var wrap = typeof(RegistrationWrapper<>);
@@ -115,10 +113,8 @@ namespace CommunicationLib
             // Test the code above
             ((RegistrationWrapper<Object>)rWrapInstance).GetMyObject();
 
-
             //TODO: rWrapInstance an Client senden
             //myClient.dataUpdate(rWrapInstance);
-        
         }
 
         /*
