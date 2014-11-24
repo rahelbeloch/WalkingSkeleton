@@ -1,4 +1,5 @@
 ﻿using System;
+using CommunicationLib.Model;
 
 namespace CommunicationLib
 {
