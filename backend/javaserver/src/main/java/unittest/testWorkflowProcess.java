@@ -33,8 +33,8 @@ public class testWorkflowProcess {
 	@Test
 	public void startWorkflow() {
 		init();
-		
-		StartTrigger start = new StartTrigger(myWorkflow);
+		ProcessManager manager = new ProcessManager();
+		StartTrigger start = new StartTrigger(myWorkflow, manager);
 		start.startWorkflow();
 		Item item = (Item) myWorkflow.getItem().get(0);
 		
@@ -44,8 +44,8 @@ public class testWorkflowProcess {
 	@Test
 	public void checkStateInaktive() {
 		init();
-		
-		StartTrigger start = new StartTrigger(myWorkflow);
+		ProcessManager manager = new ProcessManager();
+		StartTrigger start = new StartTrigger(myWorkflow, manager);
 		start.startWorkflow();
 		Item item = (Item) myWorkflow.getItem().get(0);
 		
@@ -55,16 +55,14 @@ public class testWorkflowProcess {
 	@Test
 	public void handleFirstStep() {
 		init();
-		
-		StartTrigger start = new StartTrigger(myWorkflow);
+		ProcessManager manager = new ProcessManager();
+		StartTrigger start = new StartTrigger(myWorkflow, manager);
 		start.startWorkflow();
 		
 		User benni = new User();
 		benni.setName("benni");
 		benni.setId(23);
 		
-		//This manager calls the appropriate processor for an step
-		ProcessManager manager = new ProcessManager();
 		
 		Item item = (Item) myWorkflow.getItem().get(0);
 		manager.selectProcessor(firstStep, item, benni);	

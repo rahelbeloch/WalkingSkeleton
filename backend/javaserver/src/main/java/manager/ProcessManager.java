@@ -3,7 +3,7 @@ package manager;
 import java.util.Observable;
 import java.util.Observer;
 
-import messaging.ServerPublisher;
+import messaging.ServerPublisherImp;
 import backingbeans.Action;
 import backingbeans.Item;
 import backingbeans.User;
@@ -20,13 +20,13 @@ import abstractbeans.AbstractUser;
  */
 public class ProcessManager implements Observer{
 	
-	private ServerPublisher sp;
+	private ServerPublisherImp sp;
 	
 	/**
-	 * Constructor
+	 * Constructor of ProcessManager
 	 */
 	public ProcessManager (){
-		sp = new ServerPublisher();
+		sp = new ServerPublisherImp();
 		sp.startBroker();
 	}
 	
