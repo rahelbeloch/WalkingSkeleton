@@ -20,8 +20,8 @@ namespace AdminClient.viewmodel
         /// <summary>
         /// Proprety _userCollection to fill list view with users.
         /// </summary>
-        private ObservableCollection<AbstractUser> _userCollection = new ObservableCollection<AbstractUser>();
-        public ObservableCollection<AbstractUser> userCollection { get { return _userCollection; } }
+        private ObservableCollection<User> _userCollection = new ObservableCollection<User>();
+        public ObservableCollection<User> userCollection { get { return _userCollection; } }
 
         /// <summary>
         /// Property for input from userId text box.
