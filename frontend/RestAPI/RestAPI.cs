@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RestSharp;
 
+
 namespace RestAPI
 {
     public class OwnException : Exception
@@ -18,13 +19,9 @@ namespace RestAPI
         }
     }
 
-    public class Workflow
-    {
-            
-
-    }
-
-
+    /**
+     *  Program class to test the connection. 
+     
     public class Programm
     {
 
@@ -39,7 +36,7 @@ namespace RestAPI
 
         /**
          * Method to test the Connection
-         **/
+         
         public static void Main(string[] args)
         {
             RestRequester.init();
@@ -51,7 +48,7 @@ namespace RestAPI
             Console.ReadKey();
         }
         
-    }
+    }*/
 
     /*
      * Static class, that realizes the Connection to the server.
@@ -145,7 +142,7 @@ namespace RestAPI
             }
             catch (OwnException)
             {
-                var response = client.Execute<OwnException>(request);
+                var response = client.Execute<Exception>(request);
                 throw response.Data;
             }
         }

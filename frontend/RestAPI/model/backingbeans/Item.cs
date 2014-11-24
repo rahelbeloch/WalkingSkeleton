@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdminClient.model
+namespace CommunicationLib.Model
 {
     /// <summary>
     /// Backing bean implementation for Item.
     /// </summary>
-    class Item : AbstractItem
+    public class Item : AbstractItem
     {
     }
 }
