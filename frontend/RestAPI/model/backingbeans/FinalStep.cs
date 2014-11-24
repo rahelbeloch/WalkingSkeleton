@@ -1,5 +1,4 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +9,11 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for FinalStep.
     /// </summary>
-    public class FinalStep : AbstractFinalStep
+    public class FinalStep : Step
     {
-        /// <summary>
-        /// Property label to show in GUI.
-        /// </summary>
-        private string _label = "Endzustand";
-        public string label { get { return _label; } set { } }
+        public FinalStep(AbstractFinalStep abstractFinalStep) : base(abstractFinalStep)
+        {
+            label = "Endzustand";
+        }
     }
 }
