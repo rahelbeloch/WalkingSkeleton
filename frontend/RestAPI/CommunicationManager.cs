@@ -9,6 +9,7 @@ using Apache.NMS;
 using Apache.NMS.ActiveMQ;
 using Apache.NMS.ActiveMQ.Commands;
 using RestAPI;
+using CommunicationLib.Model;
 
 namespace CommunicationLib
 {
@@ -105,7 +106,19 @@ namespace CommunicationLib
             // Call the dynamic generic generated method with parameterlist (2. param); parent of called method is static, not an instance (1.param)
             resultType = generic.Invoke(null, new object[] { id });
 
-            //TODO: resultType an Client senden
+            // Create an instance of RegistrationWrapper with dynamic generic type
+            var wrap = typeof(RegistrationWrapper<>);
+            Type[] typeArgs = { genericType, typeof(CommunicationManager) };
+            var makeme = wrap.MakeGenericType(typeArgs);
+            object rWrapInstance = Activator.CreateInstance(makeme);
+
+            // Test the code above
+            ((RegistrationWrapper<Object>)rWrapInstance).GetMyObject();
+
+
+            //TODO: rWrapInstance an Client senden
+            //myClient.dataUpdate(rWrapInstance);
+        
         }
 
         /*
