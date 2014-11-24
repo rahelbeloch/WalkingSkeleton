@@ -97,7 +97,7 @@ namespace RestAPI
         * Create an object on the server, with HTTP-Method POST.
         * Path for this HTTP-Method is always: send/<type>
         */
-        public static O postObject<O>(int id) where O : new()
+        public static O postObject<O>() where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = "send/" + typeName;
