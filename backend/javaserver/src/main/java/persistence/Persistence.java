@@ -11,7 +11,7 @@ public interface Persistence {
 	 */
 	public void storeWorkflow(AbstractWorkflow workflow);
 	public void storeItem(AbstractItem item);
-	public void addUser(AbstractUser user) throws UserAlreadyExistsEcxeption;
+	public void addUser(AbstractUser user) throws UserAlreadyExistsException;
 	public void updateUser(AbstractUser user) throws UserNotExistantException;
 	
 	/*
@@ -19,13 +19,13 @@ public interface Persistence {
 	 */
 	public AbstractWorkflow loadWorkflow(int id);
 	public AbstractItem loadItem(int id);
-	public AbstractUser loadUser(int id);
+	public AbstractUser loadUser(String name);
 
 	/*
 	 * delete functions to remove workflows, items, and users from persistence
 	 */
 	public void deleteWorkflow(int id);
 	public void deleteItem(int id);
-	public void deleteUser(int id);
+	public void deleteUser(String name);
 
 }
