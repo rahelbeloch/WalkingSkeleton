@@ -10,16 +10,16 @@ namespace CommunicationLib.Model
 {
     abstract class AbstractBackingBeanFactory
     {
-        Action createAction();
-        Action createAction(AbstractAction abstractAction);
+        static Action createAction();
+        static Action createAction(AbstractAction abstractAction);
 
-        FinalStep createFinalStep();
-        FinalStep createFinalStep(AbstractFinalStep abstractFinalStep);
+        static FinalStep createFinalStep();
+        static FinalStep createFinalStep(AbstractFinalStep abstractFinalStep);
 
-        StartStep createStartStep();
-        StartStep createStartStep(AbstractStartStep abstractStartStep);
+        static StartStep createStartStep();
+        static StartStep createStartStep(AbstractStartStep abstractStartStep);
 
-        Step createStep();
-        Step createStep(AbstractStep abstractStep);
+        static Step createStep();
+        static Step createStep(AbstractStep abstractStep);
     }
 }
