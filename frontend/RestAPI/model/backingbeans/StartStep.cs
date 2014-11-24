@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdminClient.model
+namespace CommunicationLib.Model
 {
     /// <summary>
     /// Backing bean implementation for StartStep.
     /// </summary>
-    class StartStep : AbstractStartStep
+    public class StartStep : AbstractStartStep
     {
     }
 }
