@@ -6,7 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import persistence.Persistence;
+import persistence.PersistenceImp;
 import abstractbeans.AbstractWorkflow;
 
 
@@ -19,7 +19,7 @@ import abstractbeans.AbstractWorkflow;
 @Path("items")
 public class RequestResource {
 	
-	Persistence db = new Persistence();
+	PersistenceImp db = new PersistenceImp();
 	AbstractWorkflow workflow = new AbstractWorkflow();
 	
 	/**

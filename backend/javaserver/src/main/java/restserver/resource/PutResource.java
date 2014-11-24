@@ -8,7 +8,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import abstractbeans.AbstractWorkflow;
-import persistence.Persistence;
+import persistence.PersistenceImp;
 
 /**
  * 
@@ -19,7 +19,7 @@ import persistence.Persistence;
 @Path("update")
 public class PutResource {
 
-	Persistence db = new Persistence();
+	PersistenceImp db = new PersistenceImp();
 	
 	/**
 	 * 
