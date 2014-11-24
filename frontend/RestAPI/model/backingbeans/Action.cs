@@ -1,5 +1,4 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +9,11 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for Action.
     /// </summary>
-    public class Action : AbstractAction
+    public class Action : Step
     {
-        /// <summary>
-        /// Property label to show in GUI.
-        /// </summary>
-        private string _label = "Aktion";
-        public string label { get { return _label; } set { } }
+        public Action(AbstractAction abstractAction) : base(abstractAction)
+        {
+            label = "Aktion";
+        }
     }
 }

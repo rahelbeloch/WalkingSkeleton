@@ -1,5 +1,4 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +9,15 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for Step.
     /// </summary>
-    public class Step : AbstractStep
+    public class Step
     {
+        public AbstractStep Bean { get; set; }
+        public string label { get; set; }
+
+        public Step(AbstractStep abstractStep)
+        {
+            Bean = abstractStep;
+            label = "";
+        }
     }
 }
