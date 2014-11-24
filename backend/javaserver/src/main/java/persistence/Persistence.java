@@ -11,7 +11,8 @@ public interface Persistence {
 	 */
 	public void storeWorkflow(AbstractWorkflow workflow);
 	public void storeItem(AbstractItem item);
-	public void storeUser(AbstractUser user);
+	public void addUser(AbstractUser user);
+	public void upadteUser(AbstractUser user);
 	
 	/*
 	 * load functions to get workflows, items, and users from persistence
