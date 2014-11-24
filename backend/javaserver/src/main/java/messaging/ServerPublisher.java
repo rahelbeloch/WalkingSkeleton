@@ -10,11 +10,9 @@ import javax.jms.Topic;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 
-/** //TODO good Class description
- *  Class for Messaging on server-side.
- *  Uses an embeded message broker.
- * 
- * @author sehre001
+/** Class for message publishing on server-side.
+ *  Uses ActiveMQ as embedded message broker.
+ *  String messages can be published under specific topic names.
  */
 public class ServerPublisher {
 	
@@ -25,6 +23,7 @@ public class ServerPublisher {
 	
 	//broker will run in the same VM (embeded)
 	final private String BROKER_URL = "vm://localhost";
+	final private String CONNECTOR_URL = "tcp://0.0.0.0:61616";
 	
 	public ServerPublisher() {
 		
@@ -45,7 +44,7 @@ public class ServerPublisher {
 		publisher = session.createProducer(topic);
 		publisher.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 		
-		//define messaging-content (TextMessage/MapMessage)
+		//define messaging-content (TextMessage or MapMessage)
 		TextMessage msg = session.createTextMessage(content);
 		
 		//send and close
@@ -56,22 +55,27 @@ public class ServerPublisher {
 	}
 	
 	/**
-	 * Starts the embeded messaging broker
+	 * Starts the embedded messaging broker
+	 * Uses the CONNECTOR_URL specified by <class>ServerPublisher</class>
 	 */
 	public void startBroker() {
 		broker = new BrokerService();
-		try {
-			broker.addConnector("tcp://0.0.0.0:61616");
-			broker.start();
-			System.out.println("Broker started...");
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			//Error: No Broker available
-		}	
+		if (!broker.isStarted()){
+			try {
+				broker.addConnector(CONNECTOR_URL);
+				broker.start();
+			} catch (Exception ex) {
+				//Error: No Broker available
+				ex.printStackTrace();
+			}	
+		}
+		else {
+			System.err.println("Broker allready running! (" + CONNECTOR_URL + ")");
+		}
 	}
 	
 	/**
-	 * Stops the embeded messaging broker
+	 * Stops the embedded messaging broker
 	 */
 	public void stopBroker(){
 		try {
