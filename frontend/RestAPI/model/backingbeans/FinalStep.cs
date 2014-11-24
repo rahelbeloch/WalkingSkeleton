@@ -11,5 +11,9 @@ namespace CommunicationLib.Model
     /// </summary>
     public partial class FinalStep
     {
+        public FinalStep()
+        {
+            label = "Endzustand";
+        }
     }
 }
