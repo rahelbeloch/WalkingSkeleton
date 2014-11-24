@@ -97,11 +97,12 @@ namespace RestAPI
         * Create an object on the server, with HTTP-Method POST.
         * Path for this HTTP-Method is always: send/<type>
         */
-        public static O postObject<O>() where O : new()
+        public static O postObject<O>(String serializedObj) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = "send/" + typeName;
-            O request = SendObjectRequest<O>(url, Method.POST);
+
+            O request = SendObjectRequest<O>(url, Method.POST, serializedObj);
 
             return request;
         }
@@ -152,11 +153,18 @@ namespace RestAPI
          * @url - the requested url
          * @method - the requested HTTP-Method
          */
-        private static O SendObjectRequest<O>(String url, RestSharp.Method method) where O : new()
+        private static O SendObjectRequest<O>(String url, RestSharp.Method method, String serializedObj) where O : new()
         {
             Console.WriteLine("requested Url -> " + restserverurl + url);
             var request = new RestRequest(url, method);
-            
+
+            // if there is an object to send to server per XML
+            if (serializedObj != null)
+            {
+                request.RequestFormat = RestSharp.DataFormat.Xml;
+                request.AddParameter("text/xml", serializedObj, ParameterType.RequestBody);
+            }
+
             // decide wether the server does return the right excepted object or throws an exception
             try
             {
