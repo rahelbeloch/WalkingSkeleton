@@ -11,5 +11,9 @@ namespace CommunicationLib.Model
     /// </summary>
     public partial class Action
     {
+        public Action()
+        {
+            label = "Aktion";
+        }
     }
 }

@@ -11,5 +11,9 @@ namespace CommunicationLib.Model
     /// </summary>
     public partial class StartStep
     {
+        public StartStep()
+        {
+            label = "Startzustand";
+        }
     }
 }
