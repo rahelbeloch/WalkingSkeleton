@@ -15,8 +15,22 @@ namespace CommunicationLib
 
     public class CommunicationManager
     {
-        private static Dictionary<string, Type> dataStructure;
-        private static Dictionary<string, string> funcMapping;
+        //type mapping
+        private static Dictionary<string, Type> _dataStructures = new Dictionary<string, Type>
+        {
+            {"workflow", typeof(AbstractWorkflow)}, 
+            {"item", typeof(AbstractItem)},
+            {"user", typeof(AbstractUser)}
+        };
+        //funktion mapping
+        private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
+        {
+            {"get", "getObject"},
+            {"def", "postObject"},
+            {"udp", "updateObject"},
+            {"del", "deleteObject"}
+        };
+
         //TODO: Client referenz
         //private Client myClient;
 
@@ -24,37 +38,28 @@ namespace CommunicationLib
         const string DEFAULT_TOPIC = "WORKFLOW_INFO";
 
         //jms attributes
-        private IConnection connection;
-        private IConnectionFactory connectionFactory;
-        private ISession session;
-        //TODO: Lists of consumers for multiple subscribtions
-        private IMessageConsumer messageConsumer;
+        private IConnection _connection;
+        private IConnectionFactory _connectionFactory;
+        private ISession _session;
+        //client subscriptions <topicName, consumer>
+        private Dictionary<string ,IMessageConsumer> _messageSubs;
         //'localhost' is for testing only  
         private const string BROKER_URL = "tcp://localhost:61616";
 
         public CommunicationManager()
-        {
-            //Type Mapping
-            dataStructure = new Dictionary<string, Type>();
-            dataStructure.Add("workflow", typeof(AbstractWorkflow));
-            dataStructure.Add("item", typeof(AbstractItem));
-            dataStructure.Add("user", typeof(AbstractUser));
-            
-            //Funktion Mapping
-            funcMapping = new Dictionary<string, string>();
-            funcMapping.Add("get", "getObject");
-            funcMapping.Add("def", "postObject");
-            funcMapping.Add("upd", "updateObject");
-            funcMapping.Add("del", "deleteObject");
+        {   
+            _messageSubs = new Dictionary<string, IMessageConsumer>();
 
             //build connection to message broker
-            connectionFactory = new ConnectionFactory(BROKER_URL);
-            connection = connectionFactory.CreateConnection();
-            session = connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
+            _connectionFactory = new ConnectionFactory(BROKER_URL);
+            _connection = _connectionFactory.CreateConnection();
+            _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
             //default topic subscription
-            messageConsumer = session.CreateConsumer(new ActiveMQTopic(DEFAULT_TOPIC));
+            IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(DEFAULT_TOPIC));
             messageConsumer.Listener += OnMessageReceived;
-            connection.Start();
+            _messageSubs.Add("WORKFLOW_INFO", messageConsumer);
+            
+            _connection.Start();
         }
 
         /* Call-back method
@@ -90,8 +95,8 @@ namespace CommunicationLib
             
             // options[0] --> requested Type; options[1] --> server operation; options[2] --> object identifier
             options = requestMsg.Split('=');
-            genericType = dataStructure[options[0]];
-            methodName = funcMapping[options[1]];
+            genericType = _dataStructures[options[0]];
+            methodName = _funcMapping[options[1]];
             Int32.TryParse(options[2], out id);
 
             // Reflection: generic method can not be called with dynamic generics (means deciding during runtime which generic is placed in)
