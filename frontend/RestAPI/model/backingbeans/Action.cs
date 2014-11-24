@@ -11,5 +11,10 @@ namespace CommunicationLib.Model
     /// </summary>
     public class Action : AbstractAction
     {
+        /// <summary>
+        /// Property label to show in GUI.
+        /// </summary>
+        private string _label = "Aktion";
+        public string label { get { return _label; } set { } }
     }
 }

@@ -11,5 +11,10 @@ namespace CommunicationLib.Model
     /// </summary>
     public class FinalStep : AbstractFinalStep
     {
+        /// <summary>
+        /// Property label to show in GUI.
+        /// </summary>
+        private string _label = "Endzustand";
+        public string label { get { return _label; } set { } }
     }
 }
