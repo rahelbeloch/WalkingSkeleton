@@ -54,9 +54,8 @@
   <ItemGroup>
     <Compile Include="CommunicationManager.cs" />
     <Compile Include="IDataReceiver.cs" />
-    <Compile Include="model\abstractbeans\abstractbeans.designer.cs" />
+    <Compile Include="model\abstractbeans\beans.designer.cs" />
     <Compile Include="model\backingbeans\Action.cs" />
-    <Compile Include="model\backingbeans\BackingBeanFactory.cs" />
     <Compile Include="model\backingbeans\FinalStep.cs" />
     <Compile Include="model\backingbeans\Item.cs" />
     <Compile Include="model\backingbeans\StartStep.cs" />
@@ -69,7 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="model\abstractbeans\abstractbeans.xsd">
+    <None Include="model\abstractbeans\beans.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
