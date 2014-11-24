@@ -11,6 +11,8 @@ namespace CommunicationLib.Model
     /// </summary>
     public class Action : Step
     {
+        public string description { get; set; }
+
         public Action(AbstractAction abstractAction) : base(abstractAction)
         {
             label = "Aktion";
