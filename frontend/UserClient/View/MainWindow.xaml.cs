@@ -121,6 +121,8 @@ namespace UserClient
             // Add cells with content to the second row.
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run("foo"))));
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run("bar"))));
+            var block = new BlockUIContainer(new System.Windows.Controls.Primitives.ToggleButton());
+            currentRow.Cells.Add(new TableCell(block));
         }
     }
 }
