@@ -58,10 +58,10 @@ public class PersistenceImp implements Persistence {
 	}
 
 	@Override
-	public void addUser(AbstractUser user) throws UserAlreadyExistsEcxeption {
+	public void addUser(AbstractUser user) throws UserAlreadyExistsException {
 		for(AbstractUser u: users) {
-			if(u.getName() == user.getName()) {
-				throw new UserAlreadyExistsEcxeption();
+			if(u.getName().equals(user.getName())) {
+				throw new UserAlreadyExistsException();
 			}
 		}
 		users.add((AbstractUser)user);
@@ -71,7 +71,7 @@ public class PersistenceImp implements Persistence {
 	public void updateUser(AbstractUser user) throws UserNotExistantException {
 		boolean existant = false;
 		for(AbstractUser u: users) {
-			if(u.getName() == user.getName()) {
+			if(u.getName().equals(user.getName())) {
 				existant = true;
 				users.remove(u);
 			}
@@ -131,10 +131,10 @@ public class PersistenceImp implements Persistence {
 	}
 
 	@Override
-	public AbstractUser loadUser(int id) {
+	public AbstractUser loadUser(String name) {
 		AbstractUser user = null;
 		for(AbstractUser u: users) {
-			if(u.getId() == id) {
+			if(u.getName().equals(name)) {
 				user = u;
 			}
 		}
@@ -171,9 +171,9 @@ public class PersistenceImp implements Persistence {
 	}
 	
 	@Override
-	public void deleteUser(int id) {
+	public void deleteUser(String name) {
 		for(AbstractUser u: users) {
-			if(u.getId() == id) {
+			if(u.getName().equals(name)) {
 				users.remove(u);
 			}
 		}
