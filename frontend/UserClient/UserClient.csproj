@@ -54,16 +54,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ApplicationController.cs" />
-    <Compile Include="Model\abstractbeans\abstractbeans.designer.cs" />
-    <Compile Include="Model\ApplicationPage.cs" />
-    <Compile Include="Model\Authentication.cs" />
-    <Compile Include="Model\backingbeans\Action.cs" />
-    <Compile Include="Model\backingbeans\FinalStep.cs" />
-    <Compile Include="Model\backingbeans\Item.cs" />
-    <Compile Include="Model\backingbeans\StartStep.cs" />
-    <Compile Include="Model\backingbeans\Step.cs" />
-    <Compile Include="Model\backingbeans\User.cs" />
-    <Compile Include="Model\backingbeans\Workflow.cs" />
+    <Compile Include="ViewModel\ApplicationPage.cs" />
+    <Compile Include="ViewModel\Authentication.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Page Include="View\MainWindow.xaml">
@@ -99,9 +91,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Model\abstractbeans\abstractbeans.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -111,7 +100,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RestAPI\CommunicationLib.csproj">
+      <Project>{c383c56d-200c-418d-b13b-6ad50ad1cf52}</Project>
+      <Name>CommunicationLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
