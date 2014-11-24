@@ -58,13 +58,29 @@ public class PersistenceImp implements Persistence {
 	}
 
 	@Override
-	public void storeUser(AbstractUser user) {
+	public void addUser(AbstractUser user) throws UserAlreadyExistsEcxeption {
 		for(AbstractUser u: users) {
-			if(u.getId() == user.getId()) {
-				users.remove(u);
+			if(u.getName() == user.getName()) {
+				throw new UserAlreadyExistsEcxeption();
 			}
 		}
 		users.add((AbstractUser)user);
+	}
+	
+	@Override
+	public void updateUser(AbstractUser user) throws UserNotExistantException {
+		boolean existant = false;
+		for(AbstractUser u: users) {
+			if(u.getName() == user.getName()) {
+				existant = true;
+				users.remove(u);
+			}
+		}
+		if (existant) {
+			users.add(user);
+		} else {
+			throw new UserNotExistantException();
+		}
 	}
 	
 	public void storeStep(AbstractStep step) {
@@ -135,6 +151,12 @@ public class PersistenceImp implements Persistence {
 		for(AbstractWorkflow wf: workflows) {
 			if(wf.getId() == id) {
 				workflows.remove(wf);
+				
+				// a workflows steps are resolved and deleted one by one
+				List<AbstractStep> workflowsSteps = wf.getStep();
+				for(AbstractStep step: workflowsSteps) {
+					deleteStep(step.getId());
+				}
 			}
 		}
 	}

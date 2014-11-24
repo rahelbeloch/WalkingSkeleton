@@ -11,8 +11,8 @@ public interface Persistence {
 	 */
 	public void storeWorkflow(AbstractWorkflow workflow);
 	public void storeItem(AbstractItem item);
-	public void addUser(AbstractUser user);
-	public void upadteUser(AbstractUser user);
+	public void addUser(AbstractUser user) throws UserAlreadyExistsEcxeption;
+	public void updateUser(AbstractUser user) throws UserNotExistantException;
 	
 	/*
 	 * load functions to get workflows, items, and users from persistence
