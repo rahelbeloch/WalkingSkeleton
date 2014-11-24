@@ -19,9 +19,9 @@ namespace CommunicationLib
         //type mapping
         private static Dictionary<string, Type> _dataStructures = new Dictionary<string, Type>
         {
-            {"workflow", typeof(AbstractWorkflow)}, 
-            {"item", typeof(AbstractItem)},
-            {"user", typeof(AbstractUser)}
+            {"workflow", typeof(Workflow)}, 
+            {"item", typeof(Item)},
+            {"user", typeof(User)}
         };
         //funktion mapping
         private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
@@ -33,7 +33,7 @@ namespace CommunicationLib
         };
 
         //client referenz
-        IDataReceiver myClient;
+        private IDataReceiver _myClient;
         //default topic for server information
         const string DEFAULT_TOPIC = "WORKFLOW_INFO";
         //jms attributes
@@ -45,8 +45,10 @@ namespace CommunicationLib
         //'localhost' is for testing only  
         private const string BROKER_URL = "tcp://localhost:61616";
 
-        public CommunicationManager()
-        {   
+        public CommunicationManager(IDataReceiver myClient)
+        {
+            this._myClient = myClient;
+
             _messageSubs = new Dictionary<string, IMessageConsumer>();
 
             //build connection to message broker
@@ -112,20 +114,20 @@ namespace CommunicationLib
             rWrapInstance = Wrap(genericType, resultType);
 
             //send wrapper-Instance to Client
-            if(genericType == typeof(AbstractWorkflow))
+            if(genericType == typeof(Workflow))
             {
-                RegistrationWrapper<AbstractWorkflow> workflowWrap = (RegistrationWrapper<AbstractWorkflow>)rWrapInstance;
-                myClient.WorkflowUpdate(workflowWrap);
+                RegistrationWrapper<Workflow> workflowWrap = (RegistrationWrapper<Workflow>)rWrapInstance;
+                _myClient.WorkflowUpdate(workflowWrap);
             }
-            else if (genericType == typeof(AbstractItem))
+            else if (genericType == typeof(Item))
             {
-                RegistrationWrapper<AbstractItem> itemWrap = (RegistrationWrapper<AbstractItem>)rWrapInstance;
-                myClient.ItemUpdate(itemWrap);
+                RegistrationWrapper<Item> itemWrap = (RegistrationWrapper<Item>)rWrapInstance;
+                _myClient.ItemUpdate(itemWrap);
             }
-            else if (genericType == typeof(AbstractUser))
+            else if (genericType == typeof(User))
             {
-                RegistrationWrapper<AbstractUser> userWrap = (RegistrationWrapper<AbstractUser>)rWrapInstance;
-                myClient.UserUpdate(userWrap);
+                RegistrationWrapper<User> userWrap = (RegistrationWrapper<User>)rWrapInstance;
+                _myClient.UserUpdate(userWrap);
             }
         }
 
@@ -157,34 +159,18 @@ namespace CommunicationLib
 
             int id;
             string topicName;
-            AbstractWorkflow currWorkflow;
+            Workflow currWorkflow;
 
             // find out which object type DataModel is
-            if(rw.GetType() ==  typeof(AbstractWorkflow))
+            if(rw.GetType() ==  typeof(Workflow))
             {
-                currWorkflow = (AbstractWorkflow)rw;
+                currWorkflow = (Workflow)rw;
                 id = currWorkflow.Id;
                 // Create fitting topic
                 topicName = "ITEMS_FROM_" + id;
                 IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(topicName));
                 messageConsumer.Listener += OnMessageReceived;
                 _messageSubs.Add(topicName, messageConsumer);
-                   
-                // try out with testing if this line is needed
-                //_connection.Start();
-            }
-        }
-
-        /*
-         * for testing
-         */
-        class Program
-        {
-            static void Main(string[] args)
-            {
-                CommunicationManager manager = new CommunicationManager();
-                Console.WriteLine("Communication-Manager waiting for messages...\n-- press ENTER to stop --\n");
-                Console.ReadKey();
             }
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RestSharp;
-
+using System.Web;
 
 namespace RestAPI
 {
@@ -74,8 +74,8 @@ namespace RestAPI
         public static O getObject<O>(int id) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = "items/" + typeName +"/" + id.ToString();
-            O request = sendRequest<O>(url, Method.GET);
+            String url = "items/" + typeName +"/" + id;
+            O request = SendObjectRequest<O>(url, Method.GET);
 
             return request;
         }
@@ -87,8 +87,8 @@ namespace RestAPI
         public static O updateObject<O>(int id) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = "update/" + typeName + "/" + id.ToString();
-            O request = sendRequest<O>(url, Method.PUT);
+            String url = "update/" + typeName + "/" + id;
+            O request = SendObjectRequest<O>(url, Method.PUT);
 
             return request;
         }
@@ -101,7 +101,7 @@ namespace RestAPI
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = "send/" + typeName;
-            O request = sendRequest<O>(url, Method.POST);
+            O request = SendObjectRequest<O>(url, Method.POST);
 
             return request;
         }
@@ -113,10 +113,37 @@ namespace RestAPI
         public static O deleteObject<O>(int id) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = "delete/" + typeName + "/" + id.ToString();
-            O request = sendRequest<O>(url, Method.DELETE);
+            String url = "delete/" + typeName + "/" + id;
+            O request = SendObjectRequest<O>(url, Method.DELETE);
 
             return request;
+        }
+
+        /// <summary>
+        ///     Sends a request to the server to start a workflow (create an item)
+        /// </summary>
+        /// <param name="wId">Workflow-Id</param>
+        /// <param name="uId">User-Id</param>
+        public static void StartWorkflow(int wId, int uId)
+        {
+            // start/workflowid/userid
+            String url = "start/" + wId + "/" + uId;
+            IRestResponse response = SendSimpleRequest(url, Method.POST);
+            // do something with the response, e.g. look if everything is ok.
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="stepId"></param>
+        /// <param name="itemId"></param>
+        /// <param name="uId"></param>
+        public static void StepForward(int stepId, int itemId, int uId)
+        {
+            // forward/stepid/itemid/userid
+            String url = "forward/" + stepId + "/" + itemId + "/" + uId;
+            IRestResponse response = SendSimpleRequest(url, Method.POST);
+            // do something with the response, e.g. look if everything is ok.
         }
 
         /**
@@ -125,7 +152,7 @@ namespace RestAPI
          * @url - the requested url
          * @method - the requested HTTP-Method
          */
-        private static O sendRequest<O>(String url, RestSharp.Method method) where O : new()
+        private static O SendObjectRequest<O>(String url, RestSharp.Method method) where O : new()
         {
             Console.WriteLine("requested Url -> " + restserverurl + url);
             var request = new RestRequest(url, method);
@@ -146,5 +173,21 @@ namespace RestAPI
                 throw response.Data;
             }
         }
+
+        private static IRestResponse SendSimpleRequest(string url, RestSharp.Method method)
+        {
+            var request = new RestRequest(url, method);
+            try
+            {
+                var response = client.Execute(request);
+                return response;
+            }
+            catch(Exception e)
+            {
+                var response = client.Execute<Exception>(request);
+                throw response.Data;
+            }
+        }
+
     }
 }
