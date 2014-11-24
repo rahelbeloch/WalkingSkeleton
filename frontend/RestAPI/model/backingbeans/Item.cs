@@ -9,7 +9,7 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for Item.
     /// </summary>
-    public class Item : AbstractItem
+    public partial class Item
     {
     }
 }

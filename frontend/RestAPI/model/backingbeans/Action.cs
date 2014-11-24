@@ -9,13 +9,7 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for Action.
     /// </summary>
-    public class Action : Step
+    public partial class Action
     {
-        public string description { get; set; }
-
-        public Action(AbstractAction abstractAction) : base(abstractAction)
-        {
-            label = "Aktion";
-        }
     }
 }

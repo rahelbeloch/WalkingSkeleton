@@ -9,7 +9,7 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for Workflow.
     /// </summary>
-    public class Workflow : AbstractWorkflow
+    public partial class Workflow
     {
     }
 }
