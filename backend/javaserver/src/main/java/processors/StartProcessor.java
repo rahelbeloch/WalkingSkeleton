@@ -22,7 +22,8 @@ public class StartProcessor extends Observable{
 
 	
 	/**
-	 * Default-Constructor
+	 * Constructor of StartProcessor
+	 * @param pm is the observer and manager of the processor
 	 */
 	public StartProcessor(ProcessManager pm){
 		addObserver(pm);
