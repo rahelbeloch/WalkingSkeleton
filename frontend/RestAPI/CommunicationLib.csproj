@@ -58,7 +58,6 @@
     <Compile Include="model\backingbeans\Action.cs" />
     <Compile Include="model\backingbeans\BackingBeanFactory.cs" />
     <Compile Include="model\backingbeans\FinalStep.cs" />
-    <Compile Include="model\backingbeans\AbstractBackingBeanFactory.cs" />
     <Compile Include="model\backingbeans\Item.cs" />
     <Compile Include="model\backingbeans\StartStep.cs" />
     <Compile Include="model\backingbeans\Step.cs" />

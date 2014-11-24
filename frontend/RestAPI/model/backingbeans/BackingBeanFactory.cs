@@ -8,7 +8,7 @@ using Action = CommunicationLib.Model.Action;
 
 namespace CommunicationLib.Model
 {
-    class BackingBeanFactory : AbstractBackingBeanFactory
+    class BackingBeanFactory
     {
         public static Action createAction()
         {
