@@ -2,17 +2,17 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Beans"
 	xmlns:tns="http://www.example.org/Beans" elementFormDefault="qualified">
 
-	<complexType name="AbstractStep">
+	<complexType name="Step">
 		<sequence>
 			<element name="Id" type="int"></element>
-			<element name="nextSteps" type="tns:AbstractStep" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="nextSteps" type="tns:Step" minOccurs="0" maxOccurs="unbounded"></element>
 		</sequence>
 	</complexType>
 	
-	<element name="AbstractFinalStep">
+	<element name="FinalStep">
 		<complexType>
 			<complexContent>
-				<extension base="tns:AbstractStep">
+				<extension base="tns:Step">
 					<sequence>
 						<element name="Name" type="string"></element>
 					</sequence>
@@ -21,10 +21,10 @@
 		</complexType>
 	</element>
 
-	<element name="AbstractStartStep">
+	<element name="StartStep">
 		<complexType>
 			<complexContent>
-				<extension base="tns:AbstractStep">
+				<extension base="tns:Step">
 					<sequence>
 						<element name="UserId" type="int"></element>
 					</sequence>
@@ -33,10 +33,10 @@
 		</complexType>
 	</element>
 	
-	<element name ="AbstractAction">
+	<element name ="Action">
 		<complexType>
 			<complexContent>
-				<extension base = "tns:AbstractStep">
+				<extension base = "tns:Step">
 					<sequence>
 						<element name="Name" type="string"></element>
 						<element name="UserId" type="int"></element>
@@ -46,7 +46,7 @@
 		</complexType>
 	</element>
 	
-	<element name="AbstractUser">
+	<element name="User">
 		<complexType>
 			<sequence>
 				<element name="Id" type="int"></element>
@@ -56,26 +56,26 @@
 	</element>
 	
 	
-	<element name="AbstractWorkflow">
+	<element name="Workflow">
 		<complexType>
 			<sequence>
 			<element name="Id" type="int" ></element>
-			<element name="Step" type="tns:AbstractStep" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="Item" type="tns:AbstractItem" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="Step" type="tns:Step" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="Item" type="tns:Item" minOccurs="0" maxOccurs="unbounded"></element>
 			</sequence>
 		</complexType>
 	</element>
 	
-	<complexType name="AbstractItem">
+	<complexType name="Item">
 		<sequence>
 			<element name="Id" type="int"></element>
 			<element name="WorkflowId" type="int"></element>
-			<element name="Metadata" type="tns:AbstractMetaEntry" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="Metadata" type="tns:MetaEntry" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="finished" type="boolean"></element>
 		</sequence>
 	</complexType>
 	
-	<complexType name="AbstractMetaEntry">
+	<complexType name="MetaEntry">
 		<sequence>
 			<element name="key" type="string"></element>
 			<element name="value" type="string"></element>
@@ -83,7 +83,7 @@
 		</sequence>
 	</complexType>
 	
-	<simpleType name="AbstractMetaState"> 
+	<simpleType name="MetaState"> 
 		<restriction base="string"> 
 			<enumeration value="INACTIVE"></enumeration>
 			<enumeration value="OPEN"></enumeration>
