@@ -6,10 +6,10 @@ namespace CommunicationLib
     /// <summary>
     /// Interface for client callback methods
     /// </summary>
-    class IDataReceiver
+    interface IDataReceiver
     {
-        public void WorkflowUpdate(RegistrationWrapper<AbstractWorkflow> wrappedObject);
-        public void ItemUpdate(RegistrationWrapper<AbstractItem> wrappedObject);
-        public void UserUpdate(RegistrationWrapper<AbstractUser> wrappedObject);
+        void WorkflowUpdate(RegistrationWrapper<AbstractWorkflow> wrappedObject);
+        void ItemUpdate(RegistrationWrapper<AbstractItem> wrappedObject);
+        void UserUpdate(RegistrationWrapper<AbstractUser> wrappedObject);
     }
 }
