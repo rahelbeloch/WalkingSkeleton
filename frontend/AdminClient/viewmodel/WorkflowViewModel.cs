@@ -10,15 +10,18 @@ using System.Windows.Input;
 using System.Text.RegularExpressions;
 using CommunicationLib.Model;
 using Action = CommunicationLib.Model.Action;
+using CommunicationLib;
 
 namespace AdminClient.viewmodel
 {
-    class WorkflowViewModel : ViewModelBase
+    class WorkflowViewModel : ViewModelBase, IDataReceiver
     {
         private Workflow _workflowModel = new Workflow();
+        //private CommunicationManager communicationManager;
         
         public WorkflowViewModel()
         {
+            // communicationManager = new CommunicationManager(this);
             _workflow.CollectionChanged += OnWorkflowChanged;
 
             // fill choosable steps with default values
@@ -31,15 +34,15 @@ namespace AdminClient.viewmodel
         /// Property _dummyWorkflow fills list view with steps.
         /// TODO: change AbstractStep to Step (not possible at the moment)
         /// </summary>
-        private ObservableCollection<AbstractStep> _workflow = new ObservableCollection<AbstractStep>();
-        public ObservableCollection<AbstractStep> workflow { get { return _workflow; } }
+        private ObservableCollection<Step> _workflow = new ObservableCollection<Step>();
+        public ObservableCollection<Step> workflow { get { return _workflow; } }
 
         /// <summary>
         /// Property to fill combox box with choosable steps.
         /// TODO: change AbstractStep to Step (not possible at the moment)
         /// </summary>
-        private ObservableCollection<AbstractStep> _choosableSteps = new ObservableCollection<AbstractStep>();
-        public ObservableCollection<AbstractStep> choosableSteps { get { return _choosableSteps; } }
+        private ObservableCollection<Step> _choosableSteps = new ObservableCollection<Step>();
+        public ObservableCollection<Step> choosableSteps { get { return _choosableSteps; } }
 
         /// <summary>
         /// Property to enable textbox for username input.
@@ -79,8 +82,8 @@ namespace AdminClient.viewmodel
         /// Property for currently selected step from combo box.
         /// TODO: change AbstractStep to Step (not possible at the moment)
         /// </summary>
-        private AbstractStep _selectedStep = new AbstractStep();
-        public AbstractStep selectedStep
+        private Step _selectedStep = new Step();
+        public Step selectedStep
         {
             get
             {
@@ -233,7 +236,7 @@ namespace AdminClient.viewmodel
                 {
                     _submitWorkflowCommand = new ActionCommand(func =>
                     {
-                        Console.WriteLine("TODO: send workflow to server");
+                        //RestAPI.RestRequester.postObject<Workflow>();
                         // remove steps from workflow
                         // update model AND viewmodel, because the model is not observable
                         //_workflowModel.Step.Clear();
@@ -314,5 +317,20 @@ namespace AdminClient.viewmodel
         }
 
         #endregion
+
+        public void WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ItemUpdate(RegistrationWrapper<Item> wrappedObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UserUpdate(RegistrationWrapper<User> wrappedObject)
+        {
+            throw new NotImplementedException();
+        }
     }   
 }
