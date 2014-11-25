@@ -68,6 +68,13 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 			actionProcessor.handle(item, step, user);
 		}
 	}
+	
+	/**
+	 * This method stops the messaging broker.
+	 */
+	public void stopBroker(){
+		sp.stopBroker();
+	}
 
 	/**
 	 * This method is executed if its observables notifies changes.

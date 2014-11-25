@@ -13,5 +13,6 @@ public interface ProcessManager {
 	
 	public boolean checkUser(AbstractUser user, AbstractStep step);
 	public void selectProcessor(AbstractStep step, Item item, User user);
+	public void stopBroker();
 
 }
