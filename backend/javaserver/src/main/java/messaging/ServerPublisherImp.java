@@ -88,4 +88,11 @@ public class ServerPublisherImp implements ServerPublisher {
 			ex.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Returns true if the embedded message-broker is running
+	 */
+	public boolean brokerStarted() {
+		return broker.isStarted();
+	}
 }
