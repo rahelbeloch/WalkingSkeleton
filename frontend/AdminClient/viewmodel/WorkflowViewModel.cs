@@ -11,17 +11,26 @@ using System.Text.RegularExpressions;
 using CommunicationLib.Model;
 using Action = CommunicationLib.Model.Action;
 using CommunicationLib;
+using System.Windows;
 
 namespace AdminClient.viewmodel
 {
     class WorkflowViewModel : ViewModelBase, IDataReceiver
     {
         private Workflow _workflowModel = new Workflow();
-        //private CommunicationManager communicationManager;
+        private CommunicationManager communicationManager;
         
         public WorkflowViewModel()
         {
-            // communicationManager = new CommunicationManager(this);
+            try
+            {
+                communicationManager = new CommunicationManager(this);
+            }
+            catch (Exception e)
+            {
+                MessageBoxResult result = MessageBox.Show("Es konnte keine Verbindung zum Server hergestellt werden.");
+            }
+            
             _workflow.CollectionChanged += OnWorkflowChanged;
 
             // fill choosable steps with default values
@@ -215,7 +224,7 @@ namespace AdminClient.viewmodel
                     _removeLastStepCommand = new ActionCommand(func =>
                     {
                         // update model AND viewmodel, because the model is not observable
-                        //_workflowModel.Step.RemoveAt(_workflowModel.Step.Count - 1);
+                        _workflowModel.removeLastStep();
                         _workflow.RemoveAt(_workflow.Count - 1);
                     }, func => _workflow.Count > 0);
                     
@@ -236,10 +245,10 @@ namespace AdminClient.viewmodel
                 {
                     _submitWorkflowCommand = new ActionCommand(func =>
                     {
-                        //RestAPI.RestRequester.postObject<Workflow>();
+                        RestAPI.RestRequester.postObject<Workflow>(_workflowModel);
                         // remove steps from workflow
                         // update model AND viewmodel, because the model is not observable
-                        //_workflowModel.Step.Clear();
+                        _workflowModel.clearWorkflow();
                         _workflow.Clear();
                     }, func => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
                 }
@@ -267,7 +276,7 @@ namespace AdminClient.viewmodel
                             startStep.UserId = int.Parse(userId);
 
                             _workflow.Add(startStep);
-                            //_workflowModel.Step.Add(startStep);
+                            _workflowModel.addStep(startStep);
                         }
                         else if (_selectedStep is Action)
                         {
@@ -276,15 +285,14 @@ namespace AdminClient.viewmodel
                             action.Name = stepDescription;
 
                             _workflow.Add(action);
-                            //_workflowModel.Step.Add(action);
+                            _workflowModel.addStep(action);
                         }
                         else if (_selectedStep is FinalStep)
                         {
                             FinalStep finalStep = new FinalStep();
- 
 
                             _workflow.Add(finalStep);
-                            //_workflowModel.Step.Add(finalStep);
+                            _workflowModel.addStep(finalStep);
                         }
 
                         userId = "";
