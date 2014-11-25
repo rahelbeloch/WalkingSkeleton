@@ -31,8 +31,8 @@ public class DeleteResource {
 	 */
 	@DELETE @Path("workflow/{workflowid}")
 	public Response deleteWorkflow (@PathParam("workflowid") int workflowid) {
-		p.deleteWorkflow(workflowid);
 		System.out.println("DELETE -> " + workflowid);
+		p.deleteWorkflow(workflowid);
 		return Response.status(200).build();
 	}
 	
