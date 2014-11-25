@@ -12,8 +12,7 @@ namespace CommunicationLib.Model
     /// </summary>
     public partial class AbstractStartStep
     {
-        [XmlIgnore]
-        public AbstractStartStep()
+        public AbstractStartStep() : base()
         {
             label = "Startzustand";
         }
