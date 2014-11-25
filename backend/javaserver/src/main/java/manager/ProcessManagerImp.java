@@ -38,6 +38,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	}
 	
 	/**
+	 * IMPORTANT: For walking skeleton this method is not used! 
 	 * This method checks if the user who wishes to edit a step is the responsible user who is allowed to execute the step.
 	 * @param user who edits the step
 	 * @param step which user wants to edit
@@ -46,7 +47,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	public boolean checkUser(AbstractUser user, AbstractStep step){
 		
 		if (step instanceof AbstractAction){
-			if (user.getId() == ((AbstractAction) step).getUserId()){
+			if (user.getName().equals(((AbstractAction) step).getName())){
 				return true;
 			}else{
 				return false;
