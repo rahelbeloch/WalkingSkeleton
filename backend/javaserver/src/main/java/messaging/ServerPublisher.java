@@ -14,5 +14,7 @@ public interface ServerPublisher {
 	public void startBroker();
 
 	public void stopBroker();
+	
+	public boolean brokerStarted();
 }
 
