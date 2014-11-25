@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace CommunicationLib.Model
 {
@@ -11,6 +12,7 @@ namespace CommunicationLib.Model
     /// </summary>
     public partial class AbstractStartStep
     {
+        [XmlIgnore]
         public AbstractStartStep()
         {
             label = "Startzustand";
