@@ -3,13 +3,13 @@ package logic_unittest;
 import static org.junit.Assert.*;
 import manager.ProcessManager;
 import messaging.ServerPublisher;
+import moduleDI.SingleModule;
 
 import org.junit.Test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import consoleTest.SingleModule;
 import persistence.Persistence;
 import processors.StartTrigger;
 import abstractbeans.AbstractMetaState;
