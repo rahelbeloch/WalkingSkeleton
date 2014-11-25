@@ -246,8 +246,8 @@ namespace RestAPI
             // path is always XMLFiles/<typeofObj>.xml; all XML Files are placed in this folder
             String objXMLPath = obj.GetType() + ".xml";
             XmlSerializer xmlser = new XmlSerializer(obj.GetType());
-            xmlser.Serialize(new FileStream("/XMLFiles/" + objXMLPath,FileMode.Create), obj);
-            return "/XMLFiles/" + objXMLPath;
+            xmlser.Serialize(new FileStream("XMLFiles/" + objXMLPath,FileMode.Create), obj);
+            return "XMLFiles/" + objXMLPath;
         }
     }
 }
