@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import persistence.PersistenceImp;
 import persistence.UserAlreadyExistsException;
-import persistence.UserNotExistantException;
+import persistence.UserNotExistentException;
 import abstractbeans.AbstractUser;
 import backingbeans.Action;
 import backingbeans.FinalStep;
@@ -198,7 +198,7 @@ public class PersistenceTest {
 	}
 	
 	@Test
-	public void testDuplicateUserStorage() throws UserNotExistantException {
+	public void testDuplicateUserStorage() throws UserNotExistentException {
 		AbstractUser user001 = new AbstractUser();
 		AbstractUser user002 = new AbstractUser();
 		user001.setName("17");
