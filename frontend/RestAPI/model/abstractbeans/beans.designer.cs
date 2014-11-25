@@ -472,6 +472,8 @@ namespace CommunicationLib.Model
 
         private int userIdField;
 
+        private string usernameField;
+
         private static System.Xml.Serialization.XmlSerializer serializer;
 
         public string Name
@@ -495,6 +497,18 @@ namespace CommunicationLib.Model
             set
             {
                 this.userIdField = value;
+            }
+        }
+
+        public string Username
+        {
+            get
+            {
+                return this.usernameField;
+            }
+            set
+            {
+                this.usernameField = value;
             }
         }
 
@@ -697,6 +711,8 @@ namespace CommunicationLib.Model
 
         private int userIdField;
 
+        private string usernameField;
+
         private static System.Xml.Serialization.XmlSerializer serializer;
 
         public string Name
@@ -720,6 +736,18 @@ namespace CommunicationLib.Model
             set
             {
                 this.userIdField = value;
+            }
+        }
+
+        public string Username
+        {
+            get
+            {
+                return this.usernameField;
+            }
+            set
+            {
+                this.usernameField = value;
             }
         }
 
