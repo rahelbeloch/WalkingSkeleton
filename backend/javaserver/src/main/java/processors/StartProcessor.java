@@ -3,6 +3,8 @@ package processors;
 import java.util.Observable;
 import java.util.Observer;
 
+import persistence.Persistence;
+
 import com.google.inject.Inject;
 
 import manager.ProcessManager;
@@ -21,6 +23,7 @@ import backingbeans.Workflow;
 public class StartProcessor extends Observable{
 
 	private Item currentItem;
+	private Persistence p;
 
 	
 	/**
@@ -28,7 +31,8 @@ public class StartProcessor extends Observable{
 	 * @param pm is the observer and manager of the processor
 	 */
 	@Inject
-	public StartProcessor(ProcessManager pm){
+	public StartProcessor(ProcessManager pm, Persistence p){
+		this.p = p;
 		addObserver((Observer)pm);
 	}
 	
@@ -61,8 +65,8 @@ public class StartProcessor extends Observable{
 		}
 		workflow.getItem().add(item);
 		item.setFirstStepState(AbstractMetaState.OPEN.toString());
+		p.storeItem(item);
 		setChanged();
 		notifyObservers(item);
-		//TODO erstelltes item in der persistenz abspeichern
 	}
 }

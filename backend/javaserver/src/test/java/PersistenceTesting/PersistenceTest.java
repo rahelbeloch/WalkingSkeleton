@@ -144,6 +144,13 @@ public class PersistenceTest {
 		
 		db.storeItem(item001);
 		
+		//Test by EZ, Jane
+		item001.set("key1", "group1", "value1");
+		item001.set("key3", "group2", "value2");
+		
+		db.storeItem(item001);
+		//Test by EZ, Jane
+		
 		// MetaEntries should be persistent
 		assertEquals(item001.getMetadata().get(0), db.loadMetaEntry("key1"));
 		assertEquals(item001.getMetadata().get(1), db.loadMetaEntry("key2"));

@@ -10,6 +10,7 @@ import messaging.ServerPublisher;
 import backingbeans.Action;
 import backingbeans.Item;
 import backingbeans.User;
+import persistence.Persistence;
 import processors.ActionProcessor;
 import abstractbeans.AbstractAction;
 import abstractbeans.AbstractStep;
@@ -24,13 +25,15 @@ import abstractbeans.AbstractUser;
 public class ProcessManagerImp implements Observer, ProcessManager{
 	
 	private ServerPublisher sp;
+	private Persistence p;
 	
 	/**
 	 * Constructor of ProcessManager
 	 */
 	@Inject
-	public ProcessManagerImp (ServerPublisher sp){
+	public ProcessManagerImp (ServerPublisher sp, Persistence p){
 		this.sp = sp;
+		this.p = p;
 		sp.startBroker();
 	}
 	
@@ -61,7 +64,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	public void selectProcessor(AbstractStep step, Item item, User user){
 		
 		if(step instanceof Action){
-			ActionProcessor actionProcessor = new ActionProcessor(this);
+			ActionProcessor actionProcessor = new ActionProcessor(this, p);
 			actionProcessor.handle(item, step, user);
 		}
 	}
@@ -70,6 +73,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	 * This method is executed if its observables notifies changes.
 	 */
 	public void update(Observable o, Object arg) {
+		
 		try {
 			//TODO extracting necessary information of object arg (for now <Datenstruktur>, <Operation>, <Id>
 			sp.publish("<Datenstruktur>=<Operation>=<Id>", "WORKFLOW_INFO");
