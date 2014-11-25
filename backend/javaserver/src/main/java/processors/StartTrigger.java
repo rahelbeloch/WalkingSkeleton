@@ -1,5 +1,7 @@
 package processors;
 
+import persistence.Persistence;
+
 import com.google.inject.Inject;
 
 import manager.ProcessManager;
@@ -21,9 +23,9 @@ public class StartTrigger {
 	 * @param pm is the observer and manager of the processor
 	 */
 	@Inject
-	public StartTrigger(Workflow workflow, ProcessManager pm){
+	public StartTrigger(Workflow workflow, ProcessManager pm, Persistence p){
 		currentWorkflow = workflow;
-		startProcessor = new StartProcessor(pm);
+		startProcessor = new StartProcessor(pm, p);
 	}
 	
 	/**

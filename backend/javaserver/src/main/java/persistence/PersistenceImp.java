@@ -95,11 +95,15 @@ public class PersistenceImp implements Persistence {
 	}
 
 	public void storeMetaEntry(AbstractMetaEntry metaEntry) {
+		AbstractMetaEntry rmMeta = null;
 		for (AbstractMetaEntry me : metaEntries) {
 			// assumption that MetaEntries have keys that are unique
 			if (me.getKey().equals(metaEntry.getKey())) {
-				metaEntries.remove(me);
+				rmMeta = me;
 			}
+		}
+		if (rmMeta != null){
+			metaEntries.remove(rmMeta);
 		}
 		metaEntries.add((AbstractMetaEntry) metaEntry);
 	}
