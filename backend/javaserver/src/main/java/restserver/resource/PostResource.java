@@ -7,8 +7,22 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import manager.ProcessManager;
+import messaging.ServerPublisher;
+import moduleDI.SingleModule;
+import backingbeans.Item;
+import backingbeans.User;
+import backingbeans.Workflow;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import abstractbeans.AbstractItem;
+import abstractbeans.AbstractStep;
+import abstractbeans.AbstractUser;
 import abstractbeans.AbstractWorkflow;
-import persistence.PersistenceImp;
+import persistence.Persistence;
+import processors.StartTrigger;
 
 /**
  * 
@@ -18,7 +32,11 @@ import persistence.PersistenceImp;
  */
 public class PostResource {
 	
-	PersistenceImp db = new PersistenceImp();
+	Injector i = Guice.createInjector(new SingleModule());
+	
+	ServerPublisher sp = i.getInstance(ServerPublisher.class);
+	Persistence p = i.getInstance(Persistence.class);
+	ProcessManager pm = i.getInstance(ProcessManager.class);
 	
 	/**
 	 * 
@@ -28,21 +46,26 @@ public class PostResource {
 	@POST @Path("send/workflow")
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response saveWorkflow (AbstractWorkflow receivedWorkflow) {
-		db.storeWorkflow(receivedWorkflow);
+		p.storeWorkflow(receivedWorkflow);
 		return Response.status(201).build();
 	}
 	
 	@POST @Path("start/{workflowid}/{userid}")
 	public Response startWorkflow (@PathParam("workflowid") int workflowid, @PathParam("userid") int userid) {
-		//Workflow starten
-		return Response.status(201).build();
+		Workflow workflow = (Workflow)p.loadWorkflow(workflowid);
+		StartTrigger start = new StartTrigger(workflow, pm, p);
+		start.startWorkflow();
+		return Response.status(200).build();
 	}
 	
-	@POST @Path("forward/{stepid}/{itemid}/{userid}")
+	@POST @Path("forward/{stepid}/{itemid}/{username}")
 	public Response forward (@PathParam("stepid") int stepid, @PathParam("itemid") int itemid,
-							 @PathParam("userid") int userid) {
-		//Weiterschalten
-		return Response.status(201).build();
+							 @PathParam("username") String username) {
+		AbstractStep step = p.loadStep(stepid);
+		AbstractItem item = p.loadItem(itemid);
+		AbstractUser user = p.loadUser(username);
+		pm.selectProcessor(step, (Item)item, (User)user);
+		return Response.status(200).build();
 	}
 	
 }
