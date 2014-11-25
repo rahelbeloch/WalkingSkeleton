@@ -75,7 +75,7 @@ namespace RestAPI
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = "items/" + typeName +"/" + id;
-            O request = SendObjectRequest<O>(url, Method.GET);
+            O request = SendObjectRequest<O>(url, Method.GET, null);
 
             return request;
         }
@@ -88,7 +88,7 @@ namespace RestAPI
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = "update/" + typeName + "/" + id;
-            O request = SendObjectRequest<O>(url, Method.PUT);
+            O request = SendObjectRequest<O>(url, Method.PUT, null);
 
             return request;
         }
@@ -115,7 +115,7 @@ namespace RestAPI
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = "delete/" + typeName + "/" + id;
-            O request = SendObjectRequest<O>(url, Method.DELETE);
+            O request = SendObjectRequest<O>(url, Method.DELETE, null);
 
             return request;
         }
