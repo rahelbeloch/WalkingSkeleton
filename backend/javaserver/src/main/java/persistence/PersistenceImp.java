@@ -27,10 +27,15 @@ public class PersistenceImp implements Persistence {
 	 */
 	@Override
 	public void storeWorkflow(AbstractWorkflow workflow) {
+		AbstractWorkflow workflowToRemove = null;
 		for (AbstractWorkflow wf : workflows) {
 			if (wf.getId() == workflow.getId()) {
-				workflows.remove(wf);
+				workflowToRemove = wf;
+				break;
 			}
+		}
+		if(workflowToRemove != null) {
+			workflows.remove(workflowToRemove);
 		}
 		workflows.add((AbstractWorkflow) workflow);
 
@@ -43,10 +48,15 @@ public class PersistenceImp implements Persistence {
 
 	@Override
 	public void storeItem(AbstractItem item) {
+		AbstractItem itemToRemove = null;
 		for (AbstractItem i : items) {
 			if (i.getId() == item.getId()) {
-				items.remove(i);
+				itemToRemove = i;
+				break;
 			}
+		}
+		if(itemToRemove != null) {
+			items.remove(itemToRemove);
 		}
 		items.add((AbstractItem) item);
 
@@ -70,14 +80,14 @@ public class PersistenceImp implements Persistence {
 
 	@Override
 	public void updateUser(AbstractUser user) throws UserNotExistentException {
-		boolean userExists = false;
+		AbstractUser userToRemove = null;
 		for (AbstractUser u : users) {
 			if (u.getName().equals(user.getName())) {
-				userExists = true;
-				users.remove(u);
+				userToRemove = u;
 			}
 		}
-		if (userExists) {
+		if(userToRemove != null) {
+			users.remove(userToRemove);
 			users.add(user);
 		} else {
 			throw new UserNotExistentException();
@@ -85,25 +95,31 @@ public class PersistenceImp implements Persistence {
 	}
 
 	public void storeStep(AbstractStep step) {
+		AbstractStep stepToRemove = null;
 		for (AbstractStep s : steps) {
 			if (s.getId() == step.getId()) {
-				steps.remove(s);
+				stepToRemove = s;
+				break;
 			}
+		}
+		if(stepToRemove != null) {
+			steps.remove(stepToRemove);
 		}
 		steps.add((AbstractStep) step);
 		// TODO: need to distinguish between Action/FirstStep/StartStep?
 	}
 
 	public void storeMetaEntry(AbstractMetaEntry metaEntry) {
-		AbstractMetaEntry rmMeta = null;
+		AbstractMetaEntry metaEntryToRemove = null;
 		for (AbstractMetaEntry me : metaEntries) {
 			// assumption that MetaEntries have keys that are unique
 			if (me.getKey().equals(metaEntry.getKey())) {
-				rmMeta = me;
+				metaEntryToRemove = me;
+				break;
 			}
 		}
-		if (rmMeta != null){
-			metaEntries.remove(rmMeta);
+		if (metaEntryToRemove != null){
+			metaEntries.remove(metaEntryToRemove);
 		}
 		metaEntries.add((AbstractMetaEntry) metaEntry);
 	}
@@ -175,6 +191,7 @@ public class PersistenceImp implements Persistence {
 	 */
 	@Override
 	public void deleteWorkflow(int id) {
+		AbstractWorkflow workflowToRemove = null;
 		for (AbstractWorkflow wf : workflows) {
 			if (wf.getId() == id) {
 				// a workflows steps are resolved and deleted one by one
@@ -182,13 +199,18 @@ public class PersistenceImp implements Persistence {
 				for (AbstractStep step : workflowsSteps) {
 					deleteStep(step.getId());
 				}
-				workflows.remove(wf);
+				workflowToRemove = wf;
+				break;
 			}
+		}
+		if(workflowToRemove != null) {
+			workflows.remove(workflowToRemove);
 		}
 	}
 
 	@Override
 	public void deleteItem(int id) {
+		AbstractItem itemToRemove = null;
 		for (AbstractItem i : items) {
 			if (i.getId() == id) {
 
@@ -197,33 +219,52 @@ public class PersistenceImp implements Persistence {
 				for (AbstractMetaEntry metaEntry : itemsMetaData) {
 					deleteMetaEntry(metaEntry.getKey());
 				}
-				items.remove(i);
+				itemToRemove = i;
+				break;
 			}
+		}
+		if(itemToRemove != null) {
+			items.remove(itemToRemove);
 		}
 	}
 
 	@Override
 	public void deleteUser(String name) {
+		AbstractUser userToRemove = null;
 		for (AbstractUser u : users) {
 			if (u.getName().equals(name)) {
-				users.remove(u);
+				userToRemove = u;
+				break;
 			}
+		}
+		if(userToRemove != null) {
+			users.remove(userToRemove);
 		}
 	}
 
 	public void deleteStep(int id) {
+		AbstractStep stepToRemove = null;
 		for (AbstractStep s : steps) {
 			if (s.getId() == id) {
-				steps.remove(s);
+				stepToRemove = s;
+				break;
 			}
+		}
+		if(stepToRemove != null) {
+			steps.remove(stepToRemove);			
 		}
 	}
 
 	public void deleteMetaEntry(String key) {
+		AbstractMetaEntry metaEntryToRemove = null;
 		for (AbstractMetaEntry me : metaEntries) {
 			if (me.getKey().equals(key)) {
-				metaEntries.remove(me);
+				metaEntryToRemove = me;
+				break;
 			}
+		}
+		if(metaEntryToRemove != null) {
+			metaEntries.remove(metaEntryToRemove);			
 		}
 	}
 }
