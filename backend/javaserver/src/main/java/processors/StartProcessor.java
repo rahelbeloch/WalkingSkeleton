@@ -67,6 +67,7 @@ public class StartProcessor extends Observable{
 		item.setFirstStepState(AbstractMetaState.OPEN.toString());
 		p.storeItem(item);
 		setChanged();
+		item.setState("def");
 		notifyObservers(item);
 	}
 }

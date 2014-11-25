@@ -13,6 +13,7 @@ import abstractbeans.AbstractMetaState;
  */
 public class Item extends AbstractItem{
 	
+	private String state;
 	
 	/**
 	 * Default-Constructor
@@ -125,6 +126,16 @@ public class Item extends AbstractItem{
 	public void setFirstStepState(String value){
 		
 		getForGroup("step").get(0).setValue(value);
+	}
+
+
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
 	}
 }
 
