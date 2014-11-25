@@ -11,6 +11,9 @@ import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+/**This class is for testing.
+ * It simulates a message listener listening to a Test_Topic.
+ */
 public class TestMessagingListener implements MessageListener{
 	private Connection connection;
 	private Session session;
