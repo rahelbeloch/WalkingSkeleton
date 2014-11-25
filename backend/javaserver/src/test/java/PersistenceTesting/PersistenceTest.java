@@ -18,7 +18,7 @@ import backingbeans.Workflow;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import consoleTest.SingleModule;
+import moduleDI.SingleModule;
 
 public class PersistenceTest {
 	
