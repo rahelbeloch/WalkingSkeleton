@@ -28,6 +28,7 @@
 					<sequence>
             <element name="Name" type="string"></element>
 						<element name="UserId" type="int"></element>
+            <element name="Username" type="string"></element>
 					</sequence>
 				</extension>
 			</complexContent>
@@ -41,6 +42,7 @@
 					<sequence>
 						<element name="Name" type="string"></element>
 						<element name="UserId" type="int"></element>
+            <element name="Username" type="string"></element>
 					</sequence>
 				</extension>
 			</complexContent>
