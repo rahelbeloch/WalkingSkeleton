@@ -19,9 +19,9 @@ namespace CommunicationLib
         //type mapping
         private static Dictionary<string, Type> _dataStructures = new Dictionary<string, Type>
         {
-            {"workflow", typeof(Workflow)}, 
-            {"item", typeof(Item)},
-            {"user", typeof(User)}
+            {"workflow", typeof(AbstractWorkflow)}, 
+            {"item", typeof(AbstractItem)},
+            {"user", typeof(AbstractUser)}
         };
         //funktion mapping
         private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
@@ -114,19 +114,19 @@ namespace CommunicationLib
             rWrapInstance = Wrap(genericType, resultType);
 
             //send wrapper-Instance to Client
-            if(genericType == typeof(Workflow))
+            if (genericType == typeof(AbstractWorkflow))
             {
-                RegistrationWrapper<Workflow> workflowWrap = (RegistrationWrapper<Workflow>)rWrapInstance;
+                RegistrationWrapper<AbstractWorkflow> workflowWrap = (RegistrationWrapper<AbstractWorkflow>)rWrapInstance;
                 _myClient.WorkflowUpdate(workflowWrap);
             }
-            else if (genericType == typeof(Item))
+            else if (genericType == typeof(AbstractItem))
             {
-                RegistrationWrapper<Item> itemWrap = (RegistrationWrapper<Item>)rWrapInstance;
+                RegistrationWrapper<AbstractItem> itemWrap = (RegistrationWrapper<AbstractItem>)rWrapInstance;
                 _myClient.ItemUpdate(itemWrap);
             }
-            else if (genericType == typeof(User))
+            else if (genericType == typeof(AbstractUser))
             {
-                RegistrationWrapper<User> userWrap = (RegistrationWrapper<User>)rWrapInstance;
+                RegistrationWrapper<AbstractUser> userWrap = (RegistrationWrapper<AbstractUser>)rWrapInstance;
                 _myClient.UserUpdate(userWrap);
             }
         }
@@ -159,12 +159,12 @@ namespace CommunicationLib
 
             int id;
             string topicName;
-            Workflow currWorkflow;
+            AbstractWorkflow currWorkflow;
 
             // find out which object type DataModel is
-            if(rw.GetType() ==  typeof(Workflow))
+            if (rw.GetType() == typeof(AbstractWorkflow))
             {
-                currWorkflow = (Workflow)rw;
+                currWorkflow = (AbstractWorkflow)rw;
                 id = currWorkflow.Id;
                 // Create fitting topic
                 topicName = "ITEMS_FROM_" + id;

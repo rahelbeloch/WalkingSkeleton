@@ -39,7 +39,7 @@ namespace CommunicationLib.Model
             }
             else if (Step.Count > 1)
             {
-                Step lastStep = Step[Step.Count - 1];
+                AbstractStep lastStep = Step[Step.Count - 1];
 
                 // remove link from previous step
                 Step[Step.Count - 2].nextSteps.Remove(lastStep);
