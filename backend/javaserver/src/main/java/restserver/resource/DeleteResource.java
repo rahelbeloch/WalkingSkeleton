@@ -5,7 +5,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-import persistence.PersistenceImp;
+import moduleDI.SingleModule;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import persistence.Persistence;
 
 /**
  * 
@@ -16,7 +21,8 @@ import persistence.PersistenceImp;
 @Path("delete")
 public class DeleteResource {
 
-	PersistenceImp db = new PersistenceImp();
+	Injector i = Guice.createInjector(new SingleModule());
+	Persistence p = i.getInstance(Persistence.class);
 	
 	/**
 	 * 
@@ -25,7 +31,7 @@ public class DeleteResource {
 	 */
 	@DELETE @Path("workflow/{workflowid}")
 	public Response deleteWorkflow (@PathParam("workflowid") int workflowid) {
-		db.deleteWorkflow(workflowid);
+		p.deleteWorkflow(workflowid);
 		System.out.println("DELETE -> " + workflowid);
 		return Response.status(200).build();
 	}

@@ -6,7 +6,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import persistence.PersistenceImp;
+import moduleDI.SingleModule;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import persistence.Persistence;
 import abstractbeans.AbstractWorkflow;
 
 
@@ -19,8 +24,8 @@ import abstractbeans.AbstractWorkflow;
 @Path("items")
 public class RequestResource {
 	
-	PersistenceImp db = new PersistenceImp();
-	AbstractWorkflow workflow = new AbstractWorkflow();
+	Injector i = Guice.createInjector(new SingleModule());
+	Persistence p = i.getInstance(Persistence.class);
 	
 	/**
 	 * 
@@ -30,9 +35,7 @@ public class RequestResource {
 	@GET @Path("workflow/{workflowid}")
 	@Produces(MediaType.APPLICATION_XML)
 	public AbstractWorkflow getWorkflowAsXML (@PathParam("workflowid") int workflowid) {
-		workflow.setId(17);
-		db.storeWorkflow(workflow);
 		System.out.println("GET ->" + workflowid);
-		return db.loadWorkflow(workflowid);
+		return p.loadWorkflow(workflowid);
 	}
 }
