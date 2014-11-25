@@ -18,10 +18,10 @@
             </DockPanel>
             
             <DockPanel DockPanel.Dock="Top" Height="40" HorizontalAlignment="Left">
-                <Label Content="Nutzer ID: " />
+                <Label Content="Nutzername: " />
                 <TextBox Width="120" Height="25" IsEnabled="{Binding enableUserTextBox, UpdateSourceTrigger=PropertyChanged}" >
                     <TextBox.Text>
-                        <Binding Path="userId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="userName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                     </TextBox.Text>
                 </TextBox>
             </DockPanel>

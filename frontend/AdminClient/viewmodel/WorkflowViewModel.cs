@@ -9,7 +9,6 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using CommunicationLib.Model;
-using Action = CommunicationLib.Model.Action;
 using CommunicationLib;
 using System.Windows;
 
@@ -17,7 +16,7 @@ namespace AdminClient.viewmodel
 {
     class WorkflowViewModel : ViewModelBase, IDataReceiver
     {
-        private Workflow _workflowModel = new Workflow();
+        private AbstractWorkflow _workflowModel = new AbstractWorkflow();
         private CommunicationManager communicationManager;
         
         public WorkflowViewModel()
@@ -34,7 +33,7 @@ namespace AdminClient.viewmodel
             _workflow.CollectionChanged += OnWorkflowChanged;
 
             // fill choosable steps with default values
-            _choosableSteps.Add(new StartStep());
+            _choosableSteps.Add(new AbstractStartStep());
         }
 
         #region properties
@@ -43,15 +42,15 @@ namespace AdminClient.viewmodel
         /// Property _dummyWorkflow fills list view with steps.
         /// TODO: change AbstractStep to Step (not possible at the moment)
         /// </summary>
-        private ObservableCollection<Step> _workflow = new ObservableCollection<Step>();
-        public ObservableCollection<Step> workflow { get { return _workflow; } }
+        private ObservableCollection<AbstractStep> _workflow = new ObservableCollection<AbstractStep>();
+        public ObservableCollection<AbstractStep> workflow { get { return _workflow; } }
 
         /// <summary>
         /// Property to fill combox box with choosable steps.
         /// TODO: change AbstractStep to Step (not possible at the moment)
         /// </summary>
-        private ObservableCollection<Step> _choosableSteps = new ObservableCollection<Step>();
-        public ObservableCollection<Step> choosableSteps { get { return _choosableSteps; } }
+        private ObservableCollection<AbstractStep> _choosableSteps = new ObservableCollection<AbstractStep>();
+        public ObservableCollection<AbstractStep> choosableSteps { get { return _choosableSteps; } }
 
         /// <summary>
         /// Property to enable textbox for username input.
@@ -91,8 +90,8 @@ namespace AdminClient.viewmodel
         /// Property for currently selected step from combo box.
         /// TODO: change AbstractStep to Step (not possible at the moment)
         /// </summary>
-        private Step _selectedStep = new Step();
-        public Step selectedStep
+        private AbstractStep _selectedStep = new AbstractStep();
+        public AbstractStep selectedStep
         {
             get
             {
@@ -101,18 +100,18 @@ namespace AdminClient.viewmodel
             set
             {
                 _selectedStep = value;
-                
-                if (_selectedStep is StartStep)
+
+                if (_selectedStep is AbstractStartStep)
                 {
                     enableUserTextBox = true;
                     enableDescriptionTextBox = false;
                 }
-                else if (_selectedStep is FinalStep)
+                else if (_selectedStep is AbstractFinalStep)
                 {
                     enableUserTextBox = false;
                     enableDescriptionTextBox = false;
                 }
-                else if (_selectedStep is Action)
+                else if (_selectedStep is AbstractAction)
                 {
                     enableUserTextBox = true;
                     enableDescriptionTextBox = true;
@@ -123,17 +122,17 @@ namespace AdminClient.viewmodel
         /// <summary>
         /// Property for input from userId text box.
         /// </summary>
-        private string _userId = "";
-        public string userId
+        private string _userName = "";
+        public string userName
         {
             get
             {
-                return _userId;
+                return _userName;
             }
             set
             {
-                _userId = value;
-                OnChanged("userId");
+                _userName = value;
+                OnChanged("userName");
             }
         }
 
@@ -167,22 +166,22 @@ namespace AdminClient.viewmodel
 
             if (_workflow.Count == 0)
             {
-                StartStep startStep = new StartStep();
+                AbstractStartStep startStep = new AbstractStartStep();
                 startStep.Id = 0;
                 _choosableSteps.Add(startStep);
             }
-            else if (_workflow[_workflow.Count - 1] is StartStep)
+            else if (_workflow[_workflow.Count - 1] is AbstractStartStep)
             {
-                Action action = new Action();
+                AbstractAction action = new AbstractAction();
                 action.Id = 1;
                 _choosableSteps.Add(action);
             }
-            else if (_workflow.Count >= 2 && !(_workflow[_workflow.Count - 1] is FinalStep))
+            else if (_workflow.Count >= 2 && !(_workflow[_workflow.Count - 1] is AbstractFinalStep))
             {
-                Action action = new Action();
+                AbstractAction action = new AbstractAction();
                 action.Id = 1;
 
-                FinalStep finalStep = new FinalStep();
+                AbstractFinalStep finalStep = new AbstractFinalStep();
                 finalStep.Id = 2;
                 _choosableSteps.Add(action);
                 _choosableSteps.Add(finalStep);
@@ -205,7 +204,7 @@ namespace AdminClient.viewmodel
                     {
                         AddStepWindow addElementWindow = new AddStepWindow();
                         addElementWindow.Show();
-                    }, func => (_workflow.Count == 0) || (_workflow.Count > 0 && !(_workflow[_workflow.Count - 1] is FinalStep)));
+                    }, func => (_workflow.Count == 0) || (_workflow.Count > 0 && !(_workflow[_workflow.Count - 1] is AbstractFinalStep)));
                 }
                 return _openAddStepWindow;
             }
@@ -245,12 +244,12 @@ namespace AdminClient.viewmodel
                 {
                     _submitWorkflowCommand = new ActionCommand(func =>
                     {
-                        RestAPI.RestRequester.postObject<Workflow>(_workflowModel);
+                        RestAPI.RestRequester.postObject<AbstractWorkflow>(_workflowModel);
                         // remove steps from workflow
                         // update model AND viewmodel, because the model is not observable
                         _workflowModel.clearWorkflow();
                         _workflow.Clear();
-                    }, func => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
+                    }, func => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is AbstractFinalStep);
                 }
                 return _submitWorkflowCommand;
             }
@@ -270,32 +269,32 @@ namespace AdminClient.viewmodel
                     {
                         // add step to workflow
                         // update model AND viewmodel, because the model is not observable
-                        if (_selectedStep is StartStep)
+                        if (_selectedStep is AbstractStartStep)
                         {
-                            StartStep startStep = new StartStep();
-                            startStep.UserId = int.Parse(userId);
+                            AbstractStartStep startStep = new AbstractStartStep();
+                            startStep.Name = userName;
 
                             _workflow.Add(startStep);
                             _workflowModel.addStep(startStep);
                         }
-                        else if (_selectedStep is Action)
+                        else if (_selectedStep is AbstractAction)
                         {
-                            Action action = new Action();
-                            action.UserId = int.Parse(userId);
+                            AbstractAction action = new AbstractAction();
+                            action.Name = userName;
                             action.Name = stepDescription;
 
                             _workflow.Add(action);
                             _workflowModel.addStep(action);
                         }
-                        else if (_selectedStep is FinalStep)
+                        else if (_selectedStep is AbstractFinalStep)
                         {
-                            FinalStep finalStep = new FinalStep();
+                            AbstractFinalStep finalStep = new AbstractFinalStep();
 
                             _workflow.Add(finalStep);
                             _workflowModel.addStep(finalStep);
                         }
 
-                        userId = "";
+                        userName = "";
                         stepDescription = "";
                     }, func =>
                     {
@@ -303,15 +302,15 @@ namespace AdminClient.viewmodel
                         {
                             return false;
                         }
-                        else if (selectedStep is Action && Regex.IsMatch(userId, @"^\d+$") && stepDescription.Length > 0)
+                        else if (selectedStep is AbstractAction && stepDescription.Length > 0)
                         {
                             return true;
                         }
-                        else if (selectedStep is StartStep && Regex.IsMatch(userId, @"^\d+$"))
+                        else if (selectedStep is AbstractStartStep)
                         {
                             return true;
                         }
-                        else if (selectedStep is FinalStep)
+                        else if (selectedStep is AbstractFinalStep)
                         {
                             return true;
                         }
@@ -326,17 +325,17 @@ namespace AdminClient.viewmodel
 
         #endregion
 
-        public void WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject)
+        public void WorkflowUpdate(RegistrationWrapper<AbstractWorkflow> wrappedObject)
         {
             throw new NotImplementedException();
         }
 
-        public void ItemUpdate(RegistrationWrapper<Item> wrappedObject)
+        public void ItemUpdate(RegistrationWrapper<AbstractItem> wrappedObject)
         {
             throw new NotImplementedException();
         }
 
-        public void UserUpdate(RegistrationWrapper<User> wrappedObject)
+        public void UserUpdate(RegistrationWrapper<AbstractUser> wrappedObject)
         {
             throw new NotImplementedException();
         }
