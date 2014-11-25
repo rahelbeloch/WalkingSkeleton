@@ -17,6 +17,4 @@ public class SingleModule extends AbstractModule {
 		bind(ProcessManager.class).to(ProcessManagerImp.class);
 		bind(Persistence.class).to(PersistenceImp.class);
 	}
-	
-
 }

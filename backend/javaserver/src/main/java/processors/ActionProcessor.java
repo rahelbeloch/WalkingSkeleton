@@ -45,12 +45,14 @@ public class ActionProcessor extends Observable implements StepProcessor {
 		
 		currentItem = item;
 		currentItem.setStepState(step.getId(), AbstractMetaState.BUSY.toString());
+		currentItem.setState("upd");
 		p.storeItem(currentItem);
 		setChanged();
 		notifyObservers(currentItem);
 		
 		//funktion irrelevant fuer walking skeleton
 		currentItem.setStepState(step.getId(), AbstractMetaState.DONE.toString());
+		currentItem.setState("upd");
 		p.storeItem(currentItem);
 		setChanged();
 		notifyObservers(currentItem);
@@ -58,12 +60,14 @@ public class ActionProcessor extends Observable implements StepProcessor {
 		for(AbstractStep s : step.getNextSteps()){
 			if(!(s instanceof FinalStep)){ 
 				currentItem.setStepState(s.getId(), AbstractMetaState.OPEN.toString());
+				currentItem.setState("upd");
 				p.storeItem(currentItem);
 				setChanged();
 				notifyObservers(currentItem);
 			}else{
 				currentItem.setStepState(s.getId(), AbstractMetaState.DONE.toString());
 				currentItem.setFinished(true);
+				currentItem.setState("upd");
 				p.storeItem(currentItem);
 				setChanged();
 				notifyObservers(currentItem);

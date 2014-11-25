@@ -82,8 +82,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	public void update(Observable o, Object arg) {
 		
 		try {
-			//TODO extracting necessary information of object arg (for now <Datenstruktur>, <Operation>, <Id>
-			sp.publish("<Datenstruktur>=<Operation>=<Id>", "WORKFLOW_INFO");
+			sp.publish("item=" + ((Item)arg).getState() + "=" + ((Item) arg).getId(), "ITEMS_FROM_"+ ((Item) arg).getWorkflowId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
