@@ -69,7 +69,7 @@ public class PersistenceImp implements Persistence {
 	}
 
 	@Override
-	public void updateUser(AbstractUser user) throws UserNotExistantException {
+	public void updateUser(AbstractUser user) throws UserNotExistentException {
 		boolean userExists = false;
 		for (AbstractUser u : users) {
 			if (u.getName().equals(user.getName())) {
@@ -80,7 +80,7 @@ public class PersistenceImp implements Persistence {
 		if (userExists) {
 			users.add(user);
 		} else {
-			throw new UserNotExistantException();
+			throw new UserNotExistentException();
 		}
 	}
 
