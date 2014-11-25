@@ -1,6 +1,8 @@
 package persistence;
 
 import abstractbeans.AbstractItem;
+import abstractbeans.AbstractMetaEntry;
+import abstractbeans.AbstractStep;
 import abstractbeans.AbstractUser;
 import abstractbeans.AbstractWorkflow;
 
@@ -12,14 +14,20 @@ public interface Persistence {
 	public void storeWorkflow(AbstractWorkflow workflow);
 	public void storeItem(AbstractItem item);
 	public void addUser(AbstractUser user) throws UserAlreadyExistsException;
-	public void updateUser(AbstractUser user) throws UserNotExistantException;
+	public void updateUser(AbstractUser user) throws UserNotExistentException;
 	
 	/*
 	 * load functions to get workflows, items, and users from persistence
 	 */
 	public AbstractWorkflow loadWorkflow(int id);
 	public AbstractItem loadItem(int id);
-	public AbstractUser loadUser(String name) throws UserNotExistantException;
+	public AbstractUser loadUser(String name);
+	// later UserNotExistentException could thrown:
+	// public AbstractUser loadUser(String name) throws UserNotExistentException;
+	
+	// will be deleted later on (only for walking sceleton)
+	public AbstractStep loadStep(int id);
+	public AbstractMetaEntry loadMetaEntry(String key);
 
 	/*
 	 * delete functions to remove workflows, items, and users from persistence
