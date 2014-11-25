@@ -46,5 +46,13 @@ namespace CommunicationLib.Model
                 Step.RemoveAt(Step.Count - 1);
             }
         }
+
+        /// <summary>
+        /// Clears the workflow.
+        /// </summary>
+        public void clearWorkflow()
+        {
+            Step.Clear();
+        }
     }
 }
