@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using CommunicationLib.Model;
 
 namespace UserClient.ViewModel
 {
@@ -10,7 +11,7 @@ namespace UserClient.ViewModel
     {
         public AuthenticationViewModel()
         {
-            CurrentUser = new AbstractUser { Name = "Name"};
+            CurrentUser = new User { Name = "Name"};
         }
 
         private bool _IsAuthenticated;
@@ -41,8 +42,8 @@ namespace UserClient.ViewModel
             return IsAuthenticated;
         }
 
-        private AbstractUser _CurrentUser;
-        public AbstractUser CurrentUser
+        private User _CurrentUser;
+        public User CurrentUser
         {
             get { return _CurrentUser; }
             set
