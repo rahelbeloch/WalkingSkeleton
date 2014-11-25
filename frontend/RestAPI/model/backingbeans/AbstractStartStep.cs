@@ -9,9 +9,9 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for StartStep.
     /// </summary>
-    public partial class StartStep
+    public partial class AbstractStartStep
     {
-        public StartStep()
+        public AbstractStartStep()
         {
             label = "Startzustand";
         }

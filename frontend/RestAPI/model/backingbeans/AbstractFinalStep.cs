@@ -9,9 +9,9 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for FinalStep.
     /// </summary>
-    public partial class FinalStep
+    public partial class AbstractFinalStep
     {
-        public FinalStep()
+        public AbstractFinalStep()
         {
             label = "Endzustand";
         }
