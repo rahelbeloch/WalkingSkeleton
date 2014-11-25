@@ -9,7 +9,7 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for User.
     /// </summary>
-    public partial class User
+    public partial class AbstractUser
     {
     }
 }

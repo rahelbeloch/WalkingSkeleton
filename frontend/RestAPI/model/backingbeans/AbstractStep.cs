@@ -10,7 +10,7 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for Step.
     /// </summary>
-    public partial class Step
+    public partial class AbstractStep
     {
         [XmlIgnore]
         public string label { get; set; }
