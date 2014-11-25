@@ -1,77 +1,17 @@
 package manager;
 
-import java.util.Observable;
-import java.util.Observer;
-
-import messaging.ServerPublisherImp;
-import backingbeans.Action;
 import backingbeans.Item;
 import backingbeans.User;
-import processors.ActionProcessor;
-import abstractbeans.AbstractAction;
 import abstractbeans.AbstractStep;
 import abstractbeans.AbstractUser;
 
 /**
- * This class handles the processing of Steps. (For now) it provides methods for checking whether an user can execute a step and selecting
- * the right processor for a step.  
- * @author jvanh001
+ * Interface for ProcessManager. (Due to Dependency Injection)
  *
  */
-public class ProcessManager implements Observer{
+public interface ProcessManager {
 	
-	private ServerPublisherImp sp;
-	
-	/**
-	 * Constructor of ProcessManager
-	 */
-	public ProcessManager (){
-		sp = new ServerPublisherImp();
-		sp.startBroker();
-	}
-	
-	
-	/**
-	 * This method checks if the user who wishes to edit a step is the responsible user who is allowed to execute the step.
-	 * @param user who edits the step
-	 * @param step which user wants to edit
-	 * @return true if user is "owner" of step and false if not
-	 */
-	public boolean checkUser(AbstractUser user, AbstractStep step){
-		
-		if (step instanceof AbstractAction){
-			if (user.getId() == ((AbstractAction) step).getUserId()){
-				return true;
-			}else{
-				return false;
-			}
-		}
-		return false;
-	}
-	
-	
-	/**
-	 * This method selects the processor of a step and executes it.
-	 * @param step which is to be edited
-	 * @param item which is currently active
-	 * @param user who started interaction
-	 */
-	public void selectProcessor(AbstractStep step, Item item, User user){
-		
-		if(step instanceof Action){
-			ActionProcessor actionProcessor = new ActionProcessor(this);
-			actionProcessor.handle(item, step, user);
-		}
-	}
-	
+	public boolean checkUser(AbstractUser user, AbstractStep step);
+	public void selectProcessor(AbstractStep step, Item item, User user);
 
-	public void update(Observable o, Object arg) {
-		try {
-			//TODO extracting necessary information of object arg (for now <Datenstruktur>, <Operation>, <Id>
-			sp.publish("<Datenstruktur>=<Operation>=<Id>", "WORKFLOW_INFO");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
 }

@@ -18,7 +18,9 @@ import abstractbeans.AbstractMetaEntry;
 import abstractbeans.AbstractStep;
 import backingbeans.User;
 import backingbeans.Workflow;
-import manager.ProcessManager;
+import manager.ProcessManagerImp;
+import messaging.ServerPublisher;
+import messaging.ServerPublisherImp;
 
 
 public class Logic {
@@ -31,8 +33,9 @@ public class Logic {
 		for (AbstractStep s : myWorkflow.getStep()){
 			System.out.println(s.getId());
 		}
+		ServerPublisher sp = new ServerPublisherImp();
 		
-		ProcessManager manager = new ProcessManager();
+		ProcessManagerImp manager = new ProcessManagerImp(sp);
 		
 		//This object will be assigned to a specific user who can execute the workflow (startWorkflow)
 		StartTrigger start = new StartTrigger(myWorkflow, manager);

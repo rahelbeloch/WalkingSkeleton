@@ -2,9 +2,14 @@ package unittest;
 
 import static org.junit.Assert.*;
 import manager.ProcessManager;
+import messaging.ServerPublisher;
 
 import org.junit.Test;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import consoleTest.SingleModule;
 import processors.StartTrigger;
 import abstractbeans.AbstractMetaState;
 import abstractbeans.AbstractStep;
@@ -33,8 +38,10 @@ public class testWorkflowProcess {
 	@Test
 	public void startWorkflow() {
 		init();
-		ProcessManager manager = new ProcessManager();
-		StartTrigger start = new StartTrigger(myWorkflow, manager);
+		Injector i = Guice.createInjector(new SingleModule());
+		ServerPublisher sp = i.getInstance(ServerPublisher.class);
+		ProcessManager pm = i.getInstance(ProcessManager.class);
+		StartTrigger start = new StartTrigger(myWorkflow, pm);
 		start.startWorkflow();
 		Item item = (Item) myWorkflow.getItem().get(0);
 		
@@ -44,8 +51,10 @@ public class testWorkflowProcess {
 	@Test
 	public void checkStateInaktive() {
 		init();
-		ProcessManager manager = new ProcessManager();
-		StartTrigger start = new StartTrigger(myWorkflow, manager);
+		Injector i = Guice.createInjector(new SingleModule());
+		ServerPublisher sp = i.getInstance(ServerPublisher.class);
+		ProcessManager pm = i.getInstance(ProcessManager.class);
+		StartTrigger start = new StartTrigger(myWorkflow, pm);
 		start.startWorkflow();
 		Item item = (Item) myWorkflow.getItem().get(0);
 		
@@ -55,8 +64,10 @@ public class testWorkflowProcess {
 	@Test
 	public void handleFirstStep() {
 		init();
-		ProcessManager manager = new ProcessManager();
-		StartTrigger start = new StartTrigger(myWorkflow, manager);
+		Injector i = Guice.createInjector(new SingleModule());
+		ServerPublisher sp = i.getInstance(ServerPublisher.class);
+		ProcessManager pm = i.getInstance(ProcessManager.class);
+		StartTrigger start = new StartTrigger(myWorkflow, pm);
 		start.startWorkflow();
 		
 		User benni = new User();
@@ -65,7 +76,7 @@ public class testWorkflowProcess {
 		
 		
 		Item item = (Item) myWorkflow.getItem().get(0);
-		manager.selectProcessor(firstStep, item, benni);	
+		pm.selectProcessor(firstStep, item, benni);	
 		
 		assertTrue(item.getStepState(firstStep.getId()) == AbstractMetaState.DONE.toString());
 	}

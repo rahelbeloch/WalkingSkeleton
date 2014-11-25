@@ -1,6 +1,9 @@
 package processors;
 
 import java.util.Observable;
+import java.util.Observer;
+
+import com.google.inject.Inject;
 
 import manager.ProcessManager;
 import abstractbeans.AbstractAction;
@@ -13,7 +16,6 @@ import backingbeans.Workflow;
 
 /**
  * 
- * @author jvanh001
  * This class implements the function of StartTrigger. It creates a new item and saves it.
  */
 public class StartProcessor extends Observable{
@@ -25,10 +27,10 @@ public class StartProcessor extends Observable{
 	 * Constructor of StartProcessor
 	 * @param pm is the observer and manager of the processor
 	 */
+	@Inject
 	public StartProcessor(ProcessManager pm){
-		addObserver(pm);
+		addObserver((Observer)pm);
 	}
-	
 	
 	/**
 	 * This method receives an workflow-object and creates an item and calls a method which instantiates its Metadata
@@ -42,7 +44,6 @@ public class StartProcessor extends Observable{
 		currentItem.setWorkflowId(workflow.getId());
 		initiateItem(workflow, currentItem);
 	}
-	
 	
 	/**
 	 * This method instantiates an item's Metadata. The default MetaState is INACTIVE. 
