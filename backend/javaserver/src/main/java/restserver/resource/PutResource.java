@@ -35,6 +35,7 @@ public class PutResource {
 	@PUT @Path("workflow")
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response updateWorkflow(@PathParam("workflow") AbstractWorkflow workflow) {
+		System.out.println("UPDATE -> " + workflow.getId());
 		p.storeWorkflow(workflow);
 		return Response.status(201).build();
 	}
