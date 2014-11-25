@@ -27,5 +27,24 @@ namespace CommunicationLib.Model
                 Step.Add(step);
             }
         }
+
+        /// <summary>
+        /// Remove last step from workflow and remove link from previous step.
+        /// </summary>
+        public void removeLastStep()
+        {
+            if (Step.Count == 1)
+            {
+                Step.RemoveAt(0);
+            }
+            else if (Step.Count > 1)
+            {
+                Step lastStep = Step[Step.Count - 1];
+
+                // remove link from previous step
+                Step[Step.Count - 2].nextSteps.Remove(lastStep);
+                Step.RemoveAt(Step.Count - 1);
+            }
+        }
     }
 }
