@@ -34,7 +34,6 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	public ProcessManagerImp (ServerPublisher sp, Persistence p){
 		this.sp = sp;
 		this.p = p;
-		sp.startBroker();
 	}
 	
 	/**
@@ -68,6 +67,13 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 			ActionProcessor actionProcessor = new ActionProcessor(this, p);
 			actionProcessor.handle(item, step, user);
 		}
+	}
+	
+	/**
+	 * This method starts the messaging broker.
+	 */
+	public void startBroker() {
+		sp.startBroker();
 	}
 	
 	/**
