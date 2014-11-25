@@ -26,6 +26,7 @@
 			<complexContent>
 				<extension base="tns:AbstractStep">
 					<sequence>
+						<element name="Name" type="string"></element>
 						<element name="UserId" type="int"></element>
 					</sequence>
 				</extension>
