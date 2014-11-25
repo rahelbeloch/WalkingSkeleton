@@ -20,23 +20,23 @@ namespace AdminClient.viewmodel
         /// <summary>
         /// Proprety _userCollection to fill list view with users.
         /// </summary>
-        private ObservableCollection<User> _userCollection = new ObservableCollection<User>();
-        public ObservableCollection<User> userCollection { get { return _userCollection; } }
+        private ObservableCollection<AbstractUser> _userCollection = new ObservableCollection<AbstractUser>();
+        public ObservableCollection<AbstractUser> userCollection { get { return _userCollection; } }
 
         /// <summary>
         /// Property for input from userId text box.
         /// </summary>
-        private string _userId = "";
-        public string userId
+        private string _userName = "";
+        public string userName
         {
             get
             {
-                return _userId;
+                return _userName;
             }
             set
             {
-                _userId = value;
-                OnChanged("userId");
+                _userName = value;
+                OnChanged("userName");
             }
         }
 
@@ -52,18 +52,18 @@ namespace AdminClient.viewmodel
                 {
                     _addUserCommand = new ActionCommand(func =>
                     {
-                        User newUser = new User();
-                        newUser.Id = int.Parse(userId);
+                        AbstractUser newUser = new AbstractUser();
+                        newUser.Name = userName;
                         
                         // update view model
                         _userCollection.Add(newUser);
 
                         Console.WriteLine("TODO: send user to server");
                         
-                        userId = "";
+                        userName = "";
                     }, func =>
                     {
-                        if (userId.Length == 0 || !Regex.IsMatch(userId, @"^\d+$"))
+                        if (userName.Length == 0)
                         {
                             return false;
                         }
