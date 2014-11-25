@@ -3,7 +3,6 @@ package messaging;
 
 /**
  * Interface for ServerPublisher
- * @author jvanh001
  *
  */
 public interface ServerPublisher {

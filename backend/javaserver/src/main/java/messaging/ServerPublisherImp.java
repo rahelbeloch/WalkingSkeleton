@@ -28,6 +28,9 @@ public class ServerPublisherImp implements ServerPublisher {
 	final private String BROKER_URL = "vm://localhost";
 	final private String CONNECTION_URL = "tcp://0.0.0.0:61616";
 	
+	/**
+	 * Default-Constructor
+	 */
 	public ServerPublisherImp() {
 		
 	}
@@ -74,7 +77,7 @@ public class ServerPublisherImp implements ServerPublisher {
 	/**
 	 * Stops the embedded messaging broker
 	 */
-	public void stopBroker(){
+	public void stopBroker() {
 		try {
 			broker.stop();
 		} catch (Exception ex) {

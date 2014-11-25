@@ -2,6 +2,7 @@ package messagingtest;
 
 import static org.junit.Assert.*;
 import messaging.ServerPublisher;
+import moduleDI.SingleModule;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,8 +10,6 @@ import org.junit.Test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-
-import consoleTest.SingleModule;
 
 public class ServerPublisherTest {
 	
