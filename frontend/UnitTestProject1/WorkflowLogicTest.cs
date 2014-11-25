@@ -4,9 +4,15 @@ using CommunicationLib.Model;
 
 namespace UnitTestProject1
 {
+    /// <summary>
+    /// Test class for workflow (backing) bean logic.
+    /// </summary>
     [TestClass]
     public class WorkflowLogicTest
     {
+        /// <summary>
+        /// Test if addStep method works correct.
+        /// </summary>
         [TestMethod]
         public void addStepTest()
         {
@@ -24,6 +30,9 @@ namespace UnitTestProject1
 
         }
 
+        /// <summary>
+        /// Test if removeLastStep method works correct.
+        /// </summary>
         [TestMethod]
         public void removeStepTest()
         {
@@ -45,6 +54,9 @@ namespace UnitTestProject1
 
         }
 
+        /// <summary>
+        /// Test if nextStep reference is removed correctly.
+        /// </summary>
         [TestMethod]
         public void removeStepNextStepTest()
         {
@@ -63,6 +75,9 @@ namespace UnitTestProject1
             Assert.IsTrue(wf.Step[1].nextSteps.Count == 0);
         }
 
+        /// <summary>
+        /// Test if nextStep reference is correct.
+        /// </summary>
         [TestMethod]
         public void addStepNextStepTest()
         {
@@ -75,13 +90,6 @@ namespace UnitTestProject1
             wf.addStep(st2);
 
             Assert.IsTrue(wf.Step[0].nextSteps[0] == st2);
-        }
-
-
-        [TestMethod]
-        public void TestMethod1()
-        {
-            Assert.IsTrue(1 == 1);
         }
     }
 }
