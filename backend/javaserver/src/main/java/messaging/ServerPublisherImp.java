@@ -51,7 +51,6 @@ public class ServerPublisherImp implements ServerPublisher {
 		TextMessage msg = session.createTextMessage(content);
 		
 		//send and close
-		System.out.println("INHALT: " + msg.getText());
 		publisher.send(msg);
 		session.close();
 		connection.close();
@@ -66,15 +65,10 @@ public class ServerPublisherImp implements ServerPublisher {
 			try {
 				broker.addConnector(CONNECTION_URL);
 				broker.start();
-				System.out.println("Message-Broker started...");
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
-		else {
-			System.err.println("Broker allready running!");
-		}
-
 	}
 	
 	/**
@@ -83,7 +77,6 @@ public class ServerPublisherImp implements ServerPublisher {
 	public void stopBroker(){
 		try {
 			broker.stop();
-			System.out.println("Message-Broker stopped...");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
