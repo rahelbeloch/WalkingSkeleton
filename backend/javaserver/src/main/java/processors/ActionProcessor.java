@@ -1,6 +1,9 @@
 package processors;
 
 import java.util.Observable;
+import java.util.Observer;
+
+import com.google.inject.Inject;
 
 import manager.ProcessManager;
 import abstractbeans.AbstractMetaState;
@@ -13,7 +16,6 @@ import backingbeans.User;
 
 /**
  * This class executes "Action" step-objects.
- * @author jvanh001
  *
  */
 public class ActionProcessor extends Observable implements StepProcessor {
@@ -24,10 +26,10 @@ public class ActionProcessor extends Observable implements StepProcessor {
 	 * Constructor of ActionProcessor
 	 * @param pm is the observer and manager of the processor
 	 */
+	@Inject
 	public ActionProcessor (ProcessManager pm){
-		addObserver(pm);
+		addObserver((Observer) pm);
 	}
-	
 	
 	/**
 	 * This method is initiated by an User. The responsible User sends the item and the step, which they wish to edit.
