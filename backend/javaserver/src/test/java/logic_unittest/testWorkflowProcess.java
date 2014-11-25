@@ -10,6 +10,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import consoleTest.SingleModule;
+import persistence.Persistence;
 import processors.StartTrigger;
 import abstractbeans.AbstractMetaState;
 import abstractbeans.AbstractStep;
@@ -40,10 +41,12 @@ public class testWorkflowProcess {
 		init();
 		Injector i = Guice.createInjector(new SingleModule());
 		ServerPublisher sp = i.getInstance(ServerPublisher.class);
+		Persistence p = i.getInstance(Persistence.class);
 		ProcessManager pm = i.getInstance(ProcessManager.class);
-		StartTrigger start = new StartTrigger(myWorkflow, pm);
+		StartTrigger start = new StartTrigger(myWorkflow, pm, p);
 		start.startWorkflow();
 		Item item = (Item) myWorkflow.getItem().get(0);
+		pm.stopBroker();
 		
 		assertTrue(item.getStepState(firstStep.getId()) == AbstractMetaState.OPEN.toString());
 	}
@@ -54,9 +57,11 @@ public class testWorkflowProcess {
 		Injector i = Guice.createInjector(new SingleModule());
 		ServerPublisher sp = i.getInstance(ServerPublisher.class);
 		ProcessManager pm = i.getInstance(ProcessManager.class);
-		StartTrigger start = new StartTrigger(myWorkflow, pm);
+		Persistence p = i.getInstance(Persistence.class);
+		StartTrigger start = new StartTrigger(myWorkflow, pm, p);
 		start.startWorkflow();
 		Item item = (Item) myWorkflow.getItem().get(0);
+		pm.stopBroker();
 		
 		assertTrue(item.getStepState(1000) == AbstractMetaState.INACTIVE.toString());
 	}
@@ -67,7 +72,8 @@ public class testWorkflowProcess {
 		Injector i = Guice.createInjector(new SingleModule());
 		ServerPublisher sp = i.getInstance(ServerPublisher.class);
 		ProcessManager pm = i.getInstance(ProcessManager.class);
-		StartTrigger start = new StartTrigger(myWorkflow, pm);
+		Persistence p = i.getInstance(Persistence.class);
+		StartTrigger start = new StartTrigger(myWorkflow, pm, p);
 		start.startWorkflow();
 		
 		User benni = new User();
@@ -77,6 +83,7 @@ public class testWorkflowProcess {
 		
 		Item item = (Item) myWorkflow.getItem().get(0);
 		pm.selectProcessor(firstStep, item, benni);	
+		pm.stopBroker();
 		
 		assertTrue(item.getStepState(firstStep.getId()) == AbstractMetaState.DONE.toString());
 	}
