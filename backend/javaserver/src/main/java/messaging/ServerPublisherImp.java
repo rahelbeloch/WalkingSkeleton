@@ -60,8 +60,8 @@ public class ServerPublisherImp implements ServerPublisher {
 	 * Starts the embedded messaging broker
 	 */
 	public void startBroker() {
-		broker = new BrokerService();
 		if (!broker.isStarted()) {
+			broker = new BrokerService();
 			try {
 				broker.addConnector(CONNECTION_URL);
 				broker.start();
