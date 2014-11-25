@@ -61,8 +61,8 @@
 		<complexType>
 			<sequence>
 			<element name="Id" type="int" ></element>
-			<element name="AbstractStep" type="tns:AbstractStep" minOccurs="0" maxOccurs="unbounded"></element>
-			<element name="AbstractItem" type="tns:AbstractItem" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="Step" type="tns:AbstractStep" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="Item" type="tns:AbstractItem" minOccurs="0" maxOccurs="unbounded"></element>
 			</sequence>
 		</complexType>
 	</element>
@@ -71,7 +71,7 @@
 		<sequence>
 			<element name="Id" type="int"></element>
 			<element name="WorkflowId" type="int"></element>
-			<element name="AbstractMetadata" type="tns:AbstractMetaEntry" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="Metadata" type="tns:AbstractMetaEntry" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="finished" type="boolean"></element>
 		</sequence>
 	</complexType>
@@ -89,8 +89,7 @@
 			<enumeration value="INACTIVE"></enumeration>
 			<enumeration value="OPEN"></enumeration>
 			<enumeration value="BUSY"></enumeration>
-			<enumeration value="DONE">
-			</enumeration>
+			<enumeration value="DONE"></enumeration>
 		</restriction>
 	</simpleType> 
 	
