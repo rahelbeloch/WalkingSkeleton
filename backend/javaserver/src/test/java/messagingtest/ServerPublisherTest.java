@@ -17,7 +17,7 @@ public class ServerPublisherTest {
 	private ServerPublisher publisher;
 	
 	@Before
-	public void initialize() {
+	public void setUp() {
 		Injector i = Guice.createInjector(new SingleModule());
 		publisher = i.getInstance(ServerPublisher.class);
 	}
