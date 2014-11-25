@@ -19,7 +19,7 @@ public interface Persistence {
 	 */
 	public AbstractWorkflow loadWorkflow(int id);
 	public AbstractItem loadItem(int id);
-	public AbstractUser loadUser(String name);
+	public AbstractUser loadUser(String name) throws UserNotExistantException;
 
 	/*
 	 * delete functions to remove workflows, items, and users from persistence
