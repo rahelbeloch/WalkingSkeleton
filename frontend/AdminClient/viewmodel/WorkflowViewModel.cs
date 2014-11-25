@@ -272,7 +272,7 @@ namespace AdminClient.viewmodel
                         if (_selectedStep is AbstractStartStep)
                         {
                             AbstractStartStep startStep = new AbstractStartStep();
-                            startStep.Name = userName;
+                            startStep.Username = userName;
 
                             _workflow.Add(startStep);
                             _workflowModel.addStep(startStep);
@@ -280,7 +280,7 @@ namespace AdminClient.viewmodel
                         else if (_selectedStep is AbstractAction)
                         {
                             AbstractAction action = new AbstractAction();
-                            action.Name = userName;
+                            action.Username = userName;
                             action.Name = stepDescription;
 
                             _workflow.Add(action);
