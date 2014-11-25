@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace CommunicationLib.Model
 {
@@ -16,7 +15,6 @@ namespace CommunicationLib.Model
         /// Add new step to workflow. The new step is also added to the "nextSteps" list of the previous step.
         /// </summary>
         /// <param name="step"></param>
-        [XmlIgnore]
         public void addStep(AbstractStep step)
         {
             if (Step.Count == 0)
@@ -33,7 +31,6 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Remove last step from workflow and remove link from previous step.
         /// </summary>
-        [XmlIgnore]
         public void removeLastStep()
         {
             if (Step.Count == 1)
@@ -53,7 +50,6 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Clears the workflow.
         /// </summary>
-        [XmlIgnore]
         public void clearWorkflow()
         {
             Step.Clear();
