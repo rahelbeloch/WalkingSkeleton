@@ -16,11 +16,11 @@ namespace UnitTestProject1
         [TestMethod]
         public void addStepTest()
         {
-            Workflow wf = new Workflow();
+            AbstractWorkflow wf = new AbstractWorkflow();
 
-            Step st1 = new Step();
-            Step st2 = new Step();
-            Step st3 = new Step();
+            AbstractStep st1 = new AbstractStep();
+            AbstractStep st2 = new AbstractStep();
+            AbstractStep st3 = new AbstractStep();
 
             wf.addStep(st1);
             wf.addStep(st2);
@@ -36,11 +36,11 @@ namespace UnitTestProject1
         [TestMethod]
         public void removeStepTest()
         {
-            Workflow wf = new Workflow();
+            AbstractWorkflow wf = new AbstractWorkflow();
 
-            Step st1 = new Step();
-            Step st2 = new Step();
-            Step st3 = new Step();
+            AbstractStep st1 = new AbstractStep();
+            AbstractStep st2 = new AbstractStep();
+            AbstractStep st3 = new AbstractStep();
 
             wf.addStep(st1);
             wf.addStep(st2);
@@ -60,11 +60,11 @@ namespace UnitTestProject1
         [TestMethod]
         public void removeStepNextStepTest()
         {
-            Workflow wf = new Workflow();
+            AbstractWorkflow wf = new AbstractWorkflow();
 
-            Step st1 = new Step();
-            Step st2 = new Step();
-            Step st3 = new Step();
+            AbstractStep st1 = new AbstractStep();
+            AbstractStep st2 = new AbstractStep();
+            AbstractStep st3 = new AbstractStep();
 
             wf.addStep(st1);
             wf.addStep(st2);
@@ -81,10 +81,10 @@ namespace UnitTestProject1
         [TestMethod]
         public void addStepNextStepTest()
         {
-            Workflow wf = new Workflow();
+            AbstractWorkflow wf = new AbstractWorkflow();
 
-            Step st1 = new Step();
-            Step st2 = new Step();
+            AbstractStep st1 = new AbstractStep();
+            AbstractStep st2 = new AbstractStep();
 
             wf.addStep(st1);
             wf.addStep(st2);
