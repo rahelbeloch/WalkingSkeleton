@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using RestSharp;
 using System.Web;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace RestAPI
 {
@@ -75,36 +78,38 @@ namespace RestAPI
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = "items/" + typeName +"/" + id;
-            O request = SendObjectRequest<O>(url, Method.GET, null);
+            O request = GetObjectRequest<O>(url, Method.GET);
 
             return request;
         }
 
         /*
         * Update an object on the server, with HTTP-Method PUT.
-        * Path for this HTTP-Method is always: update/<type>/<id>
+        * Path for this HTTP-Method is always: update/<type>
         */
-        public static O updateObject<O>(int id) where O : new()
+        public static String updateObject(Object sendObj)
         {
-            String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = "update/" + typeName + "/" + id;
-            O request = SendObjectRequest<O>(url, Method.PUT, null);
+            String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
+            String url = "update/" + typeName;
+            String serializedObjPath = SerializeObject(sendObj);
+            IRestResponse request = SendObjectRequest(url, Method.PUT, serializedObjPath);
 
-            return request;
+            return request.Content;
         }
 
         /*
         * Create an object on the server, with HTTP-Method POST.
         * Path for this HTTP-Method is always: send/<type>
         */
-        public static O postObject<O>(String serializedObj) where O : new()
+        public static String postObject<O>(Object sendObj) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = "send/" + typeName;
 
-            O request = SendObjectRequest<O>(url, Method.POST, serializedObj);
+            String serializedObjPath = SerializeObject(sendObj);
+            IRestResponse request = SendObjectRequest(url, Method.POST, serializedObjPath);
 
-            return request;
+            return request.Content;
         }
 
         /*
@@ -115,7 +120,7 @@ namespace RestAPI
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = "delete/" + typeName + "/" + id;
-            O request = SendObjectRequest<O>(url, Method.DELETE, null);
+            O request = GetObjectRequest<O>(url, Method.DELETE);
 
             return request;
         }
@@ -125,45 +130,41 @@ namespace RestAPI
         /// </summary>
         /// <param name="wId">Workflow-Id</param>
         /// <param name="uId">User-Id</param>
-        public static void StartWorkflow(int wId, int uId)
+        public static Boolean StartWorkflow(int wId, int uId)
         {
             // start/workflowid/userid
             String url = "start/" + wId + "/" + uId;
             IRestResponse response = SendSimpleRequest(url, Method.POST);
             // do something with the response, e.g. look if everything is ok.
+            return true;
         }
 
         /// <summary>
-        ///  
+        ///     Sends a state change of an action to the server
         /// </summary>
-        /// <param name="stepId"></param>
-        /// <param name="itemId"></param>
-        /// <param name="uId"></param>
-        public static void StepForward(int stepId, int itemId, int uId)
+        /// <param name="stepId">id of the current step</param>
+        /// <param name="itemId">id of the current item</param>
+        /// <param name="uId">id of the current user</param>
+        public static Boolean StepForward(int stepId, int itemId, int uId)
         {
-            // forward/stepid/itemid/userid
+            // Request url: 'forward/stepid/itemid/userid'
             String url = "forward/" + stepId + "/" + itemId + "/" + uId;
             IRestResponse response = SendSimpleRequest(url, Method.POST);
             // do something with the response, e.g. look if everything is ok.
+            return true;
         }
 
-        /**
-         * Sends a HTTP-Request to the REST-Server. 
-         * 
-         * @url - the requested url
-         * @method - the requested HTTP-Method
-         */
-        private static O SendObjectRequest<O>(String url, RestSharp.Method method, String serializedObj) where O : new()
+        /// <summary>
+        ///     Sends a HTTP-Request to the server to get an object.
+        /// </summary>
+        /// <typeparam name="O">the type of the requested object</typeparam>
+        /// <param name="url">the requested url</param>
+        /// <param name="method">the HTTP-Method of the request</param>
+        /// <returns>the response object from server</returns>
+        private static O GetObjectRequest<O>(String url, RestSharp.Method method) where O : new()
         {
             Console.WriteLine("requested Url -> " + restserverurl + url);
             var request = new RestRequest(url, method);
-
-            // if there is an object to send to server per XML
-            if (serializedObj != null)
-            {
-                request.RequestFormat = RestSharp.DataFormat.Xml;
-                request.AddParameter("text/xml", serializedObj, ParameterType.RequestBody);
-            }
 
             // decide wether the server does return the right excepted object or throws an exception
             try
@@ -182,6 +183,44 @@ namespace RestAPI
             }
         }
 
+        /// <summary>
+        ///     Method to send a C# Object to server. Expects an answer-string from server.
+        /// </summary>
+        /// <param name="url">request url</param>
+        /// <param name="method">method of the request</param>
+        /// <param name="serializedObjPath">path to the xml file with serialized object</param>
+        /// <returns>the response from server</returns>
+        private static IRestResponse SendObjectRequest(String url, RestSharp.Method method, String serializedObjPath)
+        {
+            var request = new RestRequest(url, method);
+
+            // if there is an object-path to a xml file that shall be send to server per XML
+            if (serializedObjPath != null)
+            {
+                request.RequestFormat = RestSharp.DataFormat.Xml;
+                request.AddParameter("text/xml", File.ReadAllText(serializedObjPath), ParameterType.RequestBody);
+            }
+
+            // decide wether the server does return the right excepted object or throws an exception
+            try
+            {
+                var response = client.Execute(request);
+                Console.WriteLine("Answer from Server -> " + response);
+                return response;
+            }
+            catch (OwnException)
+            {
+                var response = client.Execute<Exception>(request);
+                throw response.Data;
+            }
+        }
+
+        /// <summary>
+        ///     Sends a simple request, just containing some information in the url. No more parameters or objects send in the request.
+        /// </summary>
+        /// <param name="url">request url</param>
+        /// <param name="method">method of the request</param>
+        /// <returns>the response from server</returns>
         private static IRestResponse SendSimpleRequest(string url, RestSharp.Method method)
         {
             var request = new RestRequest(url, method);
@@ -197,5 +236,18 @@ namespace RestAPI
             }
         }
 
+        /// <summary>
+        ///  Serializes object from C#-object to XML File.
+        /// </summary>
+        /// <param name="obj">the object to serialize</param>
+        /// <returns>the path of the new XML File</returns>
+        private static String SerializeObject(Object obj)
+        {
+            // path is always XMLFiles/<typeofObj>.xml; all XML Files are placed in this folder
+            String objXMLPath = obj.GetType() + ".xml";
+            XmlSerializer xmlser = new XmlSerializer(obj.GetType());
+            xmlser.Serialize(new FileStream("/XMLFiles/" + objXMLPath,FileMode.Create), obj);
+            return "/XMLFiles/" + objXMLPath;
+        }
     }
 }
