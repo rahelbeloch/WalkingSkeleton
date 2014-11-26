@@ -52,9 +52,9 @@ public class Resource {
 	@POST @Path("workflow")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes("application/x-www-form-urlencoded")
-	public String saveWorkflow (@PathParam("workflowid") int workflowid, MultivaluedMap<String, String> formParams) {
+	public String saveWorkflow (MultivaluedMap<String, String> formParams) {
 		ObjectMapper mapper = new ObjectMapper();
-		System.out.println("SEND -> " + workflowid + " " + formParams.get("data").get(0));
+		System.out.println("SEND -> ");
 		String workflowAsString = formParams.get("data").get(0);
 		Workflow workflow;
 		workflow = mapper.readValue(workflowAsString, Workflow.class);
