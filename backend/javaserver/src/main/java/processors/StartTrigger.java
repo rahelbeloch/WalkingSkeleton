@@ -2,11 +2,10 @@ package processors;
 
 import java.util.Observer;
 
+import model.Workflow;
 import persistence.Persistence;
 
 import com.google.inject.Inject;
-
-import backingbeans.Workflow;
 
 /**
  * This class initializes the execution of a workflow.

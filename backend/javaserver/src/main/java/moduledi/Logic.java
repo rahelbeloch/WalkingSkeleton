@@ -2,13 +2,12 @@ package moduledi;
 
 import java.util.List;
 
+import model.Item;
+import model.Step;
+import model.User;
+import model.Workflow;
 import persistence.UserAlreadyExistsException;
 import persistence.UserNotExistentException;
-import abstractbeans.AbstractStep;
-import backingbeans.Action;
-import backingbeans.Item;
-import backingbeans.User;
-import backingbeans.Workflow;
 
 public interface Logic {
 	
@@ -23,12 +22,12 @@ public interface Logic {
 	/*
 	 * item 
 	 */
-	public void stepOver(Item item, AbstractStep  step, User user);
+	public void stepOver(Item item, Step  step, User user);
 	
 	/*
 	 * step functions
 	 */
-	public void addStep (int workflowID, AbstractStep step);
+	public void addStep (int workflowID, Step step);
 	public void deleteStep (int workflowID, int stepID); 
 	
 	/*

@@ -17,19 +17,15 @@ public class Workflow extends RootElement {
 	public Workflow(int id) {
 		super();
 		this.id = id;
+		steps = new ArrayList<Step>();
+        items = new ArrayList<Item>();
 	}
 	
 	public List<Step> getSteps() {
-        if (steps == null) {
-        	steps = new ArrayList<Step>();
-        }
         return this.steps;
     }
 	
 	public List<Item> getItems() {
-        if (steps == null) {
-        	steps = new ArrayList<Step>();
-        }
         return this.items;
     }
 	

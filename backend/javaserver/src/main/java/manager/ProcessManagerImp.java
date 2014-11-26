@@ -3,19 +3,17 @@ package manager;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-
 import messaging.ServerPublisher;
 import messaging.ServerPublisherBrokerException;
-import backingbeans.Action;
-import backingbeans.Item;
-import backingbeans.User;
+import model.Action;
+import model.Item;
+import model.Step;
+import model.User;
 import persistence.Persistence;
 import processors.ActionProcessor;
-import abstractbeans.AbstractAction;
-import abstractbeans.AbstractStep;
-import abstractbeans.AbstractUser;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 /**
  * This class handles the processing of Steps. (For now) it provides methods for checking whether an user can execute a step and selecting
@@ -44,10 +42,10 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	 * @param step which user wants to edit
 	 * @return true if user is "owner" of step and false if not
 	 */
-	public boolean checkUser(AbstractUser user, AbstractStep step){
+	public boolean checkUser(User user, Step step){
 		
-		if (step instanceof AbstractAction){
-			return user.getName().equals(((AbstractAction) step).getName());
+		if (step instanceof Action){
+			return user.getUsername().equals(((Action) step).getUsername());
 		}
 		return false;
 	}
@@ -58,7 +56,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	 * @param item which is currently active
 	 * @param user who started interaction
 	 */
-	public void selectProcessor(AbstractStep step, Item item, User user){
+	public void selectProcessor(Step step, Item item, User user){
 		
 		if(step instanceof Action){
 			ActionProcessor actionProcessor = new ActionProcessor(p);

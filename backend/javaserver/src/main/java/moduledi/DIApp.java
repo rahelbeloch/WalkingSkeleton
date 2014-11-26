@@ -4,17 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import manager.ProcessManager;
+import model.Action;
+import model.FinalStep;
+import model.Item;
+import model.MetaEntry;
+import model.Step;
+import model.User;
+import model.Workflow;
 import persistence.Persistence;
 import processors.StartTrigger;
-import manager.ProcessManager;
-import abstractbeans.AbstractItem;
-import abstractbeans.AbstractMetaEntry;
-import abstractbeans.AbstractStep;
-import backingbeans.Action;
-import backingbeans.FinalStep;
-import backingbeans.Item;
-import backingbeans.User;
-import backingbeans.Workflow;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -35,11 +34,11 @@ public class DIApp {
 		System.out.println("User: " + p.loadUser("3"));
 		System.out.println("User: " + p.loadUser("4"));
 		
-		System.out.println("Workflow: " + p.loadWorkflow(0).getStep());
-		System.out.println("Workflow: " + p.loadWorkflow(1).getStep());
-		System.out.println("Workflow: " + p.loadWorkflow(2).getStep());
-		System.out.println("Workflow: " + p.loadWorkflow(3).getStep());
-		System.out.println("Workflow: " + p.loadWorkflow(4).getStep());
+		System.out.println("Workflow: " + p.loadWorkflow(0).getSteps());
+		System.out.println("Workflow: " + p.loadWorkflow(1).getSteps());
+		System.out.println("Workflow: " + p.loadWorkflow(2).getSteps());
+		System.out.println("Workflow: " + p.loadWorkflow(3).getSteps());
+		System.out.println("Workflow: " + p.loadWorkflow(4).getSteps());
 		
 		
 		pm.startBroker();
@@ -50,22 +49,22 @@ public class DIApp {
 		start.startWorkflow();
 		
 		User benni = new User();
-		benni.setName("benni");
+		benni.setUsername("benni");
 		benni.setId(23);
 		
 		
 		//Output of all items in a workflow
-		for (AbstractItem ai : myWorkflow.getItem()){
+		for (Item ai : myWorkflow.getItems()){
 			System.out.println(ai.getId());
 		}
 		
 		Item item = (Item)myWorkflow.getItemByPos(0);
-		AbstractStep step = myWorkflow.getStepByPos(0);
+		Step step = myWorkflow.getStepByPos(0);
 		
 		Item pi = (Item) p.loadItem(item.getId());
 		
-		for(AbstractMetaEntry ame : pi.getMetadata()){
-			System.out.print("1: " + ame.getGroupId() +" " +ame.getKey()+" " + ame.getValue() +"\n");
+		for(MetaEntry ame : pi.getMetadata()){
+			System.out.print("1: " + ame.getGroup() +" " +ame.getKey()+" " + ame.getValue() +"\n");
 			System.out.println();
 		}
 		
@@ -73,7 +72,7 @@ public class DIApp {
 
 		boolean work = true;
 		while(work){
-			System.out.println("Nehmen Sie den Step an?" + benni.getName().toString());
+			System.out.println("Nehmen Sie den Step an?" + benni.getUsername().toString());
 			
 			
 			String input;
@@ -93,16 +92,16 @@ public class DIApp {
 			
 			pm.selectProcessor(step, (Item)item, benni);
 			
-			for(AbstractMetaEntry ame : pi.getMetadata()){
-				System.out.print("1: " + ame.getGroupId() +" " +ame.getKey()+" " + ame.getValue() +"\n");
+			for(MetaEntry ame : pi.getMetadata()){
+				System.out.print("1: " + ame.getGroup() +" " +ame.getKey()+" " + ame.getValue() +"\n");
 				System.out.println();
 			}
 			
 			System.out.println("nach dem ersten Schritt "+ myWorkflow.getId());
 			System.out.println("Das Item heißt: "+ item.getId());
 			//System.out.println(item.getMetadata());
-			for(AbstractMetaEntry ame : item.getMetadata()){
-				System.out.print("1: " + ame.getGroupId() +" " +ame.getKey()+" " + ame.getValue() +"\n");
+			for(MetaEntry ame : item.getMetadata()){
+				System.out.print("1: " + ame.getGroup() +" " +ame.getKey()+" " + ame.getValue() +"\n");
 				System.out.println();
 			}
 			

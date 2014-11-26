@@ -1,10 +1,10 @@
 package moduledi;
 
-import backingbeans.Action;
-import backingbeans.FinalStep;
-import backingbeans.StartStep;
-import backingbeans.User;
-import backingbeans.Workflow;
+import model.Action;
+import model.FinalStep;
+import model.StartStep;
+import model.User;
+import model.Workflow;
 import persistence.Persistence;
 import persistence.UserAlreadyExistsException;
 
@@ -31,7 +31,7 @@ public class ProduceData {
 	public void createUser(Persistence p){
 		User user = new User();
 		user.setId(countUser);
-		user.setName(countUser+"");
+		user.setUsername(countUser+"");
 		try {
 			p.addUser(user);
 		} catch (UserAlreadyExistsException e) {

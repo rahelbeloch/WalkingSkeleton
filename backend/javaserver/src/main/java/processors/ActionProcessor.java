@@ -2,12 +2,12 @@ package processors;
 
 import java.util.Observable;
 
+import model.FinalStep;
+import model.Item;
+import model.MetaState;
+import model.Step;
+import model.User;
 import persistence.Persistence;
-import abstractbeans.AbstractMetaState;
-import abstractbeans.AbstractStep;
-import backingbeans.FinalStep;
-import backingbeans.Item;
-import backingbeans.User;
 
 import com.google.inject.Inject;
 
@@ -37,31 +37,31 @@ public class ActionProcessor extends Observable implements StepProcessor {
 	 * After successfully executing the Action-function the current step's state will be set on "DONE".
 	 * If the next step isn't an end state, this processor sets the state of the current step's straight neighbor to OPEN. 
 	 */
-	public void handle(Item item, AbstractStep step, User user) {
+	public void handle(Item item, Step step, User user) {
 		
 		currentItem = item;
-		currentItem.setStepState(step.getId(), AbstractMetaState.BUSY.toString());
+		currentItem.setStepState(step.getId(), MetaState.BUSY.toString());
 		currentItem.setState("upd");
 		p.storeItem(currentItem);
 		setChanged();
 		notifyObservers(currentItem);
 		
 		//funktion irrelevant fuer walking skeleton
-		currentItem.setStepState(step.getId(), AbstractMetaState.DONE.toString());
+		currentItem.setStepState(step.getId(), MetaState.DONE.toString());
 		currentItem.setState("upd");
 		p.storeItem(currentItem);
 		setChanged();
 		notifyObservers(currentItem);
 		
-		for(AbstractStep s : step.getNextSteps()){
+		for(Step s : step.getNextSteps()){
 			if(!(s instanceof FinalStep)){ 
-				currentItem.setStepState(s.getId(), AbstractMetaState.OPEN.toString());
+				currentItem.setStepState(s.getId(), MetaState.OPEN.toString());
 				currentItem.setState("upd");
 				p.storeItem(currentItem);
 				setChanged();
 				notifyObservers(currentItem);
 			}else{
-				currentItem.setStepState(s.getId(), AbstractMetaState.DONE.toString());
+				currentItem.setStepState(s.getId(), MetaState.DONE.toString());
 				currentItem.setFinished(true);
 				currentItem.setState("upd");
 				p.storeItem(currentItem);

@@ -2,16 +2,15 @@ package processors;
 
 import java.util.Observable;
 
+import model.Action;
+import model.FinalStep;
+import model.Item;
+import model.MetaState;
+import model.Step;
+import model.Workflow;
 import persistence.Persistence;
 
 import com.google.inject.Inject;
-
-import abstractbeans.AbstractAction;
-import abstractbeans.AbstractMetaState;
-import abstractbeans.AbstractStep;
-import backingbeans.FinalStep;
-import backingbeans.Item;
-import backingbeans.Workflow;
 
 
 /**
@@ -41,7 +40,7 @@ public class StartProcessor extends Observable{
 	public void createItem(Workflow workflow){
 		
 		currentItem = new Item();
-		currentItem.setId(workflow.getId()*1000 + workflow.getStep().size());
+		currentItem.setId(workflow.getId()*1000 + workflow.getSteps().size());
 		currentItem.setWorkflowId(workflow.getId());
 		initiateItem(workflow, currentItem);
 	}
@@ -55,13 +54,13 @@ public class StartProcessor extends Observable{
 	 */
 	public void initiateItem(Workflow workflow, Item item){
 		
-		for (AbstractStep s: workflow.getStep()){
-			if (s instanceof AbstractAction || s instanceof FinalStep){ 
-				item.set(s.getId()+"",  "step", AbstractMetaState.INACTIVE.toString());
+		for (Step s: workflow.getSteps()){
+			if (s instanceof Action || s instanceof FinalStep){ 
+				item.set(s.getId()+"",  "step", MetaState.INACTIVE.toString());
 			}
 		}
-		workflow.getItem().add(item);
-		item.setFirstStepState(AbstractMetaState.OPEN.toString());
+		workflow.getItems().add(item);
+		item.setFirstStepState(MetaState.OPEN.toString());
 		p.storeItem(item);
 		setChanged();
 		item.setState("def");
