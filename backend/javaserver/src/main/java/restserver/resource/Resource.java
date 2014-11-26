@@ -13,10 +13,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import model.Workflow;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import abstractbeans.AbstractWorkflow;
 
 @Path("resource")
 public class Resource {
@@ -29,8 +30,9 @@ public class Resource {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("GET -> " + workflowid);
+
 		ObjectMapper mapper = new ObjectMapper();
-		AbstractWorkflow workflow = new AbstractWorkflow();
+		Workflow workflow = new Workflow();
 		workflow.setId(workflowid);
 		String workflowAsString = "string";
 		try {
@@ -68,9 +70,9 @@ public class Resource {
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println("SEND -> ");
 		String workflowAsString = formParams.get("data").get(0);
-		AbstractWorkflow workflow;
+		Workflow workflow; // TODO: connect to business logic
 		try {
-			workflow = mapper.readValue(workflowAsString, AbstractWorkflow.class);
+			workflow = mapper.readValue(workflowAsString, Workflow.class);
 		} catch (IOException e) {
 			return "jackson exception";
 		}
@@ -89,9 +91,9 @@ public class Resource {
 		System.out.println("UPDATE -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
 		String workflowAsString = formParams.get("data").get(0);
-		AbstractWorkflow workflow;
+		Workflow workflow;
 		try {
-			workflow = mapper.readValue(workflowAsString, AbstractWorkflow.class);
+			workflow = mapper.readValue(workflowAsString, Workflow.class);
 		} catch (IOException e) {
 			return "jackson exception";
 		}
@@ -108,7 +110,7 @@ public class Resource {
 	public String deleteWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("DELETE -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
-		AbstractWorkflow workflow = new AbstractWorkflow();
+		Workflow workflow = new Workflow();
 		workflow.setId(workflowid);
 		String workflowAsString = "string";
 		try {
