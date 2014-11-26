@@ -8,11 +8,11 @@ package messaging;
 public interface ServerPublisher {
 
 	
-	public void publish(String content, String topicName) throws Exception;
+	public void publish(String content, String topicName) throws ServerPublisherBrokerException;
 
-	public void startBroker();
+	public void startBroker () throws ServerPublisherBrokerException;
 
-	public void stopBroker();
+	public void stopBroker() throws ServerPublisherBrokerException;
 	
 	public boolean brokerStarted();
 }
