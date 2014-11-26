@@ -54,7 +54,7 @@
 			</FlowDocument>
 		</FlowDocumentReader>
 		<Border x:Name="Stage" Grid.Row="1" Margin="0,25,0,0"/>
-		<Grid x:Name="LoginLayer" Background="White" Margin="0,0,2,5" Grid.RowSpan="2" Visibility="Hidden">
+		<Grid x:Name="LoginLayer" Background="White" Margin="0,0,2,5" Grid.RowSpan="2" Visibility="Visible">
 			<Label Content="Login" HorizontalAlignment="Left" Margin="46,24.666,0,0" VerticalAlignment="Top" Width="97" FontWeight="Bold" FontSize="26.667"/>
 			<PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="46,135.666,0,0" VerticalAlignment="Top" Width="210" IsEnabled="False"/>
 			<TextBox x:Name="txtName"  HorizontalAlignment="Left" Height="23" Margin="46,96.47,0,0" TextWrapping="Wrap" Text="Nutzername" VerticalAlignment="Top" Width="210"/>

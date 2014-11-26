@@ -11,7 +11,7 @@ namespace CommunicationLib
         /// <summary>
         /// Backing bean implementation for own List of AbstractElements.
         /// </summary>
-        public partial class AbstractList : IList<AbstractElement>
+        public class AbstractList : IList<AbstractElement>
         {
             private IList<AbstractElement> _myList;
 
@@ -40,11 +40,11 @@ namespace CommunicationLib
             {
                 get
                 {
-                    throw new NotImplementedException();
+                   return _myList[index];
                 }
                 set
                 {
-                    throw new NotImplementedException();
+                    _myList[index] = value;
                 }
             }
 
@@ -60,22 +60,24 @@ namespace CommunicationLib
 
             public bool Contains(AbstractElement item)
             {
-                _myList.Contains(item);
+                return _myList.Contains(item);
             }
 
             public void CopyTo(AbstractElement[] array, int arrayIndex)
             {
-                throw new NotImplementedException();
+                AbstractElement[] arr = new AbstractElement[_myList.Count];
+                arr = _myList.ToArray();
+                arr.CopyTo(array, arrayIndex);
             }
 
             public int Count
             {
-                get { throw new NotImplementedException(); }
+                get { return _myList.Count; }
             }
 
             public bool IsReadOnly
             {
-                get { throw new NotImplementedException(); }
+                get { return _myList.IsReadOnly; }
             }
 
             public bool Remove(AbstractElement item)
@@ -90,7 +92,7 @@ namespace CommunicationLib
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
             {
-                throw new NotImplementedException();
+                return _myList.GetEnumerator();
             }
         }
 

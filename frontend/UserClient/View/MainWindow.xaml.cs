@@ -73,12 +73,12 @@ namespace UserClient
                     table1.Columns[x].Background = Brushes.LightSteelBlue;
             }
             */
-            add_Workflow_as_row("Workflow1");
-            add_Workflow_as_row("Workflow2");
+            addworkflowasrow("Workflow1");
+            addworkflowasrow("Workflow2");
            
         }
 
-        private void add_Workflow_as_row(String title)
+        private void addworkflowasrow(String title)
         {
             // Create and add an empty TableRowGroup to hold the table's Rows.
             TableRowGroup newRowGroup = new TableRowGroup();
@@ -110,8 +110,12 @@ namespace UserClient
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Name"))));
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Nr."))));
 
-            // Add the third row.
-            currentRow = new TableRow();
+            additemrow(newRowGroup);
+            additemrow(newRowGroup);
+        }
+        private void additemrow(TableRowGroup newRowGroup)
+        {
+            TableRow currentRow = new TableRow();
             newRowGroup.Rows.Add(currentRow);
 
             // Global formatting for the header row.
