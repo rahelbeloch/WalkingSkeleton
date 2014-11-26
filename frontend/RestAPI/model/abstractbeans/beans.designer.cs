@@ -234,6 +234,7 @@ namespace CommunicationLib.Model
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://www.example.org/Beans")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://www.example.org/Beans", IsNullable = true)]
+    [System.Xml.Serialization.XmlInclude(typeof(AbstractStartStep))]
     public partial class AbstractStep
     {
 
@@ -463,7 +464,7 @@ namespace CommunicationLib.Model
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true, Namespace = "http://www.example.org/Beans")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType = false, Namespace = "http://www.example.org/Beans")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace = "http://www.example.org/Beans", IsNullable = false)]
     public partial class AbstractStartStep : AbstractStep
     {
