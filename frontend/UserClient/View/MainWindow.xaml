@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:UserClient.ViewModel"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="UserClient.MainWindow"
-        Title="User Client" Height="300" Width="300">
+        Title="User Client" Height="600" Width="650">
     <Window.Resources>
         <vm:MainViewModel x:Key="MainViewModel" />
     </Window.Resources>
@@ -54,11 +54,11 @@
 			</FlowDocument>
 		</FlowDocumentReader>
 		<Border x:Name="Stage" Grid.Row="1" Margin="0,25,0,0"/>
-		<Grid x:Name="LoginLayer" Background="White" Margin="0,0,2,5" Grid.RowSpan="2" Visibility="Visible">
+		<Grid x:Name="LoginLayer" Background="White" Margin="0,0,2,5" Grid.RowSpan="2" Visibility="Visible" >
 			<Label Content="Login" HorizontalAlignment="Left" Margin="46,24.666,0,0" VerticalAlignment="Top" Width="97" FontWeight="Bold" FontSize="26.667"/>
 			<PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="46,135.666,0,0" VerticalAlignment="Top" Width="210" IsEnabled="False"/>
 			<TextBox x:Name="txtName"  HorizontalAlignment="Left" Height="23" Margin="46,96.47,0,0" TextWrapping="Wrap" Text="Nutzername" VerticalAlignment="Top" Width="210"/>
-			<Button Click="Login_Click" Content="Login" HorizontalAlignment="Left" Margin="46,174.666,0,0" VerticalAlignment="Top" Width="97"/>
+            <Button Click="Login_Click" Content="Login" HorizontalAlignment="Left" Margin="46,174.666,0,0" VerticalAlignment="Top" Width="97" Command="{Binding doLogin}"/>
 		</Grid>
 	</Grid>
 </Window>
