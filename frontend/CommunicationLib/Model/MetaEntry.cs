@@ -23,7 +23,7 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization!
         /// </summary>
-        private string _groupId;
-        public string groupId { get { return _groupId; } set { _groupId = value; } }
+        private string _group;
+        public string group { get { return _group; } set { _group = value; } }
     }
 }

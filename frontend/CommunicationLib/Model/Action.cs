@@ -11,20 +11,8 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization!
         /// </summary>
-        private string _name;
-        public string name { get { return _name; } set { _name = value; } }
-
-        /// <summary>
-        /// Used for (de)serialization!
-        /// </summary>
-        private int _userId;
-        public int userId { get { return _userId; } set { _userId = value; } }
-
-        /// <summary>
-        /// Used for (de)serialization!
-        /// </summary>
-        private string _username;
-        public string username { get { return _username; } set { _username = value; } }
+        private string _description;
+        public string name { get { return _description; } set { _description = value; } }
 
         public Action()
             : base()

@@ -21,6 +21,12 @@ namespace CommunicationLib.Model
         private List<Step> _nextSteps;
         public List<Step> nextSteps { get { return _nextSteps; } set { _nextSteps = value; } }
 
+        /// <summary>
+        /// Used for (de)serialization!
+        /// </summary>
+        private string _username;
+        public string username { get { return _username; } set { _username = value; } }
+
         [JsonIgnore]
         public string label { get; set; }
 
