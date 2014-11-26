@@ -8,14 +8,12 @@ using CommunicationLib.Model;
 using RestAPI;
 using RestSharp;
 using System.Web;
-using System.Xml;
-using System.Xml.Serialization;
 using System.IO;
 
 
 namespace UnitTestProject1
 {
-   /// <summary>
+    /// <summary>
     /// Test class for workflow (backing) bean logic.
     /// </summary>
     [TestClass]
@@ -28,48 +26,53 @@ namespace UnitTestProject1
         [TestMethod]
         public void testSentWorkflow()
         {
-            //RestRequester.init();
+            RestRequester.Init();
 
-            AbstractWorkflow testWF = new AbstractWorkflow();
-            testWF.Id = 17;
+            Workflow testWF = new Workflow();
+            testWF.id = 17;
 
-            AbstractStartStep ass = new AbstractStartStep();
+            StartStep ass = new StartStep();
             /*ass.Name = "Step1";
             ass.Username = "Rahel";
             ass.UserId = 17;
             ass.Id = 0;
             ass.label = "Label";*/
             //testWF.addStep(ass);
-            testWF.addStep(new AbstractStep());
-            testWF.addStep(new AbstractStep());
+            testWF.addStep(new Step());
+            testWF.addStep(new Step());
 
             /*Console.WriteLine(testWF.Id);
             
             testWF.addStep(new AbstractAction());
             testWF.addStep(new AbstractFinalStep());*/
 
-            //String answer = RestRequester.postObject<AbstractWorkflow>(testWF);
-            SerializeObject(testWF);
+            String answer = RestRequester.PostObject<Workflow>(testWF);
 
-            Assert.IsTrue(false);
-            //Assert.IsTrue(answer == "True");
+            //Console.WriteLine("POST-Workflow Anfrage erfolgreich geschickt...");
+            //Console.WriteLine("Antwort: " + answer);
+            //Console.ReadKey();
+
+            Assert.IsTrue(answer == "true");
+
         }
-        /*
+
         /// <summary>
-        /// 
+        ///     Test to get a workflow.
         /// </summary>
         [TestMethod]
         public void testGetWorkflow()
         {
-            RestRequester.init();
-
             int getWFId = 0;
-            AbstractWorkflow getWF = RestRequester.getObject<AbstractWorkflow>(getWFId);
 
+            RestRequester.Init();
+            Workflow getWF = RestRequester.GetObject<Workflow>(getWFId);
+
+            /*
             Console.WriteLine("GET-Workflow Anfrage erfolgreich geschickt...");
             Console.WriteLine("Object bekommen: " + getWF);
             Console.WriteLine("Antwort: Workflow Nr. " + getWF.Id + " bekommen.");
             Console.ReadKey();
+            */
 
             Assert.IsTrue(getWFId == getWF.Id);
         }
@@ -80,37 +83,36 @@ namespace UnitTestProject1
         [TestMethod]
         public void testStartWorkflow()
         {
-            RestRequester.init();
-
             int testWfId = 1;
             String testUserName = "Rahel";
 
+            RestRequester.Init();
             Boolean done = RestRequester.StartWorkflow(testWfId, testUserName);
-            
+
+            /*
             Console.WriteLine("Start-Workflow Anfrage erfolgreich geschickt...");
             Console.WriteLine("Antwort: Workflow gestartet: " + done);
             Console.ReadKey();
+            */
 
             Assert.IsTrue(done);
-        }*/
+        }
 
         /// <summary>
-        ///  Serializes object from C#-object to XML File.
+        ///     Test to switch forward some actions.
         /// </summary>
-        /// <param name="obj">the object to serialize</param>
-        /// <returns>the path of the new XML File</returns>
-        private static void SerializeObject(Object obj)
+        [TestMethod]
+        public void testSwitchForward()
         {
-            // path is always XMLFiles/<typeofObj>.xml; all XML Files are placed in this folder
-            String objXMLPath = "objectCache.xml"; // Achtung: sicherstellen, dass nur ein gleichzeitiger Zugriff auf Datei erfolgt, weil es nur eine Datei gibt, die alle XML Serialisierungen enthält
-            XmlSerializer xmlser = new XmlSerializer(obj.GetType(), "CommunicationLib.Model");
+            int stepId = 5;
+            int itemId = 11;
+            string username = "Rahel";
 
-            FileStream fs = new FileStream("../../XMLFiles/" + objXMLPath, FileMode.Create);
-            xmlser.Serialize(fs, obj);
-            fs.Close();
-            
+            RestRequester.Init();
+            Boolean done = RestRequester.StepForward(stepId, itemId, username);
 
-
+            Assert.IsTrue(done);
         }
+
     }
 }
