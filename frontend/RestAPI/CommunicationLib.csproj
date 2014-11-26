@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C383C56D-200C-418D-B13B-6AD50AD1CF52}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CommunicationLib</RootNamespace>
     <AssemblyName>CommunicationLib</AssemblyName>
@@ -62,6 +62,7 @@
     <Compile Include="model\backingbeans\AbstractStep.cs" />
     <Compile Include="model\backingbeans\AbstractUser.cs" />
     <Compile Include="model\backingbeans\AbstractWorkflow.cs" />
+    <Compile Include="model\backingbeans\AbstractElement.cs" />
     <Compile Include="model\StaticRessources.cs" />
     <Compile Include="RegistrationWrapper.cs" />
     <Compile Include="RestAPI.cs" />
