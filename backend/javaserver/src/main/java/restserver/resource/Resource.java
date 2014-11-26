@@ -1,5 +1,7 @@
 package restserver.resource;
 
+import java.io.IOException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -56,8 +58,12 @@ public class Resource {
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println("SEND -> ");
 		String workflowAsString = formParams.get("data").get(0);
-		Workflow workflow;
-		workflow = mapper.readValue(workflowAsString, Workflow.class);
+		AbstractWorkflow workflow;
+		try {
+			workflow = mapper.readValue(workflowAsString, AbstractWorkflow.class);
+		} catch (IOException e) {
+			return "jackson exception";
+		}
 		return "true";
 	}
 	
