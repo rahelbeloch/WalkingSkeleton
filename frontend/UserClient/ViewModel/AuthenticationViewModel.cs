@@ -11,7 +11,7 @@ namespace UserClient.ViewModel
     {
         public AuthenticationViewModel()
         {
-            CurrentUser = new AbstractUser { Name = "Name" };
+            CurrentUser = new User { username = "Name" };
         }
 
         private bool _IsAuthenticated;
@@ -42,8 +42,8 @@ namespace UserClient.ViewModel
             return IsAuthenticated;
         }
 
-        private AbstractUser _CurrentUser;
-        public AbstractUser CurrentUser
+        private User _CurrentUser;
+        public User CurrentUser
         {
             get { return _CurrentUser; }
             set
