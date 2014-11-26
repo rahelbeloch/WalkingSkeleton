@@ -28,6 +28,20 @@ public class DIApp {
 		Persistence p = i.getInstance(Persistence.class);
 		ProcessManager pm = i.getInstance(ProcessManager.class);
 		
+		ProduceData pd= new ProduceData(p);
+		System.out.println("User: " + p.loadUser("0"));
+		System.out.println("User: " + p.loadUser("1"));
+		System.out.println("User: " + p.loadUser("2"));
+		System.out.println("User: " + p.loadUser("3"));
+		System.out.println("User: " + p.loadUser("4"));
+		
+		System.out.println("Workflow: " + p.loadWorkflow(0).getStep());
+		System.out.println("Workflow: " + p.loadWorkflow(1).getStep());
+		System.out.println("Workflow: " + p.loadWorkflow(2).getStep());
+		System.out.println("Workflow: " + p.loadWorkflow(3).getStep());
+		System.out.println("Workflow: " + p.loadWorkflow(4).getStep());
+		
+		
 		pm.startBroker();
 		
 		Workflow myWorkflow = createWorkflow();
@@ -109,8 +123,8 @@ public class DIApp {
 		Workflow myWorkflow= new Workflow(1);
 		
 		//adding steps in workflow
-		myWorkflow.addStep(new Action(0*1000, "username", 0 + " Schritt"));
-		myWorkflow.addStep(new Action(1*1000, "username", 1 + " Schritt"));
+		myWorkflow.addStep(new Action(0*1000, 0*100+"", 0 + " Schritt"));
+		myWorkflow.addStep(new Action(1*1000, 1*100+"", 1 + " Schritt"));
 		myWorkflow.addStep(new FinalStep());
 		myWorkflow.getStepByPos(2).setId(9999);
 
