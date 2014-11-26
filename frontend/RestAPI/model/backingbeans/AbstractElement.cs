@@ -14,6 +14,5 @@ namespace CommunicationLib.Model
         public AbstractElement()
         {
         }
-
     }
 }

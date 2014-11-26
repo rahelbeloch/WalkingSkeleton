@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationManager.cs" />
+    <Compile Include="ElementList.cs" />
     <Compile Include="IDataReceiver.cs" />
     <Compile Include="model\abstractbeans\beans.designer.cs" />
     <Compile Include="model\backingbeans\AbstractAction.cs" />
