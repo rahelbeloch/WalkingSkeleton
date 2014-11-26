@@ -104,9 +104,9 @@ namespace RestAPI
             client = new RestClient(restserverurl);
         }
 
-        public static IList<AbstractElement> getAllObjects<O>(int userId) where AbstractElement : new()
+        public static ElementList getAllObjects<ElementList>(int userId) where ElementList : new()
         {
-            String typeName = typeof(O).FullName.Split('.').Last().ToLower();
+            String typeName = typeof(AbstractElement).FullName.Split('.').Last().ToLower();
             String url = "getall/" + typeName + "/" + userId;
            
             var request = new RestRequest(url, Method.GET);
@@ -115,8 +115,8 @@ namespace RestAPI
             try
             {
                 
-                var response = client.Execute<IList<AbstractElement>>(request);
-                O obj = response.Data;
+                var response = client.Execute<ElementList>(request);
+                ElementList obj = response.Data;
 
                 Console.WriteLine("Get-Answer from Server -> " + obj + " content " + obj.ToString());
 
@@ -129,8 +129,8 @@ namespace RestAPI
             }
         }
 
-            return request;
-        }
+           
+        
 
         /// <summary>
         ///     Get an object from the server, with HTTP-Method GET.
