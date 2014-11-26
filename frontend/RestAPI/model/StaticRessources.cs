@@ -15,11 +15,11 @@ namespace CommunicationLib.model
             // Error codes for errors concerning user operations
             {1001,"user does not exist in db"},
             {1002,"user already existing"},
-            {1003,""},
+            {1003,"user is not permitted for access"},
             {1004,""},
             {1005,""},
-            // Error codes for errors concerning ??
-            {2001,""},
+            // Error codes for errors concerning workflows
+            {2001,"workflow does not exist"},
             {2002,""},
             {2003,""},
             // Error codes for errors concerning ??

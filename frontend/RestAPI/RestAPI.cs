@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using System.IO;
 using CommunicationLib.Model;
 using System.Collections;
+using System.Reflection;
 
 namespace RestAPI
 {
@@ -37,14 +38,12 @@ namespace RestAPI
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+
             RestRequester.init();
 
-            Console.WriteLine("*** REST-Service ist " + RestRequester.restserverurl + " ***\n");
-        
             // Test to send a Workflow - DONE
             AbstractWorkflow testWF = new AbstractWorkflow();
-            testWF.Id = 1;
-            Console.WriteLine(testWF.Id);
+            testWF.Id = 17;
             /*AbstractStartStep ass = new AbstractStartStep();
             ass.Name = "Step1";
             ass.Username = "Rahel";
@@ -52,17 +51,23 @@ namespace RestAPI
             ass.Id = 0;
             ass.label = "Label";
             testWF.addStep(ass);
-            testWF.addStep(new AbstractAction());*/
-            //testWF.addStep(new AbstractFinalStep());
-            String answer = RestRequester.postObject<AbstractWorkflow>(testWF);
-            Console.WriteLine("POST-Workflow Anfrage erfolgreich geschickt...");
-            Console.WriteLine("Antwort: " + answer);
+            testWF.addStep(new AbstractAction());
+            //testWF.addStep(new AbstractFinalStep());*/
+            //String answer = RestRequester.PostObject<AbstractWorkflow>(testWF);
+
+            var requeststadtpost = new RestRequest("resource/abstractworkflow/17", Method.POST);
+            requeststadtpost.AddHeader("Accept", "text/plain");
+            requeststadtpost.AddParameter("data",testWF.ToString(),ParameterType.RequestBody);
+            
+            var respstadtpost = RestRequester.client.Execute(requeststadtpost);
+
+            Console.WriteLine("Antwort: " + respstadtpost.StatusDescription + "/" + respstadtpost.Content);
 
             // Test to get a workflow - DONE
-            AbstractWorkflow getWF = RestRequester.getObject<AbstractWorkflow>(0);
+            AbstractWorkflow getWF = RestRequester.GetObject<AbstractWorkflow>(17);
             Console.WriteLine("GET-Workflow Anfrage erfolgreich geschickt...");
             Console.WriteLine("Object bekommen: " + getWF);
-            Console.WriteLine("Antwort: Workflow Nr. " + getWF.Id + " bekommen.");
+            //Console.WriteLine("Antwort: Workflow Nr. " + getWF.Id + " bekommen.");
 
             // Test to start a workflow - DONE
             Boolean done = RestRequester.StartWorkflow(1, "Rahel");
@@ -71,20 +76,17 @@ namespace RestAPI
             Console.WriteLine("Start-Workflow Anfrage erfolgreich geschickt...");
             Console.WriteLine("Antwort: Workflow gestartet: " + done);
 
-            
             // Step Forward
             RestRequester.StepForward(5,11,"Rahel");
 
             // updateObject
-            RestRequester.updateObject(testWF);
+            RestRequester.UpdateObject(testWF);
 
             // deleteObject
-            RestRequester.deleteObject<AbstractWorkflow>(1);
-
+            RestRequester.DeleteObject<AbstractWorkflow>(1);
 
             Console.ReadKey();
         }
-        
     }
 
     /// <summary>
@@ -94,31 +96,36 @@ namespace RestAPI
     {
         public static String restserverurl;
         public static RestClient client;
+        private static String _ressourceParam = "resource/";
+        private static String _operationParam = "command/";
 
         ///<summary>
         ///     Initializes the RestClient. Has to be called before first use.
         /// </summary>
         public static void init()
         {
-            restserverurl = "http://172.26.38.101:8080";
+            restserverurl = "http://172.26.38.108:8080";
             client = new RestClient(restserverurl);
         }
 
-        public static ElementList getAllObjects<ElementList>(int userId) where ElementList : new()
+        /// <summary>
+        ///     Requests all Objects (Items or Workflows) belonging to the given user.
+        /// </summary>
+        /// <typeparam name="ElementList">the list of AbstractElements</typeparam>
+        /// <param name="userName">name of the user</param>
+        /// <returns>the list with AbstractElements requested from server</returns>
+        public static ElementList GetAllObjects<ElementList>(String userName) where ElementList : new()
         {
             String typeName = typeof(AbstractElement).FullName.Split('.').Last().ToLower();
-            String url = "getall/" + typeName + "/" + userId;
+            String url = "getall/" + typeName + "/" + userName;
            
             var request = new RestRequest(url, Method.GET);
 
             // decide wether the server does return the right excepted object or throws an exception
             try
-            {
-                
+            {      
                 var response = client.Execute<ElementList>(request);
                 ElementList obj = response.Data;
-
-                Console.WriteLine("Get-Answer from Server -> " + obj + " content " + obj.ToString());
 
                 return obj;
             }
@@ -129,9 +136,6 @@ namespace RestAPI
             }
         }
 
-           
-        
-
         /// <summary>
         ///     Get an object from the server, with HTTP-Method GET.
         ///     Path for this HTTP-Method is always: get/<type>/<id>
@@ -139,10 +143,12 @@ namespace RestAPI
         /// <typeparam name="O">type of the requested object</typeparam>
         /// <param name="id">id of the requested object</param>
         /// <returns>the requested object</returns>
-        public static O getObject<O>(int id) where O : new()
+        public static O GetObject<O>(int id) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = "get/" + typeName +"/" + id;
+            String url = _ressourceParam + typeName +"/" + id;
+            Console.WriteLine("Anfrageart: " + Method.GET);
+            Console.WriteLine("AnfrageUrl: " + url);
             O request = GetObjectRequest<O>(url, Method.GET);
 
             return request;
@@ -150,15 +156,15 @@ namespace RestAPI
 
         /// <summary>
         ///     Update an object on the server, with HTTP-Method PUT.
-        ///     Path for this HTTP-Method is always: put/<type>
-        ///     Answer: String  (True/False)
         /// </summary>
         /// <param name="sendObj"></param>
         /// <returns></returns>
-        public static String updateObject(Object sendObj)
+        public static String UpdateObject(AbstractElement sendObj)
         {
             String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
-            String url = "put/" + typeName;
+            String url = _ressourceParam + typeName + "/" + sendObj.id;
+            Console.WriteLine("Anfrageart: " + Method.PUT);
+            Console.WriteLine("AnfrageUrl: " + url);
             String serializedObjPath = SerializeObject(sendObj);
             IRestResponse request = SendObjectRequest(url, Method.PUT, serializedObjPath);
 
@@ -170,11 +176,12 @@ namespace RestAPI
         * Path for this HTTP-Method is always: send/<type>
          * Answer: True/False als String
         */
-        public static String postObject<O>(Object sendObj) where O : new()
+        public static String PostObject<O>(AbstractElement sendObj) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = "post/" + typeName;
-            Console.WriteLine("requested Url -> " + url);
+            String url = _ressourceParam + typeName + "/" + sendObj.id;
+            Console.WriteLine("Anfrageart: " + Method.POST);
+            Console.WriteLine("AnfrageUrl: " + url);
             String serializedObjPath = SerializeObject(sendObj);
             IRestResponse request = SendObjectRequest(url, Method.POST, serializedObjPath);
 
@@ -182,15 +189,17 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///     Delete an object on the server, with HTTP-Method DEL. Path for this HTTP-Method is always: delete/<type>/<id>
+        ///     Delete an object on the server, with HTTP-Method DEL.
         /// </summary>
         /// <typeparam name="O">type of the deleted object</typeparam>
         /// <param name="id">id of the deleted object</param>
         /// <returns>the deleted object</returns>
-        public static O deleteObject<O>(int id) where O : new()
+        public static O DeleteObject<O>(int id) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = "delete/" + typeName + "/" + id;
+            String url = _ressourceParam + typeName + "/" + id;
+            Console.WriteLine("Anfrageart: " + Method.DELETE);
+            Console.WriteLine("AnfrageUrl: " + url);
             O request = GetObjectRequest<O>(url, Method.DELETE);
 
             return request;
@@ -203,13 +212,11 @@ namespace RestAPI
         /// <param name="uId">User-name</param>
         public static Boolean StartWorkflow(int wId, string username)
         {
-            // 'post/start/workflowid/username'
-            String url = "post/start/" + wId + "/" + username;
+            // 'command/start/workflowid/username'
+            String url = _operationParam + "start/" + wId + "/" + username;
             var response = SendSimpleRequest(url, Method.POST);
             // do something with the response, e.g. look if everything is ok.
-            Console.WriteLine(response.StatusCode);
-            Console.WriteLine(response.Content);
-            Console.WriteLine(response.ContentLength);
+           
             return true;
         }
 
@@ -221,10 +228,11 @@ namespace RestAPI
         /// <param name="uId">name of the current user</param>
         public static Boolean StepForward(int stepId, int itemId, string username)
         {
-            // Request url: 'forward/stepid/itemid/username'
-            String url = "post/forward/" + stepId + "/" + itemId + "/" + username;
+            // Request url: 'command/forward/stepid/itemid/username'
+            String url = _operationParam + "forward/" + stepId + "/" + itemId + "/" + username;
             IRestResponse response = SendSimpleRequest(url, Method.POST);
             // do something with the response, e.g. look if everything is ok.
+            
             return true;
         }
 
@@ -237,17 +245,14 @@ namespace RestAPI
         /// <returns>the response object from server</returns>
         private static O GetObjectRequest<O>(String url, RestSharp.Method method) where O : new()
         {
-            Console.WriteLine("requested Url -> " + restserverurl + url);
             var request = new RestRequest(url, method);
+            request.AddHeader("Accept", "text/plain");
 
             // decide wether the server does return the right excepted object or throws an exception
             try
             {
                 var response = client.Execute<O>(request);
                 O obj = response.Data;
-
-                Console.WriteLine("Get-Answer from Server -> " + obj + " content " + obj.ToString());
-
                 return obj;
             }
             catch (OwnException)
@@ -266,21 +271,24 @@ namespace RestAPI
         /// <returns>the response from server</returns>
         private static IRestResponse SendObjectRequest(String url, RestSharp.Method method, String serializedObjPath)
         {
-            Console.WriteLine("requested Url -> " + restserverurl + url);
             var request = new RestRequest(url, method);
+            Console.WriteLine(request);
+            request.AddHeader("Accept", "text/plain");
 
             // if there is an object-path to a xml file that shall be send to server per XML
             if (serializedObjPath != null)
             {
                 request.RequestFormat = RestSharp.DataFormat.Xml;
-                request.AddParameter("text/xml", File.ReadAllText(serializedObjPath), ParameterType.RequestBody);
+                request.AddParameter("data", File.ReadAllText(serializedObjPath), ParameterType.RequestBody);
             }
 
             // decide wether the server does return the right excepted object or throws an exception
             try
             {
                 var response = client.Execute(request);
-                Console.WriteLine("Post-Answer from Server -> " + response);
+                Console.WriteLine("Post Request-Antwort: " + response);
+                Console.WriteLine("Post Request-Antwort: " + response.ErrorMessage);
+                Console.WriteLine("Post Request-Antwort: " + response.StatusCode + " / " + response.StatusDescription);
                 return response;
             }
             catch (OwnException)
@@ -298,12 +306,12 @@ namespace RestAPI
         /// <returns>the response from server</returns>
         private static IRestResponse SendSimpleRequest(string url, RestSharp.Method method)
         {
-            Console.WriteLine("requested Url -> " + restserverurl + url);
             var request = new RestRequest(url, method);
+            request.AddHeader("Accept", "text/plain");
+
             try
             {
                 var response = client.Execute(request);
-                Console.WriteLine("Simple-Answer from Server -> " + response);
                 return response;
             }
             catch(Exception e)
@@ -328,8 +336,6 @@ namespace RestAPI
             xmlser.Serialize(fs, obj);
             fs.Close();
             return "../../XMLFiles/" + objXMLPath;
-
-
         }
     }
 }
