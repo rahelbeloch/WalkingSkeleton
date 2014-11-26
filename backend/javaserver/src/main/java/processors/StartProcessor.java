@@ -1,13 +1,11 @@
 package processors;
 
 import java.util.Observable;
-import java.util.Observer;
 
 import persistence.Persistence;
 
 import com.google.inject.Inject;
 
-import manager.ProcessManager;
 import abstractbeans.AbstractAction;
 import abstractbeans.AbstractMetaState;
 import abstractbeans.AbstractStep;
@@ -31,9 +29,8 @@ public class StartProcessor extends Observable{
 	 * @param pm is the observer and manager of the processor
 	 */
 	@Inject
-	public StartProcessor(ProcessManager pm, Persistence p){
+	public StartProcessor(Persistence p){
 		this.p = p;
-		addObserver((Observer)pm);
 	}
 	
 	/**
