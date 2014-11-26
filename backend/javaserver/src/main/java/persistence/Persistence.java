@@ -1,5 +1,7 @@
 package persistence;
 
+import java.util.List;
+
 import abstractbeans.AbstractItem;
 import abstractbeans.AbstractMetaEntry;
 import abstractbeans.AbstractStep;
@@ -20,6 +22,7 @@ public interface Persistence {
 	 * load functions to get workflows, items, and users from persistence
 	 */
 	public AbstractWorkflow loadWorkflow(int id);
+	public List<AbstractWorkflow> loadAllWorkflows(); 
 	public AbstractItem loadItem(int id);
 	public AbstractUser loadUser(String name);
 	// later UserNotExistentException could thrown:

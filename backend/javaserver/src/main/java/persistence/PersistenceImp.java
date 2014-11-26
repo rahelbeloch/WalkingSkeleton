@@ -3,6 +3,7 @@ package persistence;
 import java.util.LinkedList;
 import java.util.List;
 
+import backingbeans.Workflow;
 import abstractbeans.AbstractItem;
 import abstractbeans.AbstractMetaEntry;
 import abstractbeans.AbstractStep;
@@ -44,6 +45,11 @@ public class PersistenceImp implements Persistence {
 		for (AbstractStep step : workflowsSteps) {
 			storeStep(step);
 		}
+	}
+	
+	@Override
+	public List<AbstractWorkflow> loadAllWorkflows() {
+		return workflows;
 	}
 
 	@Override

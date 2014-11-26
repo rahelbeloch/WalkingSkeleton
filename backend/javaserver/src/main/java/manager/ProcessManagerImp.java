@@ -71,22 +71,27 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	 * This method starts the messaging broker.
 	 */
 	public void startBroker() {
+
 		try {
 			sp.startBroker();
 		} catch (ServerPublisherBrokerException e) {
 			//TODO Logging
 		}
+
 	}
 	
 	/**
 	 * This method stops the messaging broker.
 	 */
 	public void stopBroker(){
+
 		try {
 			sp.stopBroker();
 		} catch (ServerPublisherBrokerException e) {
-			//TODO Logging
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 	}
 
 	/**
