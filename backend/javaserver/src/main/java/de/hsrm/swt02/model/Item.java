@@ -105,7 +105,14 @@ public class Item extends RootElement {
 		return list;
 	}
 	
-	
+	public MetaEntry getActStep(){
+		for(MetaEntry me: getForGroup("step")){
+			if( me.getValue() == MetaState.OPEN.toString()){
+				return me;
+			}
+		}
+		return null;
+	}
 	/**
 	 * This method sets the value of an entry or adds a new entry.
 	 * @param key is the id of an entry
