@@ -6,7 +6,6 @@ import persistence.Persistence;
 
 import com.google.inject.Inject;
 
-import manager.ProcessManager;
 import backingbeans.Workflow;
 
 /**
@@ -25,10 +24,10 @@ public class StartTrigger {
 	 * @param pm is the observer and manager of the processor
 	 */
 	@Inject
-	public StartTrigger(Workflow workflow, ProcessManager pm, Persistence p){
+	public StartTrigger(Workflow workflow, Observer o, Persistence p){
 		currentWorkflow = workflow;
 		startProcessor = new StartProcessor(p);
-		startProcessor.addObserver((Observer)pm);
+		startProcessor.addObserver(o);
 	}
 	
 	/**

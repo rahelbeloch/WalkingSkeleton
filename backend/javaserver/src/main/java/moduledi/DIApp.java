@@ -41,8 +41,6 @@ public class DIApp {
 		benni.setName("benni");
 		benni.setId(23);
 		
-		//This manager calls the appropriate processor for an step
-		
 		
 		//Output of all items in a workflow
 		for (AbstractItem ai : myWorkflow.getItem()){
