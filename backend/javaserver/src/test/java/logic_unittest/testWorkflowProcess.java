@@ -91,10 +91,10 @@ public class testWorkflowProcess {
 	
 	public void init(){
 		myWorkflow= new Workflow(1);
-		firstStep = new Action(0, 0, 0 + " Schritt");
+		firstStep = new Action(0, "username", 0 + " Schritt");
 		//adding steps in workflow
 		myWorkflow.addStep(firstStep);
-		myWorkflow.addStep(new Action(1*1000, 1*100, 1 + " Schritt"));
+		myWorkflow.addStep(new Action(1*1000, "username", 1 + " Schritt"));
 		myWorkflow.addStep(new FinalStep());
 		myWorkflow.getStepByPos(2).setId(9999);
 
