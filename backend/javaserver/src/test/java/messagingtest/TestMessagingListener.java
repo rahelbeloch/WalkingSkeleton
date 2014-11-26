@@ -24,6 +24,19 @@ public class TestMessagingListener implements MessageListener{
 	final private String TOPIC_NAME = "TEST_TOPIC";
 	
 	public TestMessagingListener() {
+		
+	}
+	
+	public void onMessage(Message message) {
+		TextMessage tm = (TextMessage) message;
+		try {
+			receivedMsg = tm.getText();
+		} catch (JMSException e) {
+
+		}
+	}
+	
+	public void start(){
 		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(BROKERURL);	
 		try {
 			connection = factory.createConnection();
@@ -33,16 +46,15 @@ public class TestMessagingListener implements MessageListener{
 			consumer.setMessageListener(this);
 			connection.start();
 		} catch (JMSException e) {
-			e.printStackTrace();
+
 		}
 	}
 	
-	public void onMessage(Message message) {
-		TextMessage tm = (TextMessage) message;
+	public void stop(){
 		try {
-			receivedMsg = tm.getText();
+			connection.close();
 		} catch (JMSException e) {
-			e.printStackTrace();
+			
 		}
 	}
 	
