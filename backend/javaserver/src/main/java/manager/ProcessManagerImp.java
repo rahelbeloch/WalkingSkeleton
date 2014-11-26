@@ -74,7 +74,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 		try {
 			sp.startBroker();
 		} catch (ServerPublisherBrokerException e) {
-			//Loggin
+			//TODO Logging
 		}
 	}
 	
@@ -85,7 +85,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 		try {
 			sp.stopBroker();
 		} catch (ServerPublisherBrokerException e) {
-			//Loggin
+			//TODO Logging
 		}
 	}
 
@@ -97,7 +97,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 		try {
 			sp.publish("item=" + ((Item)arg).getState() + "=" + ((Item) arg).getId(), "ITEMS_FROM_"+ ((Item) arg).getWorkflowId());
 		} catch (Exception e) {
-			e.printStackTrace();
+			//TODO Logging
 		}
 	}
 }
