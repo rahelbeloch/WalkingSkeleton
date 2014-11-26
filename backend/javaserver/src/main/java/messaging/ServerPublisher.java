@@ -6,7 +6,6 @@ package messaging;
  */
 public interface ServerPublisher {
 
-	
 	public void publish(String content, String topicName) throws ServerPublisherBrokerException;
 
 	public void startBroker () throws ServerPublisherBrokerException;
