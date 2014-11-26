@@ -1,13 +1,13 @@
 package logic_unittest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import model.Action;
+import model.FinalStep;
+import model.Step;
+import model.Workflow;
 
 import org.junit.Test;
-
-import abstractbeans.AbstractStep;
-import backingbeans.Action;
-import backingbeans.FinalStep;
-import backingbeans.Workflow;
 
 public class testInitWorkflow {
 
@@ -20,7 +20,7 @@ public class testInitWorkflow {
 	
 	@Test
 	public void StepCheckId(){
-		AbstractStep step = new Action(1, "username", 0 + " Schritt");
+		Step step = new Action(1, "username", 0 + " Schritt");
 		
 		assertTrue(step.getId()==1);
 	}
@@ -36,13 +36,13 @@ public class testInitWorkflow {
 	public void ActionCheckName(){
 		Action step = new Action(1, "username", 0 + " Schritt");
 		
-		assertEquals(step.getName(), 0 + " Schritt");
+		assertEquals(step.getDescription(), 0 + " Schritt");
 	}
 	
 	@Test
 	public void addStep(){
 		Workflow myWorkflow = new Workflow(1);
-		AbstractStep step = new Action(0*1000, "username", 0 + " Schritt");
+		Step step = new Action(0*1000, "username", 0 + " Schritt");
 		myWorkflow.addStep(step);
 		
 		assertEquals(step, myWorkflow.getStepById(0));
@@ -51,8 +51,8 @@ public class testInitWorkflow {
 	@Test
 	public void connectSteps(){
 		Workflow myWorkflow = new Workflow(1);
-		AbstractStep firstStep = new Action(0*1000, "username", 0 + " Schritt");
-		AbstractStep secondStep = new Action(1*1000, "username", 1 + " Schritt");
+		Step firstStep = new Action(0*1000, "username", 0 + " Schritt");
+		Step secondStep = new Action(1*1000, "username", 1 + " Schritt");
 		
 		myWorkflow.addStep(firstStep);
 		myWorkflow.addStep(secondStep);
@@ -65,9 +65,9 @@ public class testInitWorkflow {
 	@Test
 	public void connectFinalStep(){
 		Workflow myWorkflow = new Workflow(1);
-		AbstractStep firstStep = new Action(0*1000, "username", 0 + " Schritt");
-		AbstractStep secondStep = new Action(1*1000, "username", 1 + " Schritt");
-		AbstractStep finalStep = new FinalStep();
+		Step firstStep = new Action(0*1000, "username", 0 + " Schritt");
+		Step secondStep = new Action(1*1000, "username", 1 + " Schritt");
+		Step finalStep = new FinalStep();
 		
 		myWorkflow.addStep(firstStep);
 		myWorkflow.addStep(secondStep);

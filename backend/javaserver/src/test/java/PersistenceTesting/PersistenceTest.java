@@ -2,23 +2,22 @@ package PersistenceTesting;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import model.Action;
+import model.FinalStep;
+import model.Item;
+import model.StartStep;
+import model.User;
+import model.Workflow;
+import moduledi.SingleModule;
 
 import org.junit.Test;
 
 import persistence.Persistence;
 import persistence.UserAlreadyExistsException;
 import persistence.UserNotExistentException;
-import abstractbeans.AbstractUser;
-import backingbeans.Action;
-import backingbeans.FinalStep;
-import backingbeans.Item;
-import backingbeans.StartStep;
-import backingbeans.Workflow;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-
-import moduledi.SingleModule;
 
 public class PersistenceTest {
 	
@@ -93,7 +92,7 @@ public class PersistenceTest {
 		assertEquals(step2, db.loadStep(2));
 		
 		// a workflows steps should be the same before and after storage
-		assertEquals(workflow007.getStep(), db.loadWorkflow(7).getStep());
+		assertEquals(workflow007.getSteps(), db.loadWorkflow(7).getSteps());
 		// no specific functions of a step can be tested, because db only returns an AbstractWorkflow
 		//assertEquals(workflow007.getStepByPos(2), db.loadWorkflow(7).getStepByPos(2));
 		
@@ -185,12 +184,12 @@ public class PersistenceTest {
 	 */
 	@Test
 	public void testUserStorage() throws UserAlreadyExistsException {
-		AbstractUser user001 = new AbstractUser();
-		AbstractUser user002 = new AbstractUser();
-		AbstractUser user003 = new AbstractUser();
-		user001.setName("1");
-		user002.setName("2");
-		user003.setName("3");
+		User user001 = new User();
+		User user002 = new User();
+		User user003 = new User();
+		user001.setUsername("1");
+		user002.setUsername("2");
+		user003.setUsername("3");
 		
 		db.addUser(user001);
 		db.addUser(user002);
@@ -203,10 +202,10 @@ public class PersistenceTest {
 	
 	@Test(expected=UserAlreadyExistsException.class)
 	public void testUserAlreadyExistsException() throws UserAlreadyExistsException {
-		AbstractUser user001 = new AbstractUser();
-		AbstractUser user002 = new AbstractUser();
-		user001.setName("17");
-		user002.setName("17");
+		User user001 = new User();
+		User user002 = new User();
+		user001.setUsername("17");
+		user002.setUsername("17");
 		
 		// first user is stored, second one should be rejected by UserAlreadyExistsException
 		db.addUser(user001);
@@ -215,10 +214,10 @@ public class PersistenceTest {
 	
 	@Test
 	public void testDuplicateUserStorage() {
-		AbstractUser user001 = new AbstractUser();
-		AbstractUser user002 = new AbstractUser();
-		user001.setName("17");
-		user002.setName("17");
+		User user001 = new User();
+		User user002 = new User();
+		user001.setUsername("17");
+		user002.setUsername("17");
 		
 		// first user is stored, second one should be rejected
 		try {
@@ -235,10 +234,10 @@ public class PersistenceTest {
 	
 	@Test
 	public void testUserDeletion() throws UserAlreadyExistsException {
-		AbstractUser user001 = new AbstractUser();
-		AbstractUser user002 = new AbstractUser();
-		user001.setName("1");
-		user002.setName("2");
+		User user001 = new User();
+		User user002 = new User();
+		user001.setUsername("1");
+		user002.setUsername("2");
 		
 		db.addUser(user001);
 		db.addUser(user002);
@@ -251,13 +250,13 @@ public class PersistenceTest {
 	
 	@Test
 	public void testUpadteOnUser() throws UserNotExistentException, UserAlreadyExistsException {
-		AbstractUser user001 = new AbstractUser();
-		user001.setName("1");
+		User user001 = new User();
+		user001.setUsername("1");
 		user001.setId(71);
 		db.addUser(user001);
 		
-		assertEquals(user001, db.loadUser(user001.getName()));
-		assertEquals(user001.getId(), db.loadUser(user001.getName()).getId());
+		assertEquals(user001, db.loadUser(user001.getUsername()));
+		assertEquals(user001.getId(), db.loadUser(user001.getUsername()).getId());
 		
 		// modification on users ID
 		user001.setId(17);
@@ -269,14 +268,14 @@ public class PersistenceTest {
 		// update on existing user
 		db.updateUser(user001);
 		
-		assertEquals(user001, db.loadUser(user001.getName()));
-		assertEquals(user001.getId(), db.loadUser(user001.getName()).getId());
+		assertEquals(user001, db.loadUser(user001.getUsername()));
+		assertEquals(user001.getId(), db.loadUser(user001.getUsername()).getId());
 	}
 	
 	@Test(expected=UserNotExistentException.class)
 	public void testUpdateOnNonExistentUser () throws UserNotExistentException{
-		AbstractUser user001 = new AbstractUser();
-		user001.setName("1");
+		User user001 = new User();
+		user001.setUsername("1");
 		
 		db.updateUser(user001);
 	}
