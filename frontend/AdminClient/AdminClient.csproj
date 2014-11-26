@@ -115,8 +115,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RestAPI\CommunicationLib.csproj">
-      <Project>{c383c56d-200c-418d-b13b-6ad50ad1cf52}</Project>
+    <ProjectReference Include="..\CommunicationLib\CommunicationLib.csproj">
+      <Project>{4c425a0b-326a-40f3-b0f3-e5fcb73f47ef}</Project>
       <Name>CommunicationLib</Name>
     </ProjectReference>
   </ItemGroup>
