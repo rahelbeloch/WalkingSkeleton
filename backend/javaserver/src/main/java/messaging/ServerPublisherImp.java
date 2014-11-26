@@ -130,8 +130,7 @@ public class ServerPublisherImp implements ServerPublisher {
 	public boolean brokerStarted() {
 		if (broker == null) {
 			return false;
-		}
-		else{
+		} else {
 			return broker.isStarted();
 		}
 	}
