@@ -25,113 +25,113 @@ import com.google.inject.Singleton;
  */
 @Singleton
 public class ServerPublisherImp implements ServerPublisher {
+    
+    private ActiveMQConnectionFactory factory;
+    private Connection connection;
+    private Session session;
+    private MessageProducer publisher;
+    private BrokerService broker;
 	
-	private ActiveMQConnectionFactory factory;
-	private Connection connection;
-	private Session session;
-	private MessageProducer publisher;
-	private BrokerService broker;
+    final private String BROKER_URL; 
+    final private String CONNECTION_URL;
 	
-	final private String BROKER_URL; 
-	final private String CONNECTION_URL;
-	
-	/**
-	 * Constructor
-	 */
-	public ServerPublisherImp() {
-		Properties properties = new Properties();
-		BufferedInputStream stream;
-		//read configuration file for broker properties
-		try {
-			stream = new BufferedInputStream(new FileInputStream("server.config"));
-			properties.load(stream);
-			stream.close();
-		} catch (FileNotFoundException e) {
-			//TODO LOGGING
-		} catch (IOException e) {
-			//TODO LOGGING
-		} catch (SecurityException e) {
-			//TODO LOGGING
-		} 
-		BROKER_URL = properties.getProperty("BrokerURL");
-		CONNECTION_URL = properties.getProperty("BrokerConnectionURL");
-		factory = new ActiveMQConnectionFactory(BROKER_URL);
+    /**
+     * Constructor
+     */
+    public ServerPublisherImp() {
+        Properties properties = new Properties();
+        BufferedInputStream stream;
+        //read configuration file for broker properties
+        try {
+            stream = new BufferedInputStream(new FileInputStream("server.config"));
+            properties.load(stream);
+            stream.close();
+        } catch (FileNotFoundException e) {
+            //TODO LOGGING
+        } catch (IOException e) {
+            //TODO LOGGING
+        } catch (SecurityException e) {
+            //TODO LOGGING
+        } 
+        BROKER_URL = properties.getProperty("BrokerURL");
+        CONNECTION_URL = properties.getProperty("BrokerConnectionURL");
+        factory = new ActiveMQConnectionFactory(BROKER_URL);
 	}
-	
-	/**Publishes a String-content on a specified topic.
-	 * @param content - content to publish
-	 * @param topicName - topic where the content will be published
-	 * @throws Exception
-	 */
-	public void publish(String content, String topicName) throws ServerPublisherBrokerException {
-		try {
-			connection = factory.createConnection();
-			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+    
+    /**Publishes a String-content on a specified topic.
+     * @param content - content to publish
+     * @param topicName - topic where the content will be published
+     * @throws Exception
+     */
+    public void publish(String content, String topicName) throws ServerPublisherBrokerException {
+        try {
+            connection = factory.createConnection();
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            
+            //create a message-producer for the topic
+            Topic topic = session.createTopic(topicName);
+            publisher = session.createProducer(topic);
+            publisher.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			
-			//create a message-producer for the topic
-			Topic topic = session.createTopic(topicName);
-			publisher = session.createProducer(topic);
-			publisher.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-			
-			//define messaging-content (TextMessage or MapMessage)
-			TextMessage msg = session.createTextMessage(content);
-			
-			//send and close
-			publisher.send(msg);
-			session.close();
-			connection.close();
-		} catch (JMSException e) {
-			throw new ServerPublisherBrokerException("Publishing-Error: +"
+            //define messaging-content (TextMessage or MapMessage)
+            TextMessage msg = session.createTextMessage(content);
+            
+            //send and close
+            publisher.send(msg);
+            session.close();
+            connection.close();
+        } catch (JMSException e) {
+            throw new ServerPublisherBrokerException("Publishing-Error: +"
 														+ e.getMessage());
-		}
-	}
+        }
+    }
 	
-	/**Starts the messaging broker
-	 * @throws ServerPublisherBrokerException
-	 */
-	public void startBroker() throws ServerPublisherBrokerException{
-		if(broker == null) {
-			broker = new BrokerService();
-			try {
-				broker.addConnector(CONNECTION_URL);
-			} catch (Exception e) {
-				throw new ServerPublisherBrokerException(
-						"Message broker could not add connector (URL: " 
-						+ CONNECTION_URL + ")");
-			}
-		}
-		if (!broker.isStarted()) {
-			try {
-				broker.start();
-			} catch (Exception ex) {
-				throw new ServerPublisherBrokerException("Could not START message broker");
-			}
-		}
-	}
+    /**Starts the messaging broker
+     * @throws ServerPublisherBrokerException
+     */
+    public void startBroker() throws ServerPublisherBrokerException{
+        if(broker == null) {
+            broker = new BrokerService();
+            try {
+                broker.addConnector(CONNECTION_URL);
+            } catch (Exception e) {
+                throw new ServerPublisherBrokerException(
+                	    "Message broker could not add connector (URL: " 
+                        + CONNECTION_URL + ")");
+            }
+        }
+        if (!broker.isStarted()) {
+            try {
+                broker.start();
+            } catch (Exception ex) {
+                throw new ServerPublisherBrokerException("Could not START message broker");
+            }
+        }
+    }
 	
-	/** Stops the messaging broker
-	 * @throws ServerPublisherBrokerException
-	 */
-	public void stopBroker() throws ServerPublisherBrokerException {
-		if (broker == null) {
-			throw new ServerPublisherBrokerException("Message broker was never started");
-		} else if (broker.isStarted()) {
-			try {
-				broker.stop();
-			} catch (Exception ex) {
-				throw new ServerPublisherBrokerException("Could not STOP message broker");
-			}
-		}
-	}
-	
-	/**Check weather the message broker is running
-	 * @return true if the embedded message-broker is running
-	 */
-	public boolean brokerStarted() {
-		if (broker == null) {
-			return false;
-		} else {
-			return broker.isStarted();
-		}
-	}
+    /** Stops the messaging broker
+     * @throws ServerPublisherBrokerException
+     */
+    public void stopBroker() throws ServerPublisherBrokerException {
+        if (broker == null) {
+            throw new ServerPublisherBrokerException("Message broker was never started");
+        } else if (broker.isStarted()) {
+            try {
+                broker.stop();
+            } catch (Exception ex) {
+                throw new ServerPublisherBrokerException("Could not STOP message broker");
+            }
+        }
+    }
+    
+    /**Check weather the message broker is running
+     * @return true if the embedded message-broker is running
+     */
+    public boolean brokerStarted() {
+        if (broker == null) {
+            return false;
+        } else {
+            return broker.isStarted();
+        }
+    }
 }
