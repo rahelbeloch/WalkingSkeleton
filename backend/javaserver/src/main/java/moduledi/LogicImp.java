@@ -5,15 +5,13 @@ import java.util.List;
 
 import manager.ProcessManager;
 import messaging.ServerPublisher;
+import model.Item;
+import model.Step;
+import model.User;
+import model.Workflow;
 import persistence.Persistence;
 import persistence.UserAlreadyExistsException;
 import processors.StartTrigger;
-import abstractbeans.AbstractItem;
-import abstractbeans.AbstractStep;
-import abstractbeans.AbstractWorkflow;
-import backingbeans.Item;
-import backingbeans.User;
-import backingbeans.Workflow;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -55,12 +53,12 @@ public class LogicImp implements Logic{
 	}
 
 	@Override
-	public void stepOver(Item item, AbstractStep step, User user) {
+	public void stepOver(Item item, Step step, User user) {
 		pm.selectProcessor(step, item, user);
 	}
 
 	@Override
-	public void addStep(int workflowID, AbstractStep step) {
+	public void addStep(int workflowID, Step step) {
 		Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
 		workflow.addStep(step);
 		p.storeWorkflow(workflow);
@@ -89,13 +87,14 @@ public class LogicImp implements Logic{
 		p.deleteUser(username);		
 	}
 
+	// TODO: Ez at Home
 	@Override
 	public List<Workflow> getWorkflowsByUser(User user) {
 		LinkedList<Workflow> workflows = new LinkedList<>();
-		for(AbstractWorkflow wf: p.loadAllWorkflows()) {
-			for(AbstractStep step: wf.getStep()) {
+		for(Workflow wf: p.loadAllWorkflows()) {
+			for(Step step: wf.getSteps()) {
 				//TODO username in AbstractStep
-				if(step.getUsername().equals(user.getName())) {
+				if(step.getUsername().equals(user.getUsername())) {
 					workflows.add((Workflow)wf);
 					break;
 				}
@@ -108,10 +107,11 @@ public class LogicImp implements Logic{
 	public List<Item> getOpenItemsByUser(User user) {
 		LinkedList<Workflow> workflows = (LinkedList)getWorkflowsByUser(user);
 		for(Workflow wf: workflows) {
-			for(AbstractItem item: wf.getItem()) {
+			for(Item item: wf.getItems()) {
 				
 			}
 		}
+		return null;
 	}
 
 	@Override

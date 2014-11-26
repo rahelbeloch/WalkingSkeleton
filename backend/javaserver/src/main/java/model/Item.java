@@ -20,6 +20,7 @@ public class Item extends RootElement {
 	
 	public Item() {
 		super();
+        metadata = new ArrayList<MetaEntry>();
 	}
 
 	public int getWorkflowId() {
@@ -31,9 +32,6 @@ public class Item extends RootElement {
 	}
 	
 	public List<MetaEntry> getMetadata() {
-        if (metadata == null) {
-        	metadata = new ArrayList<MetaEntry>();
-        }
         return this.metadata;
     }
 

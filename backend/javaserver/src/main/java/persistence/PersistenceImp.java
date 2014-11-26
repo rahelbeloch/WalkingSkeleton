@@ -3,33 +3,32 @@ package persistence;
 import java.util.LinkedList;
 import java.util.List;
 
-import backingbeans.Workflow;
-import abstractbeans.AbstractItem;
-import abstractbeans.AbstractMetaEntry;
-import abstractbeans.AbstractStep;
-import abstractbeans.AbstractUser;
-import abstractbeans.AbstractWorkflow;
+import model.Item;
+import model.MetaEntry;
+import model.Step;
+import model.User;
+import model.Workflow;
 
 public class PersistenceImp implements Persistence {
 
 	/*
 	 * abstraction of a database, that persists object in form Abstract-*
 	 */
-	private List<AbstractWorkflow> workflows = new LinkedList<>();
-	private List<AbstractItem> items = new LinkedList<>();
-	private List<AbstractUser> users = new LinkedList<>();
+	private List<Workflow> workflows = new LinkedList<>();
+	private List<Item> items = new LinkedList<>();
+	private List<User> users = new LinkedList<>();
 
-	private List<AbstractStep> steps = new LinkedList<>();
-	private List<AbstractMetaEntry> metaEntries = new LinkedList<>();
+	private List<Step> steps = new LinkedList<>();
+	private List<MetaEntry> metaEntries = new LinkedList<>();
 
 	/*
 	 * store functions for workflow, item, user store functions for step,
 	 * metaEntry
 	 */
 	@Override
-	public void storeWorkflow(AbstractWorkflow workflow) {
-		AbstractWorkflow workflowToRemove = null;
-		for (AbstractWorkflow wf : workflows) {
+	public void storeWorkflow(Workflow workflow) {
+		Workflow workflowToRemove = null;
+		for (Workflow wf : workflows) {
 			if (wf.getId() == workflow.getId()) {
 				workflowToRemove = wf;
 				break;
@@ -38,24 +37,24 @@ public class PersistenceImp implements Persistence {
 		if(workflowToRemove != null) {
 			workflows.remove(workflowToRemove);
 		}
-		workflows.add((AbstractWorkflow) workflow);
+		workflows.add((Workflow) workflow);
 
 		// a workflows steps are resolved and stored one by one
-		List<AbstractStep> workflowsSteps = workflow.getStep();
-		for (AbstractStep step : workflowsSteps) {
+		List<Step> workflowsSteps = workflow.getSteps();
+		for (Step step : workflowsSteps) {
 			storeStep(step);
 		}
 	}
 	
 	@Override
-	public List<AbstractWorkflow> loadAllWorkflows() {
+	public List<Workflow> loadAllWorkflows() {
 		return workflows;
 	}
 
 	@Override
-	public void storeItem(AbstractItem item) {
-		AbstractItem itemToRemove = null;
-		for (AbstractItem i : items) {
+	public void storeItem(Item item) {
+		Item itemToRemove = null;
+		for (Item i : items) {
 			if (i.getId() == item.getId()) {
 				itemToRemove = i;
 				break;
@@ -64,31 +63,31 @@ public class PersistenceImp implements Persistence {
 		if(itemToRemove != null) {
 			items.remove(itemToRemove);
 		}
-		items.add((AbstractItem) item);
+		items.add((Item) item);
 
 		// items include information of type MetaEntry which have to be stored
 		// separately
-		List<AbstractMetaEntry> itemsMetadata = item.getMetadata();
-		for (AbstractMetaEntry metaEntry : itemsMetadata) {
+		List<MetaEntry> itemsMetadata = item.getMetadata();
+		for (MetaEntry metaEntry : itemsMetadata) {
 			storeMetaEntry(metaEntry);
 		}
 	}
 
 	@Override
-	public void addUser(AbstractUser user) throws UserAlreadyExistsException {
-		for (AbstractUser u : users) {
-			if (u.getName().equals(user.getName())) {
+	public void addUser(User user) throws UserAlreadyExistsException {
+		for (User u : users) {
+			if (u.getUsername().equals(user.getUsername())) {
 				throw new UserAlreadyExistsException();
 			}
 		}
-		users.add((AbstractUser) user);
+		users.add((User) user);
 	}
 
 	@Override
-	public void updateUser(AbstractUser user) throws UserNotExistentException {
-		AbstractUser userToRemove = null;
-		for (AbstractUser u : users) {
-			if (u.getName().equals(user.getName())) {
+	public void updateUser(User user) throws UserNotExistentException {
+		User userToRemove = null;
+		for (User u : users) {
+			if (u.getUsername().equals(user.getUsername())) {
 				userToRemove = u;
 			}
 		}
@@ -100,9 +99,9 @@ public class PersistenceImp implements Persistence {
 		}
 	}
 
-	public void storeStep(AbstractStep step) {
-		AbstractStep stepToRemove = null;
-		for (AbstractStep s : steps) {
+	public void storeStep(Step step) {
+		Step stepToRemove = null;
+		for (Step s : steps) {
 			if (s.getId() == step.getId()) {
 				stepToRemove = s;
 				break;
@@ -111,13 +110,13 @@ public class PersistenceImp implements Persistence {
 		if(stepToRemove != null) {
 			steps.remove(stepToRemove);
 		}
-		steps.add((AbstractStep) step);
+		steps.add((Step) step);
 		// TODO: need to distinguish between Action/FirstStep/StartStep?
 	}
 
-	public void storeMetaEntry(AbstractMetaEntry metaEntry) {
-		AbstractMetaEntry metaEntryToRemove = null;
-		for (AbstractMetaEntry me : metaEntries) {
+	public void storeMetaEntry(MetaEntry metaEntry) {
+		MetaEntry metaEntryToRemove = null;
+		for (MetaEntry me : metaEntries) {
 			// assumption that MetaEntries have keys that are unique
 			if (me.getKey().equals(metaEntry.getKey())) {
 				metaEntryToRemove = me;
@@ -127,7 +126,7 @@ public class PersistenceImp implements Persistence {
 		if (metaEntryToRemove != null){
 			metaEntries.remove(metaEntryToRemove);
 		}
-		metaEntries.add((AbstractMetaEntry) metaEntry);
+		metaEntries.add((MetaEntry) metaEntry);
 	}
 
 	/*
@@ -135,9 +134,9 @@ public class PersistenceImp implements Persistence {
 	 * metaEntry
 	 */
 	@Override
-	public AbstractWorkflow loadWorkflow(int id) {
-		AbstractWorkflow workflow = null;
-		for (AbstractWorkflow wf : workflows) {
+	public Workflow loadWorkflow(int id) {
+		Workflow workflow = null;
+		for (Workflow wf : workflows) {
 			if (wf.getId() == id) {
 				workflow = wf;
 			}
@@ -147,9 +146,9 @@ public class PersistenceImp implements Persistence {
 	}
 
 	@Override
-	public AbstractItem loadItem(int id) {
-		AbstractItem item = null;
-		for (AbstractItem i : items) {
+	public Item loadItem(int id) {
+		Item item = null;
+		for (Item i : items) {
 			if (i.getId() == id) {
 				item = i;
 			}
@@ -159,10 +158,10 @@ public class PersistenceImp implements Persistence {
 	}
 
 	@Override
-	public AbstractUser loadUser(String name) {
-		AbstractUser user = null;
-		for (AbstractUser u : users) {
-			if (u.getName().equals(name)) {
+	public User loadUser(String name) {
+		User user = null;
+		for (User u : users) {
+			if (u.getUsername().equals(name)) {
 				user = u;
 			}
 		}
@@ -171,9 +170,9 @@ public class PersistenceImp implements Persistence {
 		return user;
 	}
 	
-	public AbstractStep loadStep(int id) {
-		AbstractStep step = null;
-		for(AbstractStep s: steps) {
+	public Step loadStep(int id) {
+		Step step = null;
+		for(Step s: steps) {
 			if(s.getId() == id) {
 				step = s;
 			}
@@ -181,9 +180,9 @@ public class PersistenceImp implements Persistence {
 		return step;
 	}
 	
-	public AbstractMetaEntry loadMetaEntry(String key) {
-		AbstractMetaEntry metaEntry = null;
-		for(AbstractMetaEntry me: metaEntries) {
+	public MetaEntry loadMetaEntry(String key) {
+		MetaEntry metaEntry = null;
+		for(MetaEntry me: metaEntries) {
 			if(me.getKey().equals(key)) {
 				metaEntry = me;
 			}
@@ -197,12 +196,12 @@ public class PersistenceImp implements Persistence {
 	 */
 	@Override
 	public void deleteWorkflow(int id) {
-		AbstractWorkflow workflowToRemove = null;
-		for (AbstractWorkflow wf : workflows) {
+		Workflow workflowToRemove = null;
+		for (Workflow wf : workflows) {
 			if (wf.getId() == id) {
 				// a workflows steps are resolved and deleted one by one
-				List<AbstractStep> workflowsSteps = wf.getStep();
-				for (AbstractStep step : workflowsSteps) {
+				List<Step> workflowsSteps = wf.getSteps();
+				for (Step step : workflowsSteps) {
 					deleteStep(step.getId());
 				}
 				workflowToRemove = wf;
@@ -216,13 +215,13 @@ public class PersistenceImp implements Persistence {
 
 	@Override
 	public void deleteItem(int id) {
-		AbstractItem itemToRemove = null;
-		for (AbstractItem i : items) {
+		Item itemToRemove = null;
+		for (Item i : items) {
 			if (i.getId() == id) {
 
 				// an items metaData are deleted as well
-				List<AbstractMetaEntry> itemsMetaData = i.getMetadata();
-				for (AbstractMetaEntry metaEntry : itemsMetaData) {
+				List<MetaEntry> itemsMetaData = i.getMetadata();
+				for (MetaEntry metaEntry : itemsMetaData) {
 					deleteMetaEntry(metaEntry.getKey());
 				}
 				itemToRemove = i;
@@ -236,9 +235,9 @@ public class PersistenceImp implements Persistence {
 
 	@Override
 	public void deleteUser(String name) {
-		AbstractUser userToRemove = null;
-		for (AbstractUser u : users) {
-			if (u.getName().equals(name)) {
+		User userToRemove = null;
+		for (User u : users) {
+			if (u.getUsername().equals(name)) {
 				userToRemove = u;
 				break;
 			}
@@ -249,8 +248,8 @@ public class PersistenceImp implements Persistence {
 	}
 
 	public void deleteStep(int id) {
-		AbstractStep stepToRemove = null;
-		for (AbstractStep s : steps) {
+		Step stepToRemove = null;
+		for (Step s : steps) {
 			if (s.getId() == id) {
 				stepToRemove = s;
 				break;
@@ -262,8 +261,8 @@ public class PersistenceImp implements Persistence {
 	}
 
 	public void deleteMetaEntry(String key) {
-		AbstractMetaEntry metaEntryToRemove = null;
-		for (AbstractMetaEntry me : metaEntries) {
+		MetaEntry metaEntryToRemove = null;
+		for (MetaEntry me : metaEntries) {
 			if (me.getKey().equals(key)) {
 				metaEntryToRemove = me;
 				break;

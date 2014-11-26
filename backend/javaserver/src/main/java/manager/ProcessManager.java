@@ -2,10 +2,9 @@ package manager;
 
 import java.util.Observer;
 
-import backingbeans.Item;
-import backingbeans.User;
-import abstractbeans.AbstractStep;
-import abstractbeans.AbstractUser;
+import model.Item;
+import model.Step;
+import model.User;
 
 /**
  * Interface for ProcessManager. (Due to Dependency Injection)
@@ -13,9 +12,9 @@ import abstractbeans.AbstractUser;
  */
 public interface ProcessManager extends Observer {
 	
-	public boolean checkUser(AbstractUser user, AbstractStep step);
+	public boolean checkUser(User user, Step step);
 	
-	public void selectProcessor(AbstractStep step, Item item, User user);
+	public void selectProcessor(Step step, Item item, User user);
 	
 	public void startBroker();
 	
