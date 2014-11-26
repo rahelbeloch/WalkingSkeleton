@@ -74,8 +74,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 		try {
 			sp.startBroker();
 		} catch (ServerPublisherBrokerException e) {
-			// TODO exception handling
-			e.printStackTrace();
+			//Loggin
 		}
 	}
 	
@@ -86,8 +85,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 		try {
 			sp.stopBroker();
 		} catch (ServerPublisherBrokerException e) {
-			//TODO exception handling
-			e.printStackTrace();
+			//Loggin
 		}
 	}
 
