@@ -13,12 +13,17 @@ namespace CommunicationLib.Model
     {
         private int _id;
 
+        public AbstractElement()
+        {
+
+        }
+
         public AbstractElement(int id)
         {
             this._id = id;
         }
 
-        public int Id
+        public int id
         {
             get { 
                 return _id; 
