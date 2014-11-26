@@ -11,8 +11,22 @@ namespace CommunicationLib.Model
     /// </summary>
     public partial class AbstractElement
     {
-        public AbstractElement()
+        private int _id;
+
+        public AbstractElement(int id)
         {
+            this._id = id;
+        }
+
+        public int Id
+        {
+            get { 
+                return _id; 
+            }
+
+            set { 
+                _id = value;
+            }
         }
     }
 }
