@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CommunicationLib.Model;
 using RestAPI;
+using RestSharp;
+using System.Web;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
+
 
 namespace UnitTestProject1
 {
@@ -22,31 +28,33 @@ namespace UnitTestProject1
         [TestMethod]
         public void testSentWorkflow()
         {
-            RestRequester.init();
+            //RestRequester.init();
 
             AbstractWorkflow testWF = new AbstractWorkflow();
-            testWF.Id = 1;
+            testWF.Id = 17;
 
-            /*Console.WriteLine(testWF.Id);
             AbstractStartStep ass = new AbstractStartStep();
-            ass.Name = "Step1";
+            /*ass.Name = "Step1";
             ass.Username = "Rahel";
             ass.UserId = 17;
             ass.Id = 0;
-            ass.label = "Label";
-            testWF.addStep(ass);
+            ass.label = "Label";*/
+            //testWF.addStep(ass);
+            testWF.addStep(new AbstractStep());
+            testWF.addStep(new AbstractStep());
+
+            /*Console.WriteLine(testWF.Id);
+            
             testWF.addStep(new AbstractAction());
             testWF.addStep(new AbstractFinalStep());*/
 
-            String answer = RestRequester.postObject<AbstractWorkflow>(testWF);
-            
-            Console.WriteLine("POST-Workflow Anfrage erfolgreich geschickt...");
-            Console.WriteLine("Antwort: " + answer);
-            Console.ReadKey();
+            //String answer = RestRequester.postObject<AbstractWorkflow>(testWF);
+            SerializeObject(testWF);
 
-            Assert.IsTrue(answer == "True");
+            Assert.IsTrue(false);
+            //Assert.IsTrue(answer == "True");
         }
-
+        /*
         /// <summary>
         /// 
         /// </summary>
@@ -84,6 +92,25 @@ namespace UnitTestProject1
             Console.ReadKey();
 
             Assert.IsTrue(done);
+        }*/
+
+        /// <summary>
+        ///  Serializes object from C#-object to XML File.
+        /// </summary>
+        /// <param name="obj">the object to serialize</param>
+        /// <returns>the path of the new XML File</returns>
+        private static void SerializeObject(Object obj)
+        {
+            // path is always XMLFiles/<typeofObj>.xml; all XML Files are placed in this folder
+            String objXMLPath = "objectCache.xml"; // Achtung: sicherstellen, dass nur ein gleichzeitiger Zugriff auf Datei erfolgt, weil es nur eine Datei gibt, die alle XML Serialisierungen enthält
+            XmlSerializer xmlser = new XmlSerializer(obj.GetType(), "CommunicationLib.Model");
+
+            FileStream fs = new FileStream("../../XMLFiles/" + objXMLPath, FileMode.Create);
+            xmlser.Serialize(fs, obj);
+            fs.Close();
+            
+
+
         }
     }
 }
