@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunicationLib
+namespace CommunicationLib.Model
 {
-    public class Class1
+    public enum MetaState
     {
+        INACTIVE,
+        OPEN,
+        BUSY,
+        DONE,
     }
 }
