@@ -26,7 +26,7 @@ public class RestserverTest {
 	@Test
 	public void testRequest () {
 		Client client = ClientBuilder.newClient();
-		Response resp = client.target("http://localhost:8080").path("resource/workflow/17").request(MediaType.APPLICATION_XML).get();
+		Response resp = client.target("http://localhost:8080").path("resource/workflow/17").request().get();
 		assertEquals(200, resp.getStatus());
 	}
 	
