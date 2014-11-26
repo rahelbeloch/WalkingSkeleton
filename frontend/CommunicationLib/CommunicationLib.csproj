@@ -30,6 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Apache.NMS">
+      <HintPath>..\packages\Apache.NMS.1.6.0.3083\lib\net40\Apache.NMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.NMS.ActiveMQ">
+      <HintPath>..\packages\Apache.NMS.ActiveMQ.1.6.3\lib\net40\Apache.NMS.ActiveMQ.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,8 +51,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CommunicationManager.cs" />
+    <Compile Include="IDataReceiver.cs" />
+    <Compile Include="Model\Action.cs" />
+    <Compile Include="Model\FinalStep.cs" />
+    <Compile Include="Model\Item.cs" />
+    <Compile Include="Model\MetaEntry.cs" />
+    <Compile Include="Model\MetaState.cs" />
+    <Compile Include="Model\RootElement.cs" />
+    <Compile Include="Model\RootElementList.cs" />
+    <Compile Include="Model\StartStep.cs" />
+    <Compile Include="Model\StaticRessources.cs" />
+    <Compile Include="Model\Step.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\Workflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegistrationWrapper.cs" />
+    <Compile Include="RestAPI.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
