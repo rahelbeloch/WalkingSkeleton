@@ -2,7 +2,9 @@ package messagingtest;
 
 import static org.junit.Assert.*;
 import messaging.ServerPublisher;
+import messaging.ServerPublisherBrokerException;
 import moduledi.SingleModule;
+
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,20 +24,20 @@ public class ServerPublisherTest {
 	}
 	
 	@After
-	public void tearDown() {
+	public void tearDown() throws ServerPublisherBrokerException {
 		if (publisher.brokerStarted()) {
 			publisher.stopBroker();
 		}
 	}
 	
 	@Test
-	public void testBrokerStart() {
+	public void testBrokerStart() throws ServerPublisherBrokerException {
 		publisher.startBroker();
 		assertTrue(publisher.brokerStarted());
 	}
 	
 	@Test
-	public void testBrokerStop() {
+	public void testBrokerStop() throws ServerPublisherBrokerException {
 		publisher.startBroker();
 		if (publisher.brokerStarted()) {
 			publisher.stopBroker();
@@ -44,18 +46,34 @@ public class ServerPublisherTest {
 	}
 	
 	@Test
-	public void testPublishing() {
+	public void testPublishing() throws ServerPublisherBrokerException {
 		publisher.startBroker();
 		if (publisher.brokerStarted()) {
 			TestMessagingListener listener = new TestMessagingListener();
-			String testString = "test String";
-			try {
-				publisher.publish(testString, "TEST_TOPIC");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			listener.start();
+			String testString = "test String";		
+			publisher.publish(testString, "TEST_TOPIC");
 			assertEquals(testString, listener.getReceivedMsg());
+			listener.stop();
 		}
 	}
-
+	
+	@Test
+	public void testMultiplePublishing() throws ServerPublisherBrokerException {
+		publisher.startBroker();
+		if (publisher.brokerStarted()) {
+			TestMessagingListener listener = new TestMessagingListener();
+			listener.start();
+			String testString = "test String1";		
+			publisher.publish(testString, "TEST_TOPIC");
+			assertEquals(testString, listener.getReceivedMsg());
+			testString = "test String2";		
+			publisher.publish(testString, "TEST_TOPIC");
+			assertEquals(testString, listener.getReceivedMsg());
+			testString = "test String3";		
+			publisher.publish(testString, "TEST_TOPIC");
+			assertEquals(testString, listener.getReceivedMsg());
+			listener.stop();
+		}
+	}
 }
