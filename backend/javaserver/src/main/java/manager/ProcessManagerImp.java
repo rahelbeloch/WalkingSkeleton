@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import messaging.ServerPublisher;
+import messaging.ServerPublisherBrokerException;
 import backingbeans.Action;
 import backingbeans.Item;
 import backingbeans.User;
@@ -70,14 +71,24 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	 * This method starts the messaging broker.
 	 */
 	public void startBroker() {
-		sp.startBroker();
+		try {
+			sp.startBroker();
+		} catch (ServerPublisherBrokerException e) {
+			// TODO exception handling
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * This method stops the messaging broker.
 	 */
 	public void stopBroker(){
-		sp.stopBroker();
+		try {
+			sp.stopBroker();
+		} catch (ServerPublisherBrokerException e) {
+			//TODO exception handling
+			e.printStackTrace();
+		}
 	}
 
 	/**
