@@ -11,10 +11,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import abstractbeans.AbstractWorkflow;
-
 import com.sun.net.httpserver.HttpServer;
-
 import restserver.RestServer;
 
 public class RestserverTest {
@@ -24,14 +21,13 @@ public class RestserverTest {
 	@BeforeClass
 	public static void setUp() {
 		restserver = RestServer.startServer();
-		restserver.toString();
 	}
 	
 	@Test
 	public void reqeustTest () {
 		Client client = ClientBuilder.newClient();
-		AbstractWorkflow workflow = client.target("http://localhost:8080").path("resource/abstractworkflow/17").request(MediaType.APPLICATION_XML).get(AbstractWorkflow.class);
-		workflow.getId();
+		Response resp = client.target("http://localhost:8080").path("resource/abstractworkflow/17").request(MediaType.APPLICATION_XML).get();
+		assertEquals(resp.getStatus(),200);
 	}
 	
 	@Test

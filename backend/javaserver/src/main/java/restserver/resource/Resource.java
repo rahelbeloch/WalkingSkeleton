@@ -9,7 +9,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import abstractbeans.AbstractWorkflow;
 
 @Path("resource")
@@ -19,13 +21,13 @@ public class Resource {
 	 * 
 	 * @param workflowid
 	 * @return the requested workflow
-	 */	@GET @Path("abstractworkflow/{workflowid}")
-	@Produces(MediaType.APPLICATION_XML)
-	public AbstractWorkflow getWorkflowAsXML (@PathParam("workflowid") int workflowid) {
+	 */	@GET @Path("workflow/{workflowid}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("GET -> " + workflowid);
 		AbstractWorkflow workflow = new AbstractWorkflow();
 		workflow.setId(workflowid);
-		return workflow;
+		return "true";
 	}
 	
 	/**
@@ -33,11 +35,11 @@ public class Resource {
 	 * @param workflowid
 	 * @return the requested workflow
 	 */
-	@GET @Path("abstractworkflow")
-	@Produces(MediaType.APPLICATION_XML)
-	public String getAllWorkflows () {
-		System.out.println("GETALL");
-		return "alle workflows";
+	@GET @Path("workflows/{username}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getAllWorkflows (@PathParam("username") String username) {
+		System.out.println("GETALL -> " + username);
+		return "alle workflows für " + username;
 	}
 	
 	/**
@@ -47,12 +49,16 @@ public class Resource {
 	 * @param receivedWorkflow
 	 * @return true or false as String
 	 */
-	@POST @Path("abstractworkflow/{workflowid}")
-	@Produces(MediaType.TEXT_XML)
-	public String saveWorkflow (String a) {
-		System.out.println("SEND -> " + a);
-		//p.storeWorkflow(receivedWorkflow);
-		return "<response>true</response>";
+	@POST @Path("workflow")
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes("application/x-www-form-urlencoded")
+	public String saveWorkflow (@PathParam("workflowid") int workflowid, MultivaluedMap<String, String> formParams) {
+		ObjectMapper mapper = new ObjectMapper();
+		System.out.println("SEND -> " + workflowid + " " + formParams.get("data").get(0));
+		String workflowAsString = formParams.get("data").get(0);
+		Workflow workflow;
+		workflow = mapper.readValue(workflowAsString, Workflow.class);
+		return "true";
 	}
 	
 	/**
@@ -60,12 +66,10 @@ public class Resource {
 	 * @param workflow
 	 * @return String true or false
 	 */
-	@PUT @Path("abstractworkflow/{workflowid}")
-	@Consumes(MediaType.APPLICATION_XML)
+	@PUT @Path("workflow/{workflowid}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String updateWorkflow(@PathParam("abstractworkflow") AbstractWorkflow workflow) {
-		System.out.println("UPDATE -> " + workflow.getId());
-		//p.storeWorkflow(workflow);
+	public String updateWorkflow(@PathParam("workflowid") int workflowid, String param) {
+		System.out.println("UPDATE -> " + workflowid + " " + param);
 		return "true";
 	}
 	
@@ -74,13 +78,11 @@ public class Resource {
 	 * @param workflowid
 	 * @return deleted workflow, if successful
 	 */
-	@DELETE @Path("abstractworkflow/{workflowid}")
-	@Produces(MediaType.APPLICATION_XML)
-	public AbstractWorkflow deleteWorkflow (@PathParam("workflowid") int workflowid) {
-		System.out.println("DELETE -> " + workflowid);
-		AbstractWorkflow workflow = new AbstractWorkflow();
-		workflow.setId(workflowid);
-		return workflow;
+	@DELETE @Path("workflow/{workflowid}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String deleteWorkflow (@PathParam("workflowid") int workflowid, String param) {
+		System.out.println("DELETE -> " + workflowid + " " + param);
+		return "true";
 	}
 	
 }
