@@ -1,4 +1,4 @@
-package moduleDI;
+package moduledi;
 
 import backingbeans.Action;
 import backingbeans.FinalStep;

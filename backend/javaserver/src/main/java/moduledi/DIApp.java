@@ -1,4 +1,4 @@
-package moduleDI;
+package moduledi;
 
 import java.io.BufferedReader;
 import java.io.IOException;

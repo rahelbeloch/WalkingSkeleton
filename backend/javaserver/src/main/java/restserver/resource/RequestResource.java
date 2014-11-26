@@ -6,7 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import moduleDI.SingleModule;
+import moduledi.SingleModule;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
