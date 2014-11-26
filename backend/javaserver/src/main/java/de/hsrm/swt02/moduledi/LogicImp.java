@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.hsrm.swt02.manager.ProcessManager;
-import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -17,18 +16,22 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 public class LogicImp implements Logic{
-	
-	private ServerPublisher sp;
+
 	private Persistence p;
 	private ProcessManager pm;
 	
 	public LogicImp() {
 		Injector i = Guice.createInjector(new SingleModule());
-		sp = i.getInstance(ServerPublisher.class);
+		
 		p = i.getInstance(Persistence.class);
 		pm = i.getInstance(ProcessManager.class);
 	}
 	
+	/**
+	 * This method starts a Workflow
+	 * @param workflowID the workflow, which should be started
+	 * @param user the User, who starts the workflow
+	 */
 	@Override
 	public void startWorkflow(int workflowID, User user) {
 		// TODO: check user permission
@@ -36,27 +39,52 @@ public class LogicImp implements Logic{
 		StartTrigger start = new StartTrigger(workflow, pm, p);
 		start.startWorkflow();
 	}
-
+	
+	/**
+	 * This method store a workflow and distribute a id
+	 * @param workflow 
+	 */
 	@Override
 	public void addWorkflow(Workflow workflow) {
+		//TODO: distribute clever ids, may return the id
 		p.storeWorkflow(workflow);	
 	}
-
+	
+	/**
+	 * This method loads a Workflow
+	 * @param workflowID describe the workflow
+	 * @return a Workflow, if there is one, who has this workflowID
+	 */
 	@Override
 	public Workflow getWorkflow(int workflowID) {
 		return (Workflow) p.loadWorkflow(workflowID);
 	}
 
+	/**
+	 * This method delete a Workflow in Persistence
+	 * @param workflowID describe the Workflow
+	 */
 	@Override
 	public void deleteWorkflow(int workflowID) {
 		p.deleteWorkflow(workflowID);
 	}
 
+	/**
+	 * This method execute a step in an item
+	 * @param item the Item, which edited
+	 * @param step the step, which execute
+	 * @param user, who execute the step in the Item
+	 */
 	@Override
 	public void stepOver(Item item, Step step, User user) {
 		pm.selectProcessor(step, item, user);
 	}
-
+	
+	/**
+	 * This method add a step into an existing Workflow
+	 * @param workflowID the workflow, which shall edited
+	 * @param step the step, which shall added
+	 */
 	@Override
 	public void addStep(int workflowID, Step step) {
 		Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
@@ -64,6 +92,11 @@ public class LogicImp implements Logic{
 		p.storeWorkflow(workflow);
 	}
 
+	/**	
+	 * This method delete a step from an existing Workflow
+	 * @param workflowID the workflow, which shall edited
+	 * @param stepID the step, which shall delete
+	 */
 	@Override
 	public void deleteStep(int workflowID, int stepID) {
 		Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
@@ -71,29 +104,48 @@ public class LogicImp implements Logic{
 		p.storeWorkflow(workflow);
 	}
 
+	/**
+	 * This method store a workflow and distribute a id
+	 * @param user
+	 * @throws UserAlreadyExistsException
+	 */
 	@Override
 	public void addUser(User user) throws UserAlreadyExistsException {
+		//TODO: distribute clever ids, may return the id
 		p.addUser(user);
 	}
 
+	/**
+	 *  This method loads a User
+	 * @param username describe the user
+	 * @return a User, if there is one, who has this username
+	 */
 	@Override
 	public User getUser(String username) {
 		return (User) p.loadUser(username);
 	}
 
+	/**
+	 * This method delete a User
+	 * @param username describe the user
+	 */
 	@Override
 	public void deleteUser(String username) {
 		//System.out.println("Do you really really really want to delete a user?");
 		p.deleteUser(username);		
 	}
 
-	// TODO: Ez at Home
+	/**
+	 * This method returns all workflows, in which the user is involved
+	 * @param user
+	 * @return a LinkedList of workflows
+	 */
 	@Override
 	public List<Workflow> getWorkflowsByUser(User user) {
 		LinkedList<Workflow> workflows = new LinkedList<>();
 		for(Workflow wf: p.loadAllWorkflows()) {
 			for(Step step: wf.getSteps()) {
-				//TODO username in AbstractStep
+				
 				if(step.getUsername().equals(user.getUsername())) {
 					workflows.add((Workflow)wf);
 					break;
@@ -102,21 +154,47 @@ public class LogicImp implements Logic{
 		}
 		return workflows;
 	}
-
+	
+	/**
+	 * This method returns all actual Items for a User
+	 * @param user 
+	 * @return a LinkedList, with actual Items
+	 */
 	@Override
 	public List<Item> getOpenItemsByUser(User user) {
+		
 		LinkedList<Workflow> workflows = (LinkedList)getWorkflowsByUser(user);
+		LinkedList<Item> items = new LinkedList<Item>();
+		
 		for(Workflow wf: workflows) {
 			for(Item item: wf.getItems()) {
 				
+				if(wf.getStepById(Integer.parseInt(item.getActStep().getKey())).getUsername()==user.getUsername()){
+					items.add(item);
+					break;
+				}
+				
 			}
 		}
-		return null;
+		return items;
 	}
 
+	/**
+	 * This method returns all Workflows, which can be startes by this user
+	 * @param user
+	 * @return
+	 */
 	@Override
 	public List<Workflow> getStartableWorkflows(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
+		LinkedList<Workflow> workflows = (LinkedList)getWorkflowsByUser(user);
+		
+		for(Workflow wf: workflows){
+			if(wf.getStepByPos(0).getUsername()==user.getUsername()){
+				startableWorkflows.add(wf);
+			}
+		}
+		return startableWorkflows;
 	}
 }
