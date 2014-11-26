@@ -24,7 +24,7 @@ public class abstractbeansTest {
 	
 	@Test
 	public void abstractActionTest() {
-		Action a = new Action(1, 1, "test");
+		Action a = new Action(1, "username", "test");
 		assertThat(a, instanceOf(AbstractAction.class));
 	}
 	

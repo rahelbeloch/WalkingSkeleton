@@ -46,11 +46,7 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	public boolean checkUser(AbstractUser user, AbstractStep step){
 		
 		if (step instanceof AbstractAction){
-			if (user.getName().equals(((AbstractAction) step).getName())){
-				return true;
-			}else{
-				return false;
-			}
+			return user.getName().equals(((AbstractAction) step).getName());
 		}
 		return false;
 	}

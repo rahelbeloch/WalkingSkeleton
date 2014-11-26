@@ -75,7 +75,7 @@ public class Item extends AbstractItem{
 	 */
 	public List<AbstractMetaEntry> getForGroup(String group){
 		
-		ArrayList<AbstractMetaEntry> list = new ArrayList<AbstractMetaEntry>();
+		List<AbstractMetaEntry> list = new ArrayList<AbstractMetaEntry>();
 	
 		for(AbstractMetaEntry a: metadata){
 			if(a.getGroupId().equals(group)){

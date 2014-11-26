@@ -21,9 +21,9 @@ public class ProduceData {
 	public void createWorkflow(Persistence p){
 		
 		Workflow w =new Workflow(countWorkflow);
-		w.addStep(new Action(0, 2, "Eins"));
-		w.addStep(new Action(0, 2, "Zwei"));
-		w.addStep(new Action(0, 2, "Drei"));
+		w.addStep(new Action(0, "username", "Eins"));
+		w.addStep(new Action(0, "username", "Zwei"));
+		w.addStep(new Action(0, "username", "Drei"));
 		w.addStep(new FinalStep());
 		
 		p.storeWorkflow(w);

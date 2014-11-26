@@ -20,7 +20,7 @@ import backingbeans.Workflow;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-public class DI_App {
+public class DIApp {
 	
 	public static void main (String args []){
 		
@@ -113,8 +113,8 @@ public class DI_App {
 		Workflow myWorkflow= new Workflow(1);
 		
 		//adding steps in workflow
-		myWorkflow.addStep(new Action(0*1000, 0*100, 0 + " Schritt"));
-		myWorkflow.addStep(new Action(1*1000, 1*100, 1 + " Schritt"));
+		myWorkflow.addStep(new Action(0*1000, "username", 0 + " Schritt"));
+		myWorkflow.addStep(new Action(1*1000, "username", 1 + " Schritt"));
 		myWorkflow.addStep(new FinalStep());
 		myWorkflow.getStepByPos(2).setId(9999);
 
