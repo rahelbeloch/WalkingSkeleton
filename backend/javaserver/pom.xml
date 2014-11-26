@@ -16,19 +16,13 @@
   </properties>
 
   <dependencies>
-<dependency>
+    <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
       <version>6.0</version>
       <scope>provided</scope>
-    </dependency>    
-<dependency>
-  <groupId>org.apache.activemq</groupId>
-  <artifactId>activemq-all</artifactId>
-  <version>5.8.0</version>
-</dependency>
-
-<dependency>
+    </dependency>
+    <dependency>
     	<groupId>org.glassfish.jersey.core</groupId>
     	<artifactId>jersey-server</artifactId>
     	<version>2.13</version>
@@ -65,12 +59,12 @@
     	<version>1.1.1</version>
     </dependency>
     <dependency>
-		<groupId>org.apache.activemq</groupId>
-		<artifactId>activemq-all</artifactId>
-		<version>5.10.0</version>
-	</dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-all</artifactId>
+      <version>5.10.0</version>
+    </dependency>
   </dependencies>
-	
+
   <build>
     <plugins>
       <plugin>
@@ -86,16 +80,16 @@
 
   <reporting>
     <plugins>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>cobertura-maven-plugin</artifactId>
-            <version>2.6</version>
-            <configuration>
-                <formats>
-                    <format>xml</format>
-                </formats>
-            </configuration>
-        </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <formats>
+            <format>xml</format>
+          </formats>
+        </configuration>
+      </plugin>
     </plugins>
   </reporting>
 </project>
