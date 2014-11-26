@@ -13,7 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import abstractbeans.AbstractWorkflow;
 
 @Path("resource")
@@ -27,9 +29,16 @@ public class Resource {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("GET -> " + workflowid);
+		ObjectMapper mapper = new ObjectMapper();
 		AbstractWorkflow workflow = new AbstractWorkflow();
 		workflow.setId(workflowid);
-		return "true";
+		String workflowAsString = "string";
+		try {
+			workflowAsString = mapper.writeValueAsString(workflow);
+		} catch (JsonProcessingException e) {
+			return "jackson exception";
+		}
+		return workflowAsString;
 	}
 	
 	/**
@@ -49,7 +58,8 @@ public class Resource {
 	 * receives a workflow and stores it into the database
 	 * 
 	 * @param receivedWorkflow
-	 * @return true or false as String
+	 * @return 	"true" if everything was successful OR
+	 * 			"jackson exception" if serialization crashed
 	 */
 	@POST @Path("workflow")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -74,8 +84,17 @@ public class Resource {
 	 */
 	@PUT @Path("workflow/{workflowid}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String updateWorkflow(@PathParam("workflowid") int workflowid, String param) {
-		System.out.println("UPDATE -> " + workflowid + " " + param);
+	@Consumes("application/x-www-form-urlencoded")
+	public String updateWorkflow(@PathParam("workflowid") int workflowid, MultivaluedMap<String, String> formParams) {
+		System.out.println("UPDATE -> " + workflowid);
+		ObjectMapper mapper = new ObjectMapper();
+		String workflowAsString = formParams.get("data").get(0);
+		AbstractWorkflow workflow;
+		try {
+			workflow = mapper.readValue(workflowAsString, AbstractWorkflow.class);
+		} catch (IOException e) {
+			return "jackson exception";
+		}
 		return "true";
 	}
 	
@@ -86,9 +105,18 @@ public class Resource {
 	 */
 	@DELETE @Path("workflow/{workflowid}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String deleteWorkflow (@PathParam("workflowid") int workflowid, String param) {
-		System.out.println("DELETE -> " + workflowid + " " + param);
-		return "true";
+	public String deleteWorkflow (@PathParam("workflowid") int workflowid) {
+		System.out.println("DELETE -> " + workflowid);
+		ObjectMapper mapper = new ObjectMapper();
+		AbstractWorkflow workflow = new AbstractWorkflow();
+		workflow.setId(workflowid);
+		String workflowAsString = "string";
+		try {
+			workflowAsString = mapper.writeValueAsString(workflow);
+		} catch (JsonProcessingException e) {
+			return "jackson exception";
+		}
+		return workflowAsString;
 	}
 	
 }
