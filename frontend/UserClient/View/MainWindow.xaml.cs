@@ -28,7 +28,12 @@ namespace UserClient
         public MainWindow()
         {
             InitializeComponent();
-            init_Dashboard();
+            InitializeDashboard();
+            //InitializeViewModel();
+        }
+        private void InitializeViewModel()
+        {
+            //sollte nicht alles über bindings erledigt werden können.
         }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
@@ -39,7 +44,7 @@ namespace UserClient
         {
             LoginLayer.Visibility = Visibility.Visible;
         }
-        private void init_Dashboard()
+        private void InitializeDashboard()
         {
             dashboard.Blocks.Clear();
             // Create the parent FlowDocument...
@@ -97,6 +102,12 @@ namespace UserClient
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(title))));
             // and set the row to span all 2 columns.
             currentRow.Cells[0].ColumnSpan = 2;
+
+            var button = new Button();
+            button.Content = "Neu erstellen";
+            button.FontSize = 18;
+            var block = new BlockUIContainer(button);
+            currentRow.Cells.Add(new TableCell(block));
 
             // Add the second (header) row.
             currentRow = new TableRow();

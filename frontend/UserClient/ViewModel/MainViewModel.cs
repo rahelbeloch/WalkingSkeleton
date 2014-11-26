@@ -18,6 +18,7 @@ namespace UserClient.ViewModel
         }
         private void DoLogin(object obj)
         {
+            Console.WriteLine("Authentication");
             AuthVM.Authenticate();
         }
         
@@ -37,6 +38,7 @@ namespace UserClient.ViewModel
 
         private void DoLogin()
         {
+            Console.WriteLine("Authentication");
             AuthVM.Authenticate();
         }
          
