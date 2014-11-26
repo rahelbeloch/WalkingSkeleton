@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 namespace CommunicationLib.Model
 {
     /// <summary>
-    /// Backing bean implementation for User.
+    /// Backing bean implementation for Item.
     /// </summary>
-    public partial class AbstractUser: AbstractElement
+    public partial class AbstractElement
     {
+        public AbstractElement()
+        {
+        }
+
     }
 }

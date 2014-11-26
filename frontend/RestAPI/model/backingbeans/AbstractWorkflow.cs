@@ -9,7 +9,7 @@ namespace CommunicationLib.Model
     /// <summary>
     /// Backing bean implementation for Workflow.
     /// </summary>
-    public partial class AbstractWorkflow
+    public partial class AbstractWorkflow: AbstractElement
     {
         /// <summary>
         /// Add new step to workflow. The new step is also added to the "nextSteps" list of the previous step.
