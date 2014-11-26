@@ -30,30 +30,20 @@ namespace UnitTestProject1
 
             Workflow testWF = new Workflow();
             testWF.id = 17;
-
-            StartStep ass = new StartStep();
-            /*ass.Name = "Step1";
+            
+            /*StartStep ass = new StartStep();
+            ass.Name = "Step1";
             ass.Username = "Rahel";
             ass.UserId = 17;
             ass.Id = 0;
-            ass.label = "Label";*/
-            //testWF.addStep(ass);
-            testWF.addStep(new Step());
-            testWF.addStep(new Step());
-
-            /*Console.WriteLine(testWF.Id);
-            
-            testWF.addStep(new AbstractAction());
-            testWF.addStep(new AbstractFinalStep());*/
+            ass.label = "Label";
+            testWF.addStep(ass);
+            testWF.addStep(new Action());
+            //testWF.addStep(new FinalStep());*/
 
             String answer = RestRequester.PostObject<Workflow>(testWF);
-
-            //Console.WriteLine("POST-Workflow Anfrage erfolgreich geschickt...");
-            //Console.WriteLine("Antwort: " + answer);
-            //Console.ReadKey();
-
+            
             Assert.IsTrue(answer == "true");
-
         }
 
         /// <summary>
@@ -67,14 +57,7 @@ namespace UnitTestProject1
             RestRequester.Init();
             Workflow getWF = RestRequester.GetObject<Workflow>(getWFId);
 
-            /*
-            Console.WriteLine("GET-Workflow Anfrage erfolgreich geschickt...");
-            Console.WriteLine("Object bekommen: " + getWF);
-            Console.WriteLine("Antwort: Workflow Nr. " + getWF.Id + " bekommen.");
-            Console.ReadKey();
-            */
-
-            Assert.IsTrue(getWFId == getWF.Id);
+            Assert.IsTrue(getWFId == getWF.id);
         }
 
         /// <summary>
@@ -87,15 +70,9 @@ namespace UnitTestProject1
             String testUserName = "Rahel";
 
             RestRequester.Init();
-            Boolean done = RestRequester.StartWorkflow(testWfId, testUserName);
+            String done = RestRequester.StartWorkflow(testWfId, testUserName);
 
-            /*
-            Console.WriteLine("Start-Workflow Anfrage erfolgreich geschickt...");
-            Console.WriteLine("Antwort: Workflow gestartet: " + done);
-            Console.ReadKey();
-            */
-
-            Assert.IsTrue(done);
+            Assert.IsTrue(done == "true");
         }
 
         /// <summary>
@@ -109,9 +86,37 @@ namespace UnitTestProject1
             string username = "Rahel";
 
             RestRequester.Init();
-            Boolean done = RestRequester.StepForward(stepId, itemId, username);
+            String done = RestRequester.StepForward(stepId, itemId, username);
 
-            Assert.IsTrue(done);
+            Assert.IsTrue(done == "true");
+        }
+
+        /// <summary>
+        ///     Test to switch forward some actions.
+        /// </summary>
+        [TestMethod]
+        public void testUpdateObject()
+        {
+            Workflow testWF = new Workflow();
+            testWF.id = 17;
+            Step testStep = new Step();
+            testStep.id = 7;
+            testWF.addStep(testStep);
+
+            RestRequester.Init();
+
+            RestRequester.UpdateObject(testWF);
+            Workflow updatedWorkflow = RestRequester.GetObject<Workflow>(17);
+
+            Assert.IsTrue(updatedWorkflow.steps[0].id == 7);
+        }
+
+        /// <summary>
+        ///     Test to switch forward some actions.
+        /// </summary>
+        [TestMethod]
+        public void testDeleteObject()
+        {
         }
 
     }
