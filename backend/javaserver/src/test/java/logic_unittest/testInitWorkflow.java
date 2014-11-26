@@ -75,8 +75,6 @@ public class testInitWorkflow {
 		
 		myWorkflow.connectSteps();
 		
-		assertTrue(firstStep.getNextSteps().get(0).getNextSteps().get(0) instanceof FinalStep);
-		
+		assertTrue(firstStep.getNextSteps().get(0).getNextSteps().get(0) instanceof FinalStep);	
 	}
-
 }
