@@ -23,22 +23,22 @@ public class RestserverTest {
 		restServer.startHTTPServer();
 	}
 	
+	@Test
+	public void testRequest () {
+		Client client = ClientBuilder.newClient();
+		Response resp = client.target("http://localhost:8080").path("resource/workflow/17").request(MediaType.APPLICATION_XML).get();
+		assertEquals(200, resp.getStatus());
+	}
+	
+	@Test
+	public void testDelete() {
+		Client client = ClientBuilder.newClient();
+		Response resp = client.target("http://localhost:8080").path("resource/workflow/17").request().delete();
+		assertEquals(200, resp.getStatus());
+	}
+	
 	@AfterClass
 	public static void cleanUp() {
 		restServer.stopHTTPServer();
-	}
-	
-	@Test
-	public void reqeustTest () {
-		Client client = ClientBuilder.newClient();
-		Response resp = client.target("http://localhost:8080").path("resource/abstractworkflow/17").request(MediaType.APPLICATION_XML).get();
-		assertEquals(resp.getStatus(),200);
-	}
-	
-	@Test
-	public void deleteTest() {
-		Client client = ClientBuilder.newClient();
-		Response resp = client.target("http://localhost:8080").path("resource/abstractworkflow/17").request().delete();
-		assertEquals(resp.getStatus(),200);
 	}
 }
