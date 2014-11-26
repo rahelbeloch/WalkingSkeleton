@@ -26,7 +26,6 @@ public class DIApp {
 		
 		Injector i = Guice.createInjector(new SingleModule());
 		
-		ServerPublisher sp = i.getInstance(ServerPublisher.class);
 		Persistence p = i.getInstance(Persistence.class);
 		ProcessManager pm = i.getInstance(ProcessManager.class);
 		
