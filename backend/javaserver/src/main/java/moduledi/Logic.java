@@ -8,7 +8,7 @@ import backingbeans.Item;
 import backingbeans.User;
 import backingbeans.Workflow;
 
-public interface logic {
+public interface Logic {
 	
 	/*
 	 * workflow functions
