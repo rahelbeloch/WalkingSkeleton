@@ -35,8 +35,7 @@ public class ProduceData {
 		try {
 			p.addUser(user);
 		} catch (UserAlreadyExistsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Loggin
 		}
 		countUser++;
 	}

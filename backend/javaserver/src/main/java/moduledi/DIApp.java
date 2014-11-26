@@ -75,7 +75,7 @@ public class DIApp {
 					work = false;
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				//Loggin
 			}
 			
 			
