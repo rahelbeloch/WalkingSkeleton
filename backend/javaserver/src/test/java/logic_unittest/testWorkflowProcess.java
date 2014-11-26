@@ -3,7 +3,7 @@ package logic_unittest;
 import static org.junit.Assert.*;
 import manager.ProcessManager;
 import messaging.ServerPublisher;
-import moduleDI.SingleModule;
+import moduledi.SingleModule;
 
 import org.junit.Test;
 

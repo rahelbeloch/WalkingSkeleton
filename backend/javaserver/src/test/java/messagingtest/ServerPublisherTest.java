@@ -2,7 +2,7 @@ package messagingtest;
 
 import static org.junit.Assert.*;
 import messaging.ServerPublisher;
-import moduleDI.SingleModule;
+import moduledi.SingleModule;
 
 import org.junit.After;
 import org.junit.Before;

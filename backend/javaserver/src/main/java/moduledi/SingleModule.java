@@ -1,4 +1,4 @@
-package moduleDI;
+package moduledi;
 
 import persistence.Persistence;
 import persistence.PersistenceImp;

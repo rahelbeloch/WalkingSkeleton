@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 
 import manager.ProcessManager;
 import messaging.ServerPublisher;
-import moduleDI.SingleModule;
+import moduledi.SingleModule;
 import backingbeans.Item;
 import backingbeans.User;
 import backingbeans.Workflow;

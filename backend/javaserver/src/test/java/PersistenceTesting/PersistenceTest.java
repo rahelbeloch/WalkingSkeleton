@@ -18,7 +18,7 @@ import backingbeans.Workflow;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import moduleDI.SingleModule;
+import moduledi.SingleModule;
 
 public class PersistenceTest {
 	
@@ -78,8 +78,8 @@ public class PersistenceTest {
 	public void testWorkflowStorageIncludingSteps() {
 		Workflow workflow007 = new Workflow(7);
 		
-		StartStep step1 = new StartStep();
-		Action step2 = new Action(2, 001, "main action");
+		StartStep step1 = new StartStep("username");
+		Action step2 = new Action(2, "username", "main action");
 		FinalStep step3 = new FinalStep();
 		
 		workflow007.addStep(step1);
