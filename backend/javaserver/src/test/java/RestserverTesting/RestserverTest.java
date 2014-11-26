@@ -11,16 +11,21 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.sun.net.httpserver.HttpServer;
 import restserver.RestServer;
 
 public class RestserverTest {
 	
-	static HttpServer restserver;
+	public static RestServer restServer;
 	
 	@BeforeClass
 	public static void setUp() {
-		restserver = RestServer.startServer();
+		restServer = new RestServer();
+		restServer.startHTTPServer();
+	}
+	
+	@AfterClass
+	public static void cleanUp() {
+		restServer.stopHTTPServer();
 	}
 	
 	@Test
@@ -35,10 +40,5 @@ public class RestserverTest {
 		Client client = ClientBuilder.newClient();
 		Response resp = client.target("http://localhost:8080").path("resource/abstractworkflow/17").request().delete();
 		assertEquals(resp.getStatus(),200);
-	}
-	
-	@AfterClass
-	public static void cleanUp() {
-		restserver.stop(5);
 	}
 }
