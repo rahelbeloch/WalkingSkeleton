@@ -64,7 +64,8 @@ public class ProcessManagerImp implements Observer, ProcessManager{
 	public void selectProcessor(AbstractStep step, Item item, User user){
 		
 		if(step instanceof Action){
-			ActionProcessor actionProcessor = new ActionProcessor(this, p);
+			ActionProcessor actionProcessor = new ActionProcessor(p);
+			actionProcessor.addObserver(this);
 			actionProcessor.handle(item, step, user);
 		}
 	}

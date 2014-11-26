@@ -30,12 +30,7 @@ public class DI_App {
 		Persistence p = i.getInstance(Persistence.class);
 		ProcessManager pm = i.getInstance(ProcessManager.class);
 		
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		pm.startBroker();
 		
 		Workflow myWorkflow = createWorkflow();
 		

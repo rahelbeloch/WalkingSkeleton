@@ -1,18 +1,15 @@
 package processors;
 
 import java.util.Observable;
-import java.util.Observer;
 
 import persistence.Persistence;
-
-import com.google.inject.Inject;
-
-import manager.ProcessManager;
 import abstractbeans.AbstractMetaState;
 import abstractbeans.AbstractStep;
 import backingbeans.FinalStep;
 import backingbeans.Item;
 import backingbeans.User;
+
+import com.google.inject.Inject;
 
 
 
@@ -30,8 +27,7 @@ public class ActionProcessor extends Observable implements StepProcessor {
 	 * @param pm is the observer and manager of the processor
 	 */
 	@Inject
-	public ActionProcessor (ProcessManager pm, Persistence p){
-		addObserver((Observer) pm);
+	public ActionProcessor (Persistence p){
 		this.p = p;
 	}
 	
