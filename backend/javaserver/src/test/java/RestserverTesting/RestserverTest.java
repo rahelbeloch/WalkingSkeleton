@@ -16,8 +16,6 @@ import com.sun.net.httpserver.HttpServer;
 
 import restserver.RestServer;
 
-
-
 public class RestserverTest {
 	
 	@BeforeClass
