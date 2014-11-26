@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using CommunicationLib.Model;
+using System.Collections;
 
 namespace RestAPI
 {
@@ -101,6 +102,34 @@ namespace RestAPI
         {
             restserverurl = "http://172.26.38.101:8080";
             client = new RestClient(restserverurl);
+        }
+
+        public static IList<AbstractElement> getAllObjects<O>(int userId) where AbstractElement : new()
+        {
+            String typeName = typeof(O).FullName.Split('.').Last().ToLower();
+            String url = "getall/" + typeName + "/" + userId;
+           
+            var request = new RestRequest(url, Method.GET);
+
+            // decide wether the server does return the right excepted object or throws an exception
+            try
+            {
+                
+                var response = client.Execute<IList<AbstractElement>>(request);
+                O obj = response.Data;
+
+                Console.WriteLine("Get-Answer from Server -> " + obj + " content " + obj.ToString());
+
+                return obj;
+            }
+            catch (OwnException)
+            {
+                var response = client.Execute<Exception>(request);
+                throw response.Data;
+            }
+        }
+
+            return request;
         }
 
         /// <summary>
