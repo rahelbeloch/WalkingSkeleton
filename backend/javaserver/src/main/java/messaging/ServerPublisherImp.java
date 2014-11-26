@@ -31,9 +31,8 @@ public class ServerPublisherImp implements ServerPublisher {
     private Session session;
     private MessageProducer publisher;
     private BrokerService broker;
-	
-    final private String BROKER_URL; 
-    final private String CONNECTION_URL;
+    private String brokerURL;
+    private String connectionURL;
 	
     /**
      * Constructor
@@ -53,9 +52,9 @@ public class ServerPublisherImp implements ServerPublisher {
         } catch (SecurityException e) {
             //TODO LOGGING
         } 
-        BROKER_URL = properties.getProperty("BrokerURL");
-        CONNECTION_URL = properties.getProperty("BrokerConnectionURL");
-        factory = new ActiveMQConnectionFactory(BROKER_URL);
+        brokerURL = properties.getProperty("BrokerURL");
+        connectionURL = properties.getProperty("BrokerConnectionURL");
+        factory = new ActiveMQConnectionFactory(brokerURL);
 	}
     
     /**Publishes a String-content on a specified topic.
@@ -93,11 +92,11 @@ public class ServerPublisherImp implements ServerPublisher {
         if(broker == null) {
             broker = new BrokerService();
             try {
-                broker.addConnector(CONNECTION_URL);
+                broker.addConnector(connectionURL);
             } catch (Exception e) {
                 throw new ServerPublisherBrokerException(
                 	    "Message broker could not add connector (URL: " 
-                        + CONNECTION_URL + ")");
+                        + connectionURL + ")");
             }
         }
         if (!broker.isStarted()) {
