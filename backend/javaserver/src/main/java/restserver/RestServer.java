@@ -12,22 +12,19 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import com.sun.net.httpserver.HttpServer;
 
-/**
- * 
+/**REST-Server
  * @author akoen001
- * 
- * REST-Server, located on localhost:8080
  */
 public class RestServer {
-
-	private static String baseURI;
-	public static final int WARTEZEIT = 5;
+	
+	private static final int WAITING_TIME = 5;
+	private HttpServer server;
+	private String baseURI;
 	
 	/**
-	 * Creates a new http server to run REST on
-	 * @return the instance of the new server
+	 * Constructor
 	 */
-	public static HttpServer startServer() {
+	public RestServer(){
 		Properties properties = new Properties();
 		BufferedInputStream stream;
 		//read configuration file for rest properties
@@ -41,23 +38,29 @@ public class RestServer {
 			//TODO LOGGING
 		} catch (SecurityException e) {
 			//TODO LOGGING
-		} 
+		}
 		baseURI = properties.getProperty("RestServerURI");
-		
+	}
+	
+	/**Starts http server to run REST on
+	 */
+	public void startHTTPServer() {
         ResourceConfig rc = new ResourceConfig();
         rc.packages("restserver.resource");
-        return JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
+        server = JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
     }
 	
+	/**Stops http server
+	 * The server waits a few seconds before it stops.
+	 * Giving all open requests enough time to run through.
+	 */
+	public void stopHTTPServer(){
+		server.stop(WAITING_TIME);
+	}
+	
+	/** @returns the URI for the http server 
+	 */
 	public String getBaseURI() {
 		return baseURI;
 	}
-	
-	public static void main(String[] args) throws IOException {
-        final HttpServer server = startServer();
-        System.out.println(String.format("SWT02 Jersey app started with WADL available at "
-                + "%sapplication.wadl\nHit enter to stop it...", baseURI));
-        System.in.read();
-        server.stop(WARTEZEIT);
-    }
 }
