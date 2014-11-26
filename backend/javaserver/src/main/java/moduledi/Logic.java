@@ -2,6 +2,8 @@ package moduledi;
 
 import java.util.List;
 
+import persistence.UserAlreadyExistsException;
+import persistence.UserNotExistentException;
 import abstractbeans.AbstractStep;
 import backingbeans.Action;
 import backingbeans.Item;
@@ -21,7 +23,7 @@ public interface Logic {
 	/*
 	 * item 
 	 */
-	public void stepOver(Item item, Action  action, User user);
+	public void stepOver(Item item, AbstractStep  step, User user);
 	
 	/*
 	 * step functions
@@ -32,8 +34,9 @@ public interface Logic {
 	/*
 	 * user functions
 	 */
-	public void addUser(String username);
-	public User getUser(String username);
+	public void addUser(User user) throws UserAlreadyExistsException;
+	public User getUser(String username) throws UserNotExistentException; // not attached yet
+	//public boolean checkLogIn(String username); // later with password checking
 	public void deleteUser(String username);
 	
 	public List<Workflow> getWorkflowsByUser(User user);
