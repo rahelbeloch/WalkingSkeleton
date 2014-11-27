@@ -11,16 +11,14 @@ import java.util.logging.LogRecord;
  * HtmlFormatter for our logger file handler
  */
 public class HTMLFormatter extends Formatter{
-	
-	/**
-	 * 
-	 */
-	public String format(LogRecord rec) {
+
+	@Override
+	public String format(LogRecord rec) {	
 		StringBuffer buf = new StringBuffer(1000);
 		buf.append("<tr>\n");
 		
 		if (rec.getLevel().intValue() >= Level.WARNING.intValue()) {
-			buf.append("\t<td style=\"color:magenta\">");
+			buf.append("\t<td style=\"color:red\">");
 			buf.append("<b>");
 			buf.append(rec.getLevel());
 			buf.append("</b>");
