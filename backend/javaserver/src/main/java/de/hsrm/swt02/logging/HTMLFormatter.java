@@ -12,6 +12,9 @@ import java.util.logging.LogRecord;
  */
 public class HTMLFormatter extends Formatter{
 
+	/**
+	 * makes sure every entry of the log file is right
+	 */
 	@Override
 	public String format(LogRecord rec) {	
 		StringBuffer buf = new StringBuffer(1000);
@@ -40,7 +43,7 @@ public class HTMLFormatter extends Formatter{
 	}
 	
 	/**
-	 * 
+	 * returns the current date and time
 	 * @param millisecs
 	 * @return
 	 */
@@ -51,7 +54,7 @@ public class HTMLFormatter extends Formatter{
 	}
 	
 	/**
-	 * 
+	 * returns the head for the HTML log file
 	 */
 	public String getHead(Handler h){
 		return "<!DOCTYPE html>\n<head>\n<style"
@@ -73,7 +76,7 @@ public class HTMLFormatter extends Formatter{
 	}
 	
 	/**
-	 * 
+	 * returns the tail for the HTML log file
 	 */
 	public String getTail(Handler h) {
 		return "</table>\n</body>\n</html>";

@@ -22,6 +22,10 @@ public class LogConfigurator {
     static private Formatter formatterHTML;
     static private HashMap<String, Level> levelMap = new HashMap<>();
     
+    /**
+     * setup methode, use this ONE TIME to start the logger with configuration from server.config
+     * @throws IOException
+     */
     static public void setup() throws IOException {
         Logger logger = Logger.getLogger(UseLogger.class.getName());
         levelMap.put("severe", Level.SEVERE);
@@ -33,18 +37,20 @@ public class LogConfigurator {
         levelMap.put("finest", Level.FINEST);
         Properties properties = new Properties();
         BufferedInputStream stream;
+        
         //read configuration file for logging properties
         try {
             stream = new BufferedInputStream(new FileInputStream("server.config"));
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
-
+        	e.printStackTrace();
         } catch (IOException e) {
-
+        	e.printStackTrace();
         } catch (SecurityException e) {
-
+            e.printStackTrace();
         }
+        
         //read properties
         Level logLevel = levelMap.get(properties.getProperty("LogLevel"));
         String consoleLogging = properties.getProperty("ConsoleLogging");
