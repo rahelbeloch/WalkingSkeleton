@@ -60,7 +60,10 @@ public class StartProcessor extends Observable{
 			}
 		}
 		workflow.getItems().add(item);
-		item.setFirstStepState(MetaState.OPEN.toString());
+		if(!item.getForGroup("step").isEmpty()){
+			item.setFirstStepState(MetaState.OPEN.toString());
+		}
+		
 		p.storeItem(item);
 		setChanged();
 		item.setState("def");

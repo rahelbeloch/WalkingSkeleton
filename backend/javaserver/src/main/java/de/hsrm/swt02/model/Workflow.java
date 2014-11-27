@@ -12,6 +12,8 @@ public class Workflow extends RootElement {
 	
 	public Workflow() {
 		super();
+		steps = new ArrayList<Step>();
+        items = new ArrayList<Item>();
 	}
 	
 	public Workflow(int id) {

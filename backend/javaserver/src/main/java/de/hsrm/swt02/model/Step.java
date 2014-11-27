@@ -11,7 +11,7 @@ public class Step {
 	protected List<Step> nextSteps;
 	
 	// Used for (de)serialization. Do not change.
-	protected String username;
+	protected String username = "noname";
 	
 	public Step() {
 	
