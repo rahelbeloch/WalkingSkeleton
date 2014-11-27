@@ -10,7 +10,7 @@ import java.util.logging.LogRecord;
 /**
  * HtmlFormatter for our logger file handler
  */
-public class HtmlFormatter extends Formatter{
+public class HTMLFormatter extends Formatter{
 	
 	/**
 	 * 
