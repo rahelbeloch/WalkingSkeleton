@@ -9,13 +9,13 @@ namespace CommunicationLib.Model
     public class Workflow : RootElement
     {
         /// <summary>
-        /// Used for (de)serialization!
+        /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private List<Step> _steps;
         public List<Step> steps { get { return _steps; } set { _steps = value; } }
 
         /// <summary>
-        /// Used for (de)serialization!
+        /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private List<Item> _items;
         public List<Item> items { get { return _items; } set { _items = value; } }
