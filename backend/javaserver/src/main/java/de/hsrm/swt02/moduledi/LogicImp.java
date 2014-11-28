@@ -13,6 +13,7 @@ import de.hsrm.swt02.persistence.UserAlreadyExistsException;
 import de.hsrm.swt02.processors.StartTrigger;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 public class LogicImp implements Logic{
@@ -20,11 +21,10 @@ public class LogicImp implements Logic{
 	private Persistence p;
 	private ProcessManager pm;
 	
-	public LogicImp() {
-		Injector i = Guice.createInjector(new SingleModule());
-		
-		p = i.getInstance(Persistence.class);
-		pm = i.getInstance(ProcessManager.class);
+	@Inject
+	public LogicImp(Persistence p, ProcessManager pm) {
+		this.p = p;
+		this.pm = pm;
 	}
 	
 	/**
