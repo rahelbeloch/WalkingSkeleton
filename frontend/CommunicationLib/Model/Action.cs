@@ -9,7 +9,7 @@ namespace CommunicationLib.Model
     public class Action : Step
     {
         /// <summary>
-        /// Used for (de)serialization!
+        /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private string _description;
         public string description { get { return _description; } set { _description = value; } }
