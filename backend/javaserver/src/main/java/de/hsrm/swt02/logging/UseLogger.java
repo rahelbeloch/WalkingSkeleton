@@ -10,67 +10,109 @@ import java.util.logging.Level;
 public class UseLogger {
     private final static Logger LOGGER = Logger.getLogger(UseLogger.class.getName());
     
-    /**
-     * can be used to set the accepted Log level
-     * @param level: must be java.util.logging.Level.SEVERE, WARNING, INFRO, CONFIG, FINE, FINER or FINEST
+    /**Sets the logging level for the logger to the given log level.
+     * @param level is the value for the next logging operations
      */
     public void setLoggingLevel(Level level){
     	LOGGER.setLevel(level);
     }
     
-    /**
-     * can be used to add an entry to the log, level: SEVERE
-     * @param logMsg - message
+    /**Logs a message with logging level SEVERE.
+     * @param logMsg is the message to log
      */
     public void logSevere(String logMsg) {
         LOGGER.severe(logMsg);
     }
     
-    /**
-     * can be used to add an entry to the log, level: WARNING
-     * @param logMsg - message
+    /**Logs a message with logging level WARNING.
+     * @param logMsg is the message to log
      */
     public void logWarning(String logMsg) {
     	LOGGER.warning(logMsg);
     }
     
-    /**
-     * can be used to add an entry to the log, level: INFO
-     * @param logMsg - message
+    /**Logs a message with logging level INFO.
+     * @param logMsg is the message to log
      */
     public void logInfo(String logMsg) {
     	LOGGER.info(logMsg);
     }
     
-    /**
-     * can be used to add an entry to the log, level: CONFIG
-     * @param logMsg - message
+    /**Logs a message with logging level CONFIG.
+     * @param logMsg is the message to log
      */
     public void logConfig(String logMsg) {
     	LOGGER.config(logMsg);
     }
     
-    /**
-     * can be used to add an entry to the log, level: FINE
-     * @param logMsg - message
+    /**Logs a message with logging level FINE.
+     * @param logMsg is the message to log
      */
     public void logFine(String logMsg) {
     	LOGGER.fine(logMsg);
     }
     
-    /**
-     * can be used to add an entry to the log, level: FINER
-     * @param logMsg - message
+    /**Logs a message with logging level FINER.
+     * @param logMsg is the message to log
      */
     public void logFiner(String logMsg) {
     	LOGGER.finer(logMsg);
     }
     
-    /**
-     * can be used to add an entry to the log, level: FINEST
-     * @param logMsg
+    /**Logs a message with logging level FINEST.
+     * @param logMsg is the message to log
      */
     public void logFinest(String logMsg) {
     	LOGGER.finest(logMsg);
+    }
+    
+    /**Logs a message String into the logging file.
+     * The logging file is specified in the 'server.config' file.
+     * If the specified log level is lower than the current log level,
+     * the message wont be logged.
+     * @param logLevel is the urgency level for log message
+     * @param logMsg is the message that should be logged
+     */
+    public void log(Level logLevel, String logMsg){
+    	LOGGER.log(logLevel, logMsg);
+    }
+    
+    /**Logs a message String into the logging file.
+     * Adds an object for additional log information.
+     * The logging file is specified in the 'server.config' file
+     * If the specified log level is lower than the current log level,
+     * the message wont be logged.
+     * @param logLevel is the urgency level for log message
+     * @param logMsg is the message that should be logged
+     * @param singleParam is an object for additional log information
+     */
+    public void log(Level logLevel, String logMsg, Object singleParam){
+    	LOGGER.log(logLevel, logMsg, singleParam);
+    }
+    
+    /**Logs a message String into the logging file.
+     * Adds a parameter list of objects for additional log information.
+     * The logging file is specified in the 'server.config' file.
+     * If the specified log level is lower than the current log level,
+     * the message wont be logged.
+     * @param logLevel is the urgency level for log message
+     * @param logMsg is the message that should be logged
+     * @param paramArray is an array of parameters for additional log information
+     */
+    public void log(Level logLevel, String logMsg, Object[] paramArray){
+    	LOGGER.log(logLevel, logMsg, paramArray);
+    }
+    
+    /**Logs a message String into the logging file.
+     * Adds an throwable object (e.g. exception) for additional log information.
+     * The logging file is specified in the 'server.config' file.
+     * If the specified log level is lower than the current log level,
+     * the message wont be logged.
+     * @param logLevel is the urgency level for log message
+     * @param logMsg is the message that should be logged
+     * @param throwable is a throwable object for additional log information
+     */
+    public void log(Level logLevel, String logMsg, Throwable throwable){
+    	LOGGER.log(logLevel, logMsg, throwable);
     }
 }
