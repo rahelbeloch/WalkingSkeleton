@@ -33,15 +33,7 @@ namespace CommunicationLib.Model
         /// <param name="step"></param>
         public void addStep(Step step)
         {
-            if (steps.Count == 0)
-            {
-                steps.Add(step);
-            }
-            else if (steps.Count > 0)
-            {
-                steps[steps.Count - 1].nextSteps.Add(step);
-                steps.Add(step);
-            }
+            steps.Add(step);
         }
 
         /// <summary>
@@ -49,18 +41,7 @@ namespace CommunicationLib.Model
         /// </summary>
         public void removeLastStep()
         {
-            if (steps.Count == 1)
-            {
-                steps.RemoveAt(0);
-            }
-            else if (steps.Count > 1)
-            {
-                Step lastStep = steps[steps.Count - 1];
-
-                // remove link from previous step
-                steps[steps.Count - 2].nextSteps.Remove(lastStep);
-                steps.RemoveAt(steps.Count - 1);
-            }
+            steps.RemoveAt(steps.Count - 1);
         }
 
         /// <summary>
