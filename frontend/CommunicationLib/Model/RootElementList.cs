@@ -9,7 +9,7 @@ namespace CommunicationLib
 {
 
         /// <summary>
-        /// Backing bean implementation for own List of RootElements.
+        ///     Backing bean implementation for own List of RootElements.
         /// </summary>
         public class RootElementList : IList<RootElement>
         {
