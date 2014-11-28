@@ -19,23 +19,12 @@ namespace AdminClient.viewmodel
     /// The WorkflowViewModel contains properties and commands to create a new workflow and to send it to the server.
     /// Furthermore, the properties and commands are used as DataBindings in the graphical user interface.
     /// </summary>
-    class WorkflowViewModel : ViewModelBase, IDataReceiver
+    class WorkflowViewModel : ViewModelBase
     {
         private Workflow _workflowModel = new Workflow();
-        //private CommunicationManager communicationManager;
         
         public WorkflowViewModel()
         {
-            RestAPI.RestRequester.Init();
-            /*try
-            {
-                communicationManager = new CommunicationManager(this);
-            }
-            catch (Exception e)
-            {
-                MessageBoxResult result = MessageBox.Show("Es konnte keine Verbindung zum Server hergestellt werden.");
-            }*/
-            
             _workflow.CollectionChanged += OnWorkflowChanged;
 
             // fill choosable steps with default values
@@ -202,11 +191,11 @@ namespace AdminClient.viewmodel
             {
                 if (_openAddStepWindow == null)
                 {
-                    _openAddStepWindow = new ActionCommand(func =>
+                    _openAddStepWindow = new ActionCommand(execute =>
                     {
                         AddStepWindow addElementWindow = new AddStepWindow();
                         addElementWindow.Show();
-                    }, func => (_workflow.Count == 0) || (_workflow.Count > 0 && !(_workflow[_workflow.Count - 1] is FinalStep)));
+                    }, canExecute => (_workflow.Count == 0) || (_workflow.Count > 0 && !(_workflow[_workflow.Count - 1] is FinalStep)));
                 }
                 return _openAddStepWindow;
             }
@@ -222,13 +211,12 @@ namespace AdminClient.viewmodel
             {
                 if (_removeLastStepCommand == null)
                 {
-                    _removeLastStepCommand = new ActionCommand(func =>
+                    _removeLastStepCommand = new ActionCommand(execute =>
                     {
                         // update model AND viewmodel, because the model is not observable
                         _workflowModel.removeLastStep();
                         _workflow.RemoveAt(_workflow.Count - 1);
-                    }, func => _workflow.Count > 0);
-                    
+                    }, canExecute => _workflow.Count > 0);
                 }
                 return _removeLastStepCommand;
             }
@@ -244,14 +232,14 @@ namespace AdminClient.viewmodel
             {
                 if (_submitWorkflowCommand == null)
                 {
-                    _submitWorkflowCommand = new ActionCommand(func =>
+                    _submitWorkflowCommand = new ActionCommand(execute =>
                     {
                         RestAPI.RestRequester.PostObject<Workflow>(_workflowModel);
                         // remove steps from workflow
                         // update model AND viewmodel, because the model is not observable
                         _workflowModel.clearWorkflow();
                         _workflow.Clear();
-                    }, func => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
+                    }, canExecute => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
                 }
                 return _submitWorkflowCommand;
             }
@@ -267,7 +255,7 @@ namespace AdminClient.viewmodel
             {
                 if (_addStepCommand == null)
                 {
-                    _addStepCommand = new ActionCommand(func =>
+                    _addStepCommand = new ActionCommand(execute =>
                     {
                         // add step to workflow
                         // update model AND viewmodel, because the model is not observable
@@ -299,7 +287,7 @@ namespace AdminClient.viewmodel
                         // reset inputs
                         username = "";
                         stepDescription = "";
-                    }, func =>
+                    }, canExecute =>
                     {
                         if (selectedStep == null)
                         {
@@ -327,20 +315,5 @@ namespace AdminClient.viewmodel
         }
 
         #endregion
-
-        public void WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ItemUpdate(RegistrationWrapper<Item> wrappedObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UserUpdate(RegistrationWrapper<User> wrappedObject)
-        {
-            throw new NotImplementedException();
-        }
     }   
 }

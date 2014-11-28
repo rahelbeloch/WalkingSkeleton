@@ -54,7 +54,7 @@ namespace AdminClient.viewmodel
             {
                 if (_addUserCommand == null)
                 {
-                    _addUserCommand = new ActionCommand(func =>
+                    _addUserCommand = new ActionCommand(execute =>
                     {
                         User newUser = new User();
                         newUser.username = username;
@@ -64,7 +64,7 @@ namespace AdminClient.viewmodel
                         RestAPI.RestRequester.PostObject<Workflow>(newUser);
                         
                         username = "";
-                    }, func =>
+                    }, canExecute =>
                     {
                         if (username.Length == 0)
                         {
