@@ -87,6 +87,7 @@ public class Resource {
 	@Consumes("application/x-www-form-urlencoded")
 	public String saveWorkflow (MultivaluedMap<String, String> formParams) {
 		ObjectMapper mapper = new ObjectMapper();
+		// TODO use logger
 		System.out.println("SEND -> ");
 		String workflowAsString = formParams.get("data").get(0);
 		Workflow workflow;
