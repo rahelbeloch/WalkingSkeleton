@@ -57,8 +57,7 @@ namespace AdminClient.viewmodel
                         
                         // update view model
                         _userCollection.Add(newUser);
-
-                        Console.WriteLine("TODO: send user to server");
+                        RestAPI.RestRequester.PostObject<Workflow>(newUser);
                         
                         userName = "";
                     }, func =>

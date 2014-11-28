@@ -18,18 +18,18 @@ namespace AdminClient.viewmodel
     class WorkflowViewModel : ViewModelBase, IDataReceiver
     {
         private Workflow _workflowModel = new Workflow();
-        private CommunicationManager communicationManager;
+        //private CommunicationManager communicationManager;
         
         public WorkflowViewModel()
         {
-            try
+            /*try
             {
                 communicationManager = new CommunicationManager(this);
             }
             catch (Exception e)
             {
                 MessageBoxResult result = MessageBox.Show("Es konnte keine Verbindung zum Server hergestellt werden.");
-            }
+            }*/
             
             _workflow.CollectionChanged += OnWorkflowChanged;
 
@@ -282,7 +282,7 @@ namespace AdminClient.viewmodel
                         {
                             Action action = new Action();
                             action.username = userName;
-                            action.name = stepDescription;
+                            action.description = stepDescription;
 
                             _workflow.Add(action);
                             _workflowModel.addStep(action);
