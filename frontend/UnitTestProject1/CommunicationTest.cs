@@ -26,7 +26,6 @@ namespace UnitTestProject1
         [TestMethod]
         public void testSentWorkflow()
         {
-            RestRequester.Init();
 
             Workflow testWF = new Workflow();
             testWF.id = 17;
@@ -40,10 +39,12 @@ namespace UnitTestProject1
             testWF.addStep(ass);
             testWF.addStep(new Action());
             //testWF.addStep(new FinalStep());*/
-
-            String answer = RestRequester.PostObject<Workflow>(testWF);
             
-            Assert.IsTrue(answer == "true");
+            IRestResponse respo = RestRequester.PostObject<Workflow>(testWF);
+            //System.Diagnostics.Trace.WriteLine("answer: " + answer);
+            String statcode = respo.StatusCode.ToString();
+
+            Assert.IsTrue(statcode.Equals("OK"));
         }
 
         /// <summary>
@@ -54,8 +55,10 @@ namespace UnitTestProject1
         {
             int getWFId = 0;
 
-            RestRequester.Init();
+          
             Workflow getWF = RestRequester.GetObject<Workflow>(getWFId);
+
+            System.Diagnostics.Trace.WriteLine("ID " + getWF.id);
 
             Assert.IsTrue(getWFId == getWF.id);
         }
@@ -69,7 +72,7 @@ namespace UnitTestProject1
             int testWfId = 1;
             String testUserName = "Rahel";
 
-            RestRequester.Init();
+            
             String done = RestRequester.StartWorkflow(testWfId, testUserName);
 
             Assert.IsTrue(done == "true");
@@ -85,7 +88,7 @@ namespace UnitTestProject1
             int itemId = 11;
             string username = "Rahel";
 
-            RestRequester.Init();
+           
             String done = RestRequester.StepForward(stepId, itemId, username);
 
             Assert.IsTrue(done == "true");
@@ -103,12 +106,13 @@ namespace UnitTestProject1
             testStep.id = 7;
             testWF.addStep(testStep);
 
-            RestRequester.Init();
 
             RestRequester.UpdateObject(testWF);
             Workflow updatedWorkflow = RestRequester.GetObject<Workflow>(17);
 
             int steps = updatedWorkflow.steps.Count;
+            System.Diagnostics.Trace.WriteLine("count steps: " + steps);
+            System.Diagnostics.Trace.WriteLine("id workflow: " + testWF.id);
 
             Assert.IsTrue(steps == 1);
             Assert.IsTrue(updatedWorkflow.steps[steps-1].id == 7);
@@ -120,6 +124,28 @@ namespace UnitTestProject1
         [TestMethod]
         public void testDeleteObject()
         {
+        }
+
+        /// <summary>
+        ///     Test to get a list of objects from server.
+        /// </summary>
+        [TestMethod]
+        public void testGetAllObjects()
+        {
+            IList<Workflow> eleList = RestRequester.GetAllObjects<Workflow>("Rahel");
+
+            Assert.IsTrue(eleList.Count == 3);
+        }
+
+        /// <summary>
+        ///     Test to get a list of objects from server.
+        /// </summary>
+        [TestMethod]
+        public void testCheckUser()
+        {
+            RestRequester.checkUser("Rahel", "12345");
+
+            Assert.IsTrue(true);
         }
 
     }
