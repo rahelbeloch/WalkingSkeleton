@@ -22,108 +22,116 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.UserAlreadyExistsException;
 
-
 @Path("resource")
 public class UserResource {
 
-	private Persistence p;
-	
-	@Inject
-	public UserResource(Persistence p) {
-		this.p = p;
-	}
-	
-	/**
-	 * 
-	 * @param username
-	 * @return the requested user
-	 */	@GET @Path("user/{username}")
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response getUser (@PathParam("username") String username) {
-		System.out.println("GET -> " + username);
-		ObjectMapper mapper = new ObjectMapper();
-		User user = p.loadUser(username);
-		String userAsString;
-		try {
-			userAsString = mapper.writeValueAsString(user);
-		} catch (JsonProcessingException e) {
-			return Response.serverError().build();
-		}
-		return Response.ok(userAsString).build();
-	}
-	
-	/**
-	 * 
-	 * receives a user and stores it into the database
-	 * 
-	 * @param receivedUser
-	 * @return 	200 ok if successful
-	 */
-	@POST @Path("user")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes("application/x-www-form-urlencoded")
-	public Response saveUser (MultivaluedMap<String, String> formParams) {
-		ObjectMapper mapper = new ObjectMapper();
-		// TODO use logger
-		String userAsString = formParams.get("data").get(0);
-		System.out.println(userAsString);
-		User user;
-		try {
-			user = mapper.readValue(userAsString, User.class);
-		} catch (IOException e) {
-			return Response.serverError().entity("Jackson parsing-error").build();
-		}
-		System.out.println("SEND -> " + user.getUsername());
-		try {
-			p.addUser(user);
-		} catch (UserAlreadyExistsException e) {
-			return Response.serverError().entity("User already exists").build();
-		}
-		return Response.ok("User stored").build();
-	}
-	
-	/**
-	 * 
-	 * @param user
-	 * @return 200 ok if successful
-	 */
-	@PUT @Path("user/{username}")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes("application/x-www-form-urlencoded")
-	public Response updateUser(@PathParam("username") String username, MultivaluedMap<String, String> formParams) {
-		System.out.println("UPDATE -> " + username);
-		ObjectMapper mapper = new ObjectMapper();
-		String userAsString = formParams.get("data").get(0);
-		User user;
-		try {
-			user = mapper.readValue(userAsString, User.class);
-		} catch (IOException e) {
-			return Response.serverError().entity("Jackson parsing-error").build();
-		}
-		//TODO: update User "user" in persistence
-		return Response.ok().build();
-	}
-	
-	/**
-	 * 
-	 * @param username
-	 * @return deleted user, if successful
-	 */
-	@DELETE @Path("user/{username}")
-	@Produces(MediaType.TEXT_PLAIN)
-	public Response deleteUser (@PathParam("username") String username) {
-		System.out.println("DELETE -> " + username);
-		ObjectMapper mapper = new ObjectMapper();
-		//TODO: get user with name "username" from persistence, then delete it
-		User user = new User();
-		user.setUsername(username);
-		String userAsString;
-		try {
-			userAsString = mapper.writeValueAsString(user);
-		} catch (JsonProcessingException e) {
-			return Response.serverError().entity("Jackson parsing-error").build();
-		}
-		return Response.ok(userAsString).build();
-	}
-	
+    private Persistence p;
+
+    @Inject
+    public UserResource(Persistence p) {
+        this.p = p;
+    }
+
+    /**
+     * 
+     * @param username
+     * @return the requested user
+     */
+    @GET
+    @Path("user/{username}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getUser(@PathParam("username") String username) {
+        System.out.println("GET -> " + username);
+        ObjectMapper mapper = new ObjectMapper();
+        User user = p.loadUser(username);
+        String userAsString;
+        try {
+            userAsString = mapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            return Response.serverError().build();
+        }
+        return Response.ok(userAsString).build();
+    }
+
+    /**
+     * 
+     * receives a user and stores it into the database
+     * 
+     * @param receivedUser
+     * @return 200 ok if successful
+     */
+    @POST
+    @Path("user")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes("application/x-www-form-urlencoded")
+    public Response saveUser(MultivaluedMap<String, String> formParams) {
+        ObjectMapper mapper = new ObjectMapper();
+        // TODO use logger
+        String userAsString = formParams.get("data").get(0);
+        System.out.println(userAsString);
+        User user;
+        try {
+            user = mapper.readValue(userAsString, User.class);
+        } catch (IOException e) {
+            return Response.serverError().entity("Jackson parsing-error")
+                    .build();
+        }
+        System.out.println("SEND -> " + user.getUsername());
+        try {
+            p.addUser(user);
+        } catch (UserAlreadyExistsException e) {
+            return Response.serverError().entity("User already exists").build();
+        }
+        return Response.ok("User stored").build();
+    }
+
+    /**
+     * 
+     * @param user
+     * @return 200 ok if successful
+     */
+    @PUT
+    @Path("user/{username}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes("application/x-www-form-urlencoded")
+    public Response updateUser(@PathParam("username") String username,
+            MultivaluedMap<String, String> formParams) {
+        System.out.println("UPDATE -> " + username);
+        ObjectMapper mapper = new ObjectMapper();
+        String userAsString = formParams.get("data").get(0);
+        User user;
+        try {
+            user = mapper.readValue(userAsString, User.class);
+        } catch (IOException e) {
+            return Response.serverError().entity("Jackson parsing-error")
+                    .build();
+        }
+        // TODO: update User "user" in persistence
+        return Response.ok().build();
+    }
+
+    /**
+     * 
+     * @param username
+     * @return deleted user, if successful
+     */
+    @DELETE
+    @Path("user/{username}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response deleteUser(@PathParam("username") String username) {
+        System.out.println("DELETE -> " + username);
+        ObjectMapper mapper = new ObjectMapper();
+        // TODO: get user with name "username" from persistence, then delete it
+        User user = new User();
+        user.setUsername(username);
+        String userAsString;
+        try {
+            userAsString = mapper.writeValueAsString(user);
+        } catch (JsonProcessingException e) {
+            return Response.serverError().entity("Jackson parsing-error")
+                    .build();
+        }
+        return Response.ok(userAsString).build();
+    }
+
 }

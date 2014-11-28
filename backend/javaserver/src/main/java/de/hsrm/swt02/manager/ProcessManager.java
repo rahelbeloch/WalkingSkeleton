@@ -11,12 +11,12 @@ import de.hsrm.swt02.model.User;
  *
  */
 public interface ProcessManager extends Observer {
-	
-	public boolean checkUser(User user, Step step);
-	
-	public void selectProcessor(Step step, Item item, User user);
-	
-	public void startBroker();
-	
-	public void stopBroker();
+
+    public boolean checkUser(User user, Step step);
+
+    public void selectProcessor(Step step, Item item, User user);
+
+    public void startBroker();
+
+    public void stopBroker();
 }

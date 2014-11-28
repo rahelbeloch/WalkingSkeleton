@@ -19,13 +19,13 @@ import org.apache.activemq.broker.BrokerService;
 
 import com.google.inject.Singleton;
 
-/** Class for message publishing on server-side.
- *  Uses ActiveMQ as message broker.
- *  Enables string publishing on a specified message topic.
+/**
+ * Class for message publishing on server-side. Uses ActiveMQ as message broker.
+ * Enables string publishing on a specified message topic.
  */
 @Singleton
 public class ServerPublisherImp implements ServerPublisher {
-    
+
     private ActiveMQConnectionFactory factory;
     private Connection connection;
     private Session session;
@@ -33,97 +33,110 @@ public class ServerPublisherImp implements ServerPublisher {
     private BrokerService broker;
     private String brokerURL;
     private String connectionURL;
-	
+
     /**
      * Constructor
      */
     public ServerPublisherImp() {
         Properties properties = new Properties();
         BufferedInputStream stream;
-        //read configuration file for broker properties
+        // read configuration file for broker properties
         try {
-            stream = new BufferedInputStream(new FileInputStream("server.config"));
+            stream = new BufferedInputStream(new FileInputStream(
+                    "server.config"));
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
-            //TODO LOGGING
+            // TODO LOGGING
         } catch (IOException e) {
-            //TODO LOGGING
+            // TODO LOGGING
         } catch (SecurityException e) {
-            //TODO LOGGING
-        } 
+            // TODO LOGGING
+        }
         brokerURL = properties.getProperty("BrokerURL");
         connectionURL = properties.getProperty("BrokerConnectionURL");
         factory = new ActiveMQConnectionFactory(brokerURL);
-	}
-    
-    /**Publishes a String-content on a specified topic.
+    }
+
+    /**
+     * Publishes a String-content on a specified topic.
+     * 
      * @param content - content to publish
      * @param topicName - topic where the content will be published
      * @throws Exception
      */
-    public void publish(String content, String topicName) throws ServerPublisherBrokerException {
+    public void publish(String content, String topicName)
+            throws ServerPublisherBrokerException {
         try {
             connection = factory.createConnection();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            
-            //create a message-producer for the topic
+
+            // create a message-producer for the topic
             Topic topic = session.createTopic(topicName);
             publisher = session.createProducer(topic);
             publisher.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-			
-            //define messaging-content (TextMessage or MapMessage)
+
+            // define messaging-content (TextMessage or MapMessage)
             TextMessage msg = session.createTextMessage(content);
-            
-            //send and close
+
+            // send and close
             publisher.send(msg);
             session.close();
             connection.close();
         } catch (JMSException e) {
             throw new ServerPublisherBrokerException("Publishing-Error: +"
-														+ e.getMessage());
+                    + e.getMessage());
         }
     }
-	
-    /**Starts the messaging broker
+
+    /**
+     * Starts the messaging broker
+     * 
      * @throws ServerPublisherBrokerException
      */
-    public void startBroker() throws ServerPublisherBrokerException{
-        if(broker == null) {
+    public void startBroker() throws ServerPublisherBrokerException {
+        if (broker == null) {
             broker = new BrokerService();
             try {
                 broker.addConnector(connectionURL);
             } catch (Exception e) {
                 throw new ServerPublisherBrokerException(
-                	    "Message broker could not add connector (URL: " 
-                        + connectionURL + ")");
+                        "Message broker could not add connector (URL: "
+                                + connectionURL + ")");
             }
         }
         if (!broker.isStarted()) {
             try {
                 broker.start();
             } catch (Exception ex) {
-                throw new ServerPublisherBrokerException("Could not START message broker");
+                throw new ServerPublisherBrokerException(
+                        "Could not START message broker");
             }
         }
     }
-	
-    /** Stops the messaging broker
+
+    /**
+     * Stops the messaging broker
+     * 
      * @throws ServerPublisherBrokerException
      */
     public void stopBroker() throws ServerPublisherBrokerException {
         if (broker == null) {
-            throw new ServerPublisherBrokerException("Message broker was never started");
+            throw new ServerPublisherBrokerException(
+                    "Message broker was never started");
         } else if (broker.isStarted()) {
             try {
                 broker.stop();
             } catch (Exception ex) {
-                throw new ServerPublisherBrokerException("Could not STOP message broker");
+                throw new ServerPublisherBrokerException(
+                        "Could not STOP message broker");
             }
         }
     }
-    
-    /**Check weather the message broker is running
+
+    /**
+     * Check weather the message broker is running
+     * 
      * @return true if the embedded message-broker is running
      */
     public boolean brokerStarted() {
