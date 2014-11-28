@@ -7,8 +7,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-/**
- * HtmlFormatter for our logger file handler
+/**HtmlFormatter for our logger file handler
  */
 public class HTMLFormatter extends Formatter{
 
@@ -42,10 +41,9 @@ public class HTMLFormatter extends Formatter{
 		return buf.toString();
 	}
 	
-	/**
-	 * returns the current date and time
+	/**Returns the current date and time.
 	 * @param millisecs
-	 * @return
+	 * @returns the current date and time
 	 */
 	private String calcDate(long millisecs) {
 		SimpleDateFormat date_format = new SimpleDateFormat("MMM dd,yyyy HH:mm");
@@ -53,8 +51,8 @@ public class HTMLFormatter extends Formatter{
 		return date_format.format(resultdate);
 	}
 	
-	/**
-	 * returns the head for the HTML log file
+	/**Generates the HTML-header for the log file.
+	 * @returns the head for the HTML log file
 	 */
 	public String getHead(Handler h){
 		return "<!DOCTYPE html>\n<head>\n<style"
@@ -75,8 +73,8 @@ public class HTMLFormatter extends Formatter{
 				+ "</tr>\n";
 	}
 	
-	/**
-	 * returns the tail for the HTML log file
+	/**Generates the HTML-tail for the log file
+	 * @returns the tail for the HTML log file
 	 */
 	public String getTail(Handler h) {
 		return "</table>\n</body>\n</html>";
