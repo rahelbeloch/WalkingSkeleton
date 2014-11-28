@@ -28,7 +28,7 @@ namespace AdminClient.viewmodel
         public ObservableCollection<User> userCollection { get { return _userCollection; } }
 
         /// <summary>
-        /// Property for input from userId text box.
+        /// Property for input from username text box.
         /// </summary>
         private string _username = "";
         public string username
