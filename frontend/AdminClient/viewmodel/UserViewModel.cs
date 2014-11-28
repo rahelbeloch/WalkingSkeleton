@@ -30,17 +30,17 @@ namespace AdminClient.viewmodel
         /// <summary>
         /// Property for input from userId text box.
         /// </summary>
-        private string _userName = "";
-        public string userName
+        private string _username = "";
+        public string username
         {
             get
             {
-                return _userName;
+                return _username;
             }
             set
             {
-                _userName = value;
-                OnChanged("userName");
+                _username = value;
+                OnChanged("username");
             }
         }
 
@@ -57,16 +57,16 @@ namespace AdminClient.viewmodel
                     _addUserCommand = new ActionCommand(func =>
                     {
                         User newUser = new User();
-                        newUser.username = userName;
+                        newUser.username = username;
                         
                         // update view model
                         _userCollection.Add(newUser);
                         RestAPI.RestRequester.PostObject<Workflow>(newUser);
                         
-                        userName = "";
+                        username = "";
                     }, func =>
                     {
-                        if (userName.Length == 0)
+                        if (username.Length == 0)
                         {
                             return false;
                         }

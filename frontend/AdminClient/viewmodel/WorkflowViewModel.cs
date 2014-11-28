@@ -126,19 +126,19 @@ namespace AdminClient.viewmodel
         }
 
         /// <summary>
-        /// Property for input from userId text box.
+        /// Property for input from username text box.
         /// </summary>
-        private string _userName = "";
-        public string userName
+        private string _username = "";
+        public string username
         {
             get
             {
-                return _userName;
+                return _username;
             }
             set
             {
-                _userName = value;
-                OnChanged("userName");
+                _username = value;
+                OnChanged("username");
             }
         }
 
@@ -173,22 +173,18 @@ namespace AdminClient.viewmodel
             if (_workflow.Count == 0)
             {
                 StartStep startStep = new StartStep();
-                startStep.id = 0;
                 _choosableSteps.Add(startStep);
             }
             else if (_workflow[_workflow.Count - 1] is StartStep)
             {
                 Action action = new Action();
-                action.id = 1;
                 _choosableSteps.Add(action);
             }
             else if (_workflow.Count >= 2 && !(_workflow[_workflow.Count - 1] is FinalStep))
             {
                 Action action = new Action();
-                action.id = 1;
 
                 FinalStep finalStep = new FinalStep();
-                finalStep.id = 2;
                 _choosableSteps.Add(action);
                 _choosableSteps.Add(finalStep);
             }
@@ -278,7 +274,7 @@ namespace AdminClient.viewmodel
                         if (_selectedStep is StartStep)
                         {
                             StartStep startStep = new StartStep();
-                            startStep.username = userName;
+                            startStep.username = username;
 
                             _workflow.Add(startStep);
                             _workflowModel.addStep(startStep);
@@ -286,7 +282,7 @@ namespace AdminClient.viewmodel
                         else if (_selectedStep is Action)
                         {
                             Action action = new Action();
-                            action.username = userName;
+                            action.username = username;
                             action.description = stepDescription;
 
                             _workflow.Add(action);
@@ -300,7 +296,8 @@ namespace AdminClient.viewmodel
                             _workflowModel.addStep(finalStep);
                         }
 
-                        userName = "";
+                        // reset inputs
+                        username = "";
                         stepDescription = "";
                     }, func =>
                     {
@@ -308,11 +305,11 @@ namespace AdminClient.viewmodel
                         {
                             return false;
                         }
-                        else if (selectedStep is Action && stepDescription.Length > 0)
+                        else if (selectedStep is Action && username.Length > 0 && stepDescription.Length > 0)
                         {
                             return true;
                         }
-                        else if (selectedStep is StartStep)
+                        else if (selectedStep is StartStep && username.Length > 0)
                         {
                             return true;
                         }

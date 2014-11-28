@@ -21,7 +21,7 @@
                 <Label Content="Nutzername: " />
                 <TextBox Width="120" Height="25" IsEnabled="{Binding enableUserTextBox, UpdateSourceTrigger=PropertyChanged}" >
                     <TextBox.Text>
-                        <Binding Path="userName" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="username" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                     </TextBox.Text>
                 </TextBox>
             </DockPanel>
