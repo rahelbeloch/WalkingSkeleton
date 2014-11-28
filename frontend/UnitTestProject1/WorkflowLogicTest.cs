@@ -27,7 +27,6 @@ namespace UnitTestProject1
             wf.addStep(st3);
 
             Assert.IsTrue(wf.steps[2] == st3);
-
         }
 
         /// <summary>
@@ -51,45 +50,6 @@ namespace UnitTestProject1
             wf.removeLastStep();
 
             Assert.IsTrue(wf.steps.Count == 0);
-
-        }
-
-        /// <summary>
-        /// Test if nextStep reference is removed correctly.
-        /// </summary>
-        [TestMethod]
-        public void removeStepNextStepTest()
-        {
-            Workflow wf = new Workflow();
-
-            Step st1 = new Step();
-            Step st2 = new Step();
-            Step st3 = new Step();
-
-            wf.addStep(st1);
-            wf.addStep(st2);
-            wf.addStep(st3);
-
-            wf.removeLastStep();
-
-            Assert.IsTrue(wf.steps[1].nextSteps.Count == 0);
-        }
-
-        /// <summary>
-        /// Test if nextStep reference is correct.
-        /// </summary>
-        [TestMethod]
-        public void addStepNextStepTest()
-        {
-            Workflow wf = new Workflow();
-
-            Step st1 = new Step();
-            Step st2 = new Step();
-
-            wf.addStep(st1);
-            wf.addStep(st2);
-
-            Assert.IsTrue(wf.steps[0].nextSteps[0] == st2);
         }
     }
 }
