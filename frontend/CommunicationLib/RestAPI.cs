@@ -151,7 +151,7 @@ namespace RestAPI
             return desObj;
         }
 
-        public void checkUser(String username, String password)
+        public static void checkUser(String username, String password)
         {
             // 'operation/user/login'
             String url = _operationParam + "user/" + "login";
