@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("command")
 public class Command {
@@ -19,14 +20,14 @@ public class Command {
 	 */
 	@POST @Path("start/{workflowid}/{username}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String startWorkflow (@PathParam("workflowid") int workflowid, @PathParam("username") String username) {
+	public Response startWorkflow (@PathParam("workflowid") int workflowid, @PathParam("username") String username) {
 		System.out.println("START -> " + workflowid + " " + username);
 		//Workflow workflow = (Workflow)p.loadWorkflow(workflowid);
 		//pm.startBroker();
 		//StartTrigger start = new StartTrigger(workflow, pm, p);
 		//start.startWorkflow();
 		//Item item = (Item)workflow.getItemByPos(0);
-		return "true";
+		return Response.ok().build();
 	}
 	
 	/**
@@ -38,14 +39,14 @@ public class Command {
 	 */
 	@POST @Path("forward/{stepid}/{itemid}/{username}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String forward (@PathParam("stepid") int stepid, @PathParam("itemid") int itemid,
+	public Response forward (@PathParam("stepid") int stepid, @PathParam("itemid") int itemid,
 							 @PathParam("username") String username) {
 		System.out.println("FORWARD -> " + itemid);
 		//AbstractStep step = p.loadStep(stepid);
 		//Item item = (Item)p.loadItem(itemid);
 		//AbstractUser user = p.loadUser(username);
 		//pm.selectProcessor(step, item, (User)user);
-		return "true";
+		return Response.ok().build();
 	}
 	
 }
