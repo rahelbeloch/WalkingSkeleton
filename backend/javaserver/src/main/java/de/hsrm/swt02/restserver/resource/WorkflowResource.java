@@ -22,7 +22,7 @@ import de.hsrm.swt02.model.Workflow;
 
 
 @Path("resource")
-public class Resource {
+public class WorkflowResource {
 
 	/**
 	 * 
