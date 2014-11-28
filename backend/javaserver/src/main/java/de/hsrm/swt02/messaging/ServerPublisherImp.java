@@ -18,6 +18,7 @@ import javax.jms.Topic;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import de.hsrm.swt02.logging.UseLogger;
@@ -40,9 +41,12 @@ public class ServerPublisherImp implements ServerPublisher {
 
     /**
      * Constructor.
+     * 
+     * @param logger is the logger for this ServerPublisher
      */
-    public ServerPublisherImp() {
-        logger = new UseLogger();
+    @Inject
+    public ServerPublisherImp(UseLogger logger) {
+        this.logger = logger;
         final Properties properties = new Properties();
         BufferedInputStream stream;
         // read configuration file for broker properties
@@ -52,11 +56,11 @@ public class ServerPublisherImp implements ServerPublisher {
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
-            logger.log(Level.WARNING, e);
+            this.logger.log(Level.WARNING, e);
         } catch (IOException e) {
-            logger.log(Level.WARNING, e);
+            this.logger.log(Level.WARNING, e);
         } catch (SecurityException e) {
-            logger.log(Level.WARNING, e);
+            this.logger.log(Level.WARNING, e);
         }
         brokerURL = properties.getProperty("BrokerURL");
         connectionURL = properties.getProperty("BrokerConnectionURL");
