@@ -12,12 +12,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-
-import de.hsrm.swt02.model.RootElementList;
-import de.hsrm.swt02.model.Workflow;
+import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import de.hsrm.swt02.model.RootElementList;
+import de.hsrm.swt02.model.Workflow;
 
 
 @Path("resource")
@@ -29,19 +30,19 @@ public class Resource {
 	 * @return the requested workflow
 	 */	@GET @Path("workflow/{workflowid}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getWorkflow (@PathParam("workflowid") int workflowid) {
+	public Response getWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("GET -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
 		//TODO: get workflow with id "workflowid" from persistence
 		Workflow workflow = new Workflow();
 		workflow.setId(workflowid);
-		String workflowAsString = "string";
+		String workflowAsString;
 		try {
 			workflowAsString = mapper.writeValueAsString(workflow);
 		} catch (JsonProcessingException e) {
-			return "jackson exception";
+			return Response.serverError().build();
 		}
-		return workflowAsString;
+		return Response.ok(workflowAsString).build();
 	}
 	
 	/**
@@ -51,7 +52,7 @@ public class Resource {
 	 */
 	@GET @Path("workflows/{username}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getAllWorkflows (@PathParam("username") String username) {
+	public Response getAllWorkflows (@PathParam("username") String username) {
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println("GETALL -> " + username);
 		//TODO: get all workflows for user "username" from persistence
@@ -69,9 +70,9 @@ public class Resource {
 		try {
 			wListString = mapper.writeValueAsString(wList);
 		} catch (JsonProcessingException e) {
-			return "jackson exception";
+			return Response.serverError().entity("Jackson parsing-error").build();
 		}
-		return wListString;
+		return Response.ok(wListString).build();
 	}
 	
 	/**
@@ -85,7 +86,7 @@ public class Resource {
 	@POST @Path("workflow")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes("application/x-www-form-urlencoded")
-	public String saveWorkflow (MultivaluedMap<String, String> formParams) {
+	public Response saveWorkflow (MultivaluedMap<String, String> formParams) {
 		ObjectMapper mapper = new ObjectMapper();
 		// TODO use logger
 		System.out.println("SEND -> ");
@@ -94,12 +95,10 @@ public class Resource {
 		try {
 			workflow = mapper.readValue(workflowAsString, Workflow.class);
 		} catch (IOException e) {
-			return "jackson exception";
+			return Response.serverError().entity("Jackson parsing-error").build();
 		}
 		//TODO: save Workflow "workflow" to persistence
-		System.out.println(workflowAsString);
-		System.out.println(workflow.getId());
-		return "true";
+		return Response.ok().build();
 	}
 	
 	/**
@@ -110,7 +109,7 @@ public class Resource {
 	@PUT @Path("workflow/{workflowid}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes("application/x-www-form-urlencoded")
-	public String updateWorkflow(@PathParam("workflowid") int workflowid, MultivaluedMap<String, String> formParams) {
+	public Response updateWorkflow(@PathParam("workflowid") int workflowid, MultivaluedMap<String, String> formParams) {
 		System.out.println("UPDATE -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
 		String workflowAsString = formParams.get("data").get(0);
@@ -118,12 +117,10 @@ public class Resource {
 		try {
 			workflow = mapper.readValue(workflowAsString, Workflow.class);
 		} catch (IOException e) {
-			return "jackson exception";
+			return Response.serverError().entity("Jackson parsing-error").build();
 		}
 		//TODO: update Workflow "workflow" persistence
-		System.out.println(workflowAsString);
-		System.out.println(workflow.getId());
-		return "true";
+		return Response.ok().build();
 	}
 	
 	/**
@@ -133,19 +130,19 @@ public class Resource {
 	 */
 	@DELETE @Path("workflow/{workflowid}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String deleteWorkflow (@PathParam("workflowid") int workflowid) {
+	public Response deleteWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("DELETE -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
 		//TODO: get workflow with id "workflowid" from persistence, then delete it
 		Workflow workflow = new Workflow();
 		workflow.setId(workflowid);
-		String workflowAsString = "string";
+		String workflowAsString;
 		try {
 			workflowAsString = mapper.writeValueAsString(workflow);
 		} catch (JsonProcessingException e) {
-			return "jackson exception";
+			return Response.serverError().entity("Jackson parsing-error").build();
 		}
-		return workflowAsString;
+		return Response.ok(workflowAsString).build();
 	}
 	
 }
