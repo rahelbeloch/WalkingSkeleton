@@ -10,9 +10,13 @@ import java.util.Properties;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.sun.net.httpserver.HttpServer;
 
 import de.hsrm.swt02.moduledi.JerseyDIBinder;
+import de.hsrm.swt02.moduledi.SingleModule;
+import de.hsrm.swt02.persistence.Persistence;
 
 /**
  * REST-Server
@@ -56,24 +60,26 @@ public class RestServer {
         rc.register(new JerseyDIBinder());
         server = JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
     }
+	
+	/**Stops http server
+	 * The server waits a few seconds before it stops.
+	 * Giving all open requests enough time to run through.
+	 */
+	public void stopHTTPServer(){
+		server.stop(WAITING_TIME);
+	}
+	
+	/** @returns the URI for the http server 
+	 */
+	public String getBaseURI() {
+		return baseURI;
+	}
+	
+	public static void main(String [] args) {
+	    Injector inj = Guice.createInjector(new SingleModule());
+	    Persistence p = inj.getInstance(Persistence.class);
+		RestServer server = new RestServer();
+		server.startHTTPServer();
+	}
 
-    /**
-     * Stops http server The server waits a few seconds before it stops. Giving
-     * all open requests enough time to run through.
-     */
-    public void stopHTTPServer() {
-        server.stop(WAITING_TIME);
-    }
-
-    /**
-     * @returns the URI for the http server
-     */
-    public String getBaseURI() {
-        return baseURI;
-    }
-
-    public static void main(String[] args) {
-        RestServer server = new RestServer();
-        server.startHTTPServer();
-    }
 }
