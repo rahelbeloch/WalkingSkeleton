@@ -80,9 +80,9 @@ public class HTMLFormatter extends Formatter{
 				+ "<h1>" + (new Date()) + "</h1>\n"
 				+ "<table border=\"0\" cellpadding=\"5\" cellspacing=\"3\">\n"
 				+ "<tr align=\"left\">\n"
-				+ "\t<th style=\"width:8%\">Loglevel</th>\n"
-				+ "\t<th style=\"width:12%\">Time</th>\n"
-				+ "\t<th style=\"width:80%\">Log Message</th>\n"
+				+ "\t<th style=\"width:15%\">Loglevel</th>\n"
+				+ "\t<th style=\"width:15%\">Time</th>\n"
+				+ "\t<th style=\"width:70%\">Log Message</th>\n"
 				+ "</tr>\n";
 	}
 	
