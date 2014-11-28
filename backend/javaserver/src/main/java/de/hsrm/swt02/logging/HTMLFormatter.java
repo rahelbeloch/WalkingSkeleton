@@ -19,6 +19,7 @@ public class HTMLFormatter extends Formatter{
 		StringBuffer buf = new StringBuffer(1000);
 		buf.append("<tr>\n");
 		
+		// log level
 		if (rec.getLevel().intValue() >= Level.WARNING.intValue()) {
 			buf.append("\t<td style=\"color:red\">");
 			buf.append("<b>");
@@ -28,13 +29,25 @@ public class HTMLFormatter extends Formatter{
 			buf.append("\t<td>");
 			buf.append(rec.getLevel());
 		}
+		buf.append("</td>\n");
 		
-		buf.append("</td>\n");
-		buf.append("\t<td>");
-		buf.append(calcDate(rec.getMillis()));
-		buf.append("</td>\n");
-		buf.append("\t<td>");
-		buf.append(formatMessage(rec));
+		// exception message
+		if (rec.getThrown() != null) {
+			buf.append("\t<td style=\"color:red\">");
+			buf.append(calcDate(rec.getMillis()));
+			buf.append("</td>\n");
+			String exceptionName = rec.getThrown().getClass().getSimpleName();
+			String exceptionMessage = rec.getThrown().getMessage();
+			buf.append("\t<td style=\"color:red\">");
+			buf.append(" EXCEPTION: " + exceptionName + " - " + exceptionMessage);
+	    // normal log message
+		} else {			
+		    buf.append("\t<td>");
+		    buf.append(calcDate(rec.getMillis()));
+		    buf.append("</td>\n");
+			buf.append("\t<td>");
+			buf.append(formatMessage(rec));
+		}
 		buf.append("</td>\n");
 		buf.append("</td>\n");
 		
@@ -46,7 +59,7 @@ public class HTMLFormatter extends Formatter{
 	 * @returns the current date and time
 	 */
 	private String calcDate(long millisecs) {
-		SimpleDateFormat date_format = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+		SimpleDateFormat date_format = new SimpleDateFormat("[MMM dd,yyyy HH:mm]");
 		Date resultdate = new Date(millisecs);
 		return date_format.format(resultdate);
 	}
@@ -67,9 +80,9 @@ public class HTMLFormatter extends Formatter{
 				+ "<h1>" + (new Date()) + "</h1>\n"
 				+ "<table border=\"0\" cellpadding=\"5\" cellspacing=\"3\">\n"
 				+ "<tr align=\"left\">\n"
-				+ "\t<th style=\"width:10%\">Loglevel</th>\n"
-				+ "\t<th style=\"width:15%\">Time</th>\n"
-				+ "\t<th style=\"width:75%\">Log Message</th>\n"
+				+ "\t<th style=\"width:8%\">Loglevel</th>\n"
+				+ "\t<th style=\"width:12%\">Time</th>\n"
+				+ "\t<th style=\"width:80%\">Log Message</th>\n"
 				+ "</tr>\n";
 	}
 	
