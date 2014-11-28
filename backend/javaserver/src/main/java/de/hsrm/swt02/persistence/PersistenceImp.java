@@ -3,12 +3,15 @@ package de.hsrm.swt02.persistence;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.inject.Singleton;
+
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 
+@Singleton
 public class PersistenceImp implements Persistence {
 
 	/*

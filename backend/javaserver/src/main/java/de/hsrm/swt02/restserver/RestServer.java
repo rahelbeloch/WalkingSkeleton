@@ -12,6 +12,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import com.sun.net.httpserver.HttpServer;
 
+import de.hsrm.swt02.moduledi.JerseyDIBinder;
+
 /**REST-Server
  * @author akoen001
  */
@@ -47,6 +49,7 @@ public class RestServer {
 	public void startHTTPServer() {
         ResourceConfig rc = new ResourceConfig();
         rc.packages("de.hsrm.swt02.restserver.resource");
+        rc.register(new JerseyDIBinder());
         server = JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
     }
 	
