@@ -8,10 +8,10 @@ import de.hsrm.swt02.restserver.resource.UserResource;
 
 public class JerseyDIBinder extends AbstractBinder {
 
-	@Override
-	protected void configure() {
-		bind(UserResource.class);
-		bind(PersistenceImp.class).to(Persistence.class);
-	}
+    @Override
+    protected void configure() {
+        bind(UserResource.class);
+        bind(PersistenceImp.class).to(Persistence.class);
+    }
 
 }

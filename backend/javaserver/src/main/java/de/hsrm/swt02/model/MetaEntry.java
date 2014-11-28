@@ -1,40 +1,40 @@
 package de.hsrm.swt02.model;
 
 public class MetaEntry {
-	// Used for (de)serialization. Do not change.
-	private String key;
-	
-	// Used for (de)serialization. Do not change.
-	private String value;
-	
-	// Used for (de)serialization. Do not change.
-	private String group;
-	
-	public MetaEntry() {
-		
-	}
+    // Used for (de)serialization. Do not change.
+    private String key;
 
-	public String getKey() {
-		return key;
-	}
+    // Used for (de)serialization. Do not change.
+    private String value;
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+    // Used for (de)serialization. Do not change.
+    private String group;
 
-	public String getValue() {
-		return value;
-	}
+    public MetaEntry() {
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    }
 
-	public String getGroup() {
-		return group;
-	}
+    public String getKey() {
+        return key;
+    }
 
-	public void setGroup(String group) {
-		this.group = group;
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
 }

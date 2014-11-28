@@ -2,10 +2,7 @@ package de.hsrm.swt02.model;
 
 public enum MetaState {
 
-    INACTIVE,
-    OPEN,
-    BUSY,
-    DONE;
+    INACTIVE, OPEN, BUSY, DONE;
 
     public String value() {
         return name();
