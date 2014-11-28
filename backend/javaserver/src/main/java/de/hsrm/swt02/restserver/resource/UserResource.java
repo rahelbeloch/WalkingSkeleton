@@ -13,16 +13,26 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.inject.Inject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.model.User;
+import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.UserAlreadyExistsException;
 
 
 @Path("resource")
 public class UserResource {
 
+	private Persistence p;
+	
+	@Inject
+	public UserResource(Persistence p) {
+		this.p = p;
+	}
+	
 	/**
 	 * 
 	 * @param username
@@ -32,9 +42,7 @@ public class UserResource {
 	public Response getUser (@PathParam("username") String username) {
 		System.out.println("GET -> " + username);
 		ObjectMapper mapper = new ObjectMapper();
-		//TODO: get user with name "username" from persistence
-		User user = new User();
-		user.setUsername(username);
+		User user = p.loadUser(username);
 		String userAsString;
 		try {
 			userAsString = mapper.writeValueAsString(user);
@@ -57,16 +65,21 @@ public class UserResource {
 	public Response saveUser (MultivaluedMap<String, String> formParams) {
 		ObjectMapper mapper = new ObjectMapper();
 		// TODO use logger
-		System.out.println("SEND -> ");
 		String userAsString = formParams.get("data").get(0);
+		System.out.println(userAsString);
 		User user;
 		try {
 			user = mapper.readValue(userAsString, User.class);
 		} catch (IOException e) {
 			return Response.serverError().entity("Jackson parsing-error").build();
 		}
-		//TODO: save User "user" to persistence
-		return Response.ok().build();
+		System.out.println("SEND -> " + user.getUsername());
+		try {
+			p.addUser(user);
+		} catch (UserAlreadyExistsException e) {
+			return Response.serverError().entity("User already exists").build();
+		}
+		return Response.ok("User stored").build();
 	}
 	
 	/**
