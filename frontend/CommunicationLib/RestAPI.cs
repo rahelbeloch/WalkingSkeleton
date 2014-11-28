@@ -33,6 +33,8 @@ namespace RestAPI
         private static String _ressourceParam, _operationParam;
         private static JsonSerializerSettings _jsonSettings;
 
+        private static Dictionary<String, String> commandMethodMap
+
         ///<summary>
         ///     Initializes the RestClient. Has to be called before first use.
         /// </summary>
@@ -43,6 +45,11 @@ namespace RestAPI
             _ressourceParam = "resource/";
             _operationParam = "command/";
             _jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None, Formatting = Formatting.Indented};
+        }
+
+        public String commandRequest(String command, IList<Object> comandParams)
+        {
+            return "";
         }
 
         /// <summary>
@@ -221,7 +228,7 @@ namespace RestAPI
             // if there is an object that shall be send to server per XML
             if (serializedObj != null)
             {
-                request.RequestFormat = RestSharp.DataFormat.Xml;
+                request.RequestFormat = RestSharp.DataFormat.Json;
                 request.AddParameter("data", serializedObj, ParameterType.GetOrPost);
             }
 
