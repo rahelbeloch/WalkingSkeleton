@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunicationLib.Model;
 
-namespace CommunicationLib
+namespace CommunicationLib.Model
 {
 
         /// <summary>
         ///     Backing bean implementation for own List of RootElements.
         /// </summary>
-        public class RootElementList : IList<RootElement>
+        public class RootElementList<RootElement> : IList<RootElement>
         {
             private IList<RootElement> _myList;
 

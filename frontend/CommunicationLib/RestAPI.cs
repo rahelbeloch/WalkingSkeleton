@@ -33,7 +33,7 @@ namespace RestAPI
         private static String _ressourceParam, _operationParam;
         private static JsonSerializerSettings _jsonSettings;
 
-        private static Dictionary<String, String> commandMethodMap
+        private static Dictionary<String, String> commandMethodMap;
 
         ///<summary>
         ///     Initializes the RestClient. Has to be called before first use.
@@ -58,7 +58,7 @@ namespace RestAPI
         /// <typeparam name="RootElementList">the list of RootElements</typeparam>
         /// <param name="userName">name of the user</param>
         /// <returns>the list with RootElements requested from server</returns>
-        public static RootElementList GetAllObjects<RootElementList>(String userName) where RootElementList : new()
+        public static RootElementList<RootElement> GetAllObjects<RootElement>(String userName) where RootElement : new()
         {
             String typeName = typeof(RootElement).FullName.Split('.').Last().ToLower();
             // if userName is not null, it is concatenated to the url, otherwise path  is just 'resource/workflows' and will request all all workflows
@@ -69,8 +69,8 @@ namespace RestAPI
             // decide wether the server does return the right excepted object or throws an exception
             try
             {      
-                var response = client.Execute<RootElementList>(request);
-                RootElementList obj = response.Data;
+                var response = client.Execute<RootElementList<RootElement>>(request);
+                RootElementList<RootElement> obj = response.Data;
 
                 return obj;
             }
