@@ -36,7 +36,7 @@ public class LogConfigurator {
     }
     
     /**Setup method to load the logger configuration from the 'server.config' file.
-     * Keep in mind that the configuration is a global setting for the UseLogger.class
+     * Keep in mind that the configuration is a global setting for the UseLogger.class.
      * That means you have to call this method just once to setup your configuration.
      * @throws IOException
      */
