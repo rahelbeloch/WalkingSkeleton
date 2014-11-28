@@ -23,7 +23,7 @@ public class LogicTest {
 	Workflow w2;
 	Workflow w3;
 	int workflowID = 3;
-	String username ="noname";
+	String username = "noname";
 	User user;
 	User user1;
 	User user2;
@@ -144,7 +144,9 @@ public class LogicTest {
 	}
 	
 	private void init(){
-		li = new LogicImp();
+		// TODO use injection!!!
+//		li = new LogicImp();
+		li = null;
 		
 		user = new User();
 		user.setUsername(username);
@@ -155,6 +157,7 @@ public class LogicTest {
 		w.addStep(new FinalStep());
 		w.setId(workflowID);
 	}
+	
 	private void initExtension(){
 		user2 = new User();
 		user2.setUsername("2");
