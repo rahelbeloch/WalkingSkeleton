@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Model
 {
+
+    public class Constants
+    {
+        public static String serverUrl = "http://172.26.38.101:8080";
+    }
+
     public class ErrorMessageMapper
     {
         private static Dictionary<int, string> errorMessages = new Dictionary<int, string>()
@@ -28,8 +34,7 @@ namespace CommunicationLib.Model
             {3003,""}
         
         };
-
-
-
     }
+
+
 }

@@ -9,6 +9,7 @@ using CommunicationLib.Model;
 using System.Collections;
 using System.Reflection;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace RestAPI
 {
@@ -33,46 +34,40 @@ namespace RestAPI
         private static String _ressourceParam, _operationParam;
         private static JsonSerializerSettings _jsonSettings;
 
-        private static Dictionary<String, String> commandMethodMap;
-
         ///<summary>
         ///     Initializes the RestClient. Has to be called before first use.
         /// </summary>
-        public static void Init()
+        static RestRequester()
         {
-            restserverurl = "http://172.26.38.108:8080";
+            restserverurl = Constants.serverUrl;
             client = new RestClient(restserverurl);
             _ressourceParam = "resource/";
             _operationParam = "command/";
             _jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None, Formatting = Formatting.Indented};
         }
 
-        public String commandRequest(String command, IList<Object> comandParams)
-        {
-            return "";
-        }
-
+        
         /// <summary>
-        ///     Requests all Objects (Items or Workflows) belonging to the given user.
+        ///     Requests all Objects (Items, Workflows or Users) belonging to the given user.
         /// </summary>
-        /// <typeparam name="RootElementList">the list of RootElements</typeparam>
+        /// <typeparam name="RootElementList">The list of RootElements</typeparam>
         /// <param name="userName">name of the user</param>
         /// <returns>the list with RootElements requested from server</returns>
-        public static RootElementList<RootElement> GetAllObjects<RootElement>(String userName) where RootElement : new()
+        public static IList<RootElement> GetAllObjects<RootElement>(String userName) where RootElement : new()
         {
             String typeName = typeof(RootElement).FullName.Split('.').Last().ToLower();
             // if userName is not null, it is concatenated to the url, otherwise path  is just 'resource/workflows' and will request all all workflows
             String url = _ressourceParam + typeName + "s" + (userName != null? "/" + userName : "");
-           
+            System.Diagnostics.Trace.WriteLine("url: " + url);
             var request = new RestRequest(url, Method.GET);
+            request.AddHeader("Accept", "text/plain");
 
             // decide wether the server does return the right excepted object or throws an exception
             try
             {      
-                var response = client.Execute<RootElementList<RootElement>>(request);
-                RootElementList<RootElement> obj = response.Data;
-
-                return obj;
+                var response = client.Execute(request);
+                IList<RootElement> eleList = JsonConvert.DeserializeObject<List<RootElement>>(response.Content, _jsonSettings);
+                return eleList;
             }
             catch (OwnException)
             {
@@ -105,7 +100,7 @@ namespace RestAPI
         /// </summary>
         /// <param name="sendObj"></param>
         /// <returns></returns>
-        public static String UpdateObject(RootElement sendObj)
+        public static IRestResponse UpdateObject(RootElement sendObj)
         {
             String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "/" + sendObj.id;
@@ -113,9 +108,9 @@ namespace RestAPI
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
             
-            IRestResponse request = SendObjectRequest(url, Method.PUT, serializedObj);
+            IRestResponse resp = SendObjectRequest(url, Method.PUT, serializedObj);
 
-            return request.Content;
+            return  resp;
         }
 
         /// <summary>
@@ -124,7 +119,7 @@ namespace RestAPI
         /// <typeparam name="O">the type of the object to be created</typeparam>
         /// <param name="sendObj">the specified object to create</param>
         /// <returns></returns>
-        public static String PostObject<O>(RootElement sendObj) where O : new()
+        public static IRestResponse PostObject<O>(RootElement sendObj) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName;
@@ -132,9 +127,9 @@ namespace RestAPI
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
             
-            IRestResponse request = SendObjectRequest(url, Method.POST, serializedObj);
+            IRestResponse response = SendObjectRequest(url, Method.POST, serializedObj);
             
-            return request.Content;
+            return response;
         }
 
         /// <summary>
@@ -156,6 +151,20 @@ namespace RestAPI
             return desObj;
         }
 
+        public void checkUser(String username, String password)
+        {
+            // 'operation/user/login'
+            String url = _operationParam + "user/" + "login";
+
+            var request = new RestRequest(url, Method.POST);
+            request.AddHeader("Accept", "text/plain");
+            request.AddParameter("username", username, ParameterType.GetOrPost);
+            request.AddParameter("password", password, ParameterType.GetOrPost);
+
+            SendSimpleRequest(request);
+        }
+
+
         /// <summary>
         ///     Sends a request to the server to start a workflow (create an item)
         /// </summary>
@@ -164,8 +173,12 @@ namespace RestAPI
         public static String StartWorkflow(int wId, string username)
         {
             // 'command/start/workflowid/username'
-            String url = _operationParam + "start/" + wId + "/" + username;
-            String responseContent = SendSimpleRequest(url, Method.POST);
+            String url = _operationParam + "workflow/"+ "start/" + wId + "/" + username;
+
+            var request = new RestRequest(url, Method.POST);
+            request.AddHeader("Accept", "text/plain");
+
+            String responseContent = SendSimpleRequest(request);
             // do something with the response, e.g. look if everything is ok.
            
             return responseContent;
@@ -180,8 +193,14 @@ namespace RestAPI
         public static String StepForward(int stepId, int itemId, string username)
         {
             // Request url: 'command/forward/stepid/itemid/username'
-            String url = _operationParam + "forward/" + stepId + "/" + itemId + "/" + username;
-            String responseContent = SendSimpleRequest(url, Method.POST);
+            String url = _operationParam + "workflow/" + "forward/" + stepId + "/" + itemId + "/" + username;
+            
+            var request = new RestRequest(url, Method.POST);
+            request.AddHeader("Accept", "text/plain");
+            //request.AddParameter("username", username, ParameterType.GetOrPost);
+            //request.AddParameter("password", password, ParameterType.GetOrPost);
+            
+            String responseContent = SendSimpleRequest(request);
             // do something with the response, e.g. look if everything is ok.
             
             return responseContent;
@@ -222,7 +241,6 @@ namespace RestAPI
         private static IRestResponse SendObjectRequest(String url, RestSharp.Method method, String serializedObj)
         {
             var request = new RestRequest(url, method);
-            Console.WriteLine(request);
             request.AddHeader("Accept", "text/plain");
 
             // if there is an object that shall be send to server per XML
@@ -248,14 +266,10 @@ namespace RestAPI
         /// <summary>
         ///     Sends a simple request, just containing some information in the url. No more parameters or objects send in the request.
         /// </summary>
-        /// <param name="url">request url</param>
-        /// <param name="method">method of the request</param>
-        /// <returns>the response from server</returns>
-        private static String SendSimpleRequest(string url, RestSharp.Method method)
+        /// <param name="request">The request to send to server.</param>
+        /// <returns>The content of the answer</returns>
+        private static String SendSimpleRequest(RestRequest request)
         {
-            var request = new RestRequest(url, method);
-            request.AddHeader("Accept", "text/plain");
-
             try
             {
                 var response = client.Execute(request);
