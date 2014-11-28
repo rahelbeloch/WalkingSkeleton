@@ -77,42 +77,14 @@ public class UseLogger {
     	LOGGER.log(logLevel, logMsg);
     }
     
-    /**Logs a message String into the logging file.
-     * Adds an object for additional log information.
-     * The logging file is specified in the 'server.config' file
-     * If the specified log level is lower than the current log level,
-     * the message wont be logged.
-     * @param logLevel is the urgency level for log message
-     * @param logMsg is the message that should be logged
-     * @param singleParam is an object for additional log information
-     */
-    public void log(Level logLevel, String logMsg, Object singleParam){
-    	LOGGER.log(logLevel, logMsg, singleParam);
-    }
-    
-    /**Logs a message String into the logging file.
-     * Adds a parameter list of objects for additional log information.
+    /**Logs an exception message into the logging file.
      * The logging file is specified in the 'server.config' file.
      * If the specified log level is lower than the current log level,
      * the message wont be logged.
      * @param logLevel is the urgency level for log message
-     * @param logMsg is the message that should be logged
-     * @param paramArray is an array of parameters for additional log information
+     * @param throwable is the source for the log information
      */
-    public void log(Level logLevel, String logMsg, Object[] paramArray){
-    	LOGGER.log(logLevel, logMsg, paramArray);
-    }
-    
-    /**Logs a message String into the logging file.
-     * Adds an throwable object (e.g. exception) for additional log information.
-     * The logging file is specified in the 'server.config' file.
-     * If the specified log level is lower than the current log level,
-     * the message wont be logged.
-     * @param logLevel is the urgency level for log message
-     * @param logMsg is the message that should be logged
-     * @param throwable is a throwable object for additional log information
-     */
-    public void log(Level logLevel, String logMsg, Throwable throwable){
-    	LOGGER.log(logLevel, logMsg, throwable);
+    public void log(Level logLevel, Throwable throwable){
+    	LOGGER.log(logLevel, "", throwable);
     }
 }
