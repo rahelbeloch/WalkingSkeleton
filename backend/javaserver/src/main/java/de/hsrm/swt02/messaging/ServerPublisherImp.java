@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -19,6 +20,8 @@ import org.apache.activemq.broker.BrokerService;
 
 import com.google.inject.Singleton;
 
+import de.hsrm.swt02.logging.UseLogger;
+
 /**
  * Class for message publishing on server-side. Uses ActiveMQ as message broker.
  * Enables string publishing on a specified message topic.
@@ -27,6 +30,7 @@ import com.google.inject.Singleton;
 public class ServerPublisherImp implements ServerPublisher {
 
     private ActiveMQConnectionFactory factory;
+    private UseLogger logger;
     private Connection connection;
     private Session session;
     private MessageProducer publisher;
@@ -35,10 +39,11 @@ public class ServerPublisherImp implements ServerPublisher {
     private String connectionURL;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public ServerPublisherImp() {
-        Properties properties = new Properties();
+        logger = new UseLogger();
+        final Properties properties = new Properties();
         BufferedInputStream stream;
         // read configuration file for broker properties
         try {
@@ -47,11 +52,11 @@ public class ServerPublisherImp implements ServerPublisher {
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
-            // TODO LOGGING
+            logger.log(Level.WARNING, e);
         } catch (IOException e) {
-            // TODO LOGGING
+            logger.log(Level.WARNING, e);
         } catch (SecurityException e) {
-            // TODO LOGGING
+            logger.log(Level.WARNING, e);
         }
         brokerURL = properties.getProperty("BrokerURL");
         connectionURL = properties.getProperty("BrokerConnectionURL");
@@ -61,9 +66,9 @@ public class ServerPublisherImp implements ServerPublisher {
     /**
      * Publishes a String-content on a specified topic.
      * 
-     * @param content - content to publish
-     * @param topicName - topic where the content will be published
-     * @throws Exception
+     * @param content content to publish
+     * @param topicName topic where the content will be published
+     * @throws ServerPublisherBrokerException if publishing goes wrong
      */
     public void publish(String content, String topicName)
             throws ServerPublisherBrokerException {
@@ -72,12 +77,12 @@ public class ServerPublisherImp implements ServerPublisher {
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
             // create a message-producer for the topic
-            Topic topic = session.createTopic(topicName);
+            final Topic topic = session.createTopic(topicName);
             publisher = session.createProducer(topic);
             publisher.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
             // define messaging-content (TextMessage or MapMessage)
-            TextMessage msg = session.createTextMessage(content);
+            final TextMessage msg = session.createTextMessage(content);
 
             // send and close
             publisher.send(msg);
@@ -90,9 +95,9 @@ public class ServerPublisherImp implements ServerPublisher {
     }
 
     /**
-     * Starts the messaging broker
+     * Starts the messaging broker.
      * 
-     * @throws ServerPublisherBrokerException
+     * @throws ServerPublisherBrokerException if broker start does not work
      */
     public void startBroker() throws ServerPublisherBrokerException {
         if (broker == null) {
@@ -116,9 +121,9 @@ public class ServerPublisherImp implements ServerPublisher {
     }
 
     /**
-     * Stops the messaging broker
+     * Stops the messaging broker.
      * 
-     * @throws ServerPublisherBrokerException
+     * @throws ServerPublisherBrokerException if broker sto does not work
      */
     public void stopBroker() throws ServerPublisherBrokerException {
         if (broker == null) {
@@ -135,7 +140,7 @@ public class ServerPublisherImp implements ServerPublisher {
     }
 
     /**
-     * Check weather the message broker is running
+     * Check weather the message broker is running.
      * 
      * @return true if the embedded message-broker is running
      */
