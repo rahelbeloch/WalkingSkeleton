@@ -42,7 +42,7 @@ namespace RestAPI
             client = new RestClient(restserverurl);
             _ressourceParam = "resource/";
             _operationParam = "command/";
-            _jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+            _jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None, Formatting = Formatting.Indented};
         }
 
         /// <summary>
@@ -54,7 +54,8 @@ namespace RestAPI
         public static RootElementList GetAllObjects<RootElementList>(String userName) where RootElementList : new()
         {
             String typeName = typeof(RootElement).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "s" + "/" + userName;
+            // if userName is not null, it is concatenated to the url, otherwise path  is just 'resource/workflows' and will request all all workflows
+            String url = _ressourceParam + typeName + "s" + (userName != null? "/" + userName : "");
            
             var request = new RestRequest(url, Method.GET);
 
