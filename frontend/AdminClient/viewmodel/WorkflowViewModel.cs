@@ -26,6 +26,7 @@ namespace AdminClient.viewmodel
         
         public WorkflowViewModel()
         {
+            RestAPI.RestRequester.Init();
             /*try
             {
                 communicationManager = new CommunicationManager(this);
