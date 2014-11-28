@@ -15,6 +15,10 @@ using Action = CommunicationLib.Model.Action;
 
 namespace AdminClient.viewmodel
 {
+    /// <summary>
+    /// The WorkflowViewModel contains properties and commands to create a new workflow and to send it to the server.
+    /// Furthermore, the properties and commands are used as DataBindings in the graphical user interface.
+    /// </summary>
     class WorkflowViewModel : ViewModelBase, IDataReceiver
     {
         private Workflow _workflowModel = new Workflow();

@@ -11,6 +11,10 @@ using CommunicationLib.Model;
 
 namespace AdminClient.viewmodel
 {
+    /// <summary>
+    /// The UserViewModel contains properties and commands to send new users to the server.
+    /// Furthermore, the properties and commands are used as DataBindings to show current users in the graphical user interface. 
+    /// </summary>
     class UserViewModel: ViewModelBase
     {
         public UserViewModel()
