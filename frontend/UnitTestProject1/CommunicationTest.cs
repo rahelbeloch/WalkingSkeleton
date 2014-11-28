@@ -108,7 +108,10 @@ namespace UnitTestProject1
             RestRequester.UpdateObject(testWF);
             Workflow updatedWorkflow = RestRequester.GetObject<Workflow>(17);
 
-            Assert.IsTrue(updatedWorkflow.steps[0].id == 7);
+            int steps = updatedWorkflow.steps.Count;
+
+            Assert.IsTrue(steps == 1);
+            Assert.IsTrue(updatedWorkflow.steps[steps-1].id == 7);
         }
 
         /// <summary>
