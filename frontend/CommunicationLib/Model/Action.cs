@@ -12,7 +12,7 @@ namespace CommunicationLib.Model
         /// Used for (de)serialization!
         /// </summary>
         private string _description;
-        public string name { get { return _description; } set { _description = value; } }
+        public string description { get { return _description; } set { _description = value; } }
 
         public Action()
             : base()
