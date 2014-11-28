@@ -1,16 +1,38 @@
 package de.hsrm.swt02.messaging;
 
 /**
- * Interface for ServerPublisher
+ * Interface for ServerPublisher.
  */
 public interface ServerPublisher {
 
-    public void publish(String content, String topicName)
+    /**
+     * Publishes a String-content on a specified topic.
+     * 
+     * @param content content to publish
+     * @param topicName topic where the content will be published
+     * @throws ServerPublisherBrokerException if publishing goes wrong
+     */
+    void publish(String content, String topicName)
             throws ServerPublisherBrokerException;
 
-    public void startBroker() throws ServerPublisherBrokerException;
+    /**
+     * Starts the messaging broker.
+     * 
+     * @throws ServerPublisherBrokerException if broker start does not work
+     */
+    void startBroker() throws ServerPublisherBrokerException;
 
-    public void stopBroker() throws ServerPublisherBrokerException;
+    /**
+     * Stops the messaging broker.
+     * 
+     * @throws ServerPublisherBrokerException if broker sto does not work
+     */
+    void stopBroker() throws ServerPublisherBrokerException;
 
-    public boolean brokerStarted();
+    /**
+     * Check weather the message broker is running.
+     * 
+     * @return true if the embedded message-broker is running
+     */
+    boolean brokerStarted();
 }
