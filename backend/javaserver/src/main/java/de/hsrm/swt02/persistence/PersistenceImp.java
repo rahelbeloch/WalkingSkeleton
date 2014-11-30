@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package de.hsrm.swt02.persistence;
 
 import java.util.LinkedList;
@@ -14,9 +17,14 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 
+/**
+ * @author Dominik
+ *
+ */
 @Singleton
 public class PersistenceImp implements Persistence {
 
+    /** The logger. */
     private UseLogger logger;
     /*
      * abstraction of a database, that persists the data objects workflow, item,
@@ -220,6 +228,9 @@ public class PersistenceImp implements Persistence {
         }
     }
 
+    /* (non-Javadoc)
+     * @see de.hsrm.swt02.persistence.Persistence#loadStep(int)
+     */
     public Step loadStep(int id) {
         Step step = null;
         for (Step s : steps) {
