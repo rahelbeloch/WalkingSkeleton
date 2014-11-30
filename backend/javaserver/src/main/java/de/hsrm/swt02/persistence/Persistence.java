@@ -24,17 +24,13 @@ public interface Persistence {
     /*
      * load functions to get workflows, items, and users from persistence
      */
-    public Workflow loadWorkflow(int id);
-
     public List<Workflow> loadAllWorkflows();
+    
+    public Workflow loadWorkflow(int id) throws WorkflowNotExistentException;
 
-    public Item loadItem(int id);
+    public Item loadItem(int id) throws ItemNotExistentException;
 
-    public User loadUser(String name);
-
-    // later UserNotExistentException could thrown:
-    // public AbstractUser loadUser(String name) throws
-    // UserNotExistentException;
+    public User loadUser(String username) throws UserNotExistentException;
 
     // will be deleted later on (only for walking sceleton)
     public Step loadStep(int id);
@@ -44,10 +40,10 @@ public interface Persistence {
     /*
      * delete functions to remove workflows, items, and users from persistence
      */
-    public void deleteWorkflow(int id);
+    public void deleteWorkflow(int id) throws WorkflowNotExistentException;
 
-    public void deleteItem(int id);
+    public void deleteItem(int id) throws ItemNotExistentException;
 
-    public void deleteUser(String name);
+    public void deleteUser(String name) throws UserNotExistentException;
 
 }
