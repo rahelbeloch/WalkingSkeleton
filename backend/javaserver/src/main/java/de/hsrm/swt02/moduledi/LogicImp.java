@@ -10,6 +10,8 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.UserNotExistentException;
+import de.hsrm.swt02.persistence.WorkflowNotExistentException;
 import de.hsrm.swt02.processors.StartTrigger;
 
 import com.google.inject.Guice;
@@ -32,9 +34,10 @@ public class LogicImp implements Logic {
      * 
      * @param workflowID the workflow, which should be started
      * @param user the User, who starts the workflow
+     * @throws WorkflowNotExistentException 
      */
     @Override
-    public void startWorkflow(int workflowID, User user) {
+    public void startWorkflow(int workflowID, User user) throws WorkflowNotExistentException {
         // TODO: check user permission
         Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         StartTrigger start = new StartTrigger(workflow, pm, p);
@@ -57,9 +60,10 @@ public class LogicImp implements Logic {
      * 
      * @param workflowID describe the workflow
      * @return a Workflow, if there is one, who has this workflowID
+     * @throws WorkflowNotExistentException 
      */
     @Override
-    public Workflow getWorkflow(int workflowID) {
+    public Workflow getWorkflow(int workflowID) throws WorkflowNotExistentException {
         return (Workflow) p.loadWorkflow(workflowID);
     }
 
@@ -67,9 +71,10 @@ public class LogicImp implements Logic {
      * This method delete a Workflow in Persistence
      * 
      * @param workflowID describe the Workflow
+     * @throws WorkflowNotExistentException 
      */
     @Override
-    public void deleteWorkflow(int workflowID) {
+    public void deleteWorkflow(int workflowID) throws WorkflowNotExistentException {
         p.deleteWorkflow(workflowID);
     }
 
@@ -90,9 +95,10 @@ public class LogicImp implements Logic {
      * 
      * @param workflowID the workflow, which shall edited
      * @param step the step, which shall added
+     * @throws WorkflowNotExistentException 
      */
     @Override
-    public void addStep(int workflowID, Step step) {
+    public void addStep(int workflowID, Step step) throws WorkflowNotExistentException {
         Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         workflow.addStep(step);
         p.storeWorkflow(workflow);
@@ -103,9 +109,10 @@ public class LogicImp implements Logic {
      * 
      * @param workflowID the workflow, which shall edited
      * @param stepID the step, which shall delete
+     * @throws WorkflowNotExistentException 
      */
     @Override
-    public void deleteStep(int workflowID, int stepID) {
+    public void deleteStep(int workflowID, int stepID) throws WorkflowNotExistentException {
         Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         workflow.removeStep(stepID);
         p.storeWorkflow(workflow);
@@ -128,9 +135,10 @@ public class LogicImp implements Logic {
      * 
      * @param username describe the user
      * @return a User, if there is one, who has this username
+     * @throws UserNotExistentException 
      */
     @Override
-    public User getUser(String username) {
+    public User getUser(String username) throws UserNotExistentException {
         return (User) p.loadUser(username);
     }
 
@@ -138,9 +146,10 @@ public class LogicImp implements Logic {
      * This method delete a User
      * 
      * @param username describe the user
+     * @throws UserNotExistentException 
      */
     @Override
-    public void deleteUser(String username) {
+    public void deleteUser(String username) throws UserNotExistentException {
         // System.out.println("Do you really really really want to delete a user?");
         p.deleteUser(username);
     }
