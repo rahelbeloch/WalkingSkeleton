@@ -12,9 +12,11 @@ import de.hsrm.swt02.moduledi.SingleModule;
 
 import org.junit.Test;
 
+import de.hsrm.swt02.persistence.ItemNotExistentException;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.UserNotExistentException;
+import de.hsrm.swt02.persistence.WorkflowNotExistentException;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -34,7 +36,7 @@ public class PersistenceTest {
      * Worflow Testing
      */
     @Test
-    public void testWorkflowStorage() {
+    public void testWorkflowStorage() throws WorkflowNotExistentException {
         Workflow workflow007 = new Workflow(7);
         Workflow workflow006 = new Workflow(6);
         Workflow workflow005 = new Workflow(5);
@@ -49,7 +51,7 @@ public class PersistenceTest {
     }
 
     @Test
-    public void testDuplicateWorkflowStorage() {
+    public void testDuplicateWorkflowStorage() throws WorkflowNotExistentException {
         Workflow workflow001 = new Workflow(17);
         Workflow workflow002 = new Workflow(17);
 
@@ -62,8 +64,8 @@ public class PersistenceTest {
         assertEquals(workflow002, db.loadWorkflow(17));
     }
 
-    @Test
-    public void testWorkflowDeletion() {
+    @Test(expected = WorkflowNotExistentException.class)
+    public void testWorkflowDeletion() throws WorkflowNotExistentException {
         Workflow wf001 = new Workflow(1);
         Workflow wf002 = new Workflow(2);
         db.storeWorkflow(wf001);
@@ -71,12 +73,12 @@ public class PersistenceTest {
 
         db.deleteWorkflow(1);
 
-        assertEquals(db.loadWorkflow(1), null);
         assertEquals(db.loadWorkflow(2), wf002);
+        assertEquals(db.loadWorkflow(1), null);
     }
 
-    @Test
-    public void testWorkflowStorageIncludingSteps() {
+    @Test(expected = WorkflowNotExistentException.class)
+    public void testWorkflowStorageIncludingSteps() throws WorkflowNotExistentException {
         Workflow workflow007 = new Workflow(7);
 
         StartStep step1 = new StartStep("username");
@@ -106,18 +108,18 @@ public class PersistenceTest {
 
         db.deleteWorkflow(7);
 
-        // workflow must not be existent on database anymore
-        assertEquals(db.loadWorkflow(7), null);
-
         // a workflows steps must not be existent on databse anymore
         assertEquals(db.loadStep(2), null);
+        
+        // workflow must not be existent on database anymore, WorkflowNotExistentException is expected here!
+        assertEquals(db.loadWorkflow(7), null);
     }
 
     /*
      * Item Testing
      */
     @Test
-    public void testItemStorage() {
+    public void testItemStorage() throws ItemNotExistentException {
         Item item001 = new Item();
         Item item002 = new Item();
         Item item003 = new Item();
@@ -135,7 +137,7 @@ public class PersistenceTest {
     }
 
     @Test
-    public void testDuplicateItemStorage() {
+    public void testDuplicateItemStorage() throws ItemNotExistentException {
         Item item001 = new Item();
         Item item002 = new Item();
         item001.setId(17);
@@ -150,8 +152,8 @@ public class PersistenceTest {
         assertEquals(item002, db.loadItem(17));
     }
 
-    @Test
-    public void testItemStorageIncludingMetaData() {
+    @Test(expected = ItemNotExistentException.class)
+    public void testItemStorageIncludingMetaData() throws ItemNotExistentException {
         Item item001 = new Item();
         item001.setId(1);
         item001.set("key1", "group1", "value1");
@@ -178,18 +180,18 @@ public class PersistenceTest {
 
         db.deleteItem(1);
 
-        // item must not be existent anymore
-        assertEquals(db.loadItem(1), null);
-
         // an items metaData must not be existent anymore
         assertEquals(db.loadMetaEntry("key1"), null);
+        
+        // item must not be existent anymore, ItemNotExistentException is expected here!
+        assertEquals(db.loadItem(1), null);
     }
 
     /*
      * User Testing
      */
     @Test
-    public void testUserStorage() throws UserAlreadyExistsException {
+    public void testUserStorage() throws UserAlreadyExistsException, UserNotExistentException {
         User user001 = new User();
         User user002 = new User();
         User user003 = new User();
@@ -221,7 +223,7 @@ public class PersistenceTest {
     }
 
     @Test
-    public void testDuplicateUserStorage() {
+    public void testDuplicateUserStorage() throws UserNotExistentException{
         User user001 = new User();
         User user002 = new User();
         user001.setUsername("17");
@@ -232,7 +234,7 @@ public class PersistenceTest {
             db.addUser(user001);
             db.addUser(user002);
         } catch (UserAlreadyExistsException e) {
-            // Exception ist catched manually in order to test if
+            // Exception is caught manually in order to test if
             // addUser(user002) was rejected
             // e.printStackTrace();
         }
@@ -241,8 +243,8 @@ public class PersistenceTest {
         assertNotEquals(user002, db.loadUser("17"));
     }
 
-    @Test
-    public void testUserDeletion() throws UserAlreadyExistsException {
+    @Test(expected = UserNotExistentException.class) 
+    public void testUserDeletion() throws UserAlreadyExistsException, UserNotExistentException {
         User user001 = new User();
         User user002 = new User();
         user001.setUsername("1");
@@ -252,9 +254,11 @@ public class PersistenceTest {
         db.addUser(user002);
 
         db.deleteUser("1");
-
-        assertEquals(db.loadUser("1"), null);
+        
+        // user001 should habe been overwritten by user002
         assertEquals(db.loadUser("2"), user002);
+        // UserNotExistentException is expected here!
+        assertEquals(db.loadUser("1"), null);
     }
 
     @Test
