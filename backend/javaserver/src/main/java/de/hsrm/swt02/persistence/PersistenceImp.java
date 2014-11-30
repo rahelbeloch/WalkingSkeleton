@@ -2,9 +2,12 @@ package de.hsrm.swt02.persistence;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
 import de.hsrm.swt02.model.Step;
@@ -14,8 +17,10 @@ import de.hsrm.swt02.model.Workflow;
 @Singleton
 public class PersistenceImp implements Persistence {
 
+    private UseLogger logger;
     /*
-     * abstraction of a database, that persists object in form Abstract-*
+     * abstraction of a database, that persists the data objects workflow, item,
+     * user, step, metaEntry
      */
     private List<Workflow> workflows = new LinkedList<>();
     private List<Item> items = new LinkedList<>();
@@ -23,6 +28,11 @@ public class PersistenceImp implements Persistence {
 
     private List<Step> steps = new LinkedList<>();
     private List<MetaEntry> metaEntries = new LinkedList<>();
+
+    @Inject
+    public PersistenceImp(UseLogger logger) {
+        this.logger = logger;
+    }
 
     /*
      * store functions for workflow, item, user store functions for step,
@@ -39,8 +49,12 @@ public class PersistenceImp implements Persistence {
         }
         if (workflowToRemove != null) {
             workflows.remove(workflowToRemove);
+            this.logger.log(Level.INFO, "removing existing workflow "
+                    + workflowToRemove.getId() + ".");
         }
         workflows.add((Workflow) workflow);
+        this.logger.log(Level.INFO, "overwriting workflow " + workflow.getId()
+                + ".");
 
         // a workflows steps are resolved and stored one by one
         List<Step> workflowsSteps = workflow.getSteps();
@@ -65,8 +79,11 @@ public class PersistenceImp implements Persistence {
         }
         if (itemToRemove != null) {
             items.remove(itemToRemove);
+            this.logger.log(Level.INFO, "removing exisiting item "
+                    + itemToRemove.getId() + ".");
         }
         items.add((Item) item);
+        this.logger.log(Level.INFO, "overwriting item " + item.getId() + ".");
 
         // items include information of type MetaEntry which have to be stored
         // separately
@@ -80,10 +97,15 @@ public class PersistenceImp implements Persistence {
     public void addUser(User user) throws UserAlreadyExistsException {
         for (User u : users) {
             if (u.getUsername().equals(user.getUsername())) {
-                throw new UserAlreadyExistsException();
+                UserAlreadyExistsException e = new UserAlreadyExistsException(
+                        user.getUsername());
+                this.logger.log(Level.WARNING, e);
+                throw e;
             }
         }
         users.add((User) user);
+        this.logger
+                .log(Level.INFO, "adding user '" + user.getUsername() + "'.");
     }
 
     @Override
@@ -96,9 +118,16 @@ public class PersistenceImp implements Persistence {
         }
         if (userToRemove != null) {
             users.remove(userToRemove);
+            this.logger.log(Level.INFO, "removing existing user '"
+                    + userToRemove.getUsername() + "'.");
             users.add(user);
+            this.logger.log(Level.INFO,
+                    "overwriting user '" + user.getUsername() + "'.");
         } else {
-            throw new UserNotExistentException();
+            UserNotExistentException e = new UserNotExistentException(
+                    user.getUsername());
+            this.logger.log(Level.WARNING, e);
+            throw e;
         }
     }
 
@@ -137,41 +166,58 @@ public class PersistenceImp implements Persistence {
      * metaEntry
      */
     @Override
-    public Workflow loadWorkflow(int id) {
+    public Workflow loadWorkflow(int id) throws WorkflowNotExistentException {
         Workflow workflow = null;
         for (Workflow wf : workflows) {
             if (wf.getId() == id) {
                 workflow = wf;
             }
         }
-        return workflow;
+        if (workflow != null) {
+            return workflow;
+        } else {
+            WorkflowNotExistentException e = new WorkflowNotExistentException(
+                    "" + id);
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
         // TODO: return steps of a workflow as well! - can be done as soon as a
         // unique and combined ID for steps and workflows is given
     }
 
     @Override
-    public Item loadItem(int id) {
+    public Item loadItem(int id) throws ItemNotExistentException {
         Item item = null;
         for (Item i : items) {
             if (i.getId() == id) {
                 item = i;
             }
         }
-        return item;
+        if (item != null) {
+            return item;
+        } else {
+            ItemNotExistentException e = new ItemNotExistentException("" + id);
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
         // TODO: return MetaData of an item as well!
     }
 
     @Override
-    public User loadUser(String name) {
+    public User loadUser(String name) throws UserNotExistentException {
         User user = null;
         for (User u : users) {
             if (u.getUsername().equals(name)) {
                 user = u;
             }
         }
-        // later UserNotExistantException could be thrown instead of returning
-        // 'null', but that has to be conform with all other load function
-        return user;
+        if (user != null) {
+            return user;
+        } else {
+            UserNotExistentException e = new UserNotExistentException(name);
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
     }
 
     public Step loadStep(int id) {
@@ -199,7 +245,7 @@ public class PersistenceImp implements Persistence {
      * metaEntry
      */
     @Override
-    public void deleteWorkflow(int id) {
+    public void deleteWorkflow(int id) throws WorkflowNotExistentException {
         Workflow workflowToRemove = null;
         for (Workflow wf : workflows) {
             if (wf.getId() == id) {
@@ -214,11 +260,18 @@ public class PersistenceImp implements Persistence {
         }
         if (workflowToRemove != null) {
             workflows.remove(workflowToRemove);
+            this.logger.log(Level.INFO,
+                    "removed workflow " + workflowToRemove.getId() + ".");
+        } else {
+            WorkflowNotExistentException e = new WorkflowNotExistentException(
+                    "" + id);
+            this.logger.log(Level.WARNING, e);
+            throw e;
         }
     }
 
     @Override
-    public void deleteItem(int id) {
+    public void deleteItem(int id) throws ItemNotExistentException {
         Item itemToRemove = null;
         for (Item i : items) {
             if (i.getId() == id) {
@@ -234,11 +287,18 @@ public class PersistenceImp implements Persistence {
         }
         if (itemToRemove != null) {
             items.remove(itemToRemove);
+            this.logger.log(Level.INFO, "removed item " + itemToRemove.getId()
+                    + ".");
+        } else {
+            ItemNotExistentException e = new ItemNotExistentException("" + id);
+            this.logger.log(Level.WARNING, e);
+            throw e;
+
         }
     }
 
     @Override
-    public void deleteUser(String name) {
+    public void deleteUser(String name) throws UserNotExistentException {
         User userToRemove = null;
         for (User u : users) {
             if (u.getUsername().equals(name)) {
@@ -248,6 +308,10 @@ public class PersistenceImp implements Persistence {
         }
         if (userToRemove != null) {
             users.remove(userToRemove);
+        } else {
+            UserNotExistentException e = new UserNotExistentException(name);
+            this.logger.log(Level.WARNING, e);
+            throw e;
         }
     }
 
