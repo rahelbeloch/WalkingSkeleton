@@ -8,20 +8,24 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.UserNotExistentException;
+import de.hsrm.swt02.persistence.WorkflowNotExistentException;
 
 public interface Logic {
 
     /*
      * workflow functions
      */
-    public void startWorkflow(int workflowID, User user);
+    public void startWorkflow(int workflowID, User user)
+            throws WorkflowNotExistentException;
 
     public void addWorkflow(Workflow workflow); // later a workflows name will
                                                 // be available
 
-    public Workflow getWorkflow(int workflowID);
+    public Workflow getWorkflow(int workflowID)
+            throws WorkflowNotExistentException;
 
-    public void deleteWorkflow(int workflowID);
+    public void deleteWorkflow(int workflowID)
+            throws WorkflowNotExistentException;
 
     /*
      * item
@@ -31,9 +35,11 @@ public interface Logic {
     /*
      * step functions
      */
-    public void addStep(int workflowID, Step step);
+    public void addStep(int workflowID, Step step)
+            throws WorkflowNotExistentException;
 
-    public void deleteStep(int workflowID, int stepID);
+    public void deleteStep(int workflowID, int stepID)
+            throws WorkflowNotExistentException;
 
     /*
      * user functions
@@ -46,7 +52,7 @@ public interface Logic {
     // public boolean checkLogIn(String username); // later with password
     // checking
 
-    public void deleteUser(String username);
+    public void deleteUser(String username) throws UserNotExistentException;
 
     public List<Workflow> getWorkflowsByUser(User user);
 
