@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.UserNotExistentException;
 
 @Path("resource")
 public class UserResource {
@@ -36,11 +37,12 @@ public class UserResource {
      * 
      * @param username
      * @return the requested user
+     * @throws UserNotExistentException 
      */
     @GET
     @Path("user/{username}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getUser(@PathParam("username") String username) {
+    public Response getUser(@PathParam("username") String username) throws UserNotExistentException {
         System.out.println("GET -> " + username);
         ObjectMapper mapper = new ObjectMapper();
         User user = p.loadUser(username);
