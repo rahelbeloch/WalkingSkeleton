@@ -13,6 +13,8 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.moduledi.LogicImp;
 import de.hsrm.swt02.persistence.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.UserNotExistentException;
+import de.hsrm.swt02.persistence.WorkflowNotExistentException;
 
 public class LogicTest {
 
@@ -28,14 +30,14 @@ public class LogicTest {
     User user2;
 
     @Test
-    public void addGetWorkflowTest() {
+    public void addGetWorkflowTest() throws WorkflowNotExistentException {
         init();
         li.addWorkflow(w);
         assertTrue(li.getWorkflow(workflowID) == w);
     }
 
     @Test
-    public void startWorkflowTest() {
+    public void startWorkflowTest() throws WorkflowNotExistentException {
         init();
 
         li.addWorkflow(w);
@@ -46,7 +48,7 @@ public class LogicTest {
     }
 
     @Test
-    public void deleteWortflowTest() {
+    public void deleteWortflowTest() throws WorkflowNotExistentException {
         init();
         li.addWorkflow(w);
         li.deleteWorkflow(workflowID);
@@ -55,7 +57,7 @@ public class LogicTest {
     }
 
     @Test
-    public void stepOverTest() {
+    public void stepOverTest() throws WorkflowNotExistentException {
         init();
         li.addWorkflow(w);
         li.startWorkflow(workflowID, user);
@@ -64,7 +66,7 @@ public class LogicTest {
     }
 
     @Test
-    public void addStepTest() {
+    public void addStepTest() throws WorkflowNotExistentException {
         init();
         li.addWorkflow(w);
         int i = w.getSteps().size();
@@ -74,7 +76,7 @@ public class LogicTest {
     }
 
     @Test
-    public void deleteStepTest() {
+    public void deleteStepTest() throws WorkflowNotExistentException {
         init();
         li.addWorkflow(w);
         int i = w.getSteps().size();
@@ -84,7 +86,7 @@ public class LogicTest {
     }
 
     @Test
-    public void addGetUserTest() {
+    public void addGetUserTest() throws UserNotExistentException {
         init();
         try {
             li.addUser(user);
@@ -103,7 +105,7 @@ public class LogicTest {
     }
 
     @Test
-    public void deleteUserTest() {
+    public void deleteUserTest() throws UserNotExistentException {
         init();
         try {
             li.addUser(user);
@@ -124,7 +126,7 @@ public class LogicTest {
     }
 
     @Test
-    public void getOpenItemsByUserTest() {
+    public void getOpenItemsByUserTest() throws WorkflowNotExistentException {
         init();
         initExtension();
 
