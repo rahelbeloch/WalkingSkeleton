@@ -9,6 +9,7 @@ using RestAPI;
 using RestSharp;
 using System.Web;
 using System.IO;
+using System.Security;
 
 
 namespace UnitTestProject1
@@ -39,12 +40,12 @@ namespace UnitTestProject1
             testWF.addStep(ass);
             testWF.addStep(new Action());
             //testWF.addStep(new FinalStep());*/
-            
+            /*
             IRestResponse respo = RestRequester.PostObject<Workflow>(testWF);
             //System.Diagnostics.Trace.WriteLine("answer: " + answer);
             String statcode = respo.StatusCode.ToString();
 
-            Assert.IsTrue(statcode.Equals("OK"));
+            Assert.IsTrue(statcode.Equals("OK"));*/
         }
 
         /// <summary>
@@ -73,9 +74,9 @@ namespace UnitTestProject1
             String testUserName = "Rahel";
 
             
-            String done = RestRequester.StartWorkflow(testWfId, testUserName);
+            Boolean done = RestRequester.StartWorkflow(testWfId, testUserName);
 
-            Assert.IsTrue(done == "true");
+            Assert.IsTrue(done);
         }
 
         /// <summary>
@@ -143,7 +144,11 @@ namespace UnitTestProject1
         [TestMethod]
         public void testCheckUser()
         {
-            RestRequester.checkUser("Rahel", "12345");
+            string initString = "TestPasswort";
+            SecureString testpwd = new SecureString();
+            foreach (char ch in initString)
+                testpwd.AppendChar(ch);
+            RestRequester.checkUser("Rahel", testpwd);
 
             Assert.IsTrue(true);
         }

@@ -14,6 +14,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UserClient.ViewModel;
 using UserClient.Model;
+using CommunicationLib.Model;
+using CommunicationLib;
+using RestAPI;
 
 namespace UserClient
 {
@@ -24,11 +27,11 @@ namespace UserClient
     {
         private FlowDocument flowDoc;
         private Table table1;
-
+        private IList<Workflow> workflows;
+        private String userName;
         public MainWindow()
         {
             InitializeComponent();
-            InitializeDashboard();
             //InitializeViewModel();
         }
         private void InitializeViewModel()
@@ -37,8 +40,23 @@ namespace UserClient
         }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            LoginLayer.Visibility = Model.Authentication.Authenticate1(txtName.Text, txtPassword.SecurePassword) ? Visibility.Collapsed : Visibility.Visible;
-            //init_Dashboard();
+            InitializeDashboard();
+            try
+            {
+                RestRequester.checkUser(txtName.Text, txtPassword.SecurePassword);
+                userName = txtName.Text;
+                //User user = RestRequester.GetObject<User>(); methode wird noch abgeändert
+                //LoginLayer.Visibility = Model.Authentication.Authenticate1(txtName.Text, txtPassword.SecurePassword) ? Visibility.Collapsed : Visibility.Visible;
+                //init_Dashboard();
+            }
+            catch (Exception exc)
+            {
+
+            }
+            finally
+            {
+                LoginLayer.Visibility = Visibility.Collapsed;
+            }
         }
         private void Log_Out(object sender, RoutedEventArgs e)
         {
@@ -46,6 +64,26 @@ namespace UserClient
         }
         private void InitializeDashboard()
         {
+            try
+            {
+
+                workflows = RestRequester.GetAllObjects<Workflow>(userName);
+                Console.WriteLine("test workflows");
+                foreach (Workflow workflow in workflows)
+                {
+                    Console.WriteLine(workflow.id);
+                    foreach (Step step in workflow.steps)
+                    {
+                        Console.WriteLine(step.label);
+                    }
+                }
+                String test = workflows[0].ToString();
+                Console.WriteLine(test);
+            }
+            catch (Exception exe)
+            {
+                Console.WriteLine("Exception " + exe.Message);
+            }
             dashboard.Blocks.Clear();
             // Create the parent FlowDocument...
             flowDoc = dashboard;
