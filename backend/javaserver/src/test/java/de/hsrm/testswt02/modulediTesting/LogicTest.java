@@ -6,12 +6,12 @@ import javax.validation.constraints.AssertTrue;
 
 import org.junit.Test;
 
+import de.hsrm.swt02.businesslogic.LogicImp;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.moduledi.LogicImp;
 import de.hsrm.swt02.persistence.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.UserNotExistentException;
 import de.hsrm.swt02.persistence.WorkflowNotExistentException;

@@ -1,9 +1,9 @@
 package de.hsrm.testswt02.messagingtest;
 
 import static org.junit.Assert.*;
+import de.hsrm.swt02.businesslogic.SingleModule;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
-import de.hsrm.swt02.moduledi.SingleModule;
 
 import org.junit.After;
 import org.junit.Before;

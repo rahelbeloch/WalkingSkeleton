@@ -2,13 +2,13 @@ package de.hsrm.testswt02.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import de.hsrm.swt02.businesslogic.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.moduledi.SingleModule;
 
 import org.junit.Test;
 

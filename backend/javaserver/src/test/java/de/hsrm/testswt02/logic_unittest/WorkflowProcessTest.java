@@ -2,7 +2,9 @@ package de.hsrm.testswt02.logic_unittest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import de.hsrm.swt02.manager.ProcessManager;
+import de.hsrm.swt02.businesslogic.ProcessManager;
+import de.hsrm.swt02.businesslogic.SingleModule;
+import de.hsrm.swt02.businesslogic.processors.StartTrigger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
@@ -10,14 +12,12 @@ import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.moduledi.SingleModule;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.processors.StartTrigger;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

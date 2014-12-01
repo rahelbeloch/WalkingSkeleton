@@ -1,8 +1,9 @@
-package de.hsrm.swt02.manager;
+package de.hsrm.swt02.businesslogic;
 
 import java.util.Observable;
 import java.util.Observer;
 
+import de.hsrm.swt02.businesslogic.processors.ActionProcessor;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Action;
@@ -10,7 +11,6 @@ import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.processors.ActionProcessor;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
