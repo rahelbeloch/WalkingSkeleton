@@ -1,4 +1,4 @@
-package de.hsrm.swt02.persistence;
+package de.hsrm.swt02.persistence.exceptions;
 
 public class ItemNotExistentException extends Exception {
     
