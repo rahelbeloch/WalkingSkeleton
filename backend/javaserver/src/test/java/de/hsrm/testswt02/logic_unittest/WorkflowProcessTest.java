@@ -45,11 +45,6 @@ public class WorkflowProcessTest {
         myWorkflow.connectSteps();
     }
 
-    @After
-    public void tearDown() {
-        processManager.stopBroker();
-    }
-
     @Test
     public void addItem() {
         Item item = new Item();
