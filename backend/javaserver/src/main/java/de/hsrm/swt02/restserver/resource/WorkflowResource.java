@@ -1,6 +1,7 @@
 package de.hsrm.swt02.restserver.resource;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -17,12 +18,16 @@ import javax.ws.rs.core.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.hsrm.swt02.businesslogic.LogicImp;
 import de.hsrm.swt02.model.RootElementList;
 import de.hsrm.swt02.model.Workflow;
 
 @Path("resource")
 public class WorkflowResource {
 
+    public static final LogicImp logic = LFFactory.getLogic();
+    public static final ServerPublisherImp publisher = LFFactory.getPublisher();
+    
 	/**
 	 * 
 	 * @param workflowid
@@ -32,9 +37,7 @@ public class WorkflowResource {
 	public Response getWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("GET -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
-		//TODO: get workflow with id "workflowid" from persistence
-		Workflow workflow = new Workflow();
-		workflow.setId(workflowid);
+		Workflow workflow = logic.getWorkflow(workflowid);
 		String workflowAsString;
 		try {
 			workflowAsString = mapper.writeValueAsString(workflow);
@@ -54,20 +57,10 @@ public class WorkflowResource {
 	public Response getAllWorkflows (@PathParam("username") String username) {
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println("GETALL -> " + username);
-		//TODO: get all workflows for user "username" from persistence
-		Workflow w1 = new Workflow();
-		Workflow w2 = new Workflow();
-		Workflow w3 = new Workflow();
-		w1.setId(1);
-		w2.setId(2);
-		w3.setId(3);
-		RootElementList wList = new RootElementList();
-		wList.add(w1);
-		wList.add(w2);
-		wList.add(w3);
+		List<Workflow>wflowList = logic.getWorkflowsByUser(logic.getUser(username));
 		String wListString;
 		try {
-			wListString = mapper.writeValueAsString(wList);
+			wListString = mapper.writeValueAsString(wflowList);
 		} catch (JsonProcessingException e) {
 			return Response.serverError().entity("Jackson parsing-error").build();
 		}
@@ -98,7 +91,7 @@ public class WorkflowResource {
 		} catch (IOException e) {
 			return Response.serverError().entity("Jackson parsing-error").build();
 		}
-		//TODO: save Workflow "workflow" to persistence
+		logic.addWorkflow(workflow);
 		return Response.ok().build();
 	}
 	
@@ -120,7 +113,7 @@ public class WorkflowResource {
 		} catch (IOException e) {
 			return Response.serverError().entity("Jackson parsing-error").build();
 		}
-		//TODO: update Workflow "workflow" persistence
+		logic.addWorkflow(workflow);
 		return Response.ok().build();
 	}
 	
@@ -134,9 +127,8 @@ public class WorkflowResource {
 	public Response deleteWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("DELETE -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
-		//TODO: get workflow with id "workflowid" from persistence, then delete it
-		Workflow workflow = new Workflow();
-		workflow.setId(workflowid);
+		Workflow workflow = logic.getWorkflow(workflowid);
+		logic.deleteWorkflow(workflowid);
 		String workflowAsString;
 		try {
 			workflowAsString = mapper.writeValueAsString(workflow);

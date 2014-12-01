@@ -7,9 +7,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import de.hsrm.swt02.businesslogic.LogicImp;
+
 @Path("command/workflow")
 public class WorkflowCommandResource {
 
+    public static final LogicImp logic = LFFactory.getLogic();
+    public static final ServerPublisherImp publisher = LFFactory.getPublisher();
+    
     /**
      * 
      * 
@@ -24,11 +29,7 @@ public class WorkflowCommandResource {
     public Response startWorkflow(@PathParam("workflowid") int workflowid,
             @PathParam("username") String username) {
         System.out.println("START -> " + workflowid + " " + username);
-        // Workflow workflow = (Workflow)p.loadWorkflow(workflowid);
-        // pm.startBroker();
-        // StartTrigger start = new StartTrigger(workflow, pm, p);
-        // start.startWorkflow();
-        // Item item = (Item)workflow.getItemByPos(0);
+        logic.startWorkflow(workflowid, logic.getUser(username));
         return Response.ok().build();
     }
 
@@ -46,10 +47,7 @@ public class WorkflowCommandResource {
             @PathParam("itemid") int itemid,
             @PathParam("username") String username) {
         System.out.println("FORWARD -> " + itemid);
-        // AbstractStep step = p.loadStep(stepid);
-        // Item item = (Item)p.loadItem(itemid);
-        // AbstractUser user = p.loadUser(username);
-        // pm.selectProcessor(step, item, (User)user);
+        //TODO: perform action in logic
         return Response.ok().build();
     }
 
