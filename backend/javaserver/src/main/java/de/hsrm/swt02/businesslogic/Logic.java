@@ -6,6 +6,7 @@ import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
@@ -25,7 +26,7 @@ public interface Logic {
      * @param user the User, who starts the workflow
      * @throws WorkflowNotExistentException 
      */
-    void startWorkflow(int workflowID, User user)
+    void startWorkflow(int workflowID, String username)
             throws WorkflowNotExistentException;
 
     /**
@@ -65,7 +66,7 @@ public interface Logic {
      * @param step the step, which execute
      * @param user who execute the step in the Item
      */
-    void stepOver(Item item, Step step, User user);
+    void stepOver(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
 
     /*
      * step functions
@@ -77,7 +78,7 @@ public interface Logic {
      * @param step the step, which shall added
      * @throws WorkflowNotExistentException 
      */
-    void addStep(int workflowID, Step step)
+    void addStep(int workflowID, int stepId)
             throws WorkflowNotExistentException;
 
     /**
@@ -128,7 +129,7 @@ public interface Logic {
      * @param user whose workflows' is looked for
      * @return a LinkedList of workflows
      */
-    List<Workflow> getWorkflowsByUser(User user);
+    List<Workflow> getWorkflowsByUser(String username);
 
     /**
      * This method returns all actual Items for a User.
@@ -136,7 +137,7 @@ public interface Logic {
      * @param user whose items' is looked for
      * @return a LinkedList, with actual Items
      */
-    List<Item> getOpenItemsByUser(User user);
+    List<Item> getOpenItemsByUser(String username);
 
     /**
      * This method returns all Workflows, which can be startes by this user.
@@ -144,6 +145,6 @@ public interface Logic {
      * @param user who can execute workflows
      * @return a LinkedList of workflows which can be executed
      */
-    List<Workflow> getStartableWorkflows(User user);
+    List<Workflow> getStartableWorkflows(String username);
 
 }
