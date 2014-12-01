@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RestSharp;
 using System.Web;
 using CommunicationLib.Model;
+using CommunicationLib.Exception;
 using System.Collections;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -217,12 +218,18 @@ namespace RestAPI
             try
             {
                 var response = client.Execute(request);
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    //BasicException baseEx = ErrorMessageMapper.errorMessages[Int32.Parse(response.StatusCode)];
+                    BasicException baseEx = new BasicException();
+                    throw baseEx;
+                }
                 return response;
             }
             catch (Exception)
             {
-                var response = client.Execute<Exception>(request);
-                throw response.Data;
+                // this has to be a HttpException with the Connection
+                throw new ConnectionException();
             }
         }
 
@@ -249,12 +256,18 @@ namespace RestAPI
             try
             {
                 var response = client.Execute(request);
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    //BasicException baseEx = ErrorMessageMapper.errorMessages[Int32.Parse(response.StatusCode)];
+                    BasicException baseEx = new BasicException();
+                    throw baseEx;
+                }
                 return response;
             }
             catch (Exception)
             {
-                var response = client.Execute<Exception>(request);
-                throw response.Data;
+                // this has to be a HttpException with the Connection
+                throw new ConnectionException();
             }
         }
 
@@ -268,12 +281,19 @@ namespace RestAPI
             try
             {
                 var response = client.Execute(request);
+                // if no HttpException happened and although the StatusCode is not "OK", there must be on Exception of our own
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    //BasicException baseEx = ErrorMessageMapper.errorMessages[Int32.Parse(response.StatusCode)];
+                    BasicException baseEx = new BasicException();
+                    throw baseEx;
+                }
                 return response;
             }
             catch(Exception)
             {
-                var response = client.Execute<Exception>(request);
-                throw response.Data;
+                // this has to be a HttpException with the Connection
+                throw new ConnectionException();
             }
         }
     }
