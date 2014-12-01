@@ -5,7 +5,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicImp;
+import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
@@ -18,7 +23,7 @@ import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 public class LogicTest {
 
-    LogicImp li;
+    Logic li;
     Workflow w;
     Workflow w1;
     Workflow w2;
@@ -47,7 +52,7 @@ public class LogicTest {
         assertFalse(w.getItems().isEmpty());
     }
 
-    @Test
+    @Test(expected = WorkflowNotExistentException.class)
     public void deleteWortflowTest() throws WorkflowNotExistentException {
         init();
         li.addWorkflow(w);
@@ -59,6 +64,7 @@ public class LogicTest {
     @Test
     public void stepOverTest() throws WorkflowNotExistentException, ItemNotExistentException, UserNotExistentException {
         init();
+        initExtension();
         li.addWorkflow(w);
         li.startWorkflow(workflowID, user.getUsername());
         li.stepOver(w.getItemByPos(0).getId(), w.getStepById(workflowID * 100).getId(), user.getUsername());
@@ -104,7 +110,7 @@ public class LogicTest {
 
     }
 
-    @Test
+    @Test(expected = UserNotExistentException.class)
     public void deleteUserTest() throws UserNotExistentException {
         init();
         try {
@@ -145,9 +151,8 @@ public class LogicTest {
     }
 
     private void init() {
-        // TODO use injection!!!
-        // li = new LogicImp();
-        li = null;
+    	Injector i = Guice.createInjector(new SingleModule());
+    	li = i.getInstance(Logic.class);
 
         user = new User();
         user.setUsername(username);
