@@ -44,7 +44,6 @@ public class DIApp {
         System.out.println("Workflow: " + p.loadWorkflow(3).getSteps());
         System.out.println("Workflow: " + p.loadWorkflow(4).getSteps());
 
-        pm.startBroker();
 
         Workflow myWorkflow = createWorkflow();
 
@@ -117,7 +116,6 @@ public class DIApp {
 
         }
         System.out.println("ende");
-        pm.stopBroker();
 
     }
 
