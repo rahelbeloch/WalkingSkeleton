@@ -9,7 +9,12 @@ using RestAPI;
 using RestSharp;
 using System.Web;
 using System.IO;
+<<<<<<< .mine
+using Nancy;
+using System.Dynamic;
+=======
 using System.Security;
+>>>>>>> .r452
 
 
 namespace UnitTestProject1
