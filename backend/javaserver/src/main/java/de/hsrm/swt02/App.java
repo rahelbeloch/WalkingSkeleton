@@ -15,6 +15,7 @@ public class App {
     /**
      * Application startup method.
      * Configures logging.
+     * Starts the Rest-Server.
      * 
      * @param args are the program start parameters
      */
