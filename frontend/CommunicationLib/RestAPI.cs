@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System.Configuration;
 using System.Net;
 using System.Security;
+using CommunicationLib;
 
 namespace RestAPI
 {
@@ -35,7 +36,10 @@ namespace RestAPI
             client = new RestClient(restserverurl);
             _ressourceParam = "resource/";
             _operationParam = "command/";
-            _jsonSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None, Formatting = Formatting.Indented};
+            _jsonSettings = new JsonSerializerSettings { 
+                TypeNameHandling = TypeNameHandling.Auto, 
+                Formatting = Formatting.Indented,
+                Binder = new CustomSerializationBinder()};
         }
 
         
