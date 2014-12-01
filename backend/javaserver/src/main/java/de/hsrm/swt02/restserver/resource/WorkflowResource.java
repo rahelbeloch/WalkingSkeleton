@@ -2,6 +2,7 @@ package de.hsrm.swt02.restserver.resource;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
@@ -29,6 +31,7 @@ public class WorkflowResource {
 
       public static final Logic logic = ConstructionFactory.getLogic();
       public static final ServerPublisher publisher = ConstructionFactory.getPublisher();
+      public static final UseLogger logger = new UseLogger();
     
 	/**
 	 * 
@@ -37,21 +40,23 @@ public class WorkflowResource {
 	 */	@GET @Path("workflow/{workflowid}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getWorkflow (@PathParam("workflowid") int workflowid) {
-		System.out.println("GET -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
 		Workflow workflow = null;
+		String loggingBody = "GETWORKFLOW -> " + workflowid;
         try {
             workflow = logic.getWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
-            // TODO use logger & return error code
-            e1.printStackTrace();
+            logger.log(Level.INFO, loggingBody + " Non-existing workflow requested.");
+            return Response.serverError().entity("Workflow does not exist.").build();
         }
 		String workflowAsString;
 		try {
 			workflowAsString = mapper.writeValueAsString(workflow);
 		} catch (JsonProcessingException e) {
-			return Response.serverError().entity("JACKSON Parsing Error").build();
+			logger.log(Level.INFO, loggingBody + " JACKSON parsing error occured.");
+			return Response.serverError().entity("JACKSON parsing-error").build();
 		}
+		logger.log(Level.INFO, loggingBody + " Request successful.");
 		return Response.ok(workflowAsString).build();
 	}
 	
@@ -64,16 +69,17 @@ public class WorkflowResource {
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getAllWorkflows (@PathParam("username") String username) {
 		ObjectMapper mapper = new ObjectMapper();
-		System.out.println("GETALL -> " + username);
+		String loggingBody = "GETALLWORKFLOWS -> " + username;
 		List<Workflow> wflowList = null;
         wflowList = logic.getWorkflowsByUser(username);
 		String wListString;
 		try {
 			wListString = mapper.writeValueAsString(wflowList);
 		} catch (JsonProcessingException e) {
-			return Response.serverError().entity("Jackson parsing-error").build();
+			logger.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
+			return Response.serverError().entity("JACKSON parsing-error").build();
 		}
-		System.out.println(wListString);
+		logger.log(Level.INFO, loggingBody + " Request successful.");
 		return Response.ok(wListString).build();
 	}
 	
@@ -90,17 +96,17 @@ public class WorkflowResource {
 	@Consumes("application/x-www-form-urlencoded")
 	public Response saveWorkflow (MultivaluedMap<String, String> formParams) {
 		ObjectMapper mapper = new ObjectMapper();
-		// TODO use logger
-		System.out.println("SEND -> ");
 		String workflowAsString = formParams.get("data").get(0);
-		System.out.println(workflowAsString);
+		String loggingBody = "SENDWORKFLOW";
 		Workflow workflow;
 		try {
 			workflow = mapper.readValue(workflowAsString, Workflow.class);
 		} catch (IOException e) {
-		    return Response.serverError().entity("JACKSON Parsing Error").build();
+			logger.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
+		    return Response.serverError().entity("JACKSON parsing-error").build();
 		}
 		logic.addWorkflow(workflow);
+		logger.log(Level.INFO, loggingBody + " Workflow successfully stored.");
 		return Response.ok().build();
 	}
 	
@@ -113,16 +119,18 @@ public class WorkflowResource {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes("application/x-www-form-urlencoded")
 	public Response updateWorkflow(@PathParam("workflowid") int workflowid, MultivaluedMap<String, String> formParams) {
-		System.out.println("UPDATE -> " + workflowid);
+		String loggingBody = "UPDATE -> " + workflowid;
 		ObjectMapper mapper = new ObjectMapper();
 		String workflowAsString = formParams.get("data").get(0);
 		Workflow workflow;
 		try {
 			workflow = mapper.readValue(workflowAsString, Workflow.class);
 		} catch (IOException e) {
-			return Response.serverError().entity("Jackson parsing-error").build();
+			logger.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
+			return Response.serverError().entity("JACKSON parsing-error").build();
 		}
 		logic.addWorkflow(workflow);
+		logger.log(Level.INFO, loggingBody + " Workflow successfully updated.");
 		return Response.ok().build();
 	}
 	
@@ -134,27 +142,24 @@ public class WorkflowResource {
 	@DELETE @Path("workflow/{workflowid}")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response deleteWorkflow (@PathParam("workflowid") int workflowid) {
-		System.out.println("DELETE -> " + workflowid);
+		String loggingBody = "DELETE -> " + workflowid;
 		ObjectMapper mapper = new ObjectMapper();
 		Workflow workflow = null;
         try {
             workflow = logic.getWorkflow(workflowid);
-        } catch (WorkflowNotExistentException e1) {
-            // TODO use logger & return error code
-            e1.printStackTrace();
-        }
-		try {
             logic.deleteWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
-            // TODO use logger & return error code
-            e1.printStackTrace();
+            logger.log(Level.INFO, loggingBody + " Workflow does not exist.");
+            return Response.serverError().entity("Workflow does not exist").build();
         }
 		String workflowAsString;
 		try {
 			workflowAsString = mapper.writeValueAsString(workflow);
 		} catch (JsonProcessingException e) {
-			return Response.serverError().entity("Jackson parsing-error").build();
+			logger.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
+			return Response.serverError().entity("JACKSON parsing-error").build();
 		}
+		logger.log(Level.INFO, loggingBody + " Workflow successfully deleted.");
 		return Response.ok(workflowAsString).build();
 	}
 
