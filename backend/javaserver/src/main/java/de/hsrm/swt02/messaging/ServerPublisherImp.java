@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 
+
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -66,6 +67,8 @@ public class ServerPublisherImp implements ServerPublisher {
         brokerURL = properties.getProperty("BrokerURL");
         connectionURL = properties.getProperty("BrokerConnectionURL");
         factory = new ActiveMQConnectionFactory(brokerURL);
+        // disable apache's log4j-system (we don't use it)
+        org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
     }
 
     /**
@@ -75,7 +78,7 @@ public class ServerPublisherImp implements ServerPublisher {
      * @param topicName topic where the content will be published
      * @throws ServerPublisherBrokerException if publishing goes wrong
      */
-    public void publish(String content, String topicName)
+    public void publish(String content, String topicName) 
             throws ServerPublisherBrokerException {
         try {
             connection = factory.createConnection();
