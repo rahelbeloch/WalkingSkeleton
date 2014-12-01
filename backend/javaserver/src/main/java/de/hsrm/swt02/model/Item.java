@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * This class represents an Item. It extends the class RootElement, so it can have an Id.
+ */
 public class Item extends RootElement {
     // Used for (de)serialization. Do not change.
     private int workflowId;
@@ -15,32 +18,72 @@ public class Item extends RootElement {
     // Used for (de)serialization. Do not change.
     private boolean finished;
 
+    // When an Item object is (de)serializated: state will be ignored because in the client item, there is no state.
     @JsonIgnore
     private String state;
 
+    /**
+     * Constructor for Item
+     */
     public Item() {
         super();
         metadata = new ArrayList<MetaEntry>();
     }
 
+    /**
+     * WorkflowId getter
+     * @return workflowId
+     */
     public int getWorkflowId() {
         return workflowId;
     }
 
+    /**
+     * WorkflowId setter
+     * @param workflowId
+     */
     public void setWorkflowId(int workflowId) {
         this.workflowId = workflowId;
     }
 
+    /**
+     * Metadata (list of MetaEntries) getter
+     * @return metadata
+     */
     public List<MetaEntry> getMetadata() {
         return this.metadata;
     }
 
+    /**
+     * Finished getter
+     * @return finished
+     */
     public boolean isFinished() {
         return finished;
     }
 
+    /**
+     * Finished setter
+     * @param finished
+     */
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+    
+    /**
+     * State getter
+     * @return state
+     */
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * State setter
+     * @param state
+     */
+    public void setState(String state) {
+        this.state = state;
     }
 
     /**
@@ -157,13 +200,5 @@ public class Item extends RootElement {
     public void setFirstStepState(String value) {
 
         getForGroup("step").get(0).setValue(value);
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 }
