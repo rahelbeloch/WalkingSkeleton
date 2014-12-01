@@ -152,7 +152,7 @@ public class Item extends RootElement {
 
     public MetaEntry getActStep() {
         for (MetaEntry me : getForGroup("step")) {
-            if (me.getValue() == MetaState.OPEN.toString()) {
+            if ((me.getValue()).equals(MetaState.OPEN.toString())) {
                 return me;
             }
         }

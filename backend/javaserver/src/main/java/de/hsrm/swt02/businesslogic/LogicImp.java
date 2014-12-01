@@ -189,8 +189,8 @@ public class LogicImp implements Logic {
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
 
-                if (wf.getStepById(Integer.parseInt(item.getActStep().getKey()))
-                        .getUsername() == user.getUsername()) {
+                if ((wf.getStepById(Integer.parseInt(item.getActStep().getKey()))
+                        .getUsername()).equals(user.getUsername())) {
                     items.add(item);
                     break;
                 }
