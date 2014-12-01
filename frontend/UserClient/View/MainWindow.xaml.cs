@@ -17,6 +17,7 @@ using UserClient.Model;
 using CommunicationLib.Model;
 using CommunicationLib;
 using RestAPI;
+using CommunicationLib.Exception;
 
 namespace UserClient
 {
@@ -49,12 +50,13 @@ namespace UserClient
                 //LoginLayer.Visibility = Model.Authentication.Authenticate1(txtName.Text, txtPassword.SecurePassword) ? Visibility.Collapsed : Visibility.Visible;
                 //init_Dashboard();
             }
-            catch (Exception exc)
+            catch (BasicException exc)
             {
-
+                ErrorMessage.Visibility = Visibility.Visible;
             }
             finally
             {
+                ErrorMessage.Visibility = Visibility.Hidden;
                 LoginLayer.Visibility = Visibility.Collapsed;
             }
         }
@@ -116,12 +118,22 @@ namespace UserClient
                     table1.Columns[x].Background = Brushes.LightSteelBlue;
             }
             */
-            addworkflowasrow("Workflow1");
-            addworkflowasrow("Workflow2");
+            if (workflows != null)
+            {
+                foreach (Workflow workflow in workflows)
+                {
+                    addworkflowasrow("Workflow mit der id:"+workflow.id, workflow);
+                }
+            }
+            else
+            {
+                addworkflowasrow("Workflow1", null);
+                addworkflowasrow("Workflow2", null);
+            }
            
         }
 
-        private void addworkflowasrow(String title)
+        private void addworkflowasrow(String title, Workflow actWorkflow)
         {
             // Create and add an empty TableRowGroup to hold the table's Rows.
             TableRowGroup newRowGroup = new TableRowGroup();
@@ -143,6 +155,11 @@ namespace UserClient
 
             var button = new Button();
             button.Content = "Neu erstellen";
+            if (actWorkflow != null)
+            {
+                button.Tag = actWorkflow.id;
+            }
+            button.Click += new RoutedEventHandler(createWorkflow);
             button.FontSize = 18;
             var block = new BlockUIContainer(button);
             currentRow.Cells.Add(new TableCell(block));
@@ -159,10 +176,34 @@ namespace UserClient
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Name"))));
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Nr."))));
 
-            additemrow(newRowGroup);
-            additemrow(newRowGroup);
+            if (workflows != null)
+            {
+                foreach (Item actItem in actWorkflow.items)
+                {
+                    additemrow(newRowGroup, actItem);
+                }
+            }
+            else
+            {
+                additemrow(newRowGroup, null);
+                additemrow(newRowGroup, null);
+            }
         }
-        private void additemrow(TableRowGroup newRowGroup)
+        private void createWorkflow(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button button = sender as Button;
+                int id = (int)button.Tag;
+                RestRequester.StartWorkflow(id, userName);
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Fehler beim erstellen");
+            }
+
+        }
+        private void additemrow(TableRowGroup newRowGroup, Item actItem)
         {
             TableRow currentRow = new TableRow();
             newRowGroup.Rows.Add(currentRow);
@@ -172,8 +213,15 @@ namespace UserClient
             currentRow.FontWeight = FontWeights.Normal;
 
             // Add cells with content to the second row.
-            currentRow.Cells.Add(new TableCell(new Paragraph(new Run("foo"))));
-            currentRow.Cells.Add(new TableCell(new Paragraph(new Run("bar"))));
+            String nr = "foo";
+            String name = "bar";
+            if (workflows != null)
+            {
+                nr = ""+actItem.id;
+                name = ""+actItem.metadata;
+            }
+            currentRow.Cells.Add(new TableCell(new Paragraph(new Run(nr))));
+            currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
             var button = new System.Windows.Controls.Primitives.ToggleButton();
             button.Content = "Abschließen/Annehmen";
             var block = new BlockUIContainer(button);

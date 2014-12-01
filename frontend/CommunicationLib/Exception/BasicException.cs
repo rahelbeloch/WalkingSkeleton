@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class BasicException : System.Exception
+    public class BasicException : System.Exception
     {
         private int _number = 10000;
         public int number { get { return _number; }}

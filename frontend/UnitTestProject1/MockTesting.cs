@@ -22,10 +22,10 @@ namespace UnitTestProject1
         public TestServerModule()
         {
             // Route to get a workflow
-            Get["/resource/workflow/{val:int}"] = _ =>
+            Get["/resource/workflow/{val:int}"] = _testID =>
             {
                 Workflow newWf = new Workflow();
-                newWf.id = (int)_.val;
+                newWf.id = (int)_testID.val;
                 return newWf;
             };
 
