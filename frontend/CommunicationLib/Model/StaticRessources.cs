@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunicationLib.Exception;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,25 +15,42 @@ namespace CommunicationLib.Model
 
     public class ErrorMessageMapper
     {
-        private static Dictionary<int, string> errorMessages = new Dictionary<int, string>()
+        private static Dictionary<int, Type> errorMessages = new Dictionary<int, Type>()
         {   
-            {200, "request successfully done"},
+                       
+            // Error codes
+            {10000, typeof(BasicException)},
             
-            // Error codes for errors concerning user operations
-            {1001,"user does not exist in db"},
-            {1002,"user already existing"},
-            {1003,"user is not permitted for access"},
-            {1004,""},
-            {1005,""},
-            // Error codes for errors concerning workflows
-            {2001,"workflow does not exist"},
-            {2002,""},
-            {2003,""},
-            // Error codes for errors concerning ??
-            {3001,""},
-            {3002,""},
-            {3003,""}
-        
+            //Error codes for logic errors
+            {11000, typeof(LogicException)},
+            
+            //Error codes for logIn errors
+            {11100, typeof(LogInException)},
+
+            {11110, typeof(WrongPwException)},
+            {11120, typeof(WrongUsernameException)},
+
+            //Error code for persistence errors
+            {11200, typeof(PersistenceException)},
+            
+            {11210, typeof(IncompleteEleException)},
+            {11220, typeof(EleAlreadyExistsException)},
+            {11230, typeof(NoPermissionException)},
+            {11240, typeof(ElementChangedException)},
+            {11250, typeof(DoesntExistsException)},
+            {11260, typeof(UserNotExistException)},
+            
+            //Error codes for connection errors
+            {12000,typeof(ConnectionException)},
+
+            //Error codes for messaging errors
+            {12100,typeof(MessagingException)},
+            
+            //Error codes for rest errors
+            {12200,typeof(RestException)},
+
+            {12210,typeof(ServerNotRunningException)}
+            
         };
     }
 
