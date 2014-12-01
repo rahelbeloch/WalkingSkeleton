@@ -1,8 +1,7 @@
 package de.hsrm.testswt02.modulediTesting;
 
-import static org.junit.Assert.*;
-
-import javax.validation.constraints.AssertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -12,6 +11,7 @@ import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
@@ -42,7 +42,7 @@ public class LogicTest {
 
         li.addWorkflow(w);
 
-        li.startWorkflow(workflowID, user);
+        li.startWorkflow(workflowID, user.getUsername()); // added user.getUsername because startWorkflow expects String not user
 
         assertFalse(w.getItems().isEmpty());
     }
@@ -57,11 +57,11 @@ public class LogicTest {
     }
 
     @Test
-    public void stepOverTest() throws WorkflowNotExistentException {
+    public void stepOverTest() throws WorkflowNotExistentException, ItemNotExistentException, UserNotExistentException {
         init();
         li.addWorkflow(w);
-        li.startWorkflow(workflowID, user);
-        li.stepOver(w.getItemByPos(0), w.getStepById(workflowID * 100), user);
+        li.startWorkflow(workflowID, user.getUsername());
+        li.stepOver(w.getItemByPos(0).getId(), w.getStepById(workflowID * 100).getId(), user.getUsername());
         assertTrue(w.getItemByPos(0).getStepState(workflowID * 100) == "DONE");
     }
 
@@ -121,7 +121,7 @@ public class LogicTest {
         init();
         initExtension();
 
-        assertTrue(li.getWorkflowsByUser(user1).size() == 3);
+        assertTrue(li.getWorkflowsByUser(user1.getUsername()).size() == 3);
 
     }
 
@@ -130,10 +130,10 @@ public class LogicTest {
         init();
         initExtension();
 
-        li.startWorkflow(workflowID + 1, user1);
-        li.startWorkflow(workflowID + 2, user1);
+        li.startWorkflow(workflowID + 1, user1.getUsername());
+        li.startWorkflow(workflowID + 2, user1.getUsername());
 
-        assertTrue(li.getOpenItemsByUser(user1).size() == 2);
+        assertTrue(li.getOpenItemsByUser(user1.getUsername()).size() == 2);
 
     }
 
@@ -141,7 +141,7 @@ public class LogicTest {
     public void getStartableWorkflowsTest() {
         init();
         initExtension();
-        assertTrue(li.getStartableWorkflows(user2).size() == 2);
+        assertTrue(li.getStartableWorkflows(user2.getUsername()).size() == 2);
     }
 
     private void init() {
