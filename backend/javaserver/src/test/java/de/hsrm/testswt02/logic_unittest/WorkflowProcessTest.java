@@ -2,6 +2,14 @@ package de.hsrm.testswt02.logic_unittest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import de.hsrm.swt02.businesslogic.ProcessManager;
 import de.hsrm.swt02.businesslogic.processors.StartTrigger;
 import de.hsrm.swt02.constructionfactory.SingleModule;
@@ -12,15 +20,7 @@ import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import de.hsrm.swt02.persistence.Persistence;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 public class WorkflowProcessTest {
 
