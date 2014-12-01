@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
@@ -34,13 +35,10 @@ public class WorkflowCommandResource {
             @PathParam("username") String username) {
         System.out.println("START -> " + workflowid + " " + username);
         try {
-            logic.startWorkflow(workflowid, logic.getUser(username));
+            logic.startWorkflow(workflowid, username);
         } catch (WorkflowNotExistentException e) {
             // TODO use logger & return error code
             Response.status(4001).build();
-        } catch (UserNotExistentException e) {
-            // TODO use logger & return error code
-            e.printStackTrace();
         }
         return Response.ok().build();
     }
@@ -59,7 +57,15 @@ public class WorkflowCommandResource {
             @PathParam("itemid") int itemid,
             @PathParam("username") String username) {
         System.out.println("FORWARD -> " + itemid);
-        //TODO: perform action in logic
+        try {
+			logic.stepOver(itemid, stepid, username);
+		} catch (ItemNotExistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UserNotExistentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return Response.ok().build();
     }
 

@@ -57,16 +57,30 @@ public class RestserverTest {
 
     @Test
     public void testGet() {
+    	Workflow workflow = new Workflow();
+        workflow.setId(15);
         ObjectMapper mapper = new ObjectMapper();
-        String workflowAsString = client.target(TARGET_URL)
-                .path("resource/workflow/17").request().get(String.class);
-        Workflow workflow = null;
+        String workflowAsString = null;
+        try {
+            workflowAsString = mapper.writeValueAsString(workflow);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Form dataform = new Form().param("data", workflowAsString);
+        client.target(TARGET_URL)
+                .path("resource/workflow")
+                .request()
+                .post(Entity.entity(dataform,
+                        MediaType.APPLICATION_FORM_URLENCODED));
+        workflowAsString = client.target(TARGET_URL)
+                .path("resource/workflow/15").request().get(String.class);
+        workflow = null;
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assertEquals(workflow.getId(), 17);
+        assertEquals(workflow.getId(), 15);
     }
 
     @Test
