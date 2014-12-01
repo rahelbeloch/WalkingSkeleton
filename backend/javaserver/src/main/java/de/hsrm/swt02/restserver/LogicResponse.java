@@ -1,37 +1,45 @@
 package de.hsrm.swt02.restserver;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class is used for communication between REST-Server and Businesslogic.
  *
  */
 public class LogicResponse {
-	
-	private Map<String, String> messages;
-	
-	/**
-	 * Default-Constructor.
-	 */
-	public LogicResponse() {
-		setMessages(new HashMap<String, String>());
-	}
 
-	/**
-	 * Getter for messages map.
-	 * @return messages
-	 */
-	public Map<String, String> getMessages() {
-		return messages;
-	}
+    private List<Message> messages;
 
-	/**
-	 * Setter for messages map.
-	 * @param messages
-	 */
-	public void setMessages(Map<String, String> messages) {
-		this.messages = messages;
-	}
+    /**
+     * Constructor.
+     */
+    public LogicResponse() {
+        setMessages(new LinkedList<Message>());
+    }
 
+    /**
+     * This method adds new message object m to messages-list.
+     * @param m new object which will be added
+     */
+    public void add(Message m) {
+        messages.add(m);
+    }
+    /**
+     * Getter for messages.
+     * 
+     * @return messages
+     */
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    /**
+     * Setter for messages.
+     * 
+     * @param messages which saves Message objects
+     */
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
 }

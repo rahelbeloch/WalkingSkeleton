@@ -10,6 +10,7 @@ import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
+import de.hsrm.swt02.restserver.LogicResponse;
 /**
  * This interface is used for the business logic.
  *
@@ -146,5 +147,10 @@ public interface Logic {
      * @return a LinkedList of workflows which can be executed
      */
     List<Workflow> getStartableWorkflows(String username);
-
+    
+    /**
+     * This method gets a LogicResponse object.
+     * @return LogicResponse object
+     */
+    LogicResponse getLogicResponse();
 }

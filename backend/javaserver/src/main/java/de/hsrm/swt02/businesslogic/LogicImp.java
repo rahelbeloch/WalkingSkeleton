@@ -15,6 +15,7 @@ import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
+import de.hsrm.swt02.restserver.LogicResponse;
 
 
 /**
@@ -228,5 +229,14 @@ public class LogicImp implements Logic {
             }
         }
         return startableWorkflows;
+    }
+
+    /**
+     * This method gets a LogicResponse object from the processmanager instance.
+     * @return processmanager's logicResponse object
+     */
+    
+    public LogicResponse getLogicResponse() {
+        return pm.getLogicResponse();
     }
 }

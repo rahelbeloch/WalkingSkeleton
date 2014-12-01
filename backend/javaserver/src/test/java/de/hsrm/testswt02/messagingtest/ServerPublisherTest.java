@@ -1,9 +1,7 @@
 package de.hsrm.testswt02.messagingtest;
 
-import static org.junit.Assert.*;
-import de.hsrm.swt02.constructionfactory.SingleModule;
-import de.hsrm.swt02.messaging.ServerPublisher;
-import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -14,6 +12,10 @@ import org.junit.Test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+
+import de.hsrm.swt02.constructionfactory.SingleModule;
+import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 
 /**
  * Unit test class for ServerPublisher.class.
