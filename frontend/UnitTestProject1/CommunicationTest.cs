@@ -90,9 +90,9 @@ namespace UnitTestProject1
             string username = "Rahel";
 
            
-            String done = RestRequester.StepForward(stepId, itemId, username);
+            Boolean done = RestRequester.StepForward(stepId, itemId, username);
 
-            Assert.IsTrue(done == "true");
+            Assert.IsTrue(done);
         }
 
         /// <summary>
