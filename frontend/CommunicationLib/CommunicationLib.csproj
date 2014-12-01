@@ -39,6 +39,12 @@
     <Reference Include="Apache.NMS.ActiveMQ">
       <HintPath>..\packages\Apache.NMS.ActiveMQ.1.6.3\lib\net40\Apache.NMS.ActiveMQ.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy">
+      <HintPath>..\packages\Nancy.0.23.2\lib\net40\Nancy.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Hosting.Self">
+      <HintPath>..\packages\Nancy.Hosting.Self.0.23.2\lib\net40\Nancy.Hosting.Self.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -48,6 +54,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,13 +64,13 @@
   <ItemGroup>
     <Compile Include="CommunicationManager.cs" />
     <Compile Include="IDataReceiver.cs" />
+    <Compile Include="IRestRequester.cs" />
     <Compile Include="Model\Action.cs" />
     <Compile Include="Model\FinalStep.cs" />
     <Compile Include="Model\Item.cs" />
     <Compile Include="Model\MetaEntry.cs" />
     <Compile Include="Model\MetaState.cs" />
     <Compile Include="Model\RootElement.cs" />
-    <Compile Include="Model\RootElementList.cs" />
     <Compile Include="Model\StartStep.cs" />
     <Compile Include="Model\StaticRessources.cs" />
     <Compile Include="Model\Step.cs" />
