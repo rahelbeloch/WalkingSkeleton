@@ -105,7 +105,12 @@ public class UserResource {
             return Response.serverError().entity("Jackson parsing-error")
                     .build();
         }
-        logic.addUser(user);
+        try {
+            logic.addUser(user);
+        } catch (UserAlreadyExistsException e) {
+         // TODO use logger & return error code
+            e.printStackTrace();
+        }
         return Response.ok().build();
     }
 
@@ -120,8 +125,20 @@ public class UserResource {
     public Response deleteUser(@PathParam("username") String username) {
         System.out.println("DELETE -> " + username);
         ObjectMapper mapper = new ObjectMapper();
-        User user = logic.getUser(username);
-        logic.deleteUser(username);
+        User user = null;
+        try {
+            user = logic.getUser(username);
+        } catch (UserNotExistentException e1) {
+            // TODO use logger & return error code
+            e1.printStackTrace();
+        }
+        try {
+            logic.deleteUser(username);
+        } catch (UserNotExistentException e1) {
+         // TODO use logger & return error code
+            e1.printStackTrace();
+        }
+        String userAsString;
         try {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {

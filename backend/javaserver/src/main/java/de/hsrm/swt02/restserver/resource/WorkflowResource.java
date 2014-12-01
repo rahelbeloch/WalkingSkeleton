@@ -22,6 +22,8 @@ import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 @Path("resource")
 public class WorkflowResource {
@@ -38,7 +40,13 @@ public class WorkflowResource {
 	public Response getWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("GET -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
-		Workflow workflow = logic.getWorkflow(workflowid);
+		Workflow workflow = null;
+        try {
+            workflow = logic.getWorkflow(workflowid);
+        } catch (WorkflowNotExistentException e1) {
+            // TODO use logger & return error code
+            e1.printStackTrace();
+        }
 		String workflowAsString;
 		try {
 			workflowAsString = mapper.writeValueAsString(workflow);
@@ -58,7 +66,13 @@ public class WorkflowResource {
 	public Response getAllWorkflows (@PathParam("username") String username) {
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println("GETALL -> " + username);
-		List<Workflow>wflowList = logic.getWorkflowsByUser(logic.getUser(username));
+		List<Workflow> wflowList = null;
+        try {
+            wflowList = logic.getWorkflowsByUser(logic.getUser(username));
+        } catch (UserNotExistentException e1) {
+            // TODO use logger & return error code
+            e1.printStackTrace();
+        }
 		String wListString;
 		try {
 			wListString = mapper.writeValueAsString(wflowList);
@@ -128,8 +142,19 @@ public class WorkflowResource {
 	public Response deleteWorkflow (@PathParam("workflowid") int workflowid) {
 		System.out.println("DELETE -> " + workflowid);
 		ObjectMapper mapper = new ObjectMapper();
-		Workflow workflow = logic.getWorkflow(workflowid);
-		logic.deleteWorkflow(workflowid);
+		Workflow workflow = null;
+        try {
+            workflow = logic.getWorkflow(workflowid);
+        } catch (WorkflowNotExistentException e1) {
+            // TODO use logger & return error code
+            e1.printStackTrace();
+        }
+		try {
+            logic.deleteWorkflow(workflowid);
+        } catch (WorkflowNotExistentException e1) {
+            // TODO use logger & return error code
+            e1.printStackTrace();
+        }
 		String workflowAsString;
 		try {
 			workflowAsString = mapper.writeValueAsString(workflow);
