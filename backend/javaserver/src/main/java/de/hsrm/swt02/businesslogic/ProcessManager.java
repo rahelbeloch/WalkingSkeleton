@@ -12,11 +12,32 @@ import de.hsrm.swt02.model.User;
  */
 public interface ProcessManager extends Observer {
 
-    public boolean checkUser(User user, Step step);
+     /**
+     * This method checks if the user who wishes to edit a step is the 
+     * responsible user who is allowed to execute the step.
+     * 
+     * @param user who edits the step
+     * @param step which user wants to edit
+     * @return true if user is "owner" of step and false if not
+     */
+    boolean checkUser(User user, Step step);
 
-    public void selectProcessor(Step step, Item item, User user);
-
-    public void startBroker();
-
-    public void stopBroker();
+    /**
+     * This method selects the processor of a step and executes it.
+     * 
+     * @param step which is to be edited
+     * @param item which is currently active
+     * @param user who started interaction
+     */
+    void selectProcessor(Step step, Item item, User user);
+    
+    /**
+     * This method starts the messaging broker.
+     */
+    void startBroker();
+    
+    /**
+     * This method stops the messaging broker.
+     */
+    void stopBroker();
 }

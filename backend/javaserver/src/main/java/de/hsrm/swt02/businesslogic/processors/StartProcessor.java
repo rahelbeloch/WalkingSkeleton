@@ -23,9 +23,9 @@ public class StartProcessor extends Observable {
     private Persistence p;
 
     /**
-     * Constructor of StartProcessor
+     * Constructor of StartProcessor.
      * 
-     * @param pm is the observer and manager of the processor
+     * @param p is a singleton instance of the persistence
      */
     @Inject
     public StartProcessor(Persistence p) {
@@ -42,8 +42,9 @@ public class StartProcessor extends Observable {
      */
     public void createItem(Workflow workflow) {
 
+        final int KEY = 1000;
         currentItem = new Item();
-        currentItem.setId(workflow.getId() * 1000 + workflow.getSteps().size());
+        currentItem.setId(workflow.getId() * KEY + workflow.getSteps().size());
         currentItem.setWorkflowId(workflow.getId());
         initiateItem(workflow, currentItem);
     }

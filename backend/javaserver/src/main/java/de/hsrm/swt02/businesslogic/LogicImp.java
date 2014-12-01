@@ -11,15 +11,24 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.UserAlreadyExistsException;
-import de.hsrm.swt02.persistence.UserNotExistentException;
-import de.hsrm.swt02.persistence.WorkflowNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
+
+/**
+ * This class implements the logic interface and is used for logic operations.
+ */
 public class LogicImp implements Logic {
 
     private Persistence p;
     private ProcessManager pm;
 
+    /**
+     * Constructor for LogicImp.
+     * @param p is a singleton instance of the persistence
+     * @param pm is a singleton instance of the processmanager
+     */
     @Inject
     public LogicImp(Persistence p, ProcessManager pm) {
         this.p = p;
@@ -27,7 +36,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method starts a Workflow
+     * This method starts a Workflow.
      * 
      * @param workflowID the workflow, which should be started
      * @param user the User, who starts the workflow
@@ -35,25 +44,25 @@ public class LogicImp implements Logic {
      */
     @Override
     public void startWorkflow(int workflowID, User user) throws WorkflowNotExistentException {
-        // TODO: check user permission
+        //TODO check user permission
         Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         StartTrigger start = new StartTrigger(workflow, pm, p);
         start.startWorkflow();
     }
 
     /**
-     * This method store a workflow and distribute a id
+     * This method store a workflow and distribute a id.
      * 
      * @param workflow
      */
     @Override
     public void addWorkflow(Workflow workflow) {
-        // TODO: distribute clever ids, may return the id
+        //TODO distribute clever ids, may return the id
         p.storeWorkflow(workflow);
     }
 
     /**
-     * This method loads a Workflow
+     * This method loads a Workflow.
      * 
      * @param workflowID describe the workflow
      * @return a Workflow, if there is one, who has this workflowID
@@ -65,7 +74,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method delete a Workflow in Persistence
+     * This method delete a Workflow in Persistence.
      * 
      * @param workflowID describe the Workflow
      * @throws WorkflowNotExistentException 
@@ -76,7 +85,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method execute a step in an item
+     * This method execute a step in an item.
      * 
      * @param item the Item, which edited
      * @param step the step, which execute
@@ -88,7 +97,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method add a step into an existing Workflow
+     * This method add a step into an existing Workflow.
      * 
      * @param workflowID the workflow, which shall edited
      * @param step the step, which shall added
@@ -102,7 +111,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method delete a step from an existing Workflow
+     * This method delete a step from an existing Workflow.
      * 
      * @param workflowID the workflow, which shall edited
      * @param stepID the step, which shall delete
@@ -116,19 +125,19 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method store a workflow and distribute a id
+     * This method store a workflow and distribute a id.
      * 
      * @param user
      * @throws UserAlreadyExistsException
      */
     @Override
     public void addUser(User user) throws UserAlreadyExistsException {
-        // TODO: distribute clever ids, may return the id
+        //TODO distribute clever ids, may return the id
         p.addUser(user);
     }
 
     /**
-     * This method loads a User
+     * This method loads a User.
      * 
      * @param username describe the user
      * @return a User, if there is one, who has this username
@@ -140,7 +149,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method delete a User
+     * This method delete a User.
      * 
      * @param username describe the user
      * @throws UserNotExistentException 
@@ -152,7 +161,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method returns all workflows, in which the user is involved
+     * This method returns all workflows, in which the user is involved.
      * 
      * @param user
      * @return a LinkedList of workflows
@@ -173,7 +182,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method returns all actual Items for a User
+     * This method returns all actual Items for a User.
      * 
      * @param user
      * @return a LinkedList, with actual Items
@@ -199,7 +208,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method returns all Workflows, which can be startes by this user
+     * This method returns all Workflows, which can be startes by this user.
      * 
      * @param user
      * @return

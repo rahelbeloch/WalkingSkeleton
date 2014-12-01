@@ -12,7 +12,7 @@ import de.hsrm.swt02.model.User;
 public interface StepProcessor {
 
     /**
-     * This is the method header for executing a step
+     * This is the method header for executing a step.
      * 
      * @param item which is active in a workflow
      * @param step which an user wishes to edit

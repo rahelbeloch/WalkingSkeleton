@@ -6,7 +6,7 @@ import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 
 public class ProduceData {
 

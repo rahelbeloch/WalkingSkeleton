@@ -21,9 +21,9 @@ public class ActionProcessor extends Observable implements StepProcessor {
     private Persistence p;
 
     /**
-     * Constructor of ActionProcessor
+     * Constructor of ActionProcessor.
      * 
-     * @param pm is the observer and manager of the processor
+     * @param p is a singleton instance of the persistence
      */
     @Inject
     public ActionProcessor(Persistence p) {
@@ -37,6 +37,10 @@ public class ActionProcessor extends Observable implements StepProcessor {
      * After successfully executing the Action-function the current step's state
      * will be set on "DONE". If the next step isn't an end state, this
      * processor sets the state of the current step's straight neighbor to OPEN.
+     * 
+     * @param item which is currently edited
+     * @param step which is currently executed
+     * @param user who currently executes the step
      */
     public void handle(Item item, Step step, User user) {
 
