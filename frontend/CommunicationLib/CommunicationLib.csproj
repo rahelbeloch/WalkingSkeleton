@@ -63,6 +63,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationManager.cs" />
+    <Compile Include="Exception\BasicException.cs" />
+    <Compile Include="Exception\ConnectionExceptions\ConnectionException.cs" />
+    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\DoesntExistsException.cs" />
+    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\EleAlreadyExistsException.cs" />
+    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\ElementChangedException.cs" />
+    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\IncompleteEleException.cs" />
+    <Compile Include="Exception\LogicExceptions\LogicException.cs" />
+    <Compile Include="Exception\LogicExceptions\LogInExceptions\LogInException.cs" />
+    <Compile Include="Exception\ConnectionExceptions\MessagingExceptions\MessagingException.cs" />
+    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\NoPermissionException.cs" />
+    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\PersistenceException.cs" />
+    <Compile Include="Exception\ConnectionExceptions\RestExceptions\RestException.cs" />
+    <Compile Include="Exception\ConnectionExceptions\RestExceptions\ServerNotRuningException.cs" />
+    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\UserNotExistException.cs" />
+    <Compile Include="Exception\LogicExceptions\LogInExceptions\WrongPwException.cs" />
     <Compile Include="IDataReceiver.cs" />
     <Compile Include="IRestRequester.cs" />
     <Compile Include="Model\Action.cs" />
