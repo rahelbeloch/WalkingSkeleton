@@ -46,7 +46,6 @@ public class LogicImp implements Logic {
     @Override
     public void startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
         //TODO check user permission
-    	
         Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         StartTrigger start = new StartTrigger(workflow, pm, p);
         start.startWorkflow();

@@ -30,14 +30,4 @@ public interface ProcessManager extends Observer {
      * @param user who started interaction
      */
     void selectProcessor(Step step, Item item, User user);
-    
-    /**
-     * This method starts the messaging broker.
-     */
-    void startBroker();
-    
-    /**
-     * This method stops the messaging broker.
-     */
-    void stopBroker();
 }
