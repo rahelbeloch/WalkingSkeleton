@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunicationLib.Exception.LogicExceptions.LogInExceptions
+namespace CommunicationLib.Exception
+
 {
-    class WrongUsernameException
+    public class WrongUsernameException
     {
     }
 }

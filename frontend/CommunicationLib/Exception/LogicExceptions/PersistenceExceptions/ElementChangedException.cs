@@ -8,20 +8,20 @@ namespace CommunicationLib.Exception
 {
     class ElementChangedException : PersistenceException
     {
-         private int _number = 11260;
+        private int _number = 11240;
         public int number { get { return _number; } }
 
-        public UserNotExistException()
+        public ElementChangedException()
         {
 
         }
 
-        public UserNotExistException(string message)
+        public ElementChangedException(string message)
          : base(message)
         {
         }
 
-        public UserNotExistException(string message, System.Exception inner)
+        public ElementChangedException(string message, System.Exception inner)
             : base(message, inner)
         {
         }
