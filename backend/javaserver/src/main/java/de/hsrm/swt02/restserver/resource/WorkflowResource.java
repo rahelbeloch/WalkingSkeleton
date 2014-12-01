@@ -28,8 +28,8 @@ import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 @Path("resource")
 public class WorkflowResource {
 
-    public static final Logic logic = ConstructionFactory.getLogic();
-    public static final ServerPublisher publisher = ConstructionFactory.getPublisher();
+      public static final Logic logic = ConstructionFactory.getLogic();
+      public static final ServerPublisher publisher = ConstructionFactory.getPublisher();
     
 	/**
 	 * 
@@ -51,7 +51,7 @@ public class WorkflowResource {
 		try {
 			workflowAsString = mapper.writeValueAsString(workflow);
 		} catch (JsonProcessingException e) {
-			return Response.serverError().build();
+			return Response.serverError().entity("JACKSON Parsing Error").build();
 		}
 		return Response.ok(workflowAsString).build();
 	}
@@ -104,7 +104,7 @@ public class WorkflowResource {
 		try {
 			workflow = mapper.readValue(workflowAsString, Workflow.class);
 		} catch (IOException e) {
-			return Response.serverError().entity("Jackson parsing-error").build();
+		    return Response.serverError().entity("JACKSON Parsing Error").build();
 		}
 		logic.addWorkflow(workflow);
 		return Response.ok().build();
