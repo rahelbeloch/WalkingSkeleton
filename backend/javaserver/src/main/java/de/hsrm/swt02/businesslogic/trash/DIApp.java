@@ -83,7 +83,7 @@ public class DIApp {
             try {
                 input = inputSteam.readLine();
 
-                if (!(input == "")) {
+                if (!(input.equals(""))) {
                     work = true;
                 } else {
                     work = false;
