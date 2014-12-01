@@ -2,9 +2,9 @@ package de.hsrm.testswt02.logic_unittest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import de.hsrm.swt02.SingleModule;
 import de.hsrm.swt02.businesslogic.ProcessManager;
 import de.hsrm.swt02.businesslogic.processors.StartTrigger;
+import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
