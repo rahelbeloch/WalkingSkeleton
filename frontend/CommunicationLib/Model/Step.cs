@@ -15,6 +15,11 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
+        public string type { get { return this.GetType().Name; } set { } }
+
+        /// <summary>
+        /// Used for (de)serialization. Do not change the property name.
+        /// </summary>
         private int _id;
         public int id { get { return _id; } set { _id = value; } }
 
