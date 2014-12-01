@@ -128,7 +128,7 @@ public class ServerPublisherImp implements ServerPublisher {
     /**
      * Stops the messaging broker.
      * 
-     * @throws ServerPublisherBrokerException if broker sto does not work
+     * @throws ServerPublisherBrokerException if broker stop does not work
      */
     public void stopBroker() throws ServerPublisherBrokerException {
         if (broker == null) {
@@ -145,7 +145,7 @@ public class ServerPublisherImp implements ServerPublisher {
     }
 
     /**
-     * Check weather the message broker is running.
+     * Check whether the message broker is running.
      * 
      * @return true if the embedded message-broker is running
      */
