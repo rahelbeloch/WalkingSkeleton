@@ -1,4 +1,4 @@
-package de.hsrm.swt02.businesslogic;
+package de.hsrm.swt02;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 

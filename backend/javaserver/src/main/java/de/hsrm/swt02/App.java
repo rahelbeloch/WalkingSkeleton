@@ -3,8 +3,6 @@ package de.hsrm.swt02;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import de.hsrm.swt02.businesslogic.SingleModule;
-
 /**
  * Class for application start. Contains the main-method for the server
  * application. Uses dependency injection.

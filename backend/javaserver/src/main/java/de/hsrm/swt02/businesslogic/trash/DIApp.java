@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import de.hsrm.swt02.SingleModule;
 import de.hsrm.swt02.businesslogic.ProcessManager;
-import de.hsrm.swt02.businesslogic.SingleModule;
 import de.hsrm.swt02.businesslogic.processors.StartTrigger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
