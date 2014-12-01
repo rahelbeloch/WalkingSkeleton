@@ -14,8 +14,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.sun.net.httpserver.HttpServer;
 
-import de.hsrm.swt02.businesslogic.JerseyDIBinder;
-import de.hsrm.swt02.businesslogic.SingleModule;
+import de.hsrm.swt02.JerseyDIBinder;
+import de.hsrm.swt02.SingleModule;
 import de.hsrm.swt02.persistence.Persistence;
 
 /**

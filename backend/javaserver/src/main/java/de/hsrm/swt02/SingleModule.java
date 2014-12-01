@@ -1,7 +1,9 @@
-package de.hsrm.swt02.businesslogic;
+package de.hsrm.swt02;
 
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.PersistenceImp;
+import de.hsrm.swt02.businesslogic.ProcessManager;
+import de.hsrm.swt02.businesslogic.ProcessManagerImp;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherImp;
 
