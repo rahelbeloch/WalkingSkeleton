@@ -46,7 +46,7 @@ public class ServerPublisherImp implements ServerPublisher {
      */
     @Inject
     public ServerPublisherImp(UseLogger logger) {
-        //get the logger
+        // set the logger
         this.logger = logger;
         final Properties properties = new Properties();
         BufferedInputStream stream;
