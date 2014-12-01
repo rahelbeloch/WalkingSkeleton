@@ -22,7 +22,6 @@ import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 @Path("resource")
@@ -67,12 +66,7 @@ public class WorkflowResource {
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println("GETALL -> " + username);
 		List<Workflow> wflowList = null;
-        try {
-            wflowList = logic.getWorkflowsByUser(logic.getUser(username));
-        } catch (UserNotExistentException e1) {
-            // TODO use logger & return error code
-            e1.printStackTrace();
-        }
+        wflowList = logic.getWorkflowsByUser(username);
 		String wListString;
 		try {
 			wListString = mapper.writeValueAsString(wflowList);
