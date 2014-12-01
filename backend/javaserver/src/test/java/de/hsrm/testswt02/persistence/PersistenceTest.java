@@ -2,6 +2,12 @@ package de.hsrm.testswt02.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
+import org.junit.Test;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
@@ -9,17 +15,11 @@ import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-
-import org.junit.Test;
-
-import de.hsrm.swt02.persistence.ItemNotExistentException;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.UserAlreadyExistsException;
-import de.hsrm.swt02.persistence.UserNotExistentException;
-import de.hsrm.swt02.persistence.WorkflowNotExistentException;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 public class PersistenceTest {
 
