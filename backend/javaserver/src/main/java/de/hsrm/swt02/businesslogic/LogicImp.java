@@ -11,6 +11,7 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
@@ -43,8 +44,9 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException 
      */
     @Override
-    public void startWorkflow(int workflowID, User user) throws WorkflowNotExistentException {
+    public void startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
         //TODO check user permission
+    	
         Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         StartTrigger start = new StartTrigger(workflow, pm, p);
         start.startWorkflow();
@@ -90,10 +92,12 @@ public class LogicImp implements Logic {
      * @param item the Item, which edited
      * @param step the step, which execute
      * @param user, who execute the step in the Item
+     * @throws UserNotExistentException 
+     * @throws ItemNotExistentException 
      */
     @Override
-    public void stepOver(Item item, Step step, User user) {
-        pm.selectProcessor(step, item, user);
+    public void stepOver(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
+    	pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
     }
 
     /**
@@ -104,9 +108,9 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException 
      */
     @Override
-    public void addStep(int workflowID, Step step) throws WorkflowNotExistentException {
+    public void addStep(int workflowID, int stepId) throws WorkflowNotExistentException {
         Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
-        workflow.addStep(step);
+        workflow.addStep(p.loadStep(stepId));
         p.storeWorkflow(workflow);
     }
 
@@ -167,12 +171,12 @@ public class LogicImp implements Logic {
      * @return a LinkedList of workflows
      */
     @Override
-    public List<Workflow> getWorkflowsByUser(User user) {
+    public List<Workflow> getWorkflowsByUser(String username) {
         LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
 
-                if (step.getUsername().equals(user.getUsername())) {
+                if (step.getUsername().equals(username)) {
                     workflows.add((Workflow) wf);
                     break;
                 }
@@ -188,16 +192,16 @@ public class LogicImp implements Logic {
      * @return a LinkedList, with actual Items
      */
     @Override
-    public List<Item> getOpenItemsByUser(User user) {
+    public List<Item> getOpenItemsByUser(String username) {
 
-        LinkedList<Workflow> workflows = (LinkedList) getWorkflowsByUser(user);
+        LinkedList<Workflow> workflows = (LinkedList) getWorkflowsByUser(username);
         LinkedList<Item> items = new LinkedList<Item>();
 
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
 
                 if ((wf.getStepById(Integer.parseInt(item.getActStep().getKey()))
-                        .getUsername()).equals(user.getUsername())) {
+                        .getUsername()).equals(username)) {
                     items.add(item);
                     break;
                 }
@@ -214,13 +218,13 @@ public class LogicImp implements Logic {
      * @return
      */
     @Override
-    public List<Workflow> getStartableWorkflows(User user) {
+    public List<Workflow> getStartableWorkflows(String username) {
 
         LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
-        LinkedList<Workflow> workflows = (LinkedList) getWorkflowsByUser(user);
+        LinkedList<Workflow> workflows = (LinkedList) getWorkflowsByUser(username);
 
         for (Workflow wf : workflows) {
-            if (wf.getStepByPos(0).getUsername() == user.getUsername()) {
+            if (wf.getStepByPos(0).getUsername() == username) {
                 startableWorkflows.add(wf);
             }
         }
