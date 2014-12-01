@@ -67,10 +67,4 @@ public class RestServer {
 	public String getBaseURI() {
 		return baseURI;
 	}
-	
-	public static void main(String [] args) {
-		RestServer server = new RestServer();
-		server.startHTTPServer();
-	}
-
 }
