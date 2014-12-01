@@ -10,7 +10,8 @@ namespace CommunicationLib.Model
 
     public class Constants
     {
-        public static String serverUrl = "http://172.26.38.101:8080";
+        public static String serverUrl = "http://localhost:8080";
+        public static String MODEL_NAMESPACE = "CommunicationLib.Model";
     }
 
     public class ErrorMessageMapper
@@ -28,7 +29,7 @@ namespace CommunicationLib.Model
             {11100, typeof(LogInException)},
 
             {11110, typeof(WrongPwException)},
-            {11120, typeof(WrongUsernameException)},
+            //{11120, typeof(WrongUsernameException)},
 
             //Error code for persistence errors
             {11200, typeof(PersistenceException)},
@@ -47,9 +48,9 @@ namespace CommunicationLib.Model
             {12100,typeof(MessagingException)},
             
             //Error codes for rest errors
-            {12200,typeof(RestException)},
+            {12200,typeof(RestException)}
 
-            {12210,typeof(ServerNotRunningException)}
+            //{12210,typeof(ServerNotRunningException)}
             
         };
     }
