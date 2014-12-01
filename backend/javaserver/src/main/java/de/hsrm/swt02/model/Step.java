@@ -3,9 +3,22 @@ package de.hsrm.swt02.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 /**
  * This class represents a Step.
  */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type")
+@JsonSubTypes({
+    @Type(value = StartStep.class, name = "StartStep"),
+    @Type(value = Action.class, name = "Action"),
+    @Type(value = FinalStep.class, name = "FinalStep")
+})
 public class Step {
     // Used for (de)serialization. Do not change.
     protected int id;
@@ -20,9 +33,8 @@ public class Step {
      * Constructor for Step
      */
     public Step() {
-
     }
-
+    
     /**
      * Id getter
      * @return id
