@@ -37,7 +37,7 @@ public class WorkflowCommandResource {
             logic.startWorkflow(workflowid, logic.getUser(username));
         } catch (WorkflowNotExistentException e) {
             // TODO use logger & return error code
-            e.printStackTrace();
+            Response.status(4001).build();
         } catch (UserNotExistentException e) {
             // TODO use logger & return error code
             e.printStackTrace();
