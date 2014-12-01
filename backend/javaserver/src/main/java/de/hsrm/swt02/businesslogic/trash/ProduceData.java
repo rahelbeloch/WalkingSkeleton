@@ -1,4 +1,4 @@
-package de.hsrm.swt02.moduledi;
+package de.hsrm.swt02.businesslogic.trash;
 
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;

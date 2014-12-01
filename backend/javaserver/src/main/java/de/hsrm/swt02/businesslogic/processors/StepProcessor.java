@@ -1,4 +1,4 @@
-package de.hsrm.swt02.processors;
+package de.hsrm.swt02.businesslogic.processors;
 
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;

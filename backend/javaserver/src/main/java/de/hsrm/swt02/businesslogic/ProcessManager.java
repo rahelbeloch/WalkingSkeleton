@@ -1,4 +1,4 @@
-package de.hsrm.swt02.manager;
+package de.hsrm.swt02.businesslogic;
 
 import java.util.Observer;
 
