@@ -6,10 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * This class represents a RootElement List for Rest
+ */
 public class RootElementList implements List<RootElement> {
-
+	
     private List<RootElement> myList;
 
+    /**
+     * Constructor for RootElementList
+     */
     public RootElementList() {
         myList = new LinkedList<RootElement>();
     }

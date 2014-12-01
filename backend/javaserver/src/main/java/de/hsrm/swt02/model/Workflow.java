@@ -3,6 +3,10 @@ package de.hsrm.swt02.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents a Workflow. A Workflow is a manifestation of a RootElement
+ *
+ */
 public class Workflow extends RootElement {
     // Used for (de)serialization. Do not change.
     private List<Step> steps;
@@ -10,12 +14,19 @@ public class Workflow extends RootElement {
     // Used for (de)serialization. Do not change.
     private List<Item> items;
 
+    /**
+     * Constructor for Workflow without parameters
+     */
     public Workflow() {
         super();
         steps = new ArrayList<Step>();
         items = new ArrayList<Item>();
     }
 
+    /**
+     * Constructor for Workflow with parameters
+     * @param id
+     */
     public Workflow(int id) {
         super();
         this.id = id;
@@ -23,10 +34,18 @@ public class Workflow extends RootElement {
         items = new ArrayList<Item>();
     }
 
+    /**
+     * Steps getter. There is no setter because steps is an ArrayList.
+     * @return steps
+     */
     public List<Step> getSteps() {
         return this.steps;
     }
 
+    /**
+     * Items getter. There is no setter because items is an ArrayList.
+     * @return items
+     */
     public List<Item> getItems() {
         return this.items;
     }
