@@ -3,6 +3,8 @@ package de.hsrm.swt02.businesslogic;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import de.hsrm.swt02.businesslogic.processors.StartTrigger;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
@@ -12,10 +14,6 @@ import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.UserNotExistentException;
 import de.hsrm.swt02.persistence.WorkflowNotExistentException;
-
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 
 public class LogicImp implements Logic {
 
@@ -149,7 +147,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public void deleteUser(String username) throws UserNotExistentException {
-        // System.out.println("Do you really really really want to delete a user?");
+        // System.out.println("Do you really want to delete a user?");
         p.deleteUser(username);
     }
 
