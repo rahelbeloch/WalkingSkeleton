@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Model
 {
+    /// <summary>
+    /// This class represents a MetaEntry for the MetaEntryList of an Item
+    /// </summary>
     public class MetaEntry
     {
         /// <summary>

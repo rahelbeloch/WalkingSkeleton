@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Model
 {
+    /// <summary>
+    /// This class represents an item. An Item is a manifestation of a RootElement
+    /// </summary>
     public class Item : RootElement
     {
         /// <summary>
@@ -26,6 +29,9 @@ namespace CommunicationLib.Model
         private bool _finished;
         public bool finished { get { return _finished; } set { _finished = value; } }
 
+        /// <summary>
+        /// Constructor for Item
+        /// </summary>
         public Item()
             : base()
         {
