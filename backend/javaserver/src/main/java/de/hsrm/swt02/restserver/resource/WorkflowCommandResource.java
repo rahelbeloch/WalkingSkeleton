@@ -10,6 +10,8 @@ import javax.ws.rs.core.Response;
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 @Path("command/workflow")
 public class WorkflowCommandResource {
@@ -31,7 +33,15 @@ public class WorkflowCommandResource {
     public Response startWorkflow(@PathParam("workflowid") int workflowid,
             @PathParam("username") String username) {
         System.out.println("START -> " + workflowid + " " + username);
-        logic.startWorkflow(workflowid, logic.getUser(username));
+        try {
+            logic.startWorkflow(workflowid, logic.getUser(username));
+        } catch (WorkflowNotExistentException e) {
+            // TODO use logger & return error code
+            e.printStackTrace();
+        } catch (UserNotExistentException e) {
+            // TODO use logger & return error code
+            e.printStackTrace();
+        }
         return Response.ok().build();
     }
 
