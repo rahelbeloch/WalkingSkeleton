@@ -9,11 +9,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * This class represents a Step.
+ * 
+ * The JsonTypeInfo and JsonSubTypes annotations assure that 
+ * the (de)serialization process of derived types works correctly.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "type")
+    property = "$type")
 @JsonSubTypes({
     @Type(value = StartStep.class, name = "StartStep"),
     @Type(value = Action.class, name = "Action"),
