@@ -97,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CommunicationLib.config" />
-    <None Include="config.ini" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
