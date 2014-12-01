@@ -26,13 +26,6 @@ import de.hsrm.swt02.persistence.UserNotExistentException;
 @Path("resource")
 public class UserResource {
 
-    private Persistence p;
-
-    @Inject
-    public UserResource(Persistence p) {
-        this.p = p;
-    }
-
     /**
      * 
      * @param username

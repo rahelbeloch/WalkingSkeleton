@@ -10,13 +10,7 @@ import java.util.Properties;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.sun.net.httpserver.HttpServer;
-
-import de.hsrm.swt02.JerseyDIBinder;
-import de.hsrm.swt02.SingleModule;
-import de.hsrm.swt02.persistence.Persistence;
 
 /**
  * REST-Server
@@ -57,7 +51,6 @@ public class RestServer {
     public void startHTTPServer() {
         ResourceConfig rc = new ResourceConfig();
         rc.packages("de.hsrm.swt02.restserver.resource");
-        rc.register(new JerseyDIBinder());
         server = JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
     }
 	
@@ -76,8 +69,6 @@ public class RestServer {
 	}
 	
 	public static void main(String [] args) {
-	    Injector inj = Guice.createInjector(new SingleModule());
-	    Persistence p = inj.getInstance(Persistence.class);
 		RestServer server = new RestServer();
 		server.startHTTPServer();
 	}
