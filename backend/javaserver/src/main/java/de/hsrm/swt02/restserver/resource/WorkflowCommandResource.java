@@ -10,16 +10,21 @@ import javax.ws.rs.core.Response;
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
+import de.hsrm.swt02.restserver.LogicResponse;
+import de.hsrm.swt02.restserver.Message;
 
 @Path("command/workflow")
 public class WorkflowCommandResource {
 
     public static final Logic logic = ConstructionFactory.getLogic();
-    public static final ServerPublisher publisher = ConstructionFactory.getPublisher();
-    
+    public static final ServerPublisher publisher = ConstructionFactory
+            .getPublisher();
+    LogicResponse logicResponse;
+
     /**
      * 
      * 
@@ -33,10 +38,16 @@ public class WorkflowCommandResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response startWorkflow(@PathParam("workflowid") int workflowid,
             @PathParam("username") String username) {
+        
         System.out.println("START -> " + workflowid + " " + username);
         try {
             logic.startWorkflow(workflowid, username);
-        } catch (WorkflowNotExistentException e) {
+            //!! Must be yet tested!!
+            logicResponse = logic.getLogicResponse();
+            for(Message m : logicResponse.getMessages()){
+                publisher.publish(m.getValue(), m.getTopic());
+            }
+        } catch (WorkflowNotExistentException | ServerPublisherBrokerException e) {
             // TODO use logger & return error code
             Response.status(4001).build();
         }
@@ -58,14 +69,22 @@ public class WorkflowCommandResource {
             @PathParam("username") String username) {
         System.out.println("FORWARD -> " + itemid);
         try {
-			logic.stepOver(itemid, stepid, username);
-		} catch (ItemNotExistentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UserNotExistentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            logic.stepOver(itemid, stepid, username);
+            //!! Must be yet tested!!
+            logicResponse = logic.getLogicResponse();
+            for(Message m : logicResponse.getMessages()){
+                publisher.publish(m.getValue(), m.getTopic());
+            }
+        } catch (ItemNotExistentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (UserNotExistentException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ServerPublisherBrokerException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return Response.ok().build();
     }
 

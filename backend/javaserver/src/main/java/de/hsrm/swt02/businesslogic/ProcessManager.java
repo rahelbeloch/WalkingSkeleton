@@ -5,6 +5,7 @@ import java.util.Observer;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
+import de.hsrm.swt02.restserver.LogicResponse;
 
 /**
  * Interface for ProcessManager. (Due to Dependency Injection)
@@ -30,4 +31,10 @@ public interface ProcessManager extends Observer {
      * @param user who started interaction
      */
     void selectProcessor(Step step, Item item, User user);
+    
+    /**
+     * This method gets a LogicResponse object.
+     * @return LogicResponse object
+     */
+    LogicResponse getLogicResponse();
 }
