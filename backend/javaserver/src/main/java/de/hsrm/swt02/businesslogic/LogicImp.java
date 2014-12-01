@@ -108,9 +108,9 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException 
      */
     @Override
-    public void addStep(int workflowID, int stepId) throws WorkflowNotExistentException {
+    public void addStep(int workflowID, Step step) throws WorkflowNotExistentException {
         Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
-        workflow.addStep(p.loadStep(stepId));
+        workflow.addStep(step);
         p.storeWorkflow(workflow);
     }
 

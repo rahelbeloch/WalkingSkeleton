@@ -78,7 +78,7 @@ public interface Logic {
      * @param step the step, which shall added
      * @throws WorkflowNotExistentException 
      */
-    void addStep(int workflowID, int stepId)
+    void addStep(int workflowID, Step stepId)
             throws WorkflowNotExistentException;
 
     /**
