@@ -18,15 +18,16 @@ import javax.ws.rs.core.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import de.hsrm.swt02.businesslogic.LogicImp;
-import de.hsrm.swt02.model.RootElementList;
+import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
+import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Workflow;
 
 @Path("resource")
 public class WorkflowResource {
 
-    public static final LogicImp logic = LFFactory.getLogic();
-    public static final ServerPublisherImp publisher = LFFactory.getPublisher();
+    public static final Logic logic = ConstructionFactory.getLogic();
+    public static final ServerPublisher publisher = ConstructionFactory.getPublisher();
     
 	/**
 	 * 

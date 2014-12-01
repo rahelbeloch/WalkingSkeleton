@@ -7,13 +7,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import de.hsrm.swt02.businesslogic.LogicImp;
+import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
+import de.hsrm.swt02.messaging.ServerPublisher;
 
 @Path("command/workflow")
 public class WorkflowCommandResource {
 
-    public static final LogicImp logic = LFFactory.getLogic();
-    public static final ServerPublisherImp publisher = LFFactory.getPublisher();
+    public static final Logic logic = ConstructionFactory.getLogic();
+    public static final ServerPublisher publisher = ConstructionFactory.getPublisher();
     
     /**
      * 

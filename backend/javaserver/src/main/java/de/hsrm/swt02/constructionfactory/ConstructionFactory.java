@@ -14,14 +14,14 @@ public class ConstructionFactory {
 	
 	private static final Injector INJECTOR = Guice.createInjector(new SingleModule());
 	
-	private Logic logic = INJECTOR.getInstance(Logic.class);
-	private ServerPublisher serverPublisher = INJECTOR.getInstance(ServerPublisher.class);
+	private static Logic logic = INJECTOR.getInstance(Logic.class);
+	private static ServerPublisher serverPublisher = INJECTOR.getInstance(ServerPublisher.class);
 	
 	/**
 	 * This method returns the Logic instance.
 	 * @return logic 
 	 */
-	public Logic getLogic() {
+	public static Logic getLogic() {
 		return logic;
 	}
 	
@@ -29,7 +29,7 @@ public class ConstructionFactory {
 	 * This method returns the instance of ServerPublisher.
 	 * @return serverpublisher
 	 */
-	public ServerPublisher getPublisher() {
+	public static ServerPublisher getPublisher() {
 		return serverPublisher;
 	}
 
