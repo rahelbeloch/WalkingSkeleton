@@ -14,10 +14,10 @@ import de.hsrm.swt02.model.MetaEntry;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.persistence.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.UserNotExistentException;
-import de.hsrm.swt02.persistence.WorkflowNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

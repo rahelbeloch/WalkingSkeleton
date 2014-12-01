@@ -12,9 +12,9 @@ import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.persistence.UserAlreadyExistsException;
-import de.hsrm.swt02.persistence.UserNotExistentException;
-import de.hsrm.swt02.persistence.WorkflowNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 public class LogicTest {
 

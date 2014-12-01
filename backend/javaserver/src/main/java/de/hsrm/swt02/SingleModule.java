@@ -9,8 +9,15 @@ import de.hsrm.swt02.messaging.ServerPublisherImp;
 
 import com.google.inject.AbstractModule;
 
+/**
+ * This class binds interfaces to default implementations. 
+ *
+ */
 public class SingleModule extends AbstractModule {
 
+    /**
+     * This methods binds interfaces to default implementations.
+     */
     protected void configure() {
         bind(ServerPublisher.class).to(ServerPublisherImp.class);
         bind(ProcessManager.class).to(ProcessManagerImp.class);

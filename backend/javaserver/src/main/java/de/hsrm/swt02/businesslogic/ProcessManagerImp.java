@@ -28,7 +28,9 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     private Persistence p;
 
     /**
-     * Constructor of ProcessManager
+     * Constructor of ProcessManager.
+     * @param sp provides communication to a broker
+     * @param p is a singleton for the persistence 
      */
     @Inject
     public ProcessManagerImp(ServerPublisher sp, Persistence p) {
@@ -98,6 +100,8 @@ public class ProcessManagerImp implements Observer, ProcessManager {
 
     /**
      * This method is executed if its observables notifies changes.
+     * @param o is the observed object
+     * @param arg is an object which is received when notified
      */
     public void update(Observable o, Object arg) {
 
@@ -106,7 +110,7 @@ public class ProcessManagerImp implements Observer, ProcessManager {
                     "item=" + ((Item) arg).getState() + "="
                             + ((Item) arg).getId(), "ITEMS_FROM_"
                             + ((Item) arg).getWorkflowId());
-        } catch (Exception e) {
+        } catch (ServerPublisherBrokerException e) {
             // TODO Logging
         }
     }
