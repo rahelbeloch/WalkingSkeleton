@@ -13,11 +13,10 @@ namespace CommunicationLib
     /// </summary>
     class CustomSerializationBinder : SerializationBinder
     {
-        public string TypeFormat { get; private set; }
+        // public string TypeFormat { get; private set; }
 
-        public CustomSerializationBinder(string typeFormat)
+        public CustomSerializationBinder()
         {
-            TypeFormat = typeFormat;
         }
 
         /// <summary>
