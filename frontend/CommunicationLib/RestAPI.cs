@@ -18,7 +18,7 @@ namespace RestAPI
     /// <summary>
     ///     Static class, that realizes the Connection to the server.
     /// </summary>
-    public class RestRequester : CommunicationLib.IRestRequester
+    public class RestRequester
     {
         public static String restserverurl;
         public static RestClient client;
