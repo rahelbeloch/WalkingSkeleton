@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Model
 {
+    /// <summary>
+    /// This class represents a Workflow and is a manifestation of a RootElement
+    /// </summary>
     public class Workflow : RootElement
     {
         /// <summary>
@@ -20,6 +23,9 @@ namespace CommunicationLib.Model
         private List<Item> _items;
         public List<Item> items { get { return _items; } set { _items = value; } }
 
+        /// <summary>
+        /// Constructor for Workflow
+        /// </summary>
         public Workflow()
             : base()
         {

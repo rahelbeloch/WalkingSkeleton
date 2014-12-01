@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Model
 {
+    /// <summary>
+    /// This class represents an User. An User is a manifestation of a RootElement.
+    /// </summary>
     public class User : RootElement
     {
         /// <summary>

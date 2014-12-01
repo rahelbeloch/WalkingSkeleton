@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Model
 {
+    /// <summary>
+    /// This class represents a Step
+    /// </summary>
     public class Step
     {
         /// <summary>
@@ -29,10 +32,14 @@ namespace CommunicationLib.Model
 
         /// <summary>
         /// The label represents the type of a Step as a string (e.g. "Startzustand", "Aktion", ...).
+        /// When (de)serializated, the label will be ignored (because in the Server Step model, there is no label)
         /// </summary>
         [JsonIgnore]
         public string label { get; set; }
 
+        /// <summary>
+        /// Constructor for Step
+        /// </summary>
         public Step()
             : base()
         {

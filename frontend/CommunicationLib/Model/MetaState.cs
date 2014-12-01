@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Model
 {
+    /// <summary>
+    /// This Enum represents the state of a Step in the MetaEntryList
+    /// </summary>
     public enum MetaState
     {
         INACTIVE,
