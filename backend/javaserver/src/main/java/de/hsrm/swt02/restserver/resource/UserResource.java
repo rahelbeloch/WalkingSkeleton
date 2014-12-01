@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.hsrm.swt02.businesslogic.LogicImp;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.UserAlreadyExistsException;
@@ -26,6 +27,9 @@ import de.hsrm.swt02.persistence.UserNotExistentException;
 @Path("resource")
 public class UserResource {
 
+    public static final LogicImp logic = LFFactory.getLogic();
+    public static final ServerPublisherImp publisher = LFFactory.getPublisher();
+    
     /**
      * 
      * @param username
@@ -38,7 +42,7 @@ public class UserResource {
     public Response getUser(@PathParam("username") String username) throws UserNotExistentException {
         System.out.println("GET -> " + username);
         ObjectMapper mapper = new ObjectMapper();
-        User user = p.loadUser(username);
+        User user = logic.getUser(username);
         String userAsString;
         try {
             userAsString = mapper.writeValueAsString(user);
@@ -73,7 +77,7 @@ public class UserResource {
         }
         System.out.println("SEND -> " + user.getUsername());
         try {
-            p.addUser(user);
+            logic.addUser(user);
         } catch (UserAlreadyExistsException e) {
             return Response.serverError().entity("User already exists").build();
         }
@@ -101,7 +105,7 @@ public class UserResource {
             return Response.serverError().entity("Jackson parsing-error")
                     .build();
         }
-        // TODO: update User "user" in persistence
+        logic.addUser(user);
         return Response.ok().build();
     }
 
@@ -116,10 +120,8 @@ public class UserResource {
     public Response deleteUser(@PathParam("username") String username) {
         System.out.println("DELETE -> " + username);
         ObjectMapper mapper = new ObjectMapper();
-        // TODO: get user with name "username" from persistence, then delete it
-        User user = new User();
-        user.setUsername(username);
-        String userAsString;
+        User user = logic.getUser(username);
+        logic.deleteUser(username);
         try {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {

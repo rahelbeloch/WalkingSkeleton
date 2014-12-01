@@ -8,9 +8,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import de.hsrm.swt02.businesslogic.LogicImp;
+
 
 @Path("command/user")
 public class UserCommandResource {
+    
+    public static final LogicImp logic = LFFactory.getLogic();
+    public static final ServerPublisherImp publisher = LFFactory.getPublisher();
 
     @POST @Path("login")
     @Produces(MediaType.TEXT_PLAIN)
@@ -20,7 +25,7 @@ public class UserCommandResource {
         String username = formParams.get("username").get(0);
         String password = formParams.get("password").get(0);
         System.out.println("LOGIN -> " + username + " : " + password);
-        //TODO: check Login in logic
+        // TODO check login in Logic
         return Response.ok().build();
     }
     
