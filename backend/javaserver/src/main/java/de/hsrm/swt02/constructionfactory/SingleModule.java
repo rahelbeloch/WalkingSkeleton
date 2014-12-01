@@ -1,4 +1,4 @@
-package de.hsrm.swt02;
+package de.hsrm.swt02.constructionfactory;
 
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.PersistenceImp;
