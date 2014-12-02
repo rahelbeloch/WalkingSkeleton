@@ -2,7 +2,10 @@ package de.hsrm.swt02.persistence.exceptions;
 
 public class UserAlreadyExistsException extends AlreadyExistsException {
 
-    private static final long serialVersionUID = 4328135084952400723L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3331198130589019219L;
     private int errorcode = 11221;
     
     public UserAlreadyExistsException() {

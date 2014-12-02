@@ -17,37 +17,37 @@ public interface Persistence {
     /*
      * store functions to store workflows, items, and users into persistence
      */
-    public void storeWorkflow(Workflow workflow);
+    void storeWorkflow(Workflow workflow);
 
-    public void storeItem(Item item);
+    void storeItem(Item item);
 
-    public void addUser(User user) throws UserAlreadyExistsException;
+    void addUser(User user) throws UserAlreadyExistsException;
 
-    public void updateUser(User user) throws UserNotExistentException;
+    void updateUser(User user) throws UserNotExistentException;
 
     /*
      * load functions to get workflows, items, and users from persistence
      */
-    public List<Workflow> loadAllWorkflows();
+    List<Workflow> loadAllWorkflows();
     
-    public Workflow loadWorkflow(int id) throws WorkflowNotExistentException;
+    Workflow loadWorkflow(int id) throws WorkflowNotExistentException;
 
-    public Item loadItem(int id) throws ItemNotExistentException;
+    Item loadItem(int id) throws ItemNotExistentException;
 
-    public User loadUser(String username) throws UserNotExistentException;
+    User loadUser(String username) throws UserNotExistentException;
 
     // will be deleted later on (only for walking sceleton)
-    public Step loadStep(int id);
+    Step loadStep(int id);
 
-    public MetaEntry loadMetaEntry(String key);
+    MetaEntry loadMetaEntry(String key);
 
     /*
      * delete functions to remove workflows, items, and users from persistence
      */
-    public void deleteWorkflow(int id) throws WorkflowNotExistentException;
+    void deleteWorkflow(int id) throws WorkflowNotExistentException;
 
-    public void deleteItem(int id) throws ItemNotExistentException;
+    void deleteItem(int id) throws ItemNotExistentException;
 
-    public void deleteUser(String name) throws UserNotExistentException;
+    void deleteUser(String name) throws UserNotExistentException;
 
 }

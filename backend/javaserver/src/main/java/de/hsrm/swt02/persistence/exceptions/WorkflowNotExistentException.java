@@ -2,7 +2,10 @@ package de.hsrm.swt02.persistence.exceptions;
 
 public class WorkflowNotExistentException extends NotExistentException {
 
-    private static final long serialVersionUID = 3157473446452493460L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6105983074536990369L;
     private int errorcode = 11252;
 
     public WorkflowNotExistentException() {

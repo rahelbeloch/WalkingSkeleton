@@ -2,7 +2,10 @@ package de.hsrm.swt02.persistence.exceptions;
 
 public class AlreadyExistsException extends PersistenceException {
     
-    private static final long serialVersionUID =9128135084952400723L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -130962526189571793L;
     private int errorcode = 11220;
     
     public AlreadyExistsException() {

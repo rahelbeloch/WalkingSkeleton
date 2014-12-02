@@ -2,7 +2,10 @@ package de.hsrm.swt02.persistence.exceptions;
 
 public class UserNotExistentException extends NotExistentException {
 
-    private static final long serialVersionUID = 4657473446452493460L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7867137682701372781L;
     private int errorcode = 11251;
     
     public UserNotExistentException() {
