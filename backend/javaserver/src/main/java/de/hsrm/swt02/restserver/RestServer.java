@@ -6,17 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import com.sun.net.httpserver.HttpServer;
 
+import de.hsrm.swt02.logging.UseLogger;
 
 /**
- * REST-Server
+ * This class defines the REST-Server.
  * 
- * @author akoen001
  */
 public class RestServer {
 
@@ -25,10 +26,11 @@ public class RestServer {
     private String baseURI;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public RestServer() {
-        Properties properties = new Properties();
+        final UseLogger logger = new UseLogger();
+        final Properties properties = new Properties();
         BufferedInputStream stream;
         // read configuration file for rest properties
         try {
@@ -37,35 +39,37 @@ public class RestServer {
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
-            // TODO LOGGING
+            logger.log(Level.SEVERE, "Configuration file not found!");
         } catch (IOException e) {
-            // TODO LOGGING
+            logger.log(Level.SEVERE, "Can't read file!");
         } catch (SecurityException e) {
-            // TODO LOGGING
+            logger.log(Level.SEVERE, "Read Access not granted!");
         }
         baseURI = properties.getProperty("RestServerURI");
     }
 
     /**
-     * Starts http server to run REST on
+     * Starts http server to run REST on.
      */
     public void startHTTPServer() {
-        ResourceConfig rc = new ResourceConfig();
+        final ResourceConfig rc = new ResourceConfig();
         rc.packages("de.hsrm.swt02.restserver.resource");
         server = JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
     }
-	
-	/**Stops http server
-	 * The server waits a few seconds before it stops.
-	 * Giving all open requests enough time to run through.
-	 */
-	public void stopHTTPServer(){
-		server.stop(WAITING_TIME);
-	}
-	
-	/** @returns the URI for the http server 
-	 */
-	public String getBaseURI() {
-		return baseURI;
-	}
+
+    /**
+     * Stops http server. The server waits a few seconds before it stops. Giving
+     * all open requests enough time to run through.
+     */
+    public void stopHTTPServer() {
+        server.stop(WAITING_TIME);
+    }
+
+    /**
+     * This method returns the URI for the http server.
+     * @return the URI for the http server
+     */
+    public String getBaseURI() {
+        return baseURI;
+    }
 }

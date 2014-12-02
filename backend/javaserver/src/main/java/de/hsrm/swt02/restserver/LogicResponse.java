@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * This class is used for communication between REST-Server and Businesslogic.
+ * This class is used for communication. LogicResponses are used for publishing messages to the message broker.
  *
  */
 public class LogicResponse {

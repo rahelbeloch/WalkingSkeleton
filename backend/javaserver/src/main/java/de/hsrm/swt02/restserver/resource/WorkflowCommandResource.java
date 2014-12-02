@@ -35,7 +35,7 @@ public class WorkflowCommandResource {
 
     /**
      * This method executes the request to start an existing workflow.
-     * 
+     * This operation will be published on the message broker.
      * @param workflowid states which workflow should be started
      * @param username is for checking if user is authorized to execute this request
      * @return true or false as String
@@ -46,7 +46,6 @@ public class WorkflowCommandResource {
     public Response startWorkflow(@PathParam("workflowid") int workflowid,
             @PathParam("username") String username) 
     {
-
         final String loggingBody = "START -> " + workflowid + " " + username;
 
         try {
@@ -55,7 +54,6 @@ public class WorkflowCommandResource {
             LOGGER.log(Level.INFO, loggingBody + " Workflow does not exist.");
             Response.serverError().entity("11250").build();
         }
-     // !! Must be yet tested!!
         logicResponse = LOGIC.getProcessLogicResponse();
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -71,7 +69,7 @@ public class WorkflowCommandResource {
 
     /**
      * This method sets steps in progress. 
-     * 
+     * This operation will be published on the message broker.
      * @param stepid indicates which step is currently worked on
      * @param itemid indicates which item is currently worked on
      * @param username is for checking if user is authorized to execute this request
@@ -85,6 +83,7 @@ public class WorkflowCommandResource {
             @PathParam("username") String username) 
     {
         final String loggingBody = "FORWARD -> " + itemid;
+        
         try {
             LOGIC.stepForward(itemid, stepid, username);
         } catch (ItemNotExistentException e) {
@@ -94,7 +93,6 @@ public class WorkflowCommandResource {
             LOGGER.log(Level.INFO, loggingBody + " User does not exist.");
             return Response.serverError().entity("11260").build();
         }
-     // !! Must be yet tested!!
         logicResponse = LOGIC.getProcessLogicResponse();
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -107,43 +105,4 @@ public class WorkflowCommandResource {
         LOGGER.log(Level.INFO, loggingBody + " Worfklow forwarded.");
         return Response.ok().build();
     }
-
-//    /**
-//     * This method executes the request of closing a step within an item.
-//     * 
-//     * @param stepId indicates which step is currently worked on
-//     * @param itemId indicates which item is currently worked on
-//     * @param username is for checking if user is even authorized to execute this request
-//     * @return Response if it worked or not
-//     */
-//    @POST
-//    @Path("finish/{stepid}/{itemid}/{username}")
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public Response finish(@PathParam("stepid") int stepId,
-//            @PathParam("itemid") int itemId,
-//            @PathParam("username") String username) 
-//    {
-//        final String loggingBody = "FINISH -> " + itemId;
-//        try {
-//            LOGIC.stepFinished(itemId, stepId, username);
-//        } catch (ItemNotExistentException e) {
-//            LOGGER.log(Level.INFO, loggingBody + " Item does not exist.");
-//            return Response.serverError().entity("11250").build();
-//        } catch (UserNotExistentException e) {
-//            LOGGER.log(Level.INFO, loggingBody + " User does not exist.");
-//            return Response.serverError().entity("11260").build();
-//        }
-//     // !! Must be yet tested!!
-//        logicResponse = LOGIC.getProcessLogicResponse();
-//        for (Message m : logicResponse.getMessages()) {
-//            try {
-//                PUBLISHER.publish(m.getValue(), m.getTopic());
-//            } catch (ServerPublisherBrokerException e) {
-//                LOGGER.log(Level.WARNING, "Publisher not responding!");
-//            }
-//        }
-//        LOGIC.setProcessLogicResponse(new LogicResponse());
-//        return Response.ok().build();
-//    }
-
 }

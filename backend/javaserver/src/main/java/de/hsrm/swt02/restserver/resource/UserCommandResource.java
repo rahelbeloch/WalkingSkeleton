@@ -27,9 +27,9 @@ public class UserCommandResource {
     public static final UseLogger LOGGER = new UseLogger();
 
     /**
-     * This method is called if client wants to login.
+     * This method is called if some client wants to login.
      * @param formParams is a wrapper for login data
-     * @return returns if it was succesful
+     * @return returns ok if it was succesful
      */
     @POST @Path("login")
     @Produces(MediaType.TEXT_PLAIN)
