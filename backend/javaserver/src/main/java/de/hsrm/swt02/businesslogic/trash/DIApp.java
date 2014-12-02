@@ -31,18 +31,18 @@ public class DIApp {
         Persistence p = i.getInstance(Persistence.class);
         ProcessManager pm = i.getInstance(ProcessManager.class);
 
-        ProduceData pd = new ProduceData(p);
-        System.out.println("User: " + p.loadUser("0"));
-        System.out.println("User: " + p.loadUser("1"));
-        System.out.println("User: " + p.loadUser("2"));
-        System.out.println("User: " + p.loadUser("3"));
-        System.out.println("User: " + p.loadUser("4"));
-
-        System.out.println("Workflow: " + p.loadWorkflow(0).getSteps());
-        System.out.println("Workflow: " + p.loadWorkflow(1).getSteps());
-        System.out.println("Workflow: " + p.loadWorkflow(2).getSteps());
-        System.out.println("Workflow: " + p.loadWorkflow(3).getSteps());
-        System.out.println("Workflow: " + p.loadWorkflow(4).getSteps());
+//        ProduceData pd = new ProduceData(p);
+//        System.out.println("User: " + p.loadUser("0"));
+//        System.out.println("User: " + p.loadUser("1"));
+//        System.out.println("User: " + p.loadUser("2"));
+//        System.out.println("User: " + p.loadUser("3"));
+//        System.out.println("User: " + p.loadUser("4"));
+//
+//        System.out.println("Workflow: " + p.loadWorkflow(0).getSteps());
+//        System.out.println("Workflow: " + p.loadWorkflow(1).getSteps());
+//        System.out.println("Workflow: " + p.loadWorkflow(2).getSteps());
+//        System.out.println("Workflow: " + p.loadWorkflow(3).getSteps());
+//        System.out.println("Workflow: " + p.loadWorkflow(4).getSteps());
 
 
         Workflow myWorkflow = createWorkflow();
@@ -91,19 +91,19 @@ public class DIApp {
                 // Loggin
             }
 
-            pm.selectProcessor(step, (Item) item, benni);
-
+            pm.selectProcessor(step, (Item) item, benni, "busy");
             for (MetaEntry ame : pi.getMetadata()) {
-                System.out.print("1: " + ame.getGroup() + " " + ame.getKey()
+                System.out.print("2: " + ame.getGroup() + " " + ame.getKey()
                         + " " + ame.getValue() + "\n");
                 System.out.println();
             }
 
             System.out.println("nach dem ersten Schritt " + myWorkflow.getId());
             System.out.println("Das Item heißt: " + item.getId());
-            // System.out.println(item.getMetadata());
+            
+            pm.selectProcessor(step, (Item) item, benni, "finish");
             for (MetaEntry ame : item.getMetadata()) {
-                System.out.print("1: " + ame.getGroup() + " " + ame.getKey()
+                System.out.print("3: " + ame.getGroup() + " " + ame.getKey()
                         + " " + ame.getValue() + "\n");
                 System.out.println();
             }
