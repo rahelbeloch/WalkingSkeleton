@@ -148,7 +148,7 @@ public class PersistenceImp implements Persistence {
 
     public void storeStep(Step step) {
         if (step.getId() <= 0) {
-            step.setId(steps.size()+1);
+            step.setId(steps.size() + 1);
         }
         Step stepToRemove = null;
         for (Step s : steps) {
@@ -165,7 +165,7 @@ public class PersistenceImp implements Persistence {
     }
 
     public void storeMetaEntry(MetaEntry metaEntry) {
-        if (metaEntry.getKey().equals(null)) {
+        if (metaEntry.getKey().equals("")) {
             metaEntry.setKey(Integer.toString((metaEntries.size()+1)));
         }
         MetaEntry metaEntryToRemove = null;
