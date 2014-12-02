@@ -71,7 +71,6 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse addWorkflow(Workflow workflow) {
-        // TODO distribute clever ids, may return the id
         p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflow.getId()));
@@ -267,7 +266,7 @@ public class LogicImp implements Logic {
         final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
 
         for (Workflow wf : workflows) {
-            if (wf.getStepByPos(0).getUsername() == username) {
+            if (wf.getStepByPos(0).getUsername().equals(username)) {
                 startableWorkflows.add(wf);
             }
         }
