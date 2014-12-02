@@ -29,6 +29,11 @@ import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.restserver.LogicResponse;
 import de.hsrm.swt02.restserver.Message;
 
+/**
+ * This class is called if client requests user operations.
+ * @author jvanh001
+ *
+ */
 @Path("resource")
 public class UserResource {
 
@@ -38,8 +43,9 @@ public class UserResource {
     public static final UseLogger LOGGER = new UseLogger();
     
     /**
+     * This method returns a requested user.
      * 
-     * @param username
+     * @param username indicates which user is looked for
      * @return the requested user
      * @throws UserNotExistentException 
      */
@@ -65,7 +71,7 @@ public class UserResource {
      * 
      * receives a user and stores it into the database.
      * 
-     * @param receivedUser
+     * @param formParams is a wrapper for a sent user
      * @return 200 ok if successful
      */
     @POST
@@ -95,7 +101,7 @@ public class UserResource {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                // TODO Logging
+                LOGGER.log(Level.WARNING, "Publisher not responding!");
             }
         }
 
@@ -105,8 +111,9 @@ public class UserResource {
     }
 
     /**
-     * 
-     * @param user
+     * This method updates a user.
+     * @param username indicates which user should be updated
+     * @param formParams is a wrapper of a sent user 
      * @return 200 ok if successful
      */
     @PUT
@@ -114,7 +121,8 @@ public class UserResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateUser(@PathParam("username") String username,
-            MultivaluedMap<String, String> formParams) {
+            MultivaluedMap<String, String> formParams) 
+    {
         final String loggingBody = "UPDATE -> " + username;
         final ObjectMapper mapper = new ObjectMapper();
         final String userAsString = formParams.get("data").get(0);
@@ -137,7 +145,7 @@ public class UserResource {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                // TODO Logging
+                LOGGER.log(Level.WARNING, "Publisher not responding!");
             }
         }
 
@@ -147,8 +155,8 @@ public class UserResource {
     }
 
     /**
-     * 
-     * @param username
+     * This method deletes an user.
+     * @param username indicates which user should be deleted
      * @return deleted user, if successful
      */
     @DELETE
@@ -178,7 +186,7 @@ public class UserResource {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                // TODO Logging
+                LOGGER.log(Level.WARNING, "Publisher not responding!");
             }
         }
 
