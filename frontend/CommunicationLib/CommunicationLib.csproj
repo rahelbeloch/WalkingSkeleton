@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationManager.cs" />
+    <Compile Include="CustomSerializationBinder.cs" />
     <Compile Include="Exception\BasicException.cs" />
     <Compile Include="Exception\ConnectionExceptions\ConnectionException.cs" />
     <Compile Include="Exception\LogicExceptions\PersistenceExceptions\DoesntExistsException.cs" />
