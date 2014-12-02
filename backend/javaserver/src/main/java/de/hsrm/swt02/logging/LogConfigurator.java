@@ -60,11 +60,11 @@ public class LogConfigurator {
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Couldn't find the 'server.config' for logger setup.");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Couldn't read the 'server.config' for logger setup.");
         } catch (SecurityException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Couldn't read the 'server.config' for logger setup (PERMISSION DENIED).");
         }
         logLevel = levelMap.get(properties.getProperty("LogLevel"));
         consoleLogging = properties.getProperty("ConsoleLogging");
