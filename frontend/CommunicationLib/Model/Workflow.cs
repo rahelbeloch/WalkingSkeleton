@@ -40,6 +40,12 @@ namespace CommunicationLib.Model
         public void addStep(Step step)
         {
             steps.Add(step);
+            step.id = steps.Count;
+
+            if (steps.Count >= 2)
+            {
+                steps[steps.Count - 2].nextStepIds.Add(step.id);
+            }
         }
 
         /// <summary>
@@ -47,6 +53,13 @@ namespace CommunicationLib.Model
         /// </summary>
         public void removeLastStep()
         {
+            Step lastStep = steps[steps.Count - 1];
+            
+            if (steps.Count >= 2)
+            {
+                steps[steps.Count - 2].nextStepIds.Remove(lastStep.id);
+            }
+
             steps.RemoveAt(steps.Count - 1);
         }
 
