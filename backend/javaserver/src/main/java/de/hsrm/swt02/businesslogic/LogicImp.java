@@ -118,9 +118,15 @@ public class LogicImp implements Logic {
      * @throws ItemNotExistentException
      */
     @Override
-    public void stepOver(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
+    public void stepInProgress(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
         pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
     }
+    
+    @Override
+    public void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
+        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
+    }
+    
 
     /**
      * This method add a step into an existing Workflow.
@@ -297,5 +303,13 @@ public class LogicImp implements Logic {
      */
     public void setLogicResponse(LogicResponse lr) {
         this.logicResponse = lr;
+    }
+    /**
+     * This method return all workflows in persistence
+     * @return
+     */
+    @Override
+    public List<Workflow> getAllWorkflow() {
+        return p.loadAllWorkflows();
     }
 }
