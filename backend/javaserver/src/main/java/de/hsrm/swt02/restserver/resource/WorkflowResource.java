@@ -91,7 +91,9 @@ public class WorkflowResource {
         wflowList = LOGIC.getWorkflowsByUser(username);
         String wListString;
         try {
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
             wListString = mapper.writeValueAsString(wflowList);
+            System.out.println(wListString);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.INFO, loggingBody
                     + " JACKSON parsing-error occured.");
