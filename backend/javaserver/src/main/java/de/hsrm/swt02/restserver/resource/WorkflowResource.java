@@ -100,8 +100,6 @@ public class WorkflowResource {
 		ObjectMapper mapper = new ObjectMapper();
 		String loggingBody = "SEND -> ";
 		String workflowAsString = formParams.get("data").get(0);
-		System.out.println(workflowAsString);
-		
 		Workflow workflow = null;
 		try {
 		    workflow = mapper.readValue(workflowAsString, Workflow.class);

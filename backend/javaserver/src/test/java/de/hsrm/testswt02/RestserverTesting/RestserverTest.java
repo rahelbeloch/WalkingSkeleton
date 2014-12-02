@@ -73,20 +73,19 @@ public class RestserverTest {
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         workflowAsString = client.target(TARGET_URL)
-                .path("resource/workflow/15").request().get(String.class);
+                .path("resource/workflow/0").request().get(String.class);
         workflow = null;
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assertEquals(workflow.getId(), 15);
+        assertEquals(workflow.getId(), 0);
     }
 
     @Test
     public void testPost() {
         Workflow workflow = new Workflow();
-        workflow.setId(17);
         ObjectMapper mapper = new ObjectMapper();
         String workflowAsString = null;
         try {
@@ -106,7 +105,7 @@ public class RestserverTest {
 
     @Test
     public void testDelete() {
-        Response resp = client.target(TARGET_URL).path("resource/workflow/17")
+        Response resp = client.target(TARGET_URL).path("resource/workflow/0")
                 .request().delete();
         assertEquals(200, resp.getStatus());
     }
