@@ -222,15 +222,6 @@ namespace RestAPI
             try
             {
                 var response = client.Execute(request);
-                // test the StatusCode of response; if 500 happened there is a Server Error
-                if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
-                {
-                    int errorCode = Int32.Parse(response.Content);
-                    BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
-                    System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
-                    throw ex;
-                }
-                
                 System.Diagnostics.Trace.WriteLine("response: " + response.Content);
                 return response;
             }
@@ -240,6 +231,17 @@ namespace RestAPI
                 // this has to be a HttpException with the Connection
                 throw new Exception(ex.Message);
             }
+
+            // test the StatusCode of response; if 500 happened there is a Server Error
+            if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                int errorCode = Int32.Parse(response.Content);
+                BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
+                System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
+                throw ex;
+            }
+                
+
         }
 
         /// <summary>
