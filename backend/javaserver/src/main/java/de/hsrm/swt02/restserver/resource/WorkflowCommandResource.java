@@ -43,7 +43,7 @@ public class WorkflowCommandResource {
         try {
             LOGIC.startWorkflow(workflowid, username);
             //!! Must be yet tested!!
-            logicResponse = LOGIC.getLogicResponse();
+            logicResponse = LOGIC.getProcessLogicResponse();
             for(Message m : logicResponse.getMessages()){
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             }
@@ -71,7 +71,7 @@ public class WorkflowCommandResource {
         try {
             LOGIC.stepOver(itemid, stepid, username);
             //!! Must be yet tested!!
-            logicResponse = LOGIC.getLogicResponse();
+            logicResponse = LOGIC.getProcessLogicResponse();
             for(Message m : logicResponse.getMessages()){
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             }

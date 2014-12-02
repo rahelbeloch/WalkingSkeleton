@@ -2,12 +2,10 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
 
 import com.google.inject.Inject;
 
 import de.hsrm.swt02.businesslogic.processors.StartTrigger;
-import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -18,6 +16,7 @@ import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 import de.hsrm.swt02.restserver.LogicResponse;
+import de.hsrm.swt02.restserver.Message;
 
 /**
  * This class implements the logic interface and is used for logic operations.
@@ -26,6 +25,9 @@ public class LogicImp implements Logic {
 
     private Persistence p;
     private ProcessManager pm;
+    private LogicResponse logicResponse;
+
+    
 
     /**
      * Constructor for LogicImp.
@@ -39,6 +41,7 @@ public class LogicImp implements Logic {
     public LogicImp(Persistence p, ProcessManager pm) {
         this.p = p;
         this.pm = pm;
+        setLogicResponse(new LogicResponse());
     }
 
     /**
@@ -51,11 +54,14 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException
      */
     @Override
-    public void startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
+    public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
         // TODO check user permission
-        Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
-        StartTrigger start = new StartTrigger(workflow, pm, p);
+        final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
+        final StartTrigger start = new StartTrigger(workflow, pm, p);
         start.startWorkflow();
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflowID));
+        return logicResponse;
     }
 
     /**
@@ -64,9 +70,12 @@ public class LogicImp implements Logic {
      * @param workflow
      */
     @Override
-    public void addWorkflow(Workflow workflow) {
+    public LogicResponse addWorkflow(Workflow workflow) {
         // TODO distribute clever ids, may return the id
         p.storeWorkflow(workflow);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflow.getId()));
+        return logicResponse;
     }
 
     /**
@@ -90,8 +99,11 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException
      */
     @Override
-    public void deleteWorkflow(int workflowID) throws WorkflowNotExistentException {
+    public LogicResponse deleteWorkflow(int workflowID) throws WorkflowNotExistentException {
         p.deleteWorkflow(workflowID);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_del" + workflowID));
+        return logicResponse;
     }
 
     /**
@@ -121,10 +133,13 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException
      */
     @Override
-    public void addStep(int workflowID, Step step) throws WorkflowNotExistentException {
-        Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
+    public LogicResponse addStep(int workflowID, Step step) throws WorkflowNotExistentException {
+        final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         workflow.addStep(step);
         p.storeWorkflow(workflow);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_upd" + workflow.getId()));
+        return logicResponse;
     }
 
     /**
@@ -137,10 +152,13 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException
      */
     @Override
-    public void deleteStep(int workflowID, int stepID) throws WorkflowNotExistentException {
-        Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
+    public LogicResponse deleteStep(int workflowID, int stepID) throws WorkflowNotExistentException {
+        final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         workflow.removeStep(stepID);
         p.storeWorkflow(workflow);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_upd" + workflow.getId()));
+        return logicResponse;
     }
 
     /**
@@ -150,9 +168,12 @@ public class LogicImp implements Logic {
      * @throws UserAlreadyExistsException
      */
     @Override
-    public void addUser(User user) throws UserAlreadyExistsException {
+    public LogicResponse addUser(User user) throws UserAlreadyExistsException {
         // TODO distribute clever ids, may return the id
         p.addUser(user);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("USER_INFO", "user_def" + user.getUsername()));
+        return logicResponse;
     }
 
     /**
@@ -176,9 +197,12 @@ public class LogicImp implements Logic {
      * @throws UserNotExistentException
      */
     @Override
-    public void deleteUser(String username) throws UserNotExistentException {
+    public LogicResponse deleteUser(String username) throws UserNotExistentException {
         // System.out.println("Do you really want to delete a user?");
         p.deleteUser(username);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("USER_INFO", "user_del" + username));
+        return logicResponse;
     }
 
     /**
@@ -189,7 +213,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public List<Workflow> getWorkflowsByUser(String username) {
-        LinkedList<Workflow> workflows = new LinkedList<>();
+        final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
 
@@ -211,15 +235,16 @@ public class LogicImp implements Logic {
     @Override
     public List<Item> getOpenItemsByUser(String username) {
 
-        LinkedList<Workflow> workflows = (LinkedList) getWorkflowsByUser(username);
-        LinkedList<Item> items = new LinkedList<Item>();
+        final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
+        final LinkedList<Item> items = new LinkedList<Item>();
 
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
 
                 if ((wf.getStepById(Integer
                         .parseInt(item.getActStep().getKey())).getUsername())
-                        .equals(username)) {
+                        .equals(username)) 
+                {
                     items.add(item);
                     break;
                 }
@@ -238,8 +263,8 @@ public class LogicImp implements Logic {
     @Override
     public List<Workflow> getStartableWorkflows(String username) {
 
-        LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
-        LinkedList<Workflow> workflows = (LinkedList) getWorkflowsByUser(username);
+        final LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
+        final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
 
         for (Workflow wf : workflows) {
             if (wf.getStepByPos(0).getUsername() == username) {
@@ -255,7 +280,23 @@ public class LogicImp implements Logic {
      * @return processmanager's logicResponse object
      */
 
-    public LogicResponse getLogicResponse() {
+    public LogicResponse getProcessLogicResponse() {
         return pm.getLogicResponse();
+    }
+    
+    /**
+     * Getter for logicResponse.
+     * @return logicResponse
+     */
+    public LogicResponse getLogicResponse() {
+        return logicResponse;
+    }
+
+    /**
+     * Setter for logicResponse
+     * @param lr is new value for logicResponse
+     */
+    public void setLogicResponse(LogicResponse lr) {
+        this.logicResponse = lr;
     }
 }

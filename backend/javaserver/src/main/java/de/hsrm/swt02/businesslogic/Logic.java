@@ -27,7 +27,7 @@ public interface Logic {
      * @param user the User, who starts the workflow
      * @throws WorkflowNotExistentException 
      */
-    void startWorkflow(int workflowID, String username)
+    LogicResponse startWorkflow(int workflowID, String username)
             throws WorkflowNotExistentException;
 
     /**
@@ -35,7 +35,7 @@ public interface Logic {
      * 
      * @param workflow which should be added
      */
-    void addWorkflow(Workflow workflow); // later a workflows name will
+    LogicResponse addWorkflow(Workflow workflow); // later a workflows name will
                                                 // be available
 
     /**
@@ -54,7 +54,7 @@ public interface Logic {
      * @param workflowID describe the Workflow
      * @throws WorkflowNotExistentException 
      */
-    void deleteWorkflow(int workflowID)
+    LogicResponse deleteWorkflow(int workflowID)
             throws WorkflowNotExistentException;
 
     /*
@@ -79,7 +79,7 @@ public interface Logic {
      * @param step the step, which shall added
      * @throws WorkflowNotExistentException 
      */
-    void addStep(int workflowID, Step stepId)
+    LogicResponse addStep(int workflowID, Step stepId)
             throws WorkflowNotExistentException;
 
     /**
@@ -89,7 +89,7 @@ public interface Logic {
      * @param stepID the step, which shall delete
      * @throws WorkflowNotExistentException 
      */
-    void deleteStep(int workflowID, int stepID)
+    LogicResponse deleteStep(int workflowID, int stepID)
             throws WorkflowNotExistentException;
 
     /*
@@ -101,7 +101,7 @@ public interface Logic {
      * @param user which should be added
      * @throws UserAlreadyExistsException 
      */
-    void addUser(User user) throws UserAlreadyExistsException;
+    LogicResponse addUser(User user) throws UserAlreadyExistsException;
 
     /**
      * This method loads a User.
@@ -122,7 +122,7 @@ public interface Logic {
      * @param username describe the user
      * @throws UserNotExistentException 
      */
-    void deleteUser(String username) throws UserNotExistentException;
+    LogicResponse deleteUser(String username) throws UserNotExistentException;
 
     /**
      * This method returns all workflows, in which the user is involved.
@@ -152,5 +152,5 @@ public interface Logic {
      * This method gets a LogicResponse object.
      * @return LogicResponse object
      */
-    LogicResponse getLogicResponse();
+    LogicResponse getProcessLogicResponse();
 }
