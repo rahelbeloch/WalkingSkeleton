@@ -86,7 +86,7 @@ public class WorkflowCommandResource {
     {
         final String loggingBody = "FORWARD -> " + itemid;
         try {
-            LOGIC.stepInProgress(itemid, stepid, username);
+            LOGIC.stepForward(itemid, stepid, username);
         } catch (ItemNotExistentException e) {
             LOGGER.log(Level.INFO, loggingBody + " Item does not exist.");
             return Response.serverError().entity("11250").build();
@@ -108,42 +108,42 @@ public class WorkflowCommandResource {
         return Response.ok().build();
     }
 
-    /**
-     * This method executes the request of closing a step within an item.
-     * 
-     * @param stepId indicates which step is currently worked on
-     * @param itemId indicates which item is currently worked on
-     * @param username is for checking if user is even authorized to execute this request
-     * @return Response if it worked or not
-     */
-    @POST
-    @Path("finish/{stepid}/{itemid}/{username}")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response finish(@PathParam("stepid") int stepId,
-            @PathParam("itemid") int itemId,
-            @PathParam("username") String username) 
-    {
-        final String loggingBody = "FINISH -> " + itemId;
-        try {
-            LOGIC.stepFinished(itemId, stepId, username);
-        } catch (ItemNotExistentException e) {
-            LOGGER.log(Level.INFO, loggingBody + " Item does not exist.");
-            return Response.serverError().entity("11250").build();
-        } catch (UserNotExistentException e) {
-            LOGGER.log(Level.INFO, loggingBody + " User does not exist.");
-            return Response.serverError().entity("11260").build();
-        }
-     // !! Must be yet tested!!
-        logicResponse = LOGIC.getProcessLogicResponse();
-        for (Message m : logicResponse.getMessages()) {
-            try {
-                PUBLISHER.publish(m.getValue(), m.getTopic());
-            } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, "Publisher not responding!");
-            }
-        }
-        LOGIC.setProcessLogicResponse(new LogicResponse());
-        return Response.ok().build();
-    }
+//    /**
+//     * This method executes the request of closing a step within an item.
+//     * 
+//     * @param stepId indicates which step is currently worked on
+//     * @param itemId indicates which item is currently worked on
+//     * @param username is for checking if user is even authorized to execute this request
+//     * @return Response if it worked or not
+//     */
+//    @POST
+//    @Path("finish/{stepid}/{itemid}/{username}")
+//    @Produces(MediaType.TEXT_PLAIN)
+//    public Response finish(@PathParam("stepid") int stepId,
+//            @PathParam("itemid") int itemId,
+//            @PathParam("username") String username) 
+//    {
+//        final String loggingBody = "FINISH -> " + itemId;
+//        try {
+//            LOGIC.stepFinished(itemId, stepId, username);
+//        } catch (ItemNotExistentException e) {
+//            LOGGER.log(Level.INFO, loggingBody + " Item does not exist.");
+//            return Response.serverError().entity("11250").build();
+//        } catch (UserNotExistentException e) {
+//            LOGGER.log(Level.INFO, loggingBody + " User does not exist.");
+//            return Response.serverError().entity("11260").build();
+//        }
+//     // !! Must be yet tested!!
+//        logicResponse = LOGIC.getProcessLogicResponse();
+//        for (Message m : logicResponse.getMessages()) {
+//            try {
+//                PUBLISHER.publish(m.getValue(), m.getTopic());
+//            } catch (ServerPublisherBrokerException e) {
+//                LOGGER.log(Level.WARNING, "Publisher not responding!");
+//            }
+//        }
+//        LOGIC.setProcessLogicResponse(new LogicResponse());
+//        return Response.ok().build();
+//    }
 
 }

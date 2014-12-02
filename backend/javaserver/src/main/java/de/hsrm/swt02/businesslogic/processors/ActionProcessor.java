@@ -42,27 +42,10 @@ public class ActionProcessor extends Observable implements StepProcessor {
     public void handle(Item item, Step step, User user) {
 
         currentItem = item;
+        
         if (currentItem.getEntryValue(step.getId() + "", "step").equals(MetaState.OPEN.toString())) {
             currentItem.setStepState(step.getId(), MetaState.BUSY.toString());
-            currentItem.setState("upd");
-            p.storeItem(currentItem);
-            setChanged();
-            notifyObservers(currentItem);
-        } else {
-            //TODO what happens if step wasn't open?
-        }
-    }
-
-    /**
-     * This method sets the metastate of a step to "DONE" only if it was setted as "BUSY".
-     * 
-     * @param item which is currently edited
-     * @param step which is currently executed
-     * @param user who currently executes the step
-     */
-    public void close(Item item, Step step, User user) {
-        currentItem = item;
-        if (currentItem.getEntryValue(step.getId() + "", "step").equals(MetaState.BUSY.toString())) {
+        } else if (currentItem.getEntryValue(step.getId() + "", "step").equals(MetaState.BUSY.toString())) {
             currentItem.setStepState(step.getId(), MetaState.DONE.toString());
             for (Step s : step.getNextSteps()) {
                 if (!(s instanceof FinalStep)) {
@@ -77,7 +60,7 @@ public class ActionProcessor extends Observable implements StepProcessor {
             setChanged();
             notifyObservers(currentItem);
         } else {
-          //TODO what happens if step wasn't busy?
+          //TODO what happens if step state is invalid
         }
     }
 }

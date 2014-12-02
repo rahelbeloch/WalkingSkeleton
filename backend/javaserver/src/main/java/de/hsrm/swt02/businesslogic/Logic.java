@@ -45,7 +45,6 @@ public interface Logic {
      */
     List<Workflow> getAllWorkflow();
   
-
     /**
      * This method loads a Workflow.
      * 
@@ -76,20 +75,24 @@ public interface Logic {
      * @param stepId the stepId, which execute
      * @param username who execute the step in the Item
      * @throws ItemNotExistentException
+     * @exception ItemNotExistentException if requested item doesn't exist
      * @throws UserNotExistentException
+     * @exception UserNotExistentException if requested user doesn't exist
      */
-    void stepInProgress(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
+    void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
     
-    /**
-     * This method finish a step in an item.
-     * 
-     * @param itemId the Item, which edited
-     * @param stepId the step, which execute
-     * @param username who execute the step in the Item
-     * @throws ItemNotExistentException
-     * @throws UserNotExistentException
-     */
-    void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
+//    /**
+//     * This method finish a step in an item.
+//     * 
+//     * @param itemId the Item, which edited
+//     * @param stepId the step, which execute
+//     * @param username who execute the step in the Item
+//     * @throws ItemNotExistentException
+//     * @exception ItemNotExistentException if requested item doesn't exist
+//     * @throws UserNotExistentException
+//     * @exception UserNotExistentException if requested user doesn't exist
+//     */
+//    void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
 
 
     /*

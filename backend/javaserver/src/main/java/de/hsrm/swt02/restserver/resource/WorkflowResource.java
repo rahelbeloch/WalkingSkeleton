@@ -1,7 +1,6 @@
 package de.hsrm.swt02.restserver.resource;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -25,34 +24,42 @@ import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
+import de.hsrm.swt02.restserver.LogicResponse;
+import de.hsrm.swt02.restserver.Message;
 
+/**
+ * This class is called if client operates on workflows.
+ *
+ */
 @Path("resource")
 public class WorkflowResource {
 
-    public static final Logic logic = ConstructionFactory.getLogic();
-    public static final ServerPublisher publisher = ConstructionFactory
+    public static final Logic LOGIC = ConstructionFactory.getLogic();
+    public static final ServerPublisher PUBLISHER = ConstructionFactory
             .getPublisher();
-    public static final UseLogger logger = new UseLogger();
+    public static final UseLogger LOGGER = new UseLogger();
+    LogicResponse logicResponse;
 
     /**
-     * 
-     * @param workflowid
+     * This method returns a requested workflow.
+     * @param workflowid indicates which workflow is requested
      * @return the requested workflow
      */
     @GET
     @Path("workflow/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getWorkflow(@PathParam("workflowid") int workflowid) {
-        String loggingBody = "GET -> " + workflowid;
-        ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = "GET -> " + workflowid;
+        final ObjectMapper mapper = new ObjectMapper();
         Workflow workflow = null;
         try {
-            workflow = logic.getWorkflow(workflowid);
+            workflow = LOGIC.getWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
-            logger.log(Level.INFO, loggingBody
+            LOGGER.log(Level.INFO, loggingBody
                     + " Non-existing workflow requested.");
             return Response.serverError().entity("11250").build();
         }
@@ -61,44 +68,44 @@ public class WorkflowResource {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
-            logger.log(Level.INFO, loggingBody
+            LOGGER.log(Level.INFO, loggingBody
                     + " JACKSON parsing error occured.");
             return Response.serverError().entity("11210").build();
         }
-        logger.log(Level.INFO, loggingBody + " Request successful.");
+        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(workflowAsString).build();
     }
 
     /**
-     * 
-     * @param workflowid
+     * This method returns workflows where a user is involved.
+     * @param username indicates which user's workflows are requested
      * @return the requested workflow
      */
     @GET
     @Path("workflows/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getAllWorkflows(@PathParam("username") String username) {
-        ObjectMapper mapper = new ObjectMapper();
-        String loggingBody = "GETALL -> " + username;
+        final ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = "GETALL -> " + username;
         List<Workflow> wflowList = null;
-        wflowList = logic.getWorkflowsByUser(username);
+        wflowList = LOGIC.getWorkflowsByUser(username);
         String wListString;
         try {
             wListString = mapper.writeValueAsString(wflowList);
         } catch (JsonProcessingException e) {
-            logger.log(Level.INFO, loggingBody
+            LOGGER.log(Level.INFO, loggingBody
                     + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210").build();
         }
-        logger.log(Level.INFO, loggingBody + " Request successful.");
+        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(wListString).build();
     }
 
     /**
      * 
-     * receives a workflow and stores it into the database
+     * receives a workflow and stores it into the database.
      * 
-     * @param receivedWorkflow
+     * @param formParams wrapper for an sent workflow
      * @return "true" if everything was successful OR "jackson exception" if
      *         serialization crashed
      */
@@ -107,28 +114,35 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveWorkflow(MultivaluedMap<String, String> formParams) {
-        ObjectMapper mapper = new ObjectMapper();
-        String loggingBody = "SEND -> ";
-        String workflowAsString = formParams.get("data").get(0);
+        final ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = "SEND -> ";
+        final String workflowAsString = formParams.get("data").get(0);
         Workflow workflow = null;
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
-            logger.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210").build();
         }
 
         convertIdListToReferences(workflow);
 
-        logic.addWorkflow(workflow);
-        logger.log(Level.INFO, loggingBody + " Workflow successfully saved.");
+        logicResponse = LOGIC.addWorkflow(workflow);
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                LOGGER.log(Level.WARNING, "Publisher not responding!");
+            }
+        }
+        LOGGER.log(Level.INFO, loggingBody + " Workflow successfully saved.");
         return Response.ok().build();
     }
 
     /**
-     * incoming order of step ids are converted into references
+     * incoming order of step ids are converted into references.
      * 
-     * @param workflow
+     * @param workflow which is operated on
      */
     private void convertIdListToReferences(Workflow workflow) {
         for (Step step : workflow.getSteps()) {
@@ -139,8 +153,9 @@ public class WorkflowResource {
     }
 
     /**
-     * 
-     * @param workflow
+     * This method updates a workflow.
+     * @param workflowid indicates which workflow should be updated
+     * @param formParams wrapper for an sent workflow
      * @return String true or false
      */
     @PUT
@@ -148,51 +163,59 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateWorkflow(@PathParam("workflowid") int workflowid,
-            MultivaluedMap<String, String> formParams) {
-        String loggingBody = "UPDATE -> " + workflowid;
-        ObjectMapper mapper = new ObjectMapper();
-        String workflowAsString = formParams.get("data").get(0);
+            MultivaluedMap<String, String> formParams) 
+    {
+        final String loggingBody = "UPDATE -> " + workflowid;
+        final ObjectMapper mapper = new ObjectMapper();
+        final String workflowAsString = formParams.get("data").get(0);
         Workflow workflow;
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
-            logger.log(Level.INFO, loggingBody
+            LOGGER.log(Level.INFO, loggingBody
                     + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210").build();
         }
-        logic.addWorkflow(workflow);
-        logger.log(Level.INFO, loggingBody + " Workflow successfully updated.");
+        logicResponse = LOGIC.addWorkflow(workflow);
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                LOGGER.log(Level.WARNING, "Publisher not responding!");
+            }
+        }
+        LOGGER.log(Level.INFO, loggingBody + " Workflow successfully updated.");
         return Response.ok().build();
     }
 
     /**
-     * 
-     * @param workflowid
+     * This method deletes a workflow.
+     * @param workflowid which indicates which workflow should be deleted
      * @return deleted workflow, if successful
      */
     @DELETE
     @Path("workflow/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteWorkflow(@PathParam("workflowid") int workflowid) {
-        String loggingBody = "DELETE -> " + workflowid;
-        ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = "DELETE -> " + workflowid;
+        final ObjectMapper mapper = new ObjectMapper();
         Workflow workflow = null;
         try {
-            workflow = logic.getWorkflow(workflowid);
-            logic.deleteWorkflow(workflowid);
+            workflow = LOGIC.getWorkflow(workflowid);
+            LOGIC.deleteWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
-            logger.log(Level.INFO, loggingBody + " Workflow does not exist.");
+            LOGGER.log(Level.INFO, loggingBody + " Workflow does not exist.");
             return Response.serverError().entity("11250").build();
         }
         String workflowAsString;
         try {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
-            logger.log(Level.INFO, loggingBody
+            LOGGER.log(Level.INFO, loggingBody
                     + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210").build();
         }
-        logger.log(Level.INFO, loggingBody + " Workflow succesfully deleted.");
+        LOGGER.log(Level.INFO, loggingBody + " Workflow succesfully deleted.");
         return Response.ok(workflowAsString).build();
     }
 

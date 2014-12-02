@@ -15,23 +15,31 @@ import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 
-
+/**
+ * This class is called if client wants to operate on user.
+ *
+ */
 @Path("command/user")
 public class UserCommandResource {
     
-    public static final Logic logic = ConstructionFactory.getLogic();
-    public static final ServerPublisher publisher = ConstructionFactory.getPublisher();
-    public static final UseLogger logger = new UseLogger();
+    public static final Logic LOGIC = ConstructionFactory.getLogic();
+    public static final ServerPublisher PUBLISHER = ConstructionFactory.getPublisher();
+    public static final UseLogger LOGGER = new UseLogger();
 
+    /**
+     * This method is called if client wants to login.
+     * @param formParams is a wrapper for login data
+     * @return returns if it was succesful
+     */
     @POST @Path("login")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
-    public Response login (MultivaluedMap<String, String> formParams) {
-        String username = formParams.get("username").get(0);
-        String password = formParams.get("password").get(0);
-        String loggingBody = "LOGIN -> " + username + " : " + password;
+    public Response login(MultivaluedMap<String, String> formParams) {
+        final String username = formParams.get("username").get(0);
+        final String password = formParams.get("password").get(0);
+        final String loggingBody = "LOGIN -> " + username + " : " + password;
         // TODO check login in Logic
-        logger.log(Level.INFO,loggingBody + " Login successful.");
+        LOGGER.log(Level.INFO,loggingBody + " Login successful.");
         return Response.ok().build();
     }
     

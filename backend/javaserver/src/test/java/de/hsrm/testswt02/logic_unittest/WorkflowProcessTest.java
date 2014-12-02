@@ -80,8 +80,8 @@ public class WorkflowProcessTest {
         benni.setUsername("benni");
         benni.setId(23);
         Item item = (Item) myWorkflow.getItems().get(0);
-        processManager.selectProcessor(firstStep, item, benni, "busy");
-        processManager.selectProcessor(firstStep, item, benni, "finish");
+        processManager.selectProcessor(firstStep, item, benni);
+        processManager.selectProcessor(firstStep, item, benni);
         assertTrue(item.getStepState(firstStep.getId()) == MetaState.DONE
                 .toString());
     }

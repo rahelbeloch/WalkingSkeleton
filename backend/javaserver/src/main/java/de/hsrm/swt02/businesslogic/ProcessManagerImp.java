@@ -66,17 +66,12 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      *            which is currently active
      * @param user
      *            who started interaction
-     * @param operation which indicates which method should be used
      */
-    public void selectProcessor(Step step, Item item, User user, String operation) {
+    public void selectProcessor(Step step, Item item, User user) {
         if (step instanceof Action) {
             final ActionProcessor actionProcessor = new ActionProcessor(persistence);
             actionProcessor.addObserver(this);
-            if (operation.equals("busy")) {
-                actionProcessor.handle(item, step, user);
-            } else if (operation.equals("finish")) {
-                actionProcessor.close(item, step, user);
-            }
+            actionProcessor.handle(item, step, user);
         }
     }
 

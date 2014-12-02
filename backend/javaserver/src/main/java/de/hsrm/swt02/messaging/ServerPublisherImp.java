@@ -79,7 +79,8 @@ public class ServerPublisherImp implements ServerPublisher {
      * @throws ServerPublisherBrokerException if publishing goes wrong
      */
     public void publish(String content, String topicName) 
-            throws ServerPublisherBrokerException {
+            throws ServerPublisherBrokerException 
+    {
         try {
             connection = factory.createConnection();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
