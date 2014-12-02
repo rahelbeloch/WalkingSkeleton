@@ -37,9 +37,9 @@ public class PersistenceTest {
      */
     @Test
     public void testWorkflowStorage() throws WorkflowNotExistentException {
-        Workflow workflow007 = new Workflow(7);
-        Workflow workflow006 = new Workflow(6);
-        Workflow workflow005 = new Workflow(5);
+        final Workflow workflow007 = new Workflow(7);
+        final Workflow workflow006 = new Workflow(6);
+        final Workflow workflow005 = new Workflow(5);
 
         db.storeWorkflow(workflow005);
         db.storeWorkflow(workflow006);
