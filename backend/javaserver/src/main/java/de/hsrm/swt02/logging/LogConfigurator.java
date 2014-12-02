@@ -44,7 +44,7 @@ public class LogConfigurator {
      * 
      * @throws IOException if server.config file can't be found
      */
-    static public void setup() throws IOException {
+    static public void setup() {
         final Logger logger = Logger.getLogger(UseLogger.class.getName());
         final Properties properties = new Properties();
         BufferedInputStream stream;
@@ -76,7 +76,15 @@ public class LogConfigurator {
         // default level for logging
         logger.setLevel(logLevel);
         // set handler for a specific log file
-        fileHTMLHandler = new FileHandler(logFile);
+        try {
+            fileHTMLHandler = new FileHandler(logFile);
+        } catch (SecurityException e) {
+            logger.log(Level.WARNING,
+                    "Couldn't create a file handler for the logging file.");
+        } catch (IOException e) {
+            logger.log(Level.WARNING,
+                    "Couldn't create a file handler for the logging file.");
+        }
         // set HTML-Formatter for a logging handler
         formatterHTML = new HTMLFormatter();
         fileHTMLHandler.setFormatter(formatterHTML);
