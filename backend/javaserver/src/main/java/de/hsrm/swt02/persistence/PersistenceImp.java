@@ -1,6 +1,3 @@
-/*
- * 
- */
 package de.hsrm.swt02.persistence;
 
 import java.util.LinkedList;
@@ -64,6 +61,7 @@ public class PersistenceImp implements Persistence {
             this.logger.log(Level.INFO, "removing existing workflow "
                     + workflowToRemove.getId() + ".");
         }
+        workflow.setId(workflows.size());
         workflows.add((Workflow) workflow);
         this.logger.log(Level.INFO, "overwriting workflow " + workflow.getId()
                 + ".");
