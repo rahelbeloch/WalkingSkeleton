@@ -15,7 +15,7 @@ public class Workflow extends RootElement {
     private List<Item> items;
 
     /**
-     * Constructor for Workflow without parameters
+     * Constructor for Workflow without parameters.
      */
     public Workflow() {
         super();
@@ -24,8 +24,8 @@ public class Workflow extends RootElement {
     }
 
     /**
-     * Constructor for Workflow with parameters
-     * @param id
+     * Constructor for Workflow with parameters.
+     * @param id of the workflow
      */
     public Workflow(int id) {
         super();
@@ -36,7 +36,7 @@ public class Workflow extends RootElement {
 
     /**
      * Steps getter. There is no setter because steps is an ArrayList.
-     * @return steps
+     * @return steps is the list of steps of a workflow
      */
     public List<Step> getSteps() {
         return this.steps;
@@ -44,7 +44,7 @@ public class Workflow extends RootElement {
 
     /**
      * Items getter. There is no setter because items is an ArrayList.
-     * @return items
+     * @return items are the items corresponding the workflow
      */
     public List<Item> getItems() {
         return this.items;

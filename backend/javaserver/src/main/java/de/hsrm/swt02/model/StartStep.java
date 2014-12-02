@@ -4,17 +4,17 @@ package de.hsrm.swt02.model;
  * This class represents a StartStep. A StartStep is a manifestation of a Step.
  */
 public class StartStep extends Step {
-	
-	/**
-	 * Constructor for StartStep without parameters
-	 */
+
+    /**
+    * Constructor for StartStep without parameters.
+    */
     public StartStep() {
         super();
     }
 
     /**
-     * Constructor for StartStep with parameters
-     * @param username
+     * Constructor for StartStep with parameters.
+     * @param username is the username of the user responsible for the startstep
      */
     public StartStep(String username) {
         super();

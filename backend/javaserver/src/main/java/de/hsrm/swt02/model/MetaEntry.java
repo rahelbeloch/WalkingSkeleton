@@ -3,7 +3,7 @@ package de.hsrm.swt02.model;
 /**
  * This class represents an Entry for the MetaEntryList for an item
  * It's made of a key string and group string to better identify
- * the value string represents the content
+ * the value string represents the content.
  */
 public class MetaEntry {
     // Used for (de)serialization. Do not change.
@@ -16,49 +16,55 @@ public class MetaEntry {
     private String group;
 
     /**
-     * Constructor for MetaEntry
+     * Constructor for MetaEntry.
      */
     public MetaEntry() {
 
     }
 
     /**
-     * Key getter
+     * Key getter.
+     * @return key is the key string
      */
     public String getKey() {
         return key;
     }
 
     /**
-     * Key setter
+     * Key setter.
+     * @param key is the key string
      */
     public void setKey(String key) {
         this.key = key;
     }
 
     /**
-     * Value getter
+     * Value getter.
+     * @return value is the value string
      */
     public String getValue() {
         return value;
     }
 
     /**
-     * Value setter
+     * Value setter.
+     * @param value is the value string
      */
     public void setValue(String value) {
         this.value = value;
     }
 
     /**
-     * Group getter
+     * Group getter.
+     * @return group is the group string
      */
     public String getGroup() {
         return group;
     }
 
     /**
-     * Group setter
+     * Group setter.
+     * @param group is the group string
      */
     public void setGroup(String group) {
         this.group = group;

@@ -23,7 +23,7 @@ public class Item extends RootElement {
     private String state;
 
     /**
-     * Constructor for Item
+     * Constructor for Item.
      */
     public Item() {
         super();
@@ -31,47 +31,47 @@ public class Item extends RootElement {
     }
 
     /**
-     * WorkflowId getter
-     * @return workflowId
+     * WorkflowId getter.
+     * @return workflowId id of the workflow
      */
     public int getWorkflowId() {
         return workflowId;
     }
 
     /**
-     * WorkflowId setter
-     * @param workflowId
+     * WorkflowId setter.
+     * @param workflowId id of the workflow
      */
     public void setWorkflowId(int workflowId) {
         this.workflowId = workflowId;
     }
 
     /**
-     * Metadata (list of MetaEntries) getter
-     * @return metadata
+     * Metadata (list of MetaEntries) getter.
+     * @return metadata list of metadata
      */
     public List<MetaEntry> getMetadata() {
         return this.metadata;
     }
 
     /**
-     * Finished getter
-     * @return finished
+     * Finished getter.
+     * @return finished true of false wether or not the workflow is finished
      */
     public boolean isFinished() {
         return finished;
     }
 
     /**
-     * Finished setter
-     * @param finished
+     * Finished setter.
+     * @param finished finished true of false wether or not the workflow is finished
      */
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
     
     /**
-     * State getter
+     * State getter.
      * @return state
      */
     public String getState() {
@@ -79,8 +79,8 @@ public class Item extends RootElement {
     }
 
     /**
-     * State setter
-     * @param state
+     * State setter.
+     * @param state is a string representing the state of a step
      */
     public void setState(String state) {
         this.state = state;
@@ -113,7 +113,7 @@ public class Item extends RootElement {
      */
     public String getEntryValue(String key, String group) {
 
-        MetaEntry ame = getEntry(key, group);
+        final MetaEntry ame = getEntry(key, group);
 
         if (ame != null) {
             return ame.getValue();
@@ -140,7 +140,7 @@ public class Item extends RootElement {
      */
     public List<MetaEntry> getForGroup(String group) {
 
-        List<MetaEntry> list = new ArrayList<MetaEntry>();
+        final List<MetaEntry> list = new ArrayList<MetaEntry>();
 
         for (MetaEntry a : metadata) {
             if (a.getGroup().equals(group)) {
@@ -150,6 +150,10 @@ public class Item extends RootElement {
         return list;
     }
 
+    /**
+     * returns the MetaEntry of the current step.
+     * @return me or null
+     */
     public MetaEntry getActStep() {
         for (MetaEntry me : getForGroup("step")) {
             if ((me.getValue()).equals(MetaState.OPEN.toString())) {
@@ -168,12 +172,12 @@ public class Item extends RootElement {
      */
     public void set(String key, String group, String value) {
 
-        MetaEntry ame = getEntry(key, group);
+        final MetaEntry ame = getEntry(key, group);
 
         if (ame != null) {
             ame.setValue(value);
         } else {
-            MetaEntry entry = new MetaEntry();
+            final MetaEntry entry = new MetaEntry();
             entry.setGroup(group);
             entry.setKey(key);
             entry.setValue(value);
