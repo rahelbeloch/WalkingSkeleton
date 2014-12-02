@@ -17,11 +17,11 @@ public interface ProcessManager extends Observer {
      * This method checks if the user who wishes to edit a step is the 
      * responsible user who is allowed to execute the step.
      * 
-     * @param user who edits the step
+     * @param username who edits the step
      * @param step which user wants to edit
      * @return true if user is "owner" of step and false if not
      */
-    boolean checkUser(User user, Step step);
+    boolean checkUser(String username, Step step);
 
     /**
      * This method selects the processor of a step and executes it.

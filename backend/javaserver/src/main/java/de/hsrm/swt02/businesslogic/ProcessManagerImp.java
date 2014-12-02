@@ -2,16 +2,19 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import de.hsrm.swt02.businesslogic.processors.ActionProcessor;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.restserver.LogicResponse;
 import de.hsrm.swt02.restserver.Message;
 
@@ -26,17 +29,20 @@ public class ProcessManagerImp implements Observer, ProcessManager {
 
     private Persistence persistence;
     private LogicResponse logicResponse;
+    private UseLogger logger;
 
     /**
      * Constructor of ProcessManager.
      * 
      * @param p
      *            is a singleton for the persistence
+     * @param logger for logging information
      */
     @Inject
-    public ProcessManagerImp(Persistence p) {
+    public ProcessManagerImp(Persistence p, UseLogger logger) {
         this.persistence = p;
         setLogicResponse(new LogicResponse());
+        this.logger = logger;
     }
 
     /**
@@ -44,15 +50,21 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * checks if the user who wishes to edit a step is the responsible user who
      * is allowed to execute the step.
      * 
-     * @param user
+     * @param username
      *            who edits the step
      * @param step
      *            which user wants to edit
      * @return true if user is "owner" of step and false if not
      */
-    public boolean checkUser(User user, Step step) {
+    public boolean checkUser(String username, Step step) {
+        User checkUser = null;
+        try {
+            checkUser = persistence.loadUser(username);
+        } catch (UserNotExistentException e) {
+            logger.log(Level.SEVERE, "No user available!");
+        }
         if (step instanceof Action) {
-            return user.getUsername().equals(((Action) step).getUsername());
+            return checkUser.getUsername().equals(((Action) step).getUsername());
         }
         return false;
     }
