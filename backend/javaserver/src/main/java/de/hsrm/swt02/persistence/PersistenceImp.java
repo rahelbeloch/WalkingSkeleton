@@ -69,7 +69,7 @@ public class PersistenceImp implements Persistence {
                 + ".");
 
         // a workflows steps are resolved and stored one by one
-        List<Step> workflowsSteps = workflow.getSteps();
+        final List<Step> workflowsSteps = workflow.getSteps();
         for (Step step : workflowsSteps) {
             storeStep(step);
         }
@@ -99,7 +99,7 @@ public class PersistenceImp implements Persistence {
 
         // items include information of type MetaEntry which have to be stored
         // separately
-        List<MetaEntry> itemsMetadata = item.getMetadata();
+        final List<MetaEntry> itemsMetadata = item.getMetadata();
         for (MetaEntry metaEntry : itemsMetadata) {
             storeMetaEntry(metaEntry);
         }
@@ -109,7 +109,7 @@ public class PersistenceImp implements Persistence {
     public void addUser(User user) throws UserAlreadyExistsException {
         for (User u : users) {
             if (u.getUsername().equals(user.getUsername())) {
-                UserAlreadyExistsException e = new UserAlreadyExistsException(
+                final UserAlreadyExistsException e = new UserAlreadyExistsException(
                         user.getUsername());
                 this.logger.log(Level.WARNING, e);
                 throw e;
@@ -136,7 +136,7 @@ public class PersistenceImp implements Persistence {
             this.logger.log(Level.INFO,
                     "overwriting user '" + user.getUsername() + "'.");
         } else {
-            UserNotExistentException e = new UserNotExistentException(
+            final UserNotExistentException e = new UserNotExistentException(
                     user.getUsername());
             this.logger.log(Level.WARNING, e);
             throw e;
@@ -155,7 +155,7 @@ public class PersistenceImp implements Persistence {
             steps.remove(stepToRemove);
         }
         steps.add((Step) step);
-        // TODO: need to distinguish between Action/FirstStep/StartStep?
+        //TODO: need to distinguish between Action/FirstStep/StartStep?
     }
 
     public void storeMetaEntry(MetaEntry metaEntry) {
@@ -188,7 +188,7 @@ public class PersistenceImp implements Persistence {
         if (workflow != null) {
             return workflow;
         } else {
-            WorkflowNotExistentException e = new WorkflowNotExistentException(
+            final WorkflowNotExistentException e = new WorkflowNotExistentException(
                     "" + id);
             this.logger.log(Level.WARNING, e);
             throw e;
@@ -208,7 +208,7 @@ public class PersistenceImp implements Persistence {
         if (item != null) {
             return item;
         } else {
-            ItemNotExistentException e = new ItemNotExistentException("" + id);
+            final ItemNotExistentException e = new ItemNotExistentException("" + id);
             this.logger.log(Level.WARNING, e);
             throw e;
         }
@@ -226,7 +226,7 @@ public class PersistenceImp implements Persistence {
         if (user != null) {
             return user;
         } else {
-            UserNotExistentException e = new UserNotExistentException(name);
+            final UserNotExistentException e = new UserNotExistentException(name);
             this.logger.log(Level.WARNING, e);
             throw e;
         }
@@ -265,7 +265,7 @@ public class PersistenceImp implements Persistence {
         for (Workflow wf : workflows) {
             if (wf.getId() == id) {
                 // a workflows steps are resolved and deleted one by one
-                List<Step> workflowsSteps = wf.getSteps();
+                final List<Step> workflowsSteps = wf.getSteps();
                 for (Step step : workflowsSteps) {
                     deleteStep(step.getId());
                 }
@@ -278,7 +278,7 @@ public class PersistenceImp implements Persistence {
             this.logger.log(Level.INFO,
                     "removed workflow " + workflowToRemove.getId() + ".");
         } else {
-            WorkflowNotExistentException e = new WorkflowNotExistentException(
+            final WorkflowNotExistentException e = new WorkflowNotExistentException(
                     "" + id);
             this.logger.log(Level.WARNING, e);
             throw e;
@@ -292,7 +292,7 @@ public class PersistenceImp implements Persistence {
             if (i.getId() == id) {
 
                 // an items metaData are deleted as well
-                List<MetaEntry> itemsMetaData = i.getMetadata();
+                final List<MetaEntry> itemsMetaData = i.getMetadata();
                 for (MetaEntry metaEntry : itemsMetaData) {
                     deleteMetaEntry(metaEntry.getKey());
                 }
@@ -305,7 +305,7 @@ public class PersistenceImp implements Persistence {
             this.logger.log(Level.INFO, "removed item " + itemToRemove.getId()
                     + ".");
         } else {
-            ItemNotExistentException e = new ItemNotExistentException("" + id);
+            final ItemNotExistentException e = new ItemNotExistentException("" + id);
             this.logger.log(Level.WARNING, e);
             throw e;
 
@@ -324,7 +324,7 @@ public class PersistenceImp implements Persistence {
         if (userToRemove != null) {
             users.remove(userToRemove);
         } else {
-            UserNotExistentException e = new UserNotExistentException(name);
+            final UserNotExistentException e = new UserNotExistentException(name);
             this.logger.log(Level.WARNING, e);
             throw e;
         }
