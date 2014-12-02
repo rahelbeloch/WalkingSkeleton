@@ -217,11 +217,12 @@ namespace RestAPI
         {
             var request = new RestRequest(url, method);
             request.AddHeader("Accept", "text/plain");
+            IRestResponse response;
 
             // decide wether the server does return the right excepted object or throws an exception
             try
             {
-                var response = client.Execute(request);
+                response = client.Execute(request);
                 System.Diagnostics.Trace.WriteLine("response: " + response.Content);
                 return response;
             }
