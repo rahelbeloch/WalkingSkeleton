@@ -18,11 +18,15 @@ namespace CommunicationLib.Model
         private int _id;
         public int id { get { return _id; } set { _id = value; } }
 
+        private List<Step> _nextSteps;
+        [JsonIgnore]
+        public List<Step> nextSteps { get { return _nextSteps; } set { _nextSteps = value; } }
+
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private List<Step> _nextSteps;
-        public List<Step> nextSteps { get { return _nextSteps; } set { _nextSteps = value; } }
+        private List<int> _nextStepIds;
+        public List<int> nextStepIds { get { return _nextStepIds; } set { _nextStepIds = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
@@ -44,6 +48,7 @@ namespace CommunicationLib.Model
             : base()
         {
             _nextSteps = new List<Step>();
+            _nextStepIds = new List<int>();
         }
     }
 }
