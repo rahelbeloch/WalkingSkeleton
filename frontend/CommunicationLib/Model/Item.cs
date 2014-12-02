@@ -37,5 +37,20 @@ namespace CommunicationLib.Model
         {
             _metadata = new List<MetaEntry>();
         }
+
+        public int getActiveStepIdByUsername(string username)
+        {
+            foreach (MetaEntry me in metadata) 
+            {
+                if (me.group.Equals("step"))
+                {
+                    if (me.value.Equals("OPEN") || me.value.Equals("BUSY"))
+                    {
+                        return Convert.ToInt32(me.key);
+                    }
+                }
+            }
+            return -1;
+        }
     }
 }
