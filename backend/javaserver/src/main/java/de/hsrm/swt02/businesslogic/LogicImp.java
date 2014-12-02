@@ -218,6 +218,7 @@ public class LogicImp implements Logic {
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
+            	System.out.println("step:"+ step.getId() + "user:"+  step.getUsername());
 
                 if (step.getUsername().equals(username)) {
                     workflows.add((Workflow) wf);
