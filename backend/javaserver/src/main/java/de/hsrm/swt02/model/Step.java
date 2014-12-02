@@ -3,6 +3,7 @@ package de.hsrm.swt02.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,9 +27,12 @@ public class Step {
     // Used for (de)serialization. Do not change.
     protected int id;
 
-    // Used for (de)serialization. Do not change.
+    @JsonIgnore
     protected List<Step> nextSteps;
 
+    // Used for (de)serialization. Do not change.
+    protected List<Integer> nextStepIds;
+    
     // Used for (de)serialization. Do not change.
     protected String username = "noname";
 
@@ -62,7 +66,20 @@ public class Step {
         if (nextSteps == null) {
             nextSteps = new ArrayList<Step>();
         }
+        
         return this.nextSteps;
+    }
+    
+    /**
+     * NextStepIds getter: when there is no nextStepIds yet, a new ArrayList will be returned.
+     * @return nextStepIds
+     */
+    public List<Integer> getNextStepIds() {
+    	if (nextStepIds == null) {
+    		nextStepIds = new ArrayList<Integer>();
+    	}
+    	
+    	return this.nextStepIds;
     }
 
     /**
