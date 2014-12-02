@@ -12,7 +12,7 @@ using System.IO;
 using System.Security;
 using Nancy;
 using System.Dynamic;
-using System.Security;
+using CommunicationLib.Exception;
 
 
 
@@ -59,13 +59,21 @@ namespace UnitTestProject1
         public void testGetWorkflow()
         {
             int getWFId = 0;
+            Workflow getWf = null;
 
-          
-            Workflow getWF = RestRequester.GetObject<Workflow>(getWFId);
+            try
+            {
+                getWf = RestRequester.GetObject<Workflow>(getWFId);
+            }
+            catch (Exception)
+            {
+                System.Diagnostics.Trace.WriteLine("Test fehlgeschlagen.");
+                Assert.Fail();
+            }
 
-            System.Diagnostics.Trace.WriteLine("ID " + getWF.id);
+            
 
-            Assert.IsTrue(getWFId == getWF.id);
+            Assert.IsTrue(getWFId == getWf.id);
         }
 
         /// <summary>
