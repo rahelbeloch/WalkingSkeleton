@@ -31,7 +31,6 @@ import de.hsrm.swt02.restserver.Message;
 
 /**
  * This class is called if client requests user operations.
- * @author jvanh001
  *
  */
 @Path("resource")
@@ -39,12 +38,11 @@ public class UserResource {
 
     public static final Logic LOGIC = ConstructionFactory.getLogic();
     public static final ServerPublisher PUBLISHER = ConstructionFactory.getPublisher();
-    LogicResponse logicResponse;
     public static final UseLogger LOGGER = new UseLogger();
+    LogicResponse logicResponse;
     
     /**
      * This method returns a requested user.
-     * 
      * @param username indicates which user is looked for
      * @return the requested user
      * @throws UserNotExistentException 
@@ -57,6 +55,7 @@ public class UserResource {
         final ObjectMapper mapper = new ObjectMapper();
         final User user = LOGIC.getUser(username);
         String userAsString;
+        
         try {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
@@ -68,9 +67,8 @@ public class UserResource {
     }
 
     /**
-     * 
-     * receives a user and stores it into the database.
-     * 
+     * Receives a user and stores it into the database. 
+     * This operation will be published on the message broker.
      * @param formParams is a wrapper for a sent user
      * @return 200 ok if successful
      */
@@ -83,6 +81,7 @@ public class UserResource {
         final String loggingBody = "SENDUSER";
         final String userAsString = formParams.get("data").get(0);
         User user;
+        
         try {
             user = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
@@ -96,7 +95,6 @@ public class UserResource {
             LOGGER.log(Level.INFO,loggingBody + " User already exists.");
             return Response.serverError().entity("11220").build();
         }
-
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -104,14 +102,13 @@ public class UserResource {
                 LOGGER.log(Level.WARNING, "Publisher not responding!");
             }
         }
-
         LOGGER.log(Level.INFO,loggingBody + " User successfully stored.");
-
         return Response.ok("User stored").build();
     }
 
     /**
      * This method updates a user.
+     * This operation will be published on the message broker.
      * @param username indicates which user should be updated
      * @param formParams is a wrapper of a sent user 
      * @return 200 ok if successful
@@ -127,6 +124,7 @@ public class UserResource {
         final ObjectMapper mapper = new ObjectMapper();
         final String userAsString = formParams.get("data").get(0);
         User user;
+        
         try {
             user = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
@@ -140,7 +138,6 @@ public class UserResource {
             LOGGER.log(Level.INFO,loggingBody + " User already exists.");
             return Response.serverError().entity("11220").build();
         }
-
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -148,14 +145,13 @@ public class UserResource {
                 LOGGER.log(Level.WARNING, "Publisher not responding!");
             }
         }
-
         LOGGER.log(Level.INFO,loggingBody + " User successfully updated.");
-
         return Response.ok().build();
     }
 
     /**
      * This method deletes an user.
+     * This operation will be published on the message broker.
      * @param username indicates which user should be deleted
      * @return deleted user, if successful
      */
@@ -166,6 +162,8 @@ public class UserResource {
         final String loggingBody = "DELETE -> " + username;
         final ObjectMapper mapper = new ObjectMapper();
         User user = null;
+        String userAsString;
+        
         try {
             user = LOGIC.getUser(username);
             logicResponse = LOGIC.deleteUser(username);
@@ -173,7 +171,6 @@ public class UserResource {
             LOGGER.log(Level.INFO,loggingBody + " User does not exist.");
             return Response.serverError().entity("11260").build();
         }
-        String userAsString;
         try {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
@@ -181,7 +178,6 @@ public class UserResource {
             return Response.serverError().entity("11210")
                     .build();
         }
-
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -189,9 +185,7 @@ public class UserResource {
                 LOGGER.log(Level.WARNING, "Publisher not responding!");
             }
         }
-
         LOGGER.log(Level.INFO,loggingBody + " User successfully deleted.");
-
         return Response.ok(userAsString).build();
     }
 
