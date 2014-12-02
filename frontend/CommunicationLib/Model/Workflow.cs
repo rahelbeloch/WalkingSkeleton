@@ -70,5 +70,22 @@ namespace CommunicationLib.Model
         {
             steps.Clear();
         }
+
+        /// <summary>
+        /// This method returns a step object by its id.
+        /// </summary>
+        /// <param name="stepId"></param>
+        /// <returns></returns>
+        public Step getStepById(int stepId)
+        {
+            foreach (Step s in steps)
+            {
+                if (s.id == stepId)
+                {
+                    return s;
+                }
+            }
+            return null;
+        }
     }
 }
