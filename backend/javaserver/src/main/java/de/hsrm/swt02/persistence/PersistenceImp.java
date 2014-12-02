@@ -49,6 +49,7 @@ public class PersistenceImp implements Persistence {
      */
     @Override
     public void storeWorkflow(Workflow workflow) {
+        workflow.setId(workflows.size());
         Workflow workflowToRemove = null;
         for (Workflow wf : workflows) {
             if (wf.getId() == workflow.getId()) {
@@ -61,7 +62,6 @@ public class PersistenceImp implements Persistence {
             this.logger.log(Level.INFO, "removing existing workflow "
                     + workflowToRemove.getId() + ".");
         }
-        workflow.setId(workflows.size());
         workflows.add((Workflow) workflow);
         this.logger.log(Level.INFO, "overwriting workflow " + workflow.getId()
                 + ".");
