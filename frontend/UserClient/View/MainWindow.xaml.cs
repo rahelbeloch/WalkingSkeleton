@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UserClient.ViewModel;
 using UserClient.Model;
+using UserClient.View;
 using CommunicationLib.Model;
 using CommunicationLib;
 using RestAPI;
@@ -41,11 +42,11 @@ namespace UserClient
         }
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            InitializeDashboard();
             try
             {
                 RestRequester.checkUser(txtName.Text, txtPassword.SecurePassword);
                 userName = txtName.Text;
+                Console.WriteLine("userName: "+userName);
                 //User user = RestRequester.GetObject<User>(); methode wird noch abgeändert
                 //LoginLayer.Visibility = Model.Authentication.Authenticate1(txtName.Text, txtPassword.SecurePassword) ? Visibility.Collapsed : Visibility.Visible;
                 //init_Dashboard();
@@ -56,6 +57,7 @@ namespace UserClient
             }
             finally
             {
+                InitializeDashboard();
                 ErrorMessage.Visibility = Visibility.Hidden;
                 LoginLayer.Visibility = Visibility.Collapsed;
             }
@@ -68,7 +70,7 @@ namespace UserClient
         {
             try
             {
-
+                Console.WriteLine(userName);
                 workflows = RestRequester.GetAllObjects<Workflow>(userName);
                 Console.WriteLine("test workflows");
                 foreach (Workflow workflow in workflows)
@@ -223,9 +225,28 @@ namespace UserClient
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(nr))));
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
             var button = new System.Windows.Controls.Primitives.ToggleButton();
-            button.Content = "Abschließen/Annehmen";
-            var block = new BlockUIContainer(button);
-            currentRow.Cells.Add(new TableCell(block));
+            if (actItem != null)
+            {
+                MyToggleButton toggle = new MyToggleButton();
+                toggle.username = userName;
+                toggle.itemId = actItem.id;
+                toggle.stepId = actItem.getActiveStepIdByUsername(userName);
+                toggle.Click += new RoutedEventHandler(stepForward);
+                toggle.Content = "Abschließen";
+                var block = new BlockUIContainer(toggle);
+                currentRow.Cells.Add(new TableCell(block));
+            }
+            else
+            {
+                button.Content = "Abschließen/Annehmen";
+                var block = new BlockUIContainer(button);
+                currentRow.Cells.Add(new TableCell(block));
+            }
+        }
+        private void stepForward(object sender, RoutedEventArgs e)
+        {
+            MyToggleButton toggle = sender as MyToggleButton;
+            RestRequester.StepForward(toggle.stepId, toggle.itemId, toggle.username);
         }
     }
 }
