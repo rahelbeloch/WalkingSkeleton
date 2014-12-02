@@ -47,9 +47,9 @@ public class PersistenceImp implements Persistence {
         this.logger = logger;
     }
 
-    /*
-     * store functions for workflow, item, user store functions for step,
-     * metaEntry
+    /**
+     * store functions to store workflows, items, and users into persistence.
+     * @param workflow is a workflow for storing
      */
     @Override
     public void storeWorkflow(Workflow workflow) {
@@ -79,11 +79,19 @@ public class PersistenceImp implements Persistence {
         }
     }
 
+    /**
+     * Method for loeading all workflows into a list of workflows
+     * @return List<Workflow> is the list we want to load
+     */
     @Override
     public List<Workflow> loadAllWorkflows() {
         return workflows;
     }
 
+    /**
+     * store functions to store an item.
+     * @param item is an item for storing
+     */
     @Override
     public void storeItem(Item item) {
         if (item.getId() <= 0) {
@@ -112,6 +120,12 @@ public class PersistenceImp implements Persistence {
         }
     }
 
+    /**
+     * Method for adding a new user.
+     * @param user is the needed user
+     * @exception UserAlreadyExistsException if the user to store is already there.
+     * @throws UserAlreadyExistsException
+     */
     @Override
     public void addUser(User user) throws UserAlreadyExistsException {
         for (User u : users) {
@@ -127,6 +141,12 @@ public class PersistenceImp implements Persistence {
                 .log(Level.INFO, "[persistence] adding user '" + user.getUsername() + "'.");
     }
 
+    /**
+     * Method for updating an already existing user.
+     * @param user is the user we need
+     * @exception UserNotExistentException if the requested user is not there.
+     * @throws UserNotExistentException
+     */
     @Override
     public void updateUser(User user) throws UserNotExistentException {
         User userToRemove = null;
@@ -194,6 +214,13 @@ public class PersistenceImp implements Persistence {
         metaEntries.add((MetaEntry) metaEntry);
     }
 
+    /**
+     * Method for loading a workflow.
+     * @param id is the id of the requested workflow.
+     * @return workflow is the requested workflow
+     * @exception WorkflowNotExistentException if the requested workflow is not there.
+     * @throws WorkflowNotExistentException
+     */
     @Override
     public Workflow loadWorkflow(int id) throws WorkflowNotExistentException {
         Workflow workflow = null;
@@ -214,6 +241,13 @@ public class PersistenceImp implements Persistence {
         // unique and combined ID for steps and workflows is given
     }
 
+    /**
+     * Method for loading an item.
+     * @param id is the id of the requested item.
+     * @return Item is the requested item.
+     * @exception ItemNotExistentException if the requested item is not there.
+     * @throws ItemNotExistentException
+     */
     @Override
     public Item loadItem(int id) throws ItemNotExistentException {
         Item item = null;
@@ -250,8 +284,8 @@ public class PersistenceImp implements Persistence {
     }
 
     /**
-     * Method for loading a step.
-     * @param id is the id of the requested step
+     * Only for the walking skeleton:  method for loading a step.
+     * @param id is the id of the step.
      * @return step is the requested step
      */
     public Step loadStep(int id) {
@@ -265,9 +299,9 @@ public class PersistenceImp implements Persistence {
     }
 
     /**
-     * Method for loading a MetaEntry.
-     * @param key is the key string
-     * @return metaEntry is the requested MetaEntry
+     * Method for loading a requested MetaEntry.
+     * @param key is the key string.
+     * @return MetaEntry is the requested MetaEntry of the list with the right key string.
      */
     public MetaEntry loadMetaEntry(String key) {
         MetaEntry metaEntry = null;
@@ -279,9 +313,11 @@ public class PersistenceImp implements Persistence {
         return metaEntry;
     }
 
-    /*
-     * delete functions for workflow, item, user delete functions for step,
-     * metaEntry
+    /**
+     * delete functions to remove workflows, items, and users from persistence.
+     * @param id is the id of the requested workflow
+     * @exception WorkflowNotExistentException if the requested workflow is not there.
+     * @throws WorkflowNotExistentException
      */
     @Override
     public void deleteWorkflow(int id) throws WorkflowNotExistentException {
@@ -309,6 +345,12 @@ public class PersistenceImp implements Persistence {
         }
     }
 
+    /**
+     * Method for function to delete an item.
+     * @param id is the id of the requested item.
+     * @exception ItemNotExistentException if the requested item is not there
+     * @throws ItemNotExistentException
+     */
     @Override
     public void deleteItem(int id) throws ItemNotExistentException {
         Item itemToRemove = null;
@@ -336,6 +378,12 @@ public class PersistenceImp implements Persistence {
         }
     }
 
+    /**
+     * Method for the function of deleting an user.
+     * @param name is the name of the requested user.
+     * @exception UserNotExistentException if the requested user is not there.
+     * @throws UserNotExistentException
+     */
     @Override
     public void deleteUser(String name) throws UserNotExistentException {
         User userToRemove = null;
