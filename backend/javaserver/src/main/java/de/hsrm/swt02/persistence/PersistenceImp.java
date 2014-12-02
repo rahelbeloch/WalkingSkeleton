@@ -59,11 +59,11 @@ public class PersistenceImp implements Persistence {
         }
         if (workflowToRemove != null) {
             workflows.remove(workflowToRemove);
-            this.logger.log(Level.INFO, "removing existing workflow "
+            this.logger.log(Level.INFO, "[persistence] removed existing workflow "
                     + workflowToRemove.getId() + ".");
         }
         workflows.add((Workflow) workflow);
-        this.logger.log(Level.INFO, "overwriting workflow " + workflow.getId()
+        this.logger.log(Level.INFO, "[persistence] successfully stored workflow " + workflow.getId()
                 + ".");
 
         // a workflows steps are resolved and stored one by one
@@ -89,11 +89,11 @@ public class PersistenceImp implements Persistence {
         }
         if (itemToRemove != null) {
             items.remove(itemToRemove);
-            this.logger.log(Level.INFO, "removing exisiting item "
+            this.logger.log(Level.INFO, "[persistence] removing exisiting item "
                     + itemToRemove.getId() + ".");
         }
         items.add((Item) item);
-        this.logger.log(Level.INFO, "overwriting item " + item.getId() + ".");
+        this.logger.log(Level.INFO, "[persistence] successfully stored item " + item.getId() + ".");
 
         // items include information of type MetaEntry which have to be stored
         // separately
@@ -115,7 +115,7 @@ public class PersistenceImp implements Persistence {
         }
         users.add((User) user);
         this.logger
-                .log(Level.INFO, "adding user '" + user.getUsername() + "'.");
+                .log(Level.INFO, "[persistence] adding user '" + user.getUsername() + "'.");
     }
 
     @Override
@@ -128,11 +128,11 @@ public class PersistenceImp implements Persistence {
         }
         if (userToRemove != null) {
             users.remove(userToRemove);
-            this.logger.log(Level.INFO, "removing existing user '"
+            this.logger.log(Level.INFO, "[persistence] removing existing user '"
                     + userToRemove.getUsername() + "'.");
             users.add(user);
             this.logger.log(Level.INFO,
-                    "overwriting user '" + user.getUsername() + "'.");
+                    "[persistence] successfully stored user '" + user.getUsername() + "'.");
         } else {
             final UserNotExistentException e = new UserNotExistentException(
                     user.getUsername());
@@ -274,7 +274,7 @@ public class PersistenceImp implements Persistence {
         if (workflowToRemove != null) {
             workflows.remove(workflowToRemove);
             this.logger.log(Level.INFO,
-                    "removed workflow " + workflowToRemove.getId() + ".");
+                    "[persistence] removed workflow " + workflowToRemove.getId() + ".");
         } else {
             final WorkflowNotExistentException e = new WorkflowNotExistentException(
                     "" + id);
@@ -300,7 +300,7 @@ public class PersistenceImp implements Persistence {
         }
         if (itemToRemove != null) {
             items.remove(itemToRemove);
-            this.logger.log(Level.INFO, "removed item " + itemToRemove.getId()
+            this.logger.log(Level.INFO, "[persistence] removed item " + itemToRemove.getId()
                     + ".");
         } else {
             final ItemNotExistentException e = new ItemNotExistentException("" + id);
