@@ -222,11 +222,12 @@ namespace RestAPI
             try
             {
                 var response = client.Execute(request);
-                if (response.StatusCode != HttpStatusCode.OK)
+                // test the StatusCode of response; if 500 happened there is a Server Error
+                if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
                 {
-                    //BasicException baseEx = ErrorMessageMapper.errorMessages[Int32.Parse(response.StatusCode)];
-                    BasicException baseEx = new BasicException();
-                    throw baseEx;
+                    int errorCode = Int32.Parse(response.Content);
+                    BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
+                    throw ex;
                 }
                 return response;
             }

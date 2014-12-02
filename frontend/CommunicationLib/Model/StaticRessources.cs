@@ -17,8 +17,7 @@ namespace CommunicationLib.Model
     public class ErrorMessageMapper
     {
         private static Dictionary<int, Type> errorMessages = new Dictionary<int, Type>()
-        {   
-                       
+        {          
             // Error codes
             {10000, typeof(BasicException)},
             
@@ -51,9 +50,11 @@ namespace CommunicationLib.Model
             {12200,typeof(RestException)}
 
             //{12210,typeof(ServerNotRunningException)}
-            
         };
+
+        public static Type GetErrorType(int code)
+        {
+            return errorMessages[code];
+        }
     }
-
-
 }
