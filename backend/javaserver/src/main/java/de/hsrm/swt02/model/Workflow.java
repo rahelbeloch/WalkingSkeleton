@@ -61,7 +61,7 @@ public class Workflow extends RootElement {
 
         return steps.get(pos);
     }
-
+    
     /**
      * This method returns a step object by its id.
      * 
@@ -69,10 +69,9 @@ public class Workflow extends RootElement {
      * @return searched step object if found, else return null
      */
     public Step getStepById(int stepId) {
-
-        for (Step as : steps) {
-            if (as.getId() == stepId) {
-                return as;
+        for (Step s : steps) {
+            if (s.getId() == stepId) {
+                return s;
             }
         }
         return null;
