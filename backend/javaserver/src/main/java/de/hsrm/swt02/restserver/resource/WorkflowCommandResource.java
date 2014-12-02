@@ -1,5 +1,7 @@
 package de.hsrm.swt02.restserver.resource;
 
+import java.util.logging.Level;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -9,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
@@ -20,9 +23,9 @@ import de.hsrm.swt02.restserver.Message;
 @Path("command/workflow")
 public class WorkflowCommandResource {
 
-    public static final Logic LOGIC = ConstructionFactory.getLogic();
-    public static final ServerPublisher PUBLISHER = ConstructionFactory
-            .getPublisher();
+    public static final Logic logic = ConstructionFactory.getLogic();
+    public static final ServerPublisher publisher = ConstructionFactory.getPublisher();
+    public static final UseLogger logger = new UseLogger();
     LogicResponse logicResponse;
 
     /**
@@ -38,19 +41,21 @@ public class WorkflowCommandResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response startWorkflow(@PathParam("workflowid") int workflowid,
             @PathParam("username") String username) {
-        
-        System.out.println("START -> " + workflowid + " " + username);
+
+        String loggingBody = "START -> " + workflowid + " " + username;
+
         try {
-            LOGIC.startWorkflow(workflowid, username);
+            logic.startWorkflow(workflowid, username);
             //!! Must be yet tested!!
-            logicResponse = LOGIC.getProcessLogicResponse();
+            logicResponse = logic.getProcessLogicResponse();
             for(Message m : logicResponse.getMessages()){
-                PUBLISHER.publish(m.getValue(), m.getTopic());
+                publisher.publish(m.getValue(), m.getTopic());
             }
         } catch (WorkflowNotExistentException | ServerPublisherBrokerException e) {
-            // TODO use logger & return error code
-            Response.status(4001).build();
+            logger.log(Level.INFO,loggingBody + " Workflow does not exist.");
+            Response.serverError().entity("11250").build();
         }
+        logger.log(Level.INFO, loggingBody + " Workflow started.");
         return Response.ok().build();
     }
 
@@ -67,24 +72,17 @@ public class WorkflowCommandResource {
     public Response forward(@PathParam("stepid") int stepid,
             @PathParam("itemid") int itemid,
             @PathParam("username") String username) {
-        System.out.println("FORWARD -> " + itemid);
+        String loggingBody = "FORWARD -> " + itemid;
         try {
-            LOGIC.stepOver(itemid, stepid, username);
-            //!! Must be yet tested!!
-            logicResponse = LOGIC.getProcessLogicResponse();
-            for(Message m : logicResponse.getMessages()){
-                PUBLISHER.publish(m.getValue(), m.getTopic());
-            }
-        } catch (ItemNotExistentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (UserNotExistentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ServerPublisherBrokerException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+			logic.stepOver(itemid, stepid, username);
+		} catch (ItemNotExistentException e) {
+			logger.log(Level.INFO, loggingBody + " Item does not exist.");
+			return Response.serverError().entity("11250").build();
+		} catch (UserNotExistentException e) {
+			logger.log(Level.INFO, loggingBody + " User does not exist.");
+			return Response.serverError().entity("11260").build();
+		}
+        logger.log(Level.INFO, loggingBody + " Worfklow forwarded.");
         return Response.ok().build();
     }
 
