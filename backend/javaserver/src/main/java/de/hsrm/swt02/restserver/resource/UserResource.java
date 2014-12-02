@@ -22,16 +22,20 @@ import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.restserver.LogicResponse;
+import de.hsrm.swt02.restserver.Message;
 
 @Path("resource")
 public class UserResource {
 
-    public static final Logic logic = ConstructionFactory.getLogic();
-    public static final ServerPublisher publisher = ConstructionFactory.getPublisher();
-    public static final UseLogger logger = new UseLogger();
+    public static final Logic LOGIC = ConstructionFactory.getLogic();
+    public static final ServerPublisher PUBLISHER = ConstructionFactory.getPublisher();
+    LogicResponse logicResponse;
+    public static final UseLogger LOGGER = new UseLogger();
     
     /**
      * 
@@ -43,23 +47,23 @@ public class UserResource {
     @Path("user/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getUser(@PathParam("username") String username) throws UserNotExistentException {
-        String loggingBody = "GETUSER -> " + username;
-        ObjectMapper mapper = new ObjectMapper();
-        User user = logic.getUser(username);
+        final String loggingBody = "GETUSER -> " + username;
+        final ObjectMapper mapper = new ObjectMapper();
+        final User user = LOGIC.getUser(username);
         String userAsString;
         try {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
-        	logger.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210").build();
         }
-        logger.log(Level.INFO,loggingBody + " Request successful.");
+        LOGGER.log(Level.INFO,loggingBody + " Request successful.");
         return Response.ok(userAsString).build();
     }
 
     /**
      * 
-     * receives a user and stores it into the database
+     * receives a user and stores it into the database.
      * 
      * @param receivedUser
      * @return 200 ok if successful
@@ -69,24 +73,34 @@ public class UserResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveUser(MultivaluedMap<String, String> formParams) {
-        ObjectMapper mapper = new ObjectMapper();
-        String loggingBody = "SENDUSER";
-        String userAsString = formParams.get("data").get(0);
+        final ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = "SENDUSER";
+        final String userAsString = formParams.get("data").get(0);
         User user;
         try {
             user = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
-        	logger.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210")
                     .build();
         }
         try {
-            logic.addUser(user);
+            logicResponse = LOGIC.addUser(user);
         } catch (UserAlreadyExistsException e) {
-        	logger.log(Level.INFO,loggingBody + " User already exists.");
+            LOGGER.log(Level.INFO,loggingBody + " User already exists.");
             return Response.serverError().entity("11220").build();
         }
-        logger.log(Level.INFO,loggingBody + " User successfully stored.");
+
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                // TODO Logging
+            }
+        }
+
+        LOGGER.log(Level.INFO,loggingBody + " User successfully stored.");
+
         return Response.ok("User stored").build();
     }
 
@@ -101,24 +115,34 @@ public class UserResource {
     @Consumes("application/x-www-form-urlencoded")
     public Response updateUser(@PathParam("username") String username,
             MultivaluedMap<String, String> formParams) {
-        String loggingBody = "UPDATE -> " + username;
-        ObjectMapper mapper = new ObjectMapper();
-        String userAsString = formParams.get("data").get(0);
+        final String loggingBody = "UPDATE -> " + username;
+        final ObjectMapper mapper = new ObjectMapper();
+        final String userAsString = formParams.get("data").get(0);
         User user;
         try {
             user = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
-        	logger.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210")
                     .build();
         }
         try {
-            logic.addUser(user);
+            logicResponse = LOGIC.addUser(user);
         } catch (UserAlreadyExistsException e) {
-        	logger.log(Level.INFO,loggingBody + " User already exists.");
-        	return Response.serverError().entity("11220").build();
+            LOGGER.log(Level.INFO,loggingBody + " User already exists.");
+            return Response.serverError().entity("11220").build();
         }
-        logger.log(Level.INFO,loggingBody + " User successfully updated.");
+
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                // TODO Logging
+            }
+        }
+
+        LOGGER.log(Level.INFO,loggingBody + " User successfully updated.");
+
         return Response.ok().build();
     }
 
@@ -131,25 +155,35 @@ public class UserResource {
     @Path("user/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser(@PathParam("username") String username) {
-        String loggingBody = "DELETE -> " + username;
-        ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = "DELETE -> " + username;
+        final ObjectMapper mapper = new ObjectMapper();
         User user = null;
         try {
-            user = logic.getUser(username);
-            logic.deleteUser(username);
+            user = LOGIC.getUser(username);
+            logicResponse = LOGIC.deleteUser(username);
         } catch (UserNotExistentException e1) {
-        	logger.log(Level.INFO,loggingBody + " User does not exist.");
+            LOGGER.log(Level.INFO,loggingBody + " User does not exist.");
             return Response.serverError().entity("11260").build();
         }
         String userAsString;
         try {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
-        	logger.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210")
                     .build();
         }
-        logger.log(Level.INFO,loggingBody + " User successfully deleted.");
+
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                // TODO Logging
+            }
+        }
+
+        LOGGER.log(Level.INFO,loggingBody + " User successfully deleted.");
+
         return Response.ok(userAsString).build();
     }
 
