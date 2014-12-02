@@ -23,8 +23,11 @@ import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
+import de.hsrm.swt02.restserver.LogicResponse;
+import de.hsrm.swt02.restserver.Message;
 
 @Path("resource")
 public class WorkflowResource {
@@ -33,6 +36,7 @@ public class WorkflowResource {
     public static final ServerPublisher PUBLISHER = ConstructionFactory
             .getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
+    LogicResponse logicResponse = new LogicResponse();
 
     /**
      * 
@@ -118,7 +122,14 @@ public class WorkflowResource {
             return Response.serverError().entity("JACKSON parsing-error")
                     .build();
         }
-        LOGIC.addWorkflow(workflow);
+        logicResponse = LOGIC.addWorkflow(workflow);
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                // TODO Logging
+            }
+        }
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully stored.");
         return Response.ok().build();
     }
@@ -146,7 +157,14 @@ public class WorkflowResource {
             return Response.serverError().entity("JACKSON parsing-error")
                     .build();
         }
-        LOGIC.addWorkflow(workflow);
+        logicResponse = LOGIC.addWorkflow(workflow);
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                // TODO Logging
+            }
+        }
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully updated.");
         return Response.ok().build();
     }
@@ -165,7 +183,7 @@ public class WorkflowResource {
         Workflow workflow = null;
         try {
             workflow = LOGIC.getWorkflow(workflowid);
-            LOGIC.deleteWorkflow(workflowid);
+            logicResponse = LOGIC.deleteWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.INFO, loggingBody + " Workflow does not exist.");
             return Response.serverError().entity("Workflow does not exist")
@@ -179,6 +197,13 @@ public class WorkflowResource {
                     + " JACKSON parsing-error occured.");
             return Response.serverError().entity("JACKSON parsing-error")
                     .build();
+        }
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                // TODO Logging
+            }
         }
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully deleted.");
         return Response.ok(workflowAsString).build();
