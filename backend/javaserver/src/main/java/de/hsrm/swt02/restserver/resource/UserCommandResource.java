@@ -16,7 +16,7 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 
 /**
- * This class is called if client wants to operate on user.
+ * This class is called if client wants to process user information.
  *
  */
 @Path("command/user")
