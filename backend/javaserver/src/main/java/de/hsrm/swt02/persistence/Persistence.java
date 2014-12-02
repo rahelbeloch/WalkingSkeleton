@@ -46,7 +46,7 @@ public interface Persistence {
     void updateUser(User user) throws UserNotExistentException;
 
     /**
-     * load functions to get workflows, items, and users from persistence.
+     * Method for loeading all workflows into a list of workflows.
      * @return List<Workflow> is the list we want to load
      */
     List<Workflow> loadAllWorkflows();
