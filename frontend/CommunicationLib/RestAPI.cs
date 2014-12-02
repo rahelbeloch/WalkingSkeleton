@@ -101,7 +101,33 @@ namespace RestAPI
             //Deserialize JSON
             O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
 
+            if (desObj.GetType() == typeof(Workflow))
+            {
+                convertIdListToReferences(ChangeType<Workflow>(desObj));
+            }     
+
             return desObj;
+        }
+
+        public static T ChangeType<T>(object obj)
+        {
+            return (T)Convert.ChangeType(obj, typeof(T));
+        }
+
+        /// <summary>
+        /// Incoming order of step ids are converted into references
+        /// </summary>
+        /// <param name="workflow"></param>
+        public static void convertIdListToReferences(Workflow workflow)
+        {
+            foreach (Step s in workflow.steps)
+            {
+                foreach (int id in s.nextStepIds)
+                {
+                    s.nextSteps.Add(workflow.getStepById(id));
+                }
+            }
+
         }
 
         /// <summary>
