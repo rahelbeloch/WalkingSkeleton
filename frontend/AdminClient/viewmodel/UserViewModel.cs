@@ -61,7 +61,7 @@ namespace AdminClient.viewmodel
                         
                         // update view model
                         _userCollection.Add(newUser);
-                        RestAPI.RestRequester.PostObject<Workflow>(newUser);
+                        RestAPI.RestRequester.PostObject<User>(newUser);
                         
                         username = "";
                     }, canExecute =>
