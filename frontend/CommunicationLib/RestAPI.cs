@@ -227,14 +227,18 @@ namespace RestAPI
                 {
                     int errorCode = Int32.Parse(response.Content);
                     BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
+                    System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
                     throw ex;
                 }
+                
+                System.Diagnostics.Trace.WriteLine("response: " + response.Content);
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                System.Diagnostics.Trace.WriteLine(ex.Data + " / " + ex.Message);
                 // this has to be a HttpException with the Connection
-                throw new ConnectionException();
+                throw new Exception(ex.Message);
             }
         }
 
