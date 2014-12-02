@@ -27,8 +27,6 @@ public class LogicImp implements Logic {
     private ProcessManager pm;
     private LogicResponse logicResponse;
 
-    
-
     /**
      * Constructor for LogicImp.
      * 
@@ -119,12 +117,12 @@ public class LogicImp implements Logic {
      */
     @Override
     public void stepInProgress(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
-        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
+        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username), "busy");
     }
     
     @Override
     public void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
-        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
+        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username), "finish");
     }
     
 
@@ -253,7 +251,6 @@ public class LogicImp implements Logic {
                     items.add(item);
                     break;
                 }
-
             }
         }
         return items;
@@ -290,6 +287,14 @@ public class LogicImp implements Logic {
     }
     
     /**
+     * Setter for LogicResponse object from the processmanager instance.
+     */
+    public void setProcessLogicResponse(LogicResponse lr) {
+        pm.setLogicResponse(lr);
+        
+    }
+    
+    /**
      * Getter for logicResponse.
      * @return logicResponse
      */
@@ -298,18 +303,20 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * Setter for logicResponse
+     * Setter for logicResponse.
      * @param lr is new value for logicResponse
      */
     public void setLogicResponse(LogicResponse lr) {
         this.logicResponse = lr;
     }
     /**
-     * This method return all workflows in persistence
+     * This method return all workflows in persistence.
      * @return
      */
     @Override
     public List<Workflow> getAllWorkflow() {
         return p.loadAllWorkflows();
     }
+
+   
 }

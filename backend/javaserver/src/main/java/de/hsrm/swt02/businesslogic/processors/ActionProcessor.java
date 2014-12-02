@@ -33,10 +33,7 @@ public class ActionProcessor extends Observable implements StepProcessor {
     /**
      * This method is initiated by an User. The responsible User sends the item
      * and the step, which they wish to edit. The sent item will be modified and
-     * saved. First the current step's state of the item will be set on "BUSY".
-     * After successfully executing the Action-function the current step's state
-     * will be set on "DONE". If the next step isn't an end state, this
-     * processor sets the state of the current step's straight neighbor to OPEN.
+     * saved. The current step's state of the item will be set on "BUSY" only if it was setted to "OPEN".
      * 
      * @param item which is currently edited
      * @param step which is currently executed
@@ -45,34 +42,42 @@ public class ActionProcessor extends Observable implements StepProcessor {
     public void handle(Item item, Step step, User user) {
 
         currentItem = item;
-        currentItem.setStepState(step.getId(), MetaState.BUSY.toString());
-        currentItem.setState("upd");
-        p.storeItem(currentItem);
-        setChanged();
-        notifyObservers(currentItem);
+        if (currentItem.getEntryValue(step.getId() + "", "step").equals(MetaState.OPEN.toString())) {
+            currentItem.setStepState(step.getId(), MetaState.BUSY.toString());
+            currentItem.setState("upd");
+            p.storeItem(currentItem);
+            setChanged();
+            notifyObservers(currentItem);
+        } else {
+            //TODO what happens if step wasn't open?
+        }
+    }
 
-        // funktion irrelevant fuer walking skeleton
-        currentItem.setStepState(step.getId(), MetaState.DONE.toString());
-        currentItem.setState("upd");
-        p.storeItem(currentItem);
-        setChanged();
-        notifyObservers(currentItem);
-
-        for (Step s : step.getNextSteps()) {
-            if (!(s instanceof FinalStep)) {
-                currentItem.setStepState(s.getId(), MetaState.OPEN.toString());
-                currentItem.setState("upd");
-                p.storeItem(currentItem);
-                setChanged();
-                notifyObservers(currentItem);
-            } else {
-                currentItem.setStepState(s.getId(), MetaState.DONE.toString());
-                currentItem.setFinished(true);
-                currentItem.setState("upd");
-                p.storeItem(currentItem);
-                setChanged();
-                notifyObservers(currentItem);
+    /**
+     * This method sets the metastate of a step to "DONE" only if it was setted as "BUSY".
+     * 
+     * @param item which is currently edited
+     * @param step which is currently executed
+     * @param user who currently executes the step
+     */
+    public void close(Item item, Step step, User user) {
+        currentItem = item;
+        if (currentItem.getEntryValue(step.getId() + "", "step").equals(MetaState.BUSY.toString())) {
+            currentItem.setStepState(step.getId(), MetaState.DONE.toString());
+            for (Step s : step.getNextSteps()) {
+                if (!(s instanceof FinalStep)) {
+                    currentItem.setStepState(s.getId(), MetaState.OPEN.toString());
+                } else {
+                    currentItem.setStepState(s.getId(), MetaState.DONE.toString());
+                    currentItem.setFinished(true);
+                }
             }
+            currentItem.setState("upd");
+            p.storeItem(currentItem);
+            setChanged();
+            notifyObservers(currentItem);
+        } else {
+          //TODO what happens if step wasn't busy?
         }
     }
 }

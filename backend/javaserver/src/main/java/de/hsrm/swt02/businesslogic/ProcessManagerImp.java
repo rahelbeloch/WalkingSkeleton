@@ -51,7 +51,6 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * @return true if user is "owner" of step and false if not
      */
     public boolean checkUser(User user, Step step) {
-
         if (step instanceof Action) {
             return user.getUsername().equals(((Action) step).getUsername());
         }
@@ -67,13 +66,17 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      *            which is currently active
      * @param user
      *            who started interaction
+     * @param operation which indicates which method should be used
      */
-    public void selectProcessor(Step step, Item item, User user) {
-
+    public void selectProcessor(Step step, Item item, User user, String operation) {
         if (step instanceof Action) {
             final ActionProcessor actionProcessor = new ActionProcessor(persistence);
             actionProcessor.addObserver(this);
-            actionProcessor.handle(item, step, user);
+            if (operation.equals("busy")) {
+                actionProcessor.handle(item, step, user);
+            } else if (operation.equals("finish")) {
+                actionProcessor.close(item, step, user);
+            }
         }
     }
 
@@ -86,17 +89,6 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      *            is an object which is received when notified
      */
     public void update(Observable o, Object arg) {
-
-        // try {
-        // sp.publish(
-        // "item=" + ((Item) arg).getState() + "="
-        // + ((Item) arg).getId(), "ITEMS_FROM_"
-        // + ((Item) arg).getWorkflowId());
-        //
-        // } catch (ServerPublisherBrokerException e) {
-        //
-        // }
-        // TODO sammle zu veröffentlichte nachrichten in einem response objekt
         logicResponse.add(new Message("ITEMS_FROM"
                 + ((Item) arg).getWorkflowId(), "item="
                 + ((Item) arg).getState() + "=" + ((Item) arg).getId()));

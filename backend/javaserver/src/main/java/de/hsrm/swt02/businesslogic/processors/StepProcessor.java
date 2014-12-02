@@ -19,5 +19,13 @@ public interface StepProcessor {
      * @param user who sent an edit request
      */
     void handle(Item item, Step step, User user);
-
+    
+    /**
+     * This method closes a busy step.
+     * 
+     * @param item which is active in a workflow
+     * @param step which an user wishes to edit
+     * @param user  who sent the close request
+     */
+    void close(Item item, Step step, User user);
 }
