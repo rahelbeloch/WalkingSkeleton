@@ -14,15 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * The JsonTypeInfo and JsonSubTypes annotations assure that 
  * the (de)serialization process of derived types works correctly.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "$type")
-@JsonSubTypes({
-    @Type(value = StartStep.class, name = "StartStep"),
-    @Type(value = Action.class, name = "Action"),
-    @Type(value = FinalStep.class, name = "FinalStep")
-})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
+@JsonSubTypes({@Type(value = StartStep.class, name = "StartStep"), @Type(value = Action.class, name = "Action"), @Type(value = FinalStep.class, name = "FinalStep")})
 public class Step {
     // Used for (de)serialization. Do not change.
     protected int id;
@@ -37,22 +30,22 @@ public class Step {
     protected String username = "noname";
 
     /**
-     * Constructor for Step
+     * Constructor for Step.
      */
     public Step() {
     }
     
     /**
-     * Id getter
-     * @return id
+     * Id getter.
+     * @return id of step
      */
     public int getId() {
         return this.id;
     }
     
     /**
-     * Id setter
-     * @param id
+     * Id setter.
+     * @param id of step
      */
     public void setId(int id) {
         this.id = id;
@@ -83,16 +76,16 @@ public class Step {
     }
 
     /**
-     * Username getter
-     * @return username
+     * Username getter.
+     * @return username is the username of the user responsible for the step
      */
     public String getUsername() {
         return this.username;
     }
     
     /**
-     * Username setter
-     * @param username
+     * Username setter.
+     * @param username is the username of the user responsible for the step
      */
     public void setUsername(String username) {
         this.username = username;

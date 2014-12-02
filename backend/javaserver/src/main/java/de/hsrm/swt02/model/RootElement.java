@@ -8,23 +8,23 @@ public class RootElement {
     protected int id;
 
     /**
-     * Constructor for RootElement
+     * Constructor for RootElement.
      */
     public RootElement() {
 
     }
 
     /**
-     * Id getter
-     * @return id
+     * Id getter.
+     * @return id of the RootElement
      */
     public int getId() {
         return id;
     }
 
     /**
-     * Id setter
-     * @param id
+     * Id setter.
+     * @param id of the RootElement
      */
     public void setId(int id) {
         this.id = id;

@@ -5,9 +5,9 @@ package de.hsrm.swt02.model;
  *
  */
 public class FinalStep extends Step {
-	/**
-	 * Constructor for FinalStep
-	 */
+    /**
+    * Constructor for FinalStep.
+    */
     public FinalStep() {
         super();
     }

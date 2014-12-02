@@ -7,26 +7,26 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * This class represents a RootElement List for Rest
+ * This class represents a RootElement List for Rest.
  */
 public class RootElementList implements List<RootElement> {
-	
+
     private List<RootElement> myList;
 
     /**
-     * Constructor for RootElementList
+     * Constructor for RootElementList.
      */
     public RootElementList() {
         myList = new LinkedList<RootElement>();
     }
 
-    @Override
-    public boolean addAll(Collection c) {
+    @SuppressWarnings("unchecked") @Override
+    public boolean addAll(@SuppressWarnings("rawtypes") Collection c) {
         return myList.addAll((Collection<RootElement>) c);
     }
 
-    @Override
-    public boolean addAll(int index, Collection c) {
+    @SuppressWarnings("unchecked") @Override
+    public boolean addAll(int index, @SuppressWarnings("rawtypes") Collection c) {
         return myList.addAll(index, (Collection<RootElement>) c);
     }
 
@@ -40,9 +40,9 @@ public class RootElementList implements List<RootElement> {
         return myList.contains(o);
     }
 
-    @Override
-    public boolean containsAll(Collection c) {
-        return containsAll((Collection<RootElement>) c);
+    @SuppressWarnings("unchecked") @Override
+    public boolean containsAll(@SuppressWarnings("rawtypes") Collection c) {
+        return myList.containsAll((Collection<RootElement>) c);
     }
 
     @Override
@@ -80,13 +80,13 @@ public class RootElementList implements List<RootElement> {
         return myList.remove(o);
     }
 
-    @Override
-    public boolean removeAll(Collection c) {
+    @SuppressWarnings("unchecked") @Override
+    public boolean removeAll(@SuppressWarnings("rawtypes") Collection c) {
         return myList.removeAll((Collection<RootElement>) c);
     }
 
-    @Override
-    public boolean retainAll(Collection c) {
+    @SuppressWarnings("unchecked") @Override
+    public boolean retainAll(@SuppressWarnings("rawtypes") Collection c) {
         return myList.retainAll((Collection<RootElement>) c);
     }
 
@@ -105,7 +105,7 @@ public class RootElementList implements List<RootElement> {
         return myList.toArray();
     }
 
-    @Override
+    @SuppressWarnings("unchecked") @Override
     public Object[] toArray(Object[] a) {
         return myList.toArray(a);
     }
