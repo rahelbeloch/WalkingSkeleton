@@ -81,10 +81,23 @@ namespace RestAPI
         /// <returns>The requested object</returns>
         public static O GetObject<O>(int id) where O : new()
         {
+            IRestResponse response;
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName +"/" + id;
-           IRestResponse response = GetObjectRequest<O>(url, Method.GET);
-
+            try
+            {
+                response = GetObjectRequest<O>(url, Method.GET);
+                
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                System.Diagnostics.Trace.WriteLine("Ein anderer Fehler in getObject");
+                throw;
+            }
             //Deserialize JSON
             O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
 
@@ -98,15 +111,21 @@ namespace RestAPI
         /// <returns>If it worked or not</returns>
         public static Boolean UpdateObject(RootElement sendObj)
         {
+            IRestResponse response;
             String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "/" + sendObj.id;
 
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
-            
-            IRestResponse resp = SendObjectRequest(url, Method.PUT, serializedObj);
-
-            return  resp.StatusCode == HttpStatusCode.OK;
+            try
+            {
+                response = SendObjectRequest(url, Method.PUT, serializedObj);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
+            return  response.StatusCode == HttpStatusCode.OK;
         }
 
         /// <summary>
@@ -117,15 +136,22 @@ namespace RestAPI
         /// <returns>True if it worked, false/exception otherwise</returns>
         public static Boolean PostObject<O>(RootElement sendObj) where O : new()
         {
+            IRestResponse response;
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName;
             
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
-            
-            IRestResponse resp = SendObjectRequest(url, Method.POST, serializedObj);
 
-            return resp.StatusCode == HttpStatusCode.OK;
+            try
+            {
+                response = SendObjectRequest(url, Method.POST, serializedObj);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
+            return response.StatusCode == HttpStatusCode.OK;
         }
 
         /// <summary>
@@ -136,9 +162,17 @@ namespace RestAPI
         /// <returns>The deleted object</returns>
         public static O DeleteObject<O>(int id) where O : new()
         {
+            IRestResponse response;
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "/" + id;
-            IRestResponse response = GetObjectRequest<O>(url, Method.DELETE);
+            try
+            {
+                response = GetObjectRequest<O>(url, Method.DELETE);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
 
             //Deserialize JSON
             O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
@@ -154,6 +188,7 @@ namespace RestAPI
         /// <returns>True if it worked, false otherwhise, or an exception</returns>
         public static Boolean checkUser(String username, SecureString password)
         {
+            IRestResponse resp;
             String url = _operationParam + "user/" + "login";
 
             var request = new RestRequest(url, Method.POST);
@@ -161,7 +196,14 @@ namespace RestAPI
             request.AddParameter("username", username, ParameterType.GetOrPost);
             request.AddParameter("password", password, ParameterType.GetOrPost);
 
-            IRestResponse resp = SendSimpleRequest(request);
+            try
+            {
+                resp = SendSimpleRequest(request);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
 
             return resp.StatusCode == HttpStatusCode.OK;
         }
@@ -174,12 +216,20 @@ namespace RestAPI
         /// <param name="uId">Username</param>
         public static Boolean StartWorkflow(int wId, string username)
         {
+            IRestResponse resp;
             String url = _operationParam + "workflow/"+ "start/" + wId + "/" + username;
 
             var request = new RestRequest(url, Method.POST);
             request.AddHeader("Accept", "text/plain");
 
-            IRestResponse resp = SendSimpleRequest(request);
+            try
+            {
+                resp = SendSimpleRequest(request);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
             
             return resp.StatusCode == HttpStatusCode.OK ;
         }
@@ -193,6 +243,7 @@ namespace RestAPI
         /// <returns>True if it worked, false/exception otherwise</returns>
         public static Boolean StepForward(int stepId, int itemId, string username)
         {
+            IRestResponse resp;
             String url = _operationParam + "workflow/" + "forward/" + stepId + "/" + itemId + "/" + username;
             
             var request = new RestRequest(url, Method.POST);
@@ -201,8 +252,14 @@ namespace RestAPI
             //request.AddParameter("username", username, ParameterType.GetOrPost);
             //request.AddParameter("password", password, ParameterType.GetOrPost);
 
-            IRestResponse resp = SendSimpleRequest(request);
-            
+            try
+            {
+                resp = SendSimpleRequest(request);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
             return resp.StatusCode == HttpStatusCode.OK;
         }
 
@@ -224,7 +281,6 @@ namespace RestAPI
             {
                 response = client.Execute(request);
                 System.Diagnostics.Trace.WriteLine("response: " + response.Content);
-                return response;
             }
             catch (Exception ex)
             {
@@ -241,8 +297,7 @@ namespace RestAPI
                 System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
                 throw ex;
             }
-                
-
+            return response;
         }
 
         /// <summary>
@@ -254,6 +309,7 @@ namespace RestAPI
         /// <returns>The response from server</returns>
         private static IRestResponse SendObjectRequest(String url, RestSharp.Method method, String serializedObj)
         {
+            IRestResponse response;
             var request = new RestRequest(url, method);
             request.AddHeader("Accept", "text/plain");
 
@@ -267,20 +323,22 @@ namespace RestAPI
             // decide wether the server does return the right excepted object or throws an exception
             try
             {
-                var response = client.Execute(request);
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    //BasicException baseEx = ErrorMessageMapper.errorMessages[Int32.Parse(response.StatusCode)];
-                    BasicException baseEx = new BasicException();
-                    throw baseEx;
-                }
-                return response;
+                response = client.Execute(request);
             }
             catch (Exception)
             {
                 // this has to be a HttpException with the Connection
                 throw new ConnectionException();
             }
+
+            if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                int errorCode = Int32.Parse(response.Content);
+                BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
+                System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
+                throw ex;
+            }
+            return response;
         }
 
         /// <summary>
@@ -290,23 +348,26 @@ namespace RestAPI
         /// <returns>The response object</returns>
         private static IRestResponse SendSimpleRequest(RestRequest request)
         {
+            IRestResponse response;
             try
             {
-                var response = client.Execute(request);
-                // if no HttpException happened and although the StatusCode is not "OK", there must be on Exception of our own
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    //BasicException baseEx = ErrorMessageMapper.errorMessages[Int32.Parse(response.StatusCode)];
-                    BasicException baseEx = new BasicException();
-                    throw baseEx;
-                }
-                return response;
+                response = client.Execute(request);
             }
             catch(Exception)
             {
                 // this has to be a HttpException with the Connection
                 throw new ConnectionException();
             }
+
+            // if no HttpException happened and although the StatusCode is not "OK", there must be on Exception of our own
+            if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                int errorCode = Int32.Parse(response.Content);
+                BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
+                System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
+                throw ex;
+            }
+            return response;
         }
     }
 }
