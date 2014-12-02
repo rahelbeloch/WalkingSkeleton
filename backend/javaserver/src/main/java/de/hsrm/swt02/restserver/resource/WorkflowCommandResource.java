@@ -20,8 +20,8 @@ import de.hsrm.swt02.restserver.Message;
 @Path("command/workflow")
 public class WorkflowCommandResource {
 
-    public static final Logic logic = ConstructionFactory.getLogic();
-    public static final ServerPublisher publisher = ConstructionFactory
+    public static final Logic LOGIC = ConstructionFactory.getLogic();
+    public static final ServerPublisher PUBLISHER = ConstructionFactory
             .getPublisher();
     LogicResponse logicResponse;
 
@@ -41,11 +41,11 @@ public class WorkflowCommandResource {
         
         System.out.println("START -> " + workflowid + " " + username);
         try {
-            logic.startWorkflow(workflowid, username);
+            LOGIC.startWorkflow(workflowid, username);
             //!! Must be yet tested!!
-            logicResponse = logic.getLogicResponse();
+            logicResponse = LOGIC.getLogicResponse();
             for(Message m : logicResponse.getMessages()){
-                publisher.publish(m.getValue(), m.getTopic());
+                PUBLISHER.publish(m.getValue(), m.getTopic());
             }
         } catch (WorkflowNotExistentException | ServerPublisherBrokerException e) {
             // TODO use logger & return error code
@@ -69,11 +69,11 @@ public class WorkflowCommandResource {
             @PathParam("username") String username) {
         System.out.println("FORWARD -> " + itemid);
         try {
-            logic.stepOver(itemid, stepid, username);
+            LOGIC.stepOver(itemid, stepid, username);
             //!! Must be yet tested!!
-            logicResponse = logic.getLogicResponse();
+            logicResponse = LOGIC.getLogicResponse();
             for(Message m : logicResponse.getMessages()){
-                publisher.publish(m.getValue(), m.getTopic());
+                PUBLISHER.publish(m.getValue(), m.getTopic());
             }
         } catch (ItemNotExistentException e) {
             // TODO Auto-generated catch block

@@ -2,10 +2,12 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.google.inject.Inject;
 
 import de.hsrm.swt02.businesslogic.processors.StartTrigger;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -17,7 +19,6 @@ import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 import de.hsrm.swt02.restserver.LogicResponse;
 
-
 /**
  * This class implements the logic interface and is used for logic operations.
  */
@@ -28,8 +29,11 @@ public class LogicImp implements Logic {
 
     /**
      * Constructor for LogicImp.
-     * @param p is a singleton instance of the persistence
-     * @param pm is a singleton instance of the processmanager
+     * 
+     * @param p
+     *            is a singleton instance of the persistence
+     * @param pm
+     *            is a singleton instance of the processmanager
      */
     @Inject
     public LogicImp(Persistence p, ProcessManager pm) {
@@ -40,13 +44,15 @@ public class LogicImp implements Logic {
     /**
      * This method starts a Workflow.
      * 
-     * @param workflowID the workflow, which should be started
-     * @param user the User, who starts the workflow
-     * @throws WorkflowNotExistentException 
+     * @param workflowID
+     *            the workflow, which should be started
+     * @param user
+     *            the User, who starts the workflow
+     * @throws WorkflowNotExistentException
      */
     @Override
     public void startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
-        //TODO check user permission
+        // TODO check user permission
         Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         StartTrigger start = new StartTrigger(workflow, pm, p);
         start.startWorkflow();
@@ -59,16 +65,17 @@ public class LogicImp implements Logic {
      */
     @Override
     public void addWorkflow(Workflow workflow) {
-        //TODO distribute clever ids, may return the id
+        // TODO distribute clever ids, may return the id
         p.storeWorkflow(workflow);
     }
 
     /**
      * This method loads a Workflow.
      * 
-     * @param workflowID describe the workflow
+     * @param workflowID
+     *            describe the workflow
      * @return a Workflow, if there is one, who has this workflowID
-     * @throws WorkflowNotExistentException 
+     * @throws WorkflowNotExistentException
      */
     @Override
     public Workflow getWorkflow(int workflowID) throws WorkflowNotExistentException {
@@ -78,8 +85,9 @@ public class LogicImp implements Logic {
     /**
      * This method delete a Workflow in Persistence.
      * 
-     * @param workflowID describe the Workflow
-     * @throws WorkflowNotExistentException 
+     * @param workflowID
+     *            describe the Workflow
+     * @throws WorkflowNotExistentException
      */
     @Override
     public void deleteWorkflow(int workflowID) throws WorkflowNotExistentException {
@@ -89,23 +97,28 @@ public class LogicImp implements Logic {
     /**
      * This method execute a step in an item.
      * 
-     * @param item the Item, which edited
-     * @param step the step, which execute
-     * @param user, who execute the step in the Item
-     * @throws UserNotExistentException 
-     * @throws ItemNotExistentException 
+     * @param item
+     *            the Item, which edited
+     * @param step
+     *            the step, which execute
+     * @param user
+     *            , who execute the step in the Item
+     * @throws UserNotExistentException
+     * @throws ItemNotExistentException
      */
     @Override
     public void stepOver(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
-    	pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
+        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
     }
 
     /**
      * This method add a step into an existing Workflow.
      * 
-     * @param workflowID the workflow, which shall edited
-     * @param step the step, which shall added
-     * @throws WorkflowNotExistentException 
+     * @param workflowID
+     *            the workflow, which shall edited
+     * @param step
+     *            the step, which shall added
+     * @throws WorkflowNotExistentException
      */
     @Override
     public void addStep(int workflowID, Step step) throws WorkflowNotExistentException {
@@ -117,9 +130,11 @@ public class LogicImp implements Logic {
     /**
      * This method delete a step from an existing Workflow.
      * 
-     * @param workflowID the workflow, which shall edited
-     * @param stepID the step, which shall delete
-     * @throws WorkflowNotExistentException 
+     * @param workflowID
+     *            the workflow, which shall edited
+     * @param stepID
+     *            the step, which shall delete
+     * @throws WorkflowNotExistentException
      */
     @Override
     public void deleteStep(int workflowID, int stepID) throws WorkflowNotExistentException {
@@ -136,16 +151,17 @@ public class LogicImp implements Logic {
      */
     @Override
     public void addUser(User user) throws UserAlreadyExistsException {
-        //TODO distribute clever ids, may return the id
+        // TODO distribute clever ids, may return the id
         p.addUser(user);
     }
 
     /**
      * This method loads a User.
      * 
-     * @param username describe the user
+     * @param username
+     *            describe the user
      * @return a User, if there is one, who has this username
-     * @throws UserNotExistentException 
+     * @throws UserNotExistentException
      */
     @Override
     public User getUser(String username) throws UserNotExistentException {
@@ -155,8 +171,9 @@ public class LogicImp implements Logic {
     /**
      * This method delete a User.
      * 
-     * @param username describe the user
-     * @throws UserNotExistentException 
+     * @param username
+     *            describe the user
+     * @throws UserNotExistentException
      */
     @Override
     public void deleteUser(String username) throws UserNotExistentException {
@@ -200,8 +217,9 @@ public class LogicImp implements Logic {
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
 
-                if ((wf.getStepById(Integer.parseInt(item.getActStep().getKey()))
-                        .getUsername()).equals(username)) {
+                if ((wf.getStepById(Integer
+                        .parseInt(item.getActStep().getKey())).getUsername())
+                        .equals(username)) {
                     items.add(item);
                     break;
                 }
@@ -233,9 +251,10 @@ public class LogicImp implements Logic {
 
     /**
      * This method gets a LogicResponse object from the processmanager instance.
+     * 
      * @return processmanager's logicResponse object
      */
-    
+
     public LogicResponse getLogicResponse() {
         return pm.getLogicResponse();
     }
