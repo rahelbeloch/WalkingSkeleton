@@ -109,13 +109,19 @@ namespace RestAPI
             return desObj;
         }
 
+        /// <summary>
+        /// This method changes the type of a generic object.
+        /// </summary>
+        /// <typeparam name="T">The expected new type.</typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static T ChangeType<T>(object obj)
         {
             return (T)Convert.ChangeType(obj, typeof(T));
         }
 
         /// <summary>
-        /// Incoming order of step ids are converted into references
+        /// Incoming order of step ids are converted into references.
         /// </summary>
         /// <param name="workflow"></param>
         public static void convertIdListToReferences(Workflow workflow)
