@@ -49,7 +49,9 @@ public class PersistenceImp implements Persistence {
      */
     @Override
     public void storeWorkflow(Workflow workflow) {
-        workflow.setId(workflows.size());
+        if (workflow.getId() <= 0) {
+            workflow.setId(workflows.size()+1);
+        }
         Workflow workflowToRemove = null;
         for (Workflow wf : workflows) {
             if (wf.getId() == workflow.getId()) {
@@ -80,6 +82,9 @@ public class PersistenceImp implements Persistence {
 
     @Override
     public void storeItem(Item item) {
+        if (item.getId() <= 0) {
+            item.setId(items.size()+1);
+        }
         Item itemToRemove = null;
         for (Item i : items) {
             if (i.getId() == item.getId()) {
@@ -142,6 +147,9 @@ public class PersistenceImp implements Persistence {
     }
 
     public void storeStep(Step step) {
+        if (step.getId() <= 0) {
+            step.setId(steps.size()+1);
+        }
         Step stepToRemove = null;
         for (Step s : steps) {
             if (s.getId() == step.getId()) {
@@ -157,6 +165,9 @@ public class PersistenceImp implements Persistence {
     }
 
     public void storeMetaEntry(MetaEntry metaEntry) {
+        if (metaEntry.getKey().equals(null)) {
+            metaEntry.setKey(Integer.toString((metaEntries.size()+1)));
+        }
         MetaEntry metaEntryToRemove = null;
         for (MetaEntry me : metaEntries) {
             // assumption that MetaEntries have keys that are unique
