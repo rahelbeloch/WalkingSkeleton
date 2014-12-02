@@ -21,6 +21,10 @@ import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
+/**
+ * Class for testing the persistence functions.
+ *
+ */
 public class PersistenceTest {
 
     // Dependency Injection
@@ -32,42 +36,61 @@ public class PersistenceTest {
     // later the following line would be sufficient:
     // PersistenceImp db = new PersistenceImp();
 
-    /*
-     * Worflow Testing
+    /**
+     * Testing if it's possible to store a workflow.
+     * @exception WorkflowNotExistentException if the requested workflow is not there
+     * @throws WorkflowNotExistentException
      */
-    @Test
+    @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowStorage() throws WorkflowNotExistentException {
         final Workflow workflow007 = new Workflow(7);
         final Workflow workflow006 = new Workflow(6);
         final Workflow workflow005 = new Workflow(5);
+        
+        final int id5 = 5;
+        final int id6 = 6;
+        final int id7 = 7;
 
         db.storeWorkflow(workflow005);
         db.storeWorkflow(workflow006);
         db.storeWorkflow(workflow007);
 
-        assertEquals(db.loadWorkflow(5), workflow005);
-        assertEquals(db.loadWorkflow(6), workflow006);
-        assertEquals(db.loadWorkflow(7), workflow007);
+        assertEquals(db.loadWorkflow(id5), workflow005);
+        assertEquals(db.loadWorkflow(id6), workflow006);
+        assertEquals(db.loadWorkflow(id7), workflow007);
     }
 
+    /**
+     * Class for testing the storage of multiple duplicate workflows.
+     * @exception WorkflowNotExistentException if the requested workflow is not there
+     * @throws WorkflowNotExistentException
+     */
     @Test
     public void testDuplicateWorkflowStorage() throws WorkflowNotExistentException {
-        Workflow workflow001 = new Workflow(17);
-        Workflow workflow002 = new Workflow(17);
+        final Workflow workflow001 = new Workflow(17);
+        final Workflow workflow002 = new Workflow(17);
+        
+        final int id17 = 17;
 
         db.storeWorkflow(workflow001);
         db.storeWorkflow(workflow002);
+        
 
         // current assumption: second workflow entry should have overwritten the
         // first one
-        assertNotEquals(workflow001, db.loadWorkflow(17));
-        assertEquals(workflow002, db.loadWorkflow(17));
+        assertNotEquals(workflow001, db.loadWorkflow(id17));
+        assertEquals(workflow002, db.loadWorkflow(id17));
     }
 
+    /**
+     * Method for testing if it's possible to delete a workflow.
+     * @exception WorkflowNotExistentException if the requested workflow is not there
+     * @throws WorkflowNotExistentException
+     */
     @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowDeletion() throws WorkflowNotExistentException {
-        Workflow wf001 = new Workflow(1);
-        Workflow wf002 = new Workflow(2);
+        final Workflow wf001 = new Workflow(1);
+        final Workflow wf002 = new Workflow(2);
         db.storeWorkflow(wf001);
         db.storeWorkflow(wf002);
 
@@ -77,13 +100,20 @@ public class PersistenceTest {
         assertEquals(db.loadWorkflow(1), null);
     }
 
+    /**
+     * Method for testing if it's possible to store a workflow with a few steps in the steplist.
+     * @exception WorkflowNotExistentException if the requested workflow is not there
+     * @throws WorkflowNotExistentException
+     */
     @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowStorageIncludingSteps() throws WorkflowNotExistentException {
-        Workflow workflow007 = new Workflow(7);
+        final Workflow workflow007 = new Workflow(7);
 
-        StartStep step1 = new StartStep("username");
-        Action step2 = new Action(2, "username", "main action");
-        FinalStep step3 = new FinalStep();
+        final StartStep step1 = new StartStep("username");
+        final Action step2 = new Action(2, "username", "main action");
+        final FinalStep step3 = new FinalStep();
+        
+        final int id7 = 7;
 
         workflow007.addStep(step1);
         workflow007.addStep(step2);
@@ -97,64 +127,80 @@ public class PersistenceTest {
         assertEquals(step2, db.loadStep(2));
 
         // a workflows steps should be the same before and after storage
-        assertEquals(workflow007.getSteps(), db.loadWorkflow(7).getSteps());
+        assertEquals(workflow007.getSteps(), db.loadWorkflow(id7).getSteps());
         // no specific functions of a step can be tested, because db only
         // returns an AbstractWorkflow
         // assertEquals(workflow007.getStepByPos(2),
         // db.loadWorkflow(7).getStepByPos(2));
 
         // workflow instances should still be equal
-        assertEquals(db.loadWorkflow(7), workflow007);
+        assertEquals(db.loadWorkflow(id7), workflow007);
 
-        db.deleteWorkflow(7);
+        db.deleteWorkflow(id7);
 
         // a workflows steps must not be existent on databse anymore
         assertEquals(db.loadStep(2), null);
         
         // workflow must not be existent on database anymore, WorkflowNotExistentException is expected here!
-        assertEquals(db.loadWorkflow(7), null);
+        assertEquals(db.loadWorkflow(id7), null);
     }
 
-    /*
-     * Item Testing
+    /**
+     * Method for testing if it's possible to store an item.
+     * @exception ItemNotExistentException if the requested item is not there
+     * @throws ItemNotExistentException
      */
     @Test
     public void testItemStorage() throws ItemNotExistentException {
-        Item item001 = new Item();
-        Item item002 = new Item();
-        Item item003 = new Item();
-        item001.setId(1);
-        item002.setId(2);
-        item003.setId(3);
+        final Item item001 = new Item();
+        final Item item002 = new Item();
+        final Item item003 = new Item();
+        final int id1 = 1;
+        final int id2 = 2;
+        final int id3 = 3;
+        item001.setId(id1);
+        item002.setId(id2);
+        item003.setId(id3);
 
         db.storeItem(item001);
         db.storeItem(item002);
         db.storeItem(item003);
 
-        assertEquals(item001, db.loadItem(1));
-        assertEquals(item002, db.loadItem(2));
-        assertEquals(item003, db.loadItem(3));
+        assertEquals(item001, db.loadItem(id1));
+        assertEquals(item002, db.loadItem(id2));
+        assertEquals(item003, db.loadItem(id3));
     }
 
+    /**
+     * Method for testing if it's possible to store multiple items of the same id.
+     * @exception ItemNotExistentException if the requested item is not there
+     * @throws ItemNotExistentException
+     */
     @Test
     public void testDuplicateItemStorage() throws ItemNotExistentException {
-        Item item001 = new Item();
-        Item item002 = new Item();
-        item001.setId(17);
-        item002.setId(17);
+        final Item item001 = new Item();
+        final Item item002 = new Item();
+        final int id17 = 17;
+        item001.setId(id17);
+        item002.setId(id17);
 
         db.storeItem(item001);
         db.storeItem(item002);
 
         // current assumption: second item entry should have overwritten the
         // first one
-        assertNotEquals(item001, db.loadItem(17));
-        assertEquals(item002, db.loadItem(17));
+        assertNotEquals(item001, db.loadItem(id17));
+        assertEquals(item002, db.loadItem(id17));
     }
 
+    /**
+     * Method for testing if it's possible to store an item with a few metadata entries.
+     * @exception ItemNotExistentException if the requested item is not there
+     * @throws ItemNotExistentException
+     */
     @Test(expected = ItemNotExistentException.class)
     public void testItemStorageIncludingMetaData() throws ItemNotExistentException {
-        Item item001 = new Item();
+        final Item item001 = new Item();
         item001.setId(1);
         item001.set("key1", "group1", "value1");
         item001.set("key2", "group2", "value2");
@@ -187,14 +233,18 @@ public class PersistenceTest {
         assertEquals(db.loadItem(1), null);
     }
 
-    /*
-     * User Testing
+    /**
+     * Method for testing if it's possible to store a user.
+     * @exception UserAlreadyExistsException if the requested user is already there
+     * @exception UserNotExistentException if the requested user is not there
+     * @throws UserAlreadyExistsException
+     * @throws UserNotExistentException
      */
     @Test
     public void testUserStorage() throws UserAlreadyExistsException, UserNotExistentException {
-        User user001 = new User();
-        User user002 = new User();
-        User user003 = new User();
+        final User user001 = new User();
+        final User user002 = new User();
+        final User user003 = new User();
         user001.setUsername("1");
         user002.setUsername("2");
         user003.setUsername("3");
@@ -208,11 +258,15 @@ public class PersistenceTest {
         assertEquals(user003, db.loadUser("3"));
     }
 
+    /**
+     * Method for testing if a user is already there.
+     * @exception UserAlreadyExistsException if the requested user is already there
+     * @throws UserAlreadyExistsException
+     */
     @Test(expected = UserAlreadyExistsException.class)
-    public void testUserAlreadyExistsException()
-            throws UserAlreadyExistsException {
-        User user001 = new User();
-        User user002 = new User();
+    public void testUserAlreadyExistsException() throws UserAlreadyExistsException {
+        final User user001 = new User();
+        final User user002 = new User();
         user001.setUsername("17");
         user002.setUsername("17");
 
@@ -222,10 +276,15 @@ public class PersistenceTest {
         db.addUser(user002);
     }
 
+    /**
+     * Method for testing if it's possible to store duplicate user.
+     * @exception UserNotExistentException if the requested user is not there
+     * @throws UserNotExistentException
+     */
     @Test
-    public void testDuplicateUserStorage() throws UserNotExistentException{
-        User user001 = new User();
-        User user002 = new User();
+    public void testDuplicateUserStorage() throws UserNotExistentException {
+        final User user001 = new User();
+        final User user002 = new User();
         user001.setUsername("17");
         user002.setUsername("17");
 
@@ -236,17 +295,24 @@ public class PersistenceTest {
         } catch (UserAlreadyExistsException e) {
             // Exception is caught manually in order to test if
             // addUser(user002) was rejected
-            // e.printStackTrace();
+            e.printStackTrace();
         }
 
         assertEquals(user001, db.loadUser("17"));
         assertNotEquals(user002, db.loadUser("17"));
     }
 
+    /**
+     * Method for testing if it's possible to delete an user.
+     * @exception UserAlreadyExistsException if the requested user is already there
+     * @exception UserNotExistentException if the requested user is not there
+     * @throws UserAlreadyExistsException
+     * @throws UserNotExistentException
+     */
     @Test(expected = UserNotExistentException.class) 
     public void testUserDeletion() throws UserAlreadyExistsException, UserNotExistentException {
-        User user001 = new User();
-        User user002 = new User();
+        final User user001 = new User();
+        final User user002 = new User();
         user001.setUsername("1");
         user002.setUsername("2");
 
@@ -261,12 +327,20 @@ public class PersistenceTest {
         assertEquals(db.loadUser("1"), null);
     }
 
+    /**
+     * Method for testing if it's possible to update an User.
+     * @exception UserNotExistentException if the requested user is not there
+     * @exception UserAlreadyExistsException if the requested user is already there
+     * @throws UserNotExistentException
+     * @throws UserAlreadyExistsException
+     */
     @Test
-    public void testUpadteOnUser() throws UserNotExistentException,
-            UserAlreadyExistsException {
-        User user001 = new User();
+    public void testUpdateOnUser() throws UserNotExistentException, UserAlreadyExistsException {
+        final User user001 = new User();
         user001.setUsername("1");
-        user001.setId(71);
+        final int id17 = 17;
+        final int id71 = 71;
+        user001.setId(id71);
         db.addUser(user001);
 
         assertEquals(user001, db.loadUser(user001.getUsername()));
@@ -274,7 +348,7 @@ public class PersistenceTest {
                 .getId());
 
         // modification on users ID
-        user001.setId(17);
+        user001.setId(id17);
 
         // TODO:
         // assertNotEquals(user001, db.loadUser(user001.getName()));
@@ -289,9 +363,13 @@ public class PersistenceTest {
                 .getId());
     }
 
+    /**
+     * Method for testing of updating a nonexistent user.
+     * @exception UserNotExistentException if the requested user is not there
+     */
     @Test(expected = UserNotExistentException.class)
     public void testUpdateOnNonExistentUser() throws UserNotExistentException {
-        User user001 = new User();
+        final User user001 = new User();
         user001.setUsername("1");
 
         db.updateUser(user001);

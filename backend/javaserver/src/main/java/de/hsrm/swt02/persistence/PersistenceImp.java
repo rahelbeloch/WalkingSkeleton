@@ -38,6 +38,10 @@ public class PersistenceImp implements Persistence {
     private List<Step> steps = new LinkedList<>();
     private List<MetaEntry> metaEntries = new LinkedList<>();
 
+    /**
+     * Constructor for PersistenceImp.
+     * @param logger is the logger for logging.
+     */
     @Inject
     public PersistenceImp(UseLogger logger) {
         this.logger = logger;
@@ -50,7 +54,7 @@ public class PersistenceImp implements Persistence {
     @Override
     public void storeWorkflow(Workflow workflow) {
         if (workflow.getId() <= 0) {
-            workflow.setId(workflows.size()+1);
+            workflow.setId(workflows.size() + 1);
         }
         Workflow workflowToRemove = null;
         for (Workflow wf : workflows) {
@@ -83,7 +87,7 @@ public class PersistenceImp implements Persistence {
     @Override
     public void storeItem(Item item) {
         if (item.getId() <= 0) {
-            item.setId(items.size()+1);
+            item.setId(items.size() + 1);
         }
         Item itemToRemove = null;
         for (Item i : items) {
@@ -146,6 +150,10 @@ public class PersistenceImp implements Persistence {
         }
     }
 
+    /**
+     * Method for storing a step.
+     * @param step is the  step we need to store
+     */
     public void storeStep(Step step) {
         if (step.getId() <= 0) {
             step.setId(steps.size() + 1);
@@ -164,9 +172,13 @@ public class PersistenceImp implements Persistence {
         //TODO: need to distinguish between Action/FirstStep/StartStep?
     }
 
+    /**
+     * Method for storing a MetaEntry.
+     * @param metaEntry is the MetaEntry we need to store
+     */
     public void storeMetaEntry(MetaEntry metaEntry) {
         if (metaEntry.getKey().equals("")) {
-            metaEntry.setKey(Integer.toString((metaEntries.size()+1)));
+            metaEntry.setKey(Integer.toString(metaEntries.size() + 1));
         }
         MetaEntry metaEntryToRemove = null;
         for (MetaEntry me : metaEntries) {
@@ -182,10 +194,6 @@ public class PersistenceImp implements Persistence {
         metaEntries.add((MetaEntry) metaEntry);
     }
 
-    /*
-     * load functions for workflow, item, user load functions for step,
-     * metaEntry
-     */
     @Override
     public Workflow loadWorkflow(int id) throws WorkflowNotExistentException {
         Workflow workflow = null;
@@ -241,8 +249,10 @@ public class PersistenceImp implements Persistence {
         }
     }
 
-    /* (non-Javadoc)
-     * @see de.hsrm.swt02.persistence.Persistence#loadStep(int)
+    /**
+     * Method for loading a step.
+     * @param id is the id of the requested step
+     * @return step is the requested step
      */
     public Step loadStep(int id) {
         Step step = null;
@@ -254,6 +264,11 @@ public class PersistenceImp implements Persistence {
         return step;
     }
 
+    /**
+     * Method for loading a MetaEntry.
+     * @param key is the key string
+     * @return metaEntry is the requested MetaEntry
+     */
     public MetaEntry loadMetaEntry(String key) {
         MetaEntry metaEntry = null;
         for (MetaEntry me : metaEntries) {
@@ -339,6 +354,10 @@ public class PersistenceImp implements Persistence {
         }
     }
 
+    /**
+     * Method for deleting a step.
+     * @param id of the requested step
+     */
     public void deleteStep(int id) {
         Step stepToRemove = null;
         for (Step s : steps) {
@@ -352,6 +371,10 @@ public class PersistenceImp implements Persistence {
         }
     }
 
+    /**
+     * Method for deleting a MetaEntry.
+     * @param key is the key string.
+     */
     public void deleteMetaEntry(String key) {
         MetaEntry metaEntryToRemove = null;
         for (MetaEntry me : metaEntries) {

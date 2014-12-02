@@ -35,7 +35,7 @@ public class ModelTests {
     /**
      * method for testing FinalStep: a new FinalStep is initializated and checked.
      */
-    @Test
+    @Test 
     public void finalStepTest() {
         final FinalStep fs = new FinalStep();
         assertThat(fs, instanceOf(FinalStep.class));
