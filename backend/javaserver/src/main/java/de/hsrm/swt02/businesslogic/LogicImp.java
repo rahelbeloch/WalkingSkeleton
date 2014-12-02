@@ -53,7 +53,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
-        // TODO check user permission
+        //TODO: check user permission
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         final StartTrigger start = new StartTrigger(workflow, pm, p);
         start.startWorkflow();
@@ -116,14 +116,14 @@ public class LogicImp implements Logic {
      * @throws ItemNotExistentException
      */
     @Override
-    public void stepInProgress(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
-        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username), "busy");
+    public void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
+        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
     }
     
-    @Override
-    public void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
-        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username), "finish");
-    }
+//    @Override
+//    public void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
+//        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username), "finish");
+//    }
     
 
     /**
@@ -172,7 +172,6 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse addUser(User user) throws UserAlreadyExistsException {
-        // TODO distribute clever ids, may return the id
         p.addUser(user);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("USER_INFO", "user_def" + user.getUsername()));
@@ -288,6 +287,7 @@ public class LogicImp implements Logic {
     
     /**
      * Setter for LogicResponse object from the processmanager instance.
+     * @param lr new LogicResponse object for processmanager logicResponse
      */
     public void setProcessLogicResponse(LogicResponse lr) {
         pm.setLogicResponse(lr);

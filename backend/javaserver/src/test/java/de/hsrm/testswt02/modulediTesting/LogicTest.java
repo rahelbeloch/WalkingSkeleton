@@ -67,8 +67,8 @@ public class LogicTest {
         initExtension();
         li.addWorkflow(w);
         li.startWorkflow(workflowID, user.getUsername());
-        li.stepInProgress(w.getItemByPos(0).getId(), w.getStepById(workflowID * 100).getId(), user.getUsername());
-        li.stepFinished(w.getItemByPos(0).getId(), w.getStepById(workflowID * 100).getId(), user.getUsername());
+        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(workflowID * 100).getId(), user.getUsername());
+        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(workflowID * 100).getId(), user.getUsername());
         assertTrue(w.getItemByPos(0).getStepState(workflowID * 100) == "DONE");
     }
 

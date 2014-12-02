@@ -11,6 +11,7 @@ import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
+import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
@@ -91,28 +92,24 @@ public class DIApp {
                 // Loggin
             }
 
-            pm.selectProcessor(step, (Item) item, benni, "busy");
-            for (MetaEntry ame : pi.getMetadata()) {
-                System.out.print("2: " + ame.getGroup() + " " + ame.getKey()
-                        + " " + ame.getValue() + "\n");
-                System.out.println();
-            }
+            pm.selectProcessor(step, (Item) item, benni);
 
             System.out.println("nach dem ersten Schritt " + myWorkflow.getId());
             System.out.println("Das Item heißt: " + item.getId());
             
-            pm.selectProcessor(step, (Item) item, benni, "finish");
             for (MetaEntry ame : item.getMetadata()) {
-                System.out.print("3: " + ame.getGroup() + " " + ame.getKey()
+                System.out.print("2: " + ame.getGroup() + " " + ame.getKey()
                         + " " + ame.getValue() + "\n");
                 System.out.println();
             }
-
-            if (step.getNextSteps().size() != 0) {
-                step = step.getNextSteps().get(0);
-            } else {
-                work = false;
+            if (! (pi.getStepState(step.getId()).equals(MetaState.BUSY.toString()))) {
+                if (step.getNextSteps().size() != 0) {
+                    step = step.getNextSteps().get(0);
+                } else {
+                    work = false;
+                }
             }
+            
 
         }
         System.out.println("ende");

@@ -29,9 +29,8 @@ public interface ProcessManager extends Observer {
      * @param step which is to be edited
      * @param item which is currently active
      * @param user who started interaction
-     * @param operation which indicates which method should be used
      */
-    void selectProcessor(Step step, Item item, User user, String operation);
+    void selectProcessor(Step step, Item item, User user);
     
     /**
      * This method gets a LogicResponse object.

@@ -17,10 +17,11 @@ public class StartTrigger {
     private StartProcessor startProcessor;
 
     /**
-     * Constructor of StartTrigger
+     * Constructor of StartTrigger.
      * 
      * @param workflow which was initialized by an admin
-     * @param pm is the observer and manager of the processor
+     * @param o is the observer of starttrigger
+     * @param p is a singleton instace of the persistence
      */
     @Inject
     public StartTrigger(Workflow workflow, Observer o, Persistence p) {
