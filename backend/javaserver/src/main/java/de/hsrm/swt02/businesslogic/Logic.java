@@ -37,6 +37,12 @@ public interface Logic {
      */
     LogicResponse addWorkflow(Workflow workflow); // later a workflows name will
                                                 // be available
+    /**
+     * This method return all workflows in persistence
+     * @return
+     */
+    List<Workflow> getAllWorkflow();
+  
 
     /**
      * This method loads a Workflow.
@@ -67,7 +73,17 @@ public interface Logic {
      * @param step the step, which execute
      * @param user who execute the step in the Item
      */
-    void stepOver(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
+    void stepInProgress(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
+    
+    /**
+     * This method finish a step in an item.
+     * 
+     * @param item the Item, which edited
+     * @param step the step, which execute
+     * @param user who execute the step in the Item
+     */
+    void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
+
 
     /*
      * step functions
