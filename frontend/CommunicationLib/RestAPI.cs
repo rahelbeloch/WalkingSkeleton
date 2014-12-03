@@ -49,7 +49,7 @@ namespace RestAPI
         /// <typeparam name="RootElementList">The list of RootElements</typeparam>
         /// <param name="userName">The users name</param>
         /// <returns>The list with RootElements requested from server</returns>
-        public static IList<RootElement> GetAllObjects<RootElement>(String userName) where RootElement : new()
+        public static IList<O> GetAllObjects<O>(String userName) where O : new()
         {
             String typeName = typeof(RootElement).FullName.Split('.').Last().ToLower();
             // if userName is not null, it is concatenated to the url, otherwise path  is just 'resource/workflows' and will request all all workflows
@@ -62,7 +62,7 @@ namespace RestAPI
             try
             {      
                 var response = client.Execute(request);
-                IList<RootElement> eleList = JsonConvert.DeserializeObject<List<RootElement>>(response.Content, _jsonSettings);
+                IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, _jsonSettings);
                 return eleList;
             }
             catch (Exception)
