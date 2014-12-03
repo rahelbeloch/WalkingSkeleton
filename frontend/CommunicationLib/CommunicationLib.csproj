@@ -67,40 +67,39 @@
   <ItemGroup>
     <Compile Include="CommunicationManager.cs" />
     <Compile Include="CustomSerializationBinder.cs" />
-    <Compile Include="Exception\BasicException.cs" />
-    <Compile Include="Exception\ConnectionExceptions\ConnectionException.cs" />
-    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\DoesntExistsException.cs" />
-    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\EleAlreadyExistsException.cs" />
-    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\ElementChangedException.cs" />
-    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\IncompleteEleException.cs" />
-    <Compile Include="Exception\LogicExceptions\LogicException.cs" />
-    <Compile Include="Exception\LogicExceptions\LogInExceptions\LogInException.cs" />
-    <Compile Include="Exception\ConnectionExceptions\MessagingExceptions\MessagingException.cs" />
-    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\NoPermissionException.cs" />
-    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\PersistenceException.cs" />
-    <Compile Include="Exception\ConnectionExceptions\RestExceptions\RestException.cs" />
-    <Compile Include="Exception\ConnectionExceptions\RestExceptions\ServerNotRuningException.cs" />
-    <Compile Include="Exception\LogicExceptions\PersistenceExceptions\UserNotExistException.cs" />
-    <Compile Include="Exception\LogicExceptions\LogInExceptions\WrongPwException.cs" />
+    <Compile Include="Model\Exception\BasicException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\ConnectionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\DoesntExistsException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\EleAlreadyExistsException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\ElementChangedException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\IncompleteEleException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\LogicException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\LogInException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\MessagingExceptions\MessagingException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\NoPermissionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\PersistenceException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\RestException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\ServerNotRuningException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserNotExistException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\WrongPwException.cs" />
     <Compile Include="IDataReceiver.cs" />
     <Compile Include="IRestRequester.cs" />
-    <Compile Include="Model\Action.cs" />
-    <Compile Include="Model\FinalStep.cs" />
-    <Compile Include="Model\Item.cs" />
-    <Compile Include="Model\MetaEntry.cs" />
-    <Compile Include="Model\MetaState.cs" />
-    <Compile Include="Model\RootElement.cs" />
-    <Compile Include="Model\StartStep.cs" />
-    <Compile Include="Model\StaticRessources.cs" />
-    <Compile Include="Model\Step.cs" />
-    <Compile Include="Model\User.cs" />
-    <Compile Include="Model\Workflow.cs" />
+    <Compile Include="Model\DataModel\Action.cs" />
+    <Compile Include="Model\DataModel\FinalStep.cs" />
+    <Compile Include="Model\DataModel\Item.cs" />
+    <Compile Include="Model\DataModel\MetaEntry.cs" />
+    <Compile Include="Model\DataModel\MetaState.cs" />
+    <Compile Include="Model\DataModel\RootElement.cs" />
+    <Compile Include="Model\DataModel\StartStep.cs" />
+    <Compile Include="Model\DataModel\StaticRessources.cs" />
+    <Compile Include="Model\DataModel\Step.cs" />
+    <Compile Include="Model\DataModel\User.cs" />
+    <Compile Include="Model\DataModel\Workflow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationWrapper.cs" />
     <Compile Include="RestAPI.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CommunicationLib.config" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
