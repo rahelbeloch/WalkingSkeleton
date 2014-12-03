@@ -88,7 +88,7 @@ public class RestServerUserTest {
         final Form dataform;
         String userAsString = null;
         testUser.setId(0);
-        testUser.setUsername("Tester");
+        testUser.setUsername("Tester1");
         
         try {
             userAsString = mapper.writeValueAsString(testUser);
@@ -96,14 +96,14 @@ public class RestServerUserTest {
             e.printStackTrace();
         }
         dataform = new Form().param("data", userAsString);
-//        final Response resp = client
-//                .target(targetUrl)
-//                .path("resource/user")
-//                .request()
-//                .post(Entity.entity(dataform,
-//                        MediaType.APPLICATION_FORM_URLENCODED));
-//        
-//        assertEquals(200, resp.getStatus());
+        final Response resp = client
+                .target(targetUrl)
+                .path("resource/user")
+                .request()
+                .post(Entity.entity(dataform,
+                        MediaType.APPLICATION_FORM_URLENCODED));
+        
+        assertEquals(200, resp.getStatus());
         
         final Response resp2 = client
                 .target(targetUrl)
@@ -135,7 +135,7 @@ public class RestServerUserTest {
         final Form dataform;
         String userAsString = null;
         testUser.setId(0);
-        testUser.setUsername("Tester");
+        testUser.setUsername("Tester2");
         
         try {
             userAsString = mapper.writeValueAsString(testUser);
@@ -150,14 +150,14 @@ public class RestServerUserTest {
                       MediaType.APPLICATION_FORM_URLENCODED));
         
         userAsString = client.target(targetUrl)
-                .path("resource/user/Tester").request().get(String.class);
+                .path("resource/user/Tester2").request().get(String.class);
         
         try {
             testUser = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assertEquals(testUser.getUsername(), "Tester");
+        assertEquals(testUser.getUsername(), "Tester2");
     }
     
     /**
@@ -182,7 +182,7 @@ public class RestServerUserTest {
         final Form dataform;
         String userAsString = null;
         testUser.setId(0);
-        testUser.setUsername("Tester");
+        testUser.setUsername("Tester3");
         
         try {
             userAsString = mapper.writeValueAsString(testUser);
@@ -195,7 +195,7 @@ public class RestServerUserTest {
               .request()
               .post(Entity.entity(dataform,
                       MediaType.APPLICATION_FORM_URLENCODED));
-        final Response resp = client.target(targetUrl).path("resource/user/Tester")
+        final Response resp = client.target(targetUrl).path("resource/user/Tester3")
                 .request().delete();
         assertEquals(200, resp.getStatus());
     }
