@@ -215,6 +215,7 @@ public class LogicImp implements Logic {
             for (Step step : wf.getSteps()) {
                 if (step.getUsername().equals(username)) {
                     workflows.add((Workflow) wf);
+                    System.out.println("Neu testet: für User "+ username +" : "+wf.getId() + step.getId() +".");
                     break;
                 }
             }
