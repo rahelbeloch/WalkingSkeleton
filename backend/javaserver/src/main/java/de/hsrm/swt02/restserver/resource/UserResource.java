@@ -59,10 +59,10 @@ public class UserResource {
         try {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.INFO, e);
             return Response.serverError().entity("11210").build();
         }
-        LOGGER.log(Level.INFO,loggingBody + " Request successful.");
+        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(userAsString).build();
     }
 
@@ -85,24 +85,24 @@ public class UserResource {
         try {
             user = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
-            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210")
                     .build();
         }
         try {
             logicResponse = LOGIC.addUser(user);
         } catch (UserAlreadyExistsException e) {
-            LOGGER.log(Level.INFO,loggingBody + " User already exists.");
+            LOGGER.log(Level.INFO, e);
             return Response.serverError().entity("11220").build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, "Publisher not responding!");
+                LOGGER.log(Level.WARNING, e);
             }
         }
-        LOGGER.log(Level.INFO,loggingBody + " User successfully stored.");
+        LOGGER.log(Level.INFO, loggingBody + " User successfully stored.");
         return Response.ok("User stored").build();
     }
 
@@ -135,17 +135,17 @@ public class UserResource {
         try {
             logicResponse = LOGIC.addUser(user);
         } catch (UserAlreadyExistsException e) {
-            LOGGER.log(Level.INFO,loggingBody + " User already exists.");
+            LOGGER.log(Level.INFO, e);
             return Response.serverError().entity("11220").build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, "Publisher not responding!");
+                LOGGER.log(Level.WARNING, e);
             }
         }
-        LOGGER.log(Level.INFO,loggingBody + " User successfully updated.");
+        LOGGER.log(Level.INFO, loggingBody + " User successfully updated.");
         return Response.ok().build();
     }
 
@@ -168,13 +168,13 @@ public class UserResource {
             user = LOGIC.getUser(username);
             logicResponse = LOGIC.deleteUser(username);
         } catch (UserNotExistentException e1) {
-            LOGGER.log(Level.INFO,loggingBody + " User does not exist.");
+            LOGGER.log(Level.INFO, e1);
             return Response.serverError().entity("11260").build();
         }
         try {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210")
                     .build();
         }
@@ -182,10 +182,10 @@ public class UserResource {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, "Publisher not responding!");
+                LOGGER.log(Level.WARNING, e);
             }
         }
-        LOGGER.log(Level.INFO,loggingBody + " User successfully deleted.");
+        LOGGER.log(Level.INFO, loggingBody + " User successfully deleted.");
         return Response.ok(userAsString).build();
     }
 
