@@ -1,0 +1,24 @@
+﻿<Window x:Class="Admin.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        Title="MainWindow" Height="350" Width="525">
+
+    <DockPanel>
+        <!-- Navigation Buttons -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Admin" >
+                <MenuItem 
+                    Header="Workflow-Verwaltung" 
+                    Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                    CommandParameter="{Binding workflowViewModel}" />
+                <MenuItem 
+                    Header="Nutzer-Verwaltung" 
+                    Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                    CommandParameter="{Binding userViewModel}" />
+            </MenuItem>
+        </Menu>
+
+        <ContentControl Content="{Binding CurrentPageViewModel}" />
+    </DockPanel>
+</Window>
