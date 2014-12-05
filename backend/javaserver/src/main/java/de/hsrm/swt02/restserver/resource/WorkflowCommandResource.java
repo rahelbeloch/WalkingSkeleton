@@ -59,7 +59,7 @@ public class WorkflowCommandResource {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, "Publisher not responding!");
+                LOGGER.log(Level.WARNING, e);
             }
         }
         LOGIC.setProcessLogicResponse(new LogicResponse());
@@ -87,10 +87,10 @@ public class WorkflowCommandResource {
         try {
             LOGIC.stepForward(itemid, stepid, username);
         } catch (ItemNotExistentException e) {
-            LOGGER.log(Level.INFO, loggingBody + " Item does not exist.");
+            LOGGER.log(Level.INFO, e);
             return Response.serverError().entity("11250").build();
         } catch (UserNotExistentException e) {
-            LOGGER.log(Level.INFO, loggingBody + " User does not exist.");
+            LOGGER.log(Level.INFO, e);
             return Response.serverError().entity("11260").build();
         }
         logicResponse = LOGIC.getProcessLogicResponse();
@@ -98,7 +98,7 @@ public class WorkflowCommandResource {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, "Publisher not responding!");
+                LOGGER.log(Level.WARNING, e);
             }
         }
         LOGIC.setProcessLogicResponse(new LogicResponse());
