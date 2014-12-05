@@ -24,6 +24,12 @@ namespace CommunicationLib.Model
         public List<Item> items { get { return _items; } set { _items = value; } }
 
         /// <summary>
+        /// Used for (de)serialization. Do not change the property name.
+        /// </summary>
+        private bool _active;
+        public bool active { get { return _active; } set { _active = value; } }
+
+        /// <summary>
         /// Constructor for Workflow
         /// </summary>
         public Workflow()
