@@ -144,27 +144,13 @@ namespace RestAPI
         /// </summary>
         /// <param name="sendObj">The object to update</param>
         /// <returns>If it worked or not</returns>
-        public static Boolean UpdateObject<O>(O sendObj)
+        public static Boolean UpdateObject(RootElement sendObj)
         {
             IRestResponse response;
             String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
+            
             String url = _ressourceParam + typeName + "/";
-
-            if (typeof(O) == typeof(User))
-            {
-                User user = sendObj as User;
-                url += user.username;
-            }
-            else
-            {
-                Type t = sendObj.GetType();
-                PropertyInfo prop = t.GetProperty("id");
-                object pId = prop.GetValue(sendObj);
-                url += (int) pId;
-            }
-
-            //RootElement ele;
-            //url += typeof(Ele) == User ? ele.name : ele.id;
+            url += sendObj.GetType() == typeof(User) ? ((User)sendObj).username : sendObj.id.ToString();
 
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
@@ -330,7 +316,7 @@ namespace RestAPI
 
             // decide wether the server does return the right excepted object or throws an exception
             response = client.Execute(request);
-            
+
             // if there is a network transport error (network is down, failed DNS lookup, etc)
             if (response.ResponseStatus == ResponseStatus.Error)
             {

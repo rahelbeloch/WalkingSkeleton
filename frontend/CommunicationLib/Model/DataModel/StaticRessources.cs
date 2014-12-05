@@ -10,7 +10,7 @@ namespace CommunicationLib.Model
 
     public class Constants
     {
-        public static String serverUrl = "http://localhost:8080";
+        public static String serverUrl = "http://localhost:18887";
         public static String MODEL_NAMESPACE = "CommunicationLib.Model";
     }
 

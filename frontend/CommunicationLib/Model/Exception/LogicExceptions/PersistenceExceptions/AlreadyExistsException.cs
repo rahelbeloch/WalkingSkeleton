@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class AlreadyExistsException : PersistenceException
+    public class AlreadyExistsException : PersistenceException
     {
         private int _number = 11220;
         new public int number { get { return _number; } }
