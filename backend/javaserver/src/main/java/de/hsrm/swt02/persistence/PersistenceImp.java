@@ -31,7 +31,7 @@ public class PersistenceImp implements Persistence {
 
     /** The logger. */
     private UseLogger logger;
-    private final int IDMULTIPLICATOR = 1000;
+    private final int ID_MULTIPLICATOR = 1000;
     
     /*
      * abstraction of a database, that persists the data objects workflow, item,
@@ -58,6 +58,7 @@ public class PersistenceImp implements Persistence {
     /**
      * store functions to store workflows, items, and users into persistence.
      * @param workflow is a workflow for storing
+     * @throws WorkflowNotExistentException 
      */
     @Override
     public void storeWorkflow(Workflow workflow) {
@@ -83,7 +84,7 @@ public class PersistenceImp implements Persistence {
         // a workflows steps are resolved and stored one by one
         final List<Step> workflowsSteps = workflow.getSteps();
         for (Step step : workflowsSteps) {
-            storeStep(step);
+            storeStep(step, workflow);
         }
     }
 
@@ -93,7 +94,7 @@ public class PersistenceImp implements Persistence {
      */
     @Override
     public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
-        if (workflows != null) {
+        if (workflows.size() > 0) {
             return workflows;
         }
         else {
@@ -116,8 +117,9 @@ public class PersistenceImp implements Persistence {
                     motherWorkflow = wf;
                 }
             }
-            if (motherWorkflow != null) {
-                item.setId(motherWorkflow.getId() + IDMULTIPLICATOR + motherWorkflow.getSteps().size() + 1);
+            if(motherWorkflow != null) {
+                item.setId(motherWorkflow.getId()*ID_MULTIPLICATOR + motherWorkflow.getSteps().size() + 1);
+
             }
             else {
                 final WorkflowNotExistentException e = new WorkflowNotExistentException("invalid workflow id in item " + item.getId());
@@ -203,9 +205,9 @@ public class PersistenceImp implements Persistence {
      * Method for storing a step.
      * @param step is the  step we need to store
      */
-    public void storeStep(Step step) {
-        if (step.getId() <= 0) {
-            step.setId(steps.size() + 1);
+    public void storeStep(Step step, Workflow motherWorkflow) {
+        if(loadStep(step.getId()) == null) {
+            step.setId(motherWorkflow.getId()*ID_MULTIPLICATOR + motherWorkflow.getSteps().indexOf(step)+1);
         }
         Step stepToRemove = null;
         for (Step s : steps) {

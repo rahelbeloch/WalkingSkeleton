@@ -27,6 +27,7 @@ import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 import de.hsrm.swt02.restserver.LogicResponse;
 import de.hsrm.swt02.restserver.Message;
@@ -47,6 +48,7 @@ public class WorkflowResource {
 
     /**
      * This method returns a requested workflow.
+     * 
      * @param workflowid indicates which workflow is requested
      * @return the requested workflow
      */
@@ -58,7 +60,7 @@ public class WorkflowResource {
         final ObjectMapper mapper = new ObjectMapper();
         String workflowAsString;
         Workflow workflow = null;
-        
+
         try {
             workflow = LOGIC.getWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
@@ -71,7 +73,8 @@ public class WorkflowResource {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
-            return Response.serverError().entity(new JacksonException().getErrorCode()).build();
+            return Response.serverError()
+                    .entity(new JacksonException().getErrorCode()).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(workflowAsString).build();
@@ -79,6 +82,7 @@ public class WorkflowResource {
 
     /**
      * This method returns workflows where a user is involved.
+     * 
      * @param username indicates which user's workflows are requested
      * @return the requested workflow
      */
@@ -89,24 +93,34 @@ public class WorkflowResource {
         final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = "GETALL -> " + username;
         List<Workflow> wflowList = null;
-        wflowList = LOGIC.getWorkflowsByUser(username);
+        try {
+            wflowList = LOGIC.getWorkflowsByUser(username);
+        } catch (WorkflowNotExistentException e1) {
+            LOGGER.log(Level.WARNING, e1);
+            return Response.serverError().entity(e1.getErrorCode()).build();
+        } catch (UserNotExistentException e2) {
+            LOGGER.log(Level.WARNING, e2);
+            return Response.serverError().entity(e2.getErrorCode()).build();
+        }
         String wListString;
-        
+
         try {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             wListString = mapper.writeValueAsString(wflowList);
             LOGGER.log(Level.FINE, loggingBody + wListString);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
-            return Response.serverError().entity(new JacksonException().getErrorCode()).build();
+            return Response.serverError()
+                    .entity(new JacksonException().getErrorCode()).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(wListString).build();
     }
 
     /**
-     * Receives a workflow and stores it into the database.
-     * This operation will be published on the message broker.
+     * Receives a workflow and stores it into the database. This operation will
+     * be published on the message broker.
+     * 
      * @param formParams wrapper for an sent workflow
      * @return "true" if everything was successful OR "jackson exception" if
      *         serialization crashed
@@ -120,12 +134,13 @@ public class WorkflowResource {
         final String loggingBody = "SEND -> ";
         final String workflowAsString = formParams.get("data").get(0);
         Workflow workflow = null;
-        
+
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
-            return Response.serverError().entity(new JacksonException().getErrorCode()).build();
+            return Response.serverError()
+                    .entity(new JacksonException().getErrorCode()).build();
         }
         convertIdListToReferences(workflow);
         logicResponse = LOGIC.addWorkflow(workflow);
@@ -142,6 +157,7 @@ public class WorkflowResource {
 
     /**
      * Incoming order of step ids are converted into references.
+     * 
      * @param workflow which is operated on
      */
     private void convertIdListToReferences(Workflow workflow) {
@@ -153,8 +169,9 @@ public class WorkflowResource {
     }
 
     /**
-     * This method updates a workflow.
-     * This operation will be published on the message broker.
+     * This method updates a workflow. This operation will be published on the
+     * message broker.
+     * 
      * @param workflowid indicates which workflow should be updated
      * @param formParams wrapper for an sent workflow
      * @return String true or false
@@ -164,19 +181,19 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateWorkflow(@PathParam("workflowid") int workflowid,
-            MultivaluedMap<String, String> formParams) 
-    {
+            MultivaluedMap<String, String> formParams) {
         final String loggingBody = "UPDATE -> " + workflowid;
         final ObjectMapper mapper = new ObjectMapper();
         final String workflowAsString = formParams.get("data").get(0);
         Workflow workflow;
-        
+
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, loggingBody
                     + " JACKSON parsing-error occured.");
-            return Response.serverError().entity(new JacksonException().getErrorCode()).build();
+            return Response.serverError()
+                    .entity(new JacksonException().getErrorCode()).build();
         }
         logicResponse = LOGIC.addWorkflow(workflow);
         for (Message m : logicResponse.getMessages()) {
@@ -191,8 +208,9 @@ public class WorkflowResource {
     }
 
     /**
-     * This method deletes a workflow.
-     * This operation will be published on the message broker.
+     * This method deletes a workflow. This operation will be published on the
+     * message broker.
+     * 
      * @param workflowid which indicates which workflow should be deleted
      * @return deleted workflow, if successful
      */
@@ -204,7 +222,7 @@ public class WorkflowResource {
         final ObjectMapper mapper = new ObjectMapper();
         Workflow workflow = null;
         String workflowAsString;
-        
+
         try {
             workflow = LOGIC.getWorkflow(workflowid);
             logicResponse = LOGIC.deleteWorkflow(workflowid);
@@ -216,7 +234,8 @@ public class WorkflowResource {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
-            return Response.serverError().entity(new JacksonException().getErrorCode()).build();
+            return Response.serverError()
+                    .entity(new JacksonException().getErrorCode()).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {

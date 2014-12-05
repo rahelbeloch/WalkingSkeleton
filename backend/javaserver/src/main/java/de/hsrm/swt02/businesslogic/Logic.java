@@ -165,7 +165,7 @@ public interface Logic {
      * @param username whose workflows' is looked for
      * @return a LinkedList of workflows
      */
-    List<Workflow> getWorkflowsByUser(String username) throws WorkflowNotExistentException;
+    List<Workflow> getWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
 
     /**
      * This method returns all actual Items for a User.
@@ -173,7 +173,7 @@ public interface Logic {
      * @param username whose items' is looked for.
      * @return a LinkedList, with actual Items
      */
-    List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException;
+    List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
 
     /**
      * This method returns all Workflows, which can be startes by this user.
@@ -181,7 +181,7 @@ public interface Logic {
      * @param username who can execute workflows.
      * @return a LinkedList of workflows which can be executed
      */
-    List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException;
+    List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException;
     
     /**
      * This method gets a LogicResponse object.
