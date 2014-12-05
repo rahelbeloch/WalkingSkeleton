@@ -28,18 +28,20 @@ namespace CommunicationLib.Model
             {11100, typeof(LogInException)},
 
             {11110, typeof(WrongPwException)},
-            //{11120, typeof(WrongUsernameException)},
+            {11120, typeof(WrongUsernameException)},
 
             //Error code for persistence errors
             {11200, typeof(PersistenceException)},
             
             {11210, typeof(IncompleteEleException)},
-            {11220, typeof(EleAlreadyExistsException)},
+            {11220, typeof(AlreadyExistsException)},
+                {11222, typeof(UserAlreadyExistsException)},
             {11230, typeof(NoPermissionException)},
             {11240, typeof(ElementChangedException)},
             {11250, typeof(DoesntExistsException)},
-            {11260, typeof(UserNotExistException)},
-            
+                {11251, typeof(UserNotExistException)},
+                {11252, typeof(WorkflowNotExistException)},
+                {11253, typeof(ItemNotExistException)},
             //Error codes for connection errors
             {12000,typeof(ConnectionException)},
 
