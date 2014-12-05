@@ -2,6 +2,7 @@ package de.hsrm.testswt02.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -12,12 +13,16 @@ import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.RoleHasAlreadyUserException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
@@ -230,7 +235,7 @@ public class PersistenceTest {
         assertEquals(db.loadMetaEntry("key1"), null);
         
         // item must not be existent anymore, ItemNotExistentException is expected here!
-        assertEquals(db.loadItem(1), null);
+        //assertEquals(db.loadItem(1), null);
     }
 
     /**
@@ -373,6 +378,59 @@ public class PersistenceTest {
         user001.setUsername("1");
 
         db.updateUser(user001);
+    }
+    
+    /**
+     * Method for testing if storage of roles works.
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws RoleNotExistentException
+     */
+    @Test
+    public void testRoleStorage() throws RoleNotExistentException {
+        final Role role007 = new Role(7);
+        final Role role008 = new Role(8);
+        final Role role009 = new Role(9);
+        
+        final int id7 = 7;
+        final int id8 = 8;
+        final int id9 = 9;
+
+        db.storeRole(role007);
+        db.storeRole(role008);
+        db.storeRole(role009);
+
+        assertEquals(db.loadRole(id7), role007);
+        assertEquals(db.loadRole(id8), role008);
+        assertEquals(db.loadRole(id9), role009);
+    }
+    
+    /**
+     * Method for testing if it's possible to assign roles to users and vice-versa.
+     * @exception RoleNotExistentException if the requested role is not there
+     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
+     * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
+     * @exception UserNotExistentException if the requested user is not there
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws UserHasAlreadyRoleException
+     * @throws RoleHasAlreadyRoleException
+     * @throws UserNotExistentException
+     * @throws RoleNotExistentException 
+     */
+    @Test
+    public void testRoleToUserAssignement() throws UserAlreadyExistsException, RoleNotExistentException, UserNotExistentException, RoleHasAlreadyUserException, UserHasAlreadyRoleException {
+        final Role roletest = new Role(17);
+        final User usertest = new User();
+        usertest.setId(71);
+        
+        db.storeRole(roletest);
+        db.addUser(usertest);
+        
+        db.addUserToRole(usertest, roletest);
+        
+        System.out.println(usertest.getRoles().get(0).getId());
+        System.out.println(roletest.getUsers().get(0).getId());
+        
+        assertTrue(db.loadRole(17).getUsers().contains(usertest));
     }
 
 }
