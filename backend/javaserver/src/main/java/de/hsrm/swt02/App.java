@@ -18,11 +18,20 @@ public class App {
     public static void main(String[] args) {
         final RestServer server;
 
+        // start rest-server instance
+        server = new RestServer();
+        
         // setup log configuration
         LogConfigurator.setup();
         
-        // start rest-server instance
-        server = new RestServer();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                if (server != null) {
+                    server.stopHTTPServer(true);
+                }
+            }
+        });
+        
         server.startHTTPServer();
     }
 }
