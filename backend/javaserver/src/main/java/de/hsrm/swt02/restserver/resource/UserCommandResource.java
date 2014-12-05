@@ -45,6 +45,7 @@ public class UserCommandResource {
                 return Response.ok().build();
             } else {
                 LOGGER.log(Level.INFO,loggingBody + " Login failed.");
+                //TODO: remove Hardcoded errorcode
                 return Response.serverError().entity("11120").build();
             }
         } catch (UserNotExistentException e) {
