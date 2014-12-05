@@ -22,6 +22,7 @@ import de.hsrm.swt02.logging.UseLogger;
 public class RestServer {
 
     private static final int WAITING_TIME = 5;
+    private static UseLogger logger;
     private HttpServer server;
     private String baseURI;
 
@@ -29,7 +30,7 @@ public class RestServer {
      * Constructor.
      */
     public RestServer() {
-        final UseLogger logger = new UseLogger();
+        logger = new UseLogger();
         final Properties properties = new Properties();
         BufferedInputStream stream;
         // read configuration file for rest properties
@@ -49,25 +50,27 @@ public class RestServer {
     }
 
     /**
-     * Starts http server to run REST on.
+     * Starts HTTP-server to run REST on.
      */
     public void startHTTPServer() {
         final ResourceConfig rc = new ResourceConfig();
         rc.packages("de.hsrm.swt02.restserver.resource");
         server = JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
+        logger.log(Level.INFO, "HTTP-Server started...");
     }
 
     /**
-     * Stops http server. The server waits a few seconds before it stops. Giving
+     * Stops HTTP-server. The server waits a few seconds before it stops. Giving
      * all open requests enough time to run through.
      */
     public void stopHTTPServer() {
         server.stop(WAITING_TIME);
+        logger.log(Level.INFO, "HTTP-Server stopped...");
     }
 
     /**
-     * This method returns the URI for the http server.
-     * @return the URI for the http server
+     * This method returns the URI for the HTTP-server.
+     * @return the URI for the HTTP-server
      */
     public String getBaseURI() {
         return baseURI;
