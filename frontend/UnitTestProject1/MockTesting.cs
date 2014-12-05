@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CommunicationLib.Model;
 using Nancy;
@@ -13,7 +14,7 @@ namespace UnitTestProject1
         {
         }
     }
-
+    
     public class TestServerModule : NancyModule
     {
 
@@ -70,7 +71,7 @@ namespace UnitTestProject1
             };
 
         }
-
+        
         public void Init()
         {
             // create a new self-host server
@@ -82,5 +83,7 @@ namespace UnitTestProject1
             Console.ReadLine();
             nancyHost.Stop();
         }
-    }  
+     
+    }
 }
+*/
