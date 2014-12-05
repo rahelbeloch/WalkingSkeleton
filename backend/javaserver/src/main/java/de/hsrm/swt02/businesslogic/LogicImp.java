@@ -209,13 +209,13 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException 
      */
     @Override
-    public List<Workflow> getWorkflowsByUser(String username) throws WorkflowNotExistentException {
+    public List<Workflow> getWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException {
+        User user = p.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
                 if (step.getUsername().equals(username)) {
                     workflows.add((Workflow) wf);
-                    System.out.println("Neu testet: für User "+ username +" : "+wf.getId() + step.getId() +".");
                     break;
                 }
             }
@@ -231,7 +231,7 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException 
      */
     @Override
-    public List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException {
+    public List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException {
 
         final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
         final LinkedList<Item> items = new LinkedList<Item>();
@@ -259,7 +259,7 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException 
      */
     @Override
-    public List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException {
+    public List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException {
 
         final LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
         final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
