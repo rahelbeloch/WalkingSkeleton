@@ -209,7 +209,43 @@ public class LogicTest {
         assertTrue(li.getStartableWorkflows(user2.getUsername()).size() == 2);
     }
     
+    /**
+     * test LogIn korrekt.
+     */
+    @Test
+    public void checkLogInKorrekt() {
+        init();
+        final User user = new User();
+        final String name = "benni";
+        boolean test = false; 
+        user.setUsername(name);
+        try {
+            li.addUser(user);
+            test = li.checkLogIn(name);
+        } catch (UserAlreadyExistsException e) {
+            e.printStackTrace();
+        } catch (UserNotExistentException e) {
+            e.printStackTrace();
+        }
+        assertTrue(test);
+    }
     
+    /**
+     * test LogIn inkorrekt.
+     * @throws UserNotExistentException .
+     */
+    @Test(expected = UserNotExistentException.class)
+    public void checkLogIn() throws UserNotExistentException {
+        init();
+        final String name = "benni";
+        user.setUsername(name);
+        try {
+            li.addUser(user);
+            li.checkLogIn(name);
+        } catch (UserAlreadyExistsException e) {
+            e.printStackTrace();
+        } 
+    }
 
     /**
      * init for tests.
