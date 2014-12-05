@@ -6,6 +6,46 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Button Content="ROLE VIEW" />
+        <DockPanel>
+            <DockPanel.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding addUserCommand}" />
+            </DockPanel.InputBindings>
+            
+            <DockPanel DockPanel.Dock="Top">
+                <Label Content="Nutzer -und Rollenverwaltung" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
+            </DockPanel>
+            
+            <TabControl>
+                <TabItem Header="Nutzerverwaltung">
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <Label Content="Nutzername: "  VerticalContentAlignment="Center"/>
+                            <TextBox Width="120" Height="25">
+                                <TextBox.Text>
+                                    <Binding Path="username" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                </TextBox.Text>
+                            </TextBox>
+                            <Button HorizontalAlignment="Left" Content="Nutzer hinzufügen" Height="25" Margin="10" Command="{Binding addUserCommand}"/>
+                        </DockPanel>
+
+                        <DockPanel DockPanel.Dock="Top">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding userCollection}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridView.Columns >
+                                            <GridViewColumn Width="500" Header="Nutzername" DisplayMemberBinding="{Binding username}"/>
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+                    </DockPanel>
+                </TabItem>
+                
+                <TabItem Header="Rollenverwaltung">
+                    
+                </TabItem>
+            </TabControl>
+        </DockPanel>
     </Grid>
 </UserControl>
