@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="CommunicationManager.cs" />
     <Compile Include="CustomSerializationBinder.cs" />
+    <Compile Include="Model\DataModel\Role.cs" />
     <Compile Include="Model\DataModel\RootElement.cs" />
     <Compile Include="Model\Exception\BasicException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\ConnectionException.cs" />
