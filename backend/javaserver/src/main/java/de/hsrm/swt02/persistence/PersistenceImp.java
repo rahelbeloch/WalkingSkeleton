@@ -278,7 +278,6 @@ public class PersistenceImp implements Persistence {
             return user;
         } else {
             final UserNotExistentException e = new UserNotExistentException(name);
-            this.logger.log(Level.WARNING, e);
             throw e;
         }
     }

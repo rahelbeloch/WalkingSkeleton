@@ -85,7 +85,7 @@ public class WorkflowResource {
     @GET
     @Path("workflows/{username}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getAllWorkflows(@PathParam("username") String username) {
+    public Response getWorkflowsByUser(@PathParam("username") String username) {
         final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = "GETALL -> " + username;
         List<Workflow> wflowList = null;
@@ -95,7 +95,7 @@ public class WorkflowResource {
         try {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             wListString = mapper.writeValueAsString(wflowList);
-            LOGGER.log(Level.FINE, wListString);;
+            LOGGER.log(Level.FINE, loggingBody + wListString);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
             return Response.serverError().entity(new JacksonException().getErrorCode()).build();

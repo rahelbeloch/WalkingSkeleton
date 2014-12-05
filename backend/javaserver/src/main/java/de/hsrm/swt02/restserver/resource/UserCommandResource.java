@@ -49,7 +49,7 @@ public class UserCommandResource {
                 return Response.serverError().entity("11120").build();
             }
         } catch (UserNotExistentException e) {
-            LOGGER.log(Level.WARNING,loggingBody + " User does not exist.");
+            LOGGER.log(Level.WARNING,e);
             return Response.serverError().entity(e.getErrorCode()).build();
         }
     }
