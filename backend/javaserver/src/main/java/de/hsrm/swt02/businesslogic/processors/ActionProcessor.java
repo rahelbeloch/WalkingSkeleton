@@ -8,6 +8,7 @@ import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 import com.google.inject.Inject;
 
@@ -56,7 +57,11 @@ public class ActionProcessor extends Observable implements StepProcessor {
                 }
             }
             currentItem.setState("upd");
-            p.storeItem(currentItem);
+            try {
+                p.storeItem(currentItem);
+            } catch (WorkflowNotExistentException e) {
+                e.printStackTrace();
+            }
             setChanged();
             notifyObservers(currentItem);
         } else {

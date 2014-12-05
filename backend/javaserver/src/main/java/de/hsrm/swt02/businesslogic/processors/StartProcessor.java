@@ -9,6 +9,7 @@ import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 import com.google.inject.Inject;
 
@@ -72,7 +73,11 @@ public class StartProcessor extends Observable {
             item.setFirstStepState(MetaState.OPEN.toString());
         }
 
-        p.storeItem(item);
+        try {
+            p.storeItem(item);
+        } catch (WorkflowNotExistentException e) {
+            e.printStackTrace();
+        }
         setChanged();
         item.setState("def");
         notifyObservers(item);

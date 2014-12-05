@@ -151,7 +151,7 @@ public class PersistenceTest {
      * @throws ItemNotExistentException
      */
     @Test
-    public void testItemStorage() throws ItemNotExistentException {
+    public void testItemStorage() throws ItemNotExistentException, WorkflowNotExistentException {
         final Item item001 = new Item();
         final Item item002 = new Item();
         final Item item003 = new Item();
@@ -177,7 +177,7 @@ public class PersistenceTest {
      * @throws ItemNotExistentException
      */
     @Test
-    public void testDuplicateItemStorage() throws ItemNotExistentException {
+    public void testDuplicateItemStorage() throws ItemNotExistentException, WorkflowNotExistentException {
         final Item item001 = new Item();
         final Item item002 = new Item();
         final int id17 = 17;
@@ -199,7 +199,7 @@ public class PersistenceTest {
      * @throws ItemNotExistentException
      */
     @Test(expected = ItemNotExistentException.class)
-    public void testItemStorageIncludingMetaData() throws ItemNotExistentException {
+    public void testItemStorageIncludingMetaData() throws ItemNotExistentException, WorkflowNotExistentException {
         final Item item001 = new Item();
         item001.setId(1);
         item001.set("key1", "group1", "value1");
