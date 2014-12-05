@@ -206,9 +206,10 @@ public class LogicImp implements Logic {
      * 
      * @param user
      * @return a LinkedList of workflows
+     * @throws WorkflowNotExistentException 
      */
     @Override
-    public List<Workflow> getWorkflowsByUser(String username) {
+    public List<Workflow> getWorkflowsByUser(String username) throws WorkflowNotExistentException {
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
@@ -226,9 +227,10 @@ public class LogicImp implements Logic {
      * 
      * @param user
      * @return a LinkedList, with actual Items
+     * @throws WorkflowNotExistentException 
      */
     @Override
-    public List<Item> getOpenItemsByUser(String username) {
+    public List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException {
 
         final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
         final LinkedList<Item> items = new LinkedList<Item>();
@@ -253,9 +255,10 @@ public class LogicImp implements Logic {
      * 
      * @param user
      * @return
+     * @throws WorkflowNotExistentException 
      */
     @Override
-    public List<Workflow> getStartableWorkflows(String username) {
+    public List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException {
 
         final LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
         final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
@@ -307,7 +310,7 @@ public class LogicImp implements Logic {
      * @return
      */
     @Override
-    public List<Workflow> getAllWorkflow() {
+    public List<Workflow> getAllWorkflows() throws WorkflowNotExistentException {
         return p.loadAllWorkflows();
     }
 
