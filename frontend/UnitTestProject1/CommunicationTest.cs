@@ -10,9 +10,8 @@ using RestSharp;
 using System.Web;
 using System.IO;
 using System.Security;
-using Nancy;
-using System.Dynamic;
 using CommunicationLib.Exception;
+using Action = CommunicationLib.Model.Action;
 
 
 
@@ -24,44 +23,27 @@ namespace UnitTestProject1
     [TestClass]
     public class CommunicationTest
     {
-
         /// <summary>
         ///  Testmethod to test a transmission of a workflow to server.
         /// </summary>
         [TestMethod]
         public void testSentWorkflow()
         {
-
             Workflow testWF = new Workflow();
             testWF.id = 17;
-            
-            /*StartStep ass = new StartStep();
-            ass.Name = "Step1";
-            ass.Username = "Rahel";
-            ass.UserId = 17;
-            ass.Id = 0;
-            ass.label = "Label";
+
+            StartStep ass = new StartStep();
+            ass.username = "Rahel";
+            ass.id = 0;
             testWF.addStep(ass);
             testWF.addStep(new Action());
-            //testWF.addStep(new FinalStep());*/
-            /*
-            IRestResponse respo = RestRequester.PostObject<Workflow>(testWF);
-            //System.Diagnostics.Trace.WriteLine("answer: " + answer);
-            String statcode = respo.StatusCode.ToString();
+            testWF.addStep(new FinalStep());
 
-            Assert.IsTrue(statcode.Equals("OK"));*/
+            Boolean send = RestRequester.PostObject<Workflow>(testWF);
+            
+            Assert.IsTrue(send == true);
         }
 
-        /// <summary>
-        ///     Test to get a workflow.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(DoesntExistsException))]
-        public void testWorkflowDoesntExistsException()
-        {
-            int getWFId = -17;
-            RestRequester.GetObject<Workflow>(getWFId);
-        }
 
         /// <summary>
         ///  Test to start a Workflow.
