@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class RestException : ConnectionException
+    public class RestException : ConnectionException
     {
         private int _number = 12200;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public RestException()
         {

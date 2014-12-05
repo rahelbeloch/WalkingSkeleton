@@ -9,7 +9,7 @@ namespace CommunicationLib.Exception
     class UserAlreadyExistsException : AlreadyExistsException
     {
         private int _number = 11222;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public UserAlreadyExistsException()
         {

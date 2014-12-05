@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class NoPermissionException : PersistenceException
+    public class NoPermissionException : PersistenceException
     {
-         private int _number = 11230;
-        public int number { get { return _number; } }
+        private int _number = 11230;
+        new public int number { get { return _number; } }
 
         public NoPermissionException()
         {

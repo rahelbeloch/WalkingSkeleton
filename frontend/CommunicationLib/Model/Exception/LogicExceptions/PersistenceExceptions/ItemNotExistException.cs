@@ -9,7 +9,7 @@ namespace CommunicationLib.Exception
     class ItemNotExistException : DoesntExistsException
     {
         private int _number = 11253;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public ItemNotExistException()
         {

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class ElementChangedException : PersistenceException
+    public class ElementChangedException : PersistenceException
     {
         private int _number = 11240;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public ElementChangedException()
         {

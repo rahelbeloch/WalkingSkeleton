@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="CommunicationManager.cs" />
     <Compile Include="CustomSerializationBinder.cs" />
+    <Compile Include="Model\DataModel\RootElement.cs" />
     <Compile Include="Model\Exception\BasicException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\ConnectionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\WrongUsernameException.cs" />
@@ -93,7 +94,6 @@
     <Compile Include="Model\DataModel\Item.cs" />
     <Compile Include="Model\DataModel\MetaEntry.cs" />
     <Compile Include="Model\DataModel\MetaState.cs" />
-    <Compile Include="Model\DataModel\RootElement.cs" />
     <Compile Include="Model\DataModel\StartStep.cs" />
     <Compile Include="Model\DataModel\StaticRessources.cs" />
     <Compile Include="Model\DataModel\Step.cs" />

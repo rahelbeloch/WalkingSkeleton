@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class EleAlreadyExistsException : PersistenceException
+    public class EleAlreadyExistsException : PersistenceException
     {
         private int _number = 11220;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public EleAlreadyExistsException()
         {
