@@ -14,6 +14,7 @@ import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
  * This class is called if client wants to process user information.
@@ -38,12 +39,17 @@ public class UserCommandResource {
         final String username = formParams.get("username").get(0);
         final String password = formParams.get("password").get(0);
         final String loggingBody = "LOGIN -> " + username + " : " + password;
-        if (LOGIC.checkLogIn(username)) {
-            LOGGER.log(Level.INFO,loggingBody + " Login successful.");
-            return Response.ok().build();
-        } else {
-            LOGGER.log(Level.INFO,loggingBody + " Login failed.");
-            return Response.serverError().entity("11120").build();
+        try {
+            if (LOGIC.checkLogIn(username)) {
+                LOGGER.log(Level.INFO,loggingBody + " Login successful.");
+                return Response.ok().build();
+            } else {
+                LOGGER.log(Level.INFO,loggingBody + " Login failed.");
+                return Response.serverError().entity("11120").build();
+            }
+        } catch (UserNotExistentException e) {
+            LOGGER.log(Level.WARNING,loggingBody + " User does not exist.");
+            return Response.serverError().entity(e.getErrorCode()).build();
         }
     }
     

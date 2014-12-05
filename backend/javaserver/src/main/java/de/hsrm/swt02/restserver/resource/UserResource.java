@@ -129,14 +129,13 @@ public class UserResource {
             user = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
             LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
-            return Response.serverError().entity("11210")
-                    .build();
+            return Response.serverError().build();
         }
         try {
             logicResponse = LOGIC.addUser(user);
         } catch (UserAlreadyExistsException e) {
             LOGGER.log(Level.INFO, e);
-            return Response.serverError().entity("11220").build();
+            return Response.serverError().entity(e.getErrorCode()).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
