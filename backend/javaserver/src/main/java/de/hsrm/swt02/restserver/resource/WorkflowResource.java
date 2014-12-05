@@ -69,8 +69,7 @@ public class WorkflowResource {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.INFO, loggingBody
-                    + " JACKSON parsing error occured.");
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity("11210").build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
@@ -95,10 +94,9 @@ public class WorkflowResource {
         try {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             wListString = mapper.writeValueAsString(wflowList);
-            System.out.println(wListString);
+            LOGGER.log(Level.FINE, wListString);;
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.INFO, loggingBody
-                    + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity("11210").build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
@@ -125,7 +123,7 @@ public class WorkflowResource {
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
-            LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity("11210").build();
         }
         convertIdListToReferences(workflow);
@@ -134,7 +132,7 @@ public class WorkflowResource {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, "Publisher not responding!");
+                LOGGER.log(Level.WARNING, e);
             }
         }
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully saved.");
@@ -184,7 +182,7 @@ public class WorkflowResource {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, "Publisher not responding!");
+                LOGGER.log(Level.WARNING, e);
             }
         }
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully updated.");
@@ -210,21 +208,20 @@ public class WorkflowResource {
             workflow = LOGIC.getWorkflow(workflowid);
             logicResponse = LOGIC.deleteWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
-            LOGGER.log(Level.INFO, loggingBody + " Workflow does not exist.");
+            LOGGER.log(Level.INFO, e1);
             return Response.serverError().entity("11250").build();
         }
         try {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.INFO, loggingBody
-                    + " JACKSON parsing-error occured.");
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity("11210").build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
             } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, "Publisher not responding!");
+                LOGGER.log(Level.WARNING, e);
             }
         }
         LOGGER.log(Level.INFO, loggingBody + " Workflow succesfully deleted.");
