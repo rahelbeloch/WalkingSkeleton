@@ -9,50 +9,73 @@ import de.hsrm.swt02.model.Workflow;
 
 import org.junit.Test;
 
+/**
+ * This Class tests the initialization of a workflow with Steps.
+ *
+ */
 public class InitWorkflowTest {
 
+    /**
+     * test the initialization of a workflow.
+     */
     @Test
     public void initWorkflow() {
-        Workflow myWorkflow = new Workflow(1);
+        
+        final Workflow myWorkflow = new Workflow(1);
 
         assertEquals(myWorkflow.getId(), 1);
     }
-
+    
+    /**
+     * test the initialization of a step.
+     */
     @Test
-    public void StepCheckId() {
-        Step step = new Action(1, "username", 0 + " Schritt");
+    public void stepCheckId() {
+        final Step step = new Action(1, "username", 0 + " Schritt");
 
         assertTrue(step.getId() == 1);
     }
 
+    /**
+     * test the initialization of Action and belonging user.
+     */
     @Test
-    public void ActionCheckUser() {
-        Action step = new Action(1, "username", 0 + " Schritt");
+    public void actionCheckUser() {
+        final Action step = new Action(1, "username", 0 + " Schritt");
 
         assertTrue(step.getUsername().equals("username"));
     }
 
+    /**
+     * test the initialization of Action and Actionname.
+     */
     @Test
-    public void ActionCheckName() {
-        Action step = new Action(1, "username", 0 + " Schritt");
+    public void actionCheckName() {
+        final Action step = new Action(1, "username", 0 + " Schritt");
 
         assertEquals(step.getDescription(), 0 + " Schritt");
     }
 
+    /**
+     * test add Steps into an existing workflow.
+     */
     @Test
     public void addStep() {
-        Workflow myWorkflow = new Workflow(1);
-        Step step = new Action(0 * 1000, "username", 0 + " Schritt");
+        final Workflow myWorkflow = new Workflow(1);
+        final Step step = new Action(0 * 1000, "username", 0 + " Schritt");
         myWorkflow.addStep(step);
 
         assertEquals(step, myWorkflow.getStepById(0));
     }
 
+    /**
+     * test right connection.
+     */
     @Test
     public void connectSteps() {
-        Workflow myWorkflow = new Workflow(1);
-        Step firstStep = new Action(0 * 1000, "username", 0 + " Schritt");
-        Step secondStep = new Action(1 * 1000, "username", 1 + " Schritt");
+        final Workflow myWorkflow = new Workflow(1);
+        final Step firstStep = new Action(0 * 1000, "username", 0 + " Schritt");
+        final Step secondStep = new Action(1 * 1000, "username", 1 + " Schritt");
 
         myWorkflow.addStep(firstStep);
         myWorkflow.addStep(secondStep);
@@ -62,12 +85,15 @@ public class InitWorkflowTest {
         assertEquals(secondStep, firstStep.getNextSteps().get(0));
     }
 
+    /**
+     * test right connection FinalStep.
+     */
     @Test
     public void connectFinalStep() {
-        Workflow myWorkflow = new Workflow(1);
-        Step firstStep = new Action(0 * 1000, "username", 0 + " Schritt");
-        Step secondStep = new Action(1 * 1000, "username", 1 + " Schritt");
-        Step finalStep = new FinalStep();
+        final Workflow myWorkflow = new Workflow(1);
+        final Step firstStep = new Action(0 * 1000, "username", 0 + " Schritt");
+        final Step secondStep = new Action(1 * 1000, "username", 1 + " Schritt");
+        final Step finalStep = new FinalStep();
 
         myWorkflow.addStep(firstStep);
         myWorkflow.addStep(secondStep);
