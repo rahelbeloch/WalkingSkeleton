@@ -19,7 +19,7 @@ public class TestMessagingListener implements MessageListener {
     private Connection connection;
     private Session session;
     private MessageConsumer consumer;
-    private String receivedMsg = "fail";
+    private String receivedMsg = null;
 
     private static final String BROKERURL = "tcp://localhost:61616";
     private static final String TOPIC_NAME = "TEST_TOPIC";
@@ -82,5 +82,9 @@ public class TestMessagingListener implements MessageListener {
      */
     public String getReceivedMsg() {
         return receivedMsg;
+    }
+    
+    public void reset() {
+        receivedMsg = null;
     }
 }

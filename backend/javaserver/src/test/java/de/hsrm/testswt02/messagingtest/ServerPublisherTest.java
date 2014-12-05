@@ -1,84 +1,54 @@
 package de.hsrm.testswt02.messagingtest;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
-import de.hsrm.swt02.constructionfactory.SingleModule;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
+import de.hsrm.swt02.messaging.ServerPublisherImp;
 
 /**
  * Unit test class for ServerPublisher.class.
  * Tested methods:
- *    - startBroker()
- *    - stopBroker()
  *    - publish()
  */
 public class ServerPublisherTest {
 
-    private ServerPublisher publisher;
+    private static final int LISTENER_CHECKS = 20;
+    private static final int SLEEP_TIME = 500;
+    private static final int MULTIPUBLISH_ATTEMPTS = 3;
+    private static ServerPublisher publisher;
+    private static TestMessagingListener listener;
     
     /**
      * Disables the log4j-system (no need for it).
+     * 
+     * @throws ServerPublisherBrokerException if the publisher cannot be started
      */
     @BeforeClass
-    public static void disableLog() {
+    public static void setup() throws ServerPublisherBrokerException {
         Logger.getRootLogger().setLevel(Level.OFF);
-    }
-    
-    /**
-     * Method for test setup.
-     * Executed before each test.
-     */
-    @Before
-    public void setUp() {
-        final Injector i = Guice.createInjector(new SingleModule());
-        publisher = i.getInstance(ServerPublisher.class);
-    }
-    
-    /**
-     * Method for test tear down.
-     * Executed after each test.
-     * @throws ServerPublisherBrokerException if something goes wrong.
-     */
-    @After
-    public void tearDown() throws ServerPublisherBrokerException {
-        if (publisher.brokerStarted()) {
-            publisher.stopBroker();
-        }
-    }
-    
-    /**
-     * Tests whether the broker starts properly.
-     * @throws ServerPublisherBrokerException if something goes wrong.
-     */
-    @Test
-    public void testBrokerStart() throws ServerPublisherBrokerException {
+        publisher = new ServerPublisherImp(new UseLogger());
         publisher.startBroker();
-        assertTrue(publisher.brokerStarted());
+        listener = new TestMessagingListener();
+        listener.start();
     }
-
+    
     /**
-     * Tests whether the broker stops properly.
-     * @throws ServerPublisherBrokerException if something goes wrong.
+     * Cleans up the resources for this test.
+     * 
+     * @throws ServerPublisherBrokerException if the publisher cannot be stopped
      */
-    @Test
-    public void testBrokerStop() throws ServerPublisherBrokerException {
-        publisher.startBroker();
-        if (publisher.brokerStarted()) {
-            publisher.stopBroker();
-            assertTrue(!publisher.brokerStarted());
-        }
+    @AfterClass
+    public static void tearDown() throws ServerPublisherBrokerException {
+        publisher.stopBroker();
+        listener.stop();   
     }
     
     /**
@@ -89,14 +59,13 @@ public class ServerPublisherTest {
      */
     @Test
     public void testPublishing() throws ServerPublisherBrokerException {
-        publisher.startBroker();
         if (publisher.brokerStarted()) {
-            final TestMessagingListener listener = new TestMessagingListener();
-            listener.start();
             final String testString = "test String";
-            publisher.publish(testString, "TEST_TOPIC");
+            publisher.publish(testString, "TEST_TOPIC");     
+            waitAndCheckListener();
+            
             assertEquals(testString, listener.getReceivedMsg());
-            listener.stop();
+            listener.reset();
         }
     }
     
@@ -108,20 +77,31 @@ public class ServerPublisherTest {
      */
     @Test
     public void testMultiplePublishing() throws ServerPublisherBrokerException {
-        publisher.startBroker();
         if (publisher.brokerStarted()) {
-            final TestMessagingListener listener = new TestMessagingListener();
-            listener.start();
-            String testString = "test String1";
-            publisher.publish(testString, "TEST_TOPIC");
-            assertEquals(testString, listener.getReceivedMsg());
-            testString = "test String2";
-            publisher.publish(testString, "TEST_TOPIC");
-            assertEquals(testString, listener.getReceivedMsg());
-            testString = "test String3";
-            publisher.publish(testString, "TEST_TOPIC");
-            assertEquals(testString, listener.getReceivedMsg());
-            listener.stop();
+            final String testString = "test";
+            for (int i = 0; i < MULTIPUBLISH_ATTEMPTS; i++) {
+                publisher.publish(testString, "TEST_TOPIC");
+                waitAndCheckListener();
+                
+                assertEquals(testString, listener.getReceivedMsg());
+                listener.reset();
+            }
+        }
+    }
+    
+    /**
+     * waits a few times and checks whether the listener received a message.
+     */
+    private void waitAndCheckListener() {
+        for (int i = 0; i < LISTENER_CHECKS; i++) {
+            if (listener.getReceivedMsg() != null) {
+                break;
+            }
+            try {
+                Thread.sleep(SLEEP_TIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }         
         }
     }
 }
