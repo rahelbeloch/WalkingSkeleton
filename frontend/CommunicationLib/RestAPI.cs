@@ -51,7 +51,7 @@ namespace RestAPI
         /// <returns>The list with RootElements requested from server</returns>
         public static IList<O> GetAllObjects<O>(String userName) where O : new()
         {
-            String typeName = typeof(RootElement).FullName.Split('.').Last().ToLower();
+            String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             // if userName is not null, it is concatenated to the url, otherwise path  is just 'resource/workflows' and will request all all workflows
             String url = _ressourceParam + typeName + "s" + (userName != null? "/" + userName : "");
             System.Diagnostics.Trace.WriteLine("url: " + url);
@@ -93,11 +93,7 @@ namespace RestAPI
             {
                 throw;
             }
-            catch (Exception)
-            {
-                System.Diagnostics.Trace.WriteLine("Ein anderer Fehler in getObject");
-                throw;
-            }
+         
             //Deserialize JSON
             O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
 
