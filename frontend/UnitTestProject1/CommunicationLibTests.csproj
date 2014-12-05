@@ -65,7 +65,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CommunicationTest.cs" />
+    <Compile Include="ServerRunning\CommunicationTest.cs" />
     <Compile Include="ServerNotRunning\CommunicationExceptionTest1.cs" />
     <Compile Include="ServerRunning\CommunicationExceptionTest2.cs" />
     <Compile Include="WorkflowLogicTest.cs" />

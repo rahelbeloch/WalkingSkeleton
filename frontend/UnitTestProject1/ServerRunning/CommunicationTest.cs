@@ -23,23 +23,45 @@ namespace UnitTestProject1
     [TestClass]
     public class CommunicationTest
     {
+
+        static Workflow testWf;
+        static User testUser;
+
+        [ClassInitialize()]
+        public static void ClassInit(TestContext context)
+        {
+            // workflow with ID 1
+            testWf = new Workflow();
+            
+            // a startStep
+            StartStep startStep = new StartStep();
+            startStep.username = "Rahel";
+            testWf.addStep(startStep);
+
+            // an action
+            Action act = new Action();
+            act.username = "Rahel";
+            testWf.addStep(act);
+
+            // a final step
+            FinalStep fStep = new FinalStep();
+            fStep.username = "Rahel";
+            testWf.addStep(fStep);
+
+            // First User with name "Rahel"
+            testUser = new User();
+            testUser.username = "Rahel";
+
+            RestRequester.PostObject<User>(testUser);
+        }
+
         /// <summary>
         ///  Testmethod to test a transmission of a workflow to server.
         /// </summary>
         [TestMethod]
         public void testSentWorkflow()
         {
-            Workflow testWF = new Workflow();
-            testWF.id = 17;
-
-            StartStep ass = new StartStep();
-            ass.username = "Rahel";
-            ass.id = 0;
-            testWF.addStep(ass);
-            testWF.addStep(new Action());
-            testWF.addStep(new FinalStep());
-
-            Boolean send = RestRequester.PostObject<Workflow>(testWF);
+            Boolean send = RestRequester.PostObject<Workflow>(testWf);
             
             Assert.IsTrue(send == true);
         }
@@ -51,11 +73,9 @@ namespace UnitTestProject1
         [TestMethod]
         public void testStartWorkflow()
         {
-            int testWfId = 1;
-            String testUserName = "Rahel";
+            RestRequester.PostObject<Workflow>(testWf);
 
-            
-            Boolean done = RestRequester.StartWorkflow(testWfId, testUserName);
+            Boolean done = RestRequester.StartWorkflow(1, testUser.username);
 
             Assert.IsTrue(done);
         }
@@ -70,7 +90,6 @@ namespace UnitTestProject1
             int itemId = 11;
             string username = "Rahel";
 
-           
             Boolean done = RestRequester.StepForward(stepId, itemId, username);
 
             Assert.IsTrue(done);
@@ -82,22 +101,17 @@ namespace UnitTestProject1
         [TestMethod]
         public void testUpdateObject()
         {
-            Workflow testWF = new Workflow();
-            testWF.id = 17;
-            Step testStep = new Step();
-            testStep.id = 7;
-            testWF.addStep(testStep);
+            Workflow changeWorkflow = RestRequester.GetObject<Workflow>(1);
+            int stepCount = changeWorkflow.steps.Count;
+            changeWorkflow.addStep(new Action());
 
+            RestRequester.UpdateObject(changeWorkflow);
 
-            RestRequester.UpdateObject(testWF);
-            Workflow updatedWorkflow = RestRequester.GetObject<Workflow>(17);
+            Workflow updatedWorkflow = RestRequester.GetObject<Workflow>(1);
 
-            int steps = updatedWorkflow.steps.Count;
-            System.Diagnostics.Trace.WriteLine("count steps: " + steps);
-            System.Diagnostics.Trace.WriteLine("id workflow: " + testWF.id);
+            int newStepCount = updatedWorkflow.steps.Count;
 
-            Assert.IsTrue(steps == 1);
-            Assert.IsTrue(updatedWorkflow.steps[steps-1].id == 7);
+            Assert.IsTrue(stepCount + 1 == newStepCount);
         }
 
         /// <summary>
@@ -123,16 +137,33 @@ namespace UnitTestProject1
         ///     Test to get a list of objects from server.
         /// </summary>
         [TestMethod]
-        public void testCheckUser()
+        public void testCheckExistentUser()
+        {
+            string initString = "TestPasswort";
+            SecureString testpwd = new SecureString();
+            foreach (char ch in initString)
+               testpwd.AppendChar(ch);
+
+            Boolean done = RestRequester.checkUser("Rahel", testpwd);
+          
+            Assert.IsTrue(done);
+        }
+
+        /// <summary>
+        ///     Test to get a list of objects from server.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(UserNotExistException))]
+        public void testCheckNotExistentUser()
         {
             string initString = "TestPasswort";
             SecureString testpwd = new SecureString();
             foreach (char ch in initString)
                 testpwd.AppendChar(ch);
-            RestRequester.checkUser("Rahel", testpwd);
 
-            Assert.IsTrue(true);
+            Boolean done = RestRequester.checkUser("Jane", testpwd);
+
+            Assert.IsTrue(done);
         }
-
     }
 }
