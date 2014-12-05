@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class WrongUsernameException : LogInException
+    class WorkflowNotExistException : DoesntExistsException
     {
-        private int _number = 11110;
+        private int _number = 11252;
         public int number { get { return _number; } }
 
-        public WrongUsernameException()
+        public WorkflowNotExistException()
         {
 
         }
 
-        public WrongUsernameException(string message)
+        public WorkflowNotExistException(string message)
             : base(message)
         {
         }
 
-        public WrongUsernameException(string message, System.Exception inner)
+        public WorkflowNotExistException(string message, System.Exception inner)
             : base(message, inner)
         {
         }

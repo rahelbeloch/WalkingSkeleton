@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class WrongUsernameException : LogInException
+    class AlreadyExistsException : PersistenceException
     {
-        private int _number = 11110;
+        private int _number = 11220;
         public int number { get { return _number; } }
 
-        public WrongUsernameException()
+        public AlreadyExistsException()
         {
 
         }
 
-        public WrongUsernameException(string message)
+        public AlreadyExistsException(string message)
             : base(message)
         {
         }
 
-        public WrongUsernameException(string message, System.Exception inner)
+        public AlreadyExistsException(string message, System.Exception inner)
             : base(message, inner)
         {
         }
