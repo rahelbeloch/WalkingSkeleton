@@ -46,10 +46,10 @@ public interface Persistence {
     void updateUser(User user) throws UserNotExistentException;
 
     /**
-     * Method for loeading all workflows into a list of workflows.
+     * Method for loading all workflows into a list of workflows.
      * @return List<Workflow> is the list we want to load
      */
-    List<Workflow> loadAllWorkflows();
+    List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException;
     
     /**
      * Method for loading a workflow.

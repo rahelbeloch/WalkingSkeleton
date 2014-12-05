@@ -86,8 +86,15 @@ public class PersistenceImp implements Persistence {
      * @return List<Workflow> is the list we want to load
      */
     @Override
-    public List<Workflow> loadAllWorkflows() {
-        return workflows;
+    public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
+        if (workflows != null) {
+            return workflows;
+        }
+        else {
+            final WorkflowNotExistentException e = new WorkflowNotExistentException("no stored workflows on database");
+            this.logger.log(Level.INFO, e);
+            throw e;
+        }
     }
 
     /**
