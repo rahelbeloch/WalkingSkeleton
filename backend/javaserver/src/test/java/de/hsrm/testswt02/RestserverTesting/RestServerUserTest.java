@@ -206,7 +206,6 @@ public class RestServerUserTest {
      */
     @AfterClass
     public static void cleanUp() {
-        client.close();
         restServer.stopHTTPServer(true);
     }
 }
