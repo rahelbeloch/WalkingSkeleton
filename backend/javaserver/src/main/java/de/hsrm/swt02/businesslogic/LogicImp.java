@@ -326,5 +326,20 @@ public class LogicImp implements Logic {
         return p.loadAllWorkflows();
     }
 
+    /**
+     * This method check a User, later it will be extended for password
+     * @param username the user, to be checked
+     * @return if user existing true, else false
+     */
+    @Override
+    public boolean checkLogIn(String username) {
+        try {
+            p.loadUser(username);
+        } catch (UserNotExistentException e) {
+           return false;
+        }
+        return true;
+    }
+
    
 }
