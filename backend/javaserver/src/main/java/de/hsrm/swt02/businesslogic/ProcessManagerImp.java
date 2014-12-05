@@ -61,7 +61,7 @@ public class ProcessManagerImp implements Observer, ProcessManager {
         try {
             checkUser = persistence.loadUser(username);
         } catch (UserNotExistentException e) {
-            logger.log(Level.SEVERE, "No user available!");
+            logger.log(Level.SEVERE, e);
         }
         if (step instanceof Action) {
             return checkUser.getUsername().equals(((Action) step).getUsername());
