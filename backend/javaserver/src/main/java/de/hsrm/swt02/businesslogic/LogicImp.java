@@ -2,11 +2,9 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
 
 import com.google.inject.Inject;
 
-import de.hsrm.swt02.businesslogic.processors.StartTrigger;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
@@ -28,7 +26,6 @@ public class LogicImp implements Logic {
     private Persistence p;
     private ProcessManager pm;
     private LogicResponse logicResponse;
-    private UseLogger logger;
 
     /**
      * Constructor for LogicImp.
@@ -45,12 +42,11 @@ public class LogicImp implements Logic {
     public LogicImp(Persistence p, ProcessManager pm, UseLogger logger) {
         this.p = p;
         this.pm = pm;
-        this.logger = logger;
         setLogicResponse(new LogicResponse());
     }
 
     /**
-     * This method starts a Workflow.
+     * This method starts a Workflow via processmanager.
      * 
      * @param workflowID
      *            the workflow, which should be started
@@ -60,10 +56,8 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
-        
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
-        final StartTrigger start = new StartTrigger(workflow, pm, p);
-        start.startWorkflow();
+        pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflowID));
         return logicResponse;
@@ -126,12 +120,6 @@ public class LogicImp implements Logic {
     public void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
         pm.executeStep(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
     }
-    
-//    @Override
-//    public void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
-//        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username), "finish");
-//    }
-    
 
     /**
      * This method add a step into an existing Workflow.
@@ -207,7 +195,6 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse deleteUser(String username) throws UserNotExistentException {
-        // System.out.println("Do you really want to delete a user?");
         p.deleteUser(username);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("USER_INFO", "user_del" + username));
@@ -225,8 +212,6 @@ public class LogicImp implements Logic {
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
-                logger.log(Level.INFO, "step:" + step.getId() + "user:" +  step.getUsername());
-
                 if (step.getUsername().equals(username)) {
                     workflows.add((Workflow) wf);
                     break;
@@ -248,6 +233,7 @@ public class LogicImp implements Logic {
         final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
         final LinkedList<Item> items = new LinkedList<Item>();
 
+        
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
 
@@ -256,7 +242,6 @@ public class LogicImp implements Logic {
                         .equals(username)) 
                 {
                     items.add(item);
-                    break;
                 }
             }
         }

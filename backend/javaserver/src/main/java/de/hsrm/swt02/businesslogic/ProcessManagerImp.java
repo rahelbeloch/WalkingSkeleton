@@ -8,11 +8,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import de.hsrm.swt02.businesslogic.processors.ActionProcessor;
+import de.hsrm.swt02.businesslogic.processors.StartProcessor;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
+import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.restserver.LogicResponse;
@@ -30,6 +33,8 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     private Persistence persistence;
     private LogicResponse logicResponse;
     private UseLogger logger;
+    private ActionProcessor actionProcessor;
+    private StartProcessor startProcessor;
 
     /**
      * Constructor of ProcessManager.
@@ -46,31 +51,55 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     }
 
     /**
-     * IMPORTANT: For walking skeleton this method is not used! This method
-     * checks if the user who wishes to edit a step is the responsible user who
-     * is allowed to execute the step.
-     * 
-     * @param username
-     *            who edits the step
+     * This method checks if the user is authorized to do something 
+     * (like executing) with a step.
      * @param step
      *            which user wants to edit
+     * @param username indicates user who should be checked
      * @return true if user is "owner" of step and false if not
      */
-    public boolean checkUser(String username, Step step) {
+    public boolean checkAuthorization(Step step, String username) {
         User checkUser = null;
         try {
-            checkUser = persistence.loadUser(username);
+            checkUser = persistence.loadUser(step.getUsername());
         } catch (UserNotExistentException e) {
             logger.log(Level.SEVERE, e);
         }
-        if (step instanceof Action) {
-            return checkUser.getUsername().equals(((Action) step).getUsername());
+        return checkUser.getUsername().equals(username);
+    }
+    
+    /**
+     * This method checks if the inquired user can actually start the workflow.
+     * If she/he can a workflow is started.
+     * @param workflow which should be started.
+     * @param username who wants to start workflow.
+     */
+    public void startWorkflow(Workflow workflow, String username) {
+        final StartStep startStep = (StartStep) workflow.getStepByPos(0);
+        
+        selectProcessor(startStep);
+        if (checkAuthorization(startStep, username)) {
+            startProcessor.addObserver(this);
+            startProcessor.createItem(workflow);
+        } else {
+            logger.log(Level.WARNING, "Access denied, Authorization failed.");
         }
-        return false;
     }
 
     /**
-     * This method selects the processor of a step and executes it.
+     * This method selects the appropriate stepprocessor for a step.
+     * @param step which will be executed
+     */
+    public void selectProcessor(Step step) {
+        if (step instanceof Action) {
+            actionProcessor = new ActionProcessor(persistence);
+        } else if (step instanceof StartStep) {
+            startProcessor = new StartProcessor(persistence);
+        }
+    }
+
+    /**
+     * This method executes step operations.
      * 
      * @param step
      *            which is to be edited
@@ -79,9 +108,9 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * @param user
      *            who started interaction
      */
-    public void selectProcessor(Step step, Item item, User user) {
+    public void executeStep(Step step, Item item, User user) {
+        selectProcessor(step);
         if (step instanceof Action) {
-            final ActionProcessor actionProcessor = new ActionProcessor(persistence);
             actionProcessor.addObserver(this);
             actionProcessor.handle(item, step, user);
         }

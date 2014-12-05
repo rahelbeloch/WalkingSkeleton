@@ -5,6 +5,7 @@ import java.util.Observer;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
+import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.restserver.LogicResponse;
 
 /**
@@ -14,23 +15,35 @@ import de.hsrm.swt02.restserver.LogicResponse;
 public interface ProcessManager extends Observer {
 
      /**
-     * This method checks if the user who wishes to edit a step is the 
-     * responsible user who is allowed to execute the step.
-     * 
-     * @param username who edits the step
+     * This method checks if the user is authorized to do something 
+     * (like executing) with a step.
      * @param step which user wants to edit
+     * @param username who edits the step
      * @return true if user is "owner" of step and false if not
      */
-    boolean checkUser(String username, Step step);
+    boolean checkAuthorization(Step step, String username);
+    
+    /**
+     * This method starts a workflow.
+     * @param workflow which will be started
+     * @param username indicates who wants to start a workflow
+     */
+    void startWorkflow(Workflow workflow, String username);
+    
+    /**
+     * This method selects the appropriate stepprocessor for a step.
+     * @param step which will be executed
+     */
+    void selectProcessor(Step step);
 
     /**
-     * This method selects the processor of a step and executes it.
+     * This method executes the step operation.
      * 
      * @param step which is to be edited
      * @param item which is currently active
      * @param user who started interaction
      */
-    void selectProcessor(Step step, Item item, User user);
+    void executeStep(Step step, Item item, User user);
     
     /**
      * This method gets a LogicResponse object.

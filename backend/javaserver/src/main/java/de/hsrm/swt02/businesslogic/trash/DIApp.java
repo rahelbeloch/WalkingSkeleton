@@ -4,24 +4,25 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import de.hsrm.swt02.businesslogic.ProcessManager;
-import de.hsrm.swt02.businesslogic.processors.StartTrigger;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
 import de.hsrm.swt02.model.MetaState;
+import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
-
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 
 public class DIApp {
 
@@ -48,20 +49,31 @@ public class DIApp {
 
         Workflow myWorkflow = createWorkflow();
 
-        StartTrigger start = new StartTrigger(myWorkflow, pm, p);
-        start.startWorkflow();
+//        StartTrigger start = new StartTrigger(myWorkflow, pm, p);
+//        start.startWorkflow();
+        
+        
 
         User benni = new User();
         benni.setUsername("benni");
         benni.setId(23);
+        try {
+            p.addUser(benni);
+        } catch (UserAlreadyExistsException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
 
+        pm.selectProcessor((StartStep)myWorkflow.getStepByPos(0));
+        pm.startWorkflow(myWorkflow, benni.getUsername());
+        
         // Output of all items in a workflow
         for (Item ai : myWorkflow.getItems()) {
             System.out.println(ai.getId());
         }
 
         Item item = (Item) myWorkflow.getItemByPos(0);
-        Step step = myWorkflow.getStepByPos(0);
+        Step step = myWorkflow.getStepByPos(1);
 
         Item pi = (Item) p.loadItem(item.getId());
 
@@ -92,7 +104,8 @@ public class DIApp {
                 // Loggin
             }
 
-            pm.selectProcessor(step, (Item) item, benni);
+            pm.selectProcessor(step);
+            pm.executeStep(step, item, benni);
 
             System.out.println("nach dem ersten Schritt " + myWorkflow.getId());
             System.out.println("Das Item heißt: " + item.getId());
@@ -120,10 +133,11 @@ public class DIApp {
         Workflow myWorkflow = new Workflow(1);
 
         // adding steps in workflow
+        myWorkflow.addStep(new StartStep("benni"));
         myWorkflow.addStep(new Action(0 * 1000, 0 * 100 + "", 0 + " Schritt"));
         myWorkflow.addStep(new Action(1 * 1000, 1 * 100 + "", 1 + " Schritt"));
         myWorkflow.addStep(new FinalStep());
-        myWorkflow.getStepByPos(2).setId(9999);
+        myWorkflow.getStepByPos(3).setId(9999);
 
         // this method generates straight neighbors for steps in steplist
         myWorkflow.connectSteps();
