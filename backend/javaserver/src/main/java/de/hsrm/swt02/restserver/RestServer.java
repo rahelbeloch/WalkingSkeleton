@@ -66,6 +66,10 @@ public class RestServer {
      * @param forceServerStop forces the HTTP-Server to stop without waiting
      */
     public void stopHTTPServer(boolean forceServerStop) {
+        if (server == null) {
+            return;
+        }
+
         if (forceServerStop) {
             server.stop(0);
         } else {
@@ -76,6 +80,7 @@ public class RestServer {
 
     /**
      * This method returns the URI for the HTTP-server.
+     * 
      * @return the URI for the HTTP-server
      */
     public String getBaseURI() {
