@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 
 /**
  * This class provides instances of the Logic interface and Messaging
@@ -19,6 +20,14 @@ public class ConstructionFactory {
     private static Logic logic = INJECTOR.getInstance(Logic.class);
     private static ServerPublisher serverPublisher = INJECTOR
             .getInstance(ServerPublisher.class);
+    
+    public ConstructionFactory() {
+        try {
+            serverPublisher.startBroker();
+        } catch (ServerPublisherBrokerException e) {
+            //TODO find a solution for the logging instance-problem
+        }
+    }
 
     /**
      * This method returns the Logic instance.
