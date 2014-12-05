@@ -42,9 +42,10 @@ public class StartProcessor extends Observable {
      */
     public void createItem(Workflow workflow) {
 
-        final int key = 1000;
+//        final int key = 1000;
         currentItem = new Item();
-        currentItem.setId(workflow.getId() * key + workflow.getSteps().size());
+//        currentItem.setId(workflow.getId() * key + workflow.getSteps().size() + workflow.getItems().size());
+//        System.out.println(currentItem.getId());
         currentItem.setWorkflowId(workflow.getId());
         initiateItem(workflow, currentItem);
     }
