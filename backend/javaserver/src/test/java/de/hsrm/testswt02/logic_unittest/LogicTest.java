@@ -1,4 +1,4 @@
-package de.hsrm.testswt02.modulediTesting;
+package de.hsrm.testswt02.logic_unittest;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
