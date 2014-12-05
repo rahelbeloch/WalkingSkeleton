@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="500" d:DesignWidth="800">
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
@@ -42,7 +42,8 @@
                                 </TextBox.Text>
                             </TextBox>
 
-                            <Button Content="Element hinzufügen" Height="25" Margin="10" Command="{Binding addStepCommand}"/>
+                            <Button Content="+" Width="35" Height="25" Margin="10" Command="{Binding addStepCommand}"/>
+                            <Button x:Name="removeLastElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-" Width="35" Height="25" Margin="0, 10, 0, 0" Command="{Binding removeLastStepCommand}"/>
                         </DockPanel>
 
                         <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflow}">
@@ -57,7 +58,7 @@
                             </ListView.View>
                         </ListView>
                         <DockPanel DockPanel.Dock="Top">
-                            <Button x:Name="removeLastElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Letzten Schritt entfernen" Width="150" Height="25" Margin="10" Command="{Binding removeLastStepCommand}"/>
+                            
                         </DockPanel>
 
                         <DockPanel DockPanel.Dock="Bottom" Height="45" VerticalAlignment="Bottom">
