@@ -146,7 +146,7 @@ public interface Logic {
      * @param username the user, to be checked
      * @return if user correct true, else false
      */
-    boolean checkLogIn(String username); // later with password
+    boolean checkLogIn(String username) throws UserNotExistentException; // later with password
     
 
     /**
