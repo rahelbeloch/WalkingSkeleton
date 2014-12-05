@@ -56,24 +56,11 @@ namespace UnitTestProject1
         ///     Test to get a workflow.
         /// </summary>
         [TestMethod]
-        public void testGetWorkflow()
+        [ExpectedException(typeof(DoesntExistsException))]
+        public void testWorkflowDoesntExistsException()
         {
-            int getWFId = 0;
-            Workflow getWf = null;
-
-            try
-            {
-                getWf = RestRequester.GetObject<Workflow>(getWFId);
-            }
-            catch (Exception)
-            {
-                System.Diagnostics.Trace.WriteLine("Test fehlgeschlagen.");
-                Assert.Fail();
-            }
-
-            
-
-            Assert.IsTrue(getWFId == getWf.id);
+            int getWFId = -17;
+            RestRequester.GetObject<Workflow>(getWFId);
         }
 
         /// <summary>
