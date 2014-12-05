@@ -51,10 +51,16 @@ public class UserResource {
     @GET
     @Path("user/{username}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getUser(@PathParam("username") String username) throws UserNotExistentException {
+    public Response getUser(@PathParam("username") String username) {
         final String loggingBody = "GETUSER -> " + username;
         final ObjectMapper mapper = new ObjectMapper();
-        final User user = LOGIC.getUser(username);
+        User user;
+        try {
+            user = LOGIC.getUser(username);
+        } catch (UserNotExistentException e1) {
+            LOGGER.log(Level.INFO, e1);
+            return Response.serverError().entity(e1.getErrorCode()).build();
+        }
         String userAsString;
         
         try {
