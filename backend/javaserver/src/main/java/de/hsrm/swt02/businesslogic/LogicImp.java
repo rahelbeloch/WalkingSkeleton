@@ -327,7 +327,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method check a User, later it will be extended for password
+     * This method check a User, later it will be extended for password.
      * @param username the user, to be checked
      * @return if user existing true, else false
      */
@@ -336,7 +336,7 @@ public class LogicImp implements Logic {
         try {
             p.loadUser(username);
         } catch (UserNotExistentException e) {
-           return false;
+            return false;
         }
         return true;
     }
