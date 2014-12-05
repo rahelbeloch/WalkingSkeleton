@@ -61,7 +61,7 @@ public class WorkflowResource {
         try {
             workflow = LOGIC.getWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
-            LOGGER.log(Level.INFO, loggingBody
+            LOGGER.log(Level.WARNING, loggingBody
                     + " Non-existing workflow requested.");
             return Response.serverError().entity("11250").build();
         }
@@ -69,7 +69,7 @@ public class WorkflowResource {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
             return Response.serverError().entity("11210").build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
@@ -96,7 +96,7 @@ public class WorkflowResource {
             wListString = mapper.writeValueAsString(wflowList);
             LOGGER.log(Level.FINE, wListString);;
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
             return Response.serverError().entity("11210").build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
@@ -123,7 +123,7 @@ public class WorkflowResource {
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
             return Response.serverError().entity("11210").build();
         }
         convertIdListToReferences(workflow);
@@ -173,7 +173,7 @@ public class WorkflowResource {
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
-            LOGGER.log(Level.INFO, loggingBody
+            LOGGER.log(Level.WARNING, loggingBody
                     + " JACKSON parsing-error occured.");
             return Response.serverError().entity("11210").build();
         }
@@ -208,13 +208,13 @@ public class WorkflowResource {
             workflow = LOGIC.getWorkflow(workflowid);
             logicResponse = LOGIC.deleteWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
-            LOGGER.log(Level.INFO, e1);
+            LOGGER.log(Level.WARNING, loggingBody + "Workflow does not exist");
             return Response.serverError().entity("11250").build();
         }
         try {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
             return Response.serverError().entity("11210").build();
         }
         for (Message m : logicResponse.getMessages()) {
