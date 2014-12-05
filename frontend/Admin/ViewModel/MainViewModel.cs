@@ -11,7 +11,6 @@ namespace Admin.ViewModel
     {
         public ViewModelBase CurrentView { get; set; }
         
-        
         private WorkflowViewModel _workflowViewModel = new WorkflowViewModel();
         public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
 
@@ -20,8 +19,8 @@ namespace Admin.ViewModel
         
         public MainViewModel()
         {
-            PageViewModels.Add(userViewModel);
             PageViewModels.Add(workflowViewModel);
+            PageViewModels.Add(userViewModel);
 
             CurrentPageViewModel = PageViewModels[0];
         }
