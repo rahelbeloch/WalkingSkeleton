@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class WorkflowNotExistException : DoesntExistsException
+    public class WorkflowNotExistException : DoesntExistsException
     {
         private int _number = 11252;
         new public int number { get { return _number; } }

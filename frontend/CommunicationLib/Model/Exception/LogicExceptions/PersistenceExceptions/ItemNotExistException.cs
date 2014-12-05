@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class ItemNotExistException : DoesntExistsException
+    public class ItemNotExistException : DoesntExistsException
     {
         private int _number = 11253;
         new public int number { get { return _number; } }
