@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class LogicException : BasicException
+    public class LogicException : BasicException
     {
         private int _number = 11000;
         public int number { get { return _number; } }

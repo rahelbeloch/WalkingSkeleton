@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class PersistenceException : LogicException
+    public class PersistenceException : LogicException
     {
         private int _number = 11200;
         public int number { get { return _number; } }
