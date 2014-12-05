@@ -29,7 +29,7 @@ public class UserCommandResource {
     /**
      * This method is called if some client wants to login.
      * @param formParams is a wrapper for login data
-     * @return returns ok if it was succesful
+     * @return returns ok if it was succesful and server error if it was not
      */
     @POST @Path("login")
     @Produces(MediaType.TEXT_PLAIN)
@@ -38,9 +38,13 @@ public class UserCommandResource {
         final String username = formParams.get("username").get(0);
         final String password = formParams.get("password").get(0);
         final String loggingBody = "LOGIN -> " + username + " : " + password;
-        // TODO check login in Logic
-        LOGGER.log(Level.INFO,loggingBody + " Login successful.");
-        return Response.ok().build();
+        if (LOGIC.checkLogIn(username)) {
+            LOGGER.log(Level.INFO,loggingBody + " Login successful.");
+            return Response.ok().build();
+        } else {
+            LOGGER.log(Level.INFO,loggingBody + " Login failed.");
+            return Response.serverError().entity("11120").build();
+        }
     }
     
 }
