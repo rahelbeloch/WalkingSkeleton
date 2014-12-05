@@ -10,11 +10,15 @@ import com.google.inject.Singleton;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.RoleHasAlreadyUserException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
@@ -27,7 +31,7 @@ public class PersistenceImp implements Persistence {
 
     /** The logger. */
     private UseLogger logger;
-    private final int ID_MULTIPLICATOR = 1000;
+    private final int IDMULTIPLICATOR = 1000;
     
     /*
      * abstraction of a database, that persists the data objects workflow, item,
@@ -39,6 +43,8 @@ public class PersistenceImp implements Persistence {
 
     private List<Step> steps = new LinkedList<>();
     private List<MetaEntry> metaEntries = new LinkedList<>();
+    
+    private List<Role> roles = new LinkedList<>();
 
     /**
      * Constructor for PersistenceImp.
@@ -82,7 +88,7 @@ public class PersistenceImp implements Persistence {
     }
 
     /**
-     * Method for loeading all workflows into a list of workflows
+     * Method for loeading all workflows into a list of workflows.
      * @return List<Workflow> is the list we want to load
      */
     @Override
@@ -103,18 +109,18 @@ public class PersistenceImp implements Persistence {
      */
     @Override
     public void storeItem(Item item) throws WorkflowNotExistentException {
-        if(item.getId() <= 0) {
+        if (item.getId() <= 0) {
             Workflow motherWorkflow = null;
-            for(Workflow wf: workflows) {
-                if(item.getWorkflowId() == wf.getId()) {
+            for (Workflow wf: workflows) {
+                if (item.getWorkflowId() == wf.getId()) {
                     motherWorkflow = wf;
                 }
             }
-            if(motherWorkflow != null) {
-                item.setId(motherWorkflow.getId()+ID_MULTIPLICATOR + motherWorkflow.getSteps().size() + 1);
+            if (motherWorkflow != null) {
+                item.setId(motherWorkflow.getId() + IDMULTIPLICATOR + motherWorkflow.getSteps().size() + 1);
             }
             else {
-                final WorkflowNotExistentException e = new WorkflowNotExistentException("invalid workflow id in item "+ item.getId());
+                final WorkflowNotExistentException e = new WorkflowNotExistentException("invalid workflow id in item " + item.getId());
                 this.logger.log(Level.WARNING, e);
                 throw e;
             }
@@ -456,5 +462,123 @@ public class PersistenceImp implements Persistence {
         if (metaEntryToRemove != null) {
             metaEntries.remove(metaEntryToRemove);
         }
+    }
+
+    
+    // Sprint 2 Persistence  
+    
+    /**
+     * Method for storing a role.
+     * @param role is the role to store
+     */
+    public void storeRole(Role role) {
+        if (role.getId() <= 0) {
+            role.setId(roles.size() + 1);
+        }
+        Role roleToRemove = null;
+        for (Role r: roles) {
+            if (r.getId() == role.getId()) {
+                roleToRemove = r;
+                break;
+            }
+        }
+        if (roleToRemove != null) {
+            roles.remove(roleToRemove);
+            this.logger.log(Level.INFO, "[persistence] removed existing role "
+                    + roleToRemove.getId() + ".");
+        }
+        roles.add((Role) role);
+        this.logger.log(Level.INFO, "[persistence] successfully stored role " + role.getId()
+                + ".");
+    }
+
+    /**
+     * Method for loading all roles into a list of roles.
+     * @return List<Workflow> is the list we want to load
+     */
+    public List<Role> loadAllRoles() {
+        return roles;
+    }
+
+    /**
+     * Method for loading a workflow.
+     * @param id is the id of the requested workflow.
+     * @return workflow is the requested workflow
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws RoleNotExistentException
+     */
+    public Role loadRole(int id) throws RoleNotExistentException {
+        Role role = null;
+        for (Role r : roles) {
+            if (r.getId() == id) {
+                role = r;
+            }
+        }
+        if (role != null) {
+            return role;
+        } else {
+            final RoleNotExistentException e = new RoleNotExistentException("" + id);
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
+    }
+
+    /**
+     * @param user is the user we want to add
+     * @param role is the role we want to give the user
+     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
+     * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
+     * @exception UserNotExistentException if the requested user is not there
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws UserHasAlreadyRoleException
+     * @throws RoleHasAlreadyRoleException
+     * @throws UserNotExistentException
+     * @throws RoleNotExistentException  
+    */
+    @Override
+    public void addUserToRole(User user, Role role) throws UserNotExistentException, RoleNotExistentException, RoleHasAlreadyUserException, UserHasAlreadyRoleException {
+        Role searchedRole = null;
+        User searchedUser = null;
+        for (Role r : roles) {
+            if (r.getId() == role.getId()) {
+                searchedRole = r;
+            }
+        }
+        if (searchedRole == null) {
+            final RoleNotExistentException e = new RoleNotExistentException(role.getRolename());
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
+        
+        for (User u : users) {
+            if (u.getId() == user.getId()) {
+                searchedUser = u;
+            }
+        }
+        if (searchedUser == null) {
+            final UserNotExistentException e = new UserNotExistentException(user.getUsername());
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
+        
+        
+        for (Role r: user.getRoles()) {
+            if (role.getId() == r.getId()) {
+                final UserHasAlreadyRoleException e = new UserHasAlreadyRoleException(role.getRolename());
+                this.logger.log(Level.WARNING, e);
+                throw e;
+            }
+        }
+        
+        for (User u: role.getUsers()) {
+            if (user.getId() == u.getId()) {
+                final RoleHasAlreadyUserException e = new RoleHasAlreadyUserException(user.getUsername());
+                this.logger.log(Level.WARNING, e);
+                throw e;
+            }
+        }
+        
+        user.getRoles().add(role);
+        role.getUsers().add(user);
     }
 }

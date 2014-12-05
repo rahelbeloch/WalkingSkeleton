@@ -13,6 +13,9 @@ public class Workflow extends RootElement {
 
     // Used for (de)serialization. Do not change.
     private List<Item> items;
+    
+    // Used for (de)serializsation. Do not change.
+    private boolean active;
 
     /**
      * Constructor for Workflow without parameters.
@@ -21,8 +24,9 @@ public class Workflow extends RootElement {
         super();
         steps = new ArrayList<Step>();
         items = new ArrayList<Item>();
+        active = true;
     }
-
+    
     /**
      * Constructor for Workflow with parameters.
      * @param id of the workflow
@@ -32,6 +36,7 @@ public class Workflow extends RootElement {
         this.id = id;
         steps = new ArrayList<Step>();
         items = new ArrayList<Item>();
+        active = true;
     }
 
     /**
@@ -48,6 +53,22 @@ public class Workflow extends RootElement {
      */
     public List<Item> getItems() {
         return this.items;
+    }
+    
+    /**
+     * Active Getter getter.
+     * @return active if the workflow is active or not
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * Active setter.
+     * @param active if the workflow is active or not
+     */
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     /**

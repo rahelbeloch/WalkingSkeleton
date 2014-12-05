@@ -68,11 +68,11 @@ public class Step {
      * @return nextStepIds
      */
     public List<Integer> getNextStepIds() {
-    	if (nextStepIds == null) {
-    		nextStepIds = new ArrayList<Integer>();
-    	}
-    	
-    	return this.nextStepIds;
+        if (nextStepIds == null) {
+            nextStepIds = new ArrayList<Integer>();
+        }
+        
+        return this.nextStepIds;
     }
 
     /**
