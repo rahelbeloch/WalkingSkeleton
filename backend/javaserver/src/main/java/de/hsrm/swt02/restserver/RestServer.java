@@ -62,9 +62,15 @@ public class RestServer {
     /**
      * Stops HTTP-server. The server waits a few seconds before it stops. Giving
      * all open requests enough time to run through.
+     * 
+     * @param forceServerStop forces the HTTP-Server to stop without waiting
      */
-    public void stopHTTPServer() {
-        server.stop(WAITING_TIME);
+    public void stopHTTPServer(boolean forceServerStop) {
+        if (forceServerStop) {
+            server.stop(0);
+        } else {
+            server.stop(WAITING_TIME);
+        }
         logger.log(Level.INFO, "HTTP-Server stopped...");
     }
 
