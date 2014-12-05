@@ -1,7 +1,6 @@
 package de.hsrm.swt02.restserver.exceptions;
 
-public class JacksonException extends RestServerException {
-
+public class JacksonException extends RestserverException {
 
     /**
      * 
