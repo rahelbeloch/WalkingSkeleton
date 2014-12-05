@@ -2,7 +2,11 @@ package de.hsrm.testswt02.RestserverTesting;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -36,7 +40,7 @@ public class RestServerUserTest {
 
     public static RestServer restServer;
     public static Client client;
-    public final String targetUrl = "http://localhost:8080";
+    public static String targetUrl;
 
     /**
      * This method sets and starts the REST-Server. Additionally it provides a test client.
@@ -46,7 +50,19 @@ public class RestServerUserTest {
         restServer = new RestServer();
         restServer.startHTTPServer();
         client = ClientBuilder.newClient();
-        
+        final Properties properties = new Properties();
+        BufferedInputStream stream;
+        // read configuration file for rest properties
+        try {
+            stream = new BufferedInputStream(new FileInputStream(
+                    "server.config"));
+            properties.load(stream);
+            stream.close();
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+        } catch (SecurityException e) {
+        }
+        targetUrl = properties.getProperty("RestServerURI");
     }
     /**
      * This test checks if a new user can be saved.
