@@ -255,7 +255,7 @@ namespace RestAPI
         public static Boolean StartWorkflow(int wId, string username)
         {
             IRestResponse resp;
-            String url = _operationParam + "workflow/"+ "start/" + wId + "/" + username;
+            String url = _operationParam + "workflow/"+ "start/" + wId.ToString() + "/" + username;
 
             var request = new RestRequest(url, Method.POST);
             request.AddHeader("Accept", "text/plain");
@@ -366,6 +366,8 @@ namespace RestAPI
 
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
             {
+                System.Diagnostics.Trace.WriteLine("response: " + response);
+                System.Diagnostics.Trace.WriteLine("response.Content " + response.Content);
                 int errorCode = Int32.Parse(response.Content);
                 BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
                 System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
