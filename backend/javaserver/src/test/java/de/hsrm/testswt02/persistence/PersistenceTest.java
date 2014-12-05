@@ -41,7 +41,7 @@ public class PersistenceTest {
      * @exception WorkflowNotExistentException if the requested workflow is not there
      * @throws WorkflowNotExistentException
      */
-    @Test(expected = WorkflowNotExistentException.class)
+    @Test
     public void testWorkflowStorage() throws WorkflowNotExistentException {
         final Workflow workflow007 = new Workflow(7);
         final Workflow workflow006 = new Workflow(6);
