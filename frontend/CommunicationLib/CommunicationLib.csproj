@@ -69,6 +69,8 @@
     <Compile Include="CustomSerializationBinder.cs" />
     <Compile Include="Model\Exception\BasicException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\ConnectionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\WrongUsernameException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\AlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\DoesntExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\EleAlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\ElementChangedException.cs" />
@@ -76,10 +78,12 @@
     <Compile Include="Model\Exception\LogicExceptions\LogicException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\LogInException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\MessagingExceptions\MessagingException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\ItemNotExistException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\NoPermissionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\PersistenceException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\RestException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\ServerNotRuningException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserAlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserNotExistException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\WrongPwException.cs" />
     <Compile Include="IDataReceiver.cs" />
@@ -95,6 +99,7 @@
     <Compile Include="Model\DataModel\Step.cs" />
     <Compile Include="Model\DataModel\User.cs" />
     <Compile Include="Model\DataModel\Workflow.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\WorkflowNotExistException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistrationWrapper.cs" />
     <Compile Include="RestAPI.cs" />
