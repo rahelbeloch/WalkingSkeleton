@@ -124,7 +124,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException {
-        pm.selectProcessor(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
+        pm.executeStep(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
     }
     
 //    @Override
@@ -332,11 +332,11 @@ public class LogicImp implements Logic {
      * @return if user existing true, else false
      */
     @Override
-    public boolean checkLogIn(String username) {
+    public boolean checkLogIn(String username) throws UserNotExistentException {
         try {
             p.loadUser(username);
         } catch (UserNotExistentException e) {
-            return false;
+            throw e;
         }
         return true;
     }
