@@ -8,6 +8,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 
+
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -82,9 +83,6 @@ public class ServerPublisherImp implements ServerPublisher {
             throws ServerPublisherBrokerException 
     {
         try {
-            connection = factory.createConnection();
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
             // create a message-producer for the topic
             final Topic topic = session.createTopic(topicName);
             publisher = session.createProducer(topic);
@@ -92,13 +90,11 @@ public class ServerPublisherImp implements ServerPublisher {
 
             // define messaging-content (TextMessage or MapMessage)
             final TextMessage msg = session.createTextMessage(content);
-
+                
             // send and close
             publisher.send(msg);
-            session.close();
-            connection.close();
         } catch (JMSException e) {
-            throw new ServerPublisherBrokerException("Publishing-Error: +"
+            throw new ServerPublisherBrokerException("Publishing-Error: "
                     + e.getMessage());
         }
     }
@@ -111,6 +107,9 @@ public class ServerPublisherImp implements ServerPublisher {
     public void startBroker() throws ServerPublisherBrokerException {
         if (broker == null) {
             broker = new BrokerService();
+        }
+        
+        if (!broker.isStarted()) {
             try {
                 broker.addConnector(connectionURL);
             } catch (Exception e) {
@@ -118,13 +117,18 @@ public class ServerPublisherImp implements ServerPublisher {
                         "Message broker could not add connector (URL: "
                                 + connectionURL + ")");
             }
-        }
-        if (!broker.isStarted()) {
+
             try {
                 broker.start();
-            } catch (Exception ex) {
-                throw new ServerPublisherBrokerException(
-                        "Could not START message broker");
+            } catch (Exception e) {
+                throw new ServerPublisherBrokerException("Could not START message broker");
+            }
+            
+            try {
+                connection = factory.createConnection();
+                session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            } catch (JMSException e) {
+                throw new ServerPublisherBrokerException(e.getMessage());
             }
         }
     }
@@ -141,10 +145,11 @@ public class ServerPublisherImp implements ServerPublisher {
         } else if (broker.isStarted()) {
             try {
                 broker.stop();
+                broker = null;
             } catch (Exception ex) {
                 throw new ServerPublisherBrokerException(
                         "Could not STOP message broker");
-            }
+            } 
         }
     }
 
