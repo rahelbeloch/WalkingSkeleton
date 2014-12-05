@@ -2,10 +2,12 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.google.inject.Inject;
 
 import de.hsrm.swt02.businesslogic.processors.StartTrigger;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -26,6 +28,7 @@ public class LogicImp implements Logic {
     private Persistence p;
     private ProcessManager pm;
     private LogicResponse logicResponse;
+    private UseLogger logger;
 
     /**
      * Constructor for LogicImp.
@@ -34,11 +37,15 @@ public class LogicImp implements Logic {
      *            is a singleton instance of the persistence
      * @param pm
      *            is a singleton instance of the processmanager
+     *            
+     * @param logger 
+     *            is the logger instance for this application
      */
     @Inject
-    public LogicImp(Persistence p, ProcessManager pm) {
+    public LogicImp(Persistence p, ProcessManager pm, UseLogger logger) {
         this.p = p;
         this.pm = pm;
+        this.logger = logger;
         setLogicResponse(new LogicResponse());
     }
 
@@ -218,7 +225,7 @@ public class LogicImp implements Logic {
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
-            	System.out.println("step:"+ step.getId() + "user:"+  step.getUsername());
+                logger.log(Level.INFO, "step:" + step.getId() + "user:" +  step.getUsername());
 
                 if (step.getUsername().equals(username)) {
                     workflows.add((Workflow) wf);
