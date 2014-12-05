@@ -51,7 +51,7 @@ public class WorkflowCommandResource {
         try {
             LOGIC.startWorkflow(workflowid, username);
         } catch (WorkflowNotExistentException e) {
-            LOGGER.log(Level.INFO, loggingBody + " Workflow does not exist.");
+            LOGGER.log(Level.WARNING, loggingBody + " Workflow does not exist.");
             Response.serverError().entity("11250").build();
         }
         logicResponse = LOGIC.getProcessLogicResponse();
@@ -87,10 +87,10 @@ public class WorkflowCommandResource {
         try {
             LOGIC.stepForward(itemid, stepid, username);
         } catch (ItemNotExistentException e) {
-            LOGGER.log(Level.INFO, e);
+            LOGGER.log(Level.WARNING, loggingBody + " Item does not exist.");
             return Response.serverError().entity("11250").build();
         } catch (UserNotExistentException e) {
-            LOGGER.log(Level.INFO, e);
+            LOGGER.log(Level.WARNING, loggingBody + " User does not exist.");
             return Response.serverError().entity("11260").build();
         }
         logicResponse = LOGIC.getProcessLogicResponse();
