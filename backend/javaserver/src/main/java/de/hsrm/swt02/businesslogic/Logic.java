@@ -142,11 +142,11 @@ public interface Logic {
     User getUser(String username) throws UserNotExistentException; // not attached yet
     
     /**
-     * This method check a User
+     * This method check a User.
      * @param username the user, to be checked
      * @return if user correct true, else false
      */
-    public boolean checkLogIn(String username); // later with password
+    boolean checkLogIn(String username); // later with password
     
 
     /**
