@@ -129,8 +129,8 @@ namespace UserClient
             }
             else
             {
-                addworkflowasrow("Workflow1", null);
-                addworkflowasrow("Workflow2", null);
+                addworkflowasrow("Fallback_1", null);
+                addworkflowasrow("Fallback_2", null);
             }
            
         }
