@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CommunicationLib.Exception
 {
 
-    class UserNotExistException : DoesntExistsException
+    public class UserNotExistException : DoesntExistsException
     {
         private int _number = 11251;
         new public int number { get { return _number; } }
