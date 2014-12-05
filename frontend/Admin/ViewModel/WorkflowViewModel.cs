@@ -191,26 +191,6 @@ namespace Admin.ViewModel
         #region commands
 
         /// <summary>
-        /// Command to open window to add a step to the current workflow.
-        /// </summary>
-        private ICommand _openAddStepWindow;
-        public ICommand openAddStepWindow
-        {
-            get
-            {
-                if (_openAddStepWindow == null)
-                {
-                    _openAddStepWindow = new ActionCommand(execute =>
-                    {
-                        AddStepWindow addElementWindow = new AddStepWindow();
-                        addElementWindow.Show();
-                    }, canExecute => (_workflow.Count == 0) || (_workflow.Count > 0 && !(_workflow[_workflow.Count - 1] is FinalStep)));
-                }
-                return _openAddStepWindow;
-            }
-        }
-
-        /// <summary>
         /// Command to delete last step from workflow.
         /// </summary>
         private ICommand _removeLastStepCommand;
