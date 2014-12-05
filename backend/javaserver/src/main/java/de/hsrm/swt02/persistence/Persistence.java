@@ -27,7 +27,7 @@ public interface Persistence {
      * store functions to store an item.
      * @param item is an item for storing
      */
-    void storeItem(Item item);
+    void storeItem(Item item) throws WorkflowNotExistentException;
 
     /**
      * Method for adding a new user.

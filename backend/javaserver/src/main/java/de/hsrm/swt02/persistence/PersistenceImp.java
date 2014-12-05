@@ -27,6 +27,8 @@ public class PersistenceImp implements Persistence {
 
     /** The logger. */
     private UseLogger logger;
+    private final int ID_MULTIPLICATOR = 1000;
+    
     /*
      * abstraction of a database, that persists the data objects workflow, item,
      * user, step, metaEntry
@@ -93,10 +95,24 @@ public class PersistenceImp implements Persistence {
      * @param item is an item for storing
      */
     @Override
-    public void storeItem(Item item) {
-        if (item.getId() <= 0) {
-            item.setId(items.size() + 1);
+    public void storeItem(Item item) throws WorkflowNotExistentException {
+        if(item.getId() <= 0) {
+            Workflow motherWorkflow = null;
+            for(Workflow wf: workflows) {
+                if(item.getWorkflowId() == wf.getId()) {
+                    motherWorkflow = wf;
+                }
+            }
+            if(motherWorkflow != null) {
+                item.setId(motherWorkflow.getId()+ID_MULTIPLICATOR + motherWorkflow.getSteps().size() + 1);
+            }
+            else {
+                final WorkflowNotExistentException e = new WorkflowNotExistentException("invalid workflow id in item "+ item.getId());
+                this.logger.log(Level.WARNING, e);
+                throw e;
+            }
         }
+        
         Item itemToRemove = null;
         for (Item i : items) {
             if (i.getId() == item.getId()) {
