@@ -9,7 +9,7 @@ namespace CommunicationLib.Exception
     public class PersistenceException : LogicException
     {
         private int _number = 11200;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public PersistenceException()
         {

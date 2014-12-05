@@ -9,7 +9,7 @@ namespace CommunicationLib.Exception
     class WorkflowNotExistException : DoesntExistsException
     {
         private int _number = 11252;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public WorkflowNotExistException()
         {

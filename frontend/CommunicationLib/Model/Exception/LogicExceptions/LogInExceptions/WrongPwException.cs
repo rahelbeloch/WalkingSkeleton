@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class WrongPwException : LogInException
+    public class WrongPwException : LogInException
     {
         private int _number = 11110;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public WrongPwException()
         {

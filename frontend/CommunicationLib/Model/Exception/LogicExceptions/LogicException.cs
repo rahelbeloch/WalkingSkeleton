@@ -9,7 +9,7 @@ namespace CommunicationLib.Exception
     public class LogicException : BasicException
     {
         private int _number = 11000;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
          public LogicException()
         {

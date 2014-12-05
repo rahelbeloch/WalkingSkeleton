@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class ServerNotRuningException : RestException
+    public class ServerNotRuningException : RestException
     {
         private int _number = 12210;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public ServerNotRuningException()
         {

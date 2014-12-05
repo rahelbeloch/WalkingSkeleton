@@ -9,7 +9,7 @@ namespace CommunicationLib.Exception
     public class DoesntExistsException : PersistenceException
     {
         private int _number = 11250;
-        public int number { get { return _number; } }
+        new public int number { get { return _number; } }
 
         public DoesntExistsException()
         {

@@ -36,7 +36,7 @@ namespace CommunicationLib
         /// </summary>
         /// <param name="sendObj">The object to update</param>
         /// <returns>If it worked or not</returns>
-        Boolean UpdateObject(RootElement sendObj);
+        Boolean UpdateObject<O>(O sendObj);
 
         /// <summary>
         ///     Create an object on the server, with HTTP-Method POST.
@@ -44,7 +44,7 @@ namespace CommunicationLib
         /// <typeparam name="O">The type of the object to be created</typeparam>
         /// <param name="sendObj">The specified object to create</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
-        Boolean PostObject<O>(RootElement sendObj);
+        Boolean PostObject<O>(O sendObj);
 
         /// <summary>
         ///     Delete an object on the server, with HTTP-Method DEL.

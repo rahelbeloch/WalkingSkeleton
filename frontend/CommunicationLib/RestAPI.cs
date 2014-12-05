@@ -43,33 +43,41 @@ namespace RestAPI
         }
 
         
-        /// <summary>
-        ///     Requests all Objects (Items, Workflows or Users) belonging to the given user.
-        /// </summary>
-        /// <typeparam name="RootElementList">The list of RootElements</typeparam>
-        /// <param name="userName">The users name</param>
-        /// <returns>The list with RootElements requested from server</returns>
+       /// <summary>
+        /// Requests all Objects (Items, Workflows or Users) belonging to the given user.
+       /// </summary>
+       /// <typeparam name="O"></typeparam>
+       /// <param name="userName"></param>
+       /// <returns></returns>
         public static IList<O> GetAllObjects<O>(String userName) where O : new()
         {
+            IRestResponse response;
+            IList<O> eleList;
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             // if userName is not null, it is concatenated to the url, otherwise path  is just 'resource/workflows' and will request all all workflows
             String url = _ressourceParam + typeName + "s" + (userName != null? "/" + userName : "");
-            System.Diagnostics.Trace.WriteLine("url: " + url);
             var request = new RestRequest(url, Method.GET);
             request.AddHeader("Accept", "text/plain");
 
             // decide wether the server does return the right excepted object or throws an exception
-            try
-            {      
-                var response = client.Execute(request);
-                IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, _jsonSettings);
-                return eleList;
-            }
-            catch (Exception)
+            response = client.Execute(request);
+            eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, _jsonSettings);
+
+            // if there is a network transport error (network is down, failed DNS lookup, etc)
+            if (response.ResponseStatus == ResponseStatus.Error)
             {
-                var response = client.Execute<Exception>(request);
-                throw response.Data;
+                ConnectionException ex = new ServerNotRuningException();
+                throw ex;
             }
+
+            // if the statusCode is 500 (Error) there happened an error on the server
+            if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                int errorCode = Int32.Parse(response.Content);
+                BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
+                throw ex;
+            }
+            return eleList;
         }
 
         /// <summary>
@@ -87,7 +95,6 @@ namespace RestAPI
             try
             {
                 response = GetObjectRequest<O>(url, Method.GET);
-                
             }
             catch (BasicException)
             {
@@ -137,11 +144,27 @@ namespace RestAPI
         /// </summary>
         /// <param name="sendObj">The object to update</param>
         /// <returns>If it worked or not</returns>
-        public static Boolean UpdateObject(RootElement sendObj)
+        public static Boolean UpdateObject<O>(O sendObj)
         {
             IRestResponse response;
             String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "/" + sendObj.id;
+            String url = _ressourceParam + typeName + "/";
+
+            if (typeof(O) == typeof(User))
+            {
+                User user = sendObj as User;
+                url += user.username;
+            }
+            else
+            {
+                Type t = sendObj.GetType();
+                PropertyInfo prop = t.GetProperty("id");
+                object pId = prop.GetValue(sendObj);
+                url += (int) pId;
+            }
+
+            //RootElement ele;
+            //url += typeof(Ele) == User ? ele.name : ele.id;
 
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
@@ -162,7 +185,7 @@ namespace RestAPI
         /// <typeparam name="O">The type of the object to be created</typeparam>
         /// <param name="sendObj">The specified object to create</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
-        public static Boolean PostObject<O>(RootElement sendObj) where O : new()
+        public static Boolean PostObject<O>(O sendObj) where O : new()
         {
             IRestResponse response;
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
@@ -179,6 +202,7 @@ namespace RestAPI
             {
                 throw;
             }
+          
             return response.StatusCode == HttpStatusCode.OK;
         }
 
@@ -305,16 +329,13 @@ namespace RestAPI
             IRestResponse response;
 
             // decide wether the server does return the right excepted object or throws an exception
-            try
+            response = client.Execute(request);
+            
+            // if there is a network transport error (network is down, failed DNS lookup, etc)
+            if (response.ResponseStatus == ResponseStatus.Error)
             {
-                response = client.Execute(request);
-                System.Diagnostics.Trace.WriteLine("response: " + response.Content);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Trace.WriteLine(ex.Data + " / " + ex.Message);
-                // this has to be a HttpException with the Connection
-                throw new Exception(ex.Message);
+                ConnectionException ex = new ServerNotRuningException();
+                throw ex;
             }
 
             // test the StatusCode of response; if 500 happened there is a Server Error
@@ -322,7 +343,6 @@ namespace RestAPI
             {
                 int errorCode = Int32.Parse(response.Content);
                 BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
-                System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
                 throw ex;
             }
             return response;
@@ -349,14 +369,13 @@ namespace RestAPI
             }
 
             // decide wether the server does return the right excepted object or throws an exception
-            try
+            response = client.Execute(request);
+
+            // if there is a network transport error (network is down, failed DNS lookup, etc)
+            if (response.ResponseStatus == ResponseStatus.Error)
             {
-                response = client.Execute(request);
-            }
-            catch (Exception)
-            {
-                // this has to be a HttpException with the Connection
-                throw new ConnectionException();
+                ConnectionException ex = new ServerNotRuningException();
+                throw ex;
             }
 
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
@@ -376,15 +395,13 @@ namespace RestAPI
         /// <returns>The response object</returns>
         private static IRestResponse SendSimpleRequest(RestRequest request)
         {
-            IRestResponse response;
-            try
+            IRestResponse response = client.Execute(request);
+
+            // if there is a network transport error (network is down, failed DNS lookup, etc)
+            if (response.ResponseStatus == ResponseStatus.Error)
             {
-                response = client.Execute(request);
-            }
-            catch(Exception)
-            {
-                // this has to be a HttpException with the Connection
-                throw new ConnectionException();
+                ConnectionException ex = new ServerNotRuningException();
+                throw ex;
             }
 
             // if no HttpException happened and although the StatusCode is not "OK", there must be on Exception of our own
