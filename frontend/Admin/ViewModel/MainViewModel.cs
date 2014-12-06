@@ -7,10 +7,12 @@ using System.Windows.Input;
 
 namespace Admin.ViewModel
 {
+    /// <summary>
+    /// The MainViewModel is a container for all other ViewModels.
+    /// It can be used to switch between different ViewModels (and corresponding Views).
+    /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        public ViewModelBase CurrentView { get; set; }
-        
         private WorkflowViewModel _workflowViewModel = new WorkflowViewModel();
         public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
 
@@ -22,22 +24,16 @@ namespace Admin.ViewModel
             PageViewModels.Add(workflowViewModel);
             PageViewModels.Add(userViewModel);
 
-            CurrentPageViewModel = PageViewModels[0];
+            // set starting ViewModel
+            CurrentPageViewModel = workflowViewModel;
         }
 
+        #region Commands and Properties
 
-        #region Fields
- 
+        /// <summary>
+        /// Command to change the current View/ViewModel.
+        /// </summary>
         private ICommand _changePageCommand;
- 
-        private ViewModelBase _currentPageViewModel;
-        private List<ViewModelBase> _pageViewModels;
- 
-        #endregion
- 
- 
-        #region Properties / Commands
- 
         public ICommand ChangePageCommand
         {
             get
@@ -51,18 +47,28 @@ namespace Admin.ViewModel
                 return _changePageCommand;
             }
         }
- 
+
+        /// <summary>
+        /// Property to hold a list of all known ViewModels.
+        /// </summary>
+        private List<ViewModelBase> _pageViewModels;
         public List<ViewModelBase> PageViewModels
         {
             get
             {
                 if (_pageViewModels == null)
+                {
                     _pageViewModels = new List<ViewModelBase>();
- 
+                }
+                    
                 return _pageViewModels;
             }
         }
- 
+
+        /// <summary>
+        /// Property for the currently shown View/ViewModel.
+        /// </summary>
+        private ViewModelBase _currentPageViewModel;
         public ViewModelBase CurrentPageViewModel
         {
             get
@@ -78,19 +84,23 @@ namespace Admin.ViewModel
                 }
             }
         }
- 
+
         #endregion
- 
+
         #region Methods
 
+        /// <summary>
+        /// This method actually changes the current View/ViewModel.
+        /// </summary>
+        /// <param name="viewModel">The new current ViewModel.</param>
         private void ChangeViewModel(ViewModelBase viewModel)
         {
-            Console.WriteLine("change view model...");
             if (!PageViewModels.Contains(viewModel))
+            {
                 PageViewModels.Add(viewModel);
- 
-            CurrentPageViewModel = PageViewModels
-                .FirstOrDefault(vm => vm == viewModel);
+            }
+                
+            CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel);
         }
  
         #endregion
