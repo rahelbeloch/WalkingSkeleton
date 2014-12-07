@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunicationLib", "Communi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin", "Admin\Admin.csproj", "{C78CF8B9-87C9-4BB6-97B6-3CC3FB1DEA0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{0E6BB8B6-20C9-45D5-AF29-159E6E00E75B}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -35,6 +37,10 @@ Global
 		{C78CF8B9-87C9-4BB6-97B6-3CC3FB1DEA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C78CF8B9-87C9-4BB6-97B6-3CC3FB1DEA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C78CF8B9-87C9-4BB6-97B6-3CC3FB1DEA0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E6BB8B6-20C9-45D5-AF29-159E6E00E75B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E6BB8B6-20C9-45D5-AF29-159E6E00E75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E6BB8B6-20C9-45D5-AF29-159E6E00E75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E6BB8B6-20C9-45D5-AF29-159E6E00E75B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
