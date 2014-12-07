@@ -13,14 +13,27 @@ namespace Client.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private WorkflowViewModel _workflowViewModel = new WorkflowViewModel();
+        private WorkflowViewModel _workflowViewModel;
         public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
 
-        private LoginViewModel _loginViewModel = new LoginViewModel();
+        private LoginViewModel _loginViewModel;
         public LoginViewModel loginViewModel { get { return _loginViewModel; } }
-        
+
+        private String _userName = "";
+        public String username
+        {
+            get { return _userName; }
+            set
+            {
+                _userName = value;
+                _workflowViewModel.userName = value;
+                Console.WriteLine("username gesetzt.");
+            }
+        }
         public MainViewModel()
         {
+            _loginViewModel = new LoginViewModel(this);
+            _workflowViewModel = new WorkflowViewModel(this);
             PageViewModels.Add(workflowViewModel);
             PageViewModels.Add(loginViewModel);
 

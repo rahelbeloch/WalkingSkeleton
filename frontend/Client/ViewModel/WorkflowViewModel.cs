@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using CommunicationLib.Model;
 using CommunicationLib;
 using System.Windows;
-using Action = CommunicationLib.Model.Action;
+using RestAPI;
 
 namespace Client.ViewModel
 {
@@ -20,65 +20,61 @@ namespace Client.ViewModel
     /// </summary>
     public class WorkflowViewModel : ViewModelBase
     {
-        public string Name
+        private MainViewModel _mainViewModel;
+        public WorkflowViewModel(MainViewModel mainViewModelInstanz)
         {
-            get
-            {
-                return "Workflow View Model";
+            _mainViewModel = mainViewModelInstanz;
+        }
+        private String _userName="";
+        public String userName
+        {
+            get { return _userName; }
+            set {
+                _userName = value;
+                Console.WriteLine("Workflows holen");
+
+                if (_userName.Equals(""))
+                {
+                    _workflows = null;
+                }
+                else
+                {
+                    try
+                    {
+                        _workflows = new ObservableCollection<Workflow>(RestAPI.RestRequester.GetAllObjects<Workflow>(userName));
+                    } catch (Exception e) {
+                        Console.WriteLine(e.ToString());
+                    }
+                    Console.WriteLine("Workflows holen");
+                }
             }
         }
 
-        private Workflow _workflowModel = new Workflow();
-
-        public WorkflowViewModel()
+        private ICommand _logoutCommand;
+        public ICommand logoutCommand
         {
-            _workflow.CollectionChanged += OnWorkflowChanged;
+            get
+            {
+                if (_logoutCommand == null)
+                {
+                    _logoutCommand = new ActionCommand(excute =>
+                        {
+                            Console.WriteLine("button clicked");
+                            userName = "";
+                            _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
+                            OnChanged("workflows");
+                        }, canExecute =>
+                            {
+                                return true;
+                            });
+                }
+                return _logoutCommand;
+            }
         }
-
-
 
         #region properties
-
-        /// <summary>
-        /// Property _dummyWorkflow fills list view with steps.
-        /// TODO: change Step to Step (not possible at the moment)
-        /// </summary>
-        private ObservableCollection<Step> _workflow = new ObservableCollection<Step>();
-        public ObservableCollection<Step> workflow { get { return _workflow; } }
-
-
-
-
-        /// <summary>
-        /// Property for input from username text box.
-        /// </summary>
-        private string _username = "";
-        public string username
-        {
-            get
-            {
-                return _username;
-            }
-            set
-            {
-                _username = value;
-                OnChanged("username");
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// When the workflow is changed, reconfigure choosable steps for combobox (depending on currently allowed steps).
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void OnWorkflowChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-        }
-
-        #region commands
-
+        private ObservableCollection<Workflow> _workflows;
+        public ObservableCollection<Workflow> workflows { get { return _workflows; } }
 
         #endregion
     }
