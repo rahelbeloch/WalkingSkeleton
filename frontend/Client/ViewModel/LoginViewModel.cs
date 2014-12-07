@@ -9,8 +9,14 @@ using CommunicationLib.Exception;
 
 namespace Client.ViewModel
 {
-    public class LoginViewModel :ViewModelBase
+    public class LoginViewModel : ViewModelBase
     {
+        private MainViewModel _mainViewModel;
+        public LoginViewModel(MainViewModel mainViewModelInstanz)
+            : base()
+        {
+            _mainViewModel = mainViewModelInstanz;
+        }
         public string Name
         {
             get
@@ -55,25 +61,34 @@ namespace Client.ViewModel
         {
             get
             {
-                _authenticate = new ActionCommand(execute =>
+                if (_authenticate == null)
                 {
-                    try
-                    {
-                        RestAPI.RestRequester.checkUser(username, securePwd);
-                        Console.WriteLine("userName: " + username);
-                    }
-                    catch (BasicException exc)
-                    {
-                        Console.WriteLine("Login fehlgeschlagen");
-                    }
-                    finally
-                    {
 
-                    }
-                }, canExecute =>
-                {
-                    return true;
-                });
+                    _authenticate = new ActionCommand(execute =>
+                    {
+                        Console.WriteLine("authenticate mit " + _username);
+                        _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
+                        _mainViewModel.username = _username;
+                        /*try
+                        {
+                            RestAPI.RestRequester.checkUser(username, securePwd);
+                            Console.WriteLine("userName: " + username);
+                            _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
+                        }
+                        catch (BasicException exc)
+                        {
+                            Console.WriteLine("Login fehlgeschlagen:");
+                            Console.WriteLine(exc.ToString());
+                        }
+                        finally
+                        {
+
+                        }*/
+                    }, canExecute =>
+                    {
+                        return true;
+                    });
+                }
                 return _authenticate;
             }
         }

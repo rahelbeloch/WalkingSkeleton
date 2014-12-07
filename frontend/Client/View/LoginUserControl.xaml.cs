@@ -24,19 +24,5 @@ namespace Client.View
         {
             InitializeComponent();
         }
-        private void Login_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-             
-            }
-            catch (BasicException exc)
-            {
-                ErrorMessage.Visibility = Visibility.Visible;
-            }
-            finally
-            {
-            }
-        }
     }
 }
