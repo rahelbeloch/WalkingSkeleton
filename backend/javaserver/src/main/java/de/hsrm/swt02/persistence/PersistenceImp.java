@@ -31,7 +31,7 @@ public class PersistenceImp implements Persistence {
 
     /** The logger. */
     private UseLogger logger;
-    private final int ID_MULTIPLICATOR = 1000;
+    private static final int ID_MULTIPLICATOR = 1000;
     
     /*
      * abstraction of a database, that persists the data objects workflow, item,
