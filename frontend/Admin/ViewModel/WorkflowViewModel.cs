@@ -21,14 +21,6 @@ namespace Admin.ViewModel
     /// </summary>
     public class WorkflowViewModel : ViewModelBase
     {
-        public string Name
-        {
-            get
-            {
-                return "Workflow View Model";
-            }
-        }
-
         private Workflow _workflowModel = new Workflow();
         
         public WorkflowViewModel()
