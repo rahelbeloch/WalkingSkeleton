@@ -16,6 +16,12 @@ namespace CommunicationLib
         // Ressource-methods
         public IList<Workflow> GetAllWorkflows();
 
+        public IList<Workflow> GetAllWorkflowsByUser(String userName);
+
+        public IList<int> GetStartablesByUser(string userName);
+
+        public IList<Item> GetRelevantItemsByUser(int workflowID, string userName);
+
         /// <summary>
         ///     Get an object from the server, with HTTP-Method GET.
         ///     Path for this HTTP-Method is always: ressource/<typename>/<id>/
