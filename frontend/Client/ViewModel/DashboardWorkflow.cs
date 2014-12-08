@@ -10,6 +10,7 @@ namespace Client.ViewModel
     class DashboardWorkflow
     {
         private Workflow _actWorkflow;
+        public Workflow actWorkflow { get { return _actWorkflow; } }
         private List<DashboardRow> _dashboardRows;
         public List<DashboardRow> dashboardRows { get { return _dashboardRows; } }
         private Boolean _startPermission;

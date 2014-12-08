@@ -11,13 +11,16 @@ namespace Client.ViewModel
     class DashboardRow
     {
         private Item _actItem;
+        public Item actItem { get { return _actItem; } }
         private Step _actStep;
-        private MyToggleButton toggleButton;
+        public Step actStep { get { return _actStep; } }
+        private MyToggleButton _toggleButton;
+        public MyToggleButton toggleButton { get { return _toggleButton; } }
         public DashboardRow(Item actItem, Step actStep, String username)
         {
             _actItem = actItem;
             _actStep = actStep;
-            toggleButton = new MyToggleButton(actItem.id, actStep.id, username);
+            _toggleButton = new MyToggleButton(actItem.id, actStep.id, username);
         }
     }
 }
