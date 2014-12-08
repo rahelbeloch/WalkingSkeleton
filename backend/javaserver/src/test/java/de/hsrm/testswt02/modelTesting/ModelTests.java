@@ -29,7 +29,7 @@ public class ModelTests {
     */
     @Test
     public void actionTest() {
-        final Action a = new Action(0, "usernametest", "desctest");
+        final Action a = new Action("usernametest", "desctest");
         assertThat(a, instanceOf(Action.class));
     }
 
@@ -119,7 +119,7 @@ public class ModelTests {
      */
     @Test
     public void worfklowTest() {
-        final Workflow wf = new Workflow(0);
+        final Workflow wf = new Workflow();
         assertThat(wf, instanceOf(Workflow.class));
     }
 
