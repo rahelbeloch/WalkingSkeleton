@@ -227,13 +227,13 @@ public class WorkflowResource {
             workflow = LOGIC.getWorkflow(workflowid);
             logicResponse = LOGIC.deleteWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
-            LOGGER.log(Level.WARNING, loggingBody + "Workflow does not exist");
+            LOGGER.log(Level.WARNING, loggingBody + e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         try {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError()
                     .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
