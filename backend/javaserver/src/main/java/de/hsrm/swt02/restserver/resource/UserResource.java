@@ -37,8 +37,9 @@ import de.hsrm.swt02.restserver.exceptions.JacksonException;
 @Path("resource")
 public class UserResource {
 
-    public static final Logic LOGIC = ConstructionFactory.getLogic();
-    public static final ServerPublisher PUBLISHER = ConstructionFactory.getPublisher();
+    public static final ConstructionFactory FACTORY = ConstructionFactory.getInstance();
+    public static final Logic LOGIC = FACTORY.getLogic();
+    public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
     LogicResponse logicResponse;
     
