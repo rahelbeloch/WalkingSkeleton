@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="500" d:DesignWidth="800">
     <Grid>
         <DockPanel>
             <DockPanel.InputBindings>
@@ -17,29 +17,40 @@
             
             <TabControl>
                 <TabItem Header="Nutzerverwaltung">
-                    <DockPanel>
-                        <DockPanel DockPanel.Dock="Top">
-                            <Label Content="Nutzername: "  VerticalContentAlignment="Center"/>
-                            <TextBox Width="120" Height="25">
-                                <TextBox.Text>
-                                    <Binding Path="username" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
-                                </TextBox.Text>
-                            </TextBox>
-                            <Button HorizontalAlignment="Left" Content="Nutzer hinzufügen" Height="25" Margin="10" Command="{Binding addUserCommand}"/>
-                        </DockPanel>
-
-                        <DockPanel DockPanel.Dock="Top">
-                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding userCollection}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+     
+                        <DockPanel Grid.Column="0">
+                            <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding userCollection}">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns >
-                                            <GridViewColumn Width="500" Header="Nutzername" DisplayMemberBinding="{Binding username}"/>
+                                            <GridViewColumn Header="Nutzername" DisplayMemberBinding="{Binding username}"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
                             </ListView>
                         </DockPanel>
-                    </DockPanel>
+
+                        <DockPanel Grid.Column="1" VerticalAlignment="Top">
+                            <DockPanel DockPanel.Dock="Top">
+                                <Label Content="Nutzername: "  VerticalContentAlignment="Center"/>
+                                <TextBox Width="120" Height="25">
+                                    <TextBox.Text>
+                                        <Binding Path="username" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                    </TextBox.Text>
+                                </TextBox>
+                            </DockPanel>
+                            
+                            <DockPanel DockPanel.Dock="Bottom">
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Nutzer hinzufügen" Height="25" Margin="10" Command="{Binding addUserCommand}"/>
+                            </DockPanel>
+                            
+                        </DockPanel>
+                    </Grid>
                 </TabItem>
                 
                 <TabItem Header="Rollenverwaltung">
