@@ -7,6 +7,8 @@ import com.google.inject.Inject;
 
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.MetaEntry;
+import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
@@ -209,13 +211,15 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException 
      */
     @Override
-    public List<Workflow> getWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException {
+    public List<Workflow> getAllWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException {
         User user = p.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
                 if (step.getUsername().equals(username)) {
-                    workflows.add((Workflow) wf);
+                	Workflow copyOfWf = wf;
+                	copyOfWf.clearItems();
+                    workflows.add(copyOfWf);
                     break;
                 }
             }
@@ -223,54 +227,79 @@ public class LogicImp implements Logic {
         return workflows;
     }
 
-    /**
-     * This method returns all actual Items for a User.
-     * 
-     * @param user
-     * @return a LinkedList, with actual Items
-     * @throws WorkflowNotExistentException 
-     */
+//    /**
+//     * This method returns all actual Items for a User.
+//     * 
+//     * @param user
+//     * @return a LinkedList, with actual Items
+//     * @throws WorkflowNotExistentException 
+//     */
+//    public List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException {
+//
+//        final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
+//        final LinkedList<Item> items = new LinkedList<Item>();
+//
+//        
+//        for (Workflow wf : workflows) {
+//            for (Item item : wf.getItems()) {
+//
+//                if ((wf.getStepById(Integer
+//                        .parseInt(item.getActStep().getKey())).getUsername())
+//                        .equals(username)) 
+//                {
+//                    items.add(item);
+//                }
+//            }
+//        }
+//        return items;
+//    }
+    
     @Override
-    public List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException {
-
-        final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
-        final LinkedList<Item> items = new LinkedList<Item>();
-
-        
-        for (Workflow wf : workflows) {
-            for (Item item : wf.getItems()) {
-
-                if ((wf.getStepById(Integer
-                        .parseInt(item.getActStep().getKey())).getUsername())
-                        .equals(username)) 
-                {
-                    items.add(item);
-                }
-            }
-        }
-        return items;
+    public List<Integer> getStartableWorkflowsByUser(String username) throws UserNotExistentException, WorkflowNotExistentException {
+    	List<Integer> startableWorkflows = new LinkedList<>();
+    	for(Workflow workflow: getAllWorkflowsByUser(username)) {
+    		Step startStep = workflow.getSteps().get(0);
+    		assert(startStep instanceof StartStep);
+    		if(startStep.getUsername() == username) {
+    			startableWorkflows.add(workflow.getId());
+    		}
+    	}
+    	return startableWorkflows;
+    }
+    
+    @Override
+    public List<Item> getRelevantItemsByUser(int workflowId, String username) throws UserNotExistentException, WorkflowNotExistentException {
+    	LinkedList<Item> relevantItems = new LinkedList<>();
+    	for(Workflow usersWorkflow: getAllWorkflowsByUser(username)) {
+    		for(Item item: usersWorkflow.getItems()) {
+    			MetaEntry me = item.getActStep();
+    			if(me != null) {
+    				relevantItems.add(item);
+    			}
+    		}
+    	}
+    	return relevantItems;
     }
 
-    /**
-     * This method returns all Workflows, which can be startes by this user.
-     * 
-     * @param user
-     * @return
-     * @throws WorkflowNotExistentException 
-     */
-    @Override
-    public List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException {
-
-        final LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
-        final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
-
-        for (Workflow wf : workflows) {
-            if (wf.getStepByPos(0).getUsername().equals(username)) {
-                startableWorkflows.add(wf);
-            }
-        }
-        return startableWorkflows;
-    }
+//    /**
+//     * This method returns all Workflows, which can be startes by this user.
+//     * 
+//     * @param user
+//     * @return
+//     * @throws WorkflowNotExistentException 
+//     */
+//    public List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException {
+//
+//        final LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
+//        final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getWorkflowsByUser(username);
+//
+//        for (Workflow wf : workflows) {
+//            if (wf.getStepByPos(0).getUsername().equals(username)) {
+//                startableWorkflows.add(wf);
+//            }
+//        }
+//        return startableWorkflows;
+//    }
 
     /**
      * This method gets a LogicResponse object from the processmanager instance.

@@ -158,30 +158,39 @@ public interface Logic {
      * @return logicResponse of deleting a user
      */
     LogicResponse deleteUser(String username) throws UserNotExistentException;
-
+    
+    
+    
+    
     /**
-     * This method returns all workflows, in which the user is involved.
+     * This method returns all workflows, in which the user is involved, no matter if there is an open or busy item for him
+     * Mind that this method won't return the items only a list of workflows
      * 
      * @param username whose workflows' is looked for
      * @return a LinkedList of workflows
      */
-    List<Workflow> getWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
-
+    List<Workflow> getAllWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
+    
     /**
-     * This method returns all actual Items for a User.
      * 
-     * @param username whose items' is looked for.
-     * @return a LinkedList, with actual Items
+     * @param username
+     * @return
+     * @throws UserNotExistentException
      */
-    List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
-
+    List<Integer> getStartableWorkflowsByUser(String username) throws UserNotExistentException, WorkflowNotExistentException;
+    
     /**
-     * This method returns all Workflows, which can be startes by this user.
      * 
-     * @param username who can execute workflows.
-     * @return a LinkedList of workflows which can be executed
+     * @param workflowId
+     * @param username
+     * @return
+     * @throws WorkflowNotExistentException
+     * @throws UserNotExistentException
      */
-    List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException;
+    List<Item> getRelevantItemsByUser(int workflowId, String username) throws WorkflowNotExistentException, UserNotExistentException;
+    
+    
+    
     
     /**
      * This method gets a LogicResponse object.
