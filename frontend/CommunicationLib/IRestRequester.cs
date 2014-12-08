@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommunicationLib.Model;
+using System.Security;
 
 namespace CommunicationLib
 {
@@ -13,14 +14,7 @@ namespace CommunicationLib
     interface IRestRequester
     {
         // Ressource-methods
-
-        /// <summary>
-        ///     Requests all Objects (Items, Workflows or Users) belonging to the given user.
-        /// </summary>
-        /// <typeparam name="RootElementList">The list of RootElements</typeparam>
-        /// <param name="userName">The users name</param>
-        /// <returns>The list with RootElements requested from server</returns>
-        IList<RootElement> GetAllObjects<RootElement>(String userName);
+        public IList<Workflow> GetAllWorkflows();
 
         /// <summary>
         ///     Get an object from the server, with HTTP-Method GET.
@@ -29,14 +23,14 @@ namespace CommunicationLib
         /// <typeparam name="O">Type of the requested object</typeparam>
         /// <param name="id">Id of the requested object</param>
         /// <returns>The requested object</returns>
-        O GetObject<O>(int id);
+        O GetObject<O>(int id) where O : new();
 
         /// <summary>
         ///     Update an object on the server, with HTTP-Method PUT.
         /// </summary>
         /// <param name="sendObj">The object to update</param>
         /// <returns>If it worked or not</returns>
-        Boolean UpdateObject<O>(O sendObj);
+        Boolean UpdateObject(RootElement sendObj);
 
         /// <summary>
         ///     Create an object on the server, with HTTP-Method POST.
@@ -52,7 +46,7 @@ namespace CommunicationLib
         /// <typeparam name="O">Type of the deleted object</typeparam>
         /// <param name="id">Id of the deleted object</param>
         /// <returns>The deleted object</returns>
-        O DeleteObject<O>(int id);
+        O DeleteObject<O>(int id) where O : new();
 
         // Command-methods
 
@@ -62,7 +56,7 @@ namespace CommunicationLib
         /// <param name="username">Name of the user</param>
         /// <param name="password">Password of the user</param>
         /// <returns>True if it worked, false otherwhise, or an exception</returns>
-        Boolean checkUser(String username, String password);
+        Boolean checkUser(String username, SecureString password);
 
         /// <summary>
         ///     Sends a request to the server to start a workflow (create an item). Path is always: "/command/workflow/start/{workflowId}/{userName}"
@@ -79,6 +73,5 @@ namespace CommunicationLib
         /// <param name="uId">Name of the current user</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
         Boolean StepForward(int stepId, int itemId, string username);
-
     }
 }
