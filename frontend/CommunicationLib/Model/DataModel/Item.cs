@@ -38,7 +38,7 @@ namespace CommunicationLib.Model
             _metadata = new List<MetaEntry>();
         }
 
-        public int getActiveStepIdByUsername(string username)
+        public int getActiveStepId()
         {
             foreach (MetaEntry me in metadata) 
             {
