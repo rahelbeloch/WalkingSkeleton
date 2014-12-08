@@ -33,7 +33,7 @@ import de.hsrm.swt02.restserver.RestServer;
  *    - testPost()
  *    - testDelete()
  */
-public class RestserverTest {
+public class RestserverWorkflowTest {
 
     public static RestServer restServer;
     public static Client client;
