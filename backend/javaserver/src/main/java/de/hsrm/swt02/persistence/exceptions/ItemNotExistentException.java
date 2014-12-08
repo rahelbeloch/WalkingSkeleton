@@ -12,7 +12,7 @@ public class ItemNotExistentException extends NotExistentException {
      * Constructor for the Exception.
      */
     public ItemNotExistentException() {
-        super();
+        super("Das Item exsistiert nicht.");
     }
 
     /**

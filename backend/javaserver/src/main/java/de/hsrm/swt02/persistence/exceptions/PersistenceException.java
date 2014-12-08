@@ -14,7 +14,7 @@ public class PersistenceException extends LogicException {
      * Constructor for the Exception.
      */
     public PersistenceException() {
-        super();
+        super("Es ist ein Fehler in der Datenbank passiert.");
     }
 
     /**

@@ -12,7 +12,7 @@ public class NotExistentException extends PersistenceException {
      * Constructor for the Exception.
      */
     public NotExistentException() {
-        super();
+        super("Das Element existiert nicht.");
     }
 
     /**
