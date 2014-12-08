@@ -406,11 +406,13 @@ public class PersistenceTest {
     
     /**
      * Method for testing if it's possible to assign roles to users and vice-versa.
+     * @exception UserAlreadyExistsException if the requested user is already there
      * @exception RoleNotExistentException if the requested role is not there
      * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
      * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
      * @exception UserNotExistentException if the requested user is not there
      * @exception RoleNotExistentException if the requested role is not there
+     * @throws UserAlreadyExistsException
      * @throws UserHasAlreadyRoleException
      * @throws RoleHasAlreadyRoleException
      * @throws UserNotExistentException
@@ -418,9 +420,11 @@ public class PersistenceTest {
      */
     @Test
     public void testRoleToUserAssignement() throws UserAlreadyExistsException, RoleNotExistentException, UserNotExistentException, RoleHasAlreadyUserException, UserHasAlreadyRoleException {
+        final int id17 = 17;
+        final int id71 = 71;
         final Role roletest = new Role(17);
         final User usertest = new User();
-        usertest.setId(71);
+        usertest.setId(id71);
         
         db.storeRole(roletest);
         db.addUser(usertest);
@@ -430,7 +434,7 @@ public class PersistenceTest {
         System.out.println(usertest.getRoles().get(0).getId());
         System.out.println(roletest.getUsers().get(0).getId());
         
-        assertTrue(db.loadRole(17).getUsers().contains(usertest));
+        assertTrue(db.loadRole(id17).getUsers().contains(usertest));
     }
 
 }

@@ -3,13 +3,17 @@ package de.hsrm.swt02.businesslogic;
 import java.util.List;
 
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.restserver.LogicResponse;
 /**
  * This interface is used for the business logic.
@@ -203,4 +207,54 @@ public interface Logic {
      * @param lr is new value for logicResponse
      */
     void setProcessLogicResponse(LogicResponse lr);
+
+    //Business Logik Sprint 2
+    
+    /**
+     * Method for getting a list of all the existing roles in the persistance.
+     * @return list of all roles
+     * @exception RoleNotExistentException if the requested Role is not there
+     * @throws RoleNotExistentException
+     */
+    List<Role> getAllRoles() throws RoleNotExistentException;
+    
+    /**
+     * Method for returning a list of all the existing users in the persistance.
+     * @return list of all users
+     * @exception UserNotExistentException if the requested user is not there
+     * @throws UserNotExistentException
+     */
+    List<User> getAllUsers() throws UserNotExistentException;
+    
+    /**
+     * Method for adding a new role in the persistance.
+     * @param role is the role we want to add
+     * @return LogicResponse object
+     * @exception RoleAlreadyExistsException if the role we want to add is already there
+     * @throws RoleAlreadyExistsException
+     */
+    LogicResponse addRole(Role role) throws RoleAlreadyExistsException;
+    
+    /**
+     * Method for adding an existing role to the rolelist of an existing user.
+     * @param username is the username of the user
+     * @param role is the role we want to add
+     * @return LogicResponse object
+     * @exception UserNotExistentException if the user is not in the persistance
+     * @exception RoleNotExistentException if the role is not in the persistance
+     * @exception UserHasAlreadyRoleException if the user has already the role in his rolelist
+     * @throws UserNotExistentException
+     * @throws RoleNotExistentException
+     * @throws UserHasAlreadyRoleException
+     */
+    LogicResponse addRoleToUser(String username, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException;
+    
+    /**
+     * Method for deleting an existing role from the persistance. The users who have this role will lose it too.
+     * @param rolename of the role
+     * @return LogicResponce object
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws RoleNotExistentException
+     */
+    LogicResponse deleteRole(String rolename) throws RoleNotExistentException;
 }

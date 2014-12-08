@@ -11,8 +11,8 @@ import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
 import de.hsrm.swt02.model.MetaState;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.RootElement;
-import de.hsrm.swt02.model.RootElementList;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -79,15 +79,6 @@ public class ModelTests {
     }
 
     /**
-     * method for testing RootElementList: a new RootElementList is initializated and checked.
-     */
-    @Test
-    public void rootElementListTest() {
-        final RootElementList re = new RootElementList();
-        assertTrue(re instanceof RootElementList);
-    }
-
-    /**
      * method for testing StartStep: a new StartStep is initializated and checked.
      */
     @Test
@@ -121,6 +112,15 @@ public class ModelTests {
     public void worfklowTest() {
         final Workflow wf = new Workflow();
         assertThat(wf, instanceOf(Workflow.class));
+    }
+    
+    /**
+     * method for testing Workflow: a new Workflow is initializated and checked.
+     */
+    @Test
+    public void roleTest() {
+        final Role r = new Role();
+        assertThat(r, instanceOf(Role.class));
     }
 
 }

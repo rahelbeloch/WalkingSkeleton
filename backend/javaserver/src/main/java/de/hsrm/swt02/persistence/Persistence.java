@@ -134,9 +134,19 @@ public interface Persistence {
     
     /**
      * Method for loading all existing roles.
+     * @exception RoleNotExistentException if the requested role is not there.
+     * @throws RoleNotExistentException
      * @return roles is the list of all existing roles
      */
-    List<Role> loadAllRoles();
+    List<Role> loadAllRoles() throws RoleNotExistentException;
+    
+    /**
+     * Method for loading all existing users.
+     * @exception UserNotExistentException if the requested user is not there.
+     * @throws UserNotExistentException
+     * @return users is the list of all existing users
+     */
+    List<User> loadAllUsers() throws UserNotExistentException;
     
     /**
      * Method for loading a role.
@@ -160,5 +170,7 @@ public interface Persistence {
      * @throws UserNotExistentException
      * @throws RoleNotExistentException 
      */
-    void addUserToRole(User user, Role role) throws UserNotExistentException, RoleNotExistentException, RoleHasAlreadyUserException, UserHasAlreadyRoleException;  
+    void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException;  
+    
+    void deleteRole(String rolename) throws RoleNotExistentException;
 }
