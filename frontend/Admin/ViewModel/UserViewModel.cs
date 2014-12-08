@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunicationLib.Model;
+using CommunicationLib.Exception;
+using System.Windows;
 
 namespace Admin.ViewModel
 {
@@ -63,14 +65,21 @@ namespace Admin.ViewModel
                 {
                     _addUserCommand = new ActionCommand(execute =>
                     {
-                        User newUser = new User();
-                        newUser.username = username;
-                        
-                        // update view model
-                        _userCollection.Add(newUser);
-                        RestAPI.RestRequester.PostObject<User>(newUser);
-                        
-                        username = "";
+                        try
+                        {
+                            User newUser = new User();
+                            newUser.username = username;
+
+                            RestAPI.RestRequester.PostObject<User>(newUser);
+
+                            // update view model
+                            _userCollection.Add(newUser);
+                            username = "";
+                        }
+                        catch (BasicException be)
+                        {
+                            MessageBox.Show(be.Message);
+                        }
                     }, canExecute =>
                     {
                         if (username.Length == 0)
