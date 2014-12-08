@@ -7,7 +7,7 @@ import java.util.List;
  * This class represents a Workflow. A Workflow is a manifestation of a RootElement
  *
  */
-public class Workflow extends RootElement {
+public class Workflow extends RootElement implements Cloneable {
     // Used for (de)serialization. Do not change.
     private List<Step> steps;
 
@@ -181,4 +181,22 @@ public class Workflow extends RootElement {
             steps.get(i).getNextSteps().add(steps.get(i + 1));
         }
     }
+    
+    /**
+	 * Deep Copy - Cloning method for Workflows
+	 */
+    protected Object clone() throws CloneNotSupportedException {
+		Workflow clone = new Workflow();
+		clone.setActive(active);
+		clone.setId(id);
+		for(Step step: this.steps) {
+			Step cloneStep = (Step)step.clone();
+			clone.addStep(cloneStep);
+		}
+		for(Item item: this.items) {
+			Item cloneItem = (Item)item.clone();
+			clone.addItem(cloneItem);
+		}
+		return clone;
+	}
 }
