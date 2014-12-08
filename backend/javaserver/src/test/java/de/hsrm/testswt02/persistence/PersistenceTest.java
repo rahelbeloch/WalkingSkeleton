@@ -51,18 +51,14 @@ public class PersistenceTest {
         final Workflow workflow007 = new Workflow();
         final Workflow workflow006 = new Workflow();
         final Workflow workflow005 = new Workflow();
-        
-        final int id5 = 5;
-        final int id6 = 6;
-        final int id7 = 7;
 
         db.storeWorkflow(workflow005);
         db.storeWorkflow(workflow006);
         db.storeWorkflow(workflow007);
 
-        assertEquals(db.loadWorkflow(id5), workflow005);
-        assertEquals(db.loadWorkflow(id6), workflow006);
-        assertEquals(db.loadWorkflow(id7), workflow007);
+        assertEquals(db.loadWorkflow(workflow005.getId()), workflow005);
+        assertEquals(db.loadWorkflow(workflow006.getId()), workflow006);
+        assertEquals(db.loadWorkflow(workflow007.getId()), workflow007);
     }
 
     /**
@@ -75,7 +71,6 @@ public class PersistenceTest {
         final Workflow workflow001 = new Workflow();
         final Workflow workflow002 = new Workflow();
         
-        final int id17 = 17;
 
         db.storeWorkflow(workflow001);
         db.storeWorkflow(workflow002);
@@ -83,8 +78,8 @@ public class PersistenceTest {
 
         // current assumption: second workflow entry should have overwritten the
         // first one
-        assertNotEquals(workflow001, db.loadWorkflow(id17));
-        assertEquals(workflow002, db.loadWorkflow(id17));
+        assertNotEquals(workflow001, db.loadWorkflow(workflow002.getId()));
+        assertEquals(workflow002, db.loadWorkflow(workflow002.getId()));
     }
 
     /**
@@ -99,7 +94,7 @@ public class PersistenceTest {
         db.storeWorkflow(wf001);
         db.storeWorkflow(wf002);
 
-        db.deleteWorkflow(1);
+        db.deleteWorkflow(wf001.getId());
 
         assertEquals(db.loadWorkflow(2), wf002);
         assertEquals(db.loadWorkflow(1), null);
@@ -118,7 +113,6 @@ public class PersistenceTest {
         final Action step2 = new Action("username", "main action");
         final FinalStep step3 = new FinalStep();
         
-        final int id7 = 7;
 
         workflow007.addStep(step1);
         workflow007.addStep(step2);
@@ -129,25 +123,25 @@ public class PersistenceTest {
         // step2, the action of workflow007, should be persistent
         // step1 and step2 cannot be tested because their ID is not yet
         // implemented
-        assertEquals(step2, db.loadStep(2));
+        assertEquals(step2, db.loadStep(step2.getId()));
 
         // a workflows steps should be the same before and after storage
-        assertEquals(workflow007.getSteps(), db.loadWorkflow(id7).getSteps());
+        assertEquals(workflow007.getSteps(), db.loadWorkflow(workflow007.getId()).getSteps());
         // no specific functions of a step can be tested, because db only
         // returns an AbstractWorkflow
         // assertEquals(workflow007.getStepByPos(2),
         // db.loadWorkflow(7).getStepByPos(2));
 
         // workflow instances should still be equal
-        assertEquals(db.loadWorkflow(id7), workflow007);
+        assertEquals(db.loadWorkflow(workflow007.getId()), workflow007);
 
-        db.deleteWorkflow(id7);
+        db.deleteWorkflow(workflow007.getId());
 
         // a workflows steps must not be existent on databse anymore
         assertEquals(db.loadStep(2), null);
         
         // workflow must not be existent on database anymore, WorkflowNotExistentException is expected here!
-        assertEquals(db.loadWorkflow(id7), null);
+        assertEquals(db.loadWorkflow(workflow007.getId()), null);
     }
 
     /**
@@ -157,47 +151,35 @@ public class PersistenceTest {
      */
     @Test
     public void testItemStorage() throws ItemNotExistentException, WorkflowNotExistentException {
+        final Workflow wf000 = new Workflow();
         final Item item001 = new Item();
         final Item item002 = new Item();
         final Item item003 = new Item();
-        final int id1 = 1;
-        final int id2 = 2;
-        final int id3 = 3;
-        item001.setId(id1);
-        item002.setId(id2);
-        item003.setId(id3);
-
+        
+        db.storeWorkflow(wf000);
+        
+        item001.setWorkflowId(wf000.getId());
+        item002.setWorkflowId(wf000.getId());
+        item003.setWorkflowId(wf000.getId());
+        
+        wf000.addItem(item001);
+        db.storeWorkflow(wf000);
         db.storeItem(item001);
+        
+        wf000.addItem(item002);
+        db.storeWorkflow(wf000);
         db.storeItem(item002);
+        
+        wf000.addItem(item003);
+        db.storeWorkflow(wf000);
         db.storeItem(item003);
-
-        assertEquals(item001, db.loadItem(id1));
-        assertEquals(item002, db.loadItem(id2));
-        assertEquals(item003, db.loadItem(id3));
+        
+        assertEquals(item001, db.loadItem(item001.getId()));
+        assertEquals(item002, db.loadItem(item002.getId()));
+        assertEquals(item003, db.loadItem(item003.getId()));
     }
 
-    /**
-     * Method for testing if it's possible to store multiple items of the same id.
-     * @exception ItemNotExistentException if the requested item is not there
-     * @throws ItemNotExistentException
-     */
-    @Test
-    public void testDuplicateItemStorage() throws ItemNotExistentException, WorkflowNotExistentException {
-        final Item item001 = new Item();
-        final Item item002 = new Item();
-        final int id17 = 17;
-        item001.setId(id17);
-        item002.setId(id17);
-
-        db.storeItem(item001);
-        db.storeItem(item002);
-
-        // current assumption: second item entry should have overwritten the
-        // first one
-        assertNotEquals(item001, db.loadItem(id17));
-        assertEquals(item002, db.loadItem(id17));
-    }
-
+ 
     /**
      * Method for testing if it's possible to store an item with a few metadata entries.
      * @exception ItemNotExistentException if the requested item is not there
@@ -205,11 +187,16 @@ public class PersistenceTest {
      */
     @Test(expected = ItemNotExistentException.class)
     public void testItemStorageIncludingMetaData() throws ItemNotExistentException, WorkflowNotExistentException {
+        final Workflow wf000 = new Workflow();
         final Item item001 = new Item();
-        item001.setId(1);
+        
+        db.storeWorkflow(wf000);
+        item001.setWorkflowId(wf000.getId());
         item001.set("key1", "group1", "value1");
         item001.set("key2", "group2", "value2");
 
+        wf000.addItem(item001);
+        db.storeWorkflow(wf000);
         db.storeItem(item001);
 
         item001.set("key1", "group1", "value1");
@@ -222,20 +209,20 @@ public class PersistenceTest {
         assertEquals(item001.getMetadata().get(1), db.loadMetaEntry("key2"));
 
         // an items metaData should be the same before and after storage
-        assertEquals(item001.getMetadata(), db.loadItem(1).getMetadata());
+        assertEquals(item001.getMetadata(), db.loadItem(item001.getId()).getMetadata());
         assertEquals(item001.getMetadata().get(0).getValue(),
                 db.loadMetaEntry("key1").getValue());
 
         // item instances should still be the same
-        assertEquals(db.loadItem(1), item001);
+        assertEquals(db.loadItem(item001.getId()), item001);
 
-        db.deleteItem(1);
+        db.deleteItem(item001.getId());
 
         // an items metaData must not be existent anymore
         assertEquals(db.loadMetaEntry("key1"), null);
         
         // item must not be existent anymore, ItemNotExistentException is expected here!
-        //assertEquals(db.loadItem(1), null);
+        assertEquals(db.loadItem(item001.getId()), null);
     }
 
     /**
@@ -343,17 +330,11 @@ public class PersistenceTest {
     public void testUpdateOnUser() throws UserNotExistentException, UserAlreadyExistsException {
         final User user001 = new User();
         user001.setUsername("1");
-        final int id17 = 17;
-        final int id71 = 71;
-        user001.setId(id71);
         db.addUser(user001);
 
         assertEquals(user001, db.loadUser(user001.getUsername()));
         assertEquals(user001.getId(), db.loadUser(user001.getUsername())
                 .getId());
-
-        // modification on users ID
-        user001.setId(id17);
 
         // TODO:
         // assertNotEquals(user001, db.loadUser(user001.getName()));
@@ -361,6 +342,7 @@ public class PersistenceTest {
         // db.loadUser(user001.getName()).getId());
 
         // update on existing user
+        user001.setUsername("2");
         db.updateUser(user001);
 
         assertEquals(user001, db.loadUser(user001.getUsername()));
@@ -387,32 +369,26 @@ public class PersistenceTest {
      */
     @Test
     public void testRoleStorage() throws RoleNotExistentException {
-        final Role role007 = new Role(7);
-        final Role role008 = new Role(8);
-        final Role role009 = new Role(9);
-        
-        final int id7 = 7;
-        final int id8 = 8;
-        final int id9 = 9;
+        final Role role007 = new Role();
+        final Role role008 = new Role();
+        final Role role009 = new Role();
 
         db.storeRole(role007);
         db.storeRole(role008);
         db.storeRole(role009);
 
-        assertEquals(db.loadRole(id7), role007);
-        assertEquals(db.loadRole(id8), role008);
-        assertEquals(db.loadRole(id9), role009);
+        assertEquals(db.loadRole(role007.getId()), role007);
+        assertEquals(db.loadRole(role008.getId()), role008);
+        assertEquals(db.loadRole(role009.getId()), role009);
     }
     
     /**
      * Method for testing if it's possible to assign roles to users and vice-versa.
-     * @exception UserAlreadyExistsException if the requested user is already there
      * @exception RoleNotExistentException if the requested role is not there
      * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
      * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
      * @exception UserNotExistentException if the requested user is not there
      * @exception RoleNotExistentException if the requested role is not there
-     * @throws UserAlreadyExistsException
      * @throws UserHasAlreadyRoleException
      * @throws RoleHasAlreadyRoleException
      * @throws UserNotExistentException
@@ -420,21 +396,16 @@ public class PersistenceTest {
      */
     @Test
     public void testRoleToUserAssignement() throws UserAlreadyExistsException, RoleNotExistentException, UserNotExistentException, RoleHasAlreadyUserException, UserHasAlreadyRoleException {
-        final int id17 = 17;
-        final int id71 = 71;
-        final Role roletest = new Role(17);
+        final Role roletest = new Role();
         final User usertest = new User();
-        usertest.setId(id71);
+        usertest.setUsername("name");
         
         db.storeRole(roletest);
         db.addUser(usertest);
         
-        db.addUserToRole(usertest, roletest);
+        db.addRoleToUser(usertest, roletest);
         
-        System.out.println(usertest.getRoles().get(0).getId());
-        System.out.println(roletest.getUsers().get(0).getId());
-        
-        assertTrue(db.loadRole(id17).getUsers().contains(usertest));
+        assertTrue(db.loadUser("name").getRoles().contains(roletest));
     }
 
 }
