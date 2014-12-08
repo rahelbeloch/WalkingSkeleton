@@ -124,32 +124,33 @@ public class LogicTest {
     }
 
     @Test
-    public void getWorkflowsByUser() {
+    public void getWorkflowsByUser() throws WorkflowNotExistentException, UserNotExistentException {
         init();
         initExtension();
-
-        assertTrue(li.getWorkflowsByUser(user1.getUsername()).size() == 3);
+        int i = li.getWorkflowsByUser(user1.getUsername()).size();
+        assertTrue(i == 3);
 
     }
 
     @Test
-    public void getOpenItemsByUserTest() throws WorkflowNotExistentException {
+    public void getOpenItemsByUserTest() throws WorkflowNotExistentException, UserNotExistentException {
         init();
         initExtension();
 
         li.startWorkflow(w.getId(), user.getUsername());
         li.startWorkflow(w.getId(), user.getUsername());
-
-        System.out.println(li.getOpenItemsByUser(user.getUsername()).size());
-        assertTrue(li.getOpenItemsByUser(user.getUsername()).size() == 2);
+        
+        int i = li.getOpenItemsByUser(user.getUsername()).size();
+        assertTrue(i == 2);
 
     }
 
     @Test
-    public void getStartableWorkflowsTest() {
+    public void getStartableWorkflowsTest() throws WorkflowNotExistentException, UserNotExistentException {
         init();
         initExtension();
-        assertTrue(li.getStartableWorkflows(user2.getUsername()).size() == 2);
+        int i = li.getStartableWorkflows(user2.getUsername()).size();
+        assertTrue(i == 2);
     }
 
     private void init() {
