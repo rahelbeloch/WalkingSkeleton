@@ -30,6 +30,7 @@ namespace Client.View
         private WorkflowViewModel _workflowViewModel;
         private String userName;
         private ObservableCollection<Workflow> _workflows;
+        private ObservableCollection<DashboardWorkflow> _dashboardWorkflows;
         public WorkflowUserControl()
         {
             InitializeComponent();
@@ -42,6 +43,7 @@ namespace Client.View
             _workflowViewModel.workflows.CollectionChanged += OnWorkflowsChanged;
             userName = _workflowViewModel.userName;
             _workflows = _workflowViewModel.workflows;
+            _dashboardWorkflows = _workflowViewModel.dashboardWorkflows;
             InitializeDashboard();
         }
         private void OnWorkflowsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -100,36 +102,13 @@ namespace Client.View
         }
         private void draw_Dashboard()
         {
-            // Create 2 columns and add them to the table's Columns collection.
-            /* wird noch nicht verwendet
-            int numberOfColumns = 2;
-            for (int x = 0; x < numberOfColumns; x++)
+            foreach (DashboardWorkflow dashboardWorkflow in _dashboardWorkflows)
             {
-                table1.Columns.Add(new TableColumn());
-
-                // Set alternating background colors for the middle colums. 
-                if (x % 2 == 0)
-                    table1.Columns[x].Background = Brushes.Beige;
-                else
-                    table1.Columns[x].Background = Brushes.LightSteelBlue;
+                addworkflowasrow("Workflow mit der id:" + dashboardWorkflow.actWorkflow.id, dashboardWorkflow);
             }
-            */
-            if (_workflows != null)
-            {
-                foreach (Workflow workflow in _workflows)
-                {
-                    addworkflowasrow("Workflow mit der id:" + workflow.id, workflow);
-                }
-            }
-            else
-            {
-                addworkflowasrow("Fallback_1", null);
-                addworkflowasrow("Fallback_2", null);
-            }
-
         }
 
-        private void addworkflowasrow(String title, Workflow actWorkflow)
+        private void addworkflowasrow(String title, DashboardWorkflow dashboardWorkflow)
         {
             // Create and add an empty TableRowGroup to hold the table's Rows.
             TableRowGroup newRowGroup = new TableRowGroup();
@@ -148,18 +127,17 @@ namespace Client.View
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(title))));
             // and set the row to span all 2 columns.
             currentRow.Cells[0].ColumnSpan = 2;
-
-            var button = new Button();
-            button.Content = "Neu erstellen";
-            if (actWorkflow != null)
+            if (dashboardWorkflow.startPermission)
             {
-                button.Tag = actWorkflow.id;
-            }
-            button.Click += new RoutedEventHandler(createWorkflow);
-            button.FontSize = 18;
-            var block = new BlockUIContainer(button);
-            currentRow.Cells.Add(new TableCell(block));
+                var button = new Button();
+                button.Content = "Neu erstellen";
+                button.Tag = dashboardWorkflow.actWorkflow.id;
 
+                button.Click += new RoutedEventHandler(createWorkflow);
+                button.FontSize = 18;
+                var block = new BlockUIContainer(button);
+                currentRow.Cells.Add(new TableCell(block));
+            }
             // Add the second (header) row.
             currentRow = new TableRow();
             newRowGroup.Rows.Add(currentRow);
@@ -172,18 +150,12 @@ namespace Client.View
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Name"))));
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run("Nr."))));
 
-            if (_workflows != null)
+
+            foreach (DashboardRow dashboardRow in dashboardWorkflow.dashboardRows)
             {
-                foreach (Item actItem in actWorkflow.items)
-                {
-                    additemrow(newRowGroup, actItem);
-                }
+                additemrow(newRowGroup, dashboardRow);
             }
-            else
-            {
-                additemrow(newRowGroup, null);
-                additemrow(newRowGroup, null);
-            }
+            
         }
         private void createWorkflow(object sender, RoutedEventArgs e)
         {
@@ -200,7 +172,7 @@ namespace Client.View
             }
 
         }
-        private void additemrow(TableRowGroup newRowGroup, Item actItem)
+        private void additemrow(TableRowGroup newRowGroup, DashboardRow dashboardRow)
         {
             TableRow currentRow = new TableRow();
             newRowGroup.Rows.Add(currentRow);
@@ -210,33 +182,16 @@ namespace Client.View
             currentRow.FontWeight = FontWeights.Normal;
 
             // Add cells with content to the second row.
-            String nr = "foo";
-            String name = "bar";
-            if (_workflows != null)
-            {
-                nr = "" + actItem.id;
-                name = "" + actItem.metadata;
-            }
+            String nr = ""+dashboardRow.actStep.id;
+            String name = "" + dashboardRow.actStep.label;
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(nr))));
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
             var button = new System.Windows.Controls.Primitives.ToggleButton();
-            if (actItem != null)
-            {
-                MyToggleButton toggle = new MyToggleButton();
-                toggle.username = userName;
-                toggle.itemId = actItem.id;
-                //toggle.stepId = actItem.getActiveStepIdByUsername(userName); old usage
-                toggle.Click += new RoutedEventHandler(stepForward);
-                toggle.Content = "Abschließen";
-                var block = new BlockUIContainer(toggle);
-                currentRow.Cells.Add(new TableCell(block));
-            }
-            else
-            {
-                button.Content = "Abschließen/Annehmen";
-                var block = new BlockUIContainer(button);
-                currentRow.Cells.Add(new TableCell(block));
-            }
+            MyToggleButton toggle = dashboardRow.toggleButton;
+            toggle.Click += new RoutedEventHandler(stepForward);
+            toggle.Content = "Abschließen";
+            var block = new BlockUIContainer(toggle);
+            currentRow.Cells.Add(new TableCell(block));
         }
         private void stepForward(object sender, RoutedEventArgs e)
         {

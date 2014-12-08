@@ -46,10 +46,31 @@ namespace Client.ViewModel
                 {
                     newWorkflow.startPermission = false;
                 }
+                _relevantItems.Clear();
+                _restRequester.GetRelevantItemsByUser(workflow.id, _userName).ToList().ForEach(_relevantItems.Add);
+                Step activeStep;
+                DashboardRow row;
+                foreach (Item item in _relevantItems)
+                {
+                    activeStep = getStepById(item.getActiveStepId(), workflow);
+                    row = new DashboardRow(item, activeStep, _userName);
+                    newWorkflow.addDashboardRow(row);
+                }
                 _dashboardWorkflows.Add(newWorkflow);
             }
             _relevantItems.Clear();
             //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
+        }
+        private Step getStepById(int id, Workflow workflow)
+        {
+            foreach (Step step in workflow.steps)
+            {
+                if (id == step.id)
+                {
+                    return step;
+                }
+            }
+            return null;
         }
         private void deleteModel()
         {
