@@ -18,14 +18,6 @@ namespace Admin.ViewModel
     /// </summary>
     public class UserViewModel: ViewModelBase
     {
-        public string Name
-        {
-            get
-            {
-                return "User View Model";
-            }
-        }
-
         public UserViewModel()
         {
         }
