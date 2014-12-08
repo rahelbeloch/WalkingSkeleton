@@ -73,6 +73,7 @@
     <Compile Include="Model\Exception\ConnectionExceptions\ConnectionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\WrongUsernameException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\AlreadyExistsException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserHasAlreadyRoleException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\DoesntExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\EleAlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\ElementChangedException.cs" />
@@ -85,6 +86,8 @@
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\PersistenceException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\RestException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\ServerNotRuningException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleHasAlreadyUserException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleNotExistentException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserAlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserNotExistException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\WrongPwException.cs" />
