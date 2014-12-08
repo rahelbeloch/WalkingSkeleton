@@ -61,7 +61,7 @@ public class LogicImp implements Logic {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflowID));
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + workflowID));
         return logicResponse;
     }
 
@@ -74,7 +74,7 @@ public class LogicImp implements Logic {
     public LogicResponse addWorkflow(Workflow workflow) {
         p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflow.getId()));
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + workflow.getId()));
         return logicResponse;
     }
 
@@ -102,7 +102,7 @@ public class LogicImp implements Logic {
     public LogicResponse deleteWorkflow(int workflowID) throws WorkflowNotExistentException {
         p.deleteWorkflow(workflowID);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_del" + workflowID));
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=del=" + workflowID));
         return logicResponse;
     }
 
@@ -138,7 +138,7 @@ public class LogicImp implements Logic {
         workflow.addStep(step);
         p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_upd" + workflow.getId()));
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
         return logicResponse;
     }
 
@@ -157,7 +157,7 @@ public class LogicImp implements Logic {
         workflow.removeStep(stepID);
         p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_upd" + workflow.getId()));
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
         return logicResponse;
     }
 
@@ -171,7 +171,7 @@ public class LogicImp implements Logic {
     public LogicResponse addUser(User user) throws UserAlreadyExistsException {
         p.addUser(user);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("USER_INFO", "user_def" + user.getUsername()));
+        logicResponse.add(new Message("USER_INFO", "user=def=" + user.getUsername()));
         return logicResponse;
     }
 
@@ -199,7 +199,7 @@ public class LogicImp implements Logic {
     public LogicResponse deleteUser(String username) throws UserNotExistentException {
         p.deleteUser(username);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("USER_INFO", "user_del" + username));
+        logicResponse.add(new Message("USER_INFO", "user=del=" + username));
         return logicResponse;
     }
 
