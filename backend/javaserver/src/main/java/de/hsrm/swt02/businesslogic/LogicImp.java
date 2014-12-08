@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.MetaEntry;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
@@ -14,7 +15,10 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 import de.hsrm.swt02.restserver.LogicResponse;
@@ -358,5 +362,73 @@ public class LogicImp implements Logic {
         }
         return true;
     }
-
+    
+    
+    // BusinessLogic Sprint 2
+    
+    /**
+     * This method returns all roles in persistence.
+     * @return p.loadAllRoles is the list of all Roles
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws RoleNotExistentException
+     */
+    public List<Role> getAllRoles() throws RoleNotExistentException {
+        return p.loadAllRoles();
+    }
+    
+    /**
+     * This method returns all users in persistance.
+     * @return p.loadAll Users is the list of all users
+     * @exception UserNotExistentException if the requested user is not there
+     * @throws UserNotExistentException
+     */
+    public List<User> getAllUsers() throws UserNotExistentException {
+        return p.loadAllUsers();
+    }
+    
+    /**
+     * This method store a workflow and distribute a id.
+     * 
+     * @param user
+     * @throws UserAlreadyExistsException
+     */
+    @Override
+    public LogicResponse addRole(Role role) throws RoleAlreadyExistsException {
+        p.storeRole(role);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("ROLE_INFO", "role_def" + role.getRolename()));
+        return logicResponse;
+    }
+    
+    /**
+     * 
+     * @param username
+     * @param role
+     * @return
+     * @throws UserNotExistentException
+     * @throws RoleNotExistentException
+     * @throws UserHasAlreadyRoleException
+     */
+    public LogicResponse addRoleToUser (String username, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException {
+    	User user = p.loadUser(username);
+    	p.addRoleToUser(user, role);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("USER_INFO", "user" + username + "_add_role" + role.getRolename()));
+        return logicResponse;
+    }
+    
+    /**
+     * 
+     * @param rolename
+     * @return
+     * @throws RoleNotExistentException
+     */
+    public LogicResponse deleteRole(String rolename) throws RoleNotExistentException {
+    	p.deleteRole(rolename);
+    	setLogicResponse(new LogicResponse());
+    	logicResponse.add(new Message("ROLE-INFO", "role_del" + rolename));
+    	return logicResponse;
+    }
+    
+    
 }

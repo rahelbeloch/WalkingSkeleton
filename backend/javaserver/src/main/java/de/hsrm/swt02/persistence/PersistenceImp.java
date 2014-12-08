@@ -496,10 +496,37 @@ public class PersistenceImp implements Persistence {
 
     /**
      * Method for loading all roles into a list of roles.
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws RoleNotExistentException
      * @return List<Workflow> is the list we want to load
      */
-    public List<Role> loadAllRoles() {
-        return roles;
+    public List<Role> loadAllRoles() throws RoleNotExistentException {
+        if (roles.size() > 0) {
+            return roles;
+        }
+        else {
+            final RoleNotExistentException e = new RoleNotExistentException("no stored roles in database");
+            this.logger.log(Level.INFO, e);
+            throw e;
+        }
+    }
+    
+    /**
+     * Method for loeading all users into a list of users.
+     * @exception UserNotExistentException if the requested user is not there
+     * @throws UserNotExistentException
+     * @return List<User> is the list we want to load
+     */
+    @Override
+    public List<User> loadAllUsers() throws UserNotExistentException {
+        if (users.size() > 0) {
+            return users;
+        }
+        else {
+            final UserNotExistentException e = new UserNotExistentException("no stored users in database");
+            this.logger.log(Level.INFO, e);
+            throw e;
+        }
     }
 
     /**
@@ -529,16 +556,14 @@ public class PersistenceImp implements Persistence {
      * @param user is the user we want to add
      * @param role is the role we want to give the user
      * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
-     * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
      * @exception UserNotExistentException if the requested user is not there
      * @exception RoleNotExistentException if the requested role is not there
      * @throws UserHasAlreadyRoleException
-     * @throws RoleHasAlreadyRoleException
      * @throws UserNotExistentException
      * @throws RoleNotExistentException  
     */
     @Override
-    public void addUserToRole(User user, Role role) throws UserNotExistentException, RoleNotExistentException, RoleHasAlreadyUserException, UserHasAlreadyRoleException {
+    public void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException {
         Role searchedRole = null;
         User searchedUser = null;
         for (Role r : roles) {
@@ -572,15 +597,34 @@ public class PersistenceImp implements Persistence {
             }
         }
         
-        for (User u: role.getUsers()) {
-            if (user.getId() == u.getId()) {
-                final RoleHasAlreadyUserException e = new RoleHasAlreadyUserException(user.getUsername());
-                this.logger.log(Level.WARNING, e);
-                throw e;
+        user.getRoles().add(role);
+    }
+    
+    /**
+     * 
+     */
+    public void deleteRole(String rolename) throws RoleNotExistentException{
+        Role roleToRemove = null;
+        for (Role r: roles) {
+            if (r.getRolename().equals(rolename)) {
+                roleToRemove = r;
+                break;
             }
         }
-        
-        user.getRoles().add(role);
-        role.getUsers().add(user);
+        if (roleToRemove != null) {
+            for (User u: users) {
+                for (Role r: u.getRoles()) {
+                    if (r.getRolename().equals(rolename)) {
+                        u.getRoles().remove(r);
+                    }
+                }
+            }
+            users.remove(roleToRemove);
+        } else {
+            final RoleNotExistentException e = new RoleNotExistentException(rolename);
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
     }
+    
 }
