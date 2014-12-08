@@ -25,6 +25,7 @@ import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
+import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
@@ -81,6 +82,114 @@ public class WorkflowResource {
     }
 
     /**
+     * This method returns all workflows.
+     * 
+     * @return all workflows
+     */
+    @GET
+    @Path("workflows")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getAllWorkflows() {
+        final ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = "GETALL";
+        List<Workflow> wflowList = null;
+        try {
+            wflowList = LOGIC.getAllWorkflows();
+        } catch (WorkflowNotExistentException e1) {
+            LOGGER.log(Level.WARNING, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        }
+        String wListString;
+
+        try {
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            wListString = mapper.writeValueAsString(wflowList);
+            LOGGER.log(Level.FINE, loggingBody + wListString);
+        } catch (JsonProcessingException e) {
+            LOGGER.log(Level.WARNING, loggingBody + " Jackson parsing-error");
+            return Response.serverError()
+                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+        }
+        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
+        return Response.ok(wListString).build();
+    }
+    
+    /**
+     * This method returns all startable workflows for a given user.
+     * 
+     * @param username the name of the user for whom the workflows shall be returned
+     * @return all startable workflows for user
+     */
+    @GET
+    @Path("workflows/startables/{username}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getStartablesByUser(@PathParam("username") String username) {
+        final ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = "GETSTARTABLES -> " + username;
+        List<Integer> wIdList = null;
+        try {
+            wIdList = LOGIC.getStartableWorkflowsByUser(username);
+        } catch (WorkflowNotExistentException e1) {
+            LOGGER.log(Level.WARNING, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        } catch (UserNotExistentException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        }
+        String wIdListString;
+
+        try {
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            wIdListString = mapper.writeValueAsString(wIdList);
+            LOGGER.log(Level.FINE, loggingBody + wIdListString);
+        } catch (JsonProcessingException e) {
+            LOGGER.log(Level.WARNING, loggingBody + " Jackson parsing-error");
+            return Response.serverError()
+                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+        }
+        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
+        return Response.ok(wIdListString).build();
+    }
+    
+    /**
+     * This method returns all startable workflows for a given user.
+     * 
+     * @param username the name of the user for whom the workflows shall be returned
+     * @return all startable workflows for user
+     */
+    @GET
+    @Path("items/{username}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getRelevantItemsByUser(@PathParam("username") String username) {
+        final ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = "GETITEMS -> " + username;
+        List<Item> itemList = null;
+        try {
+            // TODO: get real workflowid (instead of 17)
+            itemList = LOGIC.getRelevantItemsByUser(17, username);
+        } catch (WorkflowNotExistentException e1) {
+            LOGGER.log(Level.WARNING, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        } catch (UserNotExistentException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        }
+        String itemListString;
+
+        try {
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            itemListString = mapper.writeValueAsString(itemList);
+            LOGGER.log(Level.FINE, loggingBody + itemListString);
+        } catch (JsonProcessingException e) {
+            LOGGER.log(Level.WARNING, loggingBody + " Jackson parsing-error");
+            return Response.serverError()
+                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+        }
+        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
+        return Response.ok(itemListString).build();
+    }
+    
+    /**
      * This method returns workflows where a user is involved.
      * 
      * @param username indicates which user's workflows are requested
@@ -94,7 +203,7 @@ public class WorkflowResource {
         final String loggingBody = "GETALL -> " + username;
         List<Workflow> wflowList = null;
         try {
-            wflowList = LOGIC.getWorkflowsByUser(username);
+            wflowList = LOGIC.getAllWorkflowsByUser(username);
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
