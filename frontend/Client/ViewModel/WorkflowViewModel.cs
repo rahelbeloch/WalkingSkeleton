@@ -35,13 +35,16 @@ namespace Client.ViewModel
 
                 if (_userName.Equals(""))
                 {
-                    _workflows = null;
+                    _workflows.Clear();
                 }
                 else
                 {
                     try
                     {
-                        _workflows = new ObservableCollection<Workflow>(RestAPI.RestRequester.GetAllObjects<Workflow>(userName));
+                        _workflows.Clear();
+                        RestAPI.RestRequester.GetAllObjects<Workflow>(userName).ToList().ForEach(_workflows.Add);
+                        Console.WriteLine("workflows updated");
+                        OnChanged("workflows");
                     } catch (Exception e) {
                         Console.WriteLine(e.ToString());
                     }
@@ -49,7 +52,22 @@ namespace Client.ViewModel
                 }
             }
         }
-
+        public void createWorkflow(int id, String userName)
+        {
+            try
+            {
+                RestRequester.StartWorkflow(id, userName);
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.ToString());
+                throw;
+            }
+        }
+        public void stepForward(int stepId, int itemId, String userName)
+        {
+            RestRequester.StepForward(stepId, itemId, userName);
+        }
         private ICommand _logoutCommand;
         public ICommand logoutCommand
         {
@@ -73,7 +91,7 @@ namespace Client.ViewModel
         }
 
         #region properties
-        private ObservableCollection<Workflow> _workflows;
+        private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
         public ObservableCollection<Workflow> workflows { get { return _workflows; } }
 
         #endregion
