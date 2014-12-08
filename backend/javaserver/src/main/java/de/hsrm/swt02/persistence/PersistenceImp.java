@@ -117,8 +117,8 @@ public class PersistenceImp implements Persistence {
                     motherWorkflow = wf;
                 }
             }
-            if(motherWorkflow != null) {
-                item.setId(motherWorkflow.getId()*ID_MULTIPLICATOR + motherWorkflow.getSteps().size() + 1);
+            if (motherWorkflow != null) {
+                item.setId(motherWorkflow.getId() * ID_MULTIPLICATOR + motherWorkflow.getSteps().size() + 1);
 
             }
             else {
