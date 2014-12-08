@@ -27,11 +27,17 @@ public class LogicTest {
     Workflow w1;
     Workflow w2;
     Workflow w3;
-    int key = 3;
     String username = "noname";
     User user;
     User user1;
     User user2;
+    StartStep startStep;
+    StartStep startStep1;
+    StartStep startStep2;
+    Action action;
+    Action action1;
+    Action action2;
+    FinalStep finalStep;
 
     @Test
     public void addGetWorkflowTest() throws WorkflowNotExistentException {
@@ -67,9 +73,9 @@ public class LogicTest {
         initExtension();
         li.addWorkflow(w);
         li.startWorkflow(w.getId(), user.getUsername());
-        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(key * 100).getId(), user.getUsername());
-        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(key * 100).getId(), user.getUsername());
-        assertTrue(w.getItemByPos(0).getStepState(key * 100) == "DONE");
+        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(action.getId()).getId(), user.getUsername());
+        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(action.getId()).getId(), user.getUsername());
+        assertTrue(w.getItemByPos(0).getStepState(action.getId()) == "DONE");
     }
 
     @Test
@@ -87,7 +93,7 @@ public class LogicTest {
         init();
         li.addWorkflow(w);
         int i = w.getSteps().size();
-        li.deleteStep(w.getId(), key * 100);
+        li.deleteStep(w.getId(), action.getId());
         assertTrue(w.getSteps().size() == i - 1);
 
     }
@@ -128,7 +134,7 @@ public class LogicTest {
         init();
         initExtension();
         int i = li.getWorkflowsByUser(user1.getUsername()).size();
-        assertTrue(i == 3);
+        assertTrue(i == 2);
 
     }
 
@@ -150,7 +156,7 @@ public class LogicTest {
         init();
         initExtension();
         int i = li.getStartableWorkflows(user2.getUsername()).size();
-        assertTrue(i == 2);
+        assertTrue(i == 1);
     }
 
     private void init() {
@@ -159,12 +165,15 @@ public class LogicTest {
 
         user = new User();
         user.setUsername(username);
+        
+        startStep = new StartStep(user.getUsername());
+        action = new Action(user.getUsername(), "description");
+        finalStep = new FinalStep();
 
         w = new Workflow();
-        w.addStep(new StartStep(user.getUsername()));
-        w.addStep(new Action(key * 100, user.getUsername(),
-                "description"));
-        w.addStep(new FinalStep());
+        w.addStep(startStep);
+        w.addStep(action);
+        w.addStep(finalStep);
     }
 
     private void initExtension() {
@@ -174,23 +183,28 @@ public class LogicTest {
         user1 = new User();
         user1.setUsername("1");
         
-
+        startStep1 = new StartStep(user1.getUsername());
+        startStep2 = new StartStep(user2.getUsername());
+        action1 = new Action(user1.getUsername(),
+                "description");
+        action2 = new Action(user2.getUsername(), "description");
+        finalStep = new FinalStep();
+        
         w1 = new Workflow();
-        w1.addStep(new StartStep(user2.getUsername()));
-        w1.addStep(new Action(key * 100, user1.getUsername(),
-                "description"));
-        w1.addStep(new FinalStep());
-
+        w1.addStep(startStep1);
+        w1.addStep(action1);
+        w1.addStep(finalStep);
+        
+        
+        
         w2 = new Workflow();
-        w2.addStep(new StartStep(user2.getUsername()));
-        w2.addStep(new Action(key * 100, user1.getUsername(),
-                "description"));
-        w2.addStep(new FinalStep());
+        w2.addStep(startStep2);
+        w2.addStep(action2);
+        w2.addStep(finalStep);
 
         w3 = new Workflow();
-        w3.addStep(new StartStep(user1.getUsername()));
-        w3.addStep(new Action(key * 100, user2.getUsername(),
-                "description"));
+        w3.addStep(startStep1);
+        w3.addStep(action2);
         w3.addStep(new FinalStep());
 
         li.addWorkflow(w);

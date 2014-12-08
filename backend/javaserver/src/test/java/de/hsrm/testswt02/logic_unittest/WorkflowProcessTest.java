@@ -45,9 +45,9 @@ public class WorkflowProcessTest {
         final int c2 = 9999;
         processManager = i.getInstance(ProcessManager.class);
         persistence = i.getInstance(Persistence.class);
-        myWorkflow = new Workflow(1);
+        myWorkflow = new Workflow();
         startStep = new StartStep("benni");
-        firstStep = new Action(1 * 1000, "username", 1 + " Schritt");
+        firstStep = new Action("username", 1 + " Schritt");
         // adding steps in workflow
         myWorkflow.addStep(startStep);
         myWorkflow.addStep(firstStep);
