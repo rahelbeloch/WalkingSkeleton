@@ -20,43 +20,50 @@ namespace Client.ViewModel
     /// </summary>
     public class WorkflowViewModel : ViewModelBase
     {
-        private MainViewModel _mainViewModel;
         public WorkflowViewModel(MainViewModel mainViewModelInstanz)
         {
             _mainViewModel = mainViewModelInstanz;
+            _restRequester = _mainViewModel.restRequester;
         }
-        private String _userName="";
-        public String userName
+        private void updateModel()
         {
-            get { return _userName; }
-            set {
-                _userName = value;
-                Console.WriteLine("Workflows holen");
+            Console.WriteLine("updatedModel()");
 
-                if (_userName.Equals(""))
+            _workflows.Clear();
+            _restRequester.GetAllWorkflowsByUser(_userName).ToList().ForEach(_workflows.Add);
+            OnChanged("workflows");
+
+            _startableWorkflows.Clear();
+            _restRequester.GetStartablesByUser(_userName).ToList().ForEach(_startableWorkflows.Add);
+            foreach (Workflow workflow in _workflows)
+            {
+                DashboardWorkflow newWorkflow = new DashboardWorkflow(workflow);
+                if (_startableWorkflows.Contains(workflow.id))
                 {
-                    _workflows.Clear();
+                    newWorkflow.startPermission = true;
                 }
                 else
                 {
-                    try
-                    {
-                        _workflows.Clear();
-                        RestAPI.RestRequester.GetAllObjects<Workflow>(userName).ToList().ForEach(_workflows.Add);
-                        Console.WriteLine("workflows updated");
-                        OnChanged("workflows");
-                    } catch (Exception e) {
-                        Console.WriteLine(e.ToString());
-                    }
-                    Console.WriteLine("Workflows holen");
+                    newWorkflow.startPermission = false;
                 }
+                _dashboardWorkflows.Add(newWorkflow);
             }
+            _relevantItems.Clear();
+            //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
+        }
+        private void deleteModel()
+        {
+            Console.WriteLine("deleteModel()");
+            _workflows.Clear();
+            _startableWorkflows.Clear();
+            _relevantItems.Clear();
         }
         public void createWorkflow(int id, String userName)
         {
+            Console.WriteLine("createWorkflow()");
             try
             {
-                RestRequester.StartWorkflow(id, userName);
+                _restRequester.StartWorkflow(id, userName);
             }
             catch (Exception exc)
             {
@@ -66,7 +73,8 @@ namespace Client.ViewModel
         }
         public void stepForward(int stepId, int itemId, String userName)
         {
-            RestRequester.StepForward(stepId, itemId, userName);
+            Console.WriteLine("stepForward()");
+            _restRequester.StepForward(stepId, itemId, userName);
         }
         private ICommand _logoutCommand;
         public ICommand logoutCommand
@@ -80,7 +88,6 @@ namespace Client.ViewModel
                             Console.WriteLine("button clicked");
                             userName = "";
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
-                            OnChanged("workflows");
                         }, canExecute =>
                             {
                                 return true;
@@ -91,9 +98,45 @@ namespace Client.ViewModel
         }
 
         #region properties
+        private IRestRequester _restRequester;
+        private MainViewModel _mainViewModel;
+
+        private String _userName = "";
+        public String userName
+        {
+            get { return _userName; }
+            set
+            {
+                _userName = value;
+                Console.WriteLine("Workflows holen mit user " + _userName);
+
+                if (_userName.Equals(""))
+                {
+                    deleteModel();
+                }
+                else
+                {
+                    try
+                    {
+                        updateModel();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                    }
+                }
+            }
+        }
         private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
         public ObservableCollection<Workflow> workflows { get { return _workflows; } }
 
+        private ObservableCollection<int> _startableWorkflows = new ObservableCollection<int>();
+        public ObservableCollection<int> startableWorkflows { get { return _startableWorkflows; } }
+
+        private ObservableCollection<DashboardWorkflow> _dashboardWorkflows = new ObservableCollection<DashboardWorkflow>();
+        public ObservableCollection<DashboardWorkflow> dashboardWorkflows { get { return _dashboardWorkflows; } }
+
+        private List<Item> _relevantItems = new List<Item>();
         #endregion
     }
 }
