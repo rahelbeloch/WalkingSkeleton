@@ -2,7 +2,6 @@ package de.hsrm.testswt02.messagingtest;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,11 +20,20 @@ public class BrokerStartStopTest {
     
     private ServerPublisher publisher;
     
+    /**
+     * Test setup method.
+     * Invoked before every test case.
+     */
     @Before
     public void setup() {
         publisher = new ServerPublisherImp(new UseLogger());
     }
     
+    /**
+     * Testing for broker start.
+     * 
+     * @throws ServerPublisherBrokerException if something goes wrong.
+     */
     @Test
     public void testBrokerStart() throws ServerPublisherBrokerException {
         publisher.startBroker();
@@ -35,6 +43,11 @@ public class BrokerStartStopTest {
         }
     }
     
+    /**
+     * Testing for broker stop.
+     * 
+     * @throws ServerPublisherBrokerException if someting goes wrong
+     */
     @Test
     public void testBrokerStop() throws ServerPublisherBrokerException {
         publisher.startBroker();

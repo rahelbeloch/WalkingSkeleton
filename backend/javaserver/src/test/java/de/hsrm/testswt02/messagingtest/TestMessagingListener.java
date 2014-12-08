@@ -84,6 +84,8 @@ public class TestMessagingListener implements MessageListener {
         return receivedMsg;
     }
     
+    /**Resets the received message to null. 
+     */
     public void reset() {
         receivedMsg = null;
     }
