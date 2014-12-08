@@ -158,15 +158,14 @@ public class WorkflowResource {
      * @return all startable workflows for user
      */
     @GET
-    @Path("items/{username}")
+    @Path("items/{username}/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getRelevantItemsByUser(@PathParam("username") String username) {
+    public Response getRelevantItemsByUser(@PathParam("username") String username,@PathParam("workflowid") int workflowid) {
         final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = "GETITEMS -> " + username;
         List<Item> itemList = null;
         try {
-            // TODO: get real workflowid (instead of 17)
-            itemList = LOGIC.getRelevantItemsByUser(17, username);
+            itemList = LOGIC.getRelevantItemsByUser(workflowid, username);
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
