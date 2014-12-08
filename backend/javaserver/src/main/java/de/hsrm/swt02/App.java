@@ -1,5 +1,6 @@
 package de.hsrm.swt02;
 
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.restserver.RestServer;
 
@@ -17,7 +18,10 @@ public class App {
      */
     public static void main(String[] args) {
         final RestServer server;
-
+        
+        //performance optimization
+        ConstructionFactory.getInstance();
+        
         // start rest-server instance
         server = new RestServer();
         
