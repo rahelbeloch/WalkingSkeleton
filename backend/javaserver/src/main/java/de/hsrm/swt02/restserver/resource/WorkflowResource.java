@@ -66,7 +66,7 @@ public class WorkflowResource {
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, loggingBody
                     + " Non-existing workflow requested.");
-            return Response.serverError().entity(e1.getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         try {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -74,7 +74,7 @@ public class WorkflowResource {
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
             return Response.serverError()
-                    .entity(new JacksonException().getErrorCode()).build();
+                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(workflowAsString).build();
@@ -97,10 +97,10 @@ public class WorkflowResource {
             wflowList = LOGIC.getWorkflowsByUser(username);
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
-            return Response.serverError().entity(e1.getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         } catch (UserNotExistentException e2) {
             LOGGER.log(Level.WARNING, e2);
-            return Response.serverError().entity(e2.getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
         }
         String wListString;
 
@@ -111,8 +111,9 @@ public class WorkflowResource {
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
             return Response.serverError()
-                    .entity(new JacksonException().getErrorCode()).build();
+                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
+        System.out.println(wListString);
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(wListString).build();
     }
@@ -140,7 +141,7 @@ public class WorkflowResource {
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
             return Response.serverError()
-                    .entity(new JacksonException().getErrorCode()).build();
+                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
         convertIdListToReferences(workflow);
         logicResponse = LOGIC.addWorkflow(workflow);
@@ -193,7 +194,7 @@ public class WorkflowResource {
             LOGGER.log(Level.WARNING, loggingBody
                     + " JACKSON parsing-error occured.");
             return Response.serverError()
-                    .entity(new JacksonException().getErrorCode()).build();
+                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
         logicResponse = LOGIC.addWorkflow(workflow);
         for (Message m : logicResponse.getMessages()) {
@@ -228,14 +229,14 @@ public class WorkflowResource {
             logicResponse = LOGIC.deleteWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, loggingBody + "Workflow does not exist");
-            return Response.serverError().entity(e1.getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         try {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
             return Response.serverError()
-                    .entity(new JacksonException().getErrorCode()).build();
+                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {

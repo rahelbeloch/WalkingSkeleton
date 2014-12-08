@@ -60,7 +60,7 @@ public class UserResource {
             user = LOGIC.getUser(username);
         } catch (UserNotExistentException e1) {
             LOGGER.log(Level.INFO, e1);
-            return Response.serverError().entity(e1.getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         String userAsString;
         
@@ -68,7 +68,7 @@ public class UserResource {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.INFO, e);
-            return Response.serverError().entity(new JacksonException().getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(userAsString).build();
@@ -94,14 +94,14 @@ public class UserResource {
             user = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
             LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
-            return Response.serverError().entity(new JacksonException().getErrorCode())
+            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode()))
                     .build();
         }
         try {
             logicResponse = LOGIC.addUser(user);
         } catch (UserAlreadyExistsException e) {
             LOGGER.log(Level.INFO, loggingBody + " User already exists");
-            return Response.serverError().entity(e.getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -143,7 +143,7 @@ public class UserResource {
             logicResponse = LOGIC.addUser(user);
         } catch (UserAlreadyExistsException e) {
             LOGGER.log(Level.INFO, e);
-            return Response.serverError().entity(e.getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -176,13 +176,13 @@ public class UserResource {
             logicResponse = LOGIC.deleteUser(username);
         } catch (UserNotExistentException e1) {
             LOGGER.log(Level.INFO, e1);
-            return Response.serverError().entity(e1.getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         try {
             userAsString = mapper.writeValueAsString(user);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
-            return Response.serverError().entity(new JacksonException().getErrorCode())
+            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode()))
                     .build();
         }
         for (Message m : logicResponse.getMessages()) {

@@ -330,5 +330,4 @@ public class LogicImp implements Logic {
         return true;
     }
 
-   
 }

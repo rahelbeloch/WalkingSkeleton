@@ -26,7 +26,7 @@ public class RestServer {
     private HttpServer server;
     private String baseURI;
 
-    /**
+    /** 
      * Constructor.
      */
     public RestServer() {

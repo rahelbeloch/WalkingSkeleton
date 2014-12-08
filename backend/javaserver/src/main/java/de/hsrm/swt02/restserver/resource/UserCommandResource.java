@@ -51,7 +51,7 @@ public class UserCommandResource {
             }
         } catch (UserNotExistentException e) {
             LOGGER.log(Level.WARNING,e);
-            return Response.serverError().entity(e.getErrorCode()).build();
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
     }
     
