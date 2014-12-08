@@ -40,4 +40,14 @@ public class Action extends Step {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    /**
+     * Deep Copy - Cloning method for Actions
+     */
+    protected Object clone() throws CloneNotSupportedException {
+        Action clone = (Action) super.clone();
+        clone.setDescription(this.description);
+        clone.setUsername(this.username);
+        return clone;
+    }
 }
