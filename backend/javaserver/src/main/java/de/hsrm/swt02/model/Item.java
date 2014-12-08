@@ -230,4 +230,20 @@ public class Item extends RootElement {
 
 		getForGroup("step").get(0).setValue(value);
 	}
+	
+	/**
+	 * Deep Copy - Cloning method for Items
+	 */
+    protected Object clone() throws CloneNotSupportedException {
+		Item clone = new Item();
+		clone.setFinished(finished);
+		clone.setWorkflowId(workflowId);
+		clone.setState(state);
+		
+		for(MetaEntry me: this.metadata) {
+			MetaEntry cloneMe = (MetaEntry) me.clone();
+			clone.set(cloneMe.getGroup(), cloneMe.getGroup(), cloneMe.getValue());
+		}
+		return clone;
+	}
 }

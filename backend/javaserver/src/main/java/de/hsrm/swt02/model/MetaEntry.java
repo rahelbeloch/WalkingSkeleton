@@ -69,4 +69,15 @@ public class MetaEntry {
     public void setGroup(String group) {
         this.group = group;
     }
+    
+	/**
+	 * Deep Copy - Cloning method for MetaEntries
+	 */
+    protected Object clone() throws CloneNotSupportedException {
+		MetaEntry clone = new MetaEntry();
+		clone.setGroup(group);
+		clone.setKey(key);
+		clone.setValue(value);
+		return clone;
+	}
 }

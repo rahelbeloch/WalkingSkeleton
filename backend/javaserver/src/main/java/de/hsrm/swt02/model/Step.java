@@ -90,4 +90,18 @@ public class Step {
     public void setUsername(String username) {
         this.username = username;
     }
+    
+    /**
+	 * Deep Copy - Cloning method for Steps
+	 */
+    protected Object clone() throws CloneNotSupportedException {
+		Step clone = new Step();
+		clone.setId(id);
+		clone.setUsername(username);
+		for(Step step: this.nextSteps) {
+			Step cloneStep = (Step) step.clone();
+			clone.nextSteps.add(cloneStep);
+		}
+		return clone;
+	}
 }
