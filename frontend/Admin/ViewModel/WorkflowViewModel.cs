@@ -11,6 +11,7 @@ using CommunicationLib.Model;
 using CommunicationLib;
 using System.Windows;
 using Action = CommunicationLib.Model.Action;
+using CommunicationLib.Exception;
 
 namespace Admin.ViewModel
 {
@@ -223,11 +224,19 @@ namespace Admin.ViewModel
                 {
                     _submitWorkflowCommand = new ActionCommand(execute =>
                     {
-                        RestAPI.RestRequester.PostObject<Workflow>(_workflowModel);
-                        // remove steps from workflow
-                        // update model AND viewmodel, because the model is not observable
-                        _workflowModel.clearWorkflow();
-                        _workflow.Clear();
+                        try
+                        {
+                            RestAPI.RestRequester.PostObject<Workflow>(_workflowModel);
+
+                            // remove steps from workflow
+                            // update model AND viewmodel, because the model is not observable
+                            _workflowModel.clearWorkflow();
+                            _workflow.Clear();
+                        }
+                        catch (BasicException be)
+                        {
+                            MessageBox.Show(be.Message);
+                        }
                     }, canExecute => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
                 }
                 return _submitWorkflowCommand;
