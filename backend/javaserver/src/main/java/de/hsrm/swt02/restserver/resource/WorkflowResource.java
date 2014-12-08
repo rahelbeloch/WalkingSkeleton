@@ -113,7 +113,6 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
-        System.out.println(wListString);
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(wListString).build();
     }

@@ -38,7 +38,7 @@ public class WorkflowCommandResource {
      * This operation will be published on the message broker.
      * @param workflowid states which workflow should be started
      * @param username is for checking if user is authorized to execute this request
-     * @return true or false as String
+     * @return 200 if successful, 500 + error code as String if not
      */
     @POST
     @Path("start/{workflowid}/{username}")
@@ -73,7 +73,7 @@ public class WorkflowCommandResource {
      * @param stepid indicates which step is currently worked on
      * @param itemid indicates which item is currently worked on
      * @param username is for checking if user is authorized to execute this request
-     * @return true or false as String
+     * @return 200 if successful, 500 + error code as String if not
      */
     @POST
     @Path("forward/{stepid}/{itemid}/{username}")

@@ -66,7 +66,7 @@ public class RestserverCommandTest {
      * then tries to login with that name
      */
     @Test
-    public void testUpdate() {
+    public void testLogin() {
         
         final User testUser = new User();
         final ObjectMapper mapper = new ObjectMapper();
