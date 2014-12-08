@@ -13,6 +13,7 @@ namespace CommunicationLib.Exception
         public int number { get { return _number; }}
         
         public BasicException()
+            : base("Es ist ein Fehler aufgetreten.")
         {
 
         }

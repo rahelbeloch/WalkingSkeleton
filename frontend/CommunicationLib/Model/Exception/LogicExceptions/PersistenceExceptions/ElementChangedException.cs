@@ -12,6 +12,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public ElementChangedException()
+            : base("Das Element hat sich verändert.")
         {
 
         }

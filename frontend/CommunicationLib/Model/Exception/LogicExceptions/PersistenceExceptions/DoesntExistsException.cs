@@ -12,6 +12,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public DoesntExistsException()
+            : base("Das Element existiert nicht.")
         {
 
         }

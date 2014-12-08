@@ -12,6 +12,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public ServerNotRuningException()
+            : base("Die Verbindung zum Server ist fehlgeschlagen")
         {
 
         }

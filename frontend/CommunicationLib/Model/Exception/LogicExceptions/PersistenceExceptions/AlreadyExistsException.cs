@@ -12,8 +12,8 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public AlreadyExistsException()
+            : base("Das Element existiert bereits.")
         {
-
         }
 
         public AlreadyExistsException(string message)
