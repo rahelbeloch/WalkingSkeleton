@@ -13,6 +13,7 @@ import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
+import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
@@ -27,7 +28,6 @@ public class LogicTest {
     Workflow w1;
     Workflow w2;
     Workflow w3;
-    String username = "noname";
     User user;
     User user1;
     User user2;
@@ -106,7 +106,7 @@ public class LogicTest {
         } catch (UserAlreadyExistsException e) {
             assertTrue(false);
         }
-        assertTrue(li.getUser(username) == user);
+        assertTrue(li.getUser(user.getUsername()) == user);
     }
 
     @Test(expected = UserAlreadyExistsException.class)
@@ -125,16 +125,23 @@ public class LogicTest {
         } catch (UserAlreadyExistsException e) {
             assertTrue(false);
         }
-        li.deleteUser(username);
-        assertTrue(li.getUser(username) == null);
+        li.deleteUser(user.getUsername());
+        assertTrue(li.getUser(user.getUsername()) == null);
     }
 
     @Test
     public void getWorkflowsByUser() throws WorkflowNotExistentException, UserNotExistentException {
         init();
         initExtension();
-        int i = li.getWorkflowsByUser(user1.getUsername()).size();
-        assertTrue(i == 2);
+        
+//        for(Workflow wf : li.getAllWorkflows()){
+//            for (Step s : wf.getSteps()){
+//                System.out.println("username: " + s.getUsername());
+//            }
+//            System.out.println("________");
+//        }
+        int i = li.getAllWorkflowsByUser(user.getUsername()).size();
+        assertTrue(i == 1);
 
     }
 
@@ -146,7 +153,7 @@ public class LogicTest {
         li.startWorkflow(w.getId(), user.getUsername());
         li.startWorkflow(w.getId(), user.getUsername());
         
-        int i = li.getOpenItemsByUser(user.getUsername()).size();
+        int i = li.getRelevantItemsByUser(w.getId(), user.getUsername()).size();
         assertTrue(i == 2);
 
     }
@@ -155,7 +162,7 @@ public class LogicTest {
     public void getStartableWorkflowsTest() throws WorkflowNotExistentException, UserNotExistentException {
         init();
         initExtension();
-        int i = li.getStartableWorkflows(user2.getUsername()).size();
+        int i = li.getStartableWorkflowsByUser(user2.getUsername()).size();
         assertTrue(i == 1);
     }
 
@@ -164,7 +171,7 @@ public class LogicTest {
     	li = i.getInstance(Logic.class);
 
         user = new User();
-        user.setUsername(username);
+        user.setUsername("0");
         
         startStep = new StartStep(user.getUsername());
         action = new Action(user.getUsername(), "description");
