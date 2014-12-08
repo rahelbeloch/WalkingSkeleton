@@ -37,11 +37,19 @@ public class Workflow extends RootElement {
     }
 
     /**
-     * Items getter. There is no setter because items is an ArrayList.
+     * Items getter.
      * @return items are the items corresponding the workflow
      */
     public List<Item> getItems() {
         return this.items;
+    }
+    
+    /**
+     * sets items to an empty list
+     * @param i
+     */
+    public void clearItems() {
+    	this.items.clear();
     }
     
     /**
