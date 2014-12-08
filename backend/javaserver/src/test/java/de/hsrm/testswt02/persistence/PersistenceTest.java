@@ -48,9 +48,9 @@ public class PersistenceTest {
      */
     @Test
     public void testWorkflowStorage() throws WorkflowNotExistentException {
-        final Workflow workflow007 = new Workflow(7);
-        final Workflow workflow006 = new Workflow(6);
-        final Workflow workflow005 = new Workflow(5);
+        final Workflow workflow007 = new Workflow();
+        final Workflow workflow006 = new Workflow();
+        final Workflow workflow005 = new Workflow();
         
         final int id5 = 5;
         final int id6 = 6;
@@ -72,8 +72,8 @@ public class PersistenceTest {
      */
     @Test
     public void testDuplicateWorkflowStorage() throws WorkflowNotExistentException {
-        final Workflow workflow001 = new Workflow(17);
-        final Workflow workflow002 = new Workflow(17);
+        final Workflow workflow001 = new Workflow();
+        final Workflow workflow002 = new Workflow();
         
         final int id17 = 17;
 
@@ -94,8 +94,8 @@ public class PersistenceTest {
      */
     @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowDeletion() throws WorkflowNotExistentException {
-        final Workflow wf001 = new Workflow(1);
-        final Workflow wf002 = new Workflow(2);
+        final Workflow wf001 = new Workflow();
+        final Workflow wf002 = new Workflow();
         db.storeWorkflow(wf001);
         db.storeWorkflow(wf002);
 
@@ -112,10 +112,10 @@ public class PersistenceTest {
      */
     @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowStorageIncludingSteps() throws WorkflowNotExistentException {
-        final Workflow workflow007 = new Workflow(7);
+        final Workflow workflow007 = new Workflow();
 
         final StartStep step1 = new StartStep("username");
-        final Action step2 = new Action(2, "username", "main action");
+        final Action step2 = new Action("username", "main action");
         final FinalStep step3 = new FinalStep();
         
         final int id7 = 7;
