@@ -2,6 +2,8 @@ package de.hsrm.swt02.businesslogic.processors;
 
 import java.util.Observable;
 
+import com.google.inject.Inject;
+
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
@@ -10,8 +12,6 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
-
-import com.google.inject.Inject;
 
 /**
  * 
@@ -68,12 +68,13 @@ public class StartProcessor extends Observable {
                 item.set(s.getId() + "", "step", MetaState.INACTIVE.toString());
             }
         }
-        workflow.getItems().add(item);
+        workflow.addItem(item);
         if (!item.getForGroup("step").isEmpty()) {
             item.setFirstStepState(MetaState.OPEN.toString());
         }
 
         try {
+            p.storeWorkflow(workflow);
             p.storeItem(item);
         } catch (WorkflowNotExistentException e) {
             e.printStackTrace();
