@@ -20,4 +20,13 @@ public class StartStep extends Step {
         super();
         this.username = username;
     }
+    
+    /**
+     * Deep Copy - Cloning method for Actions
+     */
+    protected Object clone() throws CloneNotSupportedException {
+        StartStep clone = (StartStep) super.clone();
+        clone.setUsername(this.username);
+        return clone;
+    }
 }
