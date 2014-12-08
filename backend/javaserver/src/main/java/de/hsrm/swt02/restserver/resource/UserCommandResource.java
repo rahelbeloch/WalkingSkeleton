@@ -23,10 +23,11 @@ import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 @Path("command/user")
 public class UserCommandResource {
     
-    public static final Logic LOGIC = ConstructionFactory.getLogic();
-    public static final ServerPublisher PUBLISHER = ConstructionFactory.getPublisher();
+    public static final ConstructionFactory FACTORY = ConstructionFactory.getInstance();
+    public static final Logic LOGIC = FACTORY.getLogic();
+    public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
-
+    
     /**
      * This method is called if some client wants to login.
      * @param formParams is a wrapper for login data
