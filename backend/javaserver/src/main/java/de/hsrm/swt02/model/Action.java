@@ -17,12 +17,10 @@ public class Action extends Step {
 
     /**
      * Constructor for Action with parameters.
-     * @param id id of action
      * @param username name of user responsible for action
      * @param description short description of action
      */
-    public Action(int id, String username, String description) {
-        this.id = id;
+    public Action(String username, String description) {
         this.username = username;
         this.description = description;
     }

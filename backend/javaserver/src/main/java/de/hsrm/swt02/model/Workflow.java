@@ -27,17 +27,6 @@ public class Workflow extends RootElement {
         active = true;
     }
     
-    /**
-     * Constructor for Workflow with parameters.
-     * @param id of the workflow
-     */
-    public Workflow(int id) {
-        super();
-        this.id = id;
-        steps = new ArrayList<Step>();
-        items = new ArrayList<Item>();
-        active = true;
-    }
 
     /**
      * Steps getter. There is no setter because steps is an ArrayList.
