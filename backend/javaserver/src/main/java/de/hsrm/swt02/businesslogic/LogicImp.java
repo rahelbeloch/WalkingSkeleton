@@ -222,7 +222,7 @@ public class LogicImp implements Logic {
             for (Step step : wf.getSteps()) {
                 if (step.getUsername().equals(username)) {
                 	Workflow copyOfWf = wf;
-                	copyOfWf.clearItems();
+                	//copyOfWf.clearItems(); this can't be used for getRelevantItemsByUser because it clears all items! Have to use another one...
                     workflows.add(copyOfWf);
                     break;
                 }
