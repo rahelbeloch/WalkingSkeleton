@@ -6,6 +6,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.ws.rs.client.Client;
@@ -20,8 +21,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.hsrm.swt02.model.FinalStep;
+import de.hsrm.swt02.model.StartStep;
+import de.hsrm.swt02.model.Step;
+import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.restserver.RestServer;
 
@@ -152,6 +158,82 @@ public class RestserverWorkflowTest {
         final Response resp = client.target(targetUrl).path("resource/workflow/0")
                 .request().delete();
         assertEquals(500, resp.getStatus());
+    }
+    
+    /**
+     * This test creates a User and a Workflow assigned to this User.
+     * Expects to get the Workflow back by requesting all workflows of the User
+     */
+    @Test
+    public void testGetWorkflowsByUser() {
+        
+        final ObjectMapper mapper = new ObjectMapper();
+        
+        Workflow workflow = new Workflow();
+        Step step1 = new StartStep();
+        Step step2 = new Step();
+        Step step3 = new FinalStep();
+        step1.setUsername("Alex");
+        step2.setUsername("Alex");
+        step3.setUsername("Alex");
+        workflow.addStep(step1);
+        workflow.addStep(step2);
+        workflow.addStep(step3);
+        
+        User alex = new User();
+        alex.setUsername("Alex");
+        
+        String workflowAsString = null;
+        String userAsString = null;
+        
+        //Store Workflow in persistence
+        try {
+            workflowAsString = mapper.writeValueAsString(workflow);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Form dataform = new Form().param("data", workflowAsString);
+        Response resp = client
+                .target(targetUrl)
+                .path("resource/workflow")
+                .request()
+                .post(Entity.entity(dataform,
+                        MediaType.APPLICATION_FORM_URLENCODED));
+        
+        //Store User "Alex" in persistence
+        try {
+            userAsString = mapper.writeValueAsString(alex);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        dataform = new Form().param("data", userAsString);
+        resp = client
+                .target(targetUrl)
+                .path("resource/user")
+                .request()
+                .post(Entity.entity(dataform,
+                        MediaType.APPLICATION_FORM_URLENCODED));
+        
+        workflowAsString = client.target(targetUrl)
+                .path("resource/workflows/Alex").request().get(String.class);
+        
+        //Get all workflows for User "Alex"
+        List <Workflow> wList = null;
+        JavaType type = mapper.getTypeFactory().
+                constructCollectionType(List.class, Workflow.class);
+        try {
+            wList = mapper.readValue(workflowAsString, type);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        assertEquals(1,wList.size());
+        
+        Workflow receivedWorkflow = wList.get(0);
+        
+        assertEquals(workflow.getSteps().get(0).getUsername(),receivedWorkflow.getSteps().get(0).getUsername());
+        assertEquals(200,resp.getStatus());
+        
     }
 
     /**
