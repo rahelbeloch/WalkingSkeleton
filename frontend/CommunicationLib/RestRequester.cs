@@ -96,7 +96,7 @@ namespace RestAPI
         public IList<Item> GetRelevantItemsByUser(int workflowID, string userName)
         {
             String typeName = typeof(Item).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "s" + "/" + userName;
+            String url = _ressourceParam + typeName + "s" + "/" + userName + "/" + workflowID;
 
             return GetElementList<Item>(url);
         }
