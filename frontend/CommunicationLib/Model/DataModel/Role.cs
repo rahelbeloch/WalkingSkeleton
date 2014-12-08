@@ -14,12 +14,6 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private List<User> _users;
-        public List<User> users { get { return _users; } set { _users = value; } }
-
-        /// <summary>
-        /// Used for (de)serialization. Do not change the property name.
-        /// </summary>
         private string _rolename;
         public string rolename { get { return _rolename; } set { _rolename = value; } }
 
@@ -29,7 +23,7 @@ namespace CommunicationLib.Model
         public Role()
             : base()
         {
-            _users = new List<User>();
+
         }
 
     }
