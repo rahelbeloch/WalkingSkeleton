@@ -61,6 +61,7 @@
     <Compile Include="View\LoginUserControl.xaml.cs">
       <DependentUpon>LoginUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\MyToggleButton.cs" />
     <Compile Include="View\WorkflowUserControl.xaml.cs">
       <DependentUpon>WorkflowUserControl.xaml</DependentUpon>
     </Compile>

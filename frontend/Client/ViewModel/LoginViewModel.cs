@@ -66,14 +66,11 @@ namespace Client.ViewModel
 
                     _authenticate = new ActionCommand(execute =>
                     {
-                        Console.WriteLine("authenticate mit " + _username);
-                        _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
-                        _mainViewModel.username = _username;
-                        /*try
-                        {
+                        try{
                             RestAPI.RestRequester.checkUser(username, securePwd);
                             Console.WriteLine("userName: " + username);
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
+                            _mainViewModel.username = _username;
                         }
                         catch (BasicException exc)
                         {
@@ -83,7 +80,7 @@ namespace Client.ViewModel
                         finally
                         {
 
-                        }*/
+                        }
                     }, canExecute =>
                     {
                         return true;
