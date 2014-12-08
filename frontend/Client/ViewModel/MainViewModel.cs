@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommunicationLib;
+using RestAPI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +21,16 @@ namespace Client.ViewModel
         private LoginViewModel _loginViewModel;
         public LoginViewModel loginViewModel { get { return _loginViewModel; } }
 
+        private IRestRequester _restRequester;
+        public IRestRequester restRequester
+        {
+            get {
+                if (_restRequester == null)
+                {
+                    _restRequester = new RestRequester();
+                }
+                return _restRequester; }
+        }
         private String _userName = "";
         public String username
         {

@@ -225,7 +225,7 @@ namespace Client.View
                 MyToggleButton toggle = new MyToggleButton();
                 toggle.username = userName;
                 toggle.itemId = actItem.id;
-                toggle.stepId = actItem.getActiveStepIdByUsername(userName);
+                //toggle.stepId = actItem.getActiveStepIdByUsername(userName); old usage
                 toggle.Click += new RoutedEventHandler(stepForward);
                 toggle.Content = "Abschließen";
                 var block = new BlockUIContainer(toggle);

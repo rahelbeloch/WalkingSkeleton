@@ -54,6 +54,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\ActionCommand.cs" />
+    <Compile Include="ViewModel\DashboardRow.cs" />
+    <Compile Include="ViewModel\DashboardWorkflow.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />

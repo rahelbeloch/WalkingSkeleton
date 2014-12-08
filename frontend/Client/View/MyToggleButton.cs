@@ -18,5 +18,12 @@ namespace Client.View
         {
 
         }
+        public MyToggleButton(int stepId, int itemId, String username)
+            : base()
+        {
+            this.stepId = stepId;
+            this.itemId = itemId;
+            this.username = username;
+        }
     }
 }

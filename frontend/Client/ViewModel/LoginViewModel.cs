@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 using CommunicationLib.Model;
 using System.Windows.Input;
 using CommunicationLib.Exception;
+using System.Windows;
+using CommunicationLib;
 
 namespace Client.ViewModel
 {
     public class LoginViewModel : ViewModelBase
     {
+        private IRestRequester _restRequester;
         private MainViewModel _mainViewModel;
         public LoginViewModel(MainViewModel mainViewModelInstanz)
             : base()
         {
             _mainViewModel = mainViewModelInstanz;
+            _restRequester = _mainViewModel.restRequester;
         }
         public string Name
         {
@@ -67,7 +71,7 @@ namespace Client.ViewModel
                     _authenticate = new ActionCommand(execute =>
                     {
                         try{
-                            RestAPI.RestRequester.checkUser(username, securePwd);
+                            _restRequester.checkUser(username, securePwd);
                             Console.WriteLine("userName: " + username);
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
                             _mainViewModel.username = _username;
@@ -75,6 +79,7 @@ namespace Client.ViewModel
                         catch (BasicException exc)
                         {
                             Console.WriteLine("Login fehlgeschlagen:");
+                            MessageBox.Show(exc.Message);
                             Console.WriteLine(exc.ToString());
                         }
                         finally
