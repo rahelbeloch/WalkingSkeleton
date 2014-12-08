@@ -21,7 +21,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(WorkflowNotExistException))]
         public void testServerConnectionGetObject()
         {
-            RestRequester.GetObject<Workflow>(0);
+            InternalRequester.GetObject<Workflow>(0);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(ItemNotExistException))]
         public void testServerConnectionSendSimpleReq()
         {
-            RestRequester.StepForward(1, 2, "Rahel");
+            InternalRequester.StepForward(1, 2, "Rahel");
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace UnitTestProject1
         public void testWorkflowDoesntExistsException()
         {
             int getWFId = -17;
-            RestRequester.GetObject<Workflow>(getWFId);
+            InternalRequester.GetObject<Workflow>(getWFId);
         }
     }
 }

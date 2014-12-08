@@ -24,15 +24,20 @@ namespace UnitTestProject1
     public class CommunicationTest
     {
 
-        static Workflow testWf;
-        static User testUser;
-
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
+        }
+
+        /// <summary>
+        ///  Testmethod to test a transmission of a workflow to server.
+        /// </summary>
+        [TestMethod]
+        public void testSentWorkflow()
+        {
             // workflow with ID 1
-            testWf = new Workflow();
-            
+            Workflow testWf = new Workflow();
+
             // a startStep
             StartStep startStep = new StartStep();
             startStep.username = "Rahel";
@@ -49,21 +54,15 @@ namespace UnitTestProject1
             testWf.addStep(fStep);
 
             // First User with name "Rahel"
-            testUser = new User();
+            User testUser = new User();
             testUser.username = "Rahel";
 
-            RestRequester.PostObject<User>(testUser);
-        }
+            Boolean postUser = InternalRequester.PostObject<User>(testUser);
 
-        /// <summary>
-        ///  Testmethod to test a transmission of a workflow to server.
-        /// </summary>
-        [TestMethod]
-        public void testSentWorkflow()
-        {
-            Boolean send = RestRequester.PostObject<Workflow>(testWf);
+            Boolean send = InternalRequester.PostObject<Workflow>(testWf);
             
             Assert.IsTrue(send == true);
+
         }
 
 
@@ -73,9 +72,7 @@ namespace UnitTestProject1
         [TestMethod]
         public void testStartWorkflow()
         {
-            RestRequester.PostObject<Workflow>(testWf);
-
-            Boolean done = RestRequester.StartWorkflow(1, testUser.username);
+            Boolean done = InternalRequester.StartWorkflow(1, "Rahel");
 
             Assert.IsTrue(done);
         }
@@ -86,11 +83,12 @@ namespace UnitTestProject1
         [TestMethod]
         public void testSwitchForward()
         {
-            int stepId = 5;
-            int itemId = 11;
+            Workflow stepWf = InternalRequester.GetObject<Workflow>(1);
+            int stepId = stepWf.steps[0].id;
+            int itemId = stepWf.items[0].id;
             string username = "Rahel";
 
-            Boolean done = RestRequester.StepForward(stepId, itemId, username);
+            Boolean done = InternalRequester.StepForward(stepId, itemId, username);
 
             Assert.IsTrue(done);
         }
@@ -101,13 +99,13 @@ namespace UnitTestProject1
         [TestMethod]
         public void testUpdateObject()
         {
-            Workflow changeWorkflow = RestRequester.GetObject<Workflow>(1);
+            Workflow changeWorkflow = InternalRequester.GetObject<Workflow>(1);
             int stepCount = changeWorkflow.steps.Count;
             changeWorkflow.addStep(new Action());
 
-            RestRequester.UpdateObject(changeWorkflow);
+            InternalRequester.UpdateObject(changeWorkflow);
 
-            Workflow updatedWorkflow = RestRequester.GetObject<Workflow>(1);
+            Workflow updatedWorkflow = InternalRequester.GetObject<Workflow>(1);
 
             int newStepCount = updatedWorkflow.steps.Count;
 
@@ -115,7 +113,7 @@ namespace UnitTestProject1
         }
 
         /// <summary>
-        ///     Test to switch forward some actions.
+        ///     Test deleting a workflow.
         /// </summary>
         [TestMethod]
         public void testDeleteObject()
@@ -128,11 +126,39 @@ namespace UnitTestProject1
         [TestMethod]
         public void testGetAllObjects()
         {
-            IList<Workflow> eleList = RestRequester.GetAllObjects<Workflow>("Rahel");
 
-            Assert.IsTrue(eleList.Count == 3);
+            User testUser = new User();
+            testUser.username = "Sebastian";
+
+            Workflow newWf = new Workflow();
+            
+            // a startStep
+            StartStep startStep = new StartStep();
+            startStep.username = "Sebastian";
+            newWf.addStep(startStep);
+
+            // an action
+            Action act = new Action();
+            act.username = "Sebastian";
+            newWf.addStep(act);
+
+            // a final step
+            FinalStep fStep = new FinalStep();
+            fStep.username = "Sebastian";
+            newWf.addStep(fStep);
+
+            
+
+            InternalRequester.PostObject<User>(testUser);
+
+            InternalRequester.PostObject<Workflow>(newWf);
+
+
+            IList<Workflow> eleList = InternalRequester.GetAllObjects<Workflow>("Sebastian");
+            System.Diagnostics.Trace.WriteLine("Anzahl Workflows Sebastian:" + eleList.Count());
+            Assert.IsTrue(eleList.Count == 1);
         }
-
+        /*
         /// <summary>
         ///     Test to get a list of objects from server.
         /// </summary>
@@ -144,7 +170,7 @@ namespace UnitTestProject1
             foreach (char ch in initString)
                testpwd.AppendChar(ch);
 
-            Boolean done = RestRequester.checkUser("Rahel", testpwd);
+            Boolean done = RestRequester.checkUser(testUser.username, testpwd);
           
             Assert.IsTrue(done);
         }
@@ -162,8 +188,7 @@ namespace UnitTestProject1
                 testpwd.AppendChar(ch);
 
             Boolean done = RestRequester.checkUser("Jane", testpwd);
-
-            Assert.IsTrue(done);
         }
+         */
     }
 }

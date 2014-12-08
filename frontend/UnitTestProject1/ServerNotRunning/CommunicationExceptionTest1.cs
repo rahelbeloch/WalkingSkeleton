@@ -21,7 +21,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(ServerNotRuningException))]
         public void testServerConnectionGetObject()
         {
-            RestRequester.GetObject<Workflow>(0);
+            InternalRequester.GetObject<Workflow>(0);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(ServerNotRuningException))]
         public void testServerConnectionSendObjectRequest()
         {
-            RestRequester.PostObject<Workflow>(new Workflow());
+            InternalRequester.PostObject<Workflow>(new Workflow());
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(ServerNotRuningException))]
         public void testServerConnectionSendSimpleReq()
         {
-            RestRequester.StepForward(1, 2, "Rahel");
+            InternalRequester.StepForward(1, 2, "Rahel");
         }
     }
 }
