@@ -105,7 +105,7 @@ namespace CommunicationLib
             Int32.TryParse(options[2], out id);
 
             // Reflection: generic method can not be called with dynamic generics (means deciding during runtime which generic is placed in)
-            MethodInfo method = typeof( RestRequester ).GetMethod( methodName );
+            MethodInfo method = typeof( InternalRequester ).GetMethod( methodName );
             MethodInfo genericMethod = method.MakeGenericMethod( genericType );
             // Call the dynamic generic generated method with parameterlist (2. param); parent of called method is static, not an instance (1.param)
             resultType = genericMethod.Invoke(null, new object[] { id });

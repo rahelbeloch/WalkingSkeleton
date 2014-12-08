@@ -20,48 +20,35 @@ namespace RestAPI
     /// <summary>
     ///     Static class, that realizes the Connection to the server.
     /// </summary>
-    public class RestRequester
+    public class InternalRequester
     {
         public static String restserverurl;
         public static RestClient client;
-        private static String _ressourceParam, _operationParam;
-        private static JsonSerializerSettings _jsonSettings;
 
         ///<summary>
         ///     Static Constructor - is called automatically at first use of the class.
         /// </summary>
-        static RestRequester()
+        static InternalRequester()
         {
             restserverurl = Constants.serverUrl;
             client = new RestClient(restserverurl);
-            _ressourceParam = "resource/";
-            _operationParam = "command/";
-            _jsonSettings = new JsonSerializerSettings { 
-                TypeNameHandling = TypeNameHandling.Auto, 
-                Formatting = Formatting.Indented,
-                Binder = new CustomSerializationBinder()};
         }
 
-        
        /// <summary>
         /// Requests all Objects (Items, Workflows or Users) belonging to the given user.
        /// </summary>
        /// <typeparam name="O"></typeparam>
        /// <param name="userName"></param>
        /// <returns></returns>
-        public static IList<O> GetAllObjects<O>(String userName) where O : new()
+        internal static IRestResponse GetAllObjects<O>(String url, RestSharp.Method method)
         {
             IRestResponse response;
-            IList<O> eleList;
-            String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            // if userName is not null, it is concatenated to the url, otherwise path  is just 'resource/workflows' and will request all all workflows
-            String url = _ressourceParam + typeName + "s" + (userName != null? "/" + userName : "");
+
             var request = new RestRequest(url, Method.GET);
             request.AddHeader("Accept", "text/plain");
 
             // decide wether the server does return the right excepted object or throws an exception
             response = client.Execute(request);
-            eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, _jsonSettings);
 
             // if there is a network transport error (network is down, failed DNS lookup, etc)
             if (response.ResponseStatus == ResponseStatus.Error)
@@ -77,229 +64,11 @@ namespace RestAPI
                 BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
                 throw ex;
             }
-            return eleList;
+
+            return response;
         }
 
-        /// <summary>
-        ///     Get an object from the server, with HTTP-Method GET.
-        ///     Path for this HTTP-Method is always: ressource/<typename>/<id>/
-        /// </summary>
-        /// <typeparam name="O">Type of the requested object</typeparam>
-        /// <param name="id">Id of the requested object</param>
-        /// <returns>The requested object</returns>
-        public static O GetObject<O>(int id) where O : new()
-        {
-            IRestResponse response;
-            String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName +"/" + id;
-            try
-            {
-                response = GetObjectRequest<O>(url, Method.GET);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-         
-            //Deserialize JSON
-            O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
-
-            if (desObj.GetType() == typeof(Workflow))
-            {
-                convertIdListToReferences(ChangeType<Workflow>(desObj));
-            }     
-
-            return desObj;
-        }
-
-        /// <summary>
-        /// This method changes the type of a generic object.
-        /// </summary>
-        /// <typeparam name="T">The expected new type.</typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static T ChangeType<T>(object obj)
-        {
-            return (T)Convert.ChangeType(obj, typeof(T));
-        }
-
-        /// <summary>
-        /// Incoming order of step ids are converted into references.
-        /// </summary>
-        /// <param name="workflow"></param>
-        public static void convertIdListToReferences(Workflow workflow)
-        {
-            foreach (Step s in workflow.steps)
-            {
-                foreach (int id in s.nextStepIds)
-                {
-                    s.nextSteps.Add(workflow.getStepById(id));
-                }
-            }
-
-        }
-
-        /// <summary>
-        ///     Update an object on the server, with HTTP-Method PUT. Path is always: 'resource/<typename>/<objId>'
-        /// </summary>
-        /// <param name="sendObj">The object to update</param>
-        /// <returns>If it worked or not</returns>
-        public static Boolean UpdateObject(RootElement sendObj)
-        {
-            IRestResponse response;
-            String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
-            
-            String url = _ressourceParam + typeName + "/";
-            url += sendObj.GetType() == typeof(User) ? ((User)sendObj).username : sendObj.id.ToString();
-
-            // Serialize to JSON
-            String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
-            try
-            {
-                response = SendObjectRequest(url, Method.PUT, serializedObj);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-            return  response.StatusCode == HttpStatusCode.OK;
-        }
-
-        /// <summary>
-        ///     Create an object on the server, with HTTP-Method POST. Path is: 'resource/<typename>'
-        /// </summary>
-        /// <typeparam name="O">The type of the object to be created</typeparam>
-        /// <param name="sendObj">The specified object to create</param>
-        /// <returns>True if it worked, false/exception otherwise</returns>
-        public static Boolean PostObject<O>(O sendObj) where O : new()
-        {
-            IRestResponse response;
-            String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName;
-            
-            // Serialize to JSON
-            String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
-
-            try
-            {
-                response = SendObjectRequest(url, Method.POST, serializedObj);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-          
-            return response.StatusCode == HttpStatusCode.OK;
-        }
-
-        /// <summary>
-        ///     Delete an object on the server, with HTTP-Method DEL. Path is: 'resource/<typename>/<resId>'
-        /// </summary>
-        /// <typeparam name="O">Type of the deleted object</typeparam>
-        /// <param name="id">Id of the deleted object</param>
-        /// <returns>The deleted object</returns>
-        public static O DeleteObject<O>(int id) where O : new()
-        {
-            IRestResponse response;
-            String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "/" + id;
-            try
-            {
-                response = GetObjectRequest<O>(url, Method.DELETE);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-
-            //Deserialize JSON
-            O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
-
-            return desObj;
-        }
-
-        /// <summary>
-        ///     Does a login access to the server. Path ist always: '/command/user/login'
-        /// </summary>
-        /// <param name="username">Name of the user</param>
-        /// <param name="password">Password of the user</param>
-        /// <returns>True if it worked, false otherwhise, or an exception</returns>
-        public static Boolean checkUser(String username, SecureString password)
-        {
-            IRestResponse resp;
-            String url = _operationParam + "user/" + "login";
-
-            var request = new RestRequest(url, Method.POST);
-            request.AddHeader("Accept", "text/plain");
-            request.AddParameter("username", username, ParameterType.GetOrPost);
-            request.AddParameter("password", password, ParameterType.GetOrPost);
-
-            try
-            {
-                resp = SendSimpleRequest(request);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-
-            return resp.StatusCode == HttpStatusCode.OK;
-        }
-
-
-        /// <summary>
-        ///     Sends a request to the server to start a workflow (create an item). Path is always: '/command/workflow/start/{workflowId}/{userName}'
-        /// </summary>
-        /// <param name="wId">Workflow-Id</param>
-        /// <param name="uId">Username</param>
-        public static Boolean StartWorkflow(int wId, string username)
-        {
-            IRestResponse resp;
-            String url = _operationParam + "workflow/"+ "start/" + wId.ToString() + "/" + username;
-
-            var request = new RestRequest(url, Method.POST);
-            request.AddHeader("Accept", "text/plain");
-
-            try
-            {
-                resp = SendSimpleRequest(request);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-            
-            return resp.StatusCode == HttpStatusCode.OK ;
-        }
-
-        /// <summary>
-        ///     Sends a state change of an action to the server. Path is always:  '/command/workflow/forward/{stepId}/{itemId}/{username}'
-        /// </summary>
-        /// <param name="stepId">Id of the current step</param>
-        /// <param name="itemId">Id of the current item</param>
-        /// <param name="uId">Name of the current user</param>
-        /// <returns>True if it worked, false/exception otherwise</returns>
-        public static Boolean StepForward(int stepId, int itemId, string username)
-        {
-            IRestResponse resp;
-            String url = _operationParam + "workflow/" + "forward/" + stepId + "/" + itemId + "/" + username;
-            
-            var request = new RestRequest(url, Method.POST);
-            request.AddHeader("Accept", "text/plain");
-            // Parameters are set in URL; alternative is adding them to the request
-            //request.AddParameter("username", username, ParameterType.GetOrPost);
-            //request.AddParameter("password", password, ParameterType.GetOrPost);
-
-            try
-            {
-                resp = SendSimpleRequest(request);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-            return resp.StatusCode == HttpStatusCode.OK;
-        }
+        
 
         /// <summary>
         ///     Sends a HTTP-Request to the server to get an object.
@@ -308,7 +77,7 @@ namespace RestAPI
         /// <param name="url">Requested url</param>
         /// <param name="method">HTTP-Method of the request</param>
         /// <returns>Response object from server</returns>
-        private static IRestResponse GetObjectRequest<O>(String url, RestSharp.Method method) where O : new()
+        internal static IRestResponse GetObjectRequest<O>(String url, RestSharp.Method method) where O : new()
         {
             var request = new RestRequest(url, method);
             request.AddHeader("Accept", "text/plain");
@@ -327,6 +96,7 @@ namespace RestAPI
             // test the StatusCode of response; if 500 happened there is a Server Error
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
             {
+                System.Diagnostics.Trace.WriteLine("Antwort: " + response.Content);
                 int errorCode = Int32.Parse(response.Content);
                 BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
                 throw ex;
@@ -341,7 +111,7 @@ namespace RestAPI
         /// <param name="method">Method of the request</param>
         /// <param name="serializedObjPath">JSON string serialized object</param>
         /// <returns>The response from server</returns>
-        private static IRestResponse SendObjectRequest(String url, RestSharp.Method method, String serializedObj)
+        internal static IRestResponse SendObjectRequest(String url, RestSharp.Method method, String serializedObj)
         {
             IRestResponse response;
             var request = new RestRequest(url, method);
@@ -381,7 +151,7 @@ namespace RestAPI
         /// </summary>
         /// <param name="request">The request to send to server</param>
         /// <returns>The response object</returns>
-        private static IRestResponse SendSimpleRequest(RestRequest request)
+        internal static IRestResponse SendSimpleRequest(RestRequest request)
         {
             IRestResponse response = client.Execute(request);
 

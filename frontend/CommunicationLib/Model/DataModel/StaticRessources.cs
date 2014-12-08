@@ -18,6 +18,9 @@ namespace CommunicationLib.Model
     {
         private static Dictionary<int, Type> errorMessages = new Dictionary<int, Type>()
         {          
+            // error if the error from server is not known/implemented
+            {9999, typeof(UnknownException)},
+
             // Error codes
             {10000, typeof(BasicException)},
             
@@ -56,6 +59,10 @@ namespace CommunicationLib.Model
 
         public static Type GetErrorType(int code)
         {
+            if (!errorMessages.ContainsKey(code))
+            {
+                code = 9999;
+            }
             return errorMessages[code];
         }
     }
