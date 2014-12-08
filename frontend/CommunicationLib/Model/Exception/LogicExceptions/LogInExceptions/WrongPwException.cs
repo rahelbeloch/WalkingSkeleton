@@ -12,6 +12,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public WrongPwException()
+            : base("Das Passwort war falsch.")
         {
 
         }

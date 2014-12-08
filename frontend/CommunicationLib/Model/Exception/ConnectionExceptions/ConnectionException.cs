@@ -12,6 +12,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public ConnectionException()
+            : base("Es ist ein Fehler bei der Übertragung passiert.")
         {
 
         }

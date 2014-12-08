@@ -12,6 +12,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public MessagingException()
+            :base("Es ist ein fehler beim Aktualisieren aufgetreten.")
         {
 
         }
