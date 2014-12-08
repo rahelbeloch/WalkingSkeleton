@@ -12,7 +12,7 @@ public class UserNotExistentException extends NotExistentException {
      * Constructor for the Exception.
      */
     public UserNotExistentException() {
-        super();
+        super("Der Nutzer existiert nicht.");
     }
 
     /**

@@ -12,7 +12,7 @@ public class UserAlreadyExistsException extends AlreadyExistsException {
      * Constructor for the Exception.
      */
     public UserAlreadyExistsException() {
-        super();
+        super("Der Nutzer existiert bereits.");
     }
 
     /**

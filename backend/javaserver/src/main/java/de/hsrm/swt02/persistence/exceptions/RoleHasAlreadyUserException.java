@@ -6,13 +6,13 @@ package de.hsrm.swt02.persistence.exceptions;
 public class RoleHasAlreadyUserException extends AlreadyExistsException {
 
     private static final long serialVersionUID = -926705890263823593L;
-    public static final int ERRORCODE = 1124;
+    public static final int ERRORCODE = 11261;
     
     /**
      * Constructor for the Exception.
      */
     public RoleHasAlreadyUserException() {
-        super();
+        super("Die Rolle hat diesen Nutzer bereits.");
     }
     
     /**

@@ -12,7 +12,7 @@ public class WorkflowNotExistentException extends NotExistentException {
      * Constructor for the Exception.
      */
     public WorkflowNotExistentException() {
-        super();
+        super("Der Workflow existiert nicht.");
     }
 
     /**

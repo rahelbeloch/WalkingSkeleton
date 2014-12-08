@@ -12,7 +12,7 @@ public class AlreadyExistsException extends PersistenceException {
      * Constructor for the Exception.
      */
     public AlreadyExistsException() {
-        super();
+        super("Das Element exsistiert bereits.");
     }
 
     /**
