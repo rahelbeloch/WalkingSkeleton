@@ -11,16 +11,16 @@ namespace CommunicationLib
     /// <summary>
     ///  Interface that describes the provided methods of this RestAPI.
     /// </summary>
-    interface IRestRequester
+    public interface IRestRequester
     {
         // Ressource-methods
-        public IList<Workflow> GetAllWorkflows();
+        IList<Workflow> GetAllWorkflows();
 
-        public IList<Workflow> GetAllWorkflowsByUser(String userName);
+        IList<Workflow> GetAllWorkflowsByUser(String userName);
 
-        public IList<int> GetStartablesByUser(string userName);
+        IList<int> GetStartablesByUser(string userName);
 
-        public IList<Item> GetRelevantItemsByUser(int workflowID, string userName);
+        IList<Item> GetRelevantItemsByUser(int workflowID, string userName);
 
         /// <summary>
         ///     Get an object from the server, with HTTP-Method GET.
