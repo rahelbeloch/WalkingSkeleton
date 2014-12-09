@@ -9,6 +9,7 @@ using System.Windows.Input;
 using CommunicationLib.Model;
 using CommunicationLib.Exception;
 using System.Windows;
+using CommunicationLib;
 
 namespace Admin.ViewModel
 {
@@ -18,8 +19,13 @@ namespace Admin.ViewModel
     /// </summary>
     public class UserViewModel: ViewModelBase
     {
-        public UserViewModel()
+        private MainViewModel _mainViewModel;
+        private IRestRequester _restRequester;
+
+        public UserViewModel(MainViewModel mainViewModel)
         {
+            _mainViewModel = mainViewModel;
+            _restRequester = _mainViewModel.restRequester;
         }
 
         /// <summary>
@@ -62,7 +68,7 @@ namespace Admin.ViewModel
                             User newUser = new User();
                             newUser.username = username;
 
-                            RestAPI.RestRequester.PostObject<User>(newUser);
+                            _restRequester.PostObject<User>(newUser);
 
                             // update view model
                             _userCollection.Add(newUser);

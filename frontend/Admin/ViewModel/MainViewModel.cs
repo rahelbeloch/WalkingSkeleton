@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CommunicationLib;
+using RestAPI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +15,30 @@ namespace Admin.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private WorkflowViewModel _workflowViewModel = new WorkflowViewModel();
+        private WorkflowViewModel _workflowViewModel;
         public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
 
-        private UserViewModel _userViewModel = new UserViewModel();
+        private UserViewModel _userViewModel;
         public UserViewModel userViewModel { get { return _userViewModel; }  }
+
+        private IRestRequester _restRequester;
+        public IRestRequester restRequester
+        {
+            get
+            {
+                if (_restRequester == null)
+                {
+                    _restRequester = new RestRequester();
+                }
+                return _restRequester;
+            }
+        }
         
         public MainViewModel()
         {
+            _workflowViewModel = new WorkflowViewModel(this);
+            _userViewModel = new UserViewModel(this);
+
             PageViewModels.Add(workflowViewModel);
             PageViewModels.Add(userViewModel);
 

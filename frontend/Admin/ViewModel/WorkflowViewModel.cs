@@ -22,10 +22,16 @@ namespace Admin.ViewModel
     public class WorkflowViewModel : ViewModelBase
     {
         private Workflow _workflowModel = new Workflow();
+
+        private MainViewModel _mainViewModel;
+        private IRestRequester _restRequester;
         
-        public WorkflowViewModel()
+        public WorkflowViewModel(MainViewModel mainViewModel)
         {
+            _mainViewModel = mainViewModel;
+            _restRequester = _mainViewModel.restRequester;
             _workflow.CollectionChanged += OnWorkflowChanged;
+
 
             // fill choosable steps with default values
             _choosableSteps.Add(new StartStep());
@@ -218,7 +224,7 @@ namespace Admin.ViewModel
                     {
                         try
                         {
-                            RestAPI.RestRequester.PostObject<Workflow>(_workflowModel);
+                            _restRequester.PostObject<Workflow>(_workflowModel);
 
                             // remove steps from workflow
                             // update model AND viewmodel, because the model is not observable
