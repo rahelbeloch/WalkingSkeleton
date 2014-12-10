@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Client.ViewModel
 {
-    class DashboardWorkflow
+    public class DashboardWorkflow
     {
         private Workflow _actWorkflow;
         public Workflow actWorkflow { get { return _actWorkflow; } }
@@ -18,6 +18,7 @@ namespace Client.ViewModel
         public DashboardWorkflow(Workflow actWorkflow)
         {
             this._actWorkflow = actWorkflow;
+            this._dashboardRows = new List<DashboardRow>();
         }
         public void addDashboardRow(DashboardRow newRow)
         {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Client.ViewModel
 {
-    class DashboardRow
+    public class DashboardRow
     {
         private Item _actItem;
         public Item actItem { get { return _actItem; } }

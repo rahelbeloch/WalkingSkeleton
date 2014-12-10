@@ -30,11 +30,25 @@ namespace Client.ViewModel
             Console.WriteLine("updatedModel()");
 
             _workflows.Clear();
-            _restRequester.GetAllWorkflowsByUser(_userName).ToList().ForEach(_workflows.Add);
+            IList<Workflow> workflowList = _restRequester.GetAllWorkflowsByUser(_userName);
+            if (workflowList == null)
+            {
+                workflowList = new List<Workflow>();
+            }
+            foreach (Workflow testWorkflow in workflowList)
+            {
+                Console.WriteLine(testWorkflow);
+            }
+            workflowList.ToList().ForEach(_workflows.Add);
             OnChanged("workflows");
 
             _startableWorkflows.Clear();
-            _restRequester.GetStartablesByUser(_userName).ToList().ForEach(_startableWorkflows.Add);
+            IList<int> startableList = _restRequester.GetStartablesByUser(_userName);
+            if (startableList == null)
+            {
+                startableList = new List<int>();
+            }
+            startableList.ToList().ForEach(_startableWorkflows.Add);
             foreach (Workflow workflow in _workflows)
             {
                 DashboardWorkflow newWorkflow = new DashboardWorkflow(workflow);
