@@ -1,5 +1,6 @@
 package de.hsrm.swt02.restserver.resource;
 
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.ws.rs.Consumes;
@@ -11,9 +12,11 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
@@ -37,7 +40,31 @@ public class UserCommandResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response login(MultivaluedMap<String, String> formParams) {
+        
+        
         final String username = formParams.get("username").get(0);
+        
+        
+        
+        
+        
+        List<Workflow> wflowList;
+        try {
+            wflowList = LOGIC.getAllWorkflows();
+            for(Workflow w : wflowList) {
+                w.convertReferencesToIdList();
+                System.out.println(w.toString());
+            }
+        } catch (LogicException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        
+        
+        
+        
+        
+        
         final String password = formParams.get("password").get(0);
         final String loggingBody = "LOGIN -> " + username + " : " + password;
         try {
@@ -53,6 +80,8 @@ public class UserCommandResource {
             LOGGER.log(Level.WARNING,e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
+        
+        
     }
     
 }
