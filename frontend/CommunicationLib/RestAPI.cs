@@ -167,6 +167,8 @@ namespace RestAPI
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 int errorCode = Int32.Parse(response.Content);
+
+                //generate convenient exception
                 BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
                 throw ex;
             }
