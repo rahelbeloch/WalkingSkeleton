@@ -77,13 +77,14 @@ namespace RestAPI
             String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "s/startables/" + userName;
 
-            var request = new RestRequest(url, Method.POST);
+            var request = new RestRequest(url, Method.GET);
             request.AddHeader("Accept", "text/plain");
 
             try
             {
                 // call Internal Requester to finally send the request
                 resp = InternalRequester.SendSimpleRequest(request);
+                Console.WriteLine(resp.Content);
             }
             catch (BasicException)
             {
