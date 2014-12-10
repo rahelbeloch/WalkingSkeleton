@@ -11,6 +11,7 @@ using CommunicationLib.Model;
 using CommunicationLib;
 using System.Windows;
 using RestAPI;
+using NLog;
 
 namespace Client.ViewModel
 {
@@ -20,6 +21,7 @@ namespace Client.ViewModel
     /// </summary>
     public class WorkflowViewModel : ViewModelBase
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public WorkflowViewModel(MainViewModel mainViewModelInstanz)
         {
             _mainViewModel = mainViewModelInstanz;
@@ -27,30 +29,23 @@ namespace Client.ViewModel
         }
         private void updateModel()
         {
-            Console.WriteLine("updatedModel()");
+            logger.Debug("updatedModel()");
 
             _workflows.Clear();
             IList<Workflow> workflowList = _restRequester.GetAllWorkflowsByUser(_userName);
             if (workflowList == null)
             {
+                logger.Debug("WorkflowList is null");
                 workflowList = new List<Workflow>();
             }
-            foreach (Workflow testWorkflow in workflowList)
-            {
-                Console.WriteLine(testWorkflow);
-            }
             workflowList.ToList().ForEach(_workflows.Add);
-            OnChanged("workflows");
 
             _startableWorkflows.Clear();
             IList<int> startableList = _restRequester.GetStartablesByUser(_userName);
             if (startableList == null)
             {
+                logger.Debug("startableList is null");
                 startableList = new List<int>();
-            }
-            foreach (int testId in startableList)
-            {
-                Console.WriteLine(testId);
             }
             startableList.ToList().ForEach(_startableWorkflows.Add);
             foreach (Workflow workflow in _workflows)
@@ -92,7 +87,7 @@ namespace Client.ViewModel
         }
         private void deleteModel()
         {
-            Console.WriteLine("deleteModel()");
+            logger.Debug("clear Model()");
             _workflows.Clear();
             _startableWorkflows.Clear();
             _relevantItems.Clear();
@@ -100,7 +95,7 @@ namespace Client.ViewModel
         }
         public void createWorkflow(int id, String userName)
         {
-            Console.WriteLine("createWorkflow()");
+            logger.Debug("createWorkflow()");
             try
             {
                 _restRequester.StartWorkflow(id, userName);
@@ -113,7 +108,7 @@ namespace Client.ViewModel
         }
         public void stepForward(int stepId, int itemId, String userName)
         {
-            Console.WriteLine("stepForward()");
+            logger.Debug("stepForward()");
             _restRequester.StepForward(stepId, itemId, userName);
         }
         private ICommand _logoutCommand;
@@ -125,7 +120,7 @@ namespace Client.ViewModel
                 {
                     _logoutCommand = new ActionCommand(excute =>
                         {
-                            Console.WriteLine("button clicked");
+                            logger.Debug("button clicked");
                             userName = "";
                             deleteModel();
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
@@ -149,7 +144,7 @@ namespace Client.ViewModel
             set
             {
                 _userName = value;
-                Console.WriteLine("Workflows holen mit user " + _userName);
+                logger.Debug("Workflows holen mit user " + _userName);
 
                 if (_userName.Equals(""))
                 {
