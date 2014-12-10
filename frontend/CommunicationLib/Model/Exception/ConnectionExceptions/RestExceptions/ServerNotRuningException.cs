@@ -11,18 +11,18 @@ namespace CommunicationLib.Exception
         private int _number = 12210;
         new public int number { get { return _number; } }
 
-        public ServerNotRuningException()
+        public ServerNotRunningException()
             : base("Die Verbindung zum Server ist fehlgeschlagen")
         {
 
         }
 
-        public ServerNotRuningException(string message)
+        public ServerNotRunningException(string message)
          : base(message)
         {
         }
 
-        public ServerNotRuningException(string message, System.Exception inner)
+        public ServerNotRunningException(string message, System.Exception inner)
             : base(message, inner)
         {
         }

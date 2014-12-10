@@ -53,7 +53,7 @@ namespace RestAPI
             // if there is a network transport error (network is down, failed DNS lookup, etc)
             if (response.ResponseStatus == ResponseStatus.Error)
             {
-                ConnectionException ex = new ServerNotRuningException();
+                ConnectionException ex = new ServerNotRunningException();
                 throw ex;
             }
 
@@ -89,7 +89,7 @@ namespace RestAPI
             // if there is a network transport error (network is down, failed DNS lookup, etc)
             if (response.ResponseStatus == ResponseStatus.Error)
             {
-                ConnectionException ex = new ServerNotRuningException();
+                ConnectionException ex = new ServerNotRunningException();
                 throw ex;
             }
 
@@ -130,7 +130,7 @@ namespace RestAPI
             // if there is a network transport error (network is down, failed DNS lookup, etc)
             if (response.ResponseStatus == ResponseStatus.Error)
             {
-                ConnectionException ex = new ServerNotRuningException();
+                ConnectionException ex = new ServerNotRunningException();
                 throw ex;
             }
 
@@ -158,7 +158,7 @@ namespace RestAPI
             // if there is a network transport error (network is down, failed DNS lookup, etc)
             if (response.ResponseStatus == ResponseStatus.Error)
             {
-                ConnectionException ex = new ServerNotRuningException();
+                ConnectionException ex = new ServerNotRunningException();
                 throw ex;
             }
 
