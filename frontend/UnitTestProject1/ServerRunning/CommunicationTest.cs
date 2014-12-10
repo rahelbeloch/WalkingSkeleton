@@ -24,6 +24,8 @@ namespace UnitTestProject1
     {
         // local object of connection to server
         public static RestRequester myRequester;
+        // Logger
+        public static TextWriterTraceListener myListener;
 
         /// <summary>
         /// Init method, does instantiate the Connection Instance.
@@ -33,6 +35,10 @@ namespace UnitTestProject1
         public static void ClassInit(TestContext context)
         {
             myRequester = new RestRequester();
+
+            // Some Loggings
+            myListener = new TextWriterTraceListener("../../CommunicationTestLog.log", "myListener");
+            System.IO.File.WriteAllBytes("../../CommunicationTestLog.log", new byte[0]);
         }
 
         /// <summary>
@@ -94,8 +100,6 @@ namespace UnitTestProject1
             // Test the real functionality
             Workflow stepWf = myRequester.GetObject<Workflow>(wf.id);
             
-            // Some Loggings
-            TextWriterTraceListener myListener = new TextWriterTraceListener("../../TextWriterOutput.log", "myListener");
             myListener.WriteLine("Anzahl der Steps: " + stepWf.steps.Count());
             myListener.WriteLine("Anzahl der Items: " + stepWf.steps.Count());
             // You must close or flush the trace listener to empty the output buffer.
@@ -136,6 +140,8 @@ namespace UnitTestProject1
             Workflow updatedWorkflow = myRequester.GetObject<Workflow>(wf.id);
 
             int newStepCount = updatedWorkflow.steps.Count;
+            myListener.WriteLine("Anzahl der Steps vorher: " + stepCount + " Anzahl nachher soll: " + changeWorkflow.steps.Count() + " Anzahl nachher ist: " + updatedWorkflow.steps.Count());
+            myListener.Flush();
 
             Assert.IsTrue(stepCount + 1 == newStepCount);
 
@@ -171,7 +177,7 @@ namespace UnitTestProject1
             myRequester.DeleteUser("Sebastian");
         }
 
-         /// <summary>
+        /// <summary>
         ///     Test to get a list of all workflows from server.
         /// </summary>
         [TestMethod]
@@ -187,7 +193,6 @@ namespace UnitTestProject1
             IList<Workflow> wFList = myRequester.GetAllWorkflows();
 
             // Some Loggings
-            TextWriterTraceListener myListener = new TextWriterTraceListener("../../TextWriterOutput3.log", "myListener");
             myListener.WriteLine("Anzahl der workflows: " + wFList.Count());
             // You must close or flush the trace listener to empty the output buffer.
             myListener.Flush();
