@@ -52,7 +52,7 @@ public class WorkflowProcessTest {
 
         myWorkflow.addStep(new FinalStep());
         // generates straight neighbors for steps in steplist
-        myWorkflow.connectSteps();
+        
         persistence.storeWorkflow(myWorkflow);;
         benni = new User();
         benni.setUsername("benni");

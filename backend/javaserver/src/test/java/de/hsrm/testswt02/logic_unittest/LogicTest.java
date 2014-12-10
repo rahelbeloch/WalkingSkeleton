@@ -14,6 +14,7 @@ import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
+import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
@@ -156,6 +157,24 @@ public class LogicTest {
         int i = li.getRelevantItemsByUser(w.getId(), user.getUsername()).size();
         assertTrue(i == 2);
 
+    }
+    
+    /**
+     * Check if steps in a workflow are connected.
+     */
+    @Test
+    public void connectWorkflowSteps() {
+        init();
+        initExtension();
+        
+        
+        for (Step step: w.getSteps()) {
+            
+            if (!(step instanceof FinalStep)) {
+                System.out.println(step.getId());
+                assertTrue(step.getNextSteps().size() != 0);
+            }
+        }
     }
 
     @Test
