@@ -131,6 +131,7 @@ public class Workflow extends RootElement implements Cloneable {
     public void addStep(Step step) {
 
         steps.add(step);
+        connectSteps();
     }
 
     /**
