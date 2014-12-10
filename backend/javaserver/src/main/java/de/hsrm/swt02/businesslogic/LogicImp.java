@@ -291,7 +291,7 @@ public class LogicImp implements Logic {
         for (Workflow workflow : getAllWorkflowsByUser(username)) {
             final Step startStep = workflow.getSteps().get(0);
             assert (startStep instanceof StartStep);
-            if (startStep.getUsername() == username) {
+            if (startStep.getUsername().equals(username)) {
                 startableWorkflows.add(workflow.getId());
             }
         }
