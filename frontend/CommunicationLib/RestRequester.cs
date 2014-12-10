@@ -17,12 +17,18 @@ using CommunicationLib;
 
 namespace RestAPI
 {
+    /// <summary>
+    /// Class that provides the communication to a server via HTTP (POST, PUT, DELET, GET).
+    /// </summary>
     public class RestRequester : CommunicationLib.IRestRequester
     {
 
         private static String _ressourceParam, _operationParam;
         private static JsonSerializerSettings _jsonSettings;
 
+        /// <summary>
+        /// Default constructor, initializes the serialization settings and pre-strings for urls.
+        /// </summary>
         public RestRequester()
         {
             _ressourceParam = "resource/";
@@ -36,9 +42,9 @@ namespace RestAPI
         }
 
         /// <summary>
-        /// 
+        ///  Method to retrieve all existent workflows on server.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of all workflows</returns>
         public IList<Workflow> GetAllWorkflows()
         {
             String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
@@ -48,10 +54,10 @@ namespace RestAPI
         }
 
         /// <summary>
-        /// 
+        ///  Method to retrieve all existent workflows of one given user on server.
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
+        /// <param name="username">Requested username</param>
+        /// <returns>List of all workflow of this user</returns>
         public IList<Workflow> GetAllWorkflowsByUser(String userName)
         {
             String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
@@ -61,22 +67,22 @@ namespace RestAPI
         }
 
         /// <summary>
-        /// 
+        ///  Method to retrieve all startable workflows of one given user. 
         /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
+        /// <param name="username">Requested username</param>
+        /// <returns>List of all startable workflows of this user</returns>
         public IList<int> GetStartablesByUser(string userName)
         {
             IRestResponse resp;
             String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "s/startables/" + userName;
-            Console.WriteLine(url);
 
             var request = new RestRequest(url, Method.POST);
             request.AddHeader("Accept", "text/plain");
 
             try
             {
+                // call Internal Requester to finally send the request
                 resp = InternalRequester.SendSimpleRequest(request);
             }
             catch (BasicException)
@@ -84,17 +90,18 @@ namespace RestAPI
                 throw;
             }
 
+            // Deserialization
             IList<int> eleList = JsonConvert.DeserializeObject<List<int>>(resp.Content, _jsonSettings);
-
+            
             return eleList;
         }
 
         /// <summary>
-        /// 
+        ///  Method to retrieve all relevant items of one given user. Relevant means all items where the user can accept or close actions.
         /// </summary>
-        /// <param name="workflowID"></param>
-        /// <param name="username"></param>
-        /// <returns></returns>
+        /// <param name="workflowID">The actual handled workflow</param>
+        /// <param name="username">The requested user</param>
+        /// <returns>List of relevant items</returns>
         public IList<Item> GetRelevantItemsByUser(int workflowID, string userName)
         {
             String typeName = typeof(Item).FullName.Split('.').Last().ToLower();
@@ -103,6 +110,12 @@ namespace RestAPI
             return GetElementList<Item>(url);
         }
 
+        /// <summary>
+        ///  General method to get a list of objects (RootElements: Workflow, Item or User) from server.
+        /// </summary>
+        /// <typeparam name="O">Type of handled object</typeparam>
+        /// <param name="url">Request URL</param>
+        /// <returns>List of handled objects</returns>
         private IList<O> GetElementList<O>(string url) 
         {
             IRestResponse response = InternalRequester.GetAllObjects<O>(url, Method.GET);
@@ -125,6 +138,7 @@ namespace RestAPI
             String url = _ressourceParam + typeName + "/" + id;
             try
             {
+                // call Internal Requester to finally send the request
                 response = InternalRequester.GetObjectRequest<O>(url, Method.GET);
             }
             catch (BasicException)
@@ -144,7 +158,7 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///     Update an object on the server, with HTTP-Method PUT. Path is always: 'resource/<typename>/<objId>'
+        ///     Update an object on the server, with HTTP-Method PUT. Path if sendObj is Workflow or Item: 'resource/<typename>/<id>', if user:  'resource/<typename>/<username>'
         /// </summary>
         /// <param name="sendObj">The object to update</param>
         /// <returns>If it worked or not</returns>
@@ -152,7 +166,6 @@ namespace RestAPI
         {
             IRestResponse response;
             String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
-
             String url = _ressourceParam + typeName + "/";
             url += sendObj.GetType() == typeof(User) ? ((User)sendObj).username : sendObj.id.ToString();
 
@@ -160,12 +173,14 @@ namespace RestAPI
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
             try
             {
+                // call Internal Requester to finally send the request
                 response = InternalRequester.SendObjectRequest(url, Method.PUT, serializedObj);
             }
             catch (BasicException)
             {
                 throw;
             }
+
             return response.StatusCode == HttpStatusCode.OK;
         }
 
@@ -186,6 +201,7 @@ namespace RestAPI
 
             try
             {
+                // call Internal Requester to finally send the request
                 response = InternalRequester.SendObjectRequest(url, Method.POST, serializedObj);
             }
             catch (BasicException)
@@ -197,18 +213,44 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///     Delete an object on the server, with HTTP-Method DEL. Path is: 'resource/<typename>/<resId>'
+        ///  Delete an object (Item or Workflow) on the server, with HTTP-Method DEL. Path is: 'resource/<typename>/<resId>'
         /// </summary>
-        /// <typeparam name="O">Type of the deleted object</typeparam>
-        /// <param name="id">Id of the deleted object</param>
-        /// <returns>The deleted object</returns>
+        /// <typeparam name="O">Type of the delete object</typeparam>
+        /// <param name="id">ID of the object to delete</param>
+        /// <returns>The deleted Object</returns>
         public O DeleteObject<O>(int id) where O : new()
         {
-            IRestResponse response;
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "/" + id;
+
+            return Delete<O>(url);
+        }
+
+        /// <summary>
+        ///  Method to delete a user.
+        /// </summary>
+        /// <param name="username">The bad bad user to delete</param>
+        /// <returns>The deleted user</returns>
+        public User DeleteUser(string username)
+        {
+            String typeName = typeof(User).FullName.Split('.').Last().ToLower();
+            String url = _ressourceParam + typeName + "/" + username;
+            
+            return Delete<User>(url);
+        }
+
+        /// <summary>
+        ///  General method to delete an object (RootElement: Workflow, Item, User).
+        /// </summary>
+        /// <typeparam name="O">Type of the object to delete</typeparam>
+        /// <param name="url">Requested URL</param>
+        /// <returns>Deleted object</returns>
+        private O Delete<O>(string url) where O : new()
+        {
+            IRestResponse response;
             try
             {
+                // call Internal Requester to finally send the request
                 response = InternalRequester.GetObjectRequest<O>(url, Method.DELETE);
             }
             catch (BasicException)
@@ -232,7 +274,7 @@ namespace RestAPI
         {
             IRestResponse resp;
             String url = _operationParam + "user/" + "login";
-
+            // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
             request.AddHeader("Accept", "text/plain");
             request.AddParameter("username", username, ParameterType.GetOrPost);
@@ -240,6 +282,7 @@ namespace RestAPI
 
             try
             {
+                // call Internal Requester to finally send the request
                 resp = InternalRequester.SendSimpleRequest(request);
             }
             catch (BasicException)
@@ -259,12 +302,13 @@ namespace RestAPI
         {
             IRestResponse resp;
             String url = _operationParam + "workflow/" + "start/" + wId.ToString() + "/" + username;
-
+            // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
             request.AddHeader("Accept", "text/plain");
 
             try
             {
+                // call Internal Requester to finally send the request
                 resp = InternalRequester.SendSimpleRequest(request);
             }
             catch (BasicException)
@@ -286,15 +330,13 @@ namespace RestAPI
         {
             IRestResponse resp;
             String url = _operationParam + "workflow/" + "forward/" + stepId + "/" + itemId + "/" + username;
-
+            // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
             request.AddHeader("Accept", "text/plain");
-            // Parameters are set in URL; alternative is adding them to the request
-            //request.AddParameter("username", username, ParameterType.GetOrPost);
-            //request.AddParameter("password", password, ParameterType.GetOrPost);
-
+            
             try
             {
+                // call Internal Requester to finally send the request
                 resp = InternalRequester.SendSimpleRequest(request);
             }
             catch (BasicException)
@@ -308,8 +350,8 @@ namespace RestAPI
         /// This method changes the type of a generic object.
         /// </summary>
         /// <typeparam name="T">The expected new type.</typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <param name="obj">The object</param>
+        /// <returns>The object with changed type</returns>
         public static T ChangeType<T>(object obj)
         {
             return (T)Convert.ChangeType(obj, typeof(T));
@@ -318,7 +360,7 @@ namespace RestAPI
         /// <summary>
         /// Incoming order of step ids are converted into references.
         /// </summary>
-        /// <param name="workflow"></param>
+        /// <param name="workflow">The worklow which steps are handled</param>
         public static void convertIdListToReferences(Workflow workflow)
         {
             foreach (Step s in workflow.steps)

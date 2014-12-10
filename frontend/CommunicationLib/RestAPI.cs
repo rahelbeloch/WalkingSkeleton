@@ -14,14 +14,16 @@ using System.Configuration;
 using System.Net;
 using System.Security;
 using CommunicationLib;
+using System.Diagnostics;
 
 namespace RestAPI
 {
     /// <summary>
-    ///     Static class, that realizes the Connection to the server.
+    ///     Static class, that realizes the internal connection to the server.
     /// </summary>
     public class InternalRequester
     {
+        // url of server
         public static String restserverurl;
         public static RestClient client;
 
@@ -34,12 +36,13 @@ namespace RestAPI
             client = new RestClient(restserverurl);
         }
 
-       /// <summary>
+        /// <summary>
         /// Requests all Objects (Items, Workflows or Users) belonging to the given user.
-       /// </summary>
-       /// <typeparam name="O"></typeparam>
-       /// <param name="userName"></param>
-       /// <returns></returns>
+        /// </summary>
+        /// <typeparam name="O">Type of the requested objects</typeparam>
+       /// <param name="url">Request-URL</param>
+       /// <param name="method">HTTP-Method of the request</param>
+       /// <returns>The rest response</returns>
         internal static IRestResponse GetAllObjects<O>(String url, RestSharp.Method method)
         {
             IRestResponse response;
@@ -47,28 +50,20 @@ namespace RestAPI
             var request = new RestRequest(url, Method.GET);
             request.AddHeader("Accept", "text/plain");
 
-            // decide wether the server does return the right excepted object or throws an exception
+            // execute the request
             response = client.Execute(request);
 
-            // if there is a network transport error (network is down, failed DNS lookup, etc)
-            if (response.ResponseStatus == ResponseStatus.Error)
+            try
             {
-                ConnectionException ex = new ServerNotRunningException();
-                throw ex;
+                ProofResponseErrors(response);
             }
-
-            // if the statusCode is 500 (Error) there happened an error on the server
-            if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
+            catch (BasicException)
             {
-                int errorCode = Int32.Parse(response.Content);
-                BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
-                throw ex;
+                throw;
             }
-
+           
             return response;
         }
-
-        
 
         /// <summary>
         ///     Sends a HTTP-Request to the server to get an object.
@@ -83,24 +78,18 @@ namespace RestAPI
             request.AddHeader("Accept", "text/plain");
             IRestResponse response;
 
-            // decide wether the server does return the right excepted object or throws an exception
+            // execute the request
             response = client.Execute(request);
 
-            // if there is a network transport error (network is down, failed DNS lookup, etc)
-            if (response.ResponseStatus == ResponseStatus.Error)
+            try
             {
-                ConnectionException ex = new ServerNotRunningException();
-                throw ex;
+                ProofResponseErrors(response);
+            }
+            catch (BasicException)
+            {
+                throw;
             }
 
-            // test the StatusCode of response; if 500 happened there is a Server Error
-            if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                System.Diagnostics.Trace.WriteLine("Antwort: " + response.Content);
-                int errorCode = Int32.Parse(response.Content);
-                BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
-                throw ex;
-            }
             return response;
         }
 
@@ -124,25 +113,18 @@ namespace RestAPI
                 request.AddParameter("data", serializedObj, ParameterType.GetOrPost);
             }
 
-            // decide wether the server does return the right excepted object or throws an exception
+            // execute the request
             response = client.Execute(request);
 
-            // if there is a network transport error (network is down, failed DNS lookup, etc)
-            if (response.ResponseStatus == ResponseStatus.Error)
+            try
             {
-                ConnectionException ex = new ServerNotRunningException();
-                throw ex;
+                ProofResponseErrors(response);
+            }
+            catch (BasicException)
+            {
+                throw;
             }
 
-            if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                System.Diagnostics.Trace.WriteLine("response: " + response);
-                System.Diagnostics.Trace.WriteLine("response.Content " + response.Content);
-                int errorCode = Int32.Parse(response.Content);
-                BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
-                System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
-                throw ex;
-            }
             return response;
         }
 
@@ -153,8 +135,27 @@ namespace RestAPI
         /// <returns>The response object</returns>
         internal static IRestResponse SendSimpleRequest(RestRequest request)
         {
+            // execute the request
             IRestResponse response = client.Execute(request);
 
+            try
+            {
+                ProofResponseErrors(response);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
+             
+            return response;
+        }
+
+        /// <summary>
+        /// Method inspects the response for server or connection errors. If an error happens, it throws the adapted exception to its caller.
+        /// </summary>
+        /// <param name="response">The response of interest</param>
+        private static void ProofResponseErrors(IRestResponse response)
+        {
             // if there is a network transport error (network is down, failed DNS lookup, etc)
             if (response.ResponseStatus == ResponseStatus.Error)
             {
@@ -167,10 +168,8 @@ namespace RestAPI
             {
                 int errorCode = Int32.Parse(response.Content);
                 BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
-                System.Diagnostics.Trace.WriteLine("errorCode: " + errorCode);
                 throw ex;
             }
-            return response;
         }
     }
 }
