@@ -35,7 +35,6 @@ namespace CommunicationLib.Model
 
             //Error code for persistence errors
             {11200, typeof(PersistenceException)},
-            
             {11210, typeof(IncompleteEleException)},
             {11220, typeof(AlreadyExistsException)},
                 {11222, typeof(UserAlreadyExistsException)},
@@ -45,7 +44,12 @@ namespace CommunicationLib.Model
                 {11251, typeof(UserNotExistException)},
                 {11252, typeof(WorkflowNotExistException)},
                 {11253, typeof(ItemNotExistException)},
-            //Error codes for connection errors
+            {11260, typeof(RoleException)},
+                {11261, typeof(RoleHasAlreadyUserException)},
+                {11262, typeof(RoleNotExistentException)},
+                {11263, typeof(UserHasAlreadyRoleException)},
+            
+                //Error codes for connection errors
             {12000,typeof(ConnectionException)},
 
             //Error codes for messaging errors
