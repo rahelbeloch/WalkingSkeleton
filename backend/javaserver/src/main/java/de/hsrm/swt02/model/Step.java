@@ -35,6 +35,12 @@ public class Step {
     public Step() {
     }
     
+    public void init(Step s) {
+        this.id = s.id;
+        this.username = s.username;
+        this.getNextStepIds().addAll(s.getNextStepIds());
+    }
+    
     /**
      * Id getter.
      * @return id of step
@@ -96,12 +102,19 @@ public class Step {
 	 */
     protected Object clone() throws CloneNotSupportedException {
 		Step clone = new Step();
-		clone.setId(id);
-		clone.setUsername(username);
-		for(Step step: this.nextSteps) {
-			Step cloneStep = (Step) step.clone();
-			clone.nextSteps.add(cloneStep);
-		}
+		clone.init(this);
+
 		return clone;
 	}
+    
+    @Override
+    public String toString() {
+        String ret = "";
+        ret += "\tType: " + this.getClass().getName() + "\n";
+        ret += "\tId: "+ this.id + "\n";
+        ret += "\tUsername: "+ this.username + "\n";
+        ret += "\tNextStepIds: " + this.nextStepIds + "\n";
+        
+        return ret;
+    }
 }

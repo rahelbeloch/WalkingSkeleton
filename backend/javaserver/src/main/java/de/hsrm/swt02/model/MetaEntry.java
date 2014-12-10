@@ -80,4 +80,15 @@ public class MetaEntry {
 		clone.setValue(value);
 		return clone;
 	}
+    
+    @Override
+    public String toString() {
+        String ret = "";
+        
+        ret += "\t\tKey: "+ this.key + "\n";
+        ret += "\t\tValue: "+ this.value + "\n";
+        ret += "\t\tGroup: "+ this.group + "\n";
+        
+        return ret;
+    }
 }
