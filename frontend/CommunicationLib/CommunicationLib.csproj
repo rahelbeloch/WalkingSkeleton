@@ -65,6 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\ItemNotForwardableException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\UserHasNoPermissionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleException.cs" />
     <Compile Include="RestRequester.cs" />
     <Compile Include="CommunicationManager.cs" />
@@ -85,7 +87,7 @@
     <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\LogInException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\MessagingExceptions\MessagingException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\ItemNotExistException.cs" />
-    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\NoPermissionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\NoPermissionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\PersistenceException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\RestException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\ServerNotRuningException.cs" />

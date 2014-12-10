@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunicationLib.Model;
 
 namespace CommunicationLib.Model
 {
@@ -39,7 +40,6 @@ namespace CommunicationLib.Model
 
             {11220, typeof(AlreadyExistsException)},
                 {11221, typeof(UserAlreadyExistsException)},
-            {11230, typeof(NoPermissionException)},
             {11240, typeof(ElementChangedException)},
             {11250, typeof(DoesntExistsException)},
                 {11251, typeof(UserNotExistException)},
@@ -50,6 +50,10 @@ namespace CommunicationLib.Model
                 {11262, typeof(RoleNotExistentException)},
                 {11263, typeof(UserHasAlreadyRoleException)},
             
+            {11300, typeof(NoPermissionException)},
+                {11310, typeof(UserHasNoPermissionException)},
+                {11320, typeof(ItemNotForwardableException)},
+
                 //Error codes for connection errors
             {12000,typeof(ConnectionException)},
 
