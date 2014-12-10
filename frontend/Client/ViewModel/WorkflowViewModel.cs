@@ -19,13 +19,15 @@ namespace Client.ViewModel
     /// The WorkflowViewModel contains properties and commands to create a new workflow and to send it to the server.
     /// Furthermore, the properties and commands are used as DataBindings in the graphical user interface.
     /// </summary>
-    public class WorkflowViewModel : ViewModelBase
+    public class WorkflowViewModel : ViewModelBase, IDataReceiver
     {
+        private CommunicationManager _comManager;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public WorkflowViewModel(MainViewModel mainViewModelInstanz)
         {
             _mainViewModel = mainViewModelInstanz;
             _restRequester = _mainViewModel.restRequester;
+            _comManager = new CommunicationManager(this);
         }
         private void updateModel()
         {
@@ -86,6 +88,9 @@ namespace Client.ViewModel
             }
             if (toUpdate == null)
             {
+
+                toUpdate = new DashboardWorkflow(updatedWorkflow);
+                _dashboardWorkflows.Add(toUpdate);
                 logger.Debug("NO workflow found to update");
             }
             toUpdate = new DashboardWorkflow(updatedWorkflow);
@@ -225,5 +230,22 @@ namespace Client.ViewModel
 
         private List<Item> _relevantItems = new List<Item>();
         #endregion
+
+        void IDataReceiver.WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject)
+        {
+            Console.WriteLine("Update WorkflowViewModel: WorkflowID = " + wrappedObject.myObject.id);
+            Workflow update = wrappedObject.myObject;
+            updateWorkflow(update);
+        }
+
+        void IDataReceiver.ItemUpdate(RegistrationWrapper<Item> wrappedObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IDataReceiver.UserUpdate(RegistrationWrapper<User> wrappedObject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
