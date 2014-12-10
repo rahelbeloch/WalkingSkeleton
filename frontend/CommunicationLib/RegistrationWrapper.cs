@@ -3,8 +3,36 @@ using CommunicationLib;
 
 public class RegistrationWrapper<T>
 {
-    T myObject;
-    CommunicationManager com;
+    private T _myObject;
+    public T myObject
+    {
+        get
+        {
+            return _myObject;
+        }
+        set
+        {
+            _myObject = value;
+        }
+    }
+
+    private CommunicationManager _com;
+    public CommunicationManager com
+    {
+        get
+        {
+            return _com;
+        }
+        set
+        {
+            _com = value;
+        }
+    }
+
+    public RegistrationWrapper()
+    {
+        Console.WriteLine("Instanziation via default Constructor");
+    }
 
     public RegistrationWrapper(T myObject, CommunicationManager com)
 	{

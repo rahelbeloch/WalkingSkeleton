@@ -11,6 +11,8 @@ using Apache.NMS.ActiveMQ.Commands;
 using RestAPI;
 using CommunicationLib.Model;
 
+using System.Diagnostics;
+
 namespace CommunicationLib
 {
 
@@ -26,10 +28,10 @@ namespace CommunicationLib
         //funktion mapping
         private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
         {
-            {"get", "getObject"},
-            {"def", "postObject"},
-            {"udp", "updateObject"},
-            {"del", "deleteObject"}
+            {"get", "GetObject"},
+            {"def", "GetObject"},
+            {"udp", "UpdateObject"},
+            {"del", "DeleteObject"}
         };
 
         //client referenz
@@ -72,7 +74,7 @@ namespace CommunicationLib
             {
                 ITextMessage tm = msg as ITextMessage;
                 //Logging on Console 
-                Console.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
+                System.Diagnostics.Trace.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
                 HandleRequest(tm.Text);  
             }
             else if (msg is IMapMessage)
@@ -91,7 +93,7 @@ namespace CommunicationLib
         /// <param name="requestMsg">information string for rest-request</param>
         private void HandleRequest(string requestMsg)
         {
-            int id;
+            Int32 id;
             Type genericType;
             object resultType; 
             string methodName;
@@ -105,11 +107,14 @@ namespace CommunicationLib
             Int32.TryParse(options[2], out id);
 
             // Reflection: generic method can not be called with dynamic generics (means deciding during runtime which generic is placed in)
-            MethodInfo method = typeof( InternalRequester ).GetMethod( methodName );
-            MethodInfo genericMethod = method.MakeGenericMethod( genericType );
+            MethodInfo method = typeof( RestRequester ).GetMethod( "GetObject" );
+            MethodInfo genericMethod = method.MakeGenericMethod( typeof(Workflow) );
             // Call the dynamic generic generated method with parameterlist (2. param); parent of called method is static, not an instance (1.param)
-            resultType = genericMethod.Invoke(null, new object[] { id });
 
+            RestRequester obj = new RestRequester();
+            object[] args = new object[] { id };
+            resultType = genericMethod.Invoke(obj, args);
+         
             //wrapping
             rWrapInstance = Wrap(genericType, resultType);
 
@@ -140,11 +145,34 @@ namespace CommunicationLib
         private object Wrap(Type genericType, object o)
         {
             var wrap = typeof(RegistrationWrapper<>);
-            Type[] typeArgs = { genericType, typeof(CommunicationManager) };
+            Type[] typeArgs = { genericType };
             var makeme = wrap.MakeGenericType(typeArgs);
-            object rWrapInstance = Activator.CreateInstance(makeme);
 
-            return rWrapInstance;
+            object obj = Activator.CreateInstance(makeme, new object[] { o, this }); 
+
+            // TODO find solution to create instance of generic type by calling the right constructor (solution is above)
+            /*if (genericType == typeof(Workflow))
+            {
+                RegistrationWrapper<Workflow> rWrapInstance = (RegistrationWrapper<Workflow>)Activator.CreateInstance(makeme);
+                rWrapInstance.com = this;
+                rWrapInstance.myObject = (Workflow)o;
+                return rWrapInstance;
+            } else  if (genericType == typeof(Item))
+            {
+                RegistrationWrapper<Item> rWrapInstance = (RegistrationWrapper<Item>)Activator.CreateInstance(makeme);
+                rWrapInstance.com = this;
+                rWrapInstance.myObject = (Item)o;
+                return rWrapInstance;
+            } else  if (genericType == typeof(User))
+            {
+                RegistrationWrapper<User> rWrapInstance = (RegistrationWrapper<User>)Activator.CreateInstance(makeme);
+                rWrapInstance.com = this;
+                rWrapInstance.myObject = (User)o;
+                return rWrapInstance;
+            }
+            return null;
+            */
+            return obj;
         }
 
         /// <summary>
@@ -154,7 +182,7 @@ namespace CommunicationLib
         /// <param name="callback">function in the client to call by update of rw</param>
         public void Register(Object rw, Func<Object> callback)
         {
-            // gibt es nur den Fall, dass Register auf einem Workflow aufgerufen wird?
+            // gibt es nur den Fall, dass Register auf einem Workflow aufgerufen wird? // NEIN!
             // --> andernfalls viel mehr Topics; für jede Änderung eigene Topics --> viel mehr Threads
 
             int id;

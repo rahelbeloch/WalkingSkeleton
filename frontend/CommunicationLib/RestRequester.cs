@@ -429,5 +429,17 @@ namespace RestAPI
             }
 
         }
+        /*
+        public O GetObject<O>() where O : new()
+        {
+            System.Diagnostics.Trace.WriteLine("Jiphiiiiiiiiiiiiii!");
+
+            var wrap = typeof(O);
+            Type[] typeArgs = { };
+            var makeme = wrap.MakeGenericType(typeArgs);
+
+            return new O();
+        }*/
+
     }
 }
