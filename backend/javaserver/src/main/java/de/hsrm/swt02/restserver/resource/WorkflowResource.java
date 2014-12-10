@@ -21,12 +21,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Item;
-import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
@@ -64,6 +64,7 @@ public class WorkflowResource {
 
         try {
             workflow = LOGIC.getWorkflow(workflowid);
+            workflow.convertReferencesToIdList();
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, loggingBody
                     + " Non-existing workflow requested.");
@@ -95,6 +96,9 @@ public class WorkflowResource {
         List<Workflow> wflowList = null;
         try {
             wflowList = LOGIC.getAllWorkflows();
+            for(Workflow w : wflowList) {
+                w.convertReferencesToIdList();
+            }
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
@@ -132,9 +136,12 @@ public class WorkflowResource {
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
-        } catch (UserNotExistentException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (UserNotExistentException e2) {
+            LOGGER.log(Level.WARNING, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        } catch (LogicException e3) {
+            LOGGER.log(Level.WARNING, e3);
+            return Response.serverError().entity(String.valueOf(e3.getErrorCode())).build();
         }
         String wIdListString;
 
@@ -203,12 +210,18 @@ public class WorkflowResource {
         List<Workflow> wflowList = null;
         try {
             wflowList = LOGIC.getAllWorkflowsByUser(username);
+            for(Workflow w : wflowList) {
+                w.convertReferencesToIdList();
+            }
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         } catch (UserNotExistentException e2) {
             LOGGER.log(Level.WARNING, e2);
             return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        } catch (LogicException e3) {
+            LOGGER.log(Level.WARNING, e3);
+            return Response.serverError().entity(String.valueOf(e3.getErrorCode())).build();
         }
         String wListString;
 
@@ -250,7 +263,7 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
-        convertIdListToReferences(workflow);
+        workflow.convertIdListToReferences();
         logicResponse = LOGIC.addWorkflow(workflow);
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -261,19 +274,6 @@ public class WorkflowResource {
         }
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully saved.");
         return Response.ok().build();
-    }
-
-    /**
-     * Incoming order of step ids are converted into references.
-     * 
-     * @param workflow which is operated on
-     */
-    private void convertIdListToReferences(Workflow workflow) {
-        for (Step step : workflow.getSteps()) {
-            for (int id : step.getNextStepIds()) {
-                step.getNextSteps().add(workflow.getStepById(id));
-            }
-        }
     }
 
     /**

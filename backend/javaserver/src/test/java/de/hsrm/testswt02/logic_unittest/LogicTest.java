@@ -9,11 +9,11 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
-import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
@@ -130,7 +130,7 @@ public class LogicTest {
     }
 
     @Test
-    public void getWorkflowsByUser() throws WorkflowNotExistentException, UserNotExistentException {
+    public void getWorkflowsByUser() throws LogicException {
         init();
         initExtension();
         
@@ -159,7 +159,7 @@ public class LogicTest {
     }
 
     @Test
-    public void getStartableWorkflowsTest() throws WorkflowNotExistentException, UserNotExistentException {
+    public void getStartableWorkflowsTest() throws LogicException {
         init();
         initExtension();
         int i = li.getStartableWorkflowsByUser(user2.getUsername()).size();

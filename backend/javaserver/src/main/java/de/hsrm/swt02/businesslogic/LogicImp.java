@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
@@ -218,20 +219,25 @@ public class LogicImp implements Logic {
      * 
      * @param user
      * @return a LinkedList of workflows
-     * @throws WorkflowNotExistentException
+     * @throws LogicException 
      */
     @Override
     public List<Workflow> getAllWorkflowsByUser(String username)
-            throws WorkflowNotExistentException, UserNotExistentException {
-        User user = p.loadUser(username);
+            throws LogicException, UserNotExistentException {
+        p.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
                 if (step.getUsername().equals(username)) {
-                    Workflow copyOfWf = wf;
-                    copyOfWf.clearItems(); // eliminate items
-                    workflows.add(copyOfWf);
-                    break;
+                    Workflow copyOfWf;
+                    try {
+                        copyOfWf = ((Workflow) wf.clone());
+                        copyOfWf.clearItems(); // eliminate items
+                        workflows.add(copyOfWf);
+                        break;
+                    } catch (CloneNotSupportedException e) {
+                        throw new LogicException("Workflow is not cloneable.");
+                    }
                 }
             }
         }
@@ -249,7 +255,7 @@ public class LogicImp implements Logic {
      */
     public List<Workflow> getAllWorkflowsByUserWithItems(String username)
             throws WorkflowNotExistentException, UserNotExistentException {
-        User user = p.loadUser(username);
+        p.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
             for (Step step : wf.getSteps()) {
@@ -294,7 +300,7 @@ public class LogicImp implements Logic {
 
     @Override
     public List<Integer> getStartableWorkflowsByUser(String username)
-            throws UserNotExistentException, WorkflowNotExistentException {
+            throws LogicException {
         final List<Integer> startableWorkflows = new LinkedList<>();
         for (Workflow workflow : getAllWorkflowsByUser(username)) {
             final Step startStep = workflow.getSteps().get(0);
@@ -486,10 +492,10 @@ public class LogicImp implements Logic {
      * @throws UserAlreadyExistsException 
      */
     private void initTestdata() throws UserAlreadyExistsException{
-        Workflow workflow1, workflow2, workflow3;
+        Workflow workflow1;
         User user1, user2, user3;
-        StartStep startStep1, startStep2, startStep3;
-        Action action1, action2, action3;
+        StartStep startStep1;
+        Action action1, action2;
         FinalStep finalStep;
        
         user1 = new User();
@@ -504,12 +510,9 @@ public class LogicImp implements Logic {
         addUser(user3);
         
         startStep1 = new StartStep(user1.getUsername());
-        startStep2 = new StartStep(user2.getUsername());
-        startStep3 = new StartStep(user3.getUsername());
         
         action1 = new Action(user1.getUsername(), "Action von " + user1.getUsername());
         action2 = new Action(user2.getUsername(), "Action von " + user2.getUsername());
-        action3 = new Action(user3.getUsername(), "Action von " + user3.getUsername());
         
         finalStep = new FinalStep();
         
@@ -518,20 +521,9 @@ public class LogicImp implements Logic {
         workflow1.addStep(action1);
         workflow1.addStep(action2);
         workflow1.addStep(finalStep);
-        workflow2 = new Workflow();
-        workflow2.addStep(startStep2);
-        workflow2.addStep(action2);
-        workflow2.addStep(action3);
-        workflow2.addStep(finalStep);
-        workflow3 = new Workflow();
-        workflow3.addStep(startStep3);
-        workflow3.addStep(action3);
-        workflow3.addStep(action1);
-        workflow3.addStep(finalStep);
+        workflow1.connectSteps();
         
         addWorkflow(workflow1);
-        addWorkflow(workflow2);
-        addWorkflow(workflow3);
     }
 
 }
