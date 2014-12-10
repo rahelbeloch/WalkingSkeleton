@@ -102,7 +102,7 @@ namespace RestAPI
             {
                 // call Internal Requester to finally send the request
                 response = InternalRequester.RetrieveRequest(request);
-                Console.WriteLine(resp.Content);
+                Console.WriteLine(response.Content);
             }
             catch (BasicException)
             {
