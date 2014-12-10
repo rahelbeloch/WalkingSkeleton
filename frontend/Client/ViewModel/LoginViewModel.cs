@@ -8,11 +8,13 @@ using System.Windows.Input;
 using CommunicationLib.Exception;
 using System.Windows;
 using CommunicationLib;
+using NLog;
 
 namespace Client.ViewModel
 {
     public class LoginViewModel : ViewModelBase
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private IRestRequester _restRequester;
         private MainViewModel _mainViewModel;
         public LoginViewModel(MainViewModel mainViewModelInstanz)
@@ -72,13 +74,13 @@ namespace Client.ViewModel
                     {
                         try{
                             _restRequester.checkUser(username, securePwd);
-                            Console.WriteLine("userName: " + username);
+                            logger.Debug("Authentiaction userName: " + username);
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
                             _mainViewModel.username = _username;
                         }
                         catch (BasicException exc)
                         {
-                            Console.WriteLine("Login fehlgeschlagen:");
+                            logger.Debug("Login fehlgeschlagen:");
                             MessageBox.Show(exc.Message);
                             Console.WriteLine(exc.ToString());
                         }

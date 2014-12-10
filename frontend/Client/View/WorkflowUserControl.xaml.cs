@@ -30,7 +30,6 @@ namespace Client.View
         private Table table1;
         private WorkflowViewModel _workflowViewModel;
         private String userName;
-        private ObservableCollection<Workflow> _workflows;
         private ObservableCollection<DashboardWorkflow> _dashboardWorkflows;
         public WorkflowUserControl()
         {
@@ -40,47 +39,19 @@ namespace Client.View
         {
             Console.WriteLine(this.DataContext.ToString());
             _workflowViewModel = (WorkflowViewModel)(this.DataContext);
-            _workflowViewModel.PropertyChanged += new PropertyChangedEventHandler(SubPropertyChanged);
-            _workflowViewModel.workflows.CollectionChanged += OnWorkflowsChanged;
+            _workflowViewModel.dashboardWorkflows.CollectionChanged += OnDashboardWorkflowsChanged;
             userName = _workflowViewModel.userName;
-            _workflows = _workflowViewModel.workflows;
             _dashboardWorkflows = _workflowViewModel.dashboardWorkflows;
             InitializeDashboard();
         }
-        private void OnWorkflowsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+
+        private void OnDashboardWorkflowsChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Console.WriteLine("onworkflowschanged");
-            InitializeDashboard();
-        }
-        private void SubPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "workflows")
+            Console.WriteLine("dashboardWorkflows changed");
+            if (!_workflowViewModel.userName.Equals(""))
             {
-                _workflows = _workflowViewModel.workflows;
-                Console.WriteLine("workflows changed");
-                showWorkflows();
-            }
-        }
-        private void showWorkflows()
-        {
-            try
-            {
-                Console.WriteLine(userName);
-                Console.WriteLine("test workflows");
-                foreach (Workflow workflow in _workflows)
-                {
-                    Console.WriteLine(workflow.id);
-                    foreach (Step step in workflow.steps)
-                    {
-                        Console.WriteLine(step.label);
-                    }
-                }
-                String test = _workflows[0].ToString();
-                Console.WriteLine(test);
-            }
-            catch (Exception exe)
-            {
-                Console.WriteLine("Exception " + exe.Message);
+                Console.WriteLine("Init Dashboard");
+                InitializeDashboard();
             }
         }
         private void InitializeDashboard()

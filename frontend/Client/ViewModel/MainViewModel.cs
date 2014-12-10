@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using NLog;
 namespace Client.ViewModel
 {
     /// <summary>
@@ -15,6 +15,7 @@ namespace Client.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private WorkflowViewModel _workflowViewModel;
         public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
 
@@ -39,7 +40,7 @@ namespace Client.ViewModel
             {
                 _userName = value;
                 _workflowViewModel.userName = value;
-                Console.WriteLine("username gesetzt.");
+                logger.Debug("username gesetzt.");
             }
         }
         public MainViewModel()
