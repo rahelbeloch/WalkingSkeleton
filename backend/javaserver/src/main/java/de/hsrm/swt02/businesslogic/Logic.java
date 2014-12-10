@@ -73,7 +73,7 @@ public interface Logic {
      * @param workflowID
      *            describe the Workflow
      * @return logicResponse of deleting a workflow
-     * @throws WorkflowNotExistentException
+     * @throws WorkflowNotExistentException .
      */
     LogicResponse deleteWorkflow(int workflowID)
             throws WorkflowNotExistentException;
@@ -122,7 +122,7 @@ public interface Logic {
      * 
      * @param workflowID
      *            the id of the workflow which should be deactivate
-     * @throws WorkflowNotExistentException .
+     * @throws WorkflowNotExistentException 
      */
     void deactiviateWorkflow(int workflowID)
             throws WorkflowNotExistentException;
@@ -132,8 +132,8 @@ public interface Logic {
      * 
      * @param workflowID
      *            the id of the workflow which should be deactivate
-     * @throws WorkflowNotExistentException .
-     */
+     * @throws WorkflowNotExistentException 
+     *
     void activiateWorkflow(int workflowID) throws WorkflowNotExistentException;
 
     /**
@@ -144,7 +144,7 @@ public interface Logic {
      * @param stepId
      *            the step, which shall added
      * @return logicResponse of adding a step
-     * @throws WorkflowNotExistentException
+     * @throws WorkflowNotExistentException 
      */
     LogicResponse addStep(int workflowID, Step stepId)
             throws WorkflowNotExistentException;
@@ -157,7 +157,7 @@ public interface Logic {
      * @param stepID
      *            the step, which shall delete
      * @return logicResponse of deleting a step
-     * @throws WorkflowNotExistentException
+     * @throws WorkflowNotExistentException 
      */
     LogicResponse deleteStep(int workflowID, int stepID)
             throws WorkflowNotExistentException;
@@ -171,7 +171,7 @@ public interface Logic {
      * @param user
      *            which should be added
      * @return logicResponse of adding a user
-     * @throws UserAlreadyExistsException
+     * @throws UserAlreadyExistsException 
      */
     LogicResponse addUser(User user) throws UserAlreadyExistsException;
 
@@ -181,7 +181,7 @@ public interface Logic {
      * @param username
      *            describe the user
      * @return a User, if there is one, who has this username
-     * @throws UserNotExistentException
+     * @throws UserNotExistentException 
      */
     User getUser(String username) throws UserNotExistentException; // not
                                                                    // attached
