@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.Test;
 
 import com.google.inject.Guice;
@@ -155,28 +158,31 @@ public class PersistenceTest {
         final Item item001 = new Item();
         final Item item002 = new Item();
         final Item item003 = new Item();
+        final List itemList = new LinkedList<>();
         
-        db.storeWorkflow(wf000);
+        int workflowId = db.storeWorkflow(wf000);
         
-        item001.setWorkflowId(wf000.getId());
-        item002.setWorkflowId(wf000.getId());
-        item003.setWorkflowId(wf000.getId());
+        item001.setWorkflowId(workflowId);
+        item002.setWorkflowId(workflowId);
+        item003.setWorkflowId(workflowId);
+        
         
         wf000.addItem(item001);
-        db.storeWorkflow(wf000);
-        db.storeItem(item001);
+        itemList.add(item001);
+        workflowId = db.storeWorkflow(wf000);
         
         wf000.addItem(item002);
-        db.storeWorkflow(wf000);
-        db.storeItem(item002);
+        itemList.add(item002);
+        workflowId = db.storeWorkflow(wf000);
         
         wf000.addItem(item003);
-        db.storeWorkflow(wf000);
-        db.storeItem(item003);
+        itemList.add(item003);
+        workflowId = db.storeWorkflow(wf000);
         
-        assertEquals(item001, db.loadItem(item001.getId()));
-        assertEquals(item002, db.loadItem(item002.getId()));
-        assertEquals(item003, db.loadItem(item003.getId()));
+        assertEquals(wf000, db.loadWorkflow(workflowId));
+        assertEquals(itemList.get(0), db.loadWorkflow(workflowId).getItems().get(0));
+        assertEquals(itemList.get(1), db.loadWorkflow(workflowId).getItems().get(1));
+        assertEquals(itemList.get(2), db.loadWorkflow(workflowId).getItems().get(2));
     }
 
  
