@@ -278,9 +278,10 @@ public class LogicImp implements Logic {
      * @return a list of workflows
      * @throws WorkflowNotExistentException if a workflow doesnt exists.
      * @throws UserNotExistentException if the user doesnt exists.
+     * @throws CloneNotSupportedException 
      */
     public List<Workflow> getAllWorkflowsByUserWithItems(String username)
-            throws WorkflowNotExistentException, UserNotExistentException 
+            throws WorkflowNotExistentException, UserNotExistentException, CloneNotSupportedException 
     {
         p.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
@@ -288,7 +289,7 @@ public class LogicImp implements Logic {
             if (wf.isActive()) {
                 for (Step step : wf.getSteps()) {
                     if (step.getUsername().equals(username)) {
-                        final Workflow copyOfWf = wf;
+                        final Workflow copyOfWf = (Workflow) wf.clone();
                         workflows.add(copyOfWf);
                         break;
                     }
@@ -352,10 +353,12 @@ public class LogicImp implements Logic {
             Workflow workflow = getWorkflow(workflowId);
             for (Item item : workflow.getItems()) {
                 final MetaEntry me = item.getActStep();
-                String itemUsername = workflow.getStepById(Integer.parseInt(me.getKey())).getUsername();
-                if(username.equals(itemUsername) && me != null) {
+                if(me != null) {
+                    String itemUsername = workflow.getStepById(Integer.parseInt(me.getKey())).getUsername();
+                    if(username.equals(itemUsername)) {
                         relevantItems.add(item);
-                }
+                    }
+                } 
             }
             return relevantItems;
     }
@@ -598,7 +601,6 @@ public class LogicImp implements Logic {
         workflow1.addStep(action1);
         workflow1.addStep(action2);
         workflow1.addStep(finalStep);
-        workflow1.connectSteps();
 
         addWorkflow(workflow1);
     }

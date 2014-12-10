@@ -33,6 +33,7 @@ public class WorkflowCommandResource {
     public static final Logic LOGIC = FACTORY.getLogic();
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
+    public static final String PREFIX = "[restserver] ";
     LogicResponse logicResponse;
 
     /**
@@ -48,7 +49,8 @@ public class WorkflowCommandResource {
     public Response startWorkflow(@PathParam("workflowid") int workflowid,
             @PathParam("username") String username) 
     {
-        final String loggingBody = "START -> " + workflowid + " " + username;
+        LOGGER.log(Level.INFO, PREFIX + "POST /start/" + workflowid + "/" + username);
+        final String loggingBody = PREFIX + "START -> " + workflowid + " " + username;
 
         try {
             LOGIC.startWorkflow(workflowid, username);
@@ -84,7 +86,8 @@ public class WorkflowCommandResource {
             @PathParam("itemid") int itemid,
             @PathParam("username") String username) 
     {
-        final String loggingBody = "FORWARD ITEM -> " + itemid;
+        LOGGER.log(Level.INFO, PREFIX + "POST /forward/" + stepid + "/" + itemid + "/" + username);
+        final String loggingBody = PREFIX + "FORWARD ITEM -> " + itemid;
         
         try {
             LOGIC.stepForward(itemid, stepid, username);
