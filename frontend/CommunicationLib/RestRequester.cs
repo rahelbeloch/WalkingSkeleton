@@ -18,7 +18,7 @@ using CommunicationLib;
 namespace RestAPI
 {
     /// <summary>
-    /// Class that provides the communication to a server via HTTP (POST, PUT, DELET, GET).
+    /// Class that provides the communication to a server via HTTP (POST, PUT, DELETE, GET).
     /// </summary>
     public class RestRequester : CommunicationLib.IRestRequester
     {
@@ -50,7 +50,16 @@ namespace RestAPI
             String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "s";
 
-            return GetElementList<Workflow>(url);
+            IList<Workflow> eleList;
+            try
+            {
+                eleList = GetElementList<Workflow>(url);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
+            return eleList;
         }
 
         /// <summary>
@@ -63,7 +72,16 @@ namespace RestAPI
             String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "s" + "/" + userName;
 
-            return GetElementList<Workflow>(url);
+            IList<Workflow> eleList;
+            try
+            {
+                eleList = GetElementList<Workflow>(url);
+            }
+            catch (BasicException)
+            {
+                throw;
+            } 
+            return eleList;
         }
 
         /// <summary>
@@ -73,7 +91,7 @@ namespace RestAPI
         /// <returns>List of all startable workflows of this user</returns>
         public IList<int> GetStartablesByUser(string userName)
         {
-            IRestResponse resp;
+            IRestResponse response;
             String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "s/startables/" + userName;
 
@@ -83,7 +101,7 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                resp = InternalRequester.SendSimpleRequest(request);
+                response = InternalRequester.RetrieveRequest(request);
                 Console.WriteLine(resp.Content);
             }
             catch (BasicException)
@@ -92,7 +110,7 @@ namespace RestAPI
             }
 
             // Deserialization
-            IList<int> eleList = JsonConvert.DeserializeObject<List<int>>(resp.Content, _jsonSettings);
+            IList<int> eleList = JsonConvert.DeserializeObject<List<int>>(response.Content, _jsonSettings);
             
             return eleList;
         }
@@ -108,7 +126,16 @@ namespace RestAPI
             String typeName = typeof(Item).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "s" + "/" + userName + "/" + workflowID;
 
-            return GetElementList<Item>(url);
+            IList<Item> eleList;
+            try
+            {
+                eleList = GetElementList<Item>(url);
+            } catch(BasicException)
+            {
+                throw;
+            } 
+
+            return eleList;
         }
 
         /// <summary>
@@ -119,9 +146,22 @@ namespace RestAPI
         /// <returns>List of handled objects</returns>
         private IList<O> GetElementList<O>(string url) 
         {
-            IRestResponse response = InternalRequester.GetAllObjects<O>(url, Method.GET);
-            IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, _jsonSettings);
+            IRestResponse response;
 
+            var request = new RestRequest(url, Method.GET);
+            request.AddHeader("Accept", "text/plain");
+
+            try
+            {
+                //response = InternalRequester.RetrieveRequest(url, Method.GET);
+                response = InternalRequester.RetrieveRequest(request);
+            }
+            catch (BasicException)
+            {
+                throw;
+            } 
+
+            IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, _jsonSettings);
             return eleList;
         }
 
@@ -137,10 +177,15 @@ namespace RestAPI
             IRestResponse response;
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "/" + id;
+
+            var request = new RestRequest(url, Method.GET);
+            request.AddHeader("Accept", "text/plain");
+
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.GetObjectRequest<O>(url, Method.GET);
+                //response = InternalRequester.RetrieveRequest(url, Method.GET);
+                response = InternalRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
@@ -172,10 +217,14 @@ namespace RestAPI
 
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
+
+            var request = new RestRequest(url, Method.PUT);
+            request.AddHeader("Accept", "text/plain");
+
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.SendObjectRequest(url, Method.PUT, serializedObj);
+                response = InternalRequester.SendRequest(request, serializedObj);
             }
             catch (BasicException)
             {
@@ -200,10 +249,13 @@ namespace RestAPI
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
 
+            var request = new RestRequest(url, Method.POST);
+            request.AddHeader("Accept", "text/plain");
+
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.SendObjectRequest(url, Method.POST, serializedObj);
+                response = InternalRequester.SendRequest(request, serializedObj);
             }
             catch (BasicException)
             {
@@ -249,10 +301,14 @@ namespace RestAPI
         private O Delete<O>(string url) where O : new()
         {
             IRestResponse response;
+
+            var request = new RestRequest(url, Method.DELETE);
+            request.AddHeader("Accept", "text/plain");
+
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.GetObjectRequest<O>(url, Method.DELETE);
+                response = InternalRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
@@ -273,7 +329,7 @@ namespace RestAPI
         /// <returns>True if it worked, false otherwhise, or an exception</returns>
         public Boolean checkUser(String username, SecureString password)
         {
-            IRestResponse resp;
+            IRestResponse response;
             String url = _operationParam + "user/" + "login";
             // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
@@ -284,14 +340,14 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                resp = InternalRequester.SendSimpleRequest(request);
+                response = InternalRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
                 throw;
             }
 
-            return resp.StatusCode == HttpStatusCode.OK;
+            return response.StatusCode == HttpStatusCode.OK;
         }
 
         /// <summary>
@@ -301,7 +357,7 @@ namespace RestAPI
         /// <param name="uId">Username</param>
         public Boolean StartWorkflow(int wId, string username)
         {
-            IRestResponse resp;
+            IRestResponse response;
             String url = _operationParam + "workflow/" + "start/" + wId.ToString() + "/" + username;
             // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
@@ -310,14 +366,14 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                resp = InternalRequester.SendSimpleRequest(request);
+                response = InternalRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
                 throw;
             }
 
-            return resp.StatusCode == HttpStatusCode.OK;
+            return response.StatusCode == HttpStatusCode.OK;
         }
 
         /// <summary>
@@ -329,7 +385,7 @@ namespace RestAPI
         /// <returns>True if it worked, false/exception otherwise</returns>
         public Boolean StepForward(int stepId, int itemId, string username)
         {
-            IRestResponse resp;
+            IRestResponse response;
             String url = _operationParam + "workflow/" + "forward/" + stepId + "/" + itemId + "/" + username;
             // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
@@ -338,13 +394,13 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                resp = InternalRequester.SendSimpleRequest(request);
+                response = InternalRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
                 throw;
             }
-            return resp.StatusCode == HttpStatusCode.OK;
+            return response.StatusCode == HttpStatusCode.OK;
         }
 
         /// <summary>

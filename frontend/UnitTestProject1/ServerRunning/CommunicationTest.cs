@@ -67,7 +67,7 @@ namespace UnitTestProject1
         public void testStartWorkflow()
         {
             // generate some TestData
-            string username = "Alex";
+            string username = "Melanie";
             generateTestUserAndWorkflow(username);
             IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser(username);
             Workflow wf = eleList[0];
@@ -90,7 +90,7 @@ namespace UnitTestProject1
         public void testSwitchForward()
         {
             // generate some TestData
-            string username = "Dominik";
+            string username = "Axel";
             generateTestUserAndWorkflow(username);
             IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser(username);
 
@@ -169,7 +169,7 @@ namespace UnitTestProject1
             
             IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser("Sebastian");
             
-            Assert.IsTrue(eleList.Count == 1);
+            Assert.IsTrue(eleList.Count >= 1);
 
             // Clean up the whole stuff
             Workflow wf = eleList[0];
@@ -184,9 +184,9 @@ namespace UnitTestProject1
         public void testGetAllWorkflows()
         {
             // generate some TestData
-            generateTestUserAndWorkflow("Jerome");
+            generateTestUserAndWorkflow("Slubisch");
             // generate some TestData
-            generateTestUserAndWorkflow("Tilman");
+            generateTestUserAndWorkflow("Romina");
             // generate some TestData
             generateTestUserAndWorkflow("Simon");
 
@@ -197,7 +197,7 @@ namespace UnitTestProject1
             // You must close or flush the trace listener to empty the output buffer.
             myListener.Flush();
 
-            Assert.IsTrue(wFList.Count() == 4);
+            Assert.IsTrue(wFList.Count() >= 3);
 
             // Cleanup --> missing
         }

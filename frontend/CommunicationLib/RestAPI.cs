@@ -37,49 +37,14 @@ namespace RestAPI
         }
 
         /// <summary>
-        /// Requests all Objects (Items, Workflows or Users) belonging to the given user.
+        ///     Sends a simple request, request is given.
         /// </summary>
-        /// <typeparam name="O">Type of the requested objects</typeparam>
-       /// <param name="url">Request-URL</param>
-       /// <param name="method">HTTP-Method of the request</param>
-       /// <returns>The rest response</returns>
-        internal static IRestResponse GetAllObjects<O>(String url, RestSharp.Method method)
+        /// <param name="request">The request to send to server</param>
+        /// <returns>The response object</returns>
+        internal static IRestResponse RetrieveRequest(RestRequest request)
         {
-            IRestResponse response;
-
-            var request = new RestRequest(url, Method.GET);
-            request.AddHeader("Accept", "text/plain");
-
             // execute the request
-            response = client.Execute(request);
-
-            try
-            {
-                ProofResponseErrors(response);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-           
-            return response;
-        }
-
-        /// <summary>
-        ///     Sends a HTTP-Request to the server to get an object.
-        /// </summary>
-        /// <typeparam name="O">Type of the requested object</typeparam>
-        /// <param name="url">Requested url</param>
-        /// <param name="method">HTTP-Method of the request</param>
-        /// <returns>Response object from server</returns>
-        internal static IRestResponse GetObjectRequest<O>(String url, RestSharp.Method method) where O : new()
-        {
-            var request = new RestRequest(url, method);
-            request.AddHeader("Accept", "text/plain");
-            IRestResponse response;
-
-            // execute the request
-            response = client.Execute(request);
+            IRestResponse response = client.Execute(request);
 
             try
             {
@@ -100,11 +65,9 @@ namespace RestAPI
         /// <param name="method">Method of the request</param>
         /// <param name="serializedObjPath">JSON string serialized object</param>
         /// <returns>The response from server</returns>
-        internal static IRestResponse SendObjectRequest(String url, RestSharp.Method method, String serializedObj)
+        internal static IRestResponse SendRequest(RestRequest request, String serializedObj)
         {
             IRestResponse response;
-            var request = new RestRequest(url, method);
-            request.AddHeader("Accept", "text/plain");
 
             // if there is an object that shall be send to server
             if (serializedObj != null)
@@ -125,28 +88,6 @@ namespace RestAPI
                 throw;
             }
 
-            return response;
-        }
-
-        /// <summary>
-        ///     Sends a simple request, just containing some information in the url. No more parameters or objects send in the request.
-        /// </summary>
-        /// <param name="request">The request to send to server</param>
-        /// <returns>The response object</returns>
-        internal static IRestResponse SendSimpleRequest(RestRequest request)
-        {
-            // execute the request
-            IRestResponse response = client.Execute(request);
-
-            try
-            {
-                ProofResponseErrors(response);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-             
             return response;
         }
 
