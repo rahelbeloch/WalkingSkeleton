@@ -33,7 +33,7 @@ public class ConsoleLogHandler extends Handler {
         final Throwable ex =  rec.getThrown();
        
         if (ex != null) {
-            msg = ex.getClass().getSimpleName() + " - " + ex.getMessage();
+            msg = ex.getClass().getName() + " - " + ex.getMessage();
         }
         else {
             msg = rec.getMessage();
