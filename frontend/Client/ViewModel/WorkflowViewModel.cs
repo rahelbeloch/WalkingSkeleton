@@ -48,6 +48,10 @@ namespace Client.ViewModel
             {
                 startableList = new List<int>();
             }
+            foreach (int testId in startableList)
+            {
+                Console.WriteLine(testId);
+            }
             startableList.ToList().ForEach(_startableWorkflows.Add);
             foreach (Workflow workflow in _workflows)
             {
@@ -92,6 +96,7 @@ namespace Client.ViewModel
             _workflows.Clear();
             _startableWorkflows.Clear();
             _relevantItems.Clear();
+            _dashboardWorkflows.Clear();
         }
         public void createWorkflow(int id, String userName)
         {
@@ -122,6 +127,7 @@ namespace Client.ViewModel
                         {
                             Console.WriteLine("button clicked");
                             userName = "";
+                            deleteModel();
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
                         }, canExecute =>
                             {
