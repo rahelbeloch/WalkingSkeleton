@@ -82,7 +82,7 @@ public class WorkflowCommandResource {
             @PathParam("itemid") int itemid,
             @PathParam("username") String username) 
     {
-        final String loggingBody = "FORWARD -> " + itemid;
+        final String loggingBody = "FORWARD ITEM -> " + itemid;
         
         try {
             LOGIC.stepForward(itemid, stepid, username);
