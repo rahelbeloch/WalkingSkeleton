@@ -8,7 +8,7 @@ namespace CommunicationLib.Exception
 {
     public class RoleException : PersistenceException
     {
-        private int _number = 11250;
+        private int _number = 11260;
         new public int number { get { return _number; } }
 
         public RoleException()

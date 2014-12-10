@@ -8,7 +8,7 @@ namespace CommunicationLib.Exception
 {
     class WrongUsernameException : LogInException
     {
-        private int _number = 11110;
+        private int _number = 11120;
         new public int number { get { return _number; } }
 
         public WrongUsernameException()

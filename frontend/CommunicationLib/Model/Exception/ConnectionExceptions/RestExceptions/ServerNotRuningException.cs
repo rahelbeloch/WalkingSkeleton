@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    public class ServerNotRuningException : RestException
+    public class ServerNotRunningException : RestException
     {
         private int _number = 12210;
         new public int number { get { return _number; } }
