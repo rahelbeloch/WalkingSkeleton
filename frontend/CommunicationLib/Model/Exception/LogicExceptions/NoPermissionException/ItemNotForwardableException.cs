@@ -11,18 +11,18 @@ namespace CommunicationLib.Exception
         private int _number = 11320;
         new public int number { get { return _number; } }
 
-        public ItemNotForwardable()
+        public ItemNotForwardableException()
             : base("Das Item ist nicht weiterschaltbar.")
         {
 
         }
 
-        public ItemNotForwardable(string message)
+        public ItemNotForwardableException(string message)
             : base(message)
         {
         }
 
-        public ItemNotForwardable(string message, System.Exception inner)
+        public ItemNotForwardableException(string message, System.Exception inner)
             : base(message, inner)
         {
         }
