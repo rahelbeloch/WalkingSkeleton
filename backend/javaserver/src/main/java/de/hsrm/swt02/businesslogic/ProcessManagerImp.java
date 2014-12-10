@@ -41,7 +41,8 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * 
      * @param p
      *            is a singleton for the persistence
-     * @param logger for logging information
+     * @param logger
+     *            for logging information
      */
     @Inject
     public ProcessManagerImp(Persistence p, UseLogger logger) {
@@ -51,11 +52,13 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     }
 
     /**
-     * This method checks if the user is authorized to do something 
-     * (like executing) with a step.
+     * This method checks if the user is authorized to do something (like
+     * executing) with a step.
+     * 
      * @param step
      *            which user wants to edit
-     * @param username indicates user who should be checked
+     * @param username
+     *            indicates user who should be checked
      * @return true if user is "owner" of step and false if not
      */
     public boolean checkAuthorization(Step step, String username) {
@@ -67,16 +70,19 @@ public class ProcessManagerImp implements Observer, ProcessManager {
         }
         return checkUser.getUsername().equals(username);
     }
-    
+
     /**
      * This method checks if the inquired user can actually start the workflow.
      * If she/he can a workflow is started.
-     * @param workflow which should be started.
-     * @param username who wants to start workflow.
+     * 
+     * @param workflow
+     *            which should be started.
+     * @param username
+     *            who wants to start workflow.
      */
     public void startWorkflow(Workflow workflow, String username) {
         final StartStep startStep = (StartStep) workflow.getStepByPos(0);
-        
+
         selectProcessor(startStep);
         if (checkAuthorization(startStep, username)) {
             startProcessor.addObserver(this);
@@ -88,7 +94,9 @@ public class ProcessManagerImp implements Observer, ProcessManager {
 
     /**
      * This method selects the appropriate stepprocessor for a step.
-     * @param step which will be executed
+     * 
+     * @param step
+     *            which will be executed
      */
     public void selectProcessor(Step step) {
         if (step instanceof Action) {

@@ -26,7 +26,8 @@ public class StartProcessor extends Observable {
     /**
      * Constructor of StartProcessor.
      * 
-     * @param p is a singleton instance of the persistence
+     * @param p
+     *            is a singleton instance of the persistence
      */
     @Inject
     public StartProcessor(Persistence p) {
@@ -39,14 +40,16 @@ public class StartProcessor extends Observable {
      * initialized steps. The item consists of pairs of step IDs and its
      * MetaState.
      * 
-     * @param workflow it's id will be noted within a new item
+     * @param workflow
+     *            it's id will be noted within a new item
      */
     public void createItem(Workflow workflow) {
 
-//        final int key = 1000;
+        // final int key = 1000;
         currentItem = new Item();
-//        currentItem.setId(workflow.getId() * key + workflow.getSteps().size() + workflow.getItems().size());
-//        System.out.println(currentItem.getId());
+        // currentItem.setId(workflow.getId() * key + workflow.getSteps().size()
+        // + workflow.getItems().size());
+        // System.out.println(currentItem.getId());
         currentItem.setWorkflowId(workflow.getId());
         initiateItem(workflow, currentItem);
     }
@@ -57,9 +60,10 @@ public class StartProcessor extends Observable {
      * creating and initializing the item, add it to workflow. The state of the
      * very first step is set to "OPEN".
      * 
-     * @param workflow provides a step list, which will be transformed into
-     *            Metadatas
-     * @param item is the freshly created item for a workflow
+     * @param workflow
+     *            provides a step list, which will be transformed into Metadatas
+     * @param item
+     *            is the freshly created item for a workflow
      */
     public void initiateItem(Workflow workflow, Item item) {
 
