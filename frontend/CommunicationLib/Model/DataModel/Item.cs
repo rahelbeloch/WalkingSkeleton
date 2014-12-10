@@ -52,5 +52,26 @@ namespace CommunicationLib.Model
             }
             return -1;
         }
+        /// <summary>
+        /// returns the actual State of the Item
+        /// </summary>
+        public String getState()
+        {
+            foreach (MetaEntry me in metadata)
+            {
+                if (me.group.Equals("step"))
+                {
+                    if (me.value.Equals("OPEN"))
+                    {
+                        return "OPEN";
+                    }
+                    if (me.value.Equals("BUSY"))
+                    {
+                        return "BUSY";
+                    }
+                }
+            }
+            return "";
+        }
     }
 }
