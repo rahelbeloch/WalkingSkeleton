@@ -33,7 +33,7 @@ namespace Admin.ViewModel
                 return _restRequester;
             }
         }
-        
+
         public MainViewModel()
         {
             _workflowViewModel = new WorkflowViewModel(this);

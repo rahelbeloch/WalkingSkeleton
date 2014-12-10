@@ -17,7 +17,7 @@ namespace Admin.ViewModel
     /// The UserViewModel contains properties and commands to send new users to the server.
     /// Furthermore, the properties and commands are used as DataBindings to show current users in the graphical user interface. 
     /// </summary>
-    public class UserViewModel: ViewModelBase
+    public class UserViewModel: ViewModelBase, IDataReceiver
     {
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;
@@ -91,6 +91,21 @@ namespace Admin.ViewModel
 
                 return _addUserCommand;
             }
+        }
+
+        void IDataReceiver.WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject)
+        {
+            Console.WriteLine("Update UserViewModel: WorkflowID = " + wrappedObject.myObject.id);
+        }
+
+        void IDataReceiver.ItemUpdate(RegistrationWrapper<Item> wrappedObject)
+        {
+            Console.WriteLine("Update UserViewModel: ItemID = " + wrappedObject.myObject.id);
+        }
+
+        void IDataReceiver.UserUpdate(RegistrationWrapper<User> wrappedObject)
+        {
+            Console.WriteLine("Update UserViewModel: UserID = " + wrappedObject.myObject.username);
         }
     }
 }

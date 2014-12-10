@@ -19,12 +19,14 @@ namespace Admin.ViewModel
     /// The WorkflowViewModel contains properties and commands to create a new workflow and to send it to the server.
     /// Furthermore, the properties and commands are used as DataBindings in the graphical user interface.
     /// </summary>
-    public class WorkflowViewModel : ViewModelBase
+    public class WorkflowViewModel : ViewModelBase, IDataReceiver
     {
         private Workflow _workflowModel = new Workflow();
 
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;
+
+        private CommunicationManager _comManager;
         
         public WorkflowViewModel(MainViewModel mainViewModel)
         {
@@ -32,6 +34,7 @@ namespace Admin.ViewModel
             _restRequester = _mainViewModel.restRequester;
             _workflow.CollectionChanged += OnWorkflowChanged;
 
+            _comManager = new CommunicationManager(this);
 
             // fill choosable steps with default values
             _choosableSteps.Add(new StartStep());
@@ -311,5 +314,20 @@ namespace Admin.ViewModel
         }
 
         #endregion
+
+        public void WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject)
+        {
+            Console.WriteLine("Update WorkflowViewModel: WorkflowID = " + wrappedObject.myObject.id);
+        }
+
+        public void ItemUpdate(RegistrationWrapper<Item> wrappedObject)
+        {
+            Console.WriteLine("Update WorkflowViewModel: ItemID = " + wrappedObject.myObject.id);
+        }
+
+        public void UserUpdate(RegistrationWrapper<User> wrappedObject)
+        {
+            Console.WriteLine("Update WorkflowViewModel: Username = " + wrappedObject.myObject.username);
+        }
     }   
 }
