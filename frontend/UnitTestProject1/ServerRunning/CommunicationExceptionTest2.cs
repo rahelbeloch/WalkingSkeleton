@@ -14,6 +14,16 @@ namespace UnitTestProject1
     [TestClass]
     public class CommunicationExceptionTest2
     {
+
+        public static RestRequester myRequester;
+
+        [ClassInitialize()]
+        public static void ClassInit(TestContext context)
+        {
+            myRequester = new RestRequester();
+        }
+
+
         /// <summary>
         /// Test the private method 'GetObjectRequest' in RestRequester. Tests the ExceptionHandling if server is not running.
         /// </summary>
@@ -21,7 +31,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(WorkflowNotExistException))]
         public void testServerConnectionGetObject()
         {
-            InternalRequester.GetObject<Workflow>(0);
+            myRequester.GetObject<Workflow>(0);
         }
 
         /// <summary>
@@ -31,7 +41,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(ItemNotExistException))]
         public void testServerConnectionSendSimpleReq()
         {
-            InternalRequester.StepForward(1, 2, "Rahel");
+            myRequester.StepForward(1, 2, "Rahel");
         }
 
         /// <summary>
@@ -42,7 +52,7 @@ namespace UnitTestProject1
         public void testWorkflowDoesntExistsException()
         {
             int getWFId = -17;
-            InternalRequester.GetObject<Workflow>(getWFId);
+            myRequester.GetObject<Workflow>(getWFId);
         }
     }
 }

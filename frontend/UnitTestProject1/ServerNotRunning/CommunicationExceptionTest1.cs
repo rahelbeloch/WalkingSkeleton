@@ -14,34 +14,43 @@ namespace UnitTestProject1
     [TestClass]
     public class CommunicationExceptionTest1
     {
-        /// <summary>
-        /// Test the private method 'GetObjectRequest' in RestRequester. Tests the ExceptionHandling if server is not running.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ServerNotRuningException))]
-        public void testServerConnectionGetObject()
+
+        public static RestRequester myRequester;
+
+        [ClassInitialize()]
+        public static void ClassInit(TestContext context)
         {
-            InternalRequester.GetObject<Workflow>(0);
+            myRequester = new RestRequester();
         }
 
         /// <summary>
         /// Test the private method 'GetObjectRequest' in RestRequester. Tests the ExceptionHandling if server is not running.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ServerNotRuningException))]
+        [ExpectedException(typeof(ServerNotRunningException))]
+        public void testServerConnectionGetObject()
+        {
+            myRequester.GetObject<Workflow>(0);
+        }
+
+        /// <summary>
+        /// Test the private method 'GetObjectRequest' in RestRequester. Tests the ExceptionHandling if server is not running.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ServerNotRunningException))]
         public void testServerConnectionSendObjectRequest()
         {
-            InternalRequester.PostObject<Workflow>(new Workflow());
+           myRequester.PostObject<Workflow>(new Workflow());
         }
 
         /// <summary>
         /// Test the private method 'SendSimpleRequest' in RestRequester. Tests the ExceptionHandling if server is not running.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ServerNotRuningException))]
+        [ExpectedException(typeof(ServerNotRunningException))]
         public void testServerConnectionSendSimpleReq()
         {
-            InternalRequester.StepForward(1, 2, "Rahel");
+            myRequester.StepForward(1, 2, "Rahel");
         }
     }
 }
