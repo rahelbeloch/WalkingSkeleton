@@ -40,31 +40,7 @@ public class UserCommandResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response login(MultivaluedMap<String, String> formParams) {
-        
-        
         final String username = formParams.get("username").get(0);
-        
-        
-        
-        
-        
-        List<Workflow> wflowList;
-        try {
-            wflowList = LOGIC.getAllWorkflows();
-            for(Workflow w : wflowList) {
-                w.convertReferencesToIdList();
-                System.out.println(w.toString());
-            }
-        } catch (LogicException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        
-        
-        
-        
-        
-        
         final String password = formParams.get("password").get(0);
         final String loggingBody = "LOGIN -> " + username + " : " + password;
         try {
