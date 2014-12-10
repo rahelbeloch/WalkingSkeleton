@@ -22,6 +22,10 @@ import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
+/**
+ * This Testclass tests the logic interface.
+ *
+ */
 public class LogicTest {
 
     Logic li;
@@ -40,6 +44,10 @@ public class LogicTest {
     Action action2;
     FinalStep finalStep;
 
+    /**
+     * 
+     * @throws WorkflowNotExistentException if Workflow doesnt exists.
+     */
     @Test
     public void addGetWorkflowTest() throws WorkflowNotExistentException {
         init();
@@ -47,6 +55,10 @@ public class LogicTest {
         assertTrue(li.getWorkflow(w.getId()) == w);
     }
 
+    /**
+     * 
+     * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     */
     @Test
     public void startWorkflowTest() throws WorkflowNotExistentException {
         init();
@@ -54,51 +66,83 @@ public class LogicTest {
 
         li.addWorkflow(w);
 
-        li.startWorkflow(w.getId(), user.getUsername()); // added user.getUsername because startWorkflow expects String not user
+        li.startWorkflow(w.getId(), user.getUsername()); // added
+                                                         // user.getUsername
+                                                         // because
+                                                         // startWorkflow
+                                                         // expects String not
+                                                         // user
 
         assertFalse(w.getItems().isEmpty());
     }
 
+    /**
+     * 
+     * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     */
     @Test(expected = WorkflowNotExistentException.class)
     public void deleteWortflowTest() throws WorkflowNotExistentException {
         init();
         li.addWorkflow(w);
         li.deleteWorkflow(w.getId());
-        assertTrue(li.getWorkflow(w.getId()) == null);
+        
+        li.getWorkflow(w.getId());
 
     }
 
+    /**
+     * 
+     * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     * @throws ItemNotExistentException if Item doesnt exists.
+     * @throws UserNotExistentException if User doesnt exists.
+     */
     @Test
-    public void stepOverTest() throws WorkflowNotExistentException, ItemNotExistentException, UserNotExistentException {
+    public void stepOverTest() throws WorkflowNotExistentException,
+            ItemNotExistentException, UserNotExistentException 
+    {
         init();
         initExtension();
         li.addWorkflow(w);
         li.startWorkflow(w.getId(), user.getUsername());
-        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(action.getId()).getId(), user.getUsername());
-        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(action.getId()).getId(), user.getUsername());
+        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(action.getId())
+                .getId(), user.getUsername());
+        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(action.getId())
+                .getId(), user.getUsername());
         assertTrue(w.getItemByPos(0).getStepState(action.getId()) == "DONE");
     }
 
+    /**
+     * 
+     * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     */
     @Test
     public void addStepTest() throws WorkflowNotExistentException {
         init();
         li.addWorkflow(w);
-        int i = w.getSteps().size();
+        final int i = w.getSteps().size();
         li.addStep(w.getId(), new Action());
         assertTrue(w.getSteps().size() == i + 1);
 
     }
 
+    /**
+     * 
+     * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     */
     @Test
     public void deleteStepTest() throws WorkflowNotExistentException {
         init();
         li.addWorkflow(w);
-        int i = w.getSteps().size();
+        final int i = w.getSteps().size();
         li.deleteStep(w.getId(), action.getId());
         assertTrue(w.getSteps().size() == i - 1);
 
     }
 
+    /**
+     * 
+     * @throws UserNotExistentException if User doesnt exists.
+     */
     @Test
     public void addGetUserTest() throws UserNotExistentException {
         init();
@@ -110,6 +154,10 @@ public class LogicTest {
         assertTrue(li.getUser(user.getUsername()) == user);
     }
 
+    /**
+     * 
+     * @throws UserAlreadyExistsException if User Already exists in persistence.
+     */
     @Test(expected = UserAlreadyExistsException.class)
     public void userAlreadyExistsTest() throws UserAlreadyExistsException {
         init();
@@ -118,6 +166,10 @@ public class LogicTest {
 
     }
 
+    /**
+     * 
+     * @throws UserNotExistentException if User doesnt exists.
+     */
     @Test(expected = UserNotExistentException.class)
     public void deleteUserTest() throws UserNotExistentException {
         init();
@@ -130,31 +182,36 @@ public class LogicTest {
         assertTrue(li.getUser(user.getUsername()) == null);
     }
 
+    /**
+     * 
+     * @throws LogicException if something went wrong in logic
+     */
     @Test
     public void getWorkflowsByUser() throws LogicException {
         init();
         initExtension();
-        
-//        for(Workflow wf : li.getAllWorkflows()){
-//            for (Step s : wf.getSteps()){
-//                System.out.println("username: " + s.getUsername());
-//            }
-//            System.out.println("________");
-//        }
-        int i = li.getAllWorkflowsByUser(user.getUsername()).size();
+
+        final int i = li.getAllWorkflowsByUser(user.getUsername()).size();
         assertTrue(i == 1);
 
     }
 
+    /**
+     * 
+     * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     * @throws UserNotExistentException if User doesnt exists.
+     */
     @Test
-    public void getOpenItemsByUserTest() throws WorkflowNotExistentException, UserNotExistentException {
+    public void getOpenItemsByUserTest() throws WorkflowNotExistentException,
+            UserNotExistentException 
+    {
         init();
         initExtension();
 
         li.startWorkflow(w.getId(), user.getUsername());
         li.startWorkflow(w.getId(), user.getUsername());
-        
-        int i = li.getRelevantItemsByUser(w.getId(), user.getUsername()).size();
+
+        final int i = li.getRelevantItemsByUser(w.getId(), user.getUsername()).size();
         assertTrue(i == 2);
 
     }
@@ -177,21 +234,75 @@ public class LogicTest {
         }
     }
 
+    /**
+     * 
+     * @throws LogicException if something went wrong in logic.
+     */
     @Test
     public void getStartableWorkflowsTest() throws LogicException {
         init();
         initExtension();
-        int i = li.getStartableWorkflowsByUser(user2.getUsername()).size();
+        final int i = li.getStartableWorkflowsByUser(user2.getUsername()).size();
         assertTrue(i == 1);
     }
 
+    /**
+     * This Method test deactivation.
+     */
+    @Test
+    public void deactivateWorkflow() {
+        init();
+        li.addWorkflow(w);
+        w.setActive(false);
+        assertFalse(w.isActive());
+    }
+    /**
+     * 
+     * @throws WorkflowNotExistentException if workflow doesnt exists.
+     */
+    @Test
+    public void getAllActiveWorkflowTest() throws WorkflowNotExistentException {
+        init();
+        final int before = li.getAllWorkflows().size();
+        li.addWorkflow(w);
+        final int between = li.getAllWorkflows().size();
+        li.deactiviateWorkflow(w.getId());
+        final int after = li.getAllWorkflows().size();
+
+        assertTrue(before == after);
+        assertTrue(before + 1 == between);
+    }
+    
+    /**
+     * 
+     * @throws UserNotExistentException if user doesnt exisis.
+     * @throws LogicException if something went wrong in logic.
+     */
+    @Test
+    public void getAllActiveWorkflowsByUserTest() throws UserNotExistentException, LogicException {
+        init();
+        initExtension();       
+        final int before = li.getAllWorkflowsByUser(user.getUsername()).size();
+       
+        li.deactiviateWorkflow(w.getId());
+        final int after = li.getAllWorkflowsByUser(user.getUsername()).size();
+
+        assertTrue(before == after + 1);
+        
+    }
+    
+    
+
+    /**
+     * this method init basic data for testing.
+     */
     private void init() {
-    	Injector i = Guice.createInjector(new SingleModule());
-    	li = i.getInstance(Logic.class);
+        final Injector i = Guice.createInjector(new SingleModule());
+        li = i.getInstance(Logic.class);
 
         user = new User();
         user.setUsername("0");
-        
+
         startStep = new StartStep(user.getUsername());
         action = new Action(user.getUsername(), "description");
         finalStep = new FinalStep();
@@ -201,28 +312,28 @@ public class LogicTest {
         w.addStep(action);
         w.addStep(finalStep);
     }
-
+    
+    /**
+     * This method init more data for testing.
+     */
     private void initExtension() {
         user2 = new User();
         user2.setUsername("2");
 
         user1 = new User();
         user1.setUsername("1");
-        
+
         startStep1 = new StartStep(user1.getUsername());
         startStep2 = new StartStep(user2.getUsername());
-        action1 = new Action(user1.getUsername(),
-                "description");
+        action1 = new Action(user1.getUsername(), "description");
         action2 = new Action(user2.getUsername(), "description");
         finalStep = new FinalStep();
-        
+
         w1 = new Workflow();
         w1.addStep(startStep1);
         w1.addStep(action1);
         w1.addStep(finalStep);
-        
-        
-        
+
         w2 = new Workflow();
         w2.addStep(startStep2);
         w2.addStep(action2);
