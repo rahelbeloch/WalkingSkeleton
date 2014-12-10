@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using CommunicationLib.Model;
 using RestAPI;
+using Action = CommunicationLib.Model.Action;
 
 namespace Client.View
 {   
@@ -182,14 +183,22 @@ namespace Client.View
             currentRow.FontWeight = FontWeights.Normal;
 
             // Add cells with content to the second row.
-            String nr = ""+dashboardRow.actStep.id;
-            String name = "" + dashboardRow.actStep.label;
+            String nr = ""+dashboardRow.actItem.id;
+            String name = "";
+            if (dashboardRow.actStep.GetType() == typeof(Action))
+            {
+                name = "" + ((Action)dashboardRow.actStep).description;
+            }
+            else
+            {
+                name = "" + dashboardRow.actStep.label;
+            }
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(nr))));
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(name))));
             var button = new System.Windows.Controls.Primitives.ToggleButton();
             MyToggleButton toggle = dashboardRow.toggleButton;
             toggle.Click += new RoutedEventHandler(stepForward);
-            toggle.Content = "Abschließen";
+            toggle.Content = toggle.state;
             var block = new BlockUIContainer(toggle);
             currentRow.Cells.Add(new TableCell(block));
         }
