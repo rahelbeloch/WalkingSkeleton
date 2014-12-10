@@ -35,6 +35,7 @@ namespace CommunicationLib.Model
         public Workflow()
             : base()
         {
+            active = true;
             _steps = new List<Step>();
             _items = new List<Item>();
         }
