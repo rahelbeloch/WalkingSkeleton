@@ -170,22 +170,13 @@ public class Workflow extends RootElement implements Cloneable {
             }
         }
     }
-
-    /**
-     * This method connects steps with its straight neighbor. The last step has
-     * no neighbor.
-     */
-    public void connectSteps() {
-
-        for (int i = 0; i < steps.size() - 1; i++) {
-            steps.get(i).getNextSteps().add(steps.get(i + 1));
-        }
-    }
     
     /**
 	 * Deep Copy - Cloning method for Workflows
 	 */
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
+        this.convertReferencesToIdList();
+        
 		Workflow clone = new Workflow();
 		clone.setActive(active);
 		clone.setId(id);
@@ -197,6 +188,55 @@ public class Workflow extends RootElement implements Cloneable {
 			Item cloneItem = (Item)item.clone();
 			clone.addItem(cloneItem);
 		}
+		
+		clone.convertIdListToReferences();
 		return clone;
 	}
+    
+    /**
+     * Incoming order of step ids are converted into references.
+     * 
+     * @param workflow which is operated on
+     */
+    public void convertIdListToReferences() {
+        for (Step step : this.getSteps()) {
+            for (int id : step.getNextStepIds()) {
+                step.getNextSteps().add(this.getStepById(id));
+            }
+        }
+    }
+    
+    /**
+     * Workflow references are converted to ids.
+     * @param workflow
+     */
+    public void convertReferencesToIdList() {
+        for (Step step : this.getSteps()) {
+            step.getNextStepIds().clear();
+            for (Step next : step.getNextSteps()) {
+                step.getNextStepIds().add(next.getId());
+            }
+        }
+    }
+    
+    @Override
+    public String toString() {
+        String ret = "--- WORKFLOW START ---\n";
+        ret += "Id: "+ this.id + "\n";
+        ret += "Active: "+ this.active + "\n";
+        for(Step s : this.steps) {
+            ret += "\t--- STEP:\n";
+            ret += s.toString();
+        }
+        
+        ret += "\n";
+        
+        for(Item i : this.items) {
+            ret += "\t--- ITEM:\n";
+            ret += i.toString();
+        }
+        ret += "--- WORKFLOW ENDE ---";
+        
+        return ret;
+    }
 }

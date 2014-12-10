@@ -25,8 +25,8 @@ public class StartStep extends Step {
      * Deep Copy - Cloning method for Actions
      */
     protected Object clone() throws CloneNotSupportedException {
-        StartStep clone = (StartStep) super.clone();
-        clone.setUsername(this.username);
+        StartStep clone = new StartStep();
+        clone.init(this);
         return clone;
     }
 }

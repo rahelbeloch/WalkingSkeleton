@@ -24,6 +24,11 @@ public class Action extends Step {
         this.username = username;
         this.description = description;
     }
+    
+    public void init(Action s) {
+        super.init(s);
+        this.description = s.getDescription();
+    }
 
     /**
      * Description getter.
@@ -45,9 +50,17 @@ public class Action extends Step {
      * Deep Copy - Cloning method for Actions
      */
     protected Object clone() throws CloneNotSupportedException {
-        Action clone = (Action) super.clone();
-        clone.setDescription(this.description);
-        clone.setUsername(this.username);
+        Action clone = new Action();
+        clone.init(this);
         return clone;
+    }
+    
+    @Override
+    public String toString() {
+        String ret = "";
+        ret = super.toString();
+        ret += "\tBeschreibung: " + this.description + "\n";
+        
+        return ret;
     }
 }

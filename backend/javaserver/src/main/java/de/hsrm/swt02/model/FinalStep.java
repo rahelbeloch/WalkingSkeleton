@@ -16,7 +16,8 @@ public class FinalStep extends Step {
      * Deep Copy - Cloning method for FinalSteps
      */
     protected Object clone() throws CloneNotSupportedException {
-        FinalStep clone = (FinalStep) super.clone();
+        FinalStep clone = new FinalStep();
+        clone.init(this);
         return clone;
     }
 }

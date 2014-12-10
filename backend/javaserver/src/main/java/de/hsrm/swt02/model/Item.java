@@ -246,4 +246,18 @@ public class Item extends RootElement {
 		}
 		return clone;
 	}
+    
+    @Override
+    public String toString() {
+        String ret = "";
+        ret += "\tId: "+ this.id + "\n";
+        ret += "\tWorkflow Id: "+ this.workflowId + "\n";
+        ret += "\tFinished: "+ this.finished + "\n";
+        for(MetaEntry me : this.metadata) {
+            ret += "\t\t---METAENTRY:\n";
+            ret += me.toString();
+        }
+        
+        return ret;
+    }
 }
