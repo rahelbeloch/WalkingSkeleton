@@ -20,7 +20,7 @@ namespace Client.ViewModel
         {
             _actItem = actItem;
             _actStep = actStep;
-            _toggleButton = new MyToggleButton(actItem.id, actStep.id, username, _actItem.getState());
+            _toggleButton = new MyToggleButton(actStep.id, actItem.id, username, _actItem.getState());
         }
     }
 }
