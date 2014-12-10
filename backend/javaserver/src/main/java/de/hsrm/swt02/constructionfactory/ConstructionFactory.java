@@ -44,7 +44,7 @@ public class ConstructionFactory {
      */
     public synchronized static ConstructionFactory getInstance() {
         if (theInstance == null) {
-            return new ConstructionFactory();
+            theInstance = new ConstructionFactory(); 
         }
         return theInstance;
     }
