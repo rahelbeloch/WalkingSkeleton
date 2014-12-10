@@ -72,7 +72,6 @@ public class InitWorkflowTest {
         myWorkflow.addStep(firstStep);
         myWorkflow.addStep(secondStep);
 
-        myWorkflow.connectSteps();
 
         assertEquals(secondStep, firstStep.getNextSteps().get(0));
     }
@@ -91,7 +90,6 @@ public class InitWorkflowTest {
         myWorkflow.addStep(secondStep);
         myWorkflow.addStep(finalStep);
 
-        myWorkflow.connectSteps();
 
         assertTrue(firstStep.getNextSteps().get(0).getNextSteps().get(0) instanceof FinalStep);
     }
