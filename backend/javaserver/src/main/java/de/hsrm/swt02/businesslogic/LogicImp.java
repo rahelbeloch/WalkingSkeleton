@@ -247,16 +247,18 @@ public class LogicImp implements Logic {
         p.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
-            for (Step step : wf.getSteps()) {
-                if (step.getUsername().equals(username)) {
-                    Workflow copyOfWf;
-                    try {
-                        copyOfWf = ((Workflow) wf.clone());
-                        copyOfWf.clearItems(); // eliminate items
-                        workflows.add(copyOfWf);
-                        break;
-                    } catch (CloneNotSupportedException e) {
-                        throw new LogicException("Workflow is not cloneable.");
+            if (wf.isActive()) {
+                for (Step step : wf.getSteps()) {
+                    if (step.getUsername().equals(username)) {
+                        Workflow copyOfWf;
+                        try {
+                            copyOfWf = ((Workflow) wf.clone());
+                            copyOfWf.clearItems(); // eliminate items
+                            workflows.add(copyOfWf);
+                            break;
+                        } catch (CloneNotSupportedException e) {
+                            throw new LogicException("Workflow is not cloneable.");
+                        }
                     }
                 }
             }
@@ -271,8 +273,8 @@ public class LogicImp implements Logic {
      * @param username
      *            the username
      * @return a list of workflows
-     * @throws WorkflowNotExistentException
-     * @throws UserNotExistentException
+     * @throws WorkflowNotExistentException if a workflow doesnt exists.
+     * @throws UserNotExistentException if the user doesnt exists.
      */
     public List<Workflow> getAllWorkflowsByUserWithItems(String username)
             throws WorkflowNotExistentException, UserNotExistentException 
@@ -280,11 +282,13 @@ public class LogicImp implements Logic {
         p.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : p.loadAllWorkflows()) {
-            for (Step step : wf.getSteps()) {
-                if (step.getUsername().equals(username)) {
-                    final Workflow copyOfWf = wf;
-                    workflows.add(copyOfWf);
-                    break;
+            if (wf.isActive()) {
+                for (Step step : wf.getSteps()) {
+                    if (step.getUsername().equals(username)) {
+                        final Workflow copyOfWf = wf;
+                        workflows.add(copyOfWf);
+                        break;
+                    }
                 }
             }
         }
@@ -326,10 +330,12 @@ public class LogicImp implements Logic {
     {
         final List<Integer> startableWorkflows = new LinkedList<>();
         for (Workflow workflow : getAllWorkflowsByUser(username)) {
-            final Step startStep = workflow.getSteps().get(0);
-            assert (startStep instanceof StartStep);
-            if (startStep.getUsername().equals(username)) {
-                startableWorkflows.add(workflow.getId());
+            if (workflow.isActive()) {
+                final Step startStep = workflow.getSteps().get(0);
+                assert (startStep instanceof StartStep);
+                if (startStep.getUsername().equals(username)) {
+                    startableWorkflows.add(workflow.getId());
+                }
             }
         }
         return startableWorkflows;
@@ -421,7 +427,14 @@ public class LogicImp implements Logic {
      */
     @Override
     public List<Workflow> getAllWorkflows() throws WorkflowNotExistentException {
-        return p.loadAllWorkflows();
+        final List<Workflow> workflows = new LinkedList<Workflow>();
+        for (Workflow wf : p.loadAllWorkflows()) {
+            if (wf.isActive()) {
+                workflows.add(wf);
+            }
+        }
+                
+        return workflows;
     }
 
     /**
@@ -483,19 +496,20 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * T
+     * T.
      * @param username the user which get a role
      * @param role .
      * @return
-     * @throws UserNotExistentException
-     * @throws RoleNotExistentException
-     * @throws UserHasAlreadyRoleException
+     * @throws UserNotExistentException .
+     * @throws RoleNotExistentException .
+     * @throws UserHasAlreadyRoleException .
      * @return .
      */
     public LogicResponse addRoleToUser(String username, Role role)
             throws UserNotExistentException, RoleNotExistentException,
-            UserHasAlreadyRoleException {
-        User user = p.loadUser(username);
+            UserHasAlreadyRoleException 
+    {
+        final User user = p.loadUser(username);
         p.addRoleToUser(user, role);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("USER_INFO", "user" + username
@@ -505,12 +519,13 @@ public class LogicImp implements Logic {
 
     /**
      * 
-     * @param rolename
-     * @return
-     * @throws RoleNotExistentException
+     * @param rolename .
+     * @return .
+     * @throws RoleNotExistentException .
      */
     public LogicResponse deleteRole(String rolename)
-            throws RoleNotExistentException {
+            throws RoleNotExistentException 
+    {
         p.deleteRole(rolename);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("ROLE-INFO", "role_del" + rolename));
@@ -546,7 +561,7 @@ public class LogicImp implements Logic {
     /**
      * Initialize test datas.
      * 
-     * @throws UserAlreadyExistsException
+     * @throws UserAlreadyExistsException .
      */
     private void initTestdata() throws UserAlreadyExistsException {
         Workflow workflow1;
