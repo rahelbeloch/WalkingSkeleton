@@ -19,6 +19,7 @@ namespace Client.ViewModel
         public String username { get { return _username; } }
         public DashboardRow(Item actItem, Step actStep, String username)
         {
+            _username = username;
             _actItem = actItem;
             _actStep = actStep;
         }
