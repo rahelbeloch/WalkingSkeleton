@@ -9,7 +9,9 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
@@ -95,10 +97,12 @@ public class LogicTest {
      * @throws WorkflowNotExistentException if Worklow doesnt exists.
      * @throws ItemNotExistentException if Item doesnt exists.
      * @throws UserNotExistentException if User doesnt exists.
+     * @throws UserHasNoPermissionException 
+     * @throws ItemNotForwardableException 
      */
     @Test
     public void stepOverTest() throws WorkflowNotExistentException,
-            ItemNotExistentException, UserNotExistentException 
+            ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException 
     {
         init();
         initExtension();
