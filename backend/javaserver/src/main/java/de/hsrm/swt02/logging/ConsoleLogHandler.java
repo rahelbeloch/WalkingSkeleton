@@ -29,8 +29,16 @@ public class ConsoleLogHandler extends Handler {
     public void publish(LogRecord rec) {
         final Level currentLevel = rec.getLevel();
         String logMessage;
-        
-        logMessage = currentLevel + " " + calcDate(rec.getMillis()) + " " + rec.getMessage();
+        String msg;
+        final Throwable ex =  rec.getThrown();
+       
+        if (ex != null) {
+            msg = ex.getClass().getName() + " - " + ex.getMessage();
+        }
+        else {
+            msg = rec.getMessage();
+        }
+        logMessage = currentLevel + " " + calcDate(rec.getMillis()) + " " + msg;
         
         if (currentLevel.intValue() >= Level.WARNING.intValue()) {
             System.err.println(logMessage);
