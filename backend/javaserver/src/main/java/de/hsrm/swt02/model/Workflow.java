@@ -131,7 +131,10 @@ public class Workflow extends RootElement implements Cloneable {
     public void addStep(Step step) {
 
         steps.add(step);
-        connectSteps();
+        
+        if (steps.size() >= 2) {
+            steps.get(steps.size() - 2).getNextSteps().add(step);
+        }
     }
 
     /**
@@ -201,9 +204,10 @@ public class Workflow extends RootElement implements Cloneable {
     * TODO: Works only with linear workflows! Is only used to init test data.
     */ 
     public void connectSteps() { 
-        for (int i = 0; i < steps.size() - 1; i++) { 
-            steps.get(i).getNextSteps().add(steps.get(i + 1)); 
-        } 
+            
+        
+        
+        
     } 
     
     /**
