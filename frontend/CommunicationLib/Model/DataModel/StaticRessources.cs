@@ -37,7 +37,7 @@ namespace CommunicationLib.Model
             {11200, typeof(PersistenceException)},
             {11210, typeof(IncompleteEleException)},
             {11220, typeof(AlreadyExistsException)},
-                {11222, typeof(UserAlreadyExistsException)},
+                {11221, typeof(UserAlreadyExistsException)},
             {11230, typeof(NoPermissionException)},
             {11240, typeof(ElementChangedException)},
             {11250, typeof(DoesntExistsException)},
@@ -56,9 +56,9 @@ namespace CommunicationLib.Model
             {12100,typeof(MessagingException)},
             
             //Error codes for rest errors
-            {12200,typeof(RestException)}
+            {12200,typeof(RestException)},
 
-            //{12210,typeof(ServerNotRunningException)}
+            {12210,typeof(ServerNotRunningException)}
         };
 
         public static Type GetErrorType(int code)

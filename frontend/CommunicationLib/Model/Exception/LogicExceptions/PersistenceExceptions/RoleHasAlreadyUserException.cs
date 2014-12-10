@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class RoleHasAlreadyUserException : AlreadyExistsException
+    class RoleHasAlreadyUserException : RoleException
     {
-        private int _number = 1124;
+        private int _number = 11261;
         new public int number { get { return _number; } }
 
         public RoleHasAlreadyUserException()
