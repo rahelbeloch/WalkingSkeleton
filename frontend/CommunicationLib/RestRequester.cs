@@ -68,7 +68,9 @@ namespace RestAPI
         public IList<int> GetStartablesByUser(string userName)
         {
             IRestResponse resp;
-            String url = _ressourceParam + "startables/" + userName;
+            String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
+            String url = _ressourceParam + typeName + "s/startables/" + userName;
+            Console.WriteLine(url);
 
             var request = new RestRequest(url, Method.POST);
             request.AddHeader("Accept", "text/plain");
