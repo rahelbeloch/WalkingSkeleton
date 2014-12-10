@@ -193,6 +193,16 @@ public class Workflow extends RootElement implements Cloneable {
 		return clone;
 	}
     
+    /** 
+    * This method connects steps with its straight neighbor. The last step has 
+    * no neighbor. 
+    */ 
+    public void connectSteps() { 
+        for (int i = 0; i < steps.size() - 1; i++) { 
+            steps.get(i).getNextSteps().add(steps.get(i + 1)); 
+        } 
+    } 
+    
     /**
      * Incoming order of step ids are converted into references.
      * 
