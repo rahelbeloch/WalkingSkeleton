@@ -42,7 +42,7 @@ public class ConstructionFactory {
      * Return the instance for this class.
      * @return the instance
      */
-    public static ConstructionFactory getInstance() {
+    public synchronized static ConstructionFactory getInstance() {
         if (theInstance == null) {
             return new ConstructionFactory();
         }
