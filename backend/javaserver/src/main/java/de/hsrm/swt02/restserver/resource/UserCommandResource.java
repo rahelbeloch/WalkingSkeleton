@@ -1,6 +1,5 @@
 package de.hsrm.swt02.restserver.resource;
 
-import java.util.List;
 import java.util.logging.Level;
 
 import javax.ws.rs.Consumes;
@@ -12,11 +11,9 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
-import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
-import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
@@ -56,8 +53,5 @@ public class UserCommandResource {
             LOGGER.log(Level.WARNING,e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
-        
-        
     }
-    
 }
