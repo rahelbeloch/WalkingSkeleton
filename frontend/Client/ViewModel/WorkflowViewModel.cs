@@ -74,6 +74,57 @@ namespace Client.ViewModel
             _relevantItems.Clear();
             //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
         }
+        private void updateWorkflow(Workflow updatedWorkflow)
+        {
+            DashboardWorkflow toUpdate = null;
+            foreach (DashboardWorkflow dashboardWorkflow in _dashboardWorkflows)
+            {
+                if (updatedWorkflow.id == dashboardWorkflow.actWorkflow.id)
+                {
+                    toUpdate = dashboardWorkflow;
+                }
+            }
+            if (toUpdate == null)
+            {
+                logger.Debug("NO workflow found to update");
+            }
+            toUpdate = new DashboardWorkflow(updatedWorkflow);
+
+            IList<Workflow> workflowList = _restRequester.GetAllWorkflowsByUser(_userName);
+            if (workflowList == null)
+            {
+                logger.Debug("WorkflowList is null");
+                workflowList = new List<Workflow>();
+            }
+            workflowList.ToList().ForEach(_workflows.Add);
+
+            _startableWorkflows.Clear();
+            IList<int> startableList = _restRequester.GetStartablesByUser(_userName);
+            if (startableList == null)
+            {
+                logger.Debug("startableList is null");
+                startableList = new List<int>();
+            }
+            startableList.ToList().ForEach(_startableWorkflows.Add);
+            if (_startableWorkflows.Contains(updatedWorkflow.id))
+            {
+                toUpdate.startPermission = true;
+            }
+            else
+            {
+                toUpdate.startPermission = false;
+            }
+            _relevantItems.Clear();
+            _restRequester.GetRelevantItemsByUser(updatedWorkflow.id, _userName).ToList().ForEach(_relevantItems.Add);
+            Step activeStep;
+            DashboardRow row;
+            foreach (Item item in _relevantItems)
+            {
+                activeStep = getStepById(item.getActiveStepId(), updatedWorkflow);
+                row = new DashboardRow(item, activeStep, _userName);
+                toUpdate.addDashboardRow(row);
+            }
+        }
         private Step getStepById(int id, Workflow workflow)
         {
             foreach (Step step in workflow.steps)
