@@ -25,8 +25,9 @@ public interface Persistence {
     /**
      * store functions to store workflows, items, and users into persistence.
      * @param workflow is a workflow for storing
+     * @return id of stored workflow
      */
-    void storeWorkflow(Workflow workflow);
+    int storeWorkflow(Workflow workflow);
 
     /**
      * store functions to store an item.
