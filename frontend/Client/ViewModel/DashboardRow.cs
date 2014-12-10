@@ -14,13 +14,13 @@ namespace Client.ViewModel
         public Item actItem { get { return _actItem; } }
         private Step _actStep;
         public Step actStep { get { return _actStep; } }
-        private MyToggleButton _toggleButton;
-        public MyToggleButton toggleButton { get { return _toggleButton; } }
+        public MyToggleButton toggleButton { get { return new MyToggleButton(actStep.id, actItem.id, username, _actItem.getState()); } }
+        private String _username;
+        public String username { get { return _username; } }
         public DashboardRow(Item actItem, Step actStep, String username)
         {
             _actItem = actItem;
             _actStep = actStep;
-            _toggleButton = new MyToggleButton(actStep.id, actItem.id, username, _actItem.getState());
         }
     }
 }
