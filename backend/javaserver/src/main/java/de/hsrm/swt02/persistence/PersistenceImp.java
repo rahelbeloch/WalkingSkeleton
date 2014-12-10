@@ -61,7 +61,7 @@ public class PersistenceImp implements Persistence {
      * @throws WorkflowNotExistentException 
      */
     @Override
-    public void storeWorkflow(Workflow workflow) {
+    public int storeWorkflow(Workflow workflow) {
         if (workflow.getId() <= 0) {
             workflow.setId(workflows.size() + 1);
         }
@@ -86,6 +86,7 @@ public class PersistenceImp implements Persistence {
         for (Step step : workflowsSteps) {
             storeStep(step, workflow);
         }
+        return workflow.getId();
     }
 
     /**
