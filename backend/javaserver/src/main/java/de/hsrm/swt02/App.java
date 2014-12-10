@@ -6,6 +6,7 @@ import de.hsrm.swt02.restserver.RestServer;
 
 /**
  * Class for application start. Contains the main-method for the server.
+ * Loads the logging configuration. Initiates business logic.
  * Starts the Rest-server.
  */
 public class App {
@@ -22,8 +23,12 @@ public class App {
         // setup log configuration
         LogConfigurator.setup();
         
-        //performance optimization (lazy loading)
-        ConstructionFactory.getInstance();
+        //performance optimization
+        new Thread(new Runnable() {
+            public void run() {
+                ConstructionFactory.getInstance();
+            }
+        }).start();
         
         // start rest-server instance
         server = new RestServer();
