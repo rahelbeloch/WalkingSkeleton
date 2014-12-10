@@ -15,7 +15,6 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.RoleHasAlreadyUserException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
@@ -119,7 +118,7 @@ public class PersistenceImp implements Persistence {
                 }
             }
             if (motherWorkflow != null) {
-                item.setId(motherWorkflow.getId() * ID_MULTIPLICATOR + motherWorkflow.getSteps().size() + 1);
+                item.setId(motherWorkflow.getId() * ID_MULTIPLICATOR + motherWorkflow.getItems().size());
 
             }
             else {
