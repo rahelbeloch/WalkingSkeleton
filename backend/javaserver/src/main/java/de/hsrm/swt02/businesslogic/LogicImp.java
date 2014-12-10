@@ -50,7 +50,7 @@ public class LogicImp implements Logic {
         setLogicResponse(new LogicResponse());
         
         try {
-            init_Testdata();
+            initTestdata();
         } catch (UserAlreadyExistsException e) {
             e.printStackTrace();
         }
@@ -485,7 +485,7 @@ public class LogicImp implements Logic {
      * Initialize test datas.
      * @throws UserAlreadyExistsException 
      */
-    private void init_Testdata() throws UserAlreadyExistsException{
+    private void initTestdata() throws UserAlreadyExistsException{
         Workflow workflow1, workflow2, workflow3;
         User user1, user2, user3;
         StartStep startStep1, startStep2, startStep3;
