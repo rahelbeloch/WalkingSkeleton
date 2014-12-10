@@ -2,18 +2,19 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.List;
 
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.restserver.LogicResponse;
 /**
  * This interface is used for the business logic.
@@ -173,7 +174,7 @@ public interface Logic {
      * @param username whose workflows' is looked for
      * @return a LinkedList of workflows
      */
-    List<Workflow> getAllWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
+    List<Workflow> getAllWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException, LogicException;
     
     /**
      * 
@@ -181,7 +182,7 @@ public interface Logic {
      * @return
      * @throws UserNotExistentException
      */
-    List<Integer> getStartableWorkflowsByUser(String username) throws UserNotExistentException, WorkflowNotExistentException;
+    List<Integer> getStartableWorkflowsByUser(String username) throws UserNotExistentException, WorkflowNotExistentException, LogicException;
     
     /**
      * 

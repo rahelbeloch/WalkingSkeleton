@@ -196,6 +196,8 @@ public class Workflow extends RootElement implements Cloneable {
     /** 
     * This method connects steps with its straight neighbor. The last step has 
     * no neighbor. 
+    * 
+    * TODO: Works only with linear workflows! Is only used to init test data.
     */ 
     public void connectSteps() { 
         for (int i = 0; i < steps.size() - 1; i++) { 
