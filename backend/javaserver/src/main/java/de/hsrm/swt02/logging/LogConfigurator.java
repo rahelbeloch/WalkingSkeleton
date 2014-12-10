@@ -90,13 +90,16 @@ public class LogConfigurator {
         fileHTMLHandler.setFormatter(formatterHTML);
         logger.addHandler(fileHTMLHandler);
 
-        // disable console logging
-        if (consoleLogging.equals("false")) {
-            final Logger rootLogger = Logger.getLogger("");
-            final Handler[] handlers = rootLogger.getHandlers();
-            if (handlers[0] instanceof ConsoleHandler) {
-                rootLogger.removeHandler(handlers[0]);
-            }
+        // disable console logging and remove the default
+        final Logger rootLogger = Logger.getLogger("");
+        final Handler[] handlers = rootLogger.getHandlers();
+        if (handlers[0] instanceof ConsoleHandler) {
+            rootLogger.removeHandler(handlers[0]);
+        }
+        // add consoleHandler if necessary
+        if (consoleLogging.equals("true")) {
+            final ConsoleLogHandler ourConsoleHandler = new ConsoleLogHandler();
+            rootLogger.addHandler(ourConsoleHandler);
         }
     }
 }
