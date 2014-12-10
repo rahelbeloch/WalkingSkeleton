@@ -1,7 +1,13 @@
 package de.hsrm.swt02.businesslogic.processors;
 
 import java.util.Observable;
+import java.util.logging.Level;
 
+import com.google.inject.Inject;
+
+import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaState;
@@ -9,8 +15,6 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
-
-import com.google.inject.Inject;
 
 /**
  * This class executes "Action" step-objects.
@@ -20,6 +24,7 @@ public class ActionProcessor extends Observable implements StepProcessor {
 
     private Item currentItem;
     private Persistence p;
+    public static final UseLogger LOGGER = new UseLogger();
 
     /**
      * Constructor of ActionProcessor.
@@ -45,7 +50,12 @@ public class ActionProcessor extends Observable implements StepProcessor {
      * @param user
      *            who currently executes the step
      */
-    public void handle(Item item, Step step, User user) {
+    public void handle(Item item, Step step, User user) throws ItemNotForwardableException, UserHasNoPermissionException {
+        
+        String username = user.getUsername();
+        if (!username.equals(step.getUsername())) {
+            throw new UserHasNoPermissionException("user " + username + "has no permission on this item");
+        }
 
         currentItem = item;
 
@@ -63,18 +73,21 @@ public class ActionProcessor extends Observable implements StepProcessor {
                     currentItem.setStepState(s.getId(),
                             MetaState.DONE.toString());
                     currentItem.setFinished(true);
+                    LOGGER.log(Level.INFO, "[logic] Successfully finished item "+ currentItem.getId() + " from workflow " + currentItem.getWorkflowId());
                 }
             }
-            currentItem.setState("upd");
-            try {
-                p.storeItem(currentItem);
-            } catch (WorkflowNotExistentException e) {
-                e.printStackTrace();
-            }
-            setChanged();
-            notifyObservers(currentItem);
         } else {
-            // TODO what happens if step state is invalid
+            throw new ItemNotForwardableException("no forwarding action on item " + currentItem.getId());
+        } 
+        
+        
+        currentItem.setState("upd");
+        try {
+            p.storeItem(currentItem);
+        } catch (WorkflowNotExistentException e) {
+            e.printStackTrace();
         }
+        setChanged();
+        notifyObservers(currentItem);
     }
 }

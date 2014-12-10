@@ -206,12 +206,13 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getWorkflowsByUser(@PathParam("username") String username) {
         final ObjectMapper mapper = new ObjectMapper();
-        final String loggingBody = "GETALL -> " + username;
+        final String loggingBody = "GETALLBYUSER -> " + username;
         List<Workflow> wflowList = null;
         try {
             wflowList = LOGIC.getAllWorkflowsByUser(username);
             for(Workflow w : wflowList) {
                 w.convertReferencesToIdList();
+                System.out.println(w.toString());
             }
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
