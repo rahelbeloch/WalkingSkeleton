@@ -6,9 +6,11 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import de.hsrm.swt02.logging.UseLogger;
+import de.hsrm.swt02.model.Action;
+import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
-import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.MetaEntry;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -46,6 +48,12 @@ public class LogicImp implements Logic {
         this.p = p;
         this.pm = pm;
         setLogicResponse(new LogicResponse());
+        
+        try {
+            init_Testdata();
+        } catch (UserAlreadyExistsException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -471,6 +479,59 @@ public class LogicImp implements Logic {
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("ROLE-INFO", "role_del" + rolename));
         return logicResponse;
+    }
+    
+    /**
+     * Initialize test datas.
+     * @throws UserAlreadyExistsException 
+     */
+    private void init_Testdata() throws UserAlreadyExistsException{
+        Workflow workflow1, workflow2, workflow3;
+        User user1, user2, user3;
+        StartStep startStep1, startStep2, startStep3;
+        Action action1, action2, action3;
+        FinalStep finalStep;
+       
+        user1 = new User();
+        user1.setUsername("Alex");
+        user2 = new User();
+        user2.setUsername("Dominik");
+        user3 = new User();
+        user3.setUsername("Tilman");
+        
+        addUser(user1);
+        addUser(user2);
+        addUser(user3);
+        
+        startStep1 = new StartStep(user1.getUsername());
+        startStep2 = new StartStep(user2.getUsername());
+        startStep3 = new StartStep(user3.getUsername());
+        
+        action1 = new Action(user1.getUsername(), "Action von " + user1.getUsername());
+        action2 = new Action(user2.getUsername(), "Action von " + user2.getUsername());
+        action3 = new Action(user3.getUsername(), "Action von " + user3.getUsername());
+        
+        finalStep = new FinalStep();
+        
+        workflow1 = new Workflow();
+        workflow1.addStep(startStep1);
+        workflow1.addStep(action1);
+        workflow1.addStep(action2);
+        workflow1.addStep(finalStep);
+        workflow2 = new Workflow();
+        workflow2.addStep(startStep2);
+        workflow2.addStep(action2);
+        workflow2.addStep(action3);
+        workflow2.addStep(finalStep);
+        workflow3 = new Workflow();
+        workflow3.addStep(startStep3);
+        workflow3.addStep(action3);
+        workflow3.addStep(action1);
+        workflow3.addStep(finalStep);
+        
+        addWorkflow(workflow1);
+        addWorkflow(workflow2);
+        addWorkflow(workflow3);
     }
 
 }
