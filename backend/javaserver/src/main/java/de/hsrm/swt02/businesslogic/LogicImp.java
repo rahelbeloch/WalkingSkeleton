@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
@@ -138,7 +140,8 @@ public class LogicImp implements Logic {
      */
     @Override
     public void stepForward(int itemId, int stepId, String username)
-            throws ItemNotExistentException, UserNotExistentException {
+            throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException {
+        
         pm.executeStep(p.loadStep(stepId), p.loadItem(itemId),
                 p.loadUser(username));
     }
@@ -346,15 +349,15 @@ public class LogicImp implements Logic {
             throws UserNotExistentException, WorkflowNotExistentException 
     {
         final LinkedList<Item> relevantItems = new LinkedList<>();
-        for (Workflow usersWorkflow : getAllWorkflowsByUserWithItems(username)) {
-            for (Item item : usersWorkflow.getItems()) {
+            Workflow workflow = getWorkflow(workflowId);
+            for (Item item : workflow.getItems()) {
                 final MetaEntry me = item.getActStep();
-                if (me != null) {
-                    relevantItems.add(item);
+                String itemUsername = workflow.getStepById(Integer.parseInt(me.getKey())).getUsername();
+                if(username.equals(itemUsername) && me != null) {
+                        relevantItems.add(item);
                 }
             }
-        }
-        return relevantItems;
+            return relevantItems;
     }
 
     // /**

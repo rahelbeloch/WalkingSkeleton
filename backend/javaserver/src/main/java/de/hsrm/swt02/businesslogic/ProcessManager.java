@@ -2,6 +2,8 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.Observer;
 
+import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -54,7 +56,7 @@ public interface ProcessManager extends Observer {
      * @param user
      *            who started interaction
      */
-    void executeStep(Step step, Item item, User user);
+    void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException;
 
     /**
      * This method gets a LogicResponse object.

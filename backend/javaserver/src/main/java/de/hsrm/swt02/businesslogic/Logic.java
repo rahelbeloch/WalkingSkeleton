@@ -2,7 +2,9 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.List;
 
+import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
@@ -98,7 +100,7 @@ public interface Logic {
      *                if requested user doesn't exist
      */
     void stepForward(int itemId, int stepId, String username)
-            throws ItemNotExistentException, UserNotExistentException;
+            throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException;
 
     // /**
     // * This method finish a step in an item.

@@ -10,6 +10,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
@@ -87,10 +89,16 @@ public class WorkflowCommandResource {
         try {
             LOGIC.stepForward(itemid, stepid, username);
         } catch (ItemNotExistentException e) {
-            LOGGER.log(Level.WARNING, loggingBody + " Item does not exist.");
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         } catch (UserNotExistentException e) {
-            LOGGER.log(Level.WARNING, loggingBody + " User does not exist.");
+            LOGGER.log(Level.WARNING, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (ItemNotForwardableException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (UserHasNoPermissionException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         logicResponse = LOGIC.getProcessLogicResponse();

@@ -1,5 +1,7 @@
 package de.hsrm.swt02.businesslogic.processors;
 
+import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -21,5 +23,5 @@ public interface StepProcessor {
      * @param user
      *            who sent an edit request
      */
-    void handle(Item item, Step step, User user);
+    void handle(Item item, Step step, User user) throws ItemNotForwardableException, UserHasNoPermissionException;
 }

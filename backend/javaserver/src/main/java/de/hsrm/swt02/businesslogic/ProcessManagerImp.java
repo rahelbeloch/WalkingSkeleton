@@ -7,6 +7,8 @@ import java.util.logging.Level;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.businesslogic.processors.ActionProcessor;
 import de.hsrm.swt02.businesslogic.processors.StartProcessor;
 import de.hsrm.swt02.logging.UseLogger;
@@ -116,7 +118,7 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * @param user
      *            who started interaction
      */
-    public void executeStep(Step step, Item item, User user) {
+    public void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException {
         selectProcessor(step);
         if (step instanceof Action) {
             actionProcessor.addObserver(this);
