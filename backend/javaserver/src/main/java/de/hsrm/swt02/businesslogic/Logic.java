@@ -313,7 +313,7 @@ public interface Logic {
      * @throws UserNotExistentException
      * @return List<Item> is the list of items we want to get
      */
-    List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
+    List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException, LogicException;
 
     /**
     * Method for getting a list of startable workflows by a given user.
@@ -324,18 +324,8 @@ public interface Logic {
     * @throws WorkflowNotExistentException
     * @throws UserNotExistentException
     * @return List<Workflow> is the requested list of workflows
+     * @throws LogicException 
     */
-    List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException;
+    List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException, LogicException;
 
-    /**
-    * Method for getting a workflow by the username.
-    * 
-    * @param username describes the given user
-    * @exception WorkflowNotExistentException if the requested workflow doesnt exist in the persistence
-    * @exception UserNotExistentException if the requested user doesnt exist in the persistence
-    * @throws WorkflowNotExistentException
-    * @throws UserNotExistentException
-    * @return List<Workflow> is the requested list of workflows
-    */
-    List<Workflow> getWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
 }

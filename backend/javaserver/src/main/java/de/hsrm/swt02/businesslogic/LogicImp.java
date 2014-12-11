@@ -71,7 +71,6 @@ public class LogicImp implements Logic {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflowID));
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def="
                 + workflowID));
         return logicResponse;
@@ -86,7 +85,6 @@ public class LogicImp implements Logic {
     public LogicResponse addWorkflow(Workflow workflow) {
         final int id = p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflow.getId()));
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
         return logicResponse;
     }
@@ -115,7 +113,6 @@ public class LogicImp implements Logic {
     public LogicResponse deleteWorkflow(int workflowID) throws WorkflowNotExistentException {
         p.deleteWorkflow(workflowID);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_del" + workflowID));
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=del="
                 + workflowID));
         return logicResponse;
@@ -152,7 +149,6 @@ public class LogicImp implements Logic {
         workflow.addStep(step);
         p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_upd" + workflow.getId()));
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
         return logicResponse;
     }
@@ -172,7 +168,6 @@ public class LogicImp implements Logic {
         workflow.removeStep(stepID);
         p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_upd" + workflow.getId()));
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
         return logicResponse;
     }
@@ -187,7 +182,6 @@ public class LogicImp implements Logic {
     public LogicResponse addUser(User user) throws UserAlreadyExistsException {
         p.addUser(user);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("USER_INFO", "user_def" + user.getUsername()));
         logicResponse.add(new Message("USER_INFO", "user=def=" + user.getUsername()));
         return logicResponse;
     }
@@ -323,9 +317,9 @@ public class LogicImp implements Logic {
      * @return List<Item> is the list of items we want to get
      */
     @Override
-    public List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException {
+    public List<Item> getOpenItemsByUser(String username) throws LogicException, WorkflowNotExistentException, UserNotExistentException {
 
-        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getWorkflowsByUser(username);
+        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getAllWorkflowsByUser(username);
         final LinkedList<Item> items = new LinkedList<Item>();
 
         
@@ -368,7 +362,7 @@ public class LogicImp implements Logic {
         }
         return startableWorkflows;
     }
-
+    
     /**
      * This method returns all Workflows, which can be startes by this user.
      * 
@@ -376,12 +370,11 @@ public class LogicImp implements Logic {
      * @return
      * @throws WorkflowNotExistentException 
      */
-
     @Override
-    public List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException {
+    public List<Workflow> getStartableWorkflows(String username) throws LogicException, WorkflowNotExistentException, UserNotExistentException {
 
         final LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
-        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getWorkflowsByUser(username);
+        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getAllWorkflowsByUser(username);
 
         for (Workflow wf : workflows) {
             if (wf.getStepByPos(0).getUsername().equals(username)) {
@@ -657,11 +650,4 @@ public class LogicImp implements Logic {
 
         addWorkflow(workflow1);
     }
-
-	@Override
-	public List<Workflow> getWorkflowsByUser(String username)
-			throws WorkflowNotExistentException, UserNotExistentException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
