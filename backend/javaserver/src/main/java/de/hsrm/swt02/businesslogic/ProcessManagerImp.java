@@ -39,12 +39,10 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     private StartProcessor startProcessor;
 
     /**
-     * Constructor of ProcessManager.
+     * Constructor of ProcessManager. Per default is the LogicResponse gesettet.
      * 
-     * @param p
-     *            is a singleton for the persistence
-     * @param logger
-     *            for logging information
+     * @param p is a singleton for the persistence
+     * @param logger is for logging information
      */
     @Inject
     public ProcessManagerImp(Persistence p, UseLogger logger) {
@@ -57,10 +55,8 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * This method checks if the user is authorized to do something (like
      * executing) with a step.
      * 
-     * @param step
-     *            which user wants to edit
-     * @param username
-     *            indicates user who should be checked
+     * @param step is the step the user wants to edit
+     * @param username is the name of the user to check
      * @return true if user is "owner" of step and false if not
      */
     public boolean checkAuthorization(Step step, String username) {
@@ -77,10 +73,8 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * This method checks if the inquired user can actually start the workflow.
      * If she/he can a workflow is started.
      * 
-     * @param workflow
-     *            which should be started.
-     * @param username
-     *            who wants to start workflow.
+     * @param workflow is the which should be started.
+     * @param username is the name of the user who wants to start workflow.
      */
     public void startWorkflow(Workflow workflow, String username) {
         final StartStep startStep = (StartStep) workflow.getStepByPos(0);
@@ -97,8 +91,7 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     /**
      * This method selects the appropriate stepprocessor for a step.
      * 
-     * @param step
-     *            which will be executed
+     * @param step is the step which will be executed
      */
     public void selectProcessor(Step step) {
         if (step instanceof Action) {
@@ -111,12 +104,13 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     /**
      * This method executes step operations.
      * 
-     * @param step
-     *            which is to be edited
-     * @param item
-     *            which is currently active
-     * @param user
-     *            who started interaction
+     * @param step is the step which is to be edited
+     * @param item is the item which is currently active
+     * @param user is the user who started tzhe operation
+     * @exception ItemNotForwardableException if the steplist corresponding to an item can't go any further
+     * @exception UserHasNoPermissionException if the given user is not responsible for the step
+     * @throws ItemNotForawrdableException
+     * @throws UserHasNoPermissionException
      */
     public void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException {
         selectProcessor(step);
@@ -129,10 +123,8 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     /**
      * This method is executed if its observables notifies changes.
      * 
-     * @param o
-     *            is the observed object
-     * @param arg
-     *            is an object which is received when notified
+     * @param o is the observed object, can be any object of the datamodels
+     * @param arg is an object which is received when notified
      */
     public void update(Observable o, Object arg) {
         logicResponse.add(new Message("ITEMS_FROM"
@@ -152,8 +144,7 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     /**
      * Setter for logicResonse.
      * 
-     * @param lr
-     *            will be the value of logicResponse
+     * @param lr will be the value of logicResponse
      */
     public void setLogicResponse(LogicResponse lr) {
         this.logicResponse = lr;

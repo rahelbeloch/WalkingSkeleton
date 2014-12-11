@@ -169,10 +169,10 @@ public class RestserverWorkflowTest {
         
         final ObjectMapper mapper = new ObjectMapper();
         
-        Workflow workflow = new Workflow();
-        Step step1 = new StartStep();
-        Step step2 = new Step();
-        Step step3 = new FinalStep();
+        final Workflow workflow = new Workflow();
+        final Step step1 = new StartStep();
+        final Step step2 = new Step();
+        final Step step3 = new FinalStep();
         step1.setUsername("Alex");
         step2.setUsername("Alex");
         step3.setUsername("Alex");
@@ -180,11 +180,13 @@ public class RestserverWorkflowTest {
         workflow.addStep(step2);
         workflow.addStep(step3);
         
-        User alex = new User();
+        final User alex = new User();
         alex.setUsername("Alex");
         
         String workflowAsString = null;
         String userAsString = null;
+        
+        final int HTTPStatus = 200;
         
         //Store Workflow in persistence
         try {
@@ -218,8 +220,9 @@ public class RestserverWorkflowTest {
                 .path("resource/workflows/Alex").request().get(String.class);
         
         //Get all workflows for User "Alex"
-        List <Workflow> wList = null;
-        JavaType type = mapper.getTypeFactory().
+        List<Workflow> wList = null;
+        Workflow recievedWorkflow = null;
+        final JavaType type = mapper.getTypeFactory().
                 constructCollectionType(List.class, Workflow.class);
         try {
             wList = mapper.readValue(workflowAsString, type);
@@ -227,12 +230,16 @@ public class RestserverWorkflowTest {
             e.printStackTrace();
         }
         
-        assertEquals(1,wList.size());
+        if (wList != null) {
+            assertEquals(1,wList.size());
+        }
         
-        Workflow receivedWorkflow = wList.get(0);
+        if (wList != null) {
+            recievedWorkflow = wList.get(0);
+        }
         
-        assertEquals(workflow.getSteps().get(0).getUsername(),receivedWorkflow.getSteps().get(0).getUsername());
-        assertEquals(200,resp.getStatus());
+        assertEquals(workflow.getSteps().get(0).getUsername(),recievedWorkflow.getSteps().get(0).getUsername());
+        assertEquals(HTTPStatus, resp.getStatus());
         
     }
 

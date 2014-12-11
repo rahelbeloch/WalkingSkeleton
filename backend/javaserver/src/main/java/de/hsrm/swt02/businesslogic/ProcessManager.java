@@ -20,10 +20,8 @@ public interface ProcessManager extends Observer {
      * This method checks if the user is authorized to do something (like
      * executing) with a step.
      * 
-     * @param step
-     *            which user wants to edit
-     * @param username
-     *            who edits the step
+     * @param step which user wants to edit
+     * @param username who edits the step
      * @return true if user is "owner" of step and false if not
      */
     boolean checkAuthorization(Step step, String username);
@@ -31,45 +29,42 @@ public interface ProcessManager extends Observer {
     /**
      * This method starts a workflow.
      * 
-     * @param workflow
-     *            which will be started
-     * @param username
-     *            indicates who wants to start a workflow
+     * @param workflow which will be started
+     * @param username indicates who wants to start a workflow
      */
     void startWorkflow(Workflow workflow, String username);
 
     /**
      * This method selects the appropriate stepprocessor for a step.
      * 
-     * @param step
-     *            which will be executed
+     * @param step which will be executed
      */
     void selectProcessor(Step step);
 
     /**
      * This method executes the step operation.
      * 
-     * @param step
-     *            which is to be edited
-     * @param item
-     *            which is currently active
-     * @param user
-     *            who started interaction
+     * @param step which is to be edited
+     * @param item which is currently active
+     * @param user who started interaction
+     * @exception ItemNotForwardableException if the steplist corresponding to an item can't go any further
+     * @exception UserHasNoPermissionException if the given user is not responsible for the step
+     * @throws ItemNotForawrdableException
+     * @throws UserHasNoPermissionException
      */
     void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException;
 
     /**
      * This method gets a LogicResponse object.
      * 
-     * @return LogicResponse object
+     * @return LogicResponse is the LogicResponse object
      */
     LogicResponse getLogicResponse();
 
     /**
      * This method sets a LogicResponse object.
      * 
-     * @param lr
-     *            is the new logicResponse
+     * @param lr is the new logicResponse
      */
     void setLogicResponse(LogicResponse lr);
 }
