@@ -21,9 +21,9 @@ import java.util.logging.Logger;
  */
 public class LogConfigurator {
 
-    static private FileHandler fileHTMLHandler;
-    static private Formatter formatterHTML;
-    static private Map<String, Level> levelMap;
+    private static FileHandler fileHTMLHandler;
+    private static Formatter formatterHTML;
+    private static Map<String, Level> levelMap;
     static {
         final Map<String, Level> unmodifiableMap = new HashMap<String, Level>();
         unmodifiableMap.put("severe", Level.SEVERE);
@@ -44,7 +44,7 @@ public class LogConfigurator {
      * 
      * @throws IOException if server.config file can't be found
      */
-    static public void setup() {
+    public static void setup() {
         final Logger logger = Logger.getLogger(UseLogger.class.getName());
         final Properties properties = new Properties();
         BufferedInputStream stream;
