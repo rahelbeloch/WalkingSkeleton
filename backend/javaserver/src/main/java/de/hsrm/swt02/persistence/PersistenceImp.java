@@ -601,9 +601,12 @@ public class PersistenceImp implements Persistence {
     }
     
     /**
-     * 
+     * Method for deleting an existing role.
+     * @param rolename is the name of the given role
+     * @exception RoleNotExistentException if the given role doesnt exist
+     * @throws RoleNotExistentException
      */
-    public void deleteRole(String rolename) throws RoleNotExistentException{
+    public void deleteRole(String rolename) throws RoleNotExistentException {
         Role roleToRemove = null;
         for (Role r: roles) {
             if (r.getRolename().equals(rolename)) {
@@ -619,7 +622,7 @@ public class PersistenceImp implements Persistence {
                     }
                 }
             }
-            users.remove(roleToRemove);
+            roles.remove(roleToRemove);
         } else {
             final RoleNotExistentException e = new RoleNotExistentException(rolename);
             this.logger.log(Level.WARNING, e);

@@ -26,8 +26,7 @@ public class StartProcessor extends Observable {
     /**
      * Constructor of StartProcessor.
      * 
-     * @param p
-     *            is a singleton instance of the persistence
+     * @param p is a singleton instance of the persistence
      */
     @Inject
     public StartProcessor(Persistence p) {
@@ -40,8 +39,7 @@ public class StartProcessor extends Observable {
      * initialized steps. The item consists of pairs of step IDs and its
      * MetaState.
      * 
-     * @param workflow
-     *            it's id will be noted within a new item
+     * @param workflow it's id will be noted within a new item
      */
     public void createItem(Workflow workflow) {
 
@@ -60,10 +58,8 @@ public class StartProcessor extends Observable {
      * creating and initializing the item, add it to workflow. The state of the
      * very first step is set to "OPEN".
      * 
-     * @param workflow
-     *            provides a step list, which will be transformed into Metadatas
-     * @param item
-     *            is the freshly created item for a workflow
+     * @param workflow provides a step list, which will be transformed into Metadatas
+     * @param item is the freshly created item for a workflow
      */
     public void initiateItem(Workflow workflow, Item item) {
 
@@ -72,6 +68,7 @@ public class StartProcessor extends Observable {
                 item.set(s.getId() + "", "step", MetaState.INACTIVE.toString());
             }
         }
+        
         workflow.addItem(item);
         if (!item.getForGroup("step").isEmpty()) {
             item.setFirstStepState(MetaState.OPEN.toString());
@@ -83,6 +80,7 @@ public class StartProcessor extends Observable {
         } catch (WorkflowNotExistentException e) {
             e.printStackTrace();
         }
+        
         setChanged();
         item.setState("def");
         notifyObservers(item);

@@ -41,14 +41,10 @@ public class LogicImp implements Logic {
     /**
      * Constructor for LogicImp.
      * 
-     * @param p
-     *            is a singleton instance of the persistence
-     * @param pm
-     *            is a singleton instance of the processmanager
-     * 
-     * @param logger
-     *            is the logger instance for this application
-     */
+     * @param p is a singleton instance of the persistence
+     * @param pm is a singleton instance of the processmanager
+     * @param logger is the logger instance for this application
+    */
     @Inject
     public LogicImp(Persistence p, ProcessManager pm, UseLogger logger) {
         this.p = p;
@@ -65,18 +61,17 @@ public class LogicImp implements Logic {
     /**
      * This method starts a Workflow via processmanager.
      * 
-     * @param workflowID
-     *            the workflow, which should be started
-     * @param user
-     *            the User, who starts the workflow
+     * @param workflowID the workflow, which should be started
+     * @param user the User, who starts the workflow
+     * @exception WorkflowNotExistentException if the requested workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException
-     */
+    */
     @Override
-    public LogicResponse startWorkflow(int workflowID, String username)
-            throws WorkflowNotExistentException {
+    public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflowID));
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def="
                 + workflowID));
         return logicResponse;
@@ -86,11 +81,12 @@ public class LogicImp implements Logic {
      * This method store a workflow and distribute a id.
      * 
      * @param workflow
-     */
+    */
     @Override
     public LogicResponse addWorkflow(Workflow workflow) {
         final int id = p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_def" + workflow.getId()));
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
         return logicResponse;
     }
@@ -102,10 +98,9 @@ public class LogicImp implements Logic {
      *            describe the workflow
      * @return a Workflow, if there is one, who has this workflowID
      * @throws WorkflowNotExistentException
-     */
+    */
     @Override
-    public Workflow getWorkflow(int workflowID)
-            throws WorkflowNotExistentException {
+    public Workflow getWorkflow(int workflowID) throws WorkflowNotExistentException {
         return (Workflow) p.loadWorkflow(workflowID);
     }
 
@@ -117,10 +112,10 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException
      */
     @Override
-    public LogicResponse deleteWorkflow(int workflowID)
-            throws WorkflowNotExistentException {
+    public LogicResponse deleteWorkflow(int workflowID) throws WorkflowNotExistentException {
         p.deleteWorkflow(workflowID);
         setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_del" + workflowID));
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=del="
                 + workflowID));
         return logicResponse;
@@ -129,30 +124,24 @@ public class LogicImp implements Logic {
     /**
      * This method execute a step in an item.
      * 
-     * @param item
-     *            the Item, which edited
-     * @param step
-     *            the step, which execute
-     * @param user
-     *            , who execute the step in the Item
+     * @param item the Item, which edited
+     * @param step the step, which execute
+     * @param user, who execute the step in the Item
      * @throws UserNotExistentException
      * @throws ItemNotExistentException
      */
     @Override
-    public void stepForward(int itemId, int stepId, String username)
-            throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException {
+    public void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException {
         
-        pm.executeStep(p.loadStep(stepId), p.loadItem(itemId),
-                p.loadUser(username));
+        pm.executeStep(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
+        
     }
 
     /**
      * This method add a step into an existing Workflow.
      * 
-     * @param workflowID
-     *            the workflow, which shall edited
-     * @param step
-     *            the step, which shall added
+     * @param workflowID the workflow, which shall edited
+     * @param step the step, which shall added
      * @throws WorkflowNotExistentException
      */
     @Override
@@ -163,18 +152,16 @@ public class LogicImp implements Logic {
         workflow.addStep(step);
         p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd="
-                + workflow.getId()));
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_upd" + workflow.getId()));
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
         return logicResponse;
     }
 
     /**
      * This method delete a step from an existing Workflow.
      * 
-     * @param workflowID
-     *            the workflow, which shall edited
-     * @param stepID
-     *            the step, which shall delete
+     * @param workflowID the workflow, which shall edited
+     * @param stepID the step, which shall delete
      * @throws WorkflowNotExistentException
      */
     @Override
@@ -185,8 +172,8 @@ public class LogicImp implements Logic {
         workflow.removeStep(stepID);
         p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd="
-                + workflow.getId()));
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow_upd" + workflow.getId()));
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
         return logicResponse;
     }
 
@@ -200,16 +187,15 @@ public class LogicImp implements Logic {
     public LogicResponse addUser(User user) throws UserAlreadyExistsException {
         p.addUser(user);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("USER_INFO", "user=def="
-                + user.getUsername()));
+        logicResponse.add(new Message("USER_INFO", "user_def" + user.getUsername()));
+        logicResponse.add(new Message("USER_INFO", "user=def=" + user.getUsername()));
         return logicResponse;
     }
 
     /**
      * This method loads a User.
      * 
-     * @param username
-     *            describe the user
+     * @param username describe the user
      * @return a User, if there is one, who has this username
      * @throws UserNotExistentException
      */
@@ -221,8 +207,7 @@ public class LogicImp implements Logic {
     /**
      * This method delete a User.
      * 
-     * @param username
-     *            describe the user
+     * @param username describe the user
      * @throws UserNotExistentException
      */
     @Override
@@ -231,7 +216,7 @@ public class LogicImp implements Logic {
     {
         p.deleteUser(username);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("USER_INFO", "user=del=" + username));
+        logicResponse.add(new Message("USER_INFO", "user_del" + username));
         return logicResponse;
     }
 
@@ -239,7 +224,7 @@ public class LogicImp implements Logic {
      * This method returns all workflows, in which the user is involved. Mind
      * that this method won't return the items only a list of workflows.
      * 
-     * @param user
+     * @param username describes the user
      * @return a LinkedList of workflows
      * @throws LogicException
      */
@@ -273,8 +258,7 @@ public class LogicImp implements Logic {
      * Aditional method to get all workflows for a specfic user WITH items. This
      * method should not be used from outside the logicImplementation.
      * 
-     * @param username
-     *            the username
+     * @param username the username
      * @return a list of workflows
      * @throws WorkflowNotExistentException if a workflow doesnt exists.
      * @throws UserNotExistentException if the user doesnt exists.
@@ -328,10 +312,50 @@ public class LogicImp implements Logic {
     // return items;
     // }
 
+    /**
+     * Method for giving a List of items of a user which are all open.
+     * 
+     * @param username describes the given user
+     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
+     * @exception UserNotExistentException if the given user doesnt exist in the persistence
+     * @throws WorkflowNotExistentException
+     * @throws UserNotExistentException
+     * @return List<Item> is the list of items we want to get
+     */
     @Override
-    public List<Integer> getStartableWorkflowsByUser(String username)
-            throws LogicException 
-    {
+    public List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException {
+
+        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getWorkflowsByUser(username);
+        final LinkedList<Item> items = new LinkedList<Item>();
+
+        
+        for (Workflow wf : workflows) {
+            for (Item item : wf.getItems()) {
+
+                if ((wf.getStepById(Integer
+                        .parseInt(item.getActStep().getKey())).getUsername())
+                        .equals(username)) 
+                {
+                    items.add(item);
+                }
+            }
+        }
+        return items;
+    }
+    
+    /**
+    * Method for getting a workflow by the username.
+    * 
+    * @param username describes the given user
+    * @exception WorkflowNotExistentException if the requested workflow doesnt exist in the persistence
+    * @exception UserNotExistentException if the requested user doesnt exist in the persistence
+    * @throws LogicException if there is an Exception in the businesslogic
+    * @throws WorkflowNotExistentException
+    * @throws UserNotExistentException
+    * @throws LogicException
+    * @return List<Workflow> is the requested list of workflows
+    */
+    public List<Integer> getStartableWorkflowsByUser(String username) throws LogicException {
         final List<Integer> startableWorkflows = new LinkedList<>();
         for (Workflow workflow : getAllWorkflowsByUser(username)) {
             if (workflow.isActive()) {
@@ -345,22 +369,53 @@ public class LogicImp implements Logic {
         return startableWorkflows;
     }
 
+    /**
+     * This method returns all Workflows, which can be startes by this user.
+     * 
+     * @param user
+     * @return
+     * @throws WorkflowNotExistentException 
+     */
+
     @Override
+    public List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException {
+
+        final LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
+        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getWorkflowsByUser(username);
+
+        for (Workflow wf : workflows) {
+            if (wf.getStepByPos(0).getUsername().equals(username)) {
+                startableWorkflows.add(wf);
+            }
+        }
+        return startableWorkflows;
+    }
+    
+    /**
+     * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
+     * @param workflowId is the id of the given workflow
+     * @param username desribes the given user
+     * @exception WorkflowNotExistentException if the given workflow doesnt exist i9n the persistence
+     * @exception UserNotExistentException if the given user doesnt exist in the persistence
+     * @throws WorkflowNotExistentException
+     * @throws UserNotExistentException
+     * @return List<Integer> list of stepIds
+     */    
     public List<Item> getRelevantItemsByUser(int workflowId, String username)
             throws UserNotExistentException, WorkflowNotExistentException 
     {
         final LinkedList<Item> relevantItems = new LinkedList<>();
-            Workflow workflow = getWorkflow(workflowId);
-            for (Item item : workflow.getItems()) {
-                final MetaEntry me = item.getActStep();
-                if(me != null) {
-                    String itemUsername = workflow.getStepById(Integer.parseInt(me.getKey())).getUsername();
-                    if(username.equals(itemUsername)) {
-                        relevantItems.add(item);
-                    }
-                } 
-            }
-            return relevantItems;
+        final Workflow workflow = getWorkflow(workflowId);
+        for (Item item : workflow.getItems()) {
+            final MetaEntry me = item.getActStep();
+            if (me != null) {
+                final String itemUsername = workflow.getStepById(Integer.parseInt(me.getKey())).getUsername();
+                if (username.equals(itemUsername)) {
+                    relevantItems.add(item);
+                }
+            } 
+        }
+        return relevantItems;
     }
 
     // /**
@@ -391,7 +446,6 @@ public class LogicImp implements Logic {
      * 
      * @return processmanager's logicResponse object
      */
-
     public LogicResponse getProcessLogicResponse() {
         return pm.getLogicResponse();
     }
@@ -399,8 +453,7 @@ public class LogicImp implements Logic {
     /**
      * Setter for LogicResponse object from the processmanager instance.
      * 
-     * @param lr
-     *            new LogicResponse object for processmanager logicResponse
+     * @param lr new LogicResponse object for processmanager logicResponse
      */
     public void setProcessLogicResponse(LogicResponse lr) {
         pm.setLogicResponse(lr);
@@ -605,4 +658,10 @@ public class LogicImp implements Logic {
         addWorkflow(workflow1);
     }
 
+	@Override
+	public List<Workflow> getWorkflowsByUser(String username)
+			throws WorkflowNotExistentException, UserNotExistentException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

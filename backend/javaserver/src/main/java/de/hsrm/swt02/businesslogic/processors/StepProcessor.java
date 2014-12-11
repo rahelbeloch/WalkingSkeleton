@@ -9,19 +9,19 @@ import de.hsrm.swt02.model.User;
 /**
  * This is the interface of the StepProcessor.
  * 
- * @author jvanh001
  */
 public interface StepProcessor {
 
     /**
      * This is the method header for executing a step.
      * 
-     * @param item
-     *            which is active in a workflow
-     * @param step
-     *            which an user wishes to edit
-     * @param user
-     *            who sent an edit request
+     * @param item which is active in a workflow
+     * @param step which an user wishes to edit
+     * @param user who sent an edit request
+     * @exception ItemNotForwardableException if the responding steplist of the given item is not any more forwardable
+     * @exception UserHasNoPermissionException if the given user has no permission to operate on the item
+     * @throws ItemNotForwardableException
+     * @throws UserHasNoPermissionException
      */
     void handle(Item item, Step step, User user) throws ItemNotForwardableException, UserHasNoPermissionException;
 }

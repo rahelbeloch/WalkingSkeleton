@@ -5,9 +5,6 @@ package de.hsrm.swt02.businesslogic.exceptions;
  */
 public class ItemNotForwardableException extends NoPermissionException {
     
-    /**
-     * 
-     */
     private static final long serialVersionUID = 4662908169144576997L;
     public static final int ERRORCODE = 11320;
     

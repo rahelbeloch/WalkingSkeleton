@@ -12,7 +12,7 @@ public class LogicResponse {
     private List<Message> messages;
 
     /**
-     * Constructor.
+     * Constructor for LogicResponse.
      */
     public LogicResponse() {
         setMessages(new LinkedList<Message>());
@@ -25,6 +25,7 @@ public class LogicResponse {
     public void add(Message m) {
         messages.add(m);
     }
+    
     /**
      * Getter for messages.
      * 

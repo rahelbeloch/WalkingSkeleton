@@ -22,7 +22,7 @@ import de.hsrm.swt02.logging.UseLogger;
 public class RestServer {
 
     private static final int WAITING_TIME = 5;
-    private static UseLogger logger;
+    private UseLogger logger = new UseLogger();
     private HttpServer server;
     private String baseURI;
 
@@ -30,7 +30,6 @@ public class RestServer {
      * Constructor.
      */
     public RestServer() {
-        logger = new UseLogger();
         final Properties properties = new Properties();
         BufferedInputStream stream;
         // read configuration file for rest properties

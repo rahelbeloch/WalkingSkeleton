@@ -21,35 +21,28 @@ import de.hsrm.swt02.restserver.LogicResponse;
 
 /**
  * This interface is used for the business logic.
- *
  */
 public interface Logic {
 
-    /*
-     * workflow functions
-     */
     /**
      * This method starts a Workflow.
      * 
-     * @param workflowID
-     *            the workflow, which should be started
-     * @param username
-     *            the User, who starts the workflow
+     * @param workflowID is the workflow, which should be started
+     * @param username is the User, who starts the workflow
      * @return logicResponse of starting a workflow
+     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException
      */
-    LogicResponse startWorkflow(int workflowID, String username)
-            throws WorkflowNotExistentException;
+    LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException;
 
     /**
      * This method store a workflow and distribute a id.
      * 
-     * @param workflow
-     *            which should be added
+     * @param workflow is the workflow which should be added
      * @return logicResponse of adding a workflow
      */
-    LogicResponse addWorkflow(Workflow workflow); // later a workflows name will
-                                                  // be available
+    LogicResponse addWorkflow(Workflow workflow); // later a workflows name will be given a name
+                                                  
 
     /**
      * This method return all workflows in persistence.
@@ -62,9 +55,9 @@ public interface Logic {
     /**
      * This method loads a Workflow.
      * 
-     * @param workflowID
-     *            describe the workflow
+     * @param workflowID is the id of the given worklow
      * @return a Workflow, if there is one, who has this workflowID
+     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException
      */
     Workflow getWorkflow(int workflowID) throws WorkflowNotExistentException;
@@ -86,21 +79,19 @@ public interface Logic {
     /**
      * This method execute a step in an item.
      * 
-     * @param itemId
-     *            the itemId, which edited
-     * @param stepId
-     *            the stepId, which execute
-     * @param username
-     *            who execute the step in the Item
+     * @param itemId is the itemId of the given item
+     * @param stepId the stepId of the responsible item step
+     * @param username is the name of the user who executes the step in the Item
      * @throws ItemNotExistentException
-     * @exception ItemNotExistentException
-     *                if requested item doesn't exist
+     * @exception ItemNotExistentException if requested item doesn't exist
+     * @exception ItemNotForwardableException if the responsive steplist of the item can't go any further
+     * @exception UserHasNoPermissionException if the given user has no right to advance the steplist
      * @throws UserNotExistentException
-     * @exception UserNotExistentException
-     *                if requested user doesn't exist
+     * @throws ItemNotForwardableException
+     * @throws UserHasNoPermissionException
+     * @exception UserNotExistentException if requested user doesn't exist
      */
-    void stepForward(int itemId, int stepId, String username)
-            throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException;
+    void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException;
 
     // /**
     // * This method finish a step in an item.
@@ -108,71 +99,59 @@ public interface Logic {
     // * @param itemId the Item, which edited
     // * @param stepId the step, which execute
     // * @param username who execute the step in the Item
-    // * @throws ItemNotExistentException
     // * @exception ItemNotExistentException if requested item doesn't exist
-    // * @throws UserNotExistentException
     // * @exception UserNotExistentException if requested user doesn't exist
+    // * @throws UserNotExistentException
+    // * @throws ItemNotExistentException
     // */
-    // void stepFinished(int itemId, int stepId, String username) throws
-    // ItemNotExistentException, UserNotExistentException;
+    // void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
 
-    /*
-     * step functions
-     */
     /**
-     * This method deactivate a workflow.
+     * This method deactivates a workflow.
      * 
-     * @param workflowID
-     *            the id of the workflow which should be deactivate
+     * @param workflowID the id of the workflow which should be deactivate
+     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException 
      */
-    void deactiviateWorkflow(int workflowID)
-            throws WorkflowNotExistentException;
+    void deactiviateWorkflow(int workflowID) throws WorkflowNotExistentException;
 
     /**
      * This method activate a workflow.
      * 
-     * @param workflowID
-     *            the id of the workflow which should be deactivate
+     * @param workflowID the id of the workflow which should be deactivate
      * @throws WorkflowNotExistentException 
      *
     void activiateWorkflow(int workflowID) throws WorkflowNotExistentException;
+    **/
 
     /**
      * This method add a step into an existing Workflow.
      * 
-     * @param workflowID
-     *            the workflow, which shall edited
-     * @param stepId
-     *            the step, which shall added
+     * @param workflowID the workflow, which shall edited
+     * @param stepId is the Id the step, which shall added
      * @return logicResponse of adding a step
+     * @exception WorkflowNotExistentException if the given worklow doesnt exist in the persistence
      * @throws WorkflowNotExistentException 
      */
-    LogicResponse addStep(int workflowID, Step stepId)
-            throws WorkflowNotExistentException;
+    LogicResponse addStep(int workflowID, Step stepId) throws WorkflowNotExistentException;
 
     /**
      * This method delete a step from an existing Workflow.
      * 
-     * @param workflowID
-     *            the workflow, which shall edited
-     * @param stepID
-     *            the step, which shall delete
+     * @param workflowID is the id of the workflow, which shall edited
+     * @param stepID is the id of the step, which shall delete
      * @return logicResponse of deleting a step
+     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException 
      */
-    LogicResponse deleteStep(int workflowID, int stepID)
-            throws WorkflowNotExistentException;
+    LogicResponse deleteStep(int workflowID, int stepID) throws WorkflowNotExistentException;
 
-    /*
-     * user functions
-     */
     /**
      * This method store a workflow and distribute a id.
      * 
-     * @param user
-     *            which should be added
+     * @param user is the given user which should be added
      * @return logicResponse of adding a user
+     * @exception UserAlreadyExistsException if the given user already exists in the persistence
      * @throws UserAlreadyExistsException 
      */
     LogicResponse addUser(User user) throws UserAlreadyExistsException;
@@ -180,33 +159,28 @@ public interface Logic {
     /**
      * This method loads a User.
      * 
-     * @param username
-     *            describe the user
+     * @param username describe the user
      * @return a User, if there is one, who has this username
+     * @exception UserNotExistentException if the given user doesnt exist in the persistence
      * @throws UserNotExistentException 
      */
-    User getUser(String username) throws UserNotExistentException; // not
-                                                                   // attached
-                                                                   // yet
+    User getUser(String username) throws UserNotExistentException; // not there yet
 
     /**
-     * This method check a User.
+     * This method checks a User.
      * 
-     * @param username
-     *            the user, to be checked
+     * @param username of the user, to be checked
      * @return if user correct true, else false
+     * @exception UserNotExistentException if the given user doesnt exist in the persistence
      * @throws UserNotExistentException
-     *             will be thrown if user doesn't exist
      */
-    boolean checkLogIn(String username) throws UserNotExistentException; // later
-                                                                         // with
-                                                                         // password
+    boolean checkLogIn(String username) throws UserNotExistentException; // later with passwordcheck
 
     /**
-     * This method delete a User.
+     * This method deletes a User.
      * 
-     * @param username
-     *            describe the user
+     * @param username describes the user
+     * @exception UserNotExistentException if the given user doesnt exist in the persistence
      * @throws UserNotExistentException
      * @return logicResponse of deleting a user
      */
@@ -215,36 +189,45 @@ public interface Logic {
     /**
      * This method returns all workflows, in which the user is involved, no
      * matter if there is an open or busy item for him Mind that this method
-     * won't return the items only a list of workflows
+     * won't return the items only a list of workflows.
      * 
-     * @param username
-     *            whose workflows' is looked for
-     * @return a LinkedList of workflows
-     */
-    List<Workflow> getAllWorkflowsByUser(String username)
-            throws WorkflowNotExistentException, UserNotExistentException,
-            LogicException;
-
-    /**
-     * 
-     * @param username
-     * @return
-     * @throws UserNotExistentException
-     */
-    List<Integer> getStartableWorkflowsByUser(String username)
-            throws UserNotExistentException, WorkflowNotExistentException,
-            LogicException;
-
-    /**
-     * 
-     * @param workflowId
-     * @param username
-     * @return
+     * @param username is the username of the user whose workflows' is looked for
+     * @exception WorkflowNotExistentException if the requested workflow doesnt exist in the persistence
+     * @exception UserNotExistentException if the given user doesnt exist in the persistence
+     * @exception LogicException if there is an exception in the businesslogic
      * @throws WorkflowNotExistentException
      * @throws UserNotExistentException
+     * @throws LogicException
+     * @return a LinkedList of workflows
      */
-    List<Item> getRelevantItemsByUser(int workflowId, String username)
-            throws WorkflowNotExistentException, UserNotExistentException;
+    List<Workflow> getAllWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException, LogicException;
+
+    /**
+     * Method for getting a list of the ids of workflows startable by a given user (if the user is responsible for the Startstep of the steplist).
+     * 
+     * @param username is the name and describes the given user
+     * @exception UserNotExistentException if the requested user doesnt exist in the persistence
+     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
+     * @exception LogicException if there is an exception in the logic
+     * @throws UserNotExistentException
+     * @throws WorkflowNotExistentException
+     * @throws LogicException
+     * @throws UserNotExistentException
+     * @return List<Integer> list of Ids
+     */
+    List<Integer> getStartableWorkflowsByUser(String username) throws UserNotExistentException, WorkflowNotExistentException, LogicException;
+
+    /**
+     * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
+     * @param workflowId is the id of the given workflow
+     * @param username desribes the given user
+     * @exception WorkflowNotExistentException if the given workflow doesnt exist i9n the persistence
+     * @exception UserNotExistentException if the given user doesnt exist in the persistence
+     * @throws WorkflowNotExistentException
+     * @throws UserNotExistentException
+     * @return List<Integer> list of stepIds
+     */
+    List<Item> getRelevantItemsByUser(int workflowId, String username) throws WorkflowNotExistentException, UserNotExistentException;
 
     /**
      * This method gets a LogicResponse object.
@@ -256,19 +239,19 @@ public interface Logic {
     /**
      * Setter for logicResponse.
      * 
-     * @param lr
-     *            is new value for logicResponse
+     * @param lr is new value for logicResponse
      */
     void setProcessLogicResponse(LogicResponse lr);
 
-    // Business Logik Sprint 2
+    
+    
+    // Business Logic Sprint 2
 
     /**
      * Method for getting a list of all the existing roles in the persistance.
      * 
      * @return list of all roles
-     * @exception RoleNotExistentException
-     *                if the requested Role is not there
+     * @exception RoleNotExistentException if the requested Role is not there
      * @throws RoleNotExistentException
      */
     List<Role> getAllRoles() throws RoleNotExistentException;
@@ -277,8 +260,7 @@ public interface Logic {
      * Method for returning a list of all the existing users in the persistance.
      * 
      * @return list of all users
-     * @exception UserNotExistentException
-     *                if the requested user is not there
+     * @exception UserNotExistentException if the requested user is not there
      * @throws UserNotExistentException
      */
     List<User> getAllUsers() throws UserNotExistentException;
@@ -286,11 +268,9 @@ public interface Logic {
     /**
      * Method for adding a new role in the persistance.
      * 
-     * @param role
-     *            is the role we want to add
+     * @param role is the role we want to add
      * @return LogicResponse object
-     * @exception RoleAlreadyExistsException
-     *                if the role we want to add is already there
+     * @exception RoleAlreadyExistsException if the role we want to add is already there
      * @throws RoleAlreadyExistsException
      */
     LogicResponse addRole(Role role) throws RoleAlreadyExistsException;
@@ -298,17 +278,12 @@ public interface Logic {
     /**
      * Method for adding an existing role to the rolelist of an existing user.
      * 
-     * @param username
-     *            is the username of the user
-     * @param role
-     *            is the role we want to add
+     * @param username is the username of the user
+     * @param role is the role we want to add
      * @return LogicResponse object
-     * @exception UserNotExistentException
-     *                if the user is not in the persistance
-     * @exception RoleNotExistentException
-     *                if the role is not in the persistance
-     * @exception UserHasAlreadyRoleException
-     *                if the user has already the role in his rolelist
+     * @exception UserNotExistentException if the user is not in the persistance
+     * @exception RoleNotExistentException if the role is not in the persistance
+     * @exception UserHasAlreadyRoleException if the user has already the role in his rolelist
      * @throws UserNotExistentException
      * @throws RoleNotExistentException
      * @throws UserHasAlreadyRoleException
@@ -321,12 +296,46 @@ public interface Logic {
      * Method for deleting an existing role from the persistance. The users who
      * have this role will lose it too.
      * 
-     * @param rolename
-     *            of the role
+     * @param rolename of the role
      * @return LogicResponce object
-     * @exception RoleNotExistentException
-     *                if the requested role is not there
+     * @exception RoleNotExistentException if the requested role is not there
      * @throws RoleNotExistentException
      */
     LogicResponse deleteRole(String rolename) throws RoleNotExistentException;
+
+    /**
+     * Method for giving a List of items of a user which are all open.
+     * 
+     * @param username describes the given user
+     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
+     * @exception UserNotExistentException if the given user doesnt exist in the persistence
+     * @throws WorkflowNotExistentException
+     * @throws UserNotExistentException
+     * @return List<Item> is the list of items we want to get
+     */
+    List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
+
+    /**
+    * Method for getting a list of startable workflows by a given user.
+    * 
+    * @param username describes the user
+    * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
+    * @exception UserNotExistentException if the given user doesnt exist in the persistence
+    * @throws WorkflowNotExistentException
+    * @throws UserNotExistentException
+    * @return List<Workflow> is the requested list of workflows
+    */
+    List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException;
+
+    /**
+    * Method for getting a workflow by the username.
+    * 
+    * @param username describes the given user
+    * @exception WorkflowNotExistentException if the requested workflow doesnt exist in the persistence
+    * @exception UserNotExistentException if the requested user doesnt exist in the persistence
+    * @throws WorkflowNotExistentException
+    * @throws UserNotExistentException
+    * @return List<Workflow> is the requested list of workflows
+    */
+    List<Workflow> getWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException;
 }

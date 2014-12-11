@@ -5,9 +5,6 @@ package de.hsrm.swt02.businesslogic.exceptions;
  */
 public class UserHasNoPermissionException extends NoPermissionException {
     
-    /**
-     * 
-     */
     private static final long serialVersionUID = -2596215157765836553L;
     public static final int ERRORCODE = 11310;
     
