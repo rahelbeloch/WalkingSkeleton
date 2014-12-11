@@ -6,6 +6,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * Custom ConsoleHandler.
  * Logs messages to console.
@@ -16,13 +18,15 @@ import java.util.logging.LogRecord;
 public class ConsoleLogHandler extends Handler {
 
     @Override
-    public void close() throws SecurityException {
-        this.close();
+    @Deprecated
+    public void close() {
+        throw new NotImplementedException();
     }
 
     @Override
+    @Deprecated
     public void flush() {
-        this.flush();
+        throw new NotImplementedException();
     }
     
     @Override
