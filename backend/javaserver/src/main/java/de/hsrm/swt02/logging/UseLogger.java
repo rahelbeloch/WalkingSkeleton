@@ -8,7 +8,7 @@ import java.util.logging.Level;
  * can be set to adjust the logger.
  */
 public class UseLogger {
-    private final static Logger LOGGER = Logger.getLogger(UseLogger.class
+    final private static Logger LOGGER = Logger.getLogger(UseLogger.class
             .getName());
 
     /**
