@@ -28,6 +28,9 @@ public class Step {
     
     // Used for (de)serialization. Do not change.
     protected String username;
+    
+    // Used for (de)serializsation. Do not change.
+    protected String rolename;
 
     /**
      * Constructor for Step.
@@ -36,9 +39,15 @@ public class Step {
         this.username = "";
     }
     
+    /**
+     * Init method for cloning process.
+     * @param s is the step we want to clone
+     */
     public void init(Step s) {
         this.id = s.id;
         this.username = s.username;
+        this.rolename = s.rolename;
+        
         this.getNextStepIds().addAll(s.getNextStepIds());
     }
     
@@ -99,21 +108,40 @@ public class Step {
     }
     
     /**
-	 * Deep Copy - Cloning method for Steps
-	 */
-    protected Object clone() throws CloneNotSupportedException {
-		Step clone = new Step();
-		clone.init(this);
+     * Rolename getter.
+     * @return rolename is the name of the role responsible for the step
+     */
+    public String getRolename() {
+        return this.rolename;
+    }
+    
+    /**
+     * Rolename setter.
+     * @param rolename is the name of the user responsible for the step
+     */
+    public void setRolename(String rolename) {
+        this.rolename = rolename;
+    }
+    
+    /**
+     * Deep Copy - Cloning method for Steps.
+     * @exception CloneNotSupportedException convention
+     * @throws CloneNotSupportedException
+     * @return clone is the requested clone
+     */
+    public Object clone() throws CloneNotSupportedException {
+        final Step clone = new Step();
+        clone.init(this);
 
-		return clone;
-	}
+        return clone;
+    }
     
     @Override
     public String toString() {
         String ret = "";
         ret += "\tType: " + this.getClass().getName() + "\n";
-        ret += "\tId: "+ this.id + "\n";
-        ret += "\tUsername: "+ this.username + "\n";
+        ret += "\tId: " + this.id + "\n";
+        ret += "\tUsername: " + this.username + "\n";
         ret += "\tNextStepIds: " + this.nextStepIds + "\n";
         
         return ret;

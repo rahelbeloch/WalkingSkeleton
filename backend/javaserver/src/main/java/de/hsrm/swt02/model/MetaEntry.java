@@ -73,7 +73,7 @@ public class MetaEntry {
 	/**
 	 * Deep Copy - Cloning method for MetaEntries
 	 */
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
 		MetaEntry clone = new MetaEntry();
 		clone.setGroup(group);
 		clone.setKey(key);
@@ -85,9 +85,9 @@ public class MetaEntry {
     public String toString() {
         String ret = "";
         
-        ret += "\t\tKey: "+ this.key + "\n";
-        ret += "\t\tValue: "+ this.value + "\n";
-        ret += "\t\tGroup: "+ this.group + "\n";
+        ret += "\t\tKey: " + this.key + "\n";
+        ret += "\t\tValue: " + this.value + "\n";
+        ret += "\t\tGroup: " + this.group + "\n";
         
         return ret;
     }

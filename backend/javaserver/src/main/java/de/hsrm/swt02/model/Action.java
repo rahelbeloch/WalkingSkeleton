@@ -25,9 +25,13 @@ public class Action extends Step {
         this.description = description;
     }
     
-    public void init(Action s) {
-        super.init(s);
-        this.description = s.getDescription();
+    /**
+     * Init method.
+     * @param a is the action we want to init
+     */
+    public void init(Action a) {
+        super.init(a);
+        this.description = a.getDescription();
     }
 
     /**
@@ -47,10 +51,13 @@ public class Action extends Step {
     }
     
     /**
-     * Deep Copy - Cloning method for Actions
+     * Deep Copy - Cloning method for Actions.
+     * @exception CloneNotSupportedException clone convention
+     * @throws CloneNotSupportedException
+     * @return clone is the clone of the action
      */
-    protected Object clone() throws CloneNotSupportedException {
-        Action clone = new Action();
+    public Object clone() throws CloneNotSupportedException {
+        final Action clone = new Action();
         clone.init(this);
         return clone;
     }

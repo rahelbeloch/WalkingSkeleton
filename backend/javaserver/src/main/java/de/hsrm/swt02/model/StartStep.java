@@ -22,10 +22,13 @@ public class StartStep extends Step {
     }
     
     /**
-     * Deep Copy - Cloning method for Actions
+     * Deep Copy - Cloning method for Actions.
+     * @exception CloneNotSupportedException convention
+     * @throws CloneNotSupportedException
+     * @return clone is the 
      */
-    protected Object clone() throws CloneNotSupportedException {
-        StartStep clone = new StartStep();
+    public Object clone() throws CloneNotSupportedException {
+        final StartStep clone = new StartStep();
         clone.init(this);
         return clone;
     }
