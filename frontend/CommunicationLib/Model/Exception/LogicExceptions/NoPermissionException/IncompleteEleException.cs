@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    public class IncompleteEleException : PersistenceException
+    public class IncompleteEleException : NoPermissionException
     {
         /// <summary>
         /// This Exception es a child of PersistenceException. 
         /// Each Exception has an number, here it is 11210. 
         /// </summary>
-        private int _number = 11210;
+        private int _number = 11330;
         new public int number { get { return _number; } }
 
         public IncompleteEleException()

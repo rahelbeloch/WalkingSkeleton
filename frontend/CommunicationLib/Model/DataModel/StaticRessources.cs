@@ -36,7 +36,7 @@ namespace CommunicationLib.Model
 
             //Error code for persistence errors
             {11200, typeof(PersistenceException)},
-            {11210, typeof(IncompleteEleException)},
+            
 
             {11220, typeof(AlreadyExistsException)},
                 {11221, typeof(UserAlreadyExistsException)},
@@ -53,7 +53,7 @@ namespace CommunicationLib.Model
             {11300, typeof(NoPermissionException)},
                 {11310, typeof(UserHasNoPermissionException)},
                 {11320, typeof(ItemNotForwardableException)},
-
+                {11330, typeof(IncompleteEleException)},
                 //Error codes for connection errors
             {12000,typeof(ConnectionException)},
 
