@@ -9,6 +9,7 @@ namespace Client.ViewModel
 {
     public class DashboardWorkflow
     {
+        public string name { get; set; }
         private Workflow _actWorkflow;
         public Workflow actWorkflow { get { return _actWorkflow; } }
         private List<DashboardRow> _dashboardRows;
@@ -18,6 +19,7 @@ namespace Client.ViewModel
         public DashboardWorkflow(Workflow actWorkflow)
         {
             this._actWorkflow = actWorkflow;
+            name = "Workflow " + actWorkflow.id;
             this._dashboardRows = new List<DashboardRow>();
         }
         public void addDashboardRow(DashboardRow newRow)
