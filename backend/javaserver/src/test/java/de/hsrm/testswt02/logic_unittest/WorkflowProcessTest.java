@@ -66,6 +66,7 @@ public class WorkflowProcessTest {
         myWorkflow.addStep(new FinalStep());
         // generates straight neighbors for steps in steplist
         
+
         persistence.storeWorkflow(myWorkflow);
         
     }
@@ -85,7 +86,7 @@ public class WorkflowProcessTest {
      */
     @Test
     public void startWorkflow() {
-        
+
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
         assertTrue(item.getStepState(firstStep.getId()) == MetaState.OPEN
@@ -104,10 +105,10 @@ public class WorkflowProcessTest {
     }
 
     /**
-     * test states in Item via stepId, it checks the "third" entry of the workflow steplist.
-     * The first one is a startStep and isn't available in an item. 
-     * The second one has to be open because it the workflow was recently started so the next one
-     * will be inactive.
+     * test states in Item via stepId, it checks the "third" entry of the
+     * workflow steplist. The first one is a startStep and isn't available in an
+     * item. The second one has to be open because it the workflow was recently
+     * started so the next one will be inactive.
      */
     @Test
     public void checkStateInaktive() {
@@ -140,7 +141,7 @@ public class WorkflowProcessTest {
      * @throws UserHasNoPermissionException .
      */
     @Test
-    public void finishItemTest() throws ItemNotForwardableException, UserHasNoPermissionException{
+    public void finishItemTest() throws ItemNotForwardableException, UserHasNoPermissionException {
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);

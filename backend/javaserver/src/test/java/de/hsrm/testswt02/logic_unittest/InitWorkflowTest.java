@@ -22,12 +22,12 @@ public class InitWorkflowTest {
      */
     @Test
     public void initWorkflow() {
-        
+
         final Workflow myWorkflow = new Workflow();
-        
+
         assertNotEquals(myWorkflow, null);
     }
-    
+
     /**
      * test the initialization of Action and belonging user.
      */
