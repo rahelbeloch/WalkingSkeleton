@@ -16,6 +16,7 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
@@ -25,6 +26,7 @@ import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
  * @author Dominik
  *
  */
+
 @Singleton
 public class PersistenceImp implements Persistence {
 
@@ -53,7 +55,7 @@ public class PersistenceImp implements Persistence {
     public PersistenceImp(UseLogger logger) {
         this.logger = logger;
     }
-
+    
     /**
      * store functions to store workflows, items, and users into persistence.
      * @param workflow is a workflow for storing
@@ -76,7 +78,7 @@ public class PersistenceImp implements Persistence {
             this.logger.log(Level.INFO, "[persistence] removed existing workflow "
                     + workflowToRemove.getId() + ".");
         }
-        workflows.add((Workflow) workflow);
+        workflows.add(workflow);
         this.logger.log(Level.INFO, "[persistence] successfully stored workflow " + workflow.getId()
                 + ".");
 
@@ -629,5 +631,9 @@ public class PersistenceImp implements Persistence {
             throw e;
         }
     }
+    
+    // Deep-Copy Methods
+    
+    // ...
     
 }
