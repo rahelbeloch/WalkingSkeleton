@@ -28,7 +28,7 @@ namespace Client.View
     {
         private FlowDocument flowDoc;
         private Table table1;
-        private WorkflowViewModel _workflowViewModel;
+        private DashboardViewModel _workflowViewModel;
         private String userName;
         private ObservableCollection<DashboardWorkflow> _dashboardWorkflows;
         public WorkflowUserControl()
@@ -38,7 +38,7 @@ namespace Client.View
         private void pageLoaded(object sender, RoutedEventArgs e)
         {
             Console.WriteLine(this.DataContext.ToString());
-            _workflowViewModel = (WorkflowViewModel)(this.DataContext);
+            _workflowViewModel = (DashboardViewModel)(this.DataContext);
             _workflowViewModel.dashboardWorkflows.CollectionChanged += OnDashboardWorkflowsChanged;
             userName = _workflowViewModel.userName;
             _dashboardWorkflows = _workflowViewModel.dashboardWorkflows;
@@ -50,52 +50,63 @@ namespace Client.View
             Console.WriteLine("dashboardWorkflows changed");
             if (!_workflowViewModel.userName.Equals(""))
             {
-                Console.WriteLine("Init Dashboard");
-                InitializeDashboard();
+                //Console.WriteLine("Init Dashboard");
+
+                //InitializeDashboard();
+                draw_Dashboard();
             }
         }
         private void InitializeDashboard()
         {
+            Console.WriteLine("Clearing Dashboard");
             dashboard.Blocks.Clear();
             // Create the parent FlowDocument...
             flowDoc = dashboard;
 
             // Create the Table...
+            Console.WriteLine("Creating Table");
             table1 = new Table();
             // ...and add it to the FlowDocument Blocks collection.
+            Console.WriteLine("Adding Table");
             flowDoc.Blocks.Add(table1);
 
 
             // Set some global formatting properties for the table.
             table1.CellSpacing = 10;
             table1.Background = Brushes.White;
-
+            Console.WriteLine("Drawing Dashboard");
             draw_Dashboard();
         }
         private void draw_Dashboard()
         {
             foreach (DashboardWorkflow dashboardWorkflow in _dashboardWorkflows)
             {
+                Console.WriteLine("Adding Workflow: " + dashboardWorkflow);
                 addworkflowasrow("Workflow mit der id:" + dashboardWorkflow.actWorkflow.id, dashboardWorkflow);
             }
         }
 
         private void addworkflowasrow(String title, DashboardWorkflow dashboardWorkflow)
         {
+            Console.WriteLine("obergrenze");
             // Create and add an empty TableRowGroup to hold the table's Rows.
             TableRowGroup newRowGroup = new TableRowGroup();
+            Console.WriteLine("untergrenze1");
             table1.RowGroups.Add(newRowGroup);
-
+            Console.WriteLine("untergrenze2");
             // Add the first (title) row.
             TableRow currentRow = new TableRow();
+            Console.WriteLine("untergrenze3");
             newRowGroup.Rows.Add(currentRow);
-
+            Console.WriteLine("untergrenze");
             // Global formatting for the title row.
             currentRow.Background = Brushes.Silver;
             currentRow.FontSize = 40;
             currentRow.FontWeight = FontWeights.Bold;
 
             // Add the header row with content, 
+
+            
             currentRow.Cells.Add(new TableCell(new Paragraph(new Run(title))));
             // and set the row to span all 2 columns.
             currentRow.Cells[0].ColumnSpan = 2;

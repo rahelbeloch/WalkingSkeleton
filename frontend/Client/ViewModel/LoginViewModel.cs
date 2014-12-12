@@ -75,7 +75,7 @@ namespace Client.ViewModel
                         try{
                             _restRequester.checkUser(username, securePwd);
                             logger.Debug("Authentiaction userName: " + username);
-                            _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
+                            _mainViewModel.CurrentPageViewModel = _mainViewModel.dashboardViewModel;
                             _mainViewModel.username = _username;
                         }
                         catch (BasicException exc)
