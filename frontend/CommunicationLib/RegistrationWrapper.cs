@@ -29,11 +29,6 @@ public class RegistrationWrapper<T>
         }
     }
 
-    public RegistrationWrapper()
-    {
-        Console.WriteLine("Instanziation via default Constructor");
-    }
-
     public RegistrationWrapper(T myObject, CommunicationManager com)
 	{
         this.myObject = myObject;
@@ -43,7 +38,6 @@ public class RegistrationWrapper<T>
     public void Register(Func<object> onChange)
     {
         // callback function to call when change affects this client
-        com.Register(myObject, onChange);
     }
 
     public T GetMyObject()

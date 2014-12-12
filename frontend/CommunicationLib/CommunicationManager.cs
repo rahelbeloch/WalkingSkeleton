@@ -12,6 +12,7 @@ using RestAPI;
 using CommunicationLib.Model;
 
 using System.Diagnostics;
+using CommunicationLib.Exception;
 
 namespace CommunicationLib
 {
@@ -28,9 +29,8 @@ namespace CommunicationLib
         //funktion mapping
         private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
         {
-            {"get", "GetObject"},
             {"def", "GetObject"},
-            {"udp", "UpdateObject"},
+            {"udp", "GetObject"},
             {"del", "DeleteObject"}
         };
 
@@ -44,25 +44,51 @@ namespace CommunicationLib
         private ISession _session;
         //client subscriptions <topicName, consumer>
         private Dictionary<string ,IMessageConsumer> _messageSubs;
-        //'localhost' is for testing only  
-        private const string BROKER_URL = "tcp://localhost:61616";
 
         public CommunicationManager(IDataReceiver myClient)
         {
-            this._myClient = myClient;
+            //this._myClient = myClient;
 
             _messageSubs = new Dictionary<string, IMessageConsumer>();
 
             //build connection to message broker
-            _connectionFactory = new ConnectionFactory(BROKER_URL);
+            _connectionFactory = new ConnectionFactory(Constants.BROKER_URL);
             _connection = _connectionFactory.CreateConnection();
             _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
+            
+            //_connection.Start();
+        }
+
+        /// <summary>
+        ///  Register the client, which uses the ComLib to CommunicationManager. 
+        ///  Client calls this method if login works.
+        /// </summary>
+        /// <param name="myClient">The client to register</param>
+        public void registerClient(IDataReceiver myClient)
+        {
+            // TODO: alle Subs, die er vorher schonmal hatte wieder default setzen bei Neuregistrierung
+            // Beim abmelden (unregister) alle MessageSubs im User als Liste speichern (per Rest) und bei neuem Registrieren einfach holen und setzen
+            this._myClient = myClient;
+
             //default topic subscription
             IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(DEFAULT_TOPIC));
             messageConsumer.Listener += OnMessageReceived;
             _messageSubs.Add("WORKFLOW_INFO", messageConsumer);
-            
+
             _connection.Start();
+        }
+
+        /// <summary>
+        ///  Unregisters the client, which uses the ComLib, from CommunicationManager.
+        ///  Client calls this method with logout.
+        /// </summary>
+        public void unregisterClient()
+        {
+            this._myClient = null;
+
+            // remove all Topics/Consumer from messageSubs
+            _messageSubs.Clear();
+            _connection.Stop();
         }
 
         /* Call-back method
@@ -107,14 +133,16 @@ namespace CommunicationLib
             Int32.TryParse(options[2], out id);
 
             // Reflection: generic method can not be called with dynamic generics (means deciding during runtime which generic is placed in)
-            MethodInfo method = typeof( RestRequester ).GetMethod( "GetObject" );
+            MethodInfo method = typeof( RestRequester ).GetMethod( methodName );
             MethodInfo genericMethod = method.MakeGenericMethod( typeof(Workflow) );
             // Call the dynamic generic generated method with parameterlist (2. param); parent of called method is static, not an instance (1.param)
 
             RestRequester obj = new RestRequester();
             object[] args = new object[] { id };
+
             resultType = genericMethod.Invoke(obj, args);
-         
+            // if client has no access to requested resource, exception is thrown --> abortion of method
+
             //wrapping
             rWrapInstance = Wrap(genericType, resultType);
 
@@ -123,6 +151,12 @@ namespace CommunicationLib
             {
                 RegistrationWrapper<Workflow> workflowWrap = (RegistrationWrapper<Workflow>)rWrapInstance;
                 _myClient.WorkflowUpdate(workflowWrap);
+                
+                // register client for items from new workflows
+                if (methodName.Equals("def")) 
+                {
+                    Register(workflowWrap.myObject);
+                }
             }
             else if (genericType == typeof(Item))
             {
@@ -134,6 +168,8 @@ namespace CommunicationLib
                 RegistrationWrapper<User> userWrap = (RegistrationWrapper<User>)rWrapInstance;
                 _myClient.UserUpdate(userWrap);
             }
+
+            
         }
 
         /// <summary>
@@ -148,31 +184,7 @@ namespace CommunicationLib
             Type[] typeArgs = { genericType };
             var makeme = wrap.MakeGenericType(typeArgs);
 
-            object obj = Activator.CreateInstance(makeme, new object[] { o, this }); 
-
-            // TODO find solution to create instance of generic type by calling the right constructor (solution is above)
-            /*if (genericType == typeof(Workflow))
-            {
-                RegistrationWrapper<Workflow> rWrapInstance = (RegistrationWrapper<Workflow>)Activator.CreateInstance(makeme);
-                rWrapInstance.com = this;
-                rWrapInstance.myObject = (Workflow)o;
-                return rWrapInstance;
-            } else  if (genericType == typeof(Item))
-            {
-                RegistrationWrapper<Item> rWrapInstance = (RegistrationWrapper<Item>)Activator.CreateInstance(makeme);
-                rWrapInstance.com = this;
-                rWrapInstance.myObject = (Item)o;
-                return rWrapInstance;
-            } else  if (genericType == typeof(User))
-            {
-                RegistrationWrapper<User> rWrapInstance = (RegistrationWrapper<User>)Activator.CreateInstance(makeme);
-                rWrapInstance.com = this;
-                rWrapInstance.myObject = (User)o;
-                return rWrapInstance;
-            }
-            return null;
-            */
-            return obj;
+            return Activator.CreateInstance(makeme, new object[] { o, this }); 
         }
 
         /// <summary>
@@ -180,26 +192,15 @@ namespace CommunicationLib
         /// </summary>
         /// <param name="rw">object of interest</param>
         /// <param name="callback">function in the client to call by update of rw</param>
-        public void Register(Object rw, Func<Object> callback)
+        public void Register(Workflow itemSource)
         {
-            // gibt es nur den Fall, dass Register auf einem Workflow aufgerufen wird? // NEIN!
-            // --> andernfalls viel mehr Topics; für jede Änderung eigene Topics --> viel mehr Threads
-
-            int id;
             string topicName;
-            Workflow currWorkflow;
-
-            // find out which object type DataModel is
-            if (rw.GetType() == typeof(Workflow))
-            {
-                currWorkflow = (Workflow)rw;
-                id = currWorkflow.id;
-                // Create fitting topic
-                topicName = "ITEMS_FROM_" + id;
-                IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(topicName));
-                messageConsumer.Listener += OnMessageReceived;
-                _messageSubs.Add(topicName, messageConsumer);
-            }
+            
+            // Create fitting topic
+            topicName = "ITEMS_FROM_" + itemSource.id;
+            IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(topicName));
+            messageConsumer.Listener += OnMessageReceived;
+            _messageSubs.Add(topicName, messageConsumer);
         }
     }
 }
