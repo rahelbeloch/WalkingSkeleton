@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    public class IncompleteEleException : NoPermissionException
+    public class IncompleteEleException : LogicException
     {
         /// <summary>
         /// This Exception es a child of PersistenceException. 
