@@ -44,17 +44,12 @@ public class UserCommandResource {
         final String loggingBody = PREFIX + "POST /command/user/login";
         LOGGER.log(Level.INFO, loggingBody);
         try {
-            if (LOGIC.checkLogIn(username)) {
-                LOGGER.log(Level.INFO,loggingBody + " Login successful.");
-                return Response.ok().build();
-            } else {
-                LOGGER.log(Level.INFO,loggingBody + " Login failed.");
-                //TODO: remove Hardcoded errorcode
-                return Response.serverError().entity("11120").build();
-            }
+            LOGIC.checkLogIn(username);
         } catch (LogInException e) {
             LOGGER.log(Level.WARNING,e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
+        LOGGER.log(Level.INFO,loggingBody + " Login successful.");
+        return Response.ok().build();
     }
 }
