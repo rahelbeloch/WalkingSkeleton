@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.logging.UseLogger;
@@ -507,13 +508,14 @@ public class LogicImp implements Logic {
      * @param username
      *            the user, to be checked
      * @return if user existing true, else false
+     * @throws LogInException 
      */
     @Override
-    public boolean checkLogIn(String username) throws UserNotExistentException {
+    public boolean checkLogIn(String username) throws LogInException {
         try {
             p.loadUser(username);
         } catch (UserNotExistentException e) {
-            throw e;
+            throw new LogInException();
         }
         return true;
     }

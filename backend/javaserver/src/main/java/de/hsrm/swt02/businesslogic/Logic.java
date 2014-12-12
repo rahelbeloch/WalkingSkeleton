@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.model.Item;
@@ -174,7 +175,7 @@ public interface Logic {
      * @exception UserNotExistentException if the given user doesnt exist in the persistence
      * @throws UserNotExistentException
      */
-    boolean checkLogIn(String username) throws UserNotExistentException; // later with passwordcheck
+    boolean checkLogIn(String username) throws LogInException; // later with passwordcheck
 
     /**
      * This method deletes a User.
