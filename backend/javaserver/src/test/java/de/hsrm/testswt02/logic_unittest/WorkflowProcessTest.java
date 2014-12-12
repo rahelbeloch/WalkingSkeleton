@@ -145,8 +145,6 @@ public class WorkflowProcessTest {
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
-        processManager.executeStep(myWorkflow.getStepByPos(2), myWorkflow.getItems().get(0), benni);
-        
         assertTrue(myWorkflow.getItems().get(0).isFinished() == true);
         
     }
