@@ -11,6 +11,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
@@ -51,7 +52,7 @@ public class UserCommandResource {
                 //TODO: remove Hardcoded errorcode
                 return Response.serverError().entity("11120").build();
             }
-        } catch (UserNotExistentException e) {
+        } catch (LogInException e) {
             LOGGER.log(Level.WARNING,e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
