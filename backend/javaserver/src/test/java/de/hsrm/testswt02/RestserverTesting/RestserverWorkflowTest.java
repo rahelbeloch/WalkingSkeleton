@@ -173,15 +173,15 @@ public class RestserverWorkflowTest {
         final Step step1 = new StartStep();
         final Step step2 = new Step();
         final Step step3 = new FinalStep();
-        step1.setUsername("Alex");
-        step2.setUsername("Alex");
-        step3.setUsername("Alex");
+        step1.setUsername("Belex");
+        step2.setUsername("Belex");
+        step3.setUsername("Belex");
         workflow.addStep(step1);
         workflow.addStep(step2);
         workflow.addStep(step3);
         
-        final User alex = new User();
-        alex.setUsername("Alex");
+        final User BELEX = new User();
+        BELEX.setUsername("Belex");
         
         String workflowAsString = null;
         String userAsString = null;
@@ -202,9 +202,9 @@ public class RestserverWorkflowTest {
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         
-        //Store User "Alex" in persistence
+        //Store User "Belex" in persistence
         try {
-            userAsString = mapper.writeValueAsString(alex);
+            userAsString = mapper.writeValueAsString(BELEX);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -217,9 +217,9 @@ public class RestserverWorkflowTest {
                         MediaType.APPLICATION_FORM_URLENCODED));
         
         workflowAsString = client.target(targetUrl)
-                .path("resource/workflows/Alex").request().get(String.class);
+                .path("resource/workflows/Belex").request().get(String.class);
         
-        //Get all workflows for User "Alex"
+        //Get all workflows for User "Belex"
         List<Workflow> wList = null;
         Workflow recievedWorkflow = null;
         final JavaType type = mapper.getTypeFactory().
