@@ -82,7 +82,7 @@
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\DoesntExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\EleAlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\ElementChangedException.cs" />
-    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\IncompleteEleException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\IncompleteEleException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\LogicException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\LogInException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\MessagingExceptions\MessagingException.cs" />

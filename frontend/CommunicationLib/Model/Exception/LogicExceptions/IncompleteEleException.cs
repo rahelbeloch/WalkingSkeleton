@@ -12,7 +12,7 @@ namespace CommunicationLib.Exception
         /// This Exception es a child of PersistenceException. 
         /// Each Exception has an number, here it is 11210. 
         /// </summary>
-        private int _number = 11330;
+        private int _number = 11400;
         new public int number { get { return _number; } }
 
         public IncompleteEleException()
