@@ -88,7 +88,7 @@ public class UserResource {
     @Consumes("application/x-www-form-urlencoded")
     public Response saveUser(MultivaluedMap<String, String> formParams) {
         final ObjectMapper mapper = new ObjectMapper();
-        final String loggingBody = PREFIX + "POST resource/user";
+        final String loggingBody = PREFIX + "POST /resource/user";
         LOGGER.log(Level.INFO, loggingBody);
         final String userAsString = formParams.get("data").get(0);
         User user;
@@ -103,7 +103,7 @@ public class UserResource {
         try {
             logicResponse = LOGIC.addUser(user);
         } catch (UserAlreadyExistsException e) {
-            LOGGER.log(Level.INFO, loggingBody + " User already exists");
+            LOGGER.log(Level.INFO, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
@@ -131,7 +131,7 @@ public class UserResource {
     public Response updateUser(@PathParam("username") String username,
             MultivaluedMap<String, String> formParams) 
     {
-        final String loggingBody = PREFIX + "PUT user/" + username;
+        final String loggingBody = PREFIX + "PUT /resource/user/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         final String userAsString = formParams.get("data").get(0);
@@ -170,7 +170,7 @@ public class UserResource {
     @Path("user/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser(@PathParam("username") String username) {
-        final String loggingBody = PREFIX + "DELETE resource/user/" + username;
+        final String loggingBody = PREFIX + "DELETE /resource/user/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         User user = null;
@@ -180,7 +180,7 @@ public class UserResource {
             user = LOGIC.getUser(username);
             logicResponse = LOGIC.deleteUser(username);
         } catch (UserNotExistentException e1) {
-            LOGGER.log(Level.INFO, e1);
+            LOGGER.log(Level.INFO,e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         try {
