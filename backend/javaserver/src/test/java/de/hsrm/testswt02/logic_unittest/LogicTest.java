@@ -9,6 +9,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
@@ -49,9 +50,10 @@ public class LogicTest {
     /**
      * 
      * @throws WorkflowNotExistentException if Workflow doesnt exists.
+     * @throws IncompleteEleException 
      */
     @Test
-    public void addGetWorkflowTest() throws WorkflowNotExistentException {
+    public void addGetWorkflowTest() throws WorkflowNotExistentException, IncompleteEleException {
         init();
         li.addWorkflow(w);
         assertTrue(li.getWorkflow(w.getId()) == w);
@@ -60,9 +62,10 @@ public class LogicTest {
     /**
      * 
      * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     * @throws IncompleteEleException 
      */
     @Test
-    public void startWorkflowTest() throws WorkflowNotExistentException {
+    public void startWorkflowTest() throws WorkflowNotExistentException, IncompleteEleException {
         init();
         initExtension();
 
@@ -81,9 +84,10 @@ public class LogicTest {
     /**
      * 
      * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     * @throws IncompleteEleException 
      */
     @Test(expected = WorkflowNotExistentException.class)
-    public void deleteWortflowTest() throws WorkflowNotExistentException {
+    public void deleteWortflowTest() throws WorkflowNotExistentException, IncompleteEleException {
         init();
         li.addWorkflow(w);
         li.deleteWorkflow(w.getId());
@@ -99,10 +103,11 @@ public class LogicTest {
      * @throws UserNotExistentException if User doesnt exists.
      * @throws UserHasNoPermissionException 
      * @throws ItemNotForwardableException 
+     * @throws IncompleteEleException 
      */
     @Test
     public void stepOverTest() throws WorkflowNotExistentException,
-            ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException 
+            ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, IncompleteEleException 
     {
         init();
         initExtension();
@@ -118,9 +123,10 @@ public class LogicTest {
     /**
      * 
      * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     * @throws IncompleteEleException 
      */
     @Test
-    public void addStepTest() throws WorkflowNotExistentException {
+    public void addStepTest() throws WorkflowNotExistentException, IncompleteEleException {
         init();
         li.addWorkflow(w);
         final int i = w.getSteps().size();
@@ -132,9 +138,10 @@ public class LogicTest {
     /**
      * 
      * @throws WorkflowNotExistentException if Worklow doesnt exists.
+     * @throws IncompleteEleException 
      */
     @Test
-    public void deleteStepTest() throws WorkflowNotExistentException {
+    public void deleteStepTest() throws WorkflowNotExistentException, IncompleteEleException {
         init();
         li.addWorkflow(w);
         final int i = w.getSteps().size();
@@ -252,9 +259,10 @@ public class LogicTest {
 
     /**
      * This Method test deactivation.
+     * @throws IncompleteEleException 
      */
     @Test
-    public void deactivateWorkflow() {
+    public void deactivateWorkflow() throws IncompleteEleException {
         init();
         li.addWorkflow(w);
         w.setActive(false);
@@ -263,14 +271,15 @@ public class LogicTest {
     /**
      * 
      * @throws WorkflowNotExistentException if workflow doesnt exists.
+     * @throws IncompleteEleException 
      */
     @Test
-    public void getAllActiveWorkflowTest() throws WorkflowNotExistentException {
+    public void getAllActiveWorkflowTest() throws WorkflowNotExistentException, IncompleteEleException {
         init();
         final int before = li.getAllWorkflows().size();
         li.addWorkflow(w);
         final int between = li.getAllWorkflows().size();
-        li.deactiviateWorkflow(w.getId());
+        li.deactivateWorkflow(w.getId());
         final int after = li.getAllWorkflows().size();
 
         assertTrue(before == after);
@@ -288,7 +297,7 @@ public class LogicTest {
         initExtension();       
         final int before = li.getAllWorkflowsByUser(user.getUsername()).size();
        
-        li.deactiviateWorkflow(w.getId());
+        li.deactivateWorkflow(w.getId());
         final int after = li.getAllWorkflowsByUser(user.getUsername()).size();
 
         assertTrue(before == after + 1);
@@ -319,6 +328,7 @@ public class LogicTest {
     
     /**
      * This method init more data for testing.
+
      */
     private void initExtension() {
         user2 = new User();
@@ -348,11 +358,16 @@ public class LogicTest {
         w3.addStep(action2);
         w3.addStep(new FinalStep());
 
-        li.addWorkflow(w);
-        li.addWorkflow(w1);
-        li.addWorkflow(w2);
-        li.addWorkflow(w3);
+        try {
+            li.addWorkflow(w);
+            li.addWorkflow(w1);
+            li.addWorkflow(w2);
+            li.addWorkflow(w3);
 
+        } catch (IncompleteEleException e1) {
+            e1.printStackTrace();
+        }
+        
         try {
             li.addUser(user2);
             li.addUser(user1);
