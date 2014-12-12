@@ -45,18 +45,14 @@ namespace CommunicationLib
         //client subscriptions <topicName, consumer>
         private Dictionary<string ,IMessageConsumer> _messageSubs;
 
-        public CommunicationManager(IDataReceiver myClient)
+        public CommunicationManager()
         {
-            //this._myClient = myClient;
-
             _messageSubs = new Dictionary<string, IMessageConsumer>();
 
             //build connection to message broker
             _connectionFactory = new ConnectionFactory(Constants.BROKER_URL);
             _connection = _connectionFactory.CreateConnection();
             _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
-            
-            //_connection.Start();
         }
 
         /// <summary>
