@@ -76,7 +76,6 @@
     <Compile Include="Model\Exception\BasicException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\ConnectionException.cs" />
     <Compile Include="Model\Exception\UnknownException.cs" />
-    <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\WrongUsernameException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\AlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserHasAlreadyRoleException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\DoesntExistsException.cs" />
@@ -95,7 +94,6 @@
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleNotExistentException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserAlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserNotExistException.cs" />
-    <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\WrongPwException.cs" />
     <Compile Include="IDataReceiver.cs" />
     <Compile Include="IRestRequester.cs" />
     <Compile Include="Model\DataModel\Action.cs" />
