@@ -21,9 +21,12 @@ import java.util.logging.Logger;
  */
 public class LogConfigurator {
 
+    private static final int LOGFILE_SIZE = 1000000;
+    private static final int LOGFILE_AMOUNT = 1;
     private static FileHandler fileHTMLHandler;
     private static Formatter formatterHTML;
     private static Map<String, Level> levelMap;
+    
     static {
         final Map<String, Level> unmodifiableMap = new HashMap<String, Level>();
         unmodifiableMap.put("severe", Level.SEVERE);
@@ -77,7 +80,7 @@ public class LogConfigurator {
         logger.setLevel(logLevel);
         // set handler for a specific log file
         try {
-            fileHTMLHandler = new FileHandler(logFile);
+            fileHTMLHandler = new FileHandler(logFile, LOGFILE_SIZE, LOGFILE_AMOUNT, true);
         } catch (SecurityException e) {
             logger.log(Level.WARNING,
                     "Couldn't create a file handler for the logging file.");
