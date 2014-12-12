@@ -27,12 +27,13 @@ public class Step {
     protected List<Integer> nextStepIds;
     
     // Used for (de)serialization. Do not change.
-    protected String username = "noname";
+    protected String username;
 
     /**
      * Constructor for Step.
      */
     public Step() {
+        this.username = "";
     }
     
     public void init(Step s) {
