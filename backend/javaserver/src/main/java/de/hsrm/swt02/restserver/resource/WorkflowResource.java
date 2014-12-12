@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
@@ -166,6 +167,7 @@ public class WorkflowResource {
      * This method returns all startable workflows for a given user.
      * 
      * @param username the name of the user for whom the workflows shall be returned
+     * @param workflowid the id of the workflow.
      * @return all startable workflows for user
      */
     @GET
@@ -271,7 +273,13 @@ public class WorkflowResource {
                     .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
         workflow.convertIdListToReferences();
-        logicResponse = LOGIC.addWorkflow(workflow);
+        try {
+            logicResponse = LOGIC.addWorkflow(workflow);
+        } catch (IncompleteEleException e1) {
+            LOGGER.log(Level.WARNING, loggingBody + e1);
+            return Response.serverError()
+                    .entity(String.valueOf(e1.getErrorCode())).build();
+        }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -311,7 +319,14 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }
-        logicResponse = LOGIC.addWorkflow(workflow);
+        try {
+            logicResponse = LOGIC.addWorkflow(workflow);
+        } catch (IncompleteEleException e1) {
+            LOGGER.log(Level.WARNING, loggingBody
+                    + e1);
+            return Response.serverError()
+                    .entity(String.valueOf(e1.getErrorCode())).build();
+        }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
