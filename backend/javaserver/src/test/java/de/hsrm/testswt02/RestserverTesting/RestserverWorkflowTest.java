@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
@@ -50,6 +51,7 @@ public class RestserverWorkflowTest {
      */
     @BeforeClass
     public static void setUp() {
+        LogConfigurator.setup();
         restServer = new RestServer();
         restServer.startHTTPServer();
         client = ClientBuilder.newClient();
