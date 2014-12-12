@@ -79,11 +79,8 @@ public class HTMLFormatter extends Formatter {
      * @return the head for the HTML log file
      */
     public String getHead(Handler h) {
-        return "<!DOCTYPE html>\n<head>\n<style" + "type=\"text/css\">\n"
-                + "table { width: 100% }\n" + "th { font:bold 10pt Tahoma; }\n"
-                + "td { font:normal 10pt Tahoma; }\n"
-                + "h1 {font:normal 11pt Tahoma;}\n" + "</style>\n"
-                + "</head>\n" + "<body>\n" + "<h1>" + (new Date()) + "</h1>\n"
+        return "<!DOCTYPE html>\n<head>\n"
+                + "</head>\n" + "<body>\n" + "<h2>" + (new Date()) + "</h2>\n"
                 + "<table border=\"0\" cellpadding=\"5\" cellspacing=\"3\">\n"
                 + "<tr align=\"left\">\n"
                 + "\t<th style=\"width:15%\">Loglevel</th>\n"
