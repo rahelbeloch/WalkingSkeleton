@@ -1,9 +1,9 @@
 package de.hsrm.swt02.model;
 
 /**
- * This class represents an Entry for the MetaEntryList for an item
- * It's made of a key string and group string to better identify
- * the value string represents the content.
+ * This class represents an Entry for the MetaEntryList for an item It's made of
+ * a key string and group string to better identify the value string represents
+ * the content.
  */
 public class MetaEntry {
     // Used for (de)serialization. Do not change.
@@ -24,6 +24,7 @@ public class MetaEntry {
 
     /**
      * Key getter.
+     * 
      * @return key is the key string
      */
     public String getKey() {
@@ -32,7 +33,9 @@ public class MetaEntry {
 
     /**
      * Key setter.
-     * @param key is the key string
+     * 
+     * @param key
+     *            is the key string
      */
     public void setKey(String key) {
         this.key = key;
@@ -40,6 +43,7 @@ public class MetaEntry {
 
     /**
      * Value getter.
+     * 
      * @return value is the value string
      */
     public String getValue() {
@@ -48,7 +52,9 @@ public class MetaEntry {
 
     /**
      * Value setter.
-     * @param value is the value string
+     * 
+     * @param value
+     *            is the value string
      */
     public void setValue(String value) {
         this.value = value;
@@ -56,6 +62,7 @@ public class MetaEntry {
 
     /**
      * Group getter.
+     * 
      * @return group is the group string
      */
     public String getGroup() {
@@ -64,31 +71,36 @@ public class MetaEntry {
 
     /**
      * Group setter.
-     * @param group is the group string
+     * 
+     * @param group
+     *            is the group string
      */
     public void setGroup(String group) {
         this.group = group;
     }
-    
-	/**
-	 * Deep Copy - Cloning method for MetaEntries
-	 */
+
+    /**
+     * Deep Copy - Cloning method for MetaEntries.
+     * @exception CloneNotSupportedException convention
+     * @throws CloneNotSupportedException
+     * @return clone is the requested clone
+     */
     public Object clone() throws CloneNotSupportedException {
-		MetaEntry clone = new MetaEntry();
-		clone.setGroup(group);
-		clone.setKey(key);
-		clone.setValue(value);
-		return clone;
-	}
-    
+        final MetaEntry clone = new MetaEntry();
+        clone.setGroup(group);
+        clone.setKey(key);
+        clone.setValue(value);
+        return clone;
+    }
+
     @Override
     public String toString() {
         String ret = "";
-        
+
         ret += "\t\tKey: " + this.key + "\n";
         ret += "\t\tValue: " + this.value + "\n";
         ret += "\t\tGroup: " + this.group + "\n";
-        
+
         return ret;
     }
 }

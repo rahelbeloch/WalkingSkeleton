@@ -55,59 +55,59 @@ public class Item extends RootElement {
      * Metadata (list of MetaEntries) getter.
      * 
      * @return metadata list of metadata
-	 */
+     */
     public List<MetaEntry> getMetadata() {
         return this.metadata;
     }
 
-	/**
-	 * Finished getter.
-	 * 
-	 * @return finished true of false wether or not the workflow is finished
-	 */
+    /**
+     * Finished getter.
+     * 
+     * @return finished true of false wether or not the workflow is finished
+     */
     public boolean isFinished() {
         return finished;
     }
 
-	/**
-	 * Finished setter.
-	 * 
-	 * @param finished
-	 *            finished true of false wether or not the workflow is finished
-	 */
+    /**
+     * Finished setter.
+     * 
+     * @param finished
+     *            finished true of false wether or not the workflow is finished
+     */
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
 
-	/**
-	 * State getter.
-	 * 
-	 * @return state
-	 */
+    /**
+     * State getter.
+     * 
+     * @return state
+     */
     public String getState() {
         return state;
     }
 
-	/**
-	 * State setter.
-	 * 
-	 * @param state
-	 *            is a string representing the state of a step
-	 */
+    /**
+     * State setter.
+     * 
+     * @param state
+     *            is a string representing the state of a step
+     */
     public void setState(String state) {
         this.state = state;
     }
 
-	/**
-	 * This method gets an entry of the metadata list which suits the group and
-	 * key parameters.
-	 * 
-	 * @param key
-	 *            is the id of an entry
-	 * @param group
-	 *            is the type of an entry
-	 * @return the suitable entry, else return NULL
-	 */
+    /**
+     * This method gets an entry of the metadata list which suits the group and
+     * key parameters.
+     * 
+     * @param key
+     *            is the id of an entry
+     * @param group
+     *            is the type of an entry
+     * @return the suitable entry, else return NULL
+     */
     public MetaEntry getEntry(String key, String group) {
 
         for (MetaEntry a : metadata) {
@@ -118,15 +118,15 @@ public class Item extends RootElement {
         return null;
     }
 
-	/**
-	 * This method gets the value of an entry.
-	 * 
-	 * @param key
-	 *            is the id of an entry
-	 * @param group
-	 *            is the type of an entry
-	 * @return the suitable entry value, if the entry was not found return NULL
-	 */
+    /**
+     * This method gets the value of an entry.
+     * 
+     * @param key
+     *            is the id of an entry
+     * @param group
+     *            is the type of an entry
+     * @return the suitable entry value, if the entry was not found return NULL
+     */
     public String getEntryValue(String key, String group) {
 
         final MetaEntry ame = getEntry(key, group);
@@ -137,25 +137,25 @@ public class Item extends RootElement {
         return null;
     }
 
-	/**
-	 * This method returns the Metastate of an entry.
-	 * 
-	 * @param key
-	 *            is the id of an entry
-	 * @return the Metastate of the searched entry
-	 */
+    /**
+     * This method returns the Metastate of an entry.
+     * 
+     * @param key
+     *            is the id of an entry
+     * @return the Metastate of the searched entry
+     */
     public String getStepState(int key) {
 
         return MetaState.fromValue(getEntryValue(key + "", "step")).toString();
     }
 
-	/**
-	 * This method gets a list which contains looked for entries.
-	 * 
-	 * @param group
-	 *            is the type of the entries which are looked for
-	 * @return a list of suitable entries
-	 */
+    /**
+     * This method gets a list which contains looked for entries.
+     * 
+     * @param group
+     *            is the type of the entries which are looked for
+     * @return a list of suitable entries
+     */
     public List<MetaEntry> getForGroup(String group) {
 
         final List<MetaEntry> list = new ArrayList<MetaEntry>();
@@ -168,11 +168,11 @@ public class Item extends RootElement {
         return list;
     }
 
-	/**
-	 * returns the MetaEntry of the current step.
-	 * 
-	 * @return me or null
-	 */
+    /**
+     * returns the MetaEntry of the current step.
+     * 
+     * @return me or null
+     */
     public MetaEntry getActStep() {
         for (MetaEntry me : getForGroup("step")) {
             if ((me.getValue().equals(MetaState.OPEN.toString())) || me.getValue().equals(MetaState.BUSY.toString())) {
@@ -182,16 +182,16 @@ public class Item extends RootElement {
         return null;
     }
 
-	/**
-	 * This method sets the value of an entry or adds a new entry.
-	 * 
-	 * @param key
-	 *            is the id of an entry
-	 * @param group
-	 *            is the type of an entry
-	 * @param value
-	 *            represents an entrie's content
-	 */
+    /**
+     * This method sets the value of an entry or adds a new entry.
+     * 
+     * @param key
+     *            is the id of an entry
+     * @param group
+     *            is the type of an entry
+     * @param value
+     *            represents an entrie's content
+     */
     public void set(String key, String group, String value) {
 
         final MetaEntry ame = getEntry(key, group);
@@ -207,58 +207,62 @@ public class Item extends RootElement {
         }
     }
 
-	/**
-	 * This method sets specifically the metastate of an step entry.
-	 * 
-	 * @param key
-	 *            is the id of an entry
-	 * @param value
-	 *            is the new state of an entry
-	 */
+    /**
+     * This method sets specifically the metastate of an step entry.
+     * 
+     * @param key
+     *            is the id of an entry
+     * @param value
+     *            is the new state of an entry
+     */
     public void setStepState(int key, String value) {
 
         set(Integer.toString(key), "step", value);
     }
 
-	/**
-	 * This methods is just for the initial state setting of an step.
-	 * 
-	 * @param value
-	 *            has to be OPEN, for enabling very first Step
-	 */
+    /**
+     * This methods is just for the initial state setting of an step.
+     * 
+     * @param value
+     *            has to be OPEN, for enabling very first Step
+     */
     public void setFirstStepState(String value) {
 
         getForGroup("step").get(0).setValue(value);
     }
-	
+
     /**
      * Init method for cloning process.
-     * @param i is the action we want to init
+     * 
+     * @param i
+     *            is the action we want to init
      */
     public void init(Item i) {
-        super.init(i);        
+        super.init(i);
     }
-	
-	/**
-	 * Deep Copy - Cloning method for Items.
-	 * @exception CloneNotSupportedException convention
-	 * @throws CloneNotSupportedException
-	 * @return clone is the finished clone
-	 */
+
+    /**
+     * Deep Copy - Cloning method for Items.
+     * 
+     * @exception CloneNotSupportedException
+     *                convention
+     * @throws CloneNotSupportedException
+     * @return clone is the finished clone
+     */
     public Object clone() throws CloneNotSupportedException {
         final Item clone = new Item();
         clone.init(this);
         clone.setFinished(finished);
         clone.setWorkflowId(workflowId);
         clone.setState(state);
-		
-        for (MetaEntry me: this.metadata) {
-            final MetaEntry cloneMe = (MetaEntry)me.clone();
+
+        for (MetaEntry me : this.metadata) {
+            final MetaEntry cloneMe = (MetaEntry) me.clone();
             clone.getMetadata().add(cloneMe);
         }
         return clone;
     }
-    
+
     @Override
     public String toString() {
         String ret = "";
@@ -269,7 +273,7 @@ public class Item extends RootElement {
             ret += "\t\t---METAENTRY:\n";
             ret += me.toString();
         }
-        
+
         return ret;
     }
 }

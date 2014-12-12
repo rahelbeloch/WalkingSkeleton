@@ -13,11 +13,21 @@ public class RootElement {
     public RootElement() {
 
     }
-    
+
+    /**
+     * Init method for cloning.
+     * @param re is the rootelement we want to clone
+     */
     public void init(RootElement re) {
         this.id = re.id;
     }
-    
+
+    /**
+     * clone method for RootElement.
+     * @exception CloneNotSupportedException cobnvention
+     * @throws CloneNotSupportedException
+     * @return clone is the requested clone
+     */
     public Object clone() throws CloneNotSupportedException {
         final RootElement clone = new RootElement();
         clone.init(this);
@@ -27,6 +37,7 @@ public class RootElement {
 
     /**
      * Id getter.
+     * 
      * @return id of the RootElement
      */
     public int getId() {
@@ -35,7 +46,9 @@ public class RootElement {
 
     /**
      * Id setter.
-     * @param id of the RootElement
+     * 
+     * @param id
+     *            of the RootElement
      */
     public void setId(int id) {
         this.id = id;
