@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -101,6 +102,43 @@ public class RoleResource {
         }
         LOGGER.log(Level.INFO, loggingBody + " User successfully stored.");
         return Response.ok("Role stored").build();
+    }
+    
+    @PUT
+    @Path("role/{rolename}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes("application/x-www-form-urlencoded")
+    public Response updateRole(@PathParam("rolename") String rolename,
+            MultivaluedMap<String, String> formParams) 
+    {
+        final String loggingBody = PREFIX + "PUT /resource/role/" + rolename;
+        LOGGER.log(Level.INFO, loggingBody);
+        final ObjectMapper mapper = new ObjectMapper();
+        final String roleAsString = formParams.get("data").get(0);
+        Role role;
+        
+        try {
+            role = mapper.readValue(roleAsString, Role.class);
+        } catch (IOException e) {
+            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
+            return Response.serverError().build();
+        }
+        try {
+            logicResponse = LOGIC.addRole(role);
+        } catch (RoleAlreadyExistsException e1) {
+            LOGGER.log(Level.INFO, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        }
+            
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                LOGGER.log(Level.WARNING, e);
+            }
+        }
+        LOGGER.log(Level.INFO, loggingBody + " Role successfully updated.");
+        return Response.ok().build();
     }
     
 }
