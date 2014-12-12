@@ -2,6 +2,7 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.List;
 
+import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
@@ -41,7 +42,7 @@ public interface Logic {
      * @param workflow is the workflow which should be added
      * @return logicResponse of adding a workflow
      */
-    LogicResponse addWorkflow(Workflow workflow); // later a workflows name will be given a name
+    LogicResponse addWorkflow(Workflow workflow) throws IncompleteEleException; // later a workflows name will be given a name
                                                   
 
     /**
@@ -113,16 +114,15 @@ public interface Logic {
      * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException 
      */
-    void deactiviateWorkflow(int workflowID) throws WorkflowNotExistentException;
+    void deactivateWorkflow(int workflowID) throws WorkflowNotExistentException;
 
     /**
      * This method activate a workflow.
-     * 
      * @param workflowID the id of the workflow which should be deactivate
      * @throws WorkflowNotExistentException 
-     *
-    void activiateWorkflow(int workflowID) throws WorkflowNotExistentException;
-    **/
+     **/
+    void activateWorkflow(int workflowID) throws WorkflowNotExistentException;
+   
 
     /**
      * This method add a step into an existing Workflow.
