@@ -23,8 +23,6 @@ namespace RestAPI
     /// </summary>
     public class InternalRequester
     {
-        // url of server
-        public static String restserverurl;
         public static RestClient client;
 
         ///<summary>
@@ -32,8 +30,7 @@ namespace RestAPI
         /// </summary>
         static InternalRequester()
         {
-            restserverurl = Constants.serverUrl;
-            client = new RestClient(restserverurl);
+            client = new RestClient(Constants.SERVER_URL);
         }
 
         /// <summary>
