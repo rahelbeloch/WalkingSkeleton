@@ -22,6 +22,7 @@ public class User extends RootElement {
 
     /**
      * Username getter.
+     * 
      * @return username is the username
      */
     public String getUsername() {
@@ -30,44 +31,51 @@ public class User extends RootElement {
 
     /**
      * Username setter.
-     * @param username is the username
+     * 
+     * @param username
+     *            is the username
      */
     public void setUsername(String username) {
         this.username = username;
     }
-    
+
     /**
      * Roles getter. There is no setter because roles is an ArrayList.
+     * 
      * @return roles is the list of roles of the user
      */
     public List<Role> getRoles() {
         return this.roles;
     }
-    
+
     /**
      * Init method.
-     * @param r is the role we want to init
+     * 
+     * @param u
+     *            is the user we want to init
      */
     public void init(User u) {
         super.init(u);
         this.username = u.getUsername();
     }
-    
+
     /**
      * Deep Copy - Cloning method for Actions.
-     * @exception CloneNotSupportedException clone convention
+     * 
+     * @exception CloneNotSupportedException
+     *                clone convention
      * @throws CloneNotSupportedException
      * @return clone is the clone of the action
      */
     public Object clone() throws CloneNotSupportedException {
         final User clone = new User();
         clone.init(this);
-        
-        for(Role role: this.roles) {
-			Role cloneRole = (Role)role.clone();
-			clone.getRoles().add(cloneRole);
-		}
-        
+
+        for (Role role : this.roles) {
+            final Role cloneRole = (Role) role.clone();
+            clone.getRoles().add(cloneRole);
+        }
+
         return clone;
     }
 }

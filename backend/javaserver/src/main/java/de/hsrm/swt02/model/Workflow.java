@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents a Workflow. A Workflow is a manifestation of a RootElement
+ * This class represents a Workflow. A Workflow is a manifestation of a
+ * RootElement
  *
  */
 public class Workflow extends RootElement implements Cloneable {
@@ -13,7 +14,7 @@ public class Workflow extends RootElement implements Cloneable {
 
     // Used for (de)serialization. Do not change.
     private List<Item> items;
-    
+
     // Used for (de)serializsation. Do not change.
     private boolean active;
 
@@ -26,7 +27,6 @@ public class Workflow extends RootElement implements Cloneable {
         items = new ArrayList<Item>();
         active = true;
     }
-    
 
     /**
      * Steps getter. There is no setter because steps is an ArrayList.
@@ -43,15 +43,15 @@ public class Workflow extends RootElement implements Cloneable {
     public List<Item> getItems() {
         return this.items;
     }
-    
+
     /**
-     * sets items to an empty list
+     * sets items to an empty list.
      * @param i
      */
     public void clearItems() {
-    	this.items.clear();
+        this.items.clear();
     }
-    
+
     /**
      * Active Getter getter.
      * @return active if the workflow is active or not
@@ -62,7 +62,9 @@ public class Workflow extends RootElement implements Cloneable {
 
     /**
      * Active setter.
-     * @param active if the workflow is active or not
+     * 
+     * @param active
+     *            if the workflow is active or not
      */
     public void setActive(boolean active) {
         this.active = active;
@@ -72,18 +74,20 @@ public class Workflow extends RootElement implements Cloneable {
      * This method returns a step object by its position in the step list of a
      * workflow.
      * 
-     * @param pos states the index of the searched step object
+     * @param pos
+     *            states the index of the searched step object
      * @return searched step object if found
      */
     public Step getStepByPos(int pos) {
 
         return steps.get(pos);
     }
-    
+
     /**
      * This method returns a step object by its id.
      * 
-     * @param stepId states which certain object is looked for
+     * @param stepId
+     *            states which certain object is looked for
      * @return searched step object if found, else return null
      */
     public Step getStepById(int stepId) {
@@ -99,7 +103,8 @@ public class Workflow extends RootElement implements Cloneable {
      * This method returns an item object by its position in the workflow item
      * list.
      * 
-     * @param pos states the index of searched item object
+     * @param pos
+     *            states the index of searched item object
      * @return searched item object if found
      */
     public Item getItemByPos(int pos) {
@@ -110,7 +115,8 @@ public class Workflow extends RootElement implements Cloneable {
     /**
      * This method returns an item object by its id.
      * 
-     * @param itemId states which certain object is looked for
+     * @param itemId
+     *            states which certain object is looked for
      * @return searched item object if found, else return null
      */
     public Item getItemById(int itemId) {
@@ -126,12 +132,13 @@ public class Workflow extends RootElement implements Cloneable {
     /**
      * This method adds single steps to a workflow.
      * 
-     * @param step which will be added to the step list of a workflow
+     * @param step
+     *            which will be added to the step list of a workflow
      */
     public void addStep(Step step) {
 
         steps.add(step);
-        
+
         if (steps.size() >= 2) {
             steps.get(steps.size() - 2).getNextSteps().add(step);
         }
@@ -140,7 +147,8 @@ public class Workflow extends RootElement implements Cloneable {
     /**
      * This method removes a certain step by its id.
      * 
-     * @param stepId states which step should be removed
+     * @param stepId
+     *            states which step should be removed
      */
     public void removeStep(int stepId) {
 
@@ -154,7 +162,8 @@ public class Workflow extends RootElement implements Cloneable {
     /**
      * This method adds a new item of a workflow.
      * 
-     * @param item which will be added to the item lsit of a workflow
+     * @param item
+     *            which will be added to the item lsit of a workflow
      */
     public void addItem(Item item) {
 
@@ -164,7 +173,8 @@ public class Workflow extends RootElement implements Cloneable {
     /**
      * This method removes a certain item of a workflow.
      * 
-     * @param itemId states which item should be removed
+     * @param itemId
+     *            states which item should be removed
      */
     public void removeItem(int itemId) {
 
@@ -174,33 +184,34 @@ public class Workflow extends RootElement implements Cloneable {
             }
         }
     }
-    
+
     /**
-	 * Deep Copy - Cloning method for Workflows
-	 */
+     * Deep Copy - Cloning method for Workflows.
+     * @exception CloneNotSupportedException convention
+     * @throws CloneNotSupportedException
+     * @return clone is the requested cloone of the workflow
+     */
     public Object clone() throws CloneNotSupportedException {
         this.convertReferencesToIdList();
-        
-		Workflow clone = new Workflow();
-		clone.setActive(active);
-		clone.setId(id);
-		for(Step step: this.steps) {
-			Step cloneStep = (Step)step.clone();
-			clone.addStep(cloneStep);
-		}
-		for(Item item: this.items) {
-			Item cloneItem = (Item)item.clone();
-			clone.addItem(cloneItem);
-		}
-		
-		clone.convertIdListToReferences();
-		return clone;
-	}
-    
+
+        final Workflow clone = new Workflow();
+        clone.setActive(active);
+        clone.setId(id);
+        for (Step step : this.steps) {
+            final Step cloneStep = (Step) step.clone();
+            clone.addStep(cloneStep);
+        }
+        for (Item item : this.items) {
+            final Item cloneItem = (Item) item.clone();
+            clone.addItem(cloneItem);
+        }
+
+        clone.convertIdListToReferences();
+        return clone;
+    }
+
     /**
      * Incoming order of step ids are converted into references.
-     * 
-     * @param workflow which is operated on
      */
     public void convertIdListToReferences() {
         for (Step step : this.getSteps()) {
@@ -209,40 +220,42 @@ public class Workflow extends RootElement implements Cloneable {
             }
         }
     }
-    
+
     /**
      * Workflow references are converted to ids.
+     * 
      * @param workflow
      */
     public void convertReferencesToIdList() {
         for (Step step : this.getSteps()) {
             step.getNextStepIds().clear();
             for (Step next : step.getNextSteps()) {
-                if(!step.getNextStepIds().contains(next.getId())) { // Duplikate abfangen
-                    step.getNextStepIds().add(next.getId()); 
+                if (!step.getNextStepIds().contains(next.getId())) { // Duplikate
+                                                                     // abfangen
+                    step.getNextStepIds().add(next.getId());
                 }
             }
         }
     }
-    
+
     @Override
     public String toString() {
         String ret = "--- WORKFLOW START ---\n";
-        ret += "Id: "+ this.id + "\n";
-        ret += "Active: "+ this.active + "\n";
-        for(Step s : this.steps) {
+        ret += "Id: " + this.id + "\n";
+        ret += "Active: " + this.active + "\n";
+        for (Step s : this.steps) {
             ret += "\t--- STEP:\n";
             ret += s.toString();
         }
-        
+
         ret += "\n";
-        
-        for(Item i : this.items) {
+
+        for (Item i : this.items) {
             ret += "\t--- ITEM:\n";
             ret += i.toString();
         }
         ret += "--- WORKFLOW ENDE ---";
-        
+
         return ret;
     }
 }
