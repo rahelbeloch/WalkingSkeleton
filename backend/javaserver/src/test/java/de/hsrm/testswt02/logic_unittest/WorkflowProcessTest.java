@@ -24,6 +24,7 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 
+
 /**
  * class tests the workflowProcess.
  *
@@ -45,9 +46,19 @@ public class WorkflowProcessTest {
         final Injector i = Guice.createInjector(new SingleModule());
         processManager = i.getInstance(ProcessManager.class);
         persistence = i.getInstance(Persistence.class);
+        
+        benni = new User();
+        benni.setUsername("benni");
+        
+        try {
+            persistence.addUser(benni);
+        } catch (UserAlreadyExistsException e) {
+            e.printStackTrace();
+        }
+        
         myWorkflow = new Workflow();
-        startStep = new StartStep("benni");
-        firstStep = new Action("username", 1 + " Schritt");
+        startStep = new StartStep(benni.getUsername());
+        firstStep = new Action(benni.getUsername(), 1 + " Schritt");
         // adding steps in workflow
         myWorkflow.addStep(startStep);
         myWorkflow.addStep(firstStep);
@@ -55,15 +66,8 @@ public class WorkflowProcessTest {
         myWorkflow.addStep(new FinalStep());
         // generates straight neighbors for steps in steplist
         
-        persistence.storeWorkflow(myWorkflow);;
-        benni = new User();
-        benni.setUsername("benni");
-        benni.setId(23);
-        try {
-            persistence.addUser(benni);
-        } catch (UserAlreadyExistsException e) {
-            e.printStackTrace();
-        }
+        persistence.storeWorkflow(myWorkflow);
+        
     }
 
     /**
@@ -82,10 +86,21 @@ public class WorkflowProcessTest {
     @Test
     public void startWorkflow() {
         
-        processManager.startWorkflow(myWorkflow, "benni");
+        processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
         assertTrue(item.getStepState(firstStep.getId()) == MetaState.OPEN
                 .toString());
+    }
+    
+    /**
+     * test start a workflow, without authorization.
+     */
+    @Test
+    public void startWorkflowWithoutAutohrization() {
+        
+        processManager.startWorkflow(myWorkflow, "ez");
+        assertTrue(myWorkflow.getItems().size() == 0);
+        
     }
 
     /**
@@ -97,7 +112,7 @@ public class WorkflowProcessTest {
     @Test
     public void checkStateInaktive() {
         int stepId;
-        processManager.startWorkflow(myWorkflow, "benni");
+        processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
         stepId = myWorkflow.getSteps().get(1).getId();
         assertTrue(item.getStepState(stepId) == MetaState.OPEN.toString());
@@ -118,5 +133,20 @@ public class WorkflowProcessTest {
         processManager.executeStep(firstStep, item, benni);
         assertTrue(item.getStepState(firstStep.getId()) == MetaState.DONE
                 .toString());
+    }
+    /**
+     * 
+     * @throws ItemNotForwardableException .
+     * @throws UserHasNoPermissionException .
+     */
+    @Test
+    public void finishItemTest() throws ItemNotForwardableException, UserHasNoPermissionException{
+        processManager.startWorkflow(myWorkflow, benni.getUsername());
+        processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
+        processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
+        processManager.executeStep(myWorkflow.getStepByPos(2), myWorkflow.getItems().get(0), benni);
+        
+        assertTrue(myWorkflow.getItems().get(0).isFinished() == true);
+        
     }
 }
