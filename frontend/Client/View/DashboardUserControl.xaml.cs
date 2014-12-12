@@ -24,14 +24,14 @@ namespace Client.View
     /// <summary>
     /// Interaktionslogik für WorkflowUserControl.xaml
     /// </summary>
-    public partial class WorkflowUserControl : UserControl
+    public partial class DashboardUserControl : UserControl
     {
         private FlowDocument flowDoc;
         private Table table1;
         private DashboardViewModel _workflowViewModel;
         private String userName;
         private ObservableCollection<DashboardWorkflow> _dashboardWorkflows;
-        public WorkflowUserControl()
+        public DashboardUserControl()
         {
             InitializeComponent();
         }
