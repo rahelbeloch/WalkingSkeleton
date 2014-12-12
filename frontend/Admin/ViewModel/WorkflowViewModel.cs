@@ -13,6 +13,7 @@ using System.Windows;
 using Action = CommunicationLib.Model.Action;
 using CommunicationLib.Exception;
 
+
 namespace Admin.ViewModel
 {
     /// <summary>
@@ -38,9 +39,10 @@ namespace Admin.ViewModel
 
             // fill choosable steps with default values
             _choosableSteps.Add(new StartStep());
+            updateModel();
         }
 
-
+       
 
         #region properties
 
@@ -51,6 +53,8 @@ namespace Admin.ViewModel
         private ObservableCollection<Step> _workflow = new ObservableCollection<Step>();
         public ObservableCollection<Step> workflow { get { return _workflow; } }
 
+        private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
+        public ObservableCollection<Workflow> workflows { get { return _workflows; } }
         /// <summary>
         /// Property to fill combox box with choosable steps.
         /// TODO: change Step to Step (not possible at the moment)
@@ -160,6 +164,21 @@ namespace Admin.ViewModel
         }
 
         #endregion
+
+        private void updateModel()
+        {
+            Console.WriteLine("updatedModel()");
+
+            _workflows.Clear();
+            IList<Workflow> workflowList = _restRequester.GetAllWorkflows();
+            if (workflowList == null)
+            {
+                workflowList = new List<Workflow>();
+            }
+           
+            workflowList.ToList().ForEach(_workflows.Add);
+            OnChanged("workflows");
+        }
 
         /// <summary>
         /// When the workflow is changed, reconfigure choosable steps for combobox (depending on currently allowed steps).
@@ -310,6 +329,24 @@ namespace Admin.ViewModel
                 }
 
                 return _addStepCommand;
+            }
+
+        }
+
+        private ICommand _showDetails;
+        public ICommand showDetails
+        {
+            get
+            {
+                if (_showDetails == null)
+                {
+                    _showDetails = new ActionCommand(execute =>
+                    {
+                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!Geklappt!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        MessageBox.Show("klappt");
+                    }, canExecute => true);
+                }
+                return _showDetails;
             }
         }
 

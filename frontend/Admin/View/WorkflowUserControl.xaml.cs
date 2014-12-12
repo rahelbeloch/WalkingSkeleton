@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+using CommunicationLib.Model;
 
 namespace Admin.View
 {
@@ -20,9 +22,13 @@ namespace Admin.View
     /// </summary>
     public partial class WorkflowUserControl : UserControl
     {
+        
         public WorkflowUserControl()
         {
             InitializeComponent();
         }
     }
+
+
+
 }

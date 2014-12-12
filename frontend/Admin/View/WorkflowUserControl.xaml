@@ -5,6 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
+            <EventSetter Event="MouseDoubleClick" Handler="{Binding showDetails}" />
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
@@ -64,6 +71,21 @@
                         <DockPanel DockPanel.Dock="Bottom" Height="45" VerticalAlignment="Bottom">
                             <Button x:Name="saveWorkflow" HorizontalAlignment="Right" Content="Workflow speichern/veröffentlichen" Height="25" Margin="10" Command="{Binding submitWorkflowCommand}"/>
                         </DockPanel>
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Alle Workflows anzeigen">
+                    <DockPanel>
+                        <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflows}" ItemContainerStyle="{StaticResource itemstyle}">
+                            <ListView.View>
+                                <GridView >
+                                    <GridView.Columns>
+                                         <GridViewColumn Width="120" Header="Id" DisplayMemberBinding="{Binding id}"/>
+                                         <GridViewColumn Width="190" Header="Anzahl der Steps" DisplayMemberBinding="{Binding steps.Count}" />
+                                         <GridViewColumn Width="230" Header="Anzahl der aktuellen Items" DisplayMemberBinding="{Binding items.Count}"/>
+                                    </GridView.Columns>
+                                 </GridView>
+                             </ListView.View>
+                        </ListView>
                     </DockPanel>
                 </TabItem>
             </TabControl>
