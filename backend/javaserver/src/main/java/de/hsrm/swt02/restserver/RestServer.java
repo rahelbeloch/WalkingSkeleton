@@ -54,6 +54,7 @@ public class RestServer {
     public void startHTTPServer() {
         final ResourceConfig rc = new ResourceConfig();
         rc.packages("de.hsrm.swt02.restserver.resource");
+        rc.register(RestExceptionListener.class);
         server = JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
         logger.log(Level.INFO, "HTTP-Server started...");
     }
