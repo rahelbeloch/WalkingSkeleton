@@ -234,7 +234,7 @@ public class Item extends RootElement {
 	/**
 	 * Deep Copy - Cloning method for Items
 	 */
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
 		Item clone = new Item();
 		clone.setFinished(finished);
 		clone.setWorkflowId(workflowId);
