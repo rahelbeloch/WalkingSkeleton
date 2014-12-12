@@ -62,7 +62,7 @@
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="ViewModel\WorkflowViewModel.cs" />
+    <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="View\LoginUserControl.xaml.cs">
       <DependentUpon>LoginUserControl.xaml</DependentUpon>
     </Compile>

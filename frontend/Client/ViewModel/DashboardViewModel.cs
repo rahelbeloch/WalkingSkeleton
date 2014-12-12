@@ -19,11 +19,11 @@ namespace Client.ViewModel
     /// The WorkflowViewModel contains properties and commands to create a new workflow and to send it to the server.
     /// Furthermore, the properties and commands are used as DataBindings in the graphical user interface.
     /// </summary>
-    public class WorkflowViewModel : ViewModelBase, IDataReceiver
+    public class DashboardViewModel : ViewModelBase, IDataReceiver
     {
         private CommunicationManager _comManager;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        public WorkflowViewModel(MainViewModel mainViewModelInstanz)
+        public DashboardViewModel(MainViewModel mainViewModelInstanz)
         {
             _mainViewModel = mainViewModelInstanz;
             _restRequester = _mainViewModel.restRequester;
@@ -78,6 +78,7 @@ namespace Client.ViewModel
         }
         private void updateWorkflow(Workflow updatedWorkflow)
         {
+            Console.WriteLine("Update Workflow mit ID: " + updatedWorkflow.id);
             DashboardWorkflow toUpdate = null;
             foreach (DashboardWorkflow dashboardWorkflow in _dashboardWorkflows)
             {
@@ -88,7 +89,6 @@ namespace Client.ViewModel
             }
             if (toUpdate == null)
             {
-
                 toUpdate = new DashboardWorkflow(updatedWorkflow);
                 _dashboardWorkflows.Add(toUpdate);
                 logger.Debug("NO workflow found to update");

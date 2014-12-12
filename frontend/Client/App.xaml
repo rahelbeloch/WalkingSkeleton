@@ -5,7 +5,7 @@
              xmlns:viewmodel="clr-namespace:Client.ViewModel">
              
     <Application.Resources>
-        <DataTemplate DataType="{x:Type viewmodel:WorkflowViewModel}">
+        <DataTemplate DataType="{x:Type viewmodel:DashboardViewModel}">
             <view:WorkflowUserControl />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
