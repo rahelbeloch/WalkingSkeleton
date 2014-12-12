@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
+import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
@@ -55,6 +56,9 @@ public class LogicImp implements Logic {
             initTestdata();
         } catch (UserAlreadyExistsException e) {
             e.printStackTrace();
+        } catch (IncompleteEleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
@@ -80,13 +84,21 @@ public class LogicImp implements Logic {
      * This method store a workflow and distribute a id.
      * 
      * @param workflow
+     * @throws IncompleteEleException 
     */
     @Override
-    public LogicResponse addWorkflow(Workflow workflow) {
-        final int id = p.storeWorkflow(workflow);
-        setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
-        return logicResponse;
+    public LogicResponse addWorkflow(Workflow workflow) throws IncompleteEleException {
+        if ((workflow.getStepByPos(0) instanceof StartStep) && (workflow.getStepByPos(workflow.getSteps().size()-1) instanceof FinalStep)) {
+            final int id = p.storeWorkflow(workflow);
+            setLogicResponse(new LogicResponse());
+            logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
+            return logicResponse;
+        }
+        else {
+            throw new IncompleteEleException();
+        }
+        
+        
     }
 
     /**
@@ -591,7 +603,7 @@ public class LogicImp implements Logic {
      *            the id of the workflow which should be deactivate
      * @throws WorkflowNotExistentException .
      */
-    public void deactiviateWorkflow(int workflowID)
+    public void deactivateWorkflow(int workflowID)
             throws WorkflowNotExistentException 
     {
         p.loadWorkflow(workflowID).setActive(false);
@@ -604,7 +616,7 @@ public class LogicImp implements Logic {
      *            the id of the workflow which should be deactivate
      * @throws WorkflowNotExistentException .
      */
-    public void activiateWorkflow(int workflowID)
+    public void activateWorkflow(int workflowID)
             throws WorkflowNotExistentException 
     {
         p.loadWorkflow(workflowID).setActive(true);
@@ -612,10 +624,11 @@ public class LogicImp implements Logic {
 
     /**
      * Initialize test datas.
+     * @throws IncompleteEleException 
      * 
      * @throws UserAlreadyExistsException .
      */
-    private void initTestdata() throws UserAlreadyExistsException {
+    private void initTestdata() throws UserAlreadyExistsException, IncompleteEleException {
         Workflow workflow1;
         User user1, user2, user3;
         StartStep startStep1;
