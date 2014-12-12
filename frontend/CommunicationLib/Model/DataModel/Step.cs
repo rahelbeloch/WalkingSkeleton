@@ -47,6 +47,7 @@ namespace CommunicationLib.Model
         public Step()
             : base()
         {
+            username = "";
             _nextSteps = new List<Step>();
             _nextStepIds = new List<int>();
         }
