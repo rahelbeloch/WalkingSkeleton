@@ -5,6 +5,7 @@ package de.hsrm.swt02.model;
  *
  */
 public class FinalStep extends Step {
+    
     /**
     * Constructor for FinalStep.
     */
@@ -13,10 +14,21 @@ public class FinalStep extends Step {
     }
     
     /**
-     * Deep Copy - Cloning method for FinalSteps
+     * Init method.
+     * @param a is the final step we want to init
      */
-    protected Object clone() throws CloneNotSupportedException {
-        FinalStep clone = new FinalStep();
+    public void init(Action a) {
+        super.init(a);
+    }
+    
+    /**
+     * Deep Copy - Cloning method for FinalSteps.
+     * @exception CloneNotSupportedException convention
+     * @throws CloneNotSupportedException
+     * @return clone is the requested clone of the FinalStep
+     */
+    public Object clone() throws CloneNotSupportedException {
+        final FinalStep clone = new FinalStep();
         clone.init(this);
         return clone;
     }

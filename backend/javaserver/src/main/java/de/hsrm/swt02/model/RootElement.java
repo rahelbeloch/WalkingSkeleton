@@ -13,6 +13,17 @@ public class RootElement {
     public RootElement() {
 
     }
+    
+    public void init(RootElement re) {
+        this.id = re.id;
+    }
+    
+    public Object clone() throws CloneNotSupportedException {
+        final RootElement clone = new RootElement();
+        clone.init(this);
+
+        return clone;
+    }
 
     /**
      * Id getter.

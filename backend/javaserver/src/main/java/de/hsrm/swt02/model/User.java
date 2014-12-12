@@ -43,4 +43,31 @@ public class User extends RootElement {
     public List<Role> getRoles() {
         return this.roles;
     }
+    
+    /**
+     * Init method.
+     * @param r is the role we want to init
+     */
+    public void init(User u) {
+        super.init(u);
+        this.username = u.getUsername();
+    }
+    
+    /**
+     * Deep Copy - Cloning method for Actions.
+     * @exception CloneNotSupportedException clone convention
+     * @throws CloneNotSupportedException
+     * @return clone is the clone of the action
+     */
+    public Object clone() throws CloneNotSupportedException {
+        final User clone = new User();
+        clone.init(this);
+        
+        for(Role role: this.roles) {
+			Role cloneRole = (Role)role.clone();
+			clone.getRoles().add(cloneRole);
+		}
+        
+        return clone;
+    }
 }
