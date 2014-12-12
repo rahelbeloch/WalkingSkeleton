@@ -359,13 +359,13 @@ public class WorkflowResource {
             workflow = LOGIC.getWorkflow(workflowid);
             logicResponse = LOGIC.deleteWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
-            LOGGER.log(Level.WARNING, loggingBody + e1);
+            LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         try {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }

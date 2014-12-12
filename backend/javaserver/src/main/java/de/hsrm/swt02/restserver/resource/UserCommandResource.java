@@ -40,7 +40,7 @@ public class UserCommandResource {
     public Response login(MultivaluedMap<String, String> formParams) {
         final String username = formParams.get("username").get(0);
         final String password = formParams.get("password").get(0);
-        final String loggingBody = PREFIX + "POST command/user/login";
+        final String loggingBody = PREFIX + "POST /command/user/login";
         LOGGER.log(Level.INFO, loggingBody);
         try {
             if (LOGIC.checkLogIn(username)) {

@@ -1,13 +1,17 @@
 package de.hsrm.swt02.restserver.resource;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,9 +21,14 @@ import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Role;
+import de.hsrm.swt02.model.User;
+import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.restserver.LogicResponse;
+import de.hsrm.swt02.restserver.Message;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 @Path("resource")
@@ -35,8 +44,8 @@ public class RoleResource {
     @GET
     @Path("roles")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getAllRoles(@PathParam("username") String username) {
-        final String loggingBody = PREFIX + "GET /resource/roles " + username;
+    public Response getAllRoles() {
+        final String loggingBody = PREFIX + "GET /resource/roles";
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         List<Role> roles;
@@ -58,6 +67,40 @@ public class RoleResource {
         return Response.ok(rolesAsString).build();
     }
     
-    
+    @POST
+    @Path("role")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes("application/x-www-form-urlencoded")
+    public Response saveRole(MultivaluedMap<String, String> formParams) {
+        final ObjectMapper mapper = new ObjectMapper();
+        final String loggingBody = PREFIX + "POST /resource/role";
+        LOGGER.log(Level.INFO, loggingBody);
+        final String roleAsString = formParams.get("data").get(0);
+        Role role;
+        
+        try {
+            role = mapper.readValue(roleAsString, Role.class);
+        } catch (IOException e) {
+            LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
+            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode()))
+                    .build();
+        }
+        try {
+            logicResponse = LOGIC.addRole(role);
+        } catch (RoleAlreadyExistsException e1) {
+            LOGGER.log(Level.INFO, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        }
+
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                LOGGER.log(Level.WARNING, e);
+            }
+        }
+        LOGGER.log(Level.INFO, loggingBody + " User successfully stored.");
+        return Response.ok("Role stored").build();
+    }
     
 }
