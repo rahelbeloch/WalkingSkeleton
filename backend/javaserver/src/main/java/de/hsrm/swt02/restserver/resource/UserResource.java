@@ -41,6 +41,7 @@ public class UserResource {
     public static final Logic LOGIC = FACTORY.getLogic();
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
+    private static final String PREFIX = "[restserver] ";
     LogicResponse logicResponse;
     
     /**
@@ -53,7 +54,8 @@ public class UserResource {
     @Path("user/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getUser(@PathParam("username") String username) {
-        final String loggingBody = "GETUSER -> " + username;
+        final String loggingBody = PREFIX + "GET /resource/user/" + username;
+        LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         User user;
         try {
@@ -86,7 +88,8 @@ public class UserResource {
     @Consumes("application/x-www-form-urlencoded")
     public Response saveUser(MultivaluedMap<String, String> formParams) {
         final ObjectMapper mapper = new ObjectMapper();
-        final String loggingBody = "SENDUSER";
+        final String loggingBody = PREFIX + "POST resource/user";
+        LOGGER.log(Level.INFO, loggingBody);
         final String userAsString = formParams.get("data").get(0);
         User user;
         
@@ -128,7 +131,8 @@ public class UserResource {
     public Response updateUser(@PathParam("username") String username,
             MultivaluedMap<String, String> formParams) 
     {
-        final String loggingBody = "UPDATE -> " + username;
+        final String loggingBody = PREFIX + "PUT user/" + username;
+        LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         final String userAsString = formParams.get("data").get(0);
         User user;
@@ -166,7 +170,8 @@ public class UserResource {
     @Path("user/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser(@PathParam("username") String username) {
-        final String loggingBody = "DELETE -> " + username;
+        final String loggingBody = PREFIX + "DELETE resource/user/" + username;
+        LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         User user = null;
         String userAsString;

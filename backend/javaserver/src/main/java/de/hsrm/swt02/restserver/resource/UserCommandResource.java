@@ -27,6 +27,7 @@ public class UserCommandResource {
     public static final Logic LOGIC = FACTORY.getLogic();
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
+    public static final String PREFIX = "[restserver] ";
     
     /**
      * This method is called if some client wants to login.
@@ -39,7 +40,8 @@ public class UserCommandResource {
     public Response login(MultivaluedMap<String, String> formParams) {
         final String username = formParams.get("username").get(0);
         final String password = formParams.get("password").get(0);
-        final String loggingBody = "LOGIN -> " + username + " : " + password;
+        final String loggingBody = PREFIX + "POST command/user/login";
+        LOGGER.log(Level.INFO, loggingBody);
         try {
             if (LOGIC.checkLogIn(username)) {
                 LOGGER.log(Level.INFO,loggingBody + " Login successful.");

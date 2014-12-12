@@ -49,8 +49,8 @@ public class WorkflowCommandResource {
     public Response startWorkflow(@PathParam("workflowid") int workflowid,
             @PathParam("username") String username) 
     {
-        LOGGER.log(Level.INFO, PREFIX + "POST /start/" + workflowid + "/" + username);
-        final String loggingBody = PREFIX + "START -> " + workflowid + " " + username;
+        final String loggingBody = PREFIX + "POST /start/" + workflowid + "/" + username;
+        LOGGER.log(Level.INFO, loggingBody);
 
         try {
             LOGIC.startWorkflow(workflowid, username);
@@ -86,8 +86,8 @@ public class WorkflowCommandResource {
             @PathParam("itemid") int itemid,
             @PathParam("username") String username) 
     {
-        LOGGER.log(Level.INFO, PREFIX + "POST /forward/" + stepid + "/" + itemid + "/" + username);
-        final String loggingBody = PREFIX + "FORWARD ITEM -> " + itemid;
+        final String loggingBody = PREFIX + "POST /forward/" + stepid + "/" + itemid + "/" + username;
+        LOGGER.log(Level.INFO, loggingBody);
         
         try {
             LOGIC.stepForward(itemid, stepid, username);
