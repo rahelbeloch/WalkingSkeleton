@@ -99,7 +99,7 @@ public class LogicImp implements Logic {
     */
     @Override
     public Workflow getWorkflow(int workflowID) throws WorkflowNotExistentException {
-        return (Workflow) p.loadWorkflow(workflowID);
+        return p.loadWorkflow(workflowID);
     }
 
     /**
