@@ -6,7 +6,7 @@
              
     <Application.Resources>
         <DataTemplate DataType="{x:Type viewmodel:DashboardViewModel}">
-            <view:WorkflowUserControl />
+            <view:DashboardUserControl />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
             <view:LoginUserControl />
