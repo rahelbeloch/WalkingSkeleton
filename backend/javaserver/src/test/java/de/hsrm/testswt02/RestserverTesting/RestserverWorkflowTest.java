@@ -77,7 +77,16 @@ public class RestserverWorkflowTest {
     @Test
     public void testUpdate() {
         final Workflow workflow = new Workflow();
-        workflow.setId(17);
+        final Step step1 = new StartStep();
+        final Step step2 = new Step();
+        final Step step3 = new FinalStep();
+        step1.setUsername("A");
+        step2.setUsername("B");
+        step3.setUsername("D");
+        workflow.addStep(step1);
+        workflow.addStep(step2);
+        workflow.addStep(step3);
+        workflow.setId(5);
         final ObjectMapper mapper = new ObjectMapper();
         String workflowAsString = null;
         
@@ -134,6 +143,15 @@ public class RestserverWorkflowTest {
     @Test
     public void testPost() {
         final Workflow workflow = new Workflow();
+        final Step step1 = new StartStep();
+        final Step step2 = new Step();
+        final Step step3 = new FinalStep();
+        step1.setUsername("A");
+        step2.setUsername("B");
+        step3.setUsername("C");
+        workflow.addStep(step1);
+        workflow.addStep(step2);
+        workflow.addStep(step3);
         final ObjectMapper mapper = new ObjectMapper();
         String workflowAsString = null;
         try {
