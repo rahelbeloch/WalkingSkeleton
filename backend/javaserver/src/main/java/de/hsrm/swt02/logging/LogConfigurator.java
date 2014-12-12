@@ -80,7 +80,7 @@ public class LogConfigurator {
         logger.setLevel(logLevel);
         // set handler for a specific log file
         try {
-            fileHTMLHandler = new FileHandler(logFile, LOGFILE_SIZE, LOGFILE_AMOUNT, true);
+            fileHTMLHandler = new FileHandler(logFile);
         } catch (SecurityException e) {
             logger.log(Level.WARNING,
                     "Couldn't create a file handler for the logging file.");
