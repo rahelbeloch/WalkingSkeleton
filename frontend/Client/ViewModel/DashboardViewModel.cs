@@ -19,15 +19,13 @@ namespace Client.ViewModel
     /// The WorkflowViewModel contains properties and commands to create a new workflow and to send it to the server.
     /// Furthermore, the properties and commands are used as DataBindings in the graphical user interface.
     /// </summary>
-    public class DashboardViewModel : ViewModelBase, IDataReceiver
+    public class DashboardViewModel : ViewModelBase
     {
-        private CommunicationManager _comManager;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public DashboardViewModel(MainViewModel mainViewModelInstanz)
         {
             _mainViewModel = mainViewModelInstanz;
             _restRequester = _mainViewModel.restRequester;
-            _comManager = new CommunicationManager(this);
         }
         private void updateModel()
         {
@@ -76,7 +74,7 @@ namespace Client.ViewModel
             _relevantItems.Clear();
             //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
         }
-        private void updateWorkflow(Workflow updatedWorkflow)
+        internal void updateWorkflow(Workflow updatedWorkflow)
         {
             Console.WriteLine("Update Workflow mit ID: " + updatedWorkflow.id);
             DashboardWorkflow toUpdate = null;
@@ -180,6 +178,9 @@ namespace Client.ViewModel
                             userName = "";
                             deleteModel();
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
+
+                            // unregister mainViewModel from CommunicationLib (if logout worked)
+                            _mainViewModel.comManager.unregisterClient();
                         }, canExecute =>
                             {
                                 return true;
@@ -230,22 +231,5 @@ namespace Client.ViewModel
 
         private List<Item> _relevantItems = new List<Item>();
         #endregion
-
-        void IDataReceiver.WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject)
-        {
-            Console.WriteLine("Update WorkflowViewModel: WorkflowID = " + wrappedObject.myObject.id);
-            Workflow update = wrappedObject.myObject;
-            updateWorkflow(update);
-        }
-
-        void IDataReceiver.ItemUpdate(RegistrationWrapper<Item> wrappedObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IDataReceiver.UserUpdate(RegistrationWrapper<User> wrappedObject)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

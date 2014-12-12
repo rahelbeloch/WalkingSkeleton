@@ -77,6 +77,9 @@ namespace Client.ViewModel
                             logger.Debug("Authentiaction userName: " + username);
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.dashboardViewModel;
                             _mainViewModel.username = _username;
+
+                            // Register mainViewModel to CommunicationLib (if login worked)
+                            _mainViewModel.comManager.registerClient(_mainViewModel);
                         }
                         catch (BasicException exc)
                         {
