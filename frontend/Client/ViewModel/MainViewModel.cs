@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using NLog;
+using CommunicationLib.Model;
 namespace Client.ViewModel
 {
     /// <summary>
     /// The MainViewModel is a container for all other ViewModels.
     /// It can be used to switch between different ViewModels (and corresponding Views).
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDataReceiver
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private DashboardViewModel _dashboardViewModel;
@@ -22,16 +23,32 @@ namespace Client.ViewModel
         private LoginViewModel _loginViewModel;
         public LoginViewModel loginViewModel { get { return _loginViewModel; } }
 
+        private CommunicationManager _comManager;
+        public CommunicationManager comManager
+        {
+            get
+            {
+                if (_comManager == null)
+                {
+                    _comManager = new CommunicationManager();
+                }
+                return _comManager;
+            }
+        }
+
         private IRestRequester _restRequester;
         public IRestRequester restRequester
         {
-            get {
+            get 
+            {
                 if (_restRequester == null)
                 {
                     _restRequester = new RestRequester();
                 }
-                return _restRequester; }
+                return _restRequester; 
+            }
         }
+
         private String _userName = "";
         public String username
         {
@@ -128,7 +145,30 @@ namespace Client.ViewModel
                 
             CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel);
         }
- 
+
+
+        void IDataReceiver.WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject) 
+        {
+            Workflow update = wrappedObject.myObject;
+            Console.WriteLine("Received Workflow for Update: ID = " + update.id);
+            // route update-handling to subcomponents
+            _dashboardViewModel.updateWorkflow(update);
+        }
+
+        void IDataReceiver.ItemUpdate(RegistrationWrapper<Item> wrappedObject)
+        {
+            Item update = wrappedObject.myObject;
+            // route update-handling to subcomponents
+            // route to itemViewModel etc. (update-method) to react to changes in one of my items
+        }
+
+        void IDataReceiver.UserUpdate(RegistrationWrapper<User> wrappedObject)
+        {
+            User update = wrappedObject.myObject;
+            // route update-handling to subcomponents
+            // route to userViewModel etc. (update-method) to react to changes in my settings
+        }
+
         #endregion
     }
 }
