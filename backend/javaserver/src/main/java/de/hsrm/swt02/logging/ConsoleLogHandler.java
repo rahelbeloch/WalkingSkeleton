@@ -16,6 +16,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * Otherwise the message will be published on system.out
  */
 public class ConsoleLogHandler extends Handler {
+    
+    private static final boolean SHOW_TRACE = true;
 
     @Override
     @Deprecated
@@ -32,20 +34,31 @@ public class ConsoleLogHandler extends Handler {
     @Override
     public void publish(LogRecord rec) {
         final Level currentLevel = rec.getLevel();
+        final String timeStamp = calcDate(rec.getMillis());
+        final Throwable ex =  rec.getThrown();
         String logMessage;
         String msg;
-        final Throwable ex =  rec.getThrown();
-       
+        
+        // exception?
         if (ex != null) {
             msg = ex.getClass().getName() + " - " + ex.getMessage();
         }
+        // normal message
         else {
             msg = rec.getMessage();
         }
-        logMessage = currentLevel + " " + calcDate(rec.getMillis()) + " " + msg;
         
+        logMessage = currentLevel + " " + timeStamp + " " + msg;
+        
+        // console output
         if (currentLevel.intValue() >= Level.WARNING.intValue()) {
-            System.err.println(logMessage);
+            if (SHOW_TRACE && ex != null) {
+                System.err.print(currentLevel + " " + timeStamp + " ");
+                ex.printStackTrace();
+            }
+            else {
+                System.err.println(logMessage);
+            }
         }
         else {
             System.out.println(logMessage);
