@@ -35,7 +35,9 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Label Grid.Row="0" Content="{Binding name}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
-                            <Button Grid.Row="0" Content="+" Width="35" Height="25" Margin="150 5 10 10" Command="{Binding DataContext/startWorkflowCommand}" CommandParameter="{Binding}" IsEnabled="{Binding startPermission}"/>
+                            <Button Grid.Row="0" Content="+" Width="35" Height="25" Margin="150 5 10 10" 
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.startWorkflowCommand}" 
+                                    CommandParameter="{Binding}" IsEnabled="{Binding startPermission}"/>
                             <Grid Grid.Row="1"  HorizontalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
