@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using CommunicationLib.Model;
 using CommunicationLib;
-using System.Windows;
 using RestAPI;
 using NLog;
 
@@ -63,6 +63,7 @@ namespace Client.ViewModel
                 _restRequester.GetRelevantItemsByUser(workflow.id, _userName).ToList().ForEach(_relevantItems.Add);
                 Step activeStep;
                 DashboardRow row;
+                logger.Debug("relevant Items size: "+_relevantItems.Count());
                 foreach (Item item in _relevantItems)
                 {
                     activeStep = getStepById(item.getActiveStepId(), workflow);
@@ -71,6 +72,7 @@ namespace Client.ViewModel
                 }
                 _dashboardWorkflows.Add(newWorkflow);
             }
+            logger.Debug("Model update finished. Workflows-size: "+_workflows.Count());
             _relevantItems.Clear();
             //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
         }
@@ -189,7 +191,25 @@ namespace Client.ViewModel
                 return _logoutCommand;
             }
         }
-
+        private ICommand _startWorkflowCommand;
+        public ICommand startWorkflowCommand
+        {
+            get
+            {
+                if (_startWorkflowCommand == null)
+                {
+                    _startWorkflowCommand = new ActionCommand(execute =>
+                    {
+                        DashboardWorkflow param = (DashboardWorkflow)execute;
+                        createWorkflow(param.actWorkflow.id, userName);
+                    }, canExecute =>
+                    {
+                        return true;
+                    });
+                }
+                return _startWorkflowCommand;
+            }
+        }
         #region properties
         private IRestRequester _restRequester;
         private MainViewModel _mainViewModel;
