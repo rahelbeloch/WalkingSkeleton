@@ -50,9 +50,9 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel>
-                                                <TextBlock Grid.Row="0" Text="{Binding actStep/label}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding actStep/id}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
-                                                <Button Grid.Row="0" Content="{Binding actItem/getState}" Width="35" Height="25" Margin="150 5 10 10" Command="" CommandParameter="{Binding}"/>
+                                                <TextBlock DataContext="{Binding actStep}" Grid.Row="0" Text="{Binding label}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
+                                                <TextBlock DataContext="{Binding actStep}" Grid.Row="1" Text="{Binding id}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
+                                                <Button DataContext="{Binding actItem}" Grid.Row="0" Content="{Binding state}" Width="35" Height="25" Margin="150 5 10 10" Command="" CommandParameter="{Binding}"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>

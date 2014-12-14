@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,26 +53,29 @@ namespace CommunicationLib.Model
             }
             return -1;
         }
-        /// <summary>
-        /// returns the actual State of the Item
-        /// </summary>
-        public String getState()
+
+        private string _state;
+        [JsonIgnore]
+        public string state
         {
-            foreach (MetaEntry me in metadata)
+            get
             {
-                if (me.group.Equals("step"))
+                foreach (MetaEntry me in metadata)
                 {
-                    if (me.value.Equals("OPEN"))
+                    if (me.group.Equals("step"))
                     {
-                        return "OPEN";
-                    }
-                    if (me.value.Equals("BUSY"))
-                    {
-                        return "BUSY";
+                        if (me.value.Equals("OPEN"))
+                        {
+                            return "OPEN";
+                        }
+                        if (me.value.Equals("BUSY"))
+                        {
+                            return "BUSY";
+                        }
                     }
                 }
+                return "";
             }
-            return "";
         }
     }
 }
