@@ -38,6 +38,7 @@ public class Workflow extends RootElement implements Cloneable {
 
     /**
      * Items getter.
+     * 
      * @return items are the items corresponding the workflow
      */
     public List<Item> getItems() {
@@ -46,6 +47,7 @@ public class Workflow extends RootElement implements Cloneable {
 
     /**
      * sets items to an empty list.
+     * 
      * @param i
      */
     public void clearItems() {
@@ -54,6 +56,7 @@ public class Workflow extends RootElement implements Cloneable {
 
     /**
      * Active Getter getter.
+     * 
      * @return active if the workflow is active or not
      */
     public boolean isActive() {
@@ -62,6 +65,7 @@ public class Workflow extends RootElement implements Cloneable {
 
     /**
      * Active setter.
+     * 
      * 
      * @param active
      *            if the workflow is active or not
@@ -187,9 +191,10 @@ public class Workflow extends RootElement implements Cloneable {
 
     /**
      * Deep Copy - Cloning method for Workflows.
-     * @exception CloneNotSupportedException convention
+     * 
+     * @exception CloneNotSupportedException
      * @throws CloneNotSupportedException
-     * @return clone is the requested cloone of the workflow
+     * @return Object clone
      */
     public Object clone() throws CloneNotSupportedException {
         this.convertReferencesToIdList();

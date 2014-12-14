@@ -7,12 +7,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.hsrm.swt02.constructionfactory.SingleModule;
+import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
@@ -49,6 +51,13 @@ public class PersistenceTest {
      * @exception WorkflowNotExistentException if the requested workflow is not there
      * @throws WorkflowNotExistentException
      */
+    
+    @BeforeClass
+    public static void setup() {
+        LogConfigurator.setup();
+    }
+    
+    
     @Test
     public void testWorkflowStorage() throws WorkflowNotExistentException {
         final Workflow workflow007 = new Workflow();
