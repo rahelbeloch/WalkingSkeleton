@@ -167,6 +167,27 @@ namespace Client.ViewModel
             logger.Debug("stepForward()");
             _restRequester.StepForward(stepId, itemId, userName);
         }
+
+        private ICommand _stepForwardCommand;
+        public ICommand stepForwardCommand
+        {
+            get
+            {
+                if (_stepForwardCommand == null)
+                {
+                    _stepForwardCommand = new ActionCommand(execute => 
+                    {
+                        DashboardRow param = (DashboardRow) execute;
+                        stepForward(param.actStep.id, param.actItem.id, param.username);
+                    }, canExecute => true);
+
+                    
+                }
+
+                return _stepForwardCommand;
+            }
+        }
+
         private ICommand _logoutCommand;
         public ICommand logoutCommand
         {

@@ -11,7 +11,7 @@ namespace Client.ViewModel
     public class DashboardRow
     {
         private Item _actItem;
-        public Item actItem { get { return _actItem; } }
+        public Item actItem { get { return _actItem; } set { _actItem = value; } }
 
         private Step _actStep;
         public Step actStep { get { return _actStep; } set { _actStep = value; } }
