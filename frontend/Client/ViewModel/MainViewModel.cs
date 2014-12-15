@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using NLog;
 using CommunicationLib.Model;
+
 namespace Client.ViewModel
 {
     /// <summary>
@@ -23,16 +24,16 @@ namespace Client.ViewModel
         private LoginViewModel _loginViewModel;
         public LoginViewModel loginViewModel { get { return _loginViewModel; } }
 
-        private CommunicationManager _comManager;
-        public CommunicationManager comManager
+        private ComLib _myComLib;
+        public ComLib myComLib
         {
             get
             {
-                if (_comManager == null)
+                if (_myComLib == null)
                 {
-                    _comManager = new CommunicationManager();
+                    _myComLib = new ComLib(this);
                 }
-                return _comManager;
+                return _myComLib;
             }
         }
 
@@ -43,7 +44,7 @@ namespace Client.ViewModel
             {
                 if (_restRequester == null)
                 {
-                    _restRequester = new RestRequester();
+                    _restRequester = _myComLib.sender;
                 }
                 return _restRequester; 
             }
@@ -172,7 +173,6 @@ namespace Client.ViewModel
             // route update-handling to subcomponents
             // route to userViewModel etc. (update-method) to react to changes in my settings
         }
-
         #endregion
     }
 }
