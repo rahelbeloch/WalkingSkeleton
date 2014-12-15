@@ -87,6 +87,14 @@ namespace Client.ViewModel
             {
                 activeStep = getStepById(item.getActiveStepId(), updatedWorkflow);
                 row = new DashboardRow(item, activeStep, _userName);
+                if (activeStep == null)
+                {
+                    logger.Debug("activeStep.label is null");
+                }
+                else
+                {
+                    logger.Debug("addWorkflowRow activeStep: " + activeStep.label + ", item.id: " + item.id);
+                }
                 toUpdate.addDashboardRow(row);
             }
         }
