@@ -86,7 +86,7 @@ public class RoleResource {
      * @return 200 OK if successful, 500 Server Error if not
      */
     @POST
-    @Path("role")
+    @Path("roles")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveRole(MultivaluedMap<String, String> formParams) {
@@ -130,7 +130,7 @@ public class RoleResource {
      * @return 200 OK if successful, 500 Server Error if not
      */
     @PUT
-    @Path("role/{rolename}")
+    @Path("roles/{rolename}")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateRole(@PathParam("rolename") String rolename,
@@ -174,7 +174,7 @@ public class RoleResource {
      * @return 200 OK if successful, 500 ServerError if not
      */
     @DELETE
-    @Path("role/{rolename}")
+    @Path("roles/{rolename}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser(@PathParam("rolename") String rolename) {
         final String loggingBody = PREFIX + "DELETE /resource/role/" + rolename;

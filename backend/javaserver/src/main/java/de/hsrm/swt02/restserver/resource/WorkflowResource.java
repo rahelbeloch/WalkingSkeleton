@@ -56,7 +56,7 @@ public class WorkflowResource {
      * @return the requested workflow
      */
     @GET
-    @Path("workflow/{workflowid}")
+    @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getWorkflow(@PathParam("workflowid") int workflowid) {
         final String loggingBody = PREFIX + "GET /workflow/" + workflowid;
@@ -255,7 +255,7 @@ public class WorkflowResource {
      *         serialization crashed
      */
     @POST
-    @Path("workflow")
+    @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveWorkflow(MultivaluedMap<String, String> formParams) {
@@ -300,7 +300,7 @@ public class WorkflowResource {
      * @return String true or false
      */
     @PUT
-    @Path("workflow/{workflowid}")
+    @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateWorkflow(@PathParam("workflowid") int workflowid,
@@ -345,7 +345,7 @@ public class WorkflowResource {
      * @return ok if it worked
      */
     @PUT
-    @Path("workflow/{workflowid}/{state}")
+    @Path("workflows/{workflowid}/{state}")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateWorkflowActivity(@PathParam("workflowid") int workflowid, @PathParam("state") String state) {
@@ -381,7 +381,7 @@ public class WorkflowResource {
      * @return deleted workflow, if successful
      */
     @DELETE
-    @Path("workflow/{workflowid}")
+    @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteWorkflow(@PathParam("workflowid") int workflowid) {
         final String loggingBody = PREFIX + "DELETE /workflow/" + workflowid;
