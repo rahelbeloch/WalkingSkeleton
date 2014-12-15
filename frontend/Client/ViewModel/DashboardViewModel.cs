@@ -12,6 +12,7 @@ using CommunicationLib.Model;
 using CommunicationLib;
 using RestAPI;
 using NLog;
+using System.Windows.Threading;
 
 namespace Client.ViewModel
 {
@@ -93,8 +94,7 @@ namespace Client.ViewModel
             {
                 Console.WriteLine("toUpdate = null");
                 toUpdate = new DashboardWorkflow(updatedWorkflow);
-                logger.Debug("asdf");
-                _dashboardWorkflows.Add(toUpdate);
+                Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
                 logger.Debug("NO workflow found to update");
             }
             else
