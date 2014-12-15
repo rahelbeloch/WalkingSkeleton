@@ -303,7 +303,7 @@ namespace RestAPI
         public O DeleteObject<O>(int id) where O : new()
         {
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "/" + id;
+            String url = _ressourceParam + typeName + "s/" + id;
 
             var request = new RestRequest(url, Method.DELETE);
             request.AddHeader("Accept", "text/plain");
