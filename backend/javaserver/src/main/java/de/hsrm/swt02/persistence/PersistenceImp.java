@@ -304,9 +304,9 @@ public class PersistenceImp implements Persistence {
     // temp load Step - to be completed
     @Override
     public Step loadStep(String itemId, String stepId) throws ItemNotExistentException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException {
-        Item item = loadItem(itemId);
-        String workflowId = item.getWorkflowId();
-        Workflow workflow = loadWorkflow(workflowId);
+        final Item item = loadItem(itemId);
+        final String workflowId = item.getWorkflowId();
+        final Workflow workflow = loadWorkflow(workflowId);
         Step step = null;
         
         for (Step s : workflow.getSteps()){
@@ -320,7 +320,6 @@ public class PersistenceImp implements Persistence {
         }else{
             throw new StepNotExistentException("Step " + stepId + " is not existent.");
         }
-
     }
     
     
