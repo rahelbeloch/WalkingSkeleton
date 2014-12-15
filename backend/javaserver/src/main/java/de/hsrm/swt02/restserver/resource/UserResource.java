@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -26,6 +27,7 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.User;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
@@ -92,7 +94,7 @@ public class UserResource {
         LOGGER.log(Level.INFO, loggingBody);
         final String userAsString = formParams.get("data").get(0);
         User user;
-        
+        System.out.println(userAsString);
         try {
             user = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
@@ -104,6 +106,9 @@ public class UserResource {
             logicResponse = LOGIC.addUser(user);
         } catch (UserAlreadyExistsException e) {
             LOGGER.log(Level.INFO, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
@@ -148,6 +153,9 @@ public class UserResource {
         } catch (UserAlreadyExistsException e) {
             LOGGER.log(Level.INFO, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -167,9 +175,9 @@ public class UserResource {
      * @return deleted user, if successful
      */
     @DELETE
-    @Path("users/{username}")
+    @Path("users")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteUser(@PathParam("username") String username) {
+    public Response deleteUser(@HeaderParam("username") String username) {
         final String loggingBody = PREFIX + "DELETE /resource/user/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();

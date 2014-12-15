@@ -30,7 +30,7 @@ public class UserCommandResource {
     
     /**
      * This method is called if some client wants to login.
-     * @param formParams is a wrapper for login data
+     * @param username The user to login
      * @return returns ok if it was successful and server error if it was not
      */
     @POST @Path("login")
@@ -42,6 +42,7 @@ public class UserCommandResource {
             LOGIC.checkLogIn(username);
         } catch (LogInException e) {
             LOGGER.log(Level.WARNING,e);
+            System.out.println(e.getErrorCode());
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         LOGGER.log(Level.INFO,loggingBody + " Login successful.");
