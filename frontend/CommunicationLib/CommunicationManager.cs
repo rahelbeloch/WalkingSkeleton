@@ -69,20 +69,30 @@ namespace CommunicationLib
         ///  (client calls this method if login works)
         /// </summary>
         /// <param name="myClient">the client to register for</param>
-        public void registerClient(IDataReceiver myClient)
+        /// <param name="isAdmin">if this is set to true, client will be set as admin</param>
+        public void registerClient(IDataReceiver myClient, bool isAdmin)
         {
-            // TODO: alle Subs, die er vorher schonmal hatte wieder default setzen bei Neuregistrierung
-            // Beim abmelden (unregister) alle MessageSubs im User als Liste speichern (per Rest) und bei neuem Registrieren einfach holen und setzen
             this._myClient = myClient;
 
-            //default topic subscriptions
+            // get the topis for this client (user)
+            /* restRequester.getTopics(user);
+             * if (subs not empty)
+             * for (topic in topics) {
+             *          messageConsumer
+             *          add to messageSubs
+             * }
+             * else
+             * {
+             */
+
+            // workflow topic
             IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(WORKFLOW_TOPIC));
             messageConsumer.Listener += OnMessageReceived;
             _messageSubs.Add(WORKFLOW_TOPIC, messageConsumer);
 
-            //TODO check if client is admin client
-            if (true) 
+            if (isAdmin) 
             {
+                // user topic
                 messageConsumer = _session.CreateConsumer(new ActiveMQTopic(USER_TOPIC));
                 messageConsumer.Listener += OnMessageReceived;
                 _messageSubs.Add(USER_TOPIC, messageConsumer);
