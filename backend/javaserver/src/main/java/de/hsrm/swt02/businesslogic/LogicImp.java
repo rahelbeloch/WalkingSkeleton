@@ -74,7 +74,8 @@ public class LogicImp implements Logic {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def="
+        //TODO item=def=<itemID>
+        logicResponse.add(new Message("ITEMS_FROM_" + workflowID, "item=def="
                 + workflowID));
         return logicResponse;
     }
