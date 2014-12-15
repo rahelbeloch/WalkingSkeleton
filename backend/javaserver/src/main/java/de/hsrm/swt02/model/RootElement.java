@@ -53,4 +53,14 @@ public class RootElement implements Cloneable {
     public void setId(int id) {
         this.id = id;
     }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof RootElement) {
+            if (this.getId() == ((RootElement)object).getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
