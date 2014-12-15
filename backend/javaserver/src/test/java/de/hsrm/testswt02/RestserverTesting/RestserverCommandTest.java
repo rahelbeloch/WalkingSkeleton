@@ -85,17 +85,15 @@ public class RestserverCommandTest {
         dataform = new Form().param("data", userAsString);
         Response resp = client
                 .target(targetUrl)
-                .path("resource/user")
+                .path("resource/users")
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         
-        dataform = new Form().param("username", "Alex");
-        dataform.param("password", "test");
         resp = client
                 .target(targetUrl)
-                .path("command/user/login")
-                .request()
+                .path("command/users/login")
+                .request().header("username", "Alex").header("password", "test")
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         assertEquals(resp.getStatus(), 200);

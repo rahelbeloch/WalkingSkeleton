@@ -87,7 +87,7 @@ public class RestServerUserTest {
         dataform = new Form().param("data", userAsString);
         final Response resp = client
                 .target(targetUrl)
-                .path("resource/user")
+                .path("resource/users")
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
@@ -116,7 +116,7 @@ public class RestServerUserTest {
         dataform = new Form().param("data", userAsString);
         final Response resp = client
                 .target(targetUrl)
-                .path("resource/user")
+                .path("resource/users")
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
@@ -125,7 +125,7 @@ public class RestServerUserTest {
         
         final Response resp2 = client
                 .target(targetUrl)
-                .path("resource/user")
+                .path("resource/users")
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
@@ -138,7 +138,7 @@ public class RestServerUserTest {
      */
     @Test
     public void testGetNonExistentUser() {
-        final Response resp = client.target(targetUrl).path("resource/user/Testerxy")
+        final Response resp = client.target(targetUrl).path("resource/users/Testerxy")
                 .request().delete();
         assertEquals(500, resp.getStatus());
     }
@@ -162,13 +162,13 @@ public class RestServerUserTest {
         }
         dataform = new Form().param("data", userAsString);
         client.target(targetUrl)
-              .path("resource/user")
+              .path("resource/users")
               .request()
               .post(Entity.entity(dataform,
                       MediaType.APPLICATION_FORM_URLENCODED));
         
         userAsString = client.target(targetUrl)
-                .path("resource/user/Tester2").request().get(String.class);
+                .path("resource/users/Tester2").request().get(String.class);
         
         try {
             testUser = mapper.readValue(userAsString, User.class);
@@ -184,7 +184,7 @@ public class RestServerUserTest {
      */
     @Test
     public void testDeleteNonExistentUser() {
-        final Response resp = client.target(targetUrl).path("resource/user/Testerabc")
+        final Response resp = client.target(targetUrl).path("resource/users/Testerabc")
                 .request().delete();
         assertEquals(500, resp.getStatus());
     }
@@ -209,11 +209,11 @@ public class RestServerUserTest {
         }
         dataform = new Form().param("data", userAsString);
         client.target(targetUrl)
-              .path("resource/user")
+              .path("resource/users")
               .request()
               .post(Entity.entity(dataform,
                       MediaType.APPLICATION_FORM_URLENCODED));
-        final Response resp = client.target(targetUrl).path("resource/user/Tester3")
+        final Response resp = client.target(targetUrl).path("resource/users/Tester3")
                 .request().delete();
         assertEquals(200, resp.getStatus());
     }

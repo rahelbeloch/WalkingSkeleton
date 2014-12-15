@@ -98,7 +98,7 @@ public class RestserverWorkflowTest {
         final Form dataform = new Form().param("data", workflowAsString);
         final Response resp = client
                 .target(targetUrl)
-                .path("resource/workflow/17")
+                .path("resource/workflows/17")
                 .request()
                 .put(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
@@ -121,12 +121,12 @@ public class RestserverWorkflowTest {
         }
         final Form dataform = new Form().param("data", workflowAsString);
         client.target(targetUrl)
-                .path("resource/workflow")
+                .path("resource/workflows")
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         workflowAsString = client.target(targetUrl)
-                .path("resource/workflow/1").request().get(String.class);
+                .path("resource/workflows/1").request().get(String.class);
         
         try {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
@@ -162,7 +162,7 @@ public class RestserverWorkflowTest {
         final Form dataform = new Form().param("data", workflowAsString);
         final Response resp = client
                 .target(targetUrl)
-                .path("resource/workflow")
+                .path("resource/workflows")
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
@@ -175,7 +175,7 @@ public class RestserverWorkflowTest {
      */
     @Test
     public void testDelete() {
-        final Response resp = client.target(targetUrl).path("resource/workflow/0")
+        final Response resp = client.target(targetUrl).path("resource/workflows/0")
                 .request().delete();
         assertEquals(500, resp.getStatus());
     }
@@ -217,7 +217,7 @@ public class RestserverWorkflowTest {
         Form dataform = new Form().param("data", workflowAsString);
         Response resp = client
                 .target(targetUrl)
-                .path("resource/workflow")
+                .path("resource/workflows")
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
@@ -231,13 +231,13 @@ public class RestserverWorkflowTest {
         dataform = new Form().param("data", userAsString);
         resp = client
                 .target(targetUrl)
-                .path("resource/user")
+                .path("resource/users")
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         
         workflowAsString = client.target(targetUrl)
-                .path("resource/workflows/Belex").request().get(String.class);
+                .path("resource/workflows").request().header("username", "Belex").get(String.class);
         
         //Get all workflows for User "Belex"
         List<Workflow> wList = null;
