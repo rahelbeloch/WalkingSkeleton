@@ -363,7 +363,7 @@ public class LogicImp implements Logic {
     * @throws LogicException
     * @return List<Workflow> is the requested list of workflows
     */
-    public List<Integer> getStartableWorkflowsByUser(String username) throws LogicException, UserNotExistentException {
+    public List<Integer> getStartableWorkflowsByUser(String username) throws LogicException, UserNotExistentException, WorkflowNotExistentException {
         final List<Integer> startableWorkflows = new LinkedList<>();
         for (Workflow workflow : getAllWorkflowsByUser(username)) {
             if (workflow.isActive()) {
