@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunicationLib.Model.Exception.LogicExceptions.PersistenceExceptions
+namespace CommunicationLib.Exception
 {
     class StepNotExistentException : DoesntExistsException
     {
