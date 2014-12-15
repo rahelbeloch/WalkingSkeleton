@@ -13,7 +13,7 @@ namespace Admin.ViewModel
     /// The MainViewModel is a container for all other ViewModels.
     /// It can be used to switch between different ViewModels (and corresponding Views).
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase, IDataReceiver
     {
         private WorkflowViewModel _workflowViewModel;
         public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
@@ -34,8 +34,13 @@ namespace Admin.ViewModel
             }
         }
 
+        private CommunicationManager _comManager;
+
         public MainViewModel()
         {
+            _comManager = new CommunicationManager();
+            _comManager.registerClient(this);
+
             _workflowViewModel = new WorkflowViewModel(this);
             _userViewModel = new UserViewModel(this);
 
@@ -122,5 +127,20 @@ namespace Admin.ViewModel
         }
  
         #endregion
+
+        public void WorkflowUpdate(RegistrationWrapper<CommunicationLib.Model.Workflow> wrappedObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ItemUpdate(RegistrationWrapper<CommunicationLib.Model.Item> wrappedObject)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UserUpdate(RegistrationWrapper<CommunicationLib.Model.User> wrappedObject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

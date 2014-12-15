@@ -27,15 +27,13 @@ namespace Admin.ViewModel
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;
 
-        private CommunicationManager _comManager;
+        
         
         public WorkflowViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
             _workflow.CollectionChanged += OnWorkflowChanged;
-
-            _comManager = new CommunicationManager(this);
 
             // fill choosable steps with default values
             _choosableSteps.Add(new StartStep());
