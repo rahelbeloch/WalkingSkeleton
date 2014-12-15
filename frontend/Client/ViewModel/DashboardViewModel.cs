@@ -87,13 +87,21 @@ namespace Client.ViewModel
                     toUpdate = dashboardWorkflow;
                 }
             }
+
+
             if (toUpdate == null)
             {
+                Console.WriteLine("toUpdate = null");
                 toUpdate = new DashboardWorkflow(updatedWorkflow);
+                logger.Debug("asdf");
                 _dashboardWorkflows.Add(toUpdate);
                 logger.Debug("NO workflow found to update");
             }
-            toUpdate = new DashboardWorkflow(updatedWorkflow);
+            else
+            {
+
+                toUpdate = new DashboardWorkflow(updatedWorkflow);
+            }
 
             IList<Workflow> workflowList = _restRequester.GetAllWorkflowsByUser(_userName);
             if (workflowList == null)
