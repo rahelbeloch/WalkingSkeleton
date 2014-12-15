@@ -40,7 +40,7 @@ namespace Admin.ViewModel
         public MainViewModel()
         {
             _comManager = new CommunicationManager();
-            _comManager.registerClient(this);
+            _comManager.registerClient(this, true);
 
             _workflowViewModel = new WorkflowViewModel(this);
             _userViewModel = new UserViewModel(this);
