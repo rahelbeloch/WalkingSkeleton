@@ -218,7 +218,7 @@ public class WorkflowResource {
         List<Workflow> wflowList = null;
         try {
             wflowList = LOGIC.getAllWorkflowsByUser(username);
-            for(Workflow w : wflowList) {
+            for (Workflow w : wflowList) {
                 w.convertReferencesToIdList();
             }
         } catch (WorkflowNotExistentException e1) {
@@ -326,6 +326,41 @@ public class WorkflowResource {
                     + e1);
             return Response.serverError()
                     .entity(String.valueOf(e1.getErrorCode())).build();
+        }
+        for (Message m : logicResponse.getMessages()) {
+            try {
+                PUBLISHER.publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                LOGGER.log(Level.WARNING, e);
+            }
+        }
+        LOGGER.log(Level.INFO, loggingBody + " Workflow successfully updated.");
+        return Response.ok().build();
+    }
+    
+    /**
+     * This method sets a workflow's activity.
+     * @param workflowid indicates which workflow's activity should be updated
+     * @param state indicates if a workflow should be activated or deactivated 
+     * @return ok if it worked
+     */
+    @PUT
+    @Path("workflow/{workflowid}/{state}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes("application/x-www-form-urlencoded")
+    public Response updateWorkflowActivity(@PathParam("workflowid") int workflowid, @PathParam("state") String state) {
+        final String loggingBody = PREFIX + "PUT /workflow/" + workflowid + state;
+        LOGGER.log(Level.INFO, loggingBody);
+      
+        try {
+            if (state.equals("activate")) {
+                logicResponse = LOGIC.activateWorkflow(workflowid);
+            } else if (state.equals("deactivate")) { 
+                logicResponse = LOGIC.deactivateWorkflow(workflowid);
+            }
+        } catch (WorkflowNotExistentException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
