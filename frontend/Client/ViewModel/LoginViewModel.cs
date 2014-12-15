@@ -79,7 +79,7 @@ namespace Client.ViewModel
                             _mainViewModel.username = _username;
 
                             // Register mainViewModel to CommunicationLib (if login worked)
-                            _mainViewModel.comManager.registerClient(_mainViewModel, false);
+                            _mainViewModel.myComLib.Login(_username, _securePwd);
                         }
                         catch (BasicException exc)
                         {

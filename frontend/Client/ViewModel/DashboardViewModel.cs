@@ -171,7 +171,7 @@ namespace Client.ViewModel
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
 
                             // unregister mainViewModel from CommunicationLib (if logout worked)
-                            _mainViewModel.comManager.unregisterClient();
+                            _mainViewModel.myComLib.Logout();
                         }, canExecute =>
                             {
                                 return true;
