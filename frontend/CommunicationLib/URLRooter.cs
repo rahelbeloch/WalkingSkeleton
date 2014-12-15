@@ -6,34 +6,40 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib
 {
-    
-    public static class URLRooter
+    /// <summary>
+    ///  Class to generate specific URLs for server communication.
+    /// </summary>
+    public static class URLRouter
     {
-        public enum UrlMethod 
-        {
-            Resource,
-            Operation 
-        };
-
-
+        /// <summary>
+        ///  Generate a url without typeparam. 
+        /// </summary>
+        /// <param name="method">The URL-Method (Enum beneath class)</param>
+        /// <param name="values">route params</param>
+        /// <returns>the url</returns>
         public static string generateUrl(UrlMethod method, params string [] values)
         {
-            String url = (method == UrlMethod.Resource)? "resource" : "command";
-            foreach(var val in values)
-            {
-                url += "/" + val;
-            }
-
-            return url;
+            return generateUrl(method, null, values);
         }
 
+        /// <summary>
+        ///  Generate URL with typeparam.
+        /// </summary>
+        /// <param name="method">The URL-Method (Enum beneath class)</param>
+        /// <param name="objType">type of requestet resource</param>
+        /// <param name="values">route params</param>
+        /// <returns>the url</returns>
         public static string generateUrl(UrlMethod method,Type objType, params string[] values)
         {
-            String typeName = objType.FullName.Split('.').Last().ToLower();
-            typeName += "s";
             String url = (method == UrlMethod.Resource) ? "resource" : "command";
-            url += typeName;
 
+            if (objType != null)
+            {
+                String typeName = objType.FullName.Split('.').Last().ToLower();
+                url += typeName + "s";
+            }
+
+            // append all url params to url; seperated by '/'
             foreach (var val in values)
             {
                 url += "/" + val;
@@ -42,6 +48,13 @@ namespace CommunicationLib
             return url;
         }
     }
+
+    public enum UrlMethod
+    {
+        Resource,
+        Operation
+    };
+
     
 
     /* Vorhandene URLS in Rest-Schnitstelle
