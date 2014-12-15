@@ -65,9 +65,9 @@ public class PersistenceTest {
         final Workflow workflow006 = new Workflow();
         final Workflow workflow005 = new Workflow();
 
-        final int id5 = db.storeWorkflow(workflow005);
-        final int id6 = db.storeWorkflow(workflow006);
-        final int id7 = db.storeWorkflow(workflow007);
+        final String id5 = db.storeWorkflow(workflow005);
+        final String id6 = db.storeWorkflow(workflow006);
+        final String id7 = db.storeWorkflow(workflow007);
 
         assertEquals(db.loadWorkflow(id5), workflow005);
         assertEquals(db.loadWorkflow(id6), workflow006);
@@ -90,8 +90,8 @@ public class PersistenceTest {
 
         db.deleteWorkflow(wf001.getId());
 
-        assertEquals(db.loadWorkflow(2), wf002);
-        assertEquals(db.loadWorkflow(1), null);
+        assertEquals(db.loadWorkflow("2"), wf002);
+        assertEquals(db.loadWorkflow("1"), null);
     }
 
     /**
@@ -113,7 +113,7 @@ public class PersistenceTest {
         workflow007.addStep(step2);
         workflow007.addStep(step3);
 
-        final int id7 = db.storeWorkflow(workflow007);
+        final String id7 = db.storeWorkflow(workflow007);
 
         // step2, the action of workflow007, should be persistent
         // step1 and step2 cannot be tested because their ID is not yet
@@ -153,7 +153,7 @@ public class PersistenceTest {
         final Item item003 = new Item();
         final List<Item> itemList = new LinkedList<>();
         
-        int workflowId = db.storeWorkflow(wf000);
+        String workflowId = db.storeWorkflow(wf000);
         
         item001.setWorkflowId(workflowId);
         item002.setWorkflowId(workflowId);
