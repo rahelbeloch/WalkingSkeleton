@@ -76,7 +76,7 @@ public class RestServerUserTest {
         final ObjectMapper mapper = new ObjectMapper();
         final Form dataform;
         String userAsString = null;
-        testUser.setId(0);
+        testUser.setId("0");
         testUser.setUsername("Tester");
         
         try {
@@ -105,7 +105,7 @@ public class RestServerUserTest {
         final ObjectMapper mapper = new ObjectMapper();
         final Form dataform;
         String userAsString = null;
-        testUser.setId(0);
+        testUser.setId("0");
         testUser.setUsername("Tester1");
         
         try {
@@ -152,7 +152,7 @@ public class RestServerUserTest {
         final ObjectMapper mapper = new ObjectMapper();
         final Form dataform;
         String userAsString = null;
-        testUser.setId(0);
+        testUser.setId("0");
         testUser.setUsername("Tester2");
         
         try {
@@ -199,7 +199,7 @@ public class RestServerUserTest {
         final ObjectMapper mapper = new ObjectMapper();
         final Form dataform;
         String userAsString = null;
-        testUser.setId(0);
+        testUser.setId("0");
         testUser.setUsername("Tester3");
         
         try {

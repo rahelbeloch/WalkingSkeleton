@@ -86,7 +86,7 @@ public class RestserverWorkflowTest {
         workflow.addStep(step1);
         workflow.addStep(step2);
         workflow.addStep(step3);
-        workflow.setId(5);
+        workflow.setId("5");
         final ObjectMapper mapper = new ObjectMapper();
         String workflowAsString = null;
         
