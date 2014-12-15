@@ -235,6 +235,31 @@ namespace RestAPI
         }
 
         /// <summary>
+        ///     Send workflow activity change to server. Path is always: '/ressourceParam/workflow/{workflowid}/{state}
+        /// </summary>
+        /// <param name="workflowId">Id of workflow which should be (de-)activated</param> 
+        /// <param name="state">state which indicates if workflow should be (de-)activated</param>
+        /// <returns></returns>
+        public Boolean WorkflowActivity(int workflowId, string state)
+        {
+            IRestResponse response;
+            String url = _ressourceParam + "workflow/" + workflowId + "/" + state;
+
+            var request = new RestRequest(url, Method.PUT);
+            request.AddHeader("Accept", "text/plain");
+
+            try
+            {
+                response = InternalRequester.RetrieveRequest(request);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
+            return response.StatusCode == HttpStatusCode.OK;
+        }
+
+        /// <summary>
         ///     Create an object on the server, with HTTP-Method POST. Path is: 'resource/<typename>'
         /// </summary>
         /// <typeparam name="O">The type of the object to be created</typeparam>
@@ -390,7 +415,7 @@ namespace RestAPI
             // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
             request.AddHeader("Accept", "text/plain");
-            
+
             try
             {
                 // call Internal Requester to finally send the request
@@ -429,6 +454,7 @@ namespace RestAPI
             }
 
         }
+
         /*
         public O GetObject<O>() where O : new()
         {
