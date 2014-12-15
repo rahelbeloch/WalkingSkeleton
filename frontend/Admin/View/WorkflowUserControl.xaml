@@ -11,7 +11,7 @@
             <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick"/> 
         </Style>
     </UserControl.Resources>
-    
+
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">

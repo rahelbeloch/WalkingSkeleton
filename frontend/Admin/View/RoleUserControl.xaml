@@ -45,6 +45,25 @@
                                 </TextBox>
                             </DockPanel>
                             
+                            <DockPanel DockPanel.Dock="Top">
+                                <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding roleCheckboxRows}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridView.Columns >
+                                                <GridViewColumn Header="Aktiv" Width="150">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox IsChecked="{Binding isSelected, Mode=TwoWay}" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="Rolle" Width="200" DisplayMemberBinding="{Binding role.rolename}" />
+                                            </GridView.Columns>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </DockPanel>
+                            
                             <DockPanel DockPanel.Dock="Bottom">
                                 <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Nutzer hinzufügen" Height="25" Margin="10" Command="{Binding addUserCommand}"/>
                             </DockPanel>

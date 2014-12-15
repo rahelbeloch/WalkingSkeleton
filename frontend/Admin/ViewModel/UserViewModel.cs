@@ -17,7 +17,7 @@ namespace Admin.ViewModel
     /// The UserViewModel contains properties and commands to send new users to the server.
     /// Furthermore, the properties and commands are used as DataBindings to show current users in the graphical user interface. 
     /// </summary>
-    public class UserViewModel: ViewModelBase, IDataReceiver
+    public class UserViewModel: ViewModelBase
     {
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;
@@ -26,16 +26,39 @@ namespace Admin.ViewModel
         {
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
+
+            updateModel();
+        }
+
+        private void updateModel()
+        {
+            // _restRequester.GetAllRoles();
+
+            Role r1 = new Role();
+            Role r2 = new Role();
+            r1.rolename = "Manager";
+            r2.rolename = "Sachbearbeiter";
+            roleCheckboxRows.Add(new RoleCheckboxRow(r1, true));
+            roleCheckboxRows.Add(new RoleCheckboxRow(r2, false));
         }
 
         /// <summary>
-        /// Proprety _userCollection to fill list view with users.
+        /// Property _userCollection to fill list view with users.
         /// </summary>
         private ObservableCollection<User> _userCollection = new ObservableCollection<User>();
         public ObservableCollection<User> userCollection { get { return _userCollection; } }
 
+        /// <summary>
+        /// Property _roleCollection to fill list view with users.
+        /// </summary>
         private ObservableCollection<Role> _roleCollection = new ObservableCollection<Role>();
         public ObservableCollection<Role> roleCollection { get { return _roleCollection; } }
+
+        /// <summary>
+        /// Property _roleCheckboxRoles to fill list view with selectable roles.
+        /// </summary>
+        private ObservableCollection<RoleCheckboxRow> _roleCheckboxRows = new ObservableCollection<RoleCheckboxRow>();
+        public ObservableCollection<RoleCheckboxRow> roleCheckboxRows { get { return _roleCheckboxRows; } }
 
         /// <summary>
         /// Property for input from username text box.
@@ -87,6 +110,14 @@ namespace Admin.ViewModel
                         {
                             User newUser = new User();
                             newUser.username = username;
+
+                            foreach(RoleCheckboxRow actRow in roleCheckboxRows) 
+                            {
+                                if (actRow.isSelected)
+                                {
+                                    newUser.roles.Add(actRow.role);
+                                }
+                            }
 
                             _restRequester.PostObject<User>(newUser);
 
@@ -153,21 +184,6 @@ namespace Admin.ViewModel
 
                 return _addRoleCommand;
             }
-        }
-
-        void IDataReceiver.WorkflowUpdate(Workflow workflow)
-        {
-            Console.WriteLine("Update UserViewModel: WorkflowID = " + workflow.id);
-        }
-
-        void IDataReceiver.ItemUpdate(Item item)
-        {
-            Console.WriteLine("Update UserViewModel: ItemID = " + item.id);
-        }
-
-        void IDataReceiver.UserUpdate(User user)
-        {
-            Console.WriteLine("Update UserViewModel: UserID = " + user.username);
         }
     }
 }
