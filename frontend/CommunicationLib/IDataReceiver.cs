@@ -1,5 +1,6 @@
 ﻿using System;
 using CommunicationLib.Model;
+using System.Security;
 
 namespace CommunicationLib
 {

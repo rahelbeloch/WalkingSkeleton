@@ -13,6 +13,10 @@ namespace CommunicationLib
     /// </summary>
     public interface IRestRequester
     {
+        // Initialize Method
+        void InitializeClientProperties(string username, SecureString password);
+        void DeleteClientProperties();
+
         // RESSOURCE-METHODS - get, post, update, delete - do something on the ressources
 
         /// <summary>

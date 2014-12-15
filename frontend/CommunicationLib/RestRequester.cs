@@ -25,6 +25,9 @@ namespace RestAPI
 
         private static JsonSerializerSettings _jsonSettings;
 
+        private string _myUsername;
+        private SecureString _myPassword;
+
         /// <summary>
         /// Default constructor, initializes the serialization settings and pre-strings for urls.
         /// </summary>
@@ -37,6 +40,19 @@ namespace RestAPI
                 Binder = new CustomSerializationBinder()
             };
         }
+
+        public void InitializeClientProperties(string username, SecureString password)
+        {
+            _myUsername = username;
+            _myPassword = password;
+        }
+
+        public void DeleteClientProperties()
+        {
+            _myUsername = null;
+            _myPassword = null;
+        }
+
 
         public IList<O> GetAllElements<O>()
         {
