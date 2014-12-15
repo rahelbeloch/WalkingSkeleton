@@ -27,7 +27,7 @@ public interface Persistence {
      * @param workflow is a workflow for storing
      * @return id of stored workflow
      */
-    int storeWorkflow(Workflow workflow) throws StorageFailedException;
+    String storeWorkflow(Workflow workflow) throws StorageFailedException;
 
 
     /**
@@ -36,7 +36,7 @@ public interface Persistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there
      * @throws WorkflowNotExistentException
      */
-    int storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException;
+    String storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException;
     
     /**
      * Method for adding a new user.
@@ -69,7 +69,7 @@ public interface Persistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there.
      * @throws WorkflowNotExistentException
      */
-    Workflow loadWorkflow(int id) throws WorkflowNotExistentException, StorageFailedException;
+    Workflow loadWorkflow(String id) throws WorkflowNotExistentException, StorageFailedException;
 
     /**
      * Method for loading an item.
@@ -78,7 +78,7 @@ public interface Persistence {
      * @exception ItemNotExistentException if the requested item is not there.
      * @throws ItemNotExistentException
      */
-    Item loadItem(int id) throws ItemNotExistentException, StorageFailedException;
+    Item loadItem(String id) throws ItemNotExistentException, StorageFailedException;
 
     /**
      * Method for loading an user.
@@ -94,7 +94,7 @@ public interface Persistence {
      * @param id is the id of the step.
      * @return step is the requested step
      */
-    Step loadStep(int id);
+    Step loadStep(String id);
 //
 //    /**
 //     * Method for loading a requested MetaEntry.
@@ -117,7 +117,7 @@ public interface Persistence {
      * @exception ItemNotExistentException if the requested item is not there
      * @throws ItemNotExistentException
      */
-    void deleteItem(int id) throws ItemNotExistentException;
+    void deleteItem(String id) throws ItemNotExistentException;
 
     /**
      * Method for the function of deleting an user.
@@ -140,7 +140,7 @@ public interface Persistence {
     * store function to store a role.
     * @param role is the role for storing
     */
-    int storeRole(Role role);
+    String storeRole(Role role);
     
     /**
      * Method for loading all existing roles.
@@ -165,7 +165,7 @@ public interface Persistence {
      * @exception RoleNotExistentException if the requested role is not there.
      * @throws RoleNotExistentException
      */
-    Role loadRole(int id) throws RoleNotExistentException;
+    Role loadRole(String id) throws RoleNotExistentException;
     
     /**
      * Method for adding a new user to a role.
