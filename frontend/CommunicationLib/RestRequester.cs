@@ -53,7 +53,7 @@ namespace RestAPI
             IList<Workflow> eleList;
             try
             {
-                eleList = GetElementList<Workflow>(url);
+                eleList = GetElementList<Workflow>(url,"");
             }
             catch (BasicException)
             {
@@ -70,12 +70,12 @@ namespace RestAPI
         public IList<Workflow> GetAllWorkflowsByUser(String userName)
         {
             String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "s" + "/" + userName;
+            String url = _ressourceParam + typeName + "s";
 
             IList<Workflow> eleList;
             try
             {
-                eleList = GetElementList<Workflow>(url);
+                eleList = GetElementList<Workflow>(url, userName);
             }
             catch (BasicException)
             {
@@ -93,9 +93,10 @@ namespace RestAPI
         {
             IRestResponse response;
             String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "s/startables/" + userName;
+            String url = _ressourceParam + typeName + "s/startables/";
 
             var request = new RestRequest(url, Method.GET);
+            request.AddParameter("username", userName, ParameterType.HttpHeader);
             request.AddHeader("Accept", "text/plain");
 
             try
@@ -124,12 +125,12 @@ namespace RestAPI
         public IList<Item> GetRelevantItemsByUser(int workflowID, string userName)
         {
             String typeName = typeof(Item).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "s" + "/" + userName + "/" + workflowID;
+            String url = _ressourceParam + typeName + "s" + "/" + workflowID;
 
             IList<Item> eleList;
             try
             {
-                eleList = GetElementList<Item>(url);
+                eleList = GetElementList<Item>(url, userName);
             } catch(BasicException)
             {
                 throw;
@@ -144,11 +145,12 @@ namespace RestAPI
         /// <typeparam name="O">Type of handled object</typeparam>
         /// <param name="url">Request URL</param>
         /// <returns>List of handled objects</returns>
-        private IList<O> GetElementList<O>(string url) 
+        private IList<O> GetElementList<O>(string url, string username) 
         {
             IRestResponse response;
 
             var request = new RestRequest(url, Method.GET);
+            request.AddParameter("username", username, ParameterType.HttpHeader);
             request.AddHeader("Accept", "text/plain");
 
             try
@@ -176,7 +178,7 @@ namespace RestAPI
         {
             IRestResponse response;
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "/" + id;
+            String url = _ressourceParam + typeName + "s/" + id;
 
             var request = new RestRequest(url, Method.GET);
             request.AddHeader("Accept", "text/plain");
@@ -212,13 +214,15 @@ namespace RestAPI
         {
             IRestResponse response;
             String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "/";
-            url += sendObj.GetType() == typeof(User) ? ((User)sendObj).username : sendObj.id.ToString();
+            String url = _ressourceParam + typeName + "s/";
+            url += sendObj.GetType() == typeof(User) ? "" : sendObj.id.ToString();
 
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
 
             var request = new RestRequest(url, Method.PUT);
+            if(sendObj.GetType() == typeof(User))
+                request.AddParameter("username", ((User)sendObj).username, ParameterType.HttpHeader);
             request.AddHeader("Accept", "text/plain");
 
             try
@@ -269,7 +273,7 @@ namespace RestAPI
         {
             IRestResponse response;
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName;
+            String url = _ressourceParam + typeName + "s";
 
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
@@ -301,7 +305,10 @@ namespace RestAPI
             String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             String url = _ressourceParam + typeName + "/" + id;
 
-            return Delete<O>(url);
+            var request = new RestRequest(url, Method.DELETE);
+            request.AddHeader("Accept", "text/plain");
+
+            return Delete<O>(request);
         }
 
         /// <summary>
@@ -312,9 +319,13 @@ namespace RestAPI
         public User DeleteUser(string username)
         {
             String typeName = typeof(User).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "/" + username;
-            
-            return Delete<User>(url);
+            String url = _ressourceParam + typeName + "s";
+
+            var request = new RestRequest(url, Method.DELETE);
+            request.AddParameter("username", username, ParameterType.HttpHeader);
+            request.AddHeader("Accept", "text/plain");
+
+            return Delete<User>(request);
         }
 
         /// <summary>
@@ -323,12 +334,9 @@ namespace RestAPI
         /// <typeparam name="O">Type of the object to delete</typeparam>
         /// <param name="url">Requested URL</param>
         /// <returns>Deleted object</returns>
-        private O Delete<O>(string url) where O : new()
+        private O Delete<O>(RestRequest request) where O : new()
         {
             IRestResponse response;
-
-            var request = new RestRequest(url, Method.DELETE);
-            request.AddHeader("Accept", "text/plain");
 
             try
             {
@@ -355,12 +363,12 @@ namespace RestAPI
         public Boolean checkUser(String username, SecureString password)
         {
             IRestResponse response;
-            String url = _operationParam + "user/" + "login";
+            String url = _operationParam + "users/" + "login";
             // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
             request.AddHeader("Accept", "text/plain");
-            request.AddParameter("username", username, ParameterType.GetOrPost);
-            request.AddParameter("password", password, ParameterType.GetOrPost);
+            request.AddParameter("username", username, ParameterType.HttpHeader);
+            request.AddParameter("password", password, ParameterType.HttpHeader);
 
             try
             {
@@ -383,9 +391,10 @@ namespace RestAPI
         public Boolean StartWorkflow(int wId, string username)
         {
             IRestResponse response;
-            String url = _operationParam + "workflow/" + "start/" + wId.ToString() + "/" + username;
+            String url = _operationParam + "workflows/" + "start/" + wId.ToString();
             // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
+            request.AddParameter("username", username, ParameterType.HttpHeader);
             request.AddHeader("Accept", "text/plain");
 
             try
@@ -411,9 +420,10 @@ namespace RestAPI
         public Boolean StepForward(int stepId, int itemId, string username)
         {
             IRestResponse response;
-            String url = _operationParam + "workflow/" + "forward/" + stepId + "/" + itemId + "/" + username;
+            String url = _operationParam + "workflows/" + "forward/" + stepId + "/" + itemId;
             // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
+            request.AddParameter("username", username, ParameterType.HttpHeader);
             request.AddHeader("Accept", "text/plain");
 
             try
@@ -427,6 +437,15 @@ namespace RestAPI
             }
             return response.StatusCode == HttpStatusCode.OK;
         }
+
+        /*
+        private void addAuthentification(RestRequest request, string username, string password)
+        {
+            request.AddParameter("username", username, ParameterType.HttpHeader);
+            if(password != null)
+                request.AddParameter("password", password, ParameterType.HttpHeader);
+        }
+         * */
 
         /// <summary>
         /// This method changes the type of a generic object.
@@ -454,6 +473,8 @@ namespace RestAPI
             }
 
         }
+<<<<<<< .mine
+=======
 
         /*
         public O GetObject<O>() where O : new()
@@ -467,5 +488,6 @@ namespace RestAPI
             return new O();
         }*/
 
+>>>>>>> .r815
     }
 }
