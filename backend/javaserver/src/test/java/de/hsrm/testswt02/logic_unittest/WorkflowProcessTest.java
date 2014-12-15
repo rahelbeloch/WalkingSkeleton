@@ -22,6 +22,8 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 
 
@@ -40,9 +42,10 @@ public class WorkflowProcessTest {
 
     /**
      * build workingset before testing.
+     * @throws StorageFailedException 
      */
     @Before
-    public void setUp() {
+    public void setUp() throws StorageFailedException {
         final Injector i = Guice.createInjector(new SingleModule());
         processManager = i.getInstance(ProcessManager.class);
         persistence = i.getInstance(Persistence.class);
@@ -83,9 +86,11 @@ public class WorkflowProcessTest {
 
     /**
      * test start a workflow.
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      */
     @Test
-    public void startWorkflow() {
+    public void startWorkflow() throws ItemNotExistentException, StorageFailedException {
 
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
@@ -95,9 +100,11 @@ public class WorkflowProcessTest {
     
     /**
      * test start a workflow, without authorization.
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      */
     @Test
-    public void startWorkflowWithoutAutohrization() {
+    public void startWorkflowWithoutAutohrization() throws ItemNotExistentException, StorageFailedException {
         
         processManager.startWorkflow(myWorkflow, "ez");
         assertTrue(myWorkflow.getItems().size() == 0);
@@ -109,25 +116,29 @@ public class WorkflowProcessTest {
      * workflow steplist. The first one is a startStep and isn't available in an
      * item. The second one has to be open because it the workflow was recently
      * started so the next one will be inactive.
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      */
     @Test
-    public void checkStateInaktive() {
-        int stepId;
+    public void checkStateInaktive() throws ItemNotExistentException, StorageFailedException {
+        String stepId;
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
         stepId = myWorkflow.getSteps().get(1).getId();
-        assertTrue(item.getStepState(stepId) == MetaState.OPEN.toString());
+        assertTrue(item.getStepState(stepId).equals(MetaState.OPEN.toString()));
         stepId = myWorkflow.getSteps().get(2).getId();
-        assertTrue(item.getStepState(stepId) == MetaState.INACTIVE.toString());
+        assertTrue(item.getStepState(stepId).equals(MetaState.INACTIVE.toString()));
     }
 
     /**
      * test handle an step in an Item.
      * @throws UserHasNoPermissionException 
      * @throws ItemNotForwardableException 
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      */
     @Test
-    public void handleFirstStep() throws ItemNotForwardableException, UserHasNoPermissionException {
+    public void handleFirstStep() throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException {
         processManager.startWorkflow(myWorkflow, "benni");
         final Item item = (Item) myWorkflow.getItems().get(0);
         processManager.executeStep(firstStep, item, benni);
@@ -137,11 +148,13 @@ public class WorkflowProcessTest {
     }
     /**
      * 
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      * @throws ItemNotForwardableException .
      * @throws UserHasNoPermissionException .
      */
     @Test
-    public void finishItemTest() throws ItemNotForwardableException, UserHasNoPermissionException {
+    public void finishItemTest() throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException {
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
