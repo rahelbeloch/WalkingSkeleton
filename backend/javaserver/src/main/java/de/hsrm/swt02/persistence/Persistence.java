@@ -126,21 +126,28 @@ public interface Persistence {
      */
     void deleteUser(String name) throws UserNotExistentException;
     
-//    
-//    // Sprint 2 Persistence
-//    /**
-//    * store function to store a role.
-//    * @param role is the role for storing
-//    */
-//    void storeRole(Role role);
-//    
-//    /**
-//     * Method for loading all existing roles.
-//     * @exception RoleNotExistentException if the requested role is not there.
-//     * @throws RoleNotExistentException
-//     * @return roles is the list of all existing roles
-//     */
-//    List<Role> loadAllRoles() throws RoleNotExistentException;
+    
+    
+    
+    
+    
+    // Sprint 2 Persistence
+    
+    
+    
+    /**
+    * store function to store a role.
+    * @param role is the role for storing
+    */
+    int storeRole(Role role);
+    
+    /**
+     * Method for loading all existing roles.
+     * @exception RoleNotExistentException if the requested role is not there.
+     * @throws RoleNotExistentException
+     * @return roles is the list of all existing roles
+     */
+    List<Role> loadAllRoles() throws RoleNotExistentException;
     
     /**
      * Method for loading all existing users.

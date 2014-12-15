@@ -235,19 +235,20 @@ public class PersistenceImp implements Persistence {
             this.logger.log(Level.INFO, "[persistence] overwriting user '" + userToRemove.getUsername() + "'...");
         }
         
-        try {
-            // check if there are duplicate messagingsubs
-            final List<String> subs = user.getMessagingSubs();
-            final List<String> definiteSubs = null;
-            for (String sub :subs) {
-                if (!definiteSubs.contains(sub)) {
-                    definiteSubs.add(sub);
-                }
-            }
+//            // check if there are duplicate messagingsubs
+//            final List<String> subs = user.getMessagingSubs();
+//            final List<String> definiteSubs = null;
+//            for (String sub :subs) {
+//                if (!definiteSubs.contains(sub)) {
+//                    definiteSubs.add(sub);
+//                }
+//            }
             //messagingsublist is cleared and filled with the new list
-            user.getMessagingSubs().clear();
-            user.getMessagingSubs().addAll(definiteSubs);
+//            user.getMessagingSubs().clear();
+//            user.getMessagingSubs().addAll(definiteSubs);
             //finally user is added
+
+        try {
             this.addUser(user);
         } catch (UserAlreadyExistsException e) {
             throw new StorageFailedException("update user failure, duplicate users");
@@ -299,13 +300,18 @@ public class PersistenceImp implements Persistence {
     
     
     
+    
+    
     // Sprint 2 Persistence  
+    
+    
+    
     
     /**
      * Method for storing a role.
      * @param role is the role to store
      */
-    public void storeRole(Role role) {
+    public int storeRole(Role role) {
         if (role.getId() <= 0) {
             role.setId(roles.size() + 1);
         }
@@ -324,6 +330,7 @@ public class PersistenceImp implements Persistence {
         roles.add((Role) role);
         this.logger.log(Level.INFO, "[persistence] successfully stored role " + role.getId()
                 + ".");
+        return role.getId();
     }
 
     /**
