@@ -185,5 +185,10 @@ namespace Admin.ViewModel
                 return _addRoleCommand;
             }
         }
+
+        public void RoleUpdate(Role updatedRole)
+        {
+            Console.WriteLine("Update UserViewModel: RoleID = " + updatedRole.id);
+        }
     }
 }

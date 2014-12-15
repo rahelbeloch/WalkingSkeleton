@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdminClient.util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,34 +12,24 @@ using CommunicationLib.Model;
 using CommunicationLib;
 using System.Windows;
 using Action = CommunicationLib.Model.Action;
-using CommunicationLib.Exception;
 
-
-namespace Admin.ViewModel
+namespace AdminClient.viewmodel
 {
     /// <summary>
     /// The WorkflowViewModel contains properties and commands to create a new workflow and to send it to the server.
     /// Furthermore, the properties and commands are used as DataBindings in the graphical user interface.
     /// </summary>
-    public class WorkflowViewModel : ViewModelBase
+    class WorkflowViewModel : ViewModelBase
     {
         private Workflow _workflowModel = new Workflow();
-
-        private MainViewModel _mainViewModel;
-        private IRestRequester _restRequester;       
         
-        public WorkflowViewModel(MainViewModel mainViewModel)
+        public WorkflowViewModel()
         {
-            _mainViewModel = mainViewModel;
-            _restRequester = _mainViewModel.restRequester;
             _workflow.CollectionChanged += OnWorkflowChanged;
 
             // fill choosable steps with default values
             _choosableSteps.Add(new StartStep());
-            updateModel();
         }
-
-       
 
         #region properties
 
@@ -49,8 +40,6 @@ namespace Admin.ViewModel
         private ObservableCollection<Step> _workflow = new ObservableCollection<Step>();
         public ObservableCollection<Step> workflow { get { return _workflow; } }
 
-        private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
-        public ObservableCollection<Workflow> workflows { get { return _workflows; } }
         /// <summary>
         /// Property to fill combox box with choosable steps.
         /// TODO: change Step to Step (not possible at the moment)
@@ -143,23 +132,6 @@ namespace Admin.ViewModel
         }
 
         /// <summary>
-        ///
-        /// </summary>
-        private Workflow _actWorkflow = null;
-        public Workflow actWorkflow
-        {
-            get
-            {
-                return _actWorkflow;
-            }
-            set
-            {
-                _actWorkflow = value;
-                OnChanged("actWorkflow");
-            }
-        }
-
-        /// <summary>
         /// Property for input from step description text box.
         /// </summary>
         private string _stepDescription = "";
@@ -177,22 +149,6 @@ namespace Admin.ViewModel
         }
 
         #endregion
-
-        private void updateModel()
-        {
-            Console.WriteLine("updatedModel()");
-
-            _workflows.Clear();
-            // IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>(); <-- changed method in REST; is generic now; this is the old line
-            IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
-            if (workflowList == null)
-            {
-                workflowList = new List<Workflow>();
-            }
-           
-            workflowList.ToList().ForEach(_workflows.Add);
-            OnChanged("workflows");
-        }
 
         /// <summary>
         /// When the workflow is changed, reconfigure choosable steps for combobox (depending on currently allowed steps).
@@ -224,6 +180,26 @@ namespace Admin.ViewModel
         }
 
         #region commands
+
+        /// <summary>
+        /// Command to open window to add a step to the current workflow.
+        /// </summary>
+        private ICommand _openAddStepWindow;
+        public ICommand openAddStepWindow
+        {
+            get
+            {
+                if (_openAddStepWindow == null)
+                {
+                    _openAddStepWindow = new ActionCommand(execute =>
+                    {
+                        AddStepWindow addElementWindow = new AddStepWindow();
+                        addElementWindow.Show();
+                    }, canExecute => (_workflow.Count == 0) || (_workflow.Count > 0 && !(_workflow[_workflow.Count - 1] is FinalStep)));
+                }
+                return _openAddStepWindow;
+            }
+        }
 
         /// <summary>
         /// Command to delete last step from workflow.
@@ -258,19 +234,12 @@ namespace Admin.ViewModel
                 {
                     _submitWorkflowCommand = new ActionCommand(execute =>
                     {
-                        try
-                        {
-                            _restRequester.PostObject<Workflow>(_workflowModel);
+                        RestAPI.InternalRequester.PostObject<Workflow>(_workflowModel);
 
-                            // remove steps from workflow
-                            // update model AND viewmodel, because the model is not observable
-                            _workflowModel.clearWorkflow();
-                            _workflow.Clear();
-                        }
-                        catch (BasicException be)
-                        {
-                            MessageBox.Show(be.Message);
-                        }
+                        // remove steps from workflow
+                        // update model AND viewmodel, because the model is not observable
+                        _workflowModel.clearWorkflow();
+                        _workflow.Clear();
                     }, canExecute => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
                 }
                 return _submitWorkflowCommand;
@@ -343,26 +312,6 @@ namespace Admin.ViewModel
                 }
 
                 return _addStepCommand;
-            }
-
-        }
-
-        private ICommand _showDetailsCommand;
-        public ICommand showDetailsCommand
-        {
-            get
-            {
-                if (_showDetailsCommand == null)
-                {
-                    _showDetailsCommand = new ActionCommand(execute =>
-                    { 
-                        
-                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!Geklappt!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                        MessageBox.Show("klappt");
-                      
-                    }, canExecute => true);
-                }
-                return _showDetailsCommand;
             }
         }
 
