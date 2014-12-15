@@ -15,7 +15,6 @@ import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
-import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
  * This class is called if client wants to process user information.
