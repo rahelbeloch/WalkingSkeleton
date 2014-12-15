@@ -8,8 +8,8 @@ namespace CommunicationLib
     /// </summary>
     public interface IDataReceiver
     {
-        void WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject);
-        void ItemUpdate(RegistrationWrapper<Item> wrappedObject);
-        void UserUpdate(RegistrationWrapper<User> wrappedObject);
+        void WorkflowUpdate(Workflow workflow);
+        void ItemUpdate(Item item);
+        void UserUpdate(User user);
     }
 }
