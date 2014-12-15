@@ -5,6 +5,8 @@ import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 
 /**
  * This is the interface of the StepProcessor.
@@ -23,5 +25,5 @@ public interface StepProcessor {
      * @throws ItemNotForwardableException
      * @throws UserHasNoPermissionException
      */
-    void handle(Item item, Step step, User user) throws ItemNotForwardableException, UserHasNoPermissionException;
+    void handle(Item item, Step step, User user) throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException;
 }

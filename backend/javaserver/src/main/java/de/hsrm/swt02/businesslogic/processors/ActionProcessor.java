@@ -14,6 +14,8 @@ import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
@@ -47,8 +49,10 @@ public class ActionProcessor extends Observable implements StepProcessor {
      * @param user who currently executes the step
      * @exception ItemNotForwardableException if the steplist of the responding item can't go any further
      * @exception UserHasNoPermissionException if the given user has no right to operate on the step
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      */
-    public void handle(Item item, Step step, User user) throws ItemNotForwardableException, UserHasNoPermissionException {
+    public void handle(Item item, Step step, User user) throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException {
         
         final String username = user.getUsername();
         
