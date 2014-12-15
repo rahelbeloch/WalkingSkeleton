@@ -16,15 +16,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
 @JsonSubTypes({@Type(value = StartStep.class, name = "StartStep"), @Type(value = Action.class, name = "Action"), @Type(value = FinalStep.class, name = "FinalStep")})
-public class Step {
-    // Used for (de)serialization. Do not change.
-    protected int id;
+public class Step extends RootElement {
 
     @JsonIgnore
     protected List<Step> nextSteps;
 
     // Used for (de)serialization. Do not change.
-    protected List<Integer> nextStepIds;
+    protected List<String> nextStepIds;
     
     // Used for (de)serialization. Do not change.
     protected String username;
@@ -44,27 +42,11 @@ public class Step {
      * @param s is the step we want to clone
      */
     public void init(Step s) {
-        this.id = s.id;
+        super.init(s);
         this.username = s.username;
         this.rolename = s.rolename;
         
         this.getNextStepIds().addAll(s.getNextStepIds());
-    }
-    
-    /**
-     * Id getter.
-     * @return id of step
-     */
-    public int getId() {
-        return this.id;
-    }
-    
-    /**
-     * Id setter.
-     * @param id of step
-     */
-    public void setId(int id) {
-        this.id = id;
     }
 
     /**
@@ -83,9 +65,9 @@ public class Step {
      * NextStepIds getter: when there is no nextStepIds yet, a new ArrayList will be returned.
      * @return nextStepIds
      */
-    public List<Integer> getNextStepIds() {
+    public List<String> getNextStepIds() {
         if (nextStepIds == null) {
-            nextStepIds = new ArrayList<Integer>();
+            nextStepIds = new ArrayList<String>();
         }
         
         return this.nextStepIds;

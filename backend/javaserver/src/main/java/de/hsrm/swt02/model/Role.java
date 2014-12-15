@@ -4,8 +4,6 @@ package de.hsrm.swt02.model;
  * This Class represents a role.
  */
 public class Role extends RootElement {
-    // Used for (de)serializsation. Do not change!
-    private String rolename;
     
     /**
      * Constructor for Role.
@@ -19,7 +17,7 @@ public class Role extends RootElement {
      * @return rolename
      */
     public String getRolename() {
-        return rolename;
+        return id;
     }
 
     /**
@@ -27,7 +25,7 @@ public class Role extends RootElement {
      * @param rolename short description of role
      */
     public void setRolename(String rolename) {
-        this.rolename = rolename;
+        this.id = rolename;
     }
     
     /**
@@ -36,7 +34,7 @@ public class Role extends RootElement {
      */
     public void init(Role r) {
         super.init(r);
-        this.rolename = r.getRolename();
+        setRolename(r.getRolename());
     }
     
     /**

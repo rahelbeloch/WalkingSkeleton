@@ -5,7 +5,7 @@ package de.hsrm.swt02.model;
  */
 public class RootElement implements Cloneable {
     // Used for (de)serialization. Do not change.
-    protected int id;
+    protected String id;
 
     /**
      * Constructor for RootElement.
@@ -19,7 +19,7 @@ public class RootElement implements Cloneable {
      * @param re is the rootelement we want to clone
      */
     public void init(RootElement re) {
-        this.id = re.id;
+        setId(re.getId());
     }
 
     /**
@@ -40,7 +40,7 @@ public class RootElement implements Cloneable {
      * 
      * @return id of the RootElement
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -50,7 +50,7 @@ public class RootElement implements Cloneable {
      * @param id
      *            of the RootElement
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     
