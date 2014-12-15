@@ -79,7 +79,7 @@ namespace Client.ViewModel
                             _mainViewModel.username = _username;
 
                             // Register mainViewModel to CommunicationLib (if login worked)
-                            _mainViewModel.comManager.registerClient(_mainViewModel);
+                            _mainViewModel.comManager.registerClient(_mainViewModel, false);
                         }
                         catch (BasicException exc)
                         {
