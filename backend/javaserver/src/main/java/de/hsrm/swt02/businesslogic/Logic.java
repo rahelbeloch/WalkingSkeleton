@@ -98,7 +98,9 @@ public interface Logic {
      * @throws WorkflowNotExistentException 
      */
 
-    void stepForward(String itemId, String stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException;
+    void stepForward(String itemId, String stepId, String username) 
+            throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException,
+                   StorageFailedException, WorkflowNotExistentException, StepNotExistentException;
 
 
     // /**
