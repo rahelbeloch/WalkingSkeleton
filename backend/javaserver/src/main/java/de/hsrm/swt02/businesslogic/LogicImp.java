@@ -149,7 +149,9 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException 
      */
     @Override
-    public void stepForward(String itemId, String stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException {
+    public void stepForward(String itemId, String stepId, String username) 
+            throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException,
+            StorageFailedException, WorkflowNotExistentException, StepNotExistentException {
         
         pm.executeStep(p.loadStep(itemId, stepId), p.loadItem(itemId), p.loadUser(username));
     }
