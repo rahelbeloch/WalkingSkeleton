@@ -1,15 +1,15 @@
 package de.hsrm.swt02.constructionfactory;
 
-import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.PersistenceImp;
+import com.google.inject.AbstractModule;
+
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicImp;
 import de.hsrm.swt02.businesslogic.ProcessManager;
 import de.hsrm.swt02.businesslogic.ProcessManagerImp;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherImp;
-
-import com.google.inject.AbstractModule;
+import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.PersistenceImp;
 
 /**
  * This class binds interfaces to default implementations. 
