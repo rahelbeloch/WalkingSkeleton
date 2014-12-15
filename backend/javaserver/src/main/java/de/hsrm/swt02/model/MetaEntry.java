@@ -5,10 +5,8 @@ package de.hsrm.swt02.model;
  * a key string and group string to better identify the value string represents
  * the content.
  */
-public class MetaEntry {
-    // Used for (de)serialization. Do not change.
-    private String key;
-
+public class MetaEntry extends RootElement {
+    
     // Used for (de)serialization. Do not change.
     private String value;
 
@@ -28,7 +26,7 @@ public class MetaEntry {
      * @return key is the key string
      */
     public String getKey() {
-        return key;
+        return id;
     }
 
     /**
@@ -38,7 +36,7 @@ public class MetaEntry {
      *            is the key string
      */
     public void setKey(String key) {
-        this.key = key;
+        this.id = key;
     }
 
     /**
@@ -88,7 +86,7 @@ public class MetaEntry {
     public Object clone() throws CloneNotSupportedException {
         final MetaEntry clone = new MetaEntry();
         clone.setGroup(group);
-        clone.setKey(key);
+        clone.setKey(id);
         clone.setValue(value);
         return clone;
     }
@@ -97,7 +95,7 @@ public class MetaEntry {
     public String toString() {
         String ret = "";
 
-        ret += "\t\tKey: " + this.key + "\n";
+        ret += "\t\tKey: " + this.id + "\n";
         ret += "\t\tValue: " + this.value + "\n";
         ret += "\t\tGroup: " + this.group + "\n";
 

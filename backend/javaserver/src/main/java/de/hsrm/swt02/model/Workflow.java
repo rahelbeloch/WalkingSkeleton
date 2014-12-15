@@ -8,7 +8,7 @@ import java.util.List;
  * RootElement
  *
  */
-public class Workflow extends RootElement implements Cloneable {
+public class Workflow extends RootElement {
     // Used for (de)serialization. Do not change.
     private List<Step> steps;
 
@@ -94,9 +94,9 @@ public class Workflow extends RootElement implements Cloneable {
      *            states which certain object is looked for
      * @return searched step object if found, else return null
      */
-    public Step getStepById(int stepId) {
+    public Step getStepById(String stepId) {
         for (Step s : steps) {
-            if (s.getId() == stepId) {
+            if (s.getId().equals(stepId)) {
                 return s;
             }
         }
@@ -123,10 +123,10 @@ public class Workflow extends RootElement implements Cloneable {
      *            states which certain object is looked for
      * @return searched item object if found, else return null
      */
-    public Item getItemById(int itemId) {
+    public Item getItemById(String itemId) {
 
         for (Item ai : items) {
-            if (ai.getId() == itemId) {
+            if (ai.getId().equals(itemId)) {
                 return ai;
             }
         }
@@ -154,10 +154,10 @@ public class Workflow extends RootElement implements Cloneable {
      * @param stepId
      *            states which step should be removed
      */
-    public void removeStep(int stepId) {
+    public void removeStep(String stepId) {
 
         for (Step as : steps) {
-            if (as.getId() == stepId) {
+            if (as.getId().equals(stepId)) {
                 steps.remove(as);
             }
         }
@@ -183,7 +183,7 @@ public class Workflow extends RootElement implements Cloneable {
     public void removeItem(int itemId) {
 
         for (Item ai : items) {
-            if (ai.getId() == itemId) {
+            if (ai.getId().equals(itemId)) {
                 items.remove(ai);
             }
         }
@@ -220,7 +220,7 @@ public class Workflow extends RootElement implements Cloneable {
      */
     public void convertIdListToReferences() {
         for (Step step : this.getSteps()) {
-            for (int id : step.getNextStepIds()) {
+            for (String id : step.getNextStepIds()) {
                 step.getNextSteps().add(this.getStepById(id));
             }
         }

@@ -8,11 +8,8 @@ import java.util.List;
  */
 public class User extends RootElement {
     // Used for (de)serialization. Do not change.
-    private String username;
-    // Used for (de)serialization. Do not change.
     private List<Role> roles;
-    
- // Used for (de)serialization. Do not change.
+    // Used for (de)serialization. Do not change.
     private List<String> messagingSubs;
 
     /**
@@ -29,7 +26,7 @@ public class User extends RootElement {
      * @return username is the username
      */
     public String getUsername() {
-        return username;
+        return id;
     }
 
     /**
@@ -39,7 +36,7 @@ public class User extends RootElement {
      *            is the username
      */
     public void setUsername(String username) {
-        this.username = username;
+        this.id = username;
     }
 
     /**
@@ -69,7 +66,7 @@ public class User extends RootElement {
      */
     public void init(User u) {
         super.init(u);
-        this.username = u.getUsername();
+        setUsername(u.getUsername());
     }
 
     /**
