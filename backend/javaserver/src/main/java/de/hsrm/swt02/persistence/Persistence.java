@@ -3,11 +3,15 @@ package de.hsrm.swt02.persistence;
 import java.util.List;
 
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.RoleHasAlreadyUserException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
@@ -31,7 +35,7 @@ public interface Persistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there
      * @throws WorkflowNotExistentException
      */
-    void storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException;
+    int storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException;
     
     /**
      * Method for adding a new user.
@@ -146,37 +150,37 @@ public interface Persistence {
      */
     List<User> loadAllUsers() throws UserNotExistentException;
     
-//    /**
-//     * Method for loading a role.
-//     * @param id is the id of the requested role.
-//     * @return role is the requested role
-//     * @exception RoleNotExistentException if the requested role is not there.
-//     * @throws RoleNotExistentException
-//     */
-//    Role loadRole(int id) throws RoleNotExistentException;
-//    
-//    /**
-//     * Method for adding a new user to a role.
-//     * @param user is the needed user
-//     * @param role is the needed role
-//     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
-//     * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
-//     * @exception UserNotExistentException if the requested user is not there
-//     * @exception RoleNotExistentException if the requested role is not there
-//     * @throws UserHasAlreadyRoleException
-//     * @throws RoleHasAlreadyRoleException
-//     * @throws UserNotExistentException
-//     * @throws RoleNotExistentException 
-//     */
-//    void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException;  
-//    
-//    /**
-//     * Method for removing a role from datbase.
-//     * @param rolename
-//     * @exception RoleNotExistentException
-//     * @throws RoleNotExistentException
-//     */
-//    void deleteRole(String rolename) throws RoleNotExistentException;
+    /**
+     * Method for loading a role.
+     * @param id is the id of the requested role.
+     * @return role is the requested role
+     * @exception RoleNotExistentException if the requested role is not there.
+     * @throws RoleNotExistentException
+     */
+    Role loadRole(int id) throws RoleNotExistentException;
+    
+    /**
+     * Method for adding a new user to a role.
+     * @param user is the needed user
+     * @param role is the needed role
+     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
+     * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
+     * @exception UserNotExistentException if the requested user is not there
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws UserHasAlreadyRoleException
+     * @throws RoleHasAlreadyRoleException
+     * @throws UserNotExistentException
+     * @throws RoleNotExistentException 
+     */
+    void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException;  
+    
+    /**
+     * Method for removing a role from datbase.
+     * @param rolename
+     * @exception RoleNotExistentException
+     * @throws RoleNotExistentException
+     */
+    void deleteRole(String rolename) throws RoleNotExistentException;
 
 }
 

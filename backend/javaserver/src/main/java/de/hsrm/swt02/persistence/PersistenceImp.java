@@ -9,11 +9,14 @@ import com.google.inject.Singleton;
 
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
@@ -37,6 +40,7 @@ public class PersistenceImp implements Persistence {
     private List<Item> items = new LinkedList<>();
     private List<User> users = new LinkedList<>();
 
+    private List<Role> roles = new LinkedList<>();
     /**
      * Constructor for PersistenceImp.
      * @param logger is the logger for logging.
@@ -122,7 +126,7 @@ public class PersistenceImp implements Persistence {
     // Item Operations
     
     @Override
-    public void storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
+    public int storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
         Workflow parentWorkflow = null;
         Item itemToRemove = null;
         
@@ -159,6 +163,7 @@ public class PersistenceImp implements Persistence {
         }
         items.add(itemToStore);
         this.logger.log(Level.INFO, "[persistence] successfully stored item " + item.getId() + ".");
+        return item.getId();
     }
     
     @Override
@@ -291,16 +296,171 @@ public class PersistenceImp implements Persistence {
             throw new WorkflowNotExistentException("no stored workflows on database");
         }
     }
+    
+    
+    
+    // Sprint 2 Persistence  
+    
+    /**
+     * Method for storing a role.
+     * @param role is the role to store
+     */
+    public void storeRole(Role role) {
+        if (role.getId() <= 0) {
+            role.setId(roles.size() + 1);
+        }
+        Role roleToRemove = null;
+        for (Role r: roles) {
+            if (r.getId() == role.getId()) {
+                roleToRemove = r;
+                break;
+            }
+        }
+        if (roleToRemove != null) {
+            roles.remove(roleToRemove);
+            this.logger.log(Level.INFO, "[persistence] removed existing role "
+                    + roleToRemove.getId() + ".");
+        }
+        roles.add((Role) role);
+        this.logger.log(Level.INFO, "[persistence] successfully stored role " + role.getId()
+                + ".");
+    }
 
-
+    /**
+     * Method for loading all roles into a list of roles.
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws RoleNotExistentException
+     * @return List<Workflow> is the list we want to load
+     */
+    public List<Role> loadAllRoles() throws RoleNotExistentException {
+        if (roles.size() > 0) {
+            return roles;
+        }
+        else {
+            final RoleNotExistentException e = new RoleNotExistentException("no stored roles in database");
+            this.logger.log(Level.INFO, e);
+            throw e;
+        }
+    }
+    
+    /**
+     * Method for loeading all users into a list of users.
+     * @exception UserNotExistentException if the requested user is not there
+     * @throws UserNotExistentException
+     * @return List<User> is the list we want to load
+     */
     @Override
     public List<User> loadAllUsers() throws UserNotExistentException {
         if (users.size() > 0) {
             return users;
         }
         else {
-            throw new UserNotExistentException("no stored users in database");
+            final UserNotExistentException e = new UserNotExistentException("no stored users in database");
+            this.logger.log(Level.INFO, e);
+            throw e;
         }
     }
+
+    /**
+     * Method for loading a workflow.
+     * @param id is the id of the requested workflow.
+     * @return workflow is the requested workflow
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws RoleNotExistentException
+     */
+    public Role loadRole(int id) throws RoleNotExistentException {
+        Role role = null;
+        for (Role r : roles) {
+            if (r.getId() == id) {
+                role = r;
+            }
+        }
+        if (role != null) {
+            return role;
+        } else {
+            final RoleNotExistentException e = new RoleNotExistentException("" + id);
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
+    }
+
+    /**
+     * @param user is the user we want to add
+     * @param role is the role we want to give the user
+     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
+     * @exception UserNotExistentException if the requested user is not there
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws UserHasAlreadyRoleException
+     * @throws UserNotExistentException
+     * @throws RoleNotExistentException  
+    */
+    @Override
+    public void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException {
+        Role searchedRole = null;
+        User searchedUser = null;
+        for (Role r : roles) {
+            if (r.getId() == role.getId()) {
+                searchedRole = r;
+            }
+        }
+        if (searchedRole == null) {
+            final RoleNotExistentException e = new RoleNotExistentException(role.getRolename());
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
+        
+        for (User u : users) {
+            if (u.getId() == user.getId()) {
+                searchedUser = u;
+            }
+        }
+        if (searchedUser == null) {
+            final UserNotExistentException e = new UserNotExistentException(user.getUsername());
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
+        
+        
+        for (Role r: user.getRoles()) {
+            if (role.getId() == r.getId()) {
+                final UserHasAlreadyRoleException e = new UserHasAlreadyRoleException(role.getRolename());
+                this.logger.log(Level.WARNING, e);
+                throw e;
+            }
+        }
+        
+        user.getRoles().add(role);
+    }
+    
+    /**
+     * Method for deleting an existing role.
+     * @param rolename is the name of the given role
+     * @exception RoleNotExistentException if the given role doesnt exist
+     * @throws RoleNotExistentException
+     */
+    public void deleteRole(String rolename) throws RoleNotExistentException {
+        Role roleToRemove = null;
+        for (Role r: roles) {
+            if (r.getRolename().equals(rolename)) {
+                roleToRemove = r;
+                break;
+            }
+        }
+        if (roleToRemove != null) {
+            for (User u: users) {
+                for (Role r: u.getRoles()) {
+                    if (r.getRolename().equals(rolename)) {
+                        u.getRoles().remove(r);
+                    }
+                }
+            }
+            roles.remove(roleToRemove);
+        } else {
+            final RoleNotExistentException e = new RoleNotExistentException(rolename);
+            this.logger.log(Level.WARNING, e);
+            throw e;
+        }
+    }
+    
     
 }

@@ -19,7 +19,7 @@ import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 /**
  * Interface for the dependency injection of the persistence implementation.
  */
-public interface Persistence_Deprecated {
+public interface Copy_2_of_Persistence {
 
     /**
      * store functions to store workflows, items, and users into persistence.
