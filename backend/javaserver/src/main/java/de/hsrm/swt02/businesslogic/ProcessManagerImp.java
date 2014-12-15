@@ -73,17 +73,19 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * 
      * @param workflow is the which should be started.
      * @param username is the name of the user who wants to start workflow.
+     * @return itemID
      */
-    public void startWorkflow(Workflow workflow, String username) {
+    public int startWorkflow(Workflow workflow, String username) {
         final StartStep startStep = (StartStep) workflow.getStepByPos(0);
-
+        int itemID = -1;
         selectProcessor(startStep);
         if (checkAuthorization(startStep, username)) {
             startProcessor.addObserver(this);
-            startProcessor.createItem(workflow);
+            itemID = startProcessor.createItem(workflow);
         } else {
             logger.log(Level.WARNING, "Access denied, Authorization failed.");
         }
+        return itemID;
     }
 
     /**

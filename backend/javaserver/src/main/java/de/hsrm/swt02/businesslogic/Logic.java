@@ -243,6 +243,12 @@ public interface Logic {
      */
     void setProcessLogicResponse(LogicResponse lr);
 
+    /**
+     * Method gives an Item.
+     * @param itemID 
+     * @return an Item
+     */
+    Item getItem(int itemID) throws ItemNotExistentException;
     
     
     // Business Logic Sprint 2
