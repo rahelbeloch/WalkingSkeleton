@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 public class Item extends RootElement {
     // Used for (de)serialization. Do not change.
-    private int workflowId;
+    private String workflowId;
 
     // Used for (de)serialization. Do not change.
     private List<MetaEntry> metadata;
@@ -37,7 +37,7 @@ public class Item extends RootElement {
      * 
      * @return workflowId id of the workflow
      */
-    public int getWorkflowId() {
+    public String getWorkflowId() {
         return workflowId;
     }
 
@@ -47,7 +47,7 @@ public class Item extends RootElement {
      * @param workflowId
      *            id of the workflow
      */
-    public void setWorkflowId(int workflowId) {
+    public void setWorkflowId(String workflowId) {
         this.workflowId = workflowId;
     }
 
