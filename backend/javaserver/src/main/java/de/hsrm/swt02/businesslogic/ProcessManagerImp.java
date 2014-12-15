@@ -79,9 +79,9 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * @throws StorageFailedException 
      * @throws ItemNotExistentException 
      */
-    public int startWorkflow(Workflow workflow, String username) throws ItemNotExistentException, StorageFailedException {
+    public String startWorkflow(Workflow workflow, String username) throws ItemNotExistentException, StorageFailedException {
         final StartStep startStep = (StartStep) workflow.getStepByPos(0);
-        int itemID = -1;
+        String itemID = "-1";
         selectProcessor(startStep);
         if (checkAuthorization(startStep, username)) {
             startProcessor.addObserver(this);

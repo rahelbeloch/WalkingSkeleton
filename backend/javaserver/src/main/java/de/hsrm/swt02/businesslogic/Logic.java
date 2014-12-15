@@ -15,6 +15,7 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
@@ -93,8 +94,12 @@ public interface Logic {
      * @throws ItemNotForwardableException
      * @throws UserHasNoPermissionException
      * @exception UserNotExistentException if requested user doesn't exist
+     * @throws StepNotExistentException 
+     * @throws WorkflowNotExistentException 
      */
-    void stepForward(String itemId, String stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException;
+
+    void stepForward(String itemId, String stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException;
+
 
     // /**
     // * This method finish a step in an item.
