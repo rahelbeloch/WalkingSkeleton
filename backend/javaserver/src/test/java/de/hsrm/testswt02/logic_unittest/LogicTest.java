@@ -196,9 +196,11 @@ public class LogicTest {
     /**
      * 
      * @throws LogicException if something went wrong in logic
+     * @throws UserNotExistentException 
+     * @throws WorkflowNotExistentException 
      */
     @Test
-    public void getWorkflowsByUser() throws LogicException {
+    public void getWorkflowsByUser() throws LogicException, WorkflowNotExistentException, UserNotExistentException {
         init();
         initExtension();
 
@@ -248,9 +250,11 @@ public class LogicTest {
     /**
      * 
      * @throws LogicException if something went wrong in logic.
+     * @throws WorkflowNotExistentException 
+     * @throws UserNotExistentException 
      */
     @Test
-    public void getStartableWorkflowsTest() throws LogicException {
+    public void getStartableWorkflowsTest() throws LogicException, UserNotExistentException, WorkflowNotExistentException {
         init();
         initExtension();
         final int i = li.getStartableWorkflowsByUser(user2.getUsername()).size();
@@ -290,9 +294,10 @@ public class LogicTest {
      * 
      * @throws UserNotExistentException if user doesnt exisis.
      * @throws LogicException if something went wrong in logic.
+     * @throws WorkflowNotExistentException 
      */
     @Test
-    public void getAllActiveWorkflowsByUserTest() throws UserNotExistentException, LogicException {
+    public void getAllActiveWorkflowsByUserTest() throws UserNotExistentException, LogicException, WorkflowNotExistentException {
         init();
         initExtension();       
         final int before = li.getAllWorkflowsByUser(user.getUsername()).size();
