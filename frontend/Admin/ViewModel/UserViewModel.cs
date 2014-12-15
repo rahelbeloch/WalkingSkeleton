@@ -34,6 +34,9 @@ namespace Admin.ViewModel
         private ObservableCollection<User> _userCollection = new ObservableCollection<User>();
         public ObservableCollection<User> userCollection { get { return _userCollection; } }
 
+        private ObservableCollection<Role> _roleCollection = new ObservableCollection<Role>();
+        public ObservableCollection<Role> roleCollection { get { return _roleCollection; } }
+
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
@@ -48,6 +51,23 @@ namespace Admin.ViewModel
             {
                 _username = value;
                 OnChanged("username");
+            }
+        }
+
+        /// <summary>
+        /// Property for input from rolename text box.
+        /// </summary>
+        private string _rolename = "";
+        public string rolename
+        {
+            get
+            {
+                return _rolename;
+            }
+            set
+            {
+                _rolename = value;
+                OnChanged("rolename");
             }
         }
 
@@ -90,6 +110,48 @@ namespace Admin.ViewModel
                 }
 
                 return _addUserCommand;
+            }
+        }
+
+        /// <summary>
+        /// Command to add a new role.
+        /// </summary>
+        private ICommand _addRoleCommand;
+        public ICommand addRoleCommand
+        {
+            get
+            {
+                if (_addRoleCommand == null)
+                {
+                    _addRoleCommand = new ActionCommand(execute =>
+                    {
+                        try
+                        {
+                            Role newRole = new Role();
+                            newRole.rolename = rolename;
+
+                            _restRequester.PostObject<Role>(newRole);
+
+                            // update view model
+                            _roleCollection.Add(newRole);
+                            rolename = "";
+                        }
+                        catch (BasicException be)
+                        {
+                            MessageBox.Show(be.Message);
+                        }
+                    }, canExecute =>
+                    {
+                        if (rolename.Length == 0)
+                        {
+                            return false;
+                        }
+
+                        return true;
+                    });
+                }
+
+                return _addRoleCommand;
             }
         }
 
