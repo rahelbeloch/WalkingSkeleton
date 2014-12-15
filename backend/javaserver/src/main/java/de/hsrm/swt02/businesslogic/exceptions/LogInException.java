@@ -29,6 +29,6 @@ public class LogInException extends LogicException {
      * @return errorcode is the wanted errorcode
      */
     public int getErrorCode() {
-        return LogicException.ERRORCODE;
+        return LogInException.ERRORCODE;
     }
 }
