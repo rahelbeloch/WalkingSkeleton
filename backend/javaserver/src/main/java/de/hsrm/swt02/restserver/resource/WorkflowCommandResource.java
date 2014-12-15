@@ -111,6 +111,9 @@ public class WorkflowCommandResource {
         } catch (UserHasNoPermissionException e) {
             LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         logicResponse = LOGIC.getProcessLogicResponse();
         for (Message m : logicResponse.getMessages()) {
