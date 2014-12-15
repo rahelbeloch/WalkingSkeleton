@@ -142,7 +142,8 @@ namespace CommunicationLib
                 {
                     if (ErrorMessageMapper.errorMessages.ContainsKey(e.number))
                     {
-                        System.Diagnostics.Trace.WriteLine(ErrorMessageMapper.GetErrorType(e.number));
+                        Type exceptionType = ErrorMessageMapper.GetErrorType(e.number);
+                        System.Diagnostics.Trace.WriteLine(exceptionType);
                     }
                 }
             }
