@@ -143,9 +143,10 @@ public class LogicImp implements Logic {
      * @param user, who execute the step in the Item
      * @throws UserNotExistentException
      * @throws ItemNotExistentException
+     * @throws StorageFailedException 
      */
     @Override
-    public void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException {
+    public void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException {
         
         pm.executeStep(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
         

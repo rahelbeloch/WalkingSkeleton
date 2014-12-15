@@ -10,6 +10,7 @@ import com.google.inject.Singleton;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
+import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
@@ -54,10 +55,10 @@ public class PersistenceImp implements Persistence {
     // Workflow Operations
     
     @Override
-    public int storeWorkflow(Workflow workflow) throws StorageFailedException {
+    public String storeWorkflow(Workflow workflow) throws StorageFailedException {
         Workflow workflowToRemove = null;
-        if (workflow.getId() <= 0) {
-            workflow.setId(workflows.size() + 1);
+        if (workflow.getId().equals("")) { // TODO: declare default value for empty ids
+            workflow.setId(workflows.size() + 1 + "");
         } else {
             for (Workflow wf: workflows) {
                 if (wf.getId() == workflow.getId()) {
@@ -85,7 +86,7 @@ public class PersistenceImp implements Persistence {
     }
     
     @Override
-    public void deleteWorkflow(int id) throws WorkflowNotExistentException {
+    public void deleteWorkflow(String id) throws WorkflowNotExistentException {
         Workflow workflowToRemove = null;
         for (Workflow wf : workflows) {
             if (wf.getId() == id) {
@@ -299,6 +300,11 @@ public class PersistenceImp implements Persistence {
     }
     
     
+    // temp load Step - to be completed
+    @Override
+    public Step loadStep() {
+        return null;
+    }
     
     
     

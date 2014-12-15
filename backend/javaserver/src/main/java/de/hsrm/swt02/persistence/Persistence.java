@@ -4,6 +4,7 @@ import java.util.List;
 
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
+import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
@@ -87,13 +88,13 @@ public interface Persistence {
      * @throws UserNotExistentException
      */
     User loadUser(String username) throws UserNotExistentException;
-//
-//    /**
-//     * Only for the walking skeleton:  method for loading a step.
-//     * @param id is the id of the step.
-//     * @return step is the requested step
-//     */
-//    Step loadStep(int id);
+
+    /**
+     * Only for the walking skeleton:  method for loading a step.
+     * @param id is the id of the step.
+     * @return step is the requested step
+     */
+    Step loadStep(int id);
 //
 //    /**
 //     * Method for loading a requested MetaEntry.
@@ -108,7 +109,7 @@ public interface Persistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there.
      * @throws WorkflowNotExistentException
      */
-    void deleteWorkflow(int id) throws WorkflowNotExistentException;
+    void deleteWorkflow(String id) throws WorkflowNotExistentException;
 
     /**
      * Method for function to delete an item.
