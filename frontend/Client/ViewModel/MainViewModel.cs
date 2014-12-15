@@ -151,11 +151,12 @@ namespace Client.ViewModel
         {
             Console.WriteLine("Received Workflow for Update: ID = " + workflow.id);
             // route update-handling to subcomponents
-            _dashboardViewModel.updateWorkflow(workflow);
+            _dashboardViewModel.addWorkflowToModel(workflow, null);
         }
 
         void IDataReceiver.ItemUpdate(Item item)
         {
+            logger.Debug("ItemUpdate: " + item.ToString());
             // route update-handling to subcomponents
             // route to itemViewModel etc. (update-method) to react to changes in one of my items
         }

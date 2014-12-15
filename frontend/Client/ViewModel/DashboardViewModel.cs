@@ -51,74 +51,26 @@ namespace Client.ViewModel
             startableList.ToList().ForEach(_startableWorkflows.Add);
             foreach (Workflow workflow in _workflows)
             {
-                DashboardWorkflow newWorkflow = new DashboardWorkflow(workflow);
-                if (_startableWorkflows.Contains(workflow.id))
-                {
-                    newWorkflow.startPermission = true;
-                }
-                else
-                {
-                    newWorkflow.startPermission = false;
-                }
-                _relevantItems.Clear();
-                _restRequester.GetRelevantItemsByUser(workflow.id, _userName).ToList().ForEach(_relevantItems.Add);
-                Step activeStep;
-                DashboardRow row;
-                logger.Debug("relevant Items size: "+_relevantItems.Count());
-                foreach (Item item in _relevantItems)
-                {
-                    activeStep = getStepById(item.getActiveStepId(), workflow);
-                    row = new DashboardRow(item, activeStep, _userName);
-                    newWorkflow.addDashboardRow(row);
-                }
-                _dashboardWorkflows.Add(newWorkflow);
+                addWorkflowToModel(workflow, startableList);
             }
             logger.Debug("Model update finished. Workflows-size: "+_workflows.Count());
             _relevantItems.Clear();
             //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
         }
-        internal void updateWorkflow(Workflow updatedWorkflow)
+        public void addWorkflowToModel(Workflow updatedWorkflow, IList<int> startableList)
         {
-            Console.WriteLine("Update Workflow mit ID: " + updatedWorkflow.id);
-            DashboardWorkflow toUpdate = null;
-            foreach (DashboardWorkflow dashboardWorkflow in _dashboardWorkflows)
-            {
-                if (updatedWorkflow.id == dashboardWorkflow.actWorkflow.id)
-                {
-                    toUpdate = dashboardWorkflow;
-                }
-            }
+            logger.Debug("addWorkflowToModel");
+            DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
 
 
-            if (toUpdate == null)
-            {
-                Console.WriteLine("toUpdate = null");
-                toUpdate = new DashboardWorkflow(updatedWorkflow);
-                Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
-                logger.Debug("NO workflow found to update");
-            }
-            else
-            {
-
-                toUpdate = new DashboardWorkflow(updatedWorkflow);
-            }
-
-            IList<Workflow> workflowList = _restRequester.GetAllWorkflowsByUser(_userName);
-            if (workflowList == null)
-            {
-                logger.Debug("WorkflowList is null");
-                workflowList = new List<Workflow>();
-            }
-            workflowList.ToList().ForEach(_workflows.Add);
-
-            _startableWorkflows.Clear();
-            IList<int> startableList = _restRequester.GetStartablesByUser(_userName);
             if (startableList == null)
             {
+                _startableWorkflows.Clear();
                 logger.Debug("startableList is null");
-                startableList = new List<int>();
+                startableList = _restRequester.GetStartablesByUser(_userName);
+                startableList.ToList().ForEach(_startableWorkflows.Add);
             }
-            startableList.ToList().ForEach(_startableWorkflows.Add);
             if (_startableWorkflows.Contains(updatedWorkflow.id))
             {
                 toUpdate.startPermission = true;
