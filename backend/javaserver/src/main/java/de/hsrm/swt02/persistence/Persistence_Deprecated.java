@@ -3,27 +3,30 @@ package de.hsrm.swt02.persistence;
 import java.util.List;
 
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.MetaEntry;
+import de.hsrm.swt02.model.Role;
+import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 
 
 /**
  * Interface for the dependency injection of the persistence implementation.
  */
-public interface CopyOfPersistence {
+public interface Persistence_Deprecated {
 
     /**
      * store functions to store workflows, items, and users into persistence.
      * @param workflow is a workflow for storing
      * @return id of stored workflow
      */
-    int storeWorkflow(Workflow workflow) throws StorageFailedException;
-
+    int storeWorkflow(Workflow workflow);
 
     /**
      * store functions to store an item.
@@ -31,7 +34,7 @@ public interface CopyOfPersistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there
      * @throws WorkflowNotExistentException
      */
-    void storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException;
+    void storeItem(Item item) throws WorkflowNotExistentException;
     
     /**
      * Method for adding a new user.
@@ -39,7 +42,7 @@ public interface CopyOfPersistence {
      * @exception UserAlreadyExistsException if the user to store is already there.
      * @throws UserAlreadyExistsException
      */
-    void addUser(User user) throws UserAlreadyExistsException, StorageFailedException;
+    void addUser(User user) throws UserAlreadyExistsException;
 
     /**
      * Method for updating an already existing user.
@@ -47,7 +50,7 @@ public interface CopyOfPersistence {
      * @exception UserNotExistentException if the requested user is not there.
      * @throws UserNotExistentException
      */
-    void updateUser(User user) throws UserNotExistentException, StorageFailedException;
+    void updateUser(User user) throws UserNotExistentException;
 
     /**
      * Method for loading all workflows into a list of workflows.
@@ -64,7 +67,7 @@ public interface CopyOfPersistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there.
      * @throws WorkflowNotExistentException
      */
-    Workflow loadWorkflow(int id) throws WorkflowNotExistentException, StorageFailedException;
+    Workflow loadWorkflow(int id) throws WorkflowNotExistentException;
 
     /**
      * Method for loading an item.
@@ -73,7 +76,7 @@ public interface CopyOfPersistence {
      * @exception ItemNotExistentException if the requested item is not there.
      * @throws ItemNotExistentException
      */
-    Item loadItem(int id) throws ItemNotExistentException, StorageFailedException;
+    Item loadItem(int id) throws ItemNotExistentException;
 
     /**
      * Method for loading an user.
@@ -83,21 +86,21 @@ public interface CopyOfPersistence {
      * @throws UserNotExistentException
      */
     User loadUser(String username) throws UserNotExistentException;
-//
-//    /**
-//     * Only for the walking skeleton:  method for loading a step.
-//     * @param id is the id of the step.
-//     * @return step is the requested step
-//     */
-//    Step loadStep(int id);
-//
-//    /**
-//     * Method for loading a requested MetaEntry.
-//     * @param key is the key string.
-//     * @return MetaEntry is the requested MetaEntry of the list with the right key string.
-//     */
-//    MetaEntry loadMetaEntry(String key);
-//
+
+    /**
+     * Only for the walking skeleton:  method for loading a step.
+     * @param id is the id of the step.
+     * @return step is the requested step
+     */
+    Step loadStep(int id);
+
+    /**
+     * Method for loading a requested MetaEntry.
+     * @param key is the key string.
+     * @return MetaEntry is the requested MetaEntry of the list with the right key string.
+     */
+    MetaEntry loadMetaEntry(String key);
+
     /**
      * delete functions to remove workflows, items, and users from persistence.
      * @param id is the id of the requested workflow
@@ -122,21 +125,20 @@ public interface CopyOfPersistence {
      */
     void deleteUser(String name) throws UserNotExistentException;
     
-//    
-//    // Sprint 2 Persistence
-//    /**
-//    * store function to store a role.
-//    * @param role is the role for storing
-//    */
-//    void storeRole(Role role);
-//    
-//    /**
-//     * Method for loading all existing roles.
-//     * @exception RoleNotExistentException if the requested role is not there.
-//     * @throws RoleNotExistentException
-//     * @return roles is the list of all existing roles
-//     */
-//    List<Role> loadAllRoles() throws RoleNotExistentException;
+    // Sprint 2 Persistence
+    /**
+    * store function to store a role.
+    * @param role is the role for storing
+    */
+    void storeRole(Role role);
+    
+    /**
+     * Method for loading all existing roles.
+     * @exception RoleNotExistentException if the requested role is not there.
+     * @throws RoleNotExistentException
+     * @return roles is the list of all existing roles
+     */
+    List<Role> loadAllRoles() throws RoleNotExistentException;
     
     /**
      * Method for loading all existing users.
@@ -146,37 +148,35 @@ public interface CopyOfPersistence {
      */
     List<User> loadAllUsers() throws UserNotExistentException;
     
-//    /**
-//     * Method for loading a role.
-//     * @param id is the id of the requested role.
-//     * @return role is the requested role
-//     * @exception RoleNotExistentException if the requested role is not there.
-//     * @throws RoleNotExistentException
-//     */
-//    Role loadRole(int id) throws RoleNotExistentException;
-//    
-//    /**
-//     * Method for adding a new user to a role.
-//     * @param user is the needed user
-//     * @param role is the needed role
-//     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
-//     * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
-//     * @exception UserNotExistentException if the requested user is not there
-//     * @exception RoleNotExistentException if the requested role is not there
-//     * @throws UserHasAlreadyRoleException
-//     * @throws RoleHasAlreadyRoleException
-//     * @throws UserNotExistentException
-//     * @throws RoleNotExistentException 
-//     */
-//    void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException;  
-//    
-//    /**
-//     * Method for removing a role from datbase.
-//     * @param rolename
-//     * @exception RoleNotExistentException
-//     * @throws RoleNotExistentException
-//     */
-//    void deleteRole(String rolename) throws RoleNotExistentException;
-
+    /**
+     * Method for loading a role.
+     * @param id is the id of the requested role.
+     * @return role is the requested role
+     * @exception RoleNotExistentException if the requested role is not there.
+     * @throws RoleNotExistentException
+     */
+    Role loadRole(int id) throws RoleNotExistentException;
+    
+    /**
+     * Method for adding a new user to a role.
+     * @param user is the needed user
+     * @param role is the needed role
+     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
+     * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
+     * @exception UserNotExistentException if the requested user is not there
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws UserHasAlreadyRoleException
+     * @throws RoleHasAlreadyRoleException
+     * @throws UserNotExistentException
+     * @throws RoleNotExistentException 
+     */
+    void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException;  
+    
+    /**
+     * Method for removing a role from datbase.
+     * @param rolename
+     * @exception RoleNotExistentException
+     * @throws RoleNotExistentException
+     */
+    void deleteRole(String rolename) throws RoleNotExistentException;
 }
-

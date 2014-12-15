@@ -9,16 +9,11 @@ import com.google.inject.Singleton;
 
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
-import de.hsrm.swt02.model.MetaEntry;
-import de.hsrm.swt02.model.Role;
-import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
-import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
@@ -42,11 +37,6 @@ public class PersistenceImp implements Persistence {
     private List<Item> items = new LinkedList<>();
     private List<User> users = new LinkedList<>();
 
-    private List<Step> steps = new LinkedList<>();
-    private List<MetaEntry> metaEntries = new LinkedList<>();
-    
-    private List<Role> roles = new LinkedList<>();
-
     /**
      * Constructor for PersistenceImp.
      * @param logger is the logger for logging.
@@ -56,81 +46,100 @@ public class PersistenceImp implements Persistence {
         this.logger = logger;
     }
     
-    /**
-     * store functions to store workflows, items, and users into persistence.
-     * @param workflow is a workflow for storing
-     * @throws WorkflowNotExistentException 
-     */
+    
+    // Workflow Operations
+    
     @Override
-    public int storeWorkflow(Workflow workflow) {
+    public int storeWorkflow(Workflow workflow) throws StorageFailedException {
+        Workflow workflowToRemove = null;
         if (workflow.getId() <= 0) {
             workflow.setId(workflows.size() + 1);
+        } else {
+            for (Workflow wf: workflows) {
+                if (wf.getId() == workflow.getId()) {
+                    workflowToRemove = wf;
+                    break;
+                }
+            }
         }
+        if (workflowToRemove != null) {
+            try {
+                this.deleteWorkflow(workflowToRemove.getId());
+                this.logger.log(Level.INFO, "[persistence] overwriting workflow " + workflowToRemove.getId() + "...");
+            } catch (WorkflowNotExistentException e) {
+                throw new StorageFailedException("storage of workflow" + workflow.getId() + "failed.");
+            }
+        }
+        try {
+            final Workflow workflowToStore = (Workflow)workflow.clone();
+            workflows.add(workflowToStore);
+        } catch (CloneNotSupportedException e) {
+            throw new StorageFailedException("storage of workflow" + workflow.getId() + "failed."); 
+        }
+        this.logger.log(Level.INFO, "[persistence] successfully stored workflow " + workflow.getId() + ".");
+        return workflow.getId();
+    }
+    
+    @Override
+    public void deleteWorkflow(int id) throws WorkflowNotExistentException {
         Workflow workflowToRemove = null;
         for (Workflow wf : workflows) {
-            if (wf.getId() == workflow.getId()) {
+            if (wf.getId() == id) {
                 workflowToRemove = wf;
                 break;
             }
         }
         if (workflowToRemove != null) {
             workflows.remove(workflowToRemove);
-            this.logger.log(Level.INFO, "[persistence] removed existing workflow "
-                    + workflowToRemove.getId() + ".");
+            this.logger.log(Level.INFO,
+                    "[persistence] successfully removed workflow " + workflowToRemove.getId() + ".");
+        } else {
+            throw new WorkflowNotExistentException("database has no workflow " + id);
         }
-        workflows.add(workflow);
-        this.logger.log(Level.INFO, "[persistence] successfully stored workflow " + workflow.getId()
-                + ".");
-
-        // a workflows steps are resolved and stored one by one
-        final List<Step> workflowsSteps = workflow.getSteps();
-        for (Step step : workflowsSteps) {
-            storeStep(step, workflow);
-        }
-        return workflow.getId();
+        assert (workflows.contains(workflowToRemove) == false);
     }
 
-    /**
-     * Method for loeading all workflows into a list of workflows.
-     * @return List<Workflow> is the list we want to load
-     */
     @Override
-    public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
-        if (workflows.size() > 0) {
-            return workflows;
-        }
-        else {
-            final WorkflowNotExistentException e = new WorkflowNotExistentException("no stored workflows on database");
-            this.logger.log(Level.INFO, e);
-            throw e;
-        }
-    }
-
-    /**
-     * store functions to store an item.
-     * @param item is an item for storing
-     */
-    @Override
-    public void storeItem(Item item) throws WorkflowNotExistentException {
-        if (item.getId() <= 0) {
-            Workflow motherWorkflow = null;
-            for (Workflow wf: workflows) {
-                if (item.getWorkflowId() == wf.getId()) {
-                    motherWorkflow = wf;
+    public Workflow loadWorkflow(int id) throws WorkflowNotExistentException, StorageFailedException {
+        Workflow workflowToReturn = null;
+        for (Workflow wf : workflows) {
+            if (wf.getId() == id) {
+                try {
+                    workflowToReturn = (Workflow)wf.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new StorageFailedException("loading of workflow" + id + "failed."); 
                 }
             }
-            if (motherWorkflow != null) {
-                item.setId(motherWorkflow.getId() * ID_MULTIPLICATOR + motherWorkflow.getItems().size());
+        }
+        if (workflowToReturn != null) {
+            return workflowToReturn;
+        } else {
+            throw new WorkflowNotExistentException("database has no workflow " + id);
+        }
+    }
 
+    
+    // Item Operations
+    
+    @Override
+    public void storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
+        Workflow parentWorkflow = null;
+        Item itemToRemove = null;
+        
+        if (item.getId() <= 0) {
+            for (Workflow wf: workflows) {
+                if (item.getWorkflowId() == wf.getId()) {
+                    parentWorkflow = wf;
+                    break;
+                }
             }
-            else {
-                final WorkflowNotExistentException e = new WorkflowNotExistentException("invalid workflow id in item " + item.getId());
-                this.logger.log(Level.WARNING, e);
-                throw e;
+            if (parentWorkflow != null) {
+                item.setId(parentWorkflow.getId() * ID_MULTIPLICATOR + parentWorkflow.getItems().size());
+            } else {
+                throw new WorkflowNotExistentException("invalid parent workflow id in item " + item.getId());
             }
         }
         
-        Item itemToRemove = null;
         for (Item i : items) {
             if (i.getId() == item.getId()) {
                 itemToRemove = i;
@@ -138,502 +147,146 @@ public class PersistenceImp implements Persistence {
             }
         }
         if (itemToRemove != null) {
-            items.remove(itemToRemove);
-            this.logger.log(Level.INFO, "[persistence] removing exisiting item "
-                    + itemToRemove.getId() + ".");
+            this.deleteItem(itemToRemove.getId());
+            this.logger.log(Level.INFO, "[persistence] overwriting item " + itemToRemove.getId() + "...");
         }
-        items.add((Item) item);
+        
+        Item itemToStore;
+        try {
+            itemToStore = (Item)item.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new StorageFailedException("storage of item" + item.getId() + "failed."); 
+        }
+        items.add(itemToStore);
         this.logger.log(Level.INFO, "[persistence] successfully stored item " + item.getId() + ".");
-
-        // items include information of type MetaEntry which have to be stored
-        // separately
-        final List<MetaEntry> itemsMetadata = item.getMetadata();
-        for (MetaEntry metaEntry : itemsMetadata) {
-            storeMetaEntry(metaEntry);
-        }
     }
-
-    /**
-     * Method for adding a new user.
-     * @param user is the needed user
-     * @exception UserAlreadyExistsException if the user to store is already there.
-     * @throws UserAlreadyExistsException
-     */
-    @Override
-    public void addUser(User user) throws UserAlreadyExistsException {
-        for (User u : users) {
-            if (u.getUsername().equals(user.getUsername())) {
-                final UserAlreadyExistsException e = new UserAlreadyExistsException(
-                        user.getUsername());
-                this.logger.log(Level.WARNING, e);
-                throw e;
-            }
-        }
-        users.add((User) user);
-        this.logger
-                .log(Level.INFO, "[persistence] adding user '" + user.getUsername() + "'.");
-    }
-
-    /**
-     * Method for updating an already existing user.
-     * @param user is the user we need
-     * @exception UserNotExistentException if the requested user is not there.
-     * @throws UserNotExistentException
-     */
-    @Override
-    public void updateUser(User user) throws UserNotExistentException {
-        User userToRemove = null;
-        for (User u : users) {
-            if (u.getUsername().equals(user.getUsername())) {
-                userToRemove = u;
-            }
-        }
-        if (userToRemove != null) {
-            users.remove(userToRemove);
-            this.logger.log(Level.INFO, "[persistence] removing existing user '"
-                    + userToRemove.getUsername() + "'.");
-            users.add(user);
-            this.logger.log(Level.INFO,
-                    "[persistence] successfully stored user '" + user.getUsername() + "'.");
-        } else {
-            final UserNotExistentException e = new UserNotExistentException(
-                    user.getUsername());
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-    }
-
-    /**
-     * Method for storing a step.
-     * @param step is the  step we need to store
-     */
-    public void storeStep(Step step, Workflow motherWorkflow) {
-        if(loadStep(step.getId()) == null) {
-            step.setId(motherWorkflow.getId()*ID_MULTIPLICATOR + motherWorkflow.getSteps().indexOf(step)+1);
-        }
-        Step stepToRemove = null;
-        for (Step s : steps) {
-            if (s.getId() == step.getId()) {
-                stepToRemove = s;
-                break;
-            }
-        }
-        if (stepToRemove != null) {
-            steps.remove(stepToRemove);
-        }
-        steps.add((Step) step);
-        //TODO: need to distinguish between Action/FirstStep/StartStep?
-    }
-
-    /**
-     * Method for storing a MetaEntry.
-     * @param metaEntry is the MetaEntry we need to store
-     */
-    public void storeMetaEntry(MetaEntry metaEntry) {
-        if (metaEntry.getKey().equals("")) {
-            metaEntry.setKey(Integer.toString(metaEntries.size() + 1));
-        }
-        MetaEntry metaEntryToRemove = null;
-        for (MetaEntry me : metaEntries) {
-            // assumption that MetaEntries have keys that are unique
-            if (me.getKey().equals(metaEntry.getKey())) {
-                metaEntryToRemove = me;
-                break;
-            }
-        }
-        if (metaEntryToRemove != null) {
-            metaEntries.remove(metaEntryToRemove);
-        }
-        metaEntries.add((MetaEntry) metaEntry);
-    }
-
-    /**
-     * Method for loading a workflow.
-     * @param id is the id of the requested workflow.
-     * @return workflow is the requested workflow
-     * @exception WorkflowNotExistentException if the requested workflow is not there.
-     * @throws WorkflowNotExistentException
-     */
-    @Override
-    public Workflow loadWorkflow(int id) throws WorkflowNotExistentException {
-        Workflow workflow = null;
-        for (Workflow wf : workflows) {
-            if (wf.getId() == id) {
-                workflow = wf;
-            }
-        }
-        if (workflow != null) {
-            return workflow;
-        } else {
-            final WorkflowNotExistentException e = new WorkflowNotExistentException(
-                    "" + id);
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-        // TODO: return steps of a workflow as well! - can be done as soon as a
-        // unique and combined ID for steps and workflows is given
-    }
-
-    /**
-     * Method for loading an item.
-     * @param id is the id of the requested item.
-     * @return Item is the requested item.
-     * @exception ItemNotExistentException if the requested item is not there.
-     * @throws ItemNotExistentException
-     */
-    @Override
-    public Item loadItem(int id) throws ItemNotExistentException {
-        Item item = null;
-        for (Item i : items) {
-            if (i.getId() == id) {
-                item = i;
-            }
-        }
-        if (item != null) {
-            return item;
-        } else {
-            final ItemNotExistentException e = new ItemNotExistentException("" + id);
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-        // TODO: return MetaData of an item as well!
-    }
-
-    @Override
-    public User loadUser(String name) throws UserNotExistentException {
-        User user = null;
-        for (User u : users) {
-            if (u.getUsername().equals(name)) {
-                user = u;
-            }
-        }
-        if (user != null) {
-            return user;
-        } else {
-            final UserNotExistentException e = new UserNotExistentException(name);
-            throw e;
-        }
-    }
-
-    /**
-     * Only for the walking skeleton:  method for loading a step.
-     * @param id is the id of the step.
-     * @return step is the requested step
-     */
-    public Step loadStep(int id) {
-        Step step = null;
-        for (Step s : steps) {
-            if (s.getId() == id) {
-                step = s;
-            }
-        }
-        return step;
-    }
-
-    /**
-     * Method for loading a requested MetaEntry.
-     * @param key is the key string.
-     * @return MetaEntry is the requested MetaEntry of the list with the right key string.
-     */
-    public MetaEntry loadMetaEntry(String key) {
-        MetaEntry metaEntry = null;
-        for (MetaEntry me : metaEntries) {
-            if (me.getKey().equals(key)) {
-                metaEntry = me;
-            }
-        }
-        return metaEntry;
-    }
-
-    /**
-     * delete functions to remove workflows, items, and users from persistence.
-     * @param id is the id of the requested workflow
-     * @exception WorkflowNotExistentException if the requested workflow is not there.
-     * @throws WorkflowNotExistentException
-     */
-    @Override
-    public void deleteWorkflow(int id) throws WorkflowNotExistentException {
-        Workflow workflowToRemove = null;
-        for (Workflow wf : workflows) {
-            if (wf.getId() == id) {
-                // a workflows steps are resolved and deleted one by one
-                final List<Step> workflowsSteps = wf.getSteps();
-                for (Step step : workflowsSteps) {
-                    deleteStep(step.getId());
-                }
-                workflowToRemove = wf;
-                break;
-            }
-        }
-        if (workflowToRemove != null) {
-            workflows.remove(workflowToRemove);
-            this.logger.log(Level.INFO,
-                    "[persistence] removed workflow " + workflowToRemove.getId() + ".");
-        } else {
-            final WorkflowNotExistentException e = new WorkflowNotExistentException(
-                    "" + id);
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-    }
-
-    /**
-     * Method for function to delete an item.
-     * @param id is the id of the requested item.
-     * @exception ItemNotExistentException if the requested item is not there
-     * @throws ItemNotExistentException
-     */
+    
     @Override
     public void deleteItem(int id) throws ItemNotExistentException {
         Item itemToRemove = null;
-        for (Item i : items) {
-            if (i.getId() == id) {
-
-                // an items metaData are deleted as well
-                final List<MetaEntry> itemsMetaData = i.getMetadata();
-                for (MetaEntry metaEntry : itemsMetaData) {
-                    deleteMetaEntry(metaEntry.getKey());
-                }
-                itemToRemove = i;
+        for (Item item : items) {
+            if (item.getId() == id) {
+                itemToRemove = item;
                 break;
             }
         }
         if (itemToRemove != null) {
             items.remove(itemToRemove);
-            this.logger.log(Level.INFO, "[persistence] removed item " + itemToRemove.getId()
-                    + ".");
+            this.logger.log(Level.INFO,"[persistence] successfully removed workflow " + itemToRemove.getId() + ".");
         } else {
-            final ItemNotExistentException e = new ItemNotExistentException("" + id);
-            this.logger.log(Level.WARNING, e);
-            throw e;
-
+            throw new ItemNotExistentException("database has no item " + id);
         }
     }
 
-    /**
-     * Method for the function of deleting an user.
-     * @param name is the name of the requested user.
-     * @exception UserNotExistentException if the requested user is not there.
-     * @throws UserNotExistentException
-     */
     @Override
-    public void deleteUser(String name) throws UserNotExistentException {
+    public Item loadItem(int id) throws ItemNotExistentException, StorageFailedException {
+        Item itemToReturn = null;
+        for (Item item : items) {
+            if (item.getId() == id) {
+                try {
+                    itemToReturn = (Item)item.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new StorageFailedException("loading of item" + id + "failed."); 
+                }
+            }
+        }
+        if (itemToReturn != null) {
+            return itemToReturn;
+        } else {
+            throw new ItemNotExistentException("database has no item " + id);
+        }
+    }
+
+    // User Operations
+    
+    @Override
+    public void addUser(User user) throws UserAlreadyExistsException, StorageFailedException {
+        for (User u : users) {
+            if (u.getUsername().equals(user.getUsername())) {
+                throw new UserAlreadyExistsException("username " + user.getUsername() + " is already assigned.");
+            }
+        }
+        User userToStore;
+        try {
+            userToStore = (User) user.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new StorageFailedException("storage of user '" + user.getUsername() + "' failed."); 
+        }
+        users.add(userToStore);
+        this.logger.log(Level.INFO, "[persistence] successfully added user '" + userToStore.getUsername() + "'.");
+    }
+
+    @Override
+    public void updateUser(User user) throws UserNotExistentException, StorageFailedException {        
         User userToRemove = null;
         for (User u : users) {
-            if (u.getUsername().equals(name)) {
+            if (u.getUsername().equals(user.getUsername())) {
+                userToRemove = u;
+            }
+        }
+        if (userToRemove != null) {
+            this.deleteUser(userToRemove.getUsername());
+            this.logger.log(Level.INFO, "[persistence] overwriting user '" + userToRemove.getUsername() + "'...");
+        }
+        try {
+            this.addUser(user);
+        } catch (UserAlreadyExistsException e) {
+            throw new StorageFailedException("update user failure, duplicate users");
+        }
+    }
+
+    @Override
+    public User loadUser(String username) throws UserNotExistentException {
+        User userToReturn = null;
+        for (User u : users) {
+            if (u.getUsername().equals(username)) {
+                userToReturn = u;
+            }
+        }
+        if (userToReturn != null) {
+            return userToReturn;
+        } else {
+            throw new UserNotExistentException("database has no user '" + username + "'.");
+        }
+    }
+
+    @Override
+    public void deleteUser(String username) throws UserNotExistentException {
+        User userToRemove = null;
+        for (User u : users) {
+            if (u.getUsername().equals(username)) {
                 userToRemove = u;
                 break;
             }
         }
         if (userToRemove != null) {
             users.remove(userToRemove);
+            this.logger.log(Level.INFO,"[persistence] successfully removed user " + userToRemove.getId() + ".");
         } else {
-            final UserNotExistentException e = new UserNotExistentException(name);
-            this.logger.log(Level.WARNING, e);
-            throw e;
+            throw new UserNotExistentException("database has no user '" + username + "'.");
         }
     }
 
-    /**
-     * Method for deleting a step.
-     * @param id of the requested step
-     */
-    public void deleteStep(int id) {
-        Step stepToRemove = null;
-        for (Step s : steps) {
-            if (s.getId() == id) {
-                stepToRemove = s;
-                break;
-            }
-        }
-        if (stepToRemove != null) {
-            steps.remove(stepToRemove);
-        }
-    }
 
-    /**
-     * Method for deleting a MetaEntry.
-     * @param key is the key string.
-     */
-    public void deleteMetaEntry(String key) {
-        MetaEntry metaEntryToRemove = null;
-        for (MetaEntry me : metaEntries) {
-            if (me.getKey().equals(key)) {
-                metaEntryToRemove = me;
-                break;
-            }
-        }
-        if (metaEntryToRemove != null) {
-            metaEntries.remove(metaEntryToRemove);
-        }
-    }
-
-    
-    // Sprint 2 Persistence  
-    
-    /**
-     * Method for storing a role.
-     * @param role is the role to store
-     */
-    public void storeRole(Role role) {
-        if (role.getId() <= 0) {
-            role.setId(roles.size() + 1);
-        }
-        Role roleToRemove = null;
-        for (Role r: roles) {
-            if (r.getId() == role.getId()) {
-                roleToRemove = r;
-                break;
-            }
-        }
-        if (roleToRemove != null) {
-            roles.remove(roleToRemove);
-            this.logger.log(Level.INFO, "[persistence] removed existing role "
-                    + roleToRemove.getId() + ".");
-        }
-        roles.add((Role) role);
-        this.logger.log(Level.INFO, "[persistence] successfully stored role " + role.getId()
-                + ".");
-    }
-
-    /**
-     * Method for loading all roles into a list of roles.
-     * @exception RoleNotExistentException if the requested role is not there
-     * @throws RoleNotExistentException
-     * @return List<Workflow> is the list we want to load
-     */
-    public List<Role> loadAllRoles() throws RoleNotExistentException {
-        if (roles.size() > 0) {
-            return roles;
+    @Override
+    public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
+        if (workflows.size() > 0) {
+            return workflows;
         }
         else {
-            final RoleNotExistentException e = new RoleNotExistentException("no stored roles in database");
-            this.logger.log(Level.INFO, e);
-            throw e;
+            throw new WorkflowNotExistentException("no stored workflows on database");
         }
     }
-    
-    /**
-     * Method for loeading all users into a list of users.
-     * @exception UserNotExistentException if the requested user is not there
-     * @throws UserNotExistentException
-     * @return List<User> is the list we want to load
-     */
+
+
     @Override
     public List<User> loadAllUsers() throws UserNotExistentException {
         if (users.size() > 0) {
             return users;
         }
         else {
-            final UserNotExistentException e = new UserNotExistentException("no stored users in database");
-            this.logger.log(Level.INFO, e);
-            throw e;
+            throw new UserNotExistentException("no stored users in database");
         }
     }
-
-    /**
-     * Method for loading a workflow.
-     * @param id is the id of the requested workflow.
-     * @return workflow is the requested workflow
-     * @exception RoleNotExistentException if the requested role is not there
-     * @throws RoleNotExistentException
-     */
-    public Role loadRole(int id) throws RoleNotExistentException {
-        Role role = null;
-        for (Role r : roles) {
-            if (r.getId() == id) {
-                role = r;
-            }
-        }
-        if (role != null) {
-            return role;
-        } else {
-            final RoleNotExistentException e = new RoleNotExistentException("" + id);
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-    }
-
-    /**
-     * @param user is the user we want to add
-     * @param role is the role we want to give the user
-     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
-     * @exception UserNotExistentException if the requested user is not there
-     * @exception RoleNotExistentException if the requested role is not there
-     * @throws UserHasAlreadyRoleException
-     * @throws UserNotExistentException
-     * @throws RoleNotExistentException  
-    */
-    @Override
-    public void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException {
-        Role searchedRole = null;
-        User searchedUser = null;
-        for (Role r : roles) {
-            if (r.getId() == role.getId()) {
-                searchedRole = r;
-            }
-        }
-        if (searchedRole == null) {
-            final RoleNotExistentException e = new RoleNotExistentException(role.getRolename());
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-        
-        for (User u : users) {
-            if (u.getId() == user.getId()) {
-                searchedUser = u;
-            }
-        }
-        if (searchedUser == null) {
-            final UserNotExistentException e = new UserNotExistentException(user.getUsername());
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-        
-        
-        for (Role r: user.getRoles()) {
-            if (role.getId() == r.getId()) {
-                final UserHasAlreadyRoleException e = new UserHasAlreadyRoleException(role.getRolename());
-                this.logger.log(Level.WARNING, e);
-                throw e;
-            }
-        }
-        
-        user.getRoles().add(role);
-    }
-    
-    /**
-     * Method for deleting an existing role.
-     * @param rolename is the name of the given role
-     * @exception RoleNotExistentException if the given role doesnt exist
-     * @throws RoleNotExistentException
-     */
-    public void deleteRole(String rolename) throws RoleNotExistentException {
-        Role roleToRemove = null;
-        for (Role r: roles) {
-            if (r.getRolename().equals(rolename)) {
-                roleToRemove = r;
-                break;
-            }
-        }
-        if (roleToRemove != null) {
-            for (User u: users) {
-                for (Role r: u.getRoles()) {
-                    if (r.getRolename().equals(rolename)) {
-                        u.getRoles().remove(r);
-                    }
-                }
-            }
-            roles.remove(roleToRemove);
-        } else {
-            final RoleNotExistentException e = new RoleNotExistentException(rolename);
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-    }
-    
-    // Deep-Copy Methods
-    
-    // ...
     
 }
