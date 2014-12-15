@@ -26,7 +26,8 @@ namespace CommunicationLib
             {"item", typeof(Item)},
             {"user", typeof(User)}
         };
-        //funktion mapping
+        //funktion mapping 
+        //TODO how to deal with del
         private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
         {
             {"def", "GetObject"},
@@ -36,8 +37,11 @@ namespace CommunicationLib
 
         //client referenz
         private IDataReceiver _myClient;
-        //default topic for server information
-        const string DEFAULT_TOPIC = "WORKFLOW_INFO";
+        //default topic for workflow information
+        const string WORKFLOW_TOPIC = "WORKFLOW_INFO";
+        //default topic for user information (admin)
+        const string USER_TOPIC = "USER_INFO";
+
         //jms attributes
         private IConnection _connection;
         private IConnectionFactory _connectionFactory;
@@ -66,10 +70,18 @@ namespace CommunicationLib
             // Beim abmelden (unregister) alle MessageSubs im User als Liste speichern (per Rest) und bei neuem Registrieren einfach holen und setzen
             this._myClient = myClient;
 
-            //default topic subscription
-            IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(DEFAULT_TOPIC));
+            //default topic subscriptions
+            IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(WORKFLOW_TOPIC));
             messageConsumer.Listener += OnMessageReceived;
-            _messageSubs.Add("WORKFLOW_INFO", messageConsumer);
+            _messageSubs.Add(WORKFLOW_TOPIC, messageConsumer);
+
+            //TODO check if client is admin client
+            if (true) 
+            {
+                messageConsumer = _session.CreateConsumer(new ActiveMQTopic(USER_TOPIC));
+                messageConsumer.Listener += OnMessageReceived;
+                _messageSubs.Add(USER_TOPIC, messageConsumer);
+            }
 
             _connection.Start();
         }
@@ -101,7 +113,7 @@ namespace CommunicationLib
             }
             else if (msg is IMapMessage)
             {
-                // ...there is no need for this(not yet)
+                // ...there is no need for this(not yet..?)
             }
             else
             {
@@ -117,10 +129,9 @@ namespace CommunicationLib
         {
             Int32 id;
             Type genericType;
-            object resultType; 
+            object requestedObj; 
             string methodName;
             IList<string> options = new List<string>();
-            object rWrapInstance;
             
             // options[0] --> requested Type; options[1] --> server operation; options[2] --> object identifier
             options = requestMsg.Split('=');
@@ -136,33 +147,27 @@ namespace CommunicationLib
             RestRequester obj = new RestRequester();
             object[] args = new object[] { id };
 
-            resultType = genericMethod.Invoke(obj, args);
+            requestedObj = genericMethod.Invoke(obj, args);
             // if client has no access to requested resource, exception is thrown --> abortion of method
-
-            //wrapping
-            rWrapInstance = Wrap(genericType, resultType);
 
             //send wrapper-Instance to Client
             if (genericType == typeof(Workflow))
             {
-                RegistrationWrapper<Workflow> workflowWrap = (RegistrationWrapper<Workflow>)rWrapInstance;
-                _myClient.WorkflowUpdate(workflowWrap);
+                _myClient.WorkflowUpdate((Workflow)requestedObj);
                 
-                // register client for items from new workflows
+                // register client for items from this new workflows
                 if (methodName.Equals("def")) 
                 {
-                    Register(workflowWrap.myObject);
+                    Register((Workflow)requestedObj);
                 }
             }
             else if (genericType == typeof(Item))
             {
-                RegistrationWrapper<Item> itemWrap = (RegistrationWrapper<Item>)rWrapInstance;
-                _myClient.ItemUpdate(itemWrap);
+                _myClient.ItemUpdate((Item)requestedObj);
             }
             else if (genericType == typeof(User))
             {
-                RegistrationWrapper<User> userWrap = (RegistrationWrapper<User>)rWrapInstance;
-                _myClient.UserUpdate(userWrap);
+                _myClient.UserUpdate((User)requestedObj);
             }
 
             
