@@ -53,8 +53,46 @@
                     </Grid>
                 </TabItem>
                 
-                <TabItem Header="Rollenverwaltung">
-                    
+                <TabItem Header="Rollenverwaltung" Height="23" VerticalAlignment="Bottom">
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <DockPanel Grid.Column="0">
+                            <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding roleCollection}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridView.Columns >
+                                            <GridViewColumn Header="Rollen" DisplayMemberBinding="{Binding role}"/>
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+
+                        <DockPanel Grid.Column="1" VerticalAlignment="Top">
+                            <DockPanel DockPanel.Dock="Top">
+                                <Label Content="Role: "  VerticalContentAlignment="Center"/>
+                                <TextBox Width="120" Height="25">
+                                    <TextBox.Text>
+                                        <Binding Path="role" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                    </TextBox.Text>
+                                </TextBox>
+                            </DockPanel>
+
+                            <DockPanel DockPanel.Dock="Bottom">
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle hinzufügen" Height="25" Margin="10" Command="{Binding addRoleCommand}"/>
+                            </DockPanel>
+
+                        </DockPanel>
+                    </Grid>
+
+
+
                 </TabItem>
             </TabControl>
         </DockPanel>
