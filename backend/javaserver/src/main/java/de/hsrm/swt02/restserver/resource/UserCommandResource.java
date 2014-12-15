@@ -2,13 +2,11 @@ package de.hsrm.swt02.restserver.resource;
 
 import java.util.logging.Level;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
@@ -33,7 +31,7 @@ public class UserCommandResource {
     /**
      * This method is called if some client wants to login.
      * @param formParams is a wrapper for login data
-     * @return returns ok if it was succesful and server error if it was not
+     * @return returns ok if it was successful and server error if it was not
      */
     @POST @Path("login")
     @Produces(MediaType.TEXT_PLAIN)
