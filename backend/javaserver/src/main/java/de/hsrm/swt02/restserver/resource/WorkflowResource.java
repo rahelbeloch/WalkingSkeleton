@@ -61,7 +61,7 @@ public class WorkflowResource {
     @GET
     @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getWorkflow(@PathParam("workflowid") int workflowid) {
+    public Response getWorkflow(@PathParam("workflowid") String workflowid) {
         final String loggingBody = PREFIX + "GET /workflow/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
@@ -110,7 +110,7 @@ public class WorkflowResource {
         final String loggingBody = PREFIX + "GET /workflows/startables/"
                 + username;
         LOGGER.log(Level.INFO, loggingBody);
-        List<Integer> wIdList = null;
+        List<String> wIdList = null;
         try {
             wIdList = LOGIC.getStartableWorkflowsByUser(username);
         } catch (WorkflowNotExistentException e1) {
@@ -156,7 +156,7 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getRelevantItemsByUser(
             @PathParam("username") String username,
-            @PathParam("workflowid") int workflowid)
+            @PathParam("workflowid") String workflowid)
     {
         final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = PREFIX + "GET /items/" + username + "/"
@@ -360,7 +360,7 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateWorkflowActivity(
-            @PathParam("workflowid") int workflowid,
+            @PathParam("workflowid") String workflowid,
             @PathParam("state") String state) 
     {
         final String loggingBody = PREFIX + "PUT /workflow/" + workflowid
@@ -403,7 +403,7 @@ public class WorkflowResource {
     @DELETE
     @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteWorkflow(@PathParam("workflowid") int workflowid) {
+    public Response deleteWorkflow(@PathParam("workflowid") String workflowid) {
         final String loggingBody = PREFIX + "DELETE /workflow/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();

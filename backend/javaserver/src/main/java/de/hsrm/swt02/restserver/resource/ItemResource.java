@@ -49,7 +49,7 @@ public class ItemResource {
     @GET
     @Path("items/{itemid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getItemById(@PathParam("itemid") int itemid) {
+    public Response getItemById(@PathParam("itemid") String itemid) {
         final String loggingBody = PREFIX + "GET /item/" + itemid;
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
