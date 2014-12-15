@@ -24,6 +24,7 @@ import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
@@ -44,9 +45,10 @@ public class LogicImp implements Logic {
      * @param p is a singleton instance of the persistence
      * @param pm is a singleton instance of the processmanager
      * @param logger is the logger instance for this application
+     * @throws StorageFailedException 
     */
     @Inject
-    public LogicImp(Persistence p, ProcessManager pm, UseLogger logger) {
+    public LogicImp(Persistence p, ProcessManager pm, UseLogger logger) throws StorageFailedException {
         this.p = p;
         this.pm = pm;
         setLogicResponse(new LogicResponse());
@@ -68,9 +70,10 @@ public class LogicImp implements Logic {
      * @param user the User, who starts the workflow
      * @exception WorkflowNotExistentException if the requested workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException
+     * @throws StorageFailedException 
     */
     @Override
-    public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
+    public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException, StorageFailedException {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         int itemID = pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
@@ -86,9 +89,10 @@ public class LogicImp implements Logic {
      * 
      * @param workflow
      * @throws IncompleteEleException 
+     * @throws StorageFailedException 
     */
     @Override
-    public LogicResponse addWorkflow(Workflow workflow) throws IncompleteEleException {
+    public LogicResponse addWorkflow(Workflow workflow) throws IncompleteEleException, StorageFailedException {
         if ((workflow.getStepByPos(0) instanceof StartStep) && (workflow.getStepByPos(workflow.getSteps().size()-1) instanceof FinalStep)) {
             final int id = p.storeWorkflow(workflow);
             setLogicResponse(new LogicResponse());
@@ -107,9 +111,10 @@ public class LogicImp implements Logic {
      *            describe the workflow
      * @return a Workflow, if there is one, who has this workflowID
      * @throws WorkflowNotExistentException
+     * @throws StorageFailedException 
     */
     @Override
-    public Workflow getWorkflow(int workflowID) throws WorkflowNotExistentException {
+    public Workflow getWorkflow(int workflowID) throws WorkflowNotExistentException, StorageFailedException {
         return p.loadWorkflow(workflowID);
     }
 
@@ -151,10 +156,11 @@ public class LogicImp implements Logic {
      * @param workflowID the workflow, which shall edited
      * @param step the step, which shall added
      * @throws WorkflowNotExistentException
+     * @throws StorageFailedException 
      */
     @Override
     public LogicResponse addStep(int workflowID, Step step)
-            throws WorkflowNotExistentException 
+            throws WorkflowNotExistentException, StorageFailedException 
     {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         workflow.addStep(step);
@@ -170,10 +176,11 @@ public class LogicImp implements Logic {
      * @param workflowID the workflow, which shall edited
      * @param stepID the step, which shall delete
      * @throws WorkflowNotExistentException
+     * @throws StorageFailedException 
      */
     @Override
     public LogicResponse deleteStep(int workflowID, int stepID)
-            throws WorkflowNotExistentException 
+            throws WorkflowNotExistentException, StorageFailedException 
     {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         workflow.removeStep(stepID);
@@ -188,9 +195,10 @@ public class LogicImp implements Logic {
      * 
      * @param user
      * @throws UserAlreadyExistsException
+     * @throws StorageFailedException 
      */
     @Override
-    public LogicResponse addUser(User user) throws UserAlreadyExistsException {
+    public LogicResponse addUser(User user) throws UserAlreadyExistsException, StorageFailedException {
         p.addUser(user);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("USER_INFO", "user=def=" + user.getUsername()));
@@ -407,9 +415,10 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException
      * @throws UserNotExistentException
      * @return List<Integer> list of stepIds
+     * @throws StorageFailedException 
      */    
     public List<Item> getRelevantItemsByUser(int workflowId, String username)
-            throws UserNotExistentException, WorkflowNotExistentException 
+            throws UserNotExistentException, WorkflowNotExistentException, StorageFailedException 
     {
         final LinkedList<Item> relevantItems = new LinkedList<>();
         final Workflow workflow = getWorkflow(workflowId);
@@ -425,7 +434,7 @@ public class LogicImp implements Logic {
         return relevantItems;
     }
 
-    public Item getItem(int itemID) throws ItemNotExistentException{
+    public Item getItem(int itemID) throws ItemNotExistentException, StorageFailedException{
         return p.loadItem(itemID);
     }
     // /**
@@ -608,10 +617,11 @@ public class LogicImp implements Logic {
      * @param workflowID
      *            the id of the workflow which should be deactivate
      * @return logicResponse about update
+     * @throws StorageFailedException 
      * @throws WorkflowNotExistentException .
      */
     public LogicResponse deactivateWorkflow(int workflowID)
-            throws WorkflowNotExistentException 
+            throws WorkflowNotExistentException, StorageFailedException 
     {
         p.loadWorkflow(workflowID).setActive(false);
         setLogicResponse(new LogicResponse());
@@ -625,10 +635,11 @@ public class LogicImp implements Logic {
      * @param workflowID
      *            the id of the workflow which should be deactivate
      * @return logicResponse about update
+     * @throws StorageFailedException 
      * @throws WorkflowNotExistentException .
      */
     public LogicResponse activateWorkflow(int workflowID)
-            throws WorkflowNotExistentException 
+            throws WorkflowNotExistentException, StorageFailedException 
     {
         p.loadWorkflow(workflowID).setActive(true);
         setLogicResponse(new LogicResponse());
@@ -639,10 +650,11 @@ public class LogicImp implements Logic {
     /**
      * Initialize test datas.
      * @throws IncompleteEleException 
+     * @throws StorageFailedException 
      * 
      * @throws UserAlreadyExistsException .
      */
-    private void initTestdata() throws UserAlreadyExistsException, IncompleteEleException {
+    private void initTestdata() throws UserAlreadyExistsException, IncompleteEleException, StorageFailedException {
         Workflow workflow1;
         User user1, user2, user3;
         StartStep startStep1;
