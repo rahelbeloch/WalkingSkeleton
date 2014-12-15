@@ -170,8 +170,7 @@ namespace CommunicationLib
         private void HandleRequest(string requestMsg)
         {
             // object identifier
-            Int32 id;
-            string nameKey;
+            string objId;
 
             // for reflection
             Type genericType;
@@ -186,26 +185,19 @@ namespace CommunicationLib
             IList<string> msgParams = new List<string>();
             msgParams = requestMsg.Split('=');
 
+            // get method signature for reflective invocation
             genericType = _dataStructures[ msgParams[0] ];
             methodName = _funcMapping[ msgParams[1] ];
 
-            // which identifier is needed ?
-            if (genericType == typeof(User) || genericType == typeof(Role))
-            {
-                nameKey = msgParams[2];
-                args = new object [1] { nameKey };
-            } 
-            else
-            {
-                Int32.TryParse(msgParams[2], out id);
-                args = new object [1] { id };
-            }
+            // build args for reflective invocation
+            objId = msgParams[2];
+            args = new object [1] { objId };
 
             /* Problem: generic method can not be called with dynamic generics
              * -> Reflection: deciding during runtime which generic is placed in which method
              */
             MethodInfo method = typeof( RestRequester ).GetMethod( methodName );
-            MethodInfo genericMethod = method.MakeGenericMethod( typeof(Workflow) );
+            MethodInfo genericMethod = method.MakeGenericMethod( genericType );
 
             /* Invoke the dynamically generated method
              * 1. param is the method location
