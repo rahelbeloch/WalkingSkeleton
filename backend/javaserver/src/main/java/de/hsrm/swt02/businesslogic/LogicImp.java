@@ -74,7 +74,7 @@ public class LogicImp implements Logic {
      * @throws ItemNotExistentException 
     */
     @Override
-    public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
+    public LogicResponse startWorkflow(String workflowID, String username) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         int itemID = pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
@@ -95,7 +95,7 @@ public class LogicImp implements Logic {
     @Override
     public LogicResponse addWorkflow(Workflow workflow) throws IncompleteEleException, StorageFailedException {
         if ((workflow.getStepByPos(0) instanceof StartStep) && (workflow.getStepByPos(workflow.getSteps().size()-1) instanceof FinalStep)) {
-            final int id = p.storeWorkflow(workflow);
+            final String id = p.storeWorkflow(workflow);
             setLogicResponse(new LogicResponse());
             logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
             return logicResponse;
@@ -115,7 +115,7 @@ public class LogicImp implements Logic {
      * @throws StorageFailedException 
     */
     @Override
-    public Workflow getWorkflow(int workflowID) throws WorkflowNotExistentException, StorageFailedException {
+    public Workflow getWorkflow(String workflowID) throws WorkflowNotExistentException, StorageFailedException {
         return p.loadWorkflow(workflowID);
     }
 
@@ -127,7 +127,7 @@ public class LogicImp implements Logic {
      * @throws WorkflowNotExistentException
      */
     @Override
-    public LogicResponse deleteWorkflow(int workflowID) throws WorkflowNotExistentException {
+    public LogicResponse deleteWorkflow(String workflowID) throws WorkflowNotExistentException {
         p.deleteWorkflow(workflowID);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=del="
@@ -146,10 +146,8 @@ public class LogicImp implements Logic {
      * @throws StorageFailedException 
      */
     @Override
-    public void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException {
-        
-        pm.executeStep(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));
-        
+    public void stepForward(String itemId, String stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException {        
+        pm.executeStep(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));  
     }
 
     /**
@@ -161,7 +159,7 @@ public class LogicImp implements Logic {
      * @throws StorageFailedException 
      */
     @Override
-    public LogicResponse addStep(int workflowID, Step step)
+    public LogicResponse addStep(String workflowID, Step step)
             throws WorkflowNotExistentException, StorageFailedException 
     {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
@@ -181,7 +179,7 @@ public class LogicImp implements Logic {
      * @throws StorageFailedException 
      */
     @Override
-    public LogicResponse deleteStep(int workflowID, int stepID)
+    public LogicResponse deleteStep(String workflowID, String stepID)
             throws WorkflowNotExistentException, StorageFailedException 
     {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
@@ -244,7 +242,7 @@ public class LogicImp implements Logic {
     {
         p.deleteUser(username);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("USER_INFO", "user_del" + username));
+        logicResponse.add(new Message("USER_INFO", "user=del=" + username));
         return logicResponse;
     }
 
@@ -361,8 +359,7 @@ public class LogicImp implements Logic {
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
 
-                if ((wf.getStepById(Integer
-                        .parseInt(item.getActStep().getKey())).getUsername())
+                if ((wf.getStepById(item.getActStep().getKey()).getUsername())
                         .equals(username)) 
                 {
                     items.add(item);
@@ -385,9 +382,9 @@ public class LogicImp implements Logic {
     * @return List<Workflow> is the requested list of workflows
     */
 
-    public List<Integer> getStartableWorkflowsByUser(String username) throws LogicException, UserNotExistentException, WorkflowNotExistentException {
+    public List<String> getStartableWorkflowsByUser(String username) throws LogicException, UserNotExistentException, WorkflowNotExistentException {
 
-        final List<Integer> startableWorkflows = new LinkedList<>();
+        final List<String> startableWorkflows = new LinkedList<>();
         for (Workflow workflow : getAllWorkflowsByUser(username)) {
             if (workflow.isActive()) {
                 final Step startStep = workflow.getSteps().get(0);
@@ -432,7 +429,7 @@ public class LogicImp implements Logic {
      * @return List<Integer> list of stepIds
      * @throws StorageFailedException 
      */    
-    public List<Item> getRelevantItemsByUser(int workflowId, String username)
+    public List<Item> getRelevantItemsByUser(String workflowId, String username)
             throws UserNotExistentException, WorkflowNotExistentException, StorageFailedException 
     {
         final LinkedList<Item> relevantItems = new LinkedList<>();
@@ -440,7 +437,7 @@ public class LogicImp implements Logic {
         for (Item item : workflow.getItems()) {
             final MetaEntry me = item.getActStep();
             if (me != null) {
-                final String itemUsername = workflow.getStepById(Integer.parseInt(me.getKey())).getUsername();
+                final String itemUsername = workflow.getStepById(me.getKey()).getUsername();
                 if (username.equals(itemUsername)) {
                     relevantItems.add(item);
                 }
@@ -449,7 +446,7 @@ public class LogicImp implements Logic {
         return relevantItems;
     }
 
-    public Item getItem(int itemID) throws ItemNotExistentException, StorageFailedException{
+    public Item getItem(String itemID) throws ItemNotExistentException, StorageFailedException{
         return p.loadItem(itemID);
     }
     // /**
@@ -491,7 +488,6 @@ public class LogicImp implements Logic {
      */
     public void setProcessLogicResponse(LogicResponse lr) {
         pm.setLogicResponse(lr);
-
     }
 
     /**
@@ -584,8 +580,7 @@ public class LogicImp implements Logic {
     public LogicResponse addRole(Role role) throws RoleAlreadyExistsException {
         p.storeRole(role);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("ROLE_INFO", "role_def"
-                + role.getRolename()));
+        logicResponse.add(new Message("ROLE_INFO", "role=def=" + role.getRolename()));
         return logicResponse;
     }
 
@@ -606,8 +601,10 @@ public class LogicImp implements Logic {
         final User user = p.loadUser(username);
         p.addRoleToUser(user, role);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("USER_INFO", "user" + username
-                + "_add_role" + role.getRolename()));
+//        logicResponse.add(new Message("USER_INFO", "user" + username
+//                + "_add_role" + role.getRolename()));
+        logicResponse.add(new Message("USER_INFO", "user=upd=" + username));
+  
         return logicResponse;
     }
 
@@ -622,7 +619,7 @@ public class LogicImp implements Logic {
     {
         p.deleteRole(rolename);
         setLogicResponse(new LogicResponse());
-        logicResponse.add(new Message("ROLE-INFO", "role_del" + rolename));
+        logicResponse.add(new Message("ROLE_INFO", "role=del=" + rolename));
         return logicResponse;
     }
 
@@ -635,7 +632,7 @@ public class LogicImp implements Logic {
      * @throws StorageFailedException 
      * @throws WorkflowNotExistentException .
      */
-    public LogicResponse deactivateWorkflow(int workflowID)
+    public LogicResponse deactivateWorkflow(String workflowID)
             throws WorkflowNotExistentException, StorageFailedException 
     {
         p.loadWorkflow(workflowID).setActive(false);
@@ -653,7 +650,7 @@ public class LogicImp implements Logic {
      * @throws StorageFailedException 
      * @throws WorkflowNotExistentException .
      */
-    public LogicResponse activateWorkflow(int workflowID)
+    public LogicResponse activateWorkflow(String workflowID)
             throws WorkflowNotExistentException, StorageFailedException 
     {
         p.loadWorkflow(workflowID).setActive(true);
@@ -676,7 +673,6 @@ public class LogicImp implements Logic {
         Action action1, action2;
         FinalStep finalStep;
         Role role1;
-        Role role2;
 
         user1 = new User();
         user1.setUsername("Alex");
@@ -686,7 +682,7 @@ public class LogicImp implements Logic {
         user3.setUsername("Tilman");
         
         role1 = new Role();
-        role1.setId(1);
+        role1.setId("1");
         role1.setRolename("Rolle 1");
         user3.getRoles().add(role1);
 
