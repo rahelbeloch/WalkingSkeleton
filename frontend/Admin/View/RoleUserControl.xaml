@@ -67,7 +67,7 @@
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns >
-                                            <GridViewColumn Header="Rollen" DisplayMemberBinding="{Binding role}"/>
+                                            <GridViewColumn Header="Rollen" DisplayMemberBinding="{Binding rolename}"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
@@ -76,7 +76,7 @@
 
                         <DockPanel Grid.Column="1" VerticalAlignment="Top">
                             <DockPanel DockPanel.Dock="Top">
-                                <Label Content="Role: "  VerticalContentAlignment="Center"/>
+                                <Label Content="Rolle: "  VerticalContentAlignment="Center"/>
                                 <TextBox Width="120" Height="25">
                                     <TextBox.Text>
                                         <Binding Path="role" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
