@@ -23,10 +23,17 @@ namespace CommunicationLib.Model
         private List<Role> _roles;
         public List<Role> roles { get { return _roles; } set { _roles = value; } }
 
+        /// <summary>
+        /// Used for (de)serialization. Do not change the property name.
+        /// </summary>
+        private List<String> _messagingSubs;
+        public List<String> messagingSubs { get { return _messagingSubs; } set { _messagingSubs = value; } }
+
         public User()
             : base()
         {
             _roles = new List<Role>();
+            _messagingSubs = new List<String>();
         }
     }
 }
