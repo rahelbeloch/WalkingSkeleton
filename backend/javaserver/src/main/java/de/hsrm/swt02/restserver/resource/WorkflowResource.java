@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.LogicResponse;
+import de.hsrm.swt02.businesslogic.Message;
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
@@ -31,8 +33,6 @@ import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
-import de.hsrm.swt02.restserver.LogicResponse;
-import de.hsrm.swt02.restserver.Message;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**

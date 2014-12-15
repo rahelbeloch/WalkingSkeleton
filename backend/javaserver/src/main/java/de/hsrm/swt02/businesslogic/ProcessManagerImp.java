@@ -20,8 +20,6 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
-import de.hsrm.swt02.restserver.LogicResponse;
-import de.hsrm.swt02.restserver.Message;
 
 /**
  * This class handles the processing of Steps. (For now) it provides methods for

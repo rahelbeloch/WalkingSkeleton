@@ -28,8 +28,6 @@ import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
-import de.hsrm.swt02.restserver.LogicResponse;
-import de.hsrm.swt02.restserver.Message;
 
 /**
  * This class implements the logic interface and is used for logic operations.

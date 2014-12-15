@@ -1,4 +1,4 @@
-package de.hsrm.swt02.restserver;
+package de.hsrm.swt02.businesslogic;
 
 import java.util.LinkedList;
 import java.util.List;

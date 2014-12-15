@@ -19,7 +19,6 @@ import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
-import de.hsrm.swt02.restserver.LogicResponse;
 
 /**
  * This interface is used for the business logic.

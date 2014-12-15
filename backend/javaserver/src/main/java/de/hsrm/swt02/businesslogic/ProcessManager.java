@@ -8,7 +8,6 @@ import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.restserver.LogicResponse;
 
 /**
  * Interface for ProcessManager. (Due to Dependency Injection)
