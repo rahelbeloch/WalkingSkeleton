@@ -198,8 +198,21 @@ public class LogicImp implements Logic {
      * @throws UserAlreadyExistsException
      * @throws StorageFailedException 
      */
+    @SuppressWarnings("null")
     @Override
     public LogicResponse addUser(User user) throws UserAlreadyExistsException, StorageFailedException {
+        // check if there are duplicate messagingsubs
+        final List<String> subs = user.getMessagingSubs();
+        final List<String> definiteSubs = null;
+        for (String sub :subs) {
+            if (!definiteSubs.contains(sub)) {
+                definiteSubs.add(sub);
+            }
+        }
+        //messagingsublist is cleared and filled with the new list
+        user.getMessagingSubs().clear();
+        user.getMessagingSubs().addAll(definiteSubs);
+        //finally user is added
         p.addUser(user);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("USER_INFO", "user=def=" + user.getUsername()));
@@ -661,6 +674,8 @@ public class LogicImp implements Logic {
         StartStep startStep1;
         Action action1, action2;
         FinalStep finalStep;
+        Role role1;
+        Role role2;
 
         user1 = new User();
         user1.setUsername("Alex");
@@ -668,6 +683,11 @@ public class LogicImp implements Logic {
         user2.setUsername("Dominik");
         user3 = new User();
         user3.setUsername("Tilman");
+        
+        role1 = new Role();
+        role1.setId(1);
+        role1.setRolename("Rolle 1");
+        user3.getRoles().add(role1);
 
         addUser(user1);
         addUser(user2);
