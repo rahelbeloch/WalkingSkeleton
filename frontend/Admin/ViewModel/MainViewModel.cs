@@ -29,18 +29,17 @@ namespace Admin.ViewModel
             {
                 if (_restRequester == null)
                 {
-                    _restRequester = new RestRequester();
+                    _restRequester = _myComLib.sender;
                 }
                 return _restRequester;
             }
         }
 
-        private CommunicationManager _comManager;
+        private ComLib _myComLib;
 
         public MainViewModel()
         {
-            _comManager = new CommunicationManager();
-            _comManager.registerClient(this, true);
+            _myComLib = new ComLib(this);
 
             _workflowViewModel = new WorkflowViewModel(this);
             _userViewModel = new UserViewModel(this);
@@ -148,6 +147,5 @@ namespace Admin.ViewModel
         }
 
         #endregion
-
     }
 }
