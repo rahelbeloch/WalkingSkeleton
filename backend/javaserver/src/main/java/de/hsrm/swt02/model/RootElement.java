@@ -3,7 +3,7 @@ package de.hsrm.swt02.model;
 /**
  * This class represents a RootElement.
  */
-public class RootElement {
+public class RootElement implements Cloneable {
     // Used for (de)serialization. Do not change.
     protected int id;
 
