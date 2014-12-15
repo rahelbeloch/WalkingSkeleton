@@ -9,13 +9,13 @@ namespace CommunicationLib.Model
     /// <summary>
     /// This class represents a MetaEntry for the MetaEntryList of an Item
     /// </summary>
-    public class MetaEntry
+    public class MetaEntry : RootElement
     {
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private string _key;
-        public string key { get { return _key; } set { _key = value; } }
+        public string key { get { return _id; } set { _id = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.

@@ -10,13 +10,8 @@ namespace CommunicationLib.Model
     /// <summary>
     /// This class represents a Step
     /// </summary>
-    public class Step
+    public class Step : RootElement
     {
-        /// <summary>
-        /// Used for (de)serialization. Do not change the property name.
-        /// </summary>
-        private int _id;
-        public int id { get { return _id; } set { _id = value; } }
 
         private List<Step> _nextSteps;
         [JsonIgnore]
@@ -25,8 +20,8 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private List<int> _nextStepIds;
-        public List<int> nextStepIds { get { return _nextStepIds; } set { _nextStepIds = value; } }
+        private List<String> _nextStepIds;
+        public List<String> nextStepIds { get { return _nextStepIds; } set { _nextStepIds = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
@@ -49,7 +44,7 @@ namespace CommunicationLib.Model
         {
             username = "";
             _nextSteps = new List<Step>();
-            _nextStepIds = new List<int>();
+            _nextStepIds = new List<String>();
         }
     }
 }
