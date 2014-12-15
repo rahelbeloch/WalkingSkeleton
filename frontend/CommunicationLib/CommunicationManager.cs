@@ -134,7 +134,17 @@ namespace CommunicationLib
                 ITextMessage tm = msg as ITextMessage;
                 //Logging on Console 
                 System.Diagnostics.Trace.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
-                HandleRequest(tm.Text);  
+                try
+                {
+                    HandleRequest(tm.Text);  
+                }
+                catch (BasicException e)
+                {
+                    if (ErrorMessageMapper.errorMessages.ContainsKey(e.number))
+                    {
+                        System.Diagnostics.Trace.WriteLine(ErrorMessageMapper.GetErrorType(e.number));
+                    }
+                }
             }
             else if (msg is IMapMessage)
             {
@@ -224,7 +234,6 @@ namespace CommunicationLib
             {
                 _myClient.RoleUpdate( (Role)requestedObj );
             }
-
         }
 
         /// <summary>
