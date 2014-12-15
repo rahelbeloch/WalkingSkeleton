@@ -8,8 +8,9 @@ namespace CommunicationLib
     /// </summary>
     public interface IDataReceiver
     {
-        void WorkflowUpdate(Workflow workflow);
-        void ItemUpdate(Item item);
-        void UserUpdate(User user);
+        void WorkflowUpdate(Workflow updatedWorkflow);
+        void ItemUpdate(Item updatedItem);
+        void UserUpdate(User updatedUser);
+        void RoleUpdate(Role updatedRole);
     }
 }

@@ -38,8 +38,9 @@ namespace CommunicationLib
         private IDataReceiver _myClient;
         //default topic for workflow information
         const string WORKFLOW_TOPIC = "WORKFLOW_INFO";
-        //default topic for user information (admin)
+        //default topics for user and role information (admin)
         const string USER_TOPIC = "USER_INFO";
+        const string ROLE_TOPIC = "ROLE_INFO";
 
         //jms attributes
         private IConnection _connection;
@@ -66,6 +67,7 @@ namespace CommunicationLib
         ///  Default topics are:
         ///     WORKFLOW_INFO -> for all workflow changes and definitions
         ///     USER_INFO     -> for all user changes and defintions
+        ///     ROLE_INFO     -> for all role changes and defintions
         ///  (client calls this method if login works)
         /// </summary>
         /// <param name="myClient">the client to register for</param>
@@ -75,7 +77,7 @@ namespace CommunicationLib
             this._myClient = myClient;
 
             // get the topis for this client (user)
-            /* restRequester.getTopics(user);
+            /* restRequester.getUser(userName);
              * if (subs not empty)
              * for (topic in topics) {
              *          messageConsumer
@@ -96,6 +98,10 @@ namespace CommunicationLib
                 messageConsumer = _session.CreateConsumer(new ActiveMQTopic(USER_TOPIC));
                 messageConsumer.Listener += OnMessageReceived;
                 _messageSubs.Add(USER_TOPIC, messageConsumer);
+                // role topic
+                messageConsumer = _session.CreateConsumer(new ActiveMQTopic(ROLE_TOPIC));
+                messageConsumer.Listener += OnMessageReceived;
+                _messageSubs.Add(ROLE_TOPIC, messageConsumer);
             }
 
             _connection.Start();
@@ -150,7 +156,7 @@ namespace CommunicationLib
         {
             // object identifier
             Int32 id;
-            string userName;
+            string nameKey;
 
             // for reflection
             Type genericType;
@@ -169,10 +175,10 @@ namespace CommunicationLib
             methodName = _funcMapping[ msgParams[1] ];
 
             // which identifier is needed ?
-            if (genericType == typeof(User))
+            if (genericType == typeof(User) || genericType == typeof(Role))
             {
-                userName = msgParams[2];
-                args = new object [1] { userName };
+                nameKey = msgParams[2];
+                args = new object [1] { nameKey };
             } 
             else
             {
@@ -208,12 +214,17 @@ namespace CommunicationLib
             }
             else if (genericType == typeof(Item))
             {
-                _myClient.ItemUpdate((Item)requestedObj);
+                _myClient.ItemUpdate( (Item)requestedObj );
             }
             else if (genericType == typeof(User))
             {
-                _myClient.UserUpdate((User)requestedObj);
+                _myClient.UserUpdate( (User)requestedObj );
             }
+            else if (genericType == typeof(Role))
+            {
+                _myClient.RoleUpdate( (Role)requestedObj );
+            }
+
         }
 
         /// <summary>

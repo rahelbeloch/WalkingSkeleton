@@ -142,6 +142,11 @@ namespace Admin.ViewModel
             throw new NotImplementedException();
         }
 
+        public void RoleUpdate(Role role)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
     }
