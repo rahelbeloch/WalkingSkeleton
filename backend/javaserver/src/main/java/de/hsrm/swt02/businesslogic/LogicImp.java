@@ -209,15 +209,19 @@ public class LogicImp implements Logic {
         // check if there are duplicate messagingsubs
         final List<String> subs = user.getMessagingSubs();
         final List<String> definiteSubs = null;
-        definiteSubs.add(subs.get(0));
-        for (String sub : subs) {
-            if (!definiteSubs.contains(sub)) {
-                definiteSubs.add(sub);
+        
+        if (subs != null) {
+            definiteSubs.add(subs.get(0));
+            for (String sub : subs) {
+                if (!definiteSubs.contains(sub)) {
+                    definiteSubs.add(sub);
+                }
             }
+            //messagingsublist is cleared and filled with the new list
+            user.getMessagingSubs().clear();
+            user.getMessagingSubs().addAll(definiteSubs);
+            
         }
-        //messagingsublist is cleared and filled with the new list
-        user.getMessagingSubs().clear();
-        user.getMessagingSubs().addAll(definiteSubs);
         //finally user is added
         p.addUser(user);
         setLogicResponse(new LogicResponse());
