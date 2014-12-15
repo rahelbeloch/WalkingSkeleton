@@ -40,11 +40,6 @@ public class CopyOfPersistenceImp implements CopyOfPersistence {
     private List<Item> items = new LinkedList<>();
     private List<User> users = new LinkedList<>();
 
-    private List<Step> steps = new LinkedList<>();
-    private List<MetaEntry> metaEntries = new LinkedList<>();
-    
-    private List<Role> roles = new LinkedList<>();
-
     /**
      * Constructor for PersistenceImp.
      * @param logger is the logger for logging.
