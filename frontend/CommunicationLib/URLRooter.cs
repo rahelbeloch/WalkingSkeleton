@@ -9,14 +9,14 @@ namespace CommunicationLib
     
     public static class URLRooter
     {
-        enum UrlMethod 
+        public enum UrlMethod 
         {
             Resource,
             Operation 
         };
 
 
-        public string generateUrl(UrlMethod method, params string [] values)
+        public static string generateUrl(UrlMethod method, params string [] values)
         {
             String url = (method == UrlMethod.Resource)? "resource" : "command";
             foreach(var val in values)
@@ -27,7 +27,7 @@ namespace CommunicationLib
             return url;
         }
 
-        public string generateUrl(UrlMethod method,Type objType, params string[] values)
+        public static string generateUrl(UrlMethod method,Type objType, params string[] values)
         {
             String typeName = objType.FullName.Split('.').Last().ToLower();
             typeName += "s";
