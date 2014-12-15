@@ -14,68 +14,53 @@
         			Command="{Binding logoutCommand}"/>
             </MenuItem>
         </Menu>
-<!--
-        <ListBox x:Name="listboxFolder1" Grid.Row="1" BorderThickness="0" 
-     ItemsSource="{Binding dashboardWorkflows}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding name}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
--->
-        
+
         <ScrollViewer HorizontalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding dashboardWorkflows}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Content="{Binding name}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
-                            <Button Grid.Row="0" Content="+" Width="35" Height="25" Margin="150 5 10 10" 
-                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.startWorkflowCommand}" 
-                                    CommandParameter="{Binding}" IsEnabled="{Binding startPermission}"/>
-                            <Grid Grid.Row="1"  HorizontalAlignment="Center">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="AUTO" />
-                                    <ColumnDefinition Width="AUTO" />
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Content="Name" FontWeight="Medium"/>
-                                <Label Grid.Column="1" Content="Nr" FontWeight="Medium"/>
-                                <ItemsControl ItemsSource="{Binding dashboardRows}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel>
-                                                <TextBlock Grid.Row="0" Text="{Binding actStep.label}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
-                                                <TextBlock Grid.Row="1" Text="{Binding actStep.id}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
-                                                <Button Grid.Row="0" Content="{Binding actItem.state}" Width="100" Height="25" Margin="150 5 10 10" 
+                        <Border  HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="#CCC" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Content="{Binding name}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
+                                <Button Grid.Row="0" Content="+" Width="35" Height="25" Margin="150 5 10 10" 
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.startWorkflowCommand}" 
+                                        CommandParameter="{Binding}" IsEnabled="{Binding startPermission}"/>
+
+                                <Grid Grid.Row="1"  HorizontalAlignment="Center">
+                                    
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Label Grid.Row="0" Grid.Column="0" Content="Name" FontWeight="Medium"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Content="Nr" FontWeight="Medium"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Content="test" FontWeight="Medium"/>
+                                    
+                                    <ItemsControl ItemsSource="{Binding dashboardRows}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding actStep.description}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
+                                                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding actItem.id}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
+                                                    <Button Grid.Row="1" Grid.Column="2" Content="{Binding actItem.state}" Width="40" Height="25" Margin="25 0 10 0" 
                                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
-                                                        CommandParameter="{Binding}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                                        CommandParameter="{Binding}" HorizontalAlignment="Right"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
-        <!--
-        <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding dashboardWorkflows}">
-            <ListView.View>
-                <GridView>
-                    <GridView.Columns >
-                        <GridViewColumn Header="Nutzername" DisplayMemberBinding="{Binding name}"/>
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-        </ListView>
--->
-
     </DockPanel>
 </UserControl>
