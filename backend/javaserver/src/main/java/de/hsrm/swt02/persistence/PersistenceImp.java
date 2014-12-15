@@ -61,7 +61,7 @@ public class PersistenceImp implements Persistence {
             workflow.setId(workflows.size() + 1 + "");
         } else {
             for (Workflow wf: workflows) {
-                if (wf.getId() == workflow.getId()) {
+                if (wf.getId().equals(workflow.getId())) {
                     workflowToRemove = wf;
                     break;
                 }
@@ -89,7 +89,7 @@ public class PersistenceImp implements Persistence {
     public void deleteWorkflow(String id) throws WorkflowNotExistentException {
         Workflow workflowToRemove = null;
         for (Workflow wf : workflows) {
-            if (wf.getId() == id) {
+            if (wf.getId().equals(id)) {
                 workflowToRemove = wf;
                 break;
             }
@@ -105,10 +105,10 @@ public class PersistenceImp implements Persistence {
     }
 
     @Override
-    public Workflow loadWorkflow(int id) throws WorkflowNotExistentException, StorageFailedException {
+    public Workflow loadWorkflow(String id) throws WorkflowNotExistentException, StorageFailedException {
         Workflow workflowToReturn = null;
         for (Workflow wf : workflows) {
-            if (wf.getId() == id) {
+            if (wf.getId().equals(id)) {
                 try {
                     workflowToReturn = (Workflow)wf.clone();
                 } catch (CloneNotSupportedException e) {
@@ -127,26 +127,26 @@ public class PersistenceImp implements Persistence {
     // Item Operations
     
     @Override
-    public int storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
+    public String storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
         Workflow parentWorkflow = null;
         Item itemToRemove = null;
         
-        if (item.getId() <= 0) {
+        if (Integer.parseInt(item.getId()) <= 0) {
             for (Workflow wf: workflows) {
-                if (item.getWorkflowId() == wf.getId()) {
+                if (item.getWorkflowId().equals(wf.getId())) {
                     parentWorkflow = wf;
                     break;
                 }
             }
             if (parentWorkflow != null) {
-                item.setId(parentWorkflow.getId() * ID_MULTIPLICATOR + parentWorkflow.getItems().size());
+                item.setId(Integer.parseInt(parentWorkflow.getId()) * ID_MULTIPLICATOR + parentWorkflow.getItems().size() + "");
             } else {
                 throw new WorkflowNotExistentException("invalid parent workflow id in item " + item.getId());
             }
         }
         
         for (Item i : items) {
-            if (i.getId() == item.getId()) {
+            if (i.getId().equals(item.getId())) {
                 itemToRemove = i;
                 break;
             }
@@ -168,10 +168,10 @@ public class PersistenceImp implements Persistence {
     }
     
     @Override
-    public void deleteItem(int id) throws ItemNotExistentException {
+    public void deleteItem(String id) throws ItemNotExistentException {
         Item itemToRemove = null;
         for (Item item : items) {
-            if (item.getId() == id) {
+            if (item.getId().equals(id)) {
                 itemToRemove = item;
                 break;
             }
@@ -185,10 +185,10 @@ public class PersistenceImp implements Persistence {
     }
 
     @Override
-    public Item loadItem(int id) throws ItemNotExistentException, StorageFailedException {
+    public Item loadItem(String id) throws ItemNotExistentException, StorageFailedException {
         Item itemToReturn = null;
         for (Item item : items) {
-            if (item.getId() == id) {
+            if (item.getId().equals(id)) {
                 try {
                     itemToReturn = (Item)item.clone();
                 } catch (CloneNotSupportedException e) {
@@ -302,7 +302,7 @@ public class PersistenceImp implements Persistence {
     
     // temp load Step - to be completed
     @Override
-    public Step loadStep() {
+    public Step loadStep(String id) {
         return null;
     }
     
@@ -317,13 +317,13 @@ public class PersistenceImp implements Persistence {
      * Method for storing a role.
      * @param role is the role to store
      */
-    public int storeRole(Role role) {
-        if (role.getId() <= 0) {
-            role.setId(roles.size() + 1);
+    public String storeRole(Role role) {
+        if (Integer.parseInt(role.getId()) <= 0) {
+            role.setId(roles.size() + 1 + "");
         }
         Role roleToRemove = null;
-        for (Role r: roles) {
-            if (r.getId() == role.getId()) {
+        for (Role r : roles) {
+            if (r.getId().equals(role.getId())) {
                 roleToRemove = r;
                 break;
             }
@@ -381,10 +381,10 @@ public class PersistenceImp implements Persistence {
      * @exception RoleNotExistentException if the requested role is not there
      * @throws RoleNotExistentException
      */
-    public Role loadRole(int id) throws RoleNotExistentException {
+    public Role loadRole(String id) throws RoleNotExistentException {
         Role role = null;
         for (Role r : roles) {
-            if (r.getId() == id) {
+            if (r.getId().equals(id)) {
                 role = r;
             }
         }
@@ -412,7 +412,7 @@ public class PersistenceImp implements Persistence {
         Role searchedRole = null;
         User searchedUser = null;
         for (Role r : roles) {
-            if (r.getId() == role.getId()) {
+            if (r.getId().equals(role.getId())) {
                 searchedRole = r;
             }
         }
@@ -423,7 +423,7 @@ public class PersistenceImp implements Persistence {
         }
         
         for (User u : users) {
-            if (u.getId() == user.getId()) {
+            if (u.getId().equals(user.getId())) {
                 searchedUser = u;
             }
         }
@@ -435,7 +435,7 @@ public class PersistenceImp implements Persistence {
         
         
         for (Role r: user.getRoles()) {
-            if (role.getId() == r.getId()) {
+            if (role.getId().equals(r.getId())) {
                 final UserHasAlreadyRoleException e = new UserHasAlreadyRoleException(role.getRolename());
                 this.logger.log(Level.WARNING, e);
                 throw e;
