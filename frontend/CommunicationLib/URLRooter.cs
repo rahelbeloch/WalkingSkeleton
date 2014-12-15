@@ -6,14 +6,19 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib
 {
+    
     public static class URLRooter
     {
-        enum UrlMethod { Resource = "resource", Operation = "command" };
+        enum UrlMethod 
+        {
+            Resource,
+            Operation 
+        };
 
 
         public string generateUrl(UrlMethod method, params string [] values)
         {
-            String url = method.ToString();
+            String url = (method == UrlMethod.Resource)? "resource" : "command";
             foreach(var val in values)
             {
                 url += "/" + val;
@@ -26,7 +31,8 @@ namespace CommunicationLib
         {
             String typeName = objType.FullName.Split('.').Last().ToLower();
             typeName += "s";
-            String url = method.ToString()  + typeName;
+            String url = (method == UrlMethod.Resource) ? "resource" : "command";
+            url += typeName;
 
             foreach (var val in values)
             {
@@ -36,7 +42,7 @@ namespace CommunicationLib
             return url;
         }
     }
-
+    
 
     /* Vorhandene URLS in Rest-Schnitstelle
      * 
