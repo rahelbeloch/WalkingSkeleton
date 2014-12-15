@@ -40,16 +40,15 @@ public class StartProcessor extends Observable {
      * MetaState.
      * 
      * @param workflow it's id will be noted within a new item
+     * @return itemId 
      */
-    public void createItem(Workflow workflow) {
+    public int createItem(Workflow workflow) {
 
-        // final int key = 1000;
         currentItem = new Item();
-        // currentItem.setId(workflow.getId() * key + workflow.getSteps().size()
-        // + workflow.getItems().size());
-        // System.out.println(currentItem.getId());
         currentItem.setWorkflowId(workflow.getId());
         initiateItem(workflow, currentItem);
+        
+        return currentItem.getId();
     }
 
     /**

@@ -72,14 +72,15 @@ public class LogicImp implements Logic {
     @Override
     public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
-        pm.startWorkflow(workflow, username);
+        int itemID = pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
-        //TODO item=def=<itemID>
+        
         logicResponse.add(new Message("ITEMS_FROM_" + workflowID, "item=def="
-                + workflowID));
+                + itemID));
         return logicResponse;
     }
 
+    
     /**
      * This method store a workflow and distribute a id.
      * 
@@ -423,6 +424,9 @@ public class LogicImp implements Logic {
         return relevantItems;
     }
 
+    public Item getItem(int itemID) throws ItemNotExistentException{
+        return p.loadItem(itemID);
+    }
     // /**
     // * This method returns all Workflows, which can be startes by this user.
     // *

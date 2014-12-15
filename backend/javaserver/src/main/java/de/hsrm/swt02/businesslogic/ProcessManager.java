@@ -31,7 +31,7 @@ public interface ProcessManager extends Observer {
      * @param workflow which will be started
      * @param username indicates who wants to start a workflow
      */
-    void startWorkflow(Workflow workflow, String username);
+    int startWorkflow(Workflow workflow, String username);
 
     /**
      * This method selects the appropriate stepprocessor for a step.
