@@ -51,7 +51,7 @@ public class UserResource {
      * @throws UserNotExistentException 
      */
     @GET
-    @Path("user/{username}")
+    @Path("users/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getUser(@PathParam("username") String username) {
         final String loggingBody = PREFIX + "GET /resource/user/" + username;
@@ -83,7 +83,7 @@ public class UserResource {
      * @return 200 ok if successful
      */
     @POST
-    @Path("user")
+    @Path("users")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveUser(MultivaluedMap<String, String> formParams) {
@@ -125,7 +125,7 @@ public class UserResource {
      * @return 200 ok if successful
      */
     @PUT
-    @Path("user/{username}")
+    @Path("users/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateUser(@PathParam("username") String username,
@@ -167,7 +167,7 @@ public class UserResource {
      * @return deleted user, if successful
      */
     @DELETE
-    @Path("user/{username}")
+    @Path("users/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser(@PathParam("username") String username) {
         final String loggingBody = PREFIX + "DELETE /resource/user/" + username;

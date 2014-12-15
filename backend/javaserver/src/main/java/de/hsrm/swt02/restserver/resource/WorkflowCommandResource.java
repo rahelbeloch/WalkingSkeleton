@@ -26,7 +26,7 @@ import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
  * This class is called if client sends request to operate on workflows.
  *
  */
-@Path("command/workflow")
+@Path("command/workflows")
 public class WorkflowCommandResource {
 
     public static final ConstructionFactory FACTORY = ConstructionFactory.getInstance();

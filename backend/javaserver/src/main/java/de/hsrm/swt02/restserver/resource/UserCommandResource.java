@@ -3,6 +3,7 @@ package de.hsrm.swt02.restserver.resource;
 import java.util.logging.Level;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,7 +21,7 @@ import de.hsrm.swt02.messaging.ServerPublisher;
  * This class is called if client wants to process user information.
  *
  */
-@Path("command/user")
+@Path("command/users")
 public class UserCommandResource {
     
     public static final ConstructionFactory FACTORY = ConstructionFactory.getInstance();
@@ -36,10 +37,7 @@ public class UserCommandResource {
      */
     @POST @Path("login")
     @Produces(MediaType.TEXT_PLAIN)
-    @Consumes("application/x-www-form-urlencoded")
-    public Response login(MultivaluedMap<String, String> formParams) {
-        final String username = formParams.get("username").get(0);
-        final String password = formParams.get("password").get(0);
+    public Response login(@HeaderParam("username") String username) {
         final String loggingBody = PREFIX + "POST /command/user/login";
         LOGGER.log(Level.INFO, loggingBody);
         try {
