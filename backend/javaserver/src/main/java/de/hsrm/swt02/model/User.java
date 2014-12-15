@@ -11,6 +11,9 @@ public class User extends RootElement {
     private String username;
     // Used for (de)serialization. Do not change.
     private List<Role> roles;
+    
+ // Used for (de)serialization. Do not change.
+    private List<String> messagingSubs;
 
     /**
      * Constructor for User.
@@ -46,6 +49,16 @@ public class User extends RootElement {
      */
     public List<Role> getRoles() {
         return this.roles;
+    }
+    
+    
+    /**
+     * Subs getter. There is no setter because roles is an ArrayList.
+     * 
+     * @return roles is the list of roles of the user
+     */
+    public List<String> getMessagingSubs() {
+        return this.messagingSubs;
     }
 
     /**
