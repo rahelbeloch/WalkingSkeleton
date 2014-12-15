@@ -98,8 +98,6 @@ public class LogicImp implements Logic {
         else {
             throw new IncompleteEleException();
         }
-        
-        
     }
 
     /**
@@ -363,7 +361,9 @@ public class LogicImp implements Logic {
     * @throws LogicException
     * @return List<Workflow> is the requested list of workflows
     */
+
     public List<Integer> getStartableWorkflowsByUser(String username) throws LogicException, UserNotExistentException, WorkflowNotExistentException {
+
         final List<Integer> startableWorkflows = new LinkedList<>();
         for (Workflow workflow : getAllWorkflowsByUser(username)) {
             if (workflow.isActive()) {
@@ -607,12 +607,16 @@ public class LogicImp implements Logic {
      * 
      * @param workflowID
      *            the id of the workflow which should be deactivate
+     * @return logicResponse about update
      * @throws WorkflowNotExistentException .
      */
-    public void deactivateWorkflow(int workflowID)
+    public LogicResponse deactivateWorkflow(int workflowID)
             throws WorkflowNotExistentException 
     {
         p.loadWorkflow(workflowID).setActive(false);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflowID));
+        return logicResponse;
     }
 
     /**
@@ -620,12 +624,16 @@ public class LogicImp implements Logic {
      * 
      * @param workflowID
      *            the id of the workflow which should be deactivate
+     * @return logicResponse about update
      * @throws WorkflowNotExistentException .
      */
-    public void activateWorkflow(int workflowID)
+    public LogicResponse activateWorkflow(int workflowID)
             throws WorkflowNotExistentException 
     {
         p.loadWorkflow(workflowID).setActive(true);
+        setLogicResponse(new LogicResponse());
+        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflowID));
+        return logicResponse;
     }
 
     /**
