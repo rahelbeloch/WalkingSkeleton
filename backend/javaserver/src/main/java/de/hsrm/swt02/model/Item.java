@@ -144,7 +144,7 @@ public class Item extends RootElement {
      *            is the id of an entry
      * @return the Metastate of the searched entry
      */
-    public String getStepState(int key) {
+    public String getStepState(String key) {
 
         return MetaState.fromValue(getEntryValue(key + "", "step")).toString();
     }
@@ -215,9 +215,9 @@ public class Item extends RootElement {
      * @param value
      *            is the new state of an entry
      */
-    public void setStepState(int key, String value) {
+    public void setStepState(String key, String value) {
 
-        set(Integer.toString(key), "step", value);
+        set(key, "step", value);
     }
 
     /**
