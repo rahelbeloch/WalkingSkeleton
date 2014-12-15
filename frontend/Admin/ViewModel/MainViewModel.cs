@@ -1,4 +1,5 @@
 ﻿using CommunicationLib;
+using CommunicationLib.Model;
 using RestAPI;
 using System;
 using System.Collections.Generic;
@@ -125,22 +126,23 @@ namespace Admin.ViewModel
                 
             CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel);
         }
- 
+
+        public void WorkflowUpdate(Workflow worklfow)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ItemUpdate(Item item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UserUpdate(User user)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
-        public void WorkflowUpdate(RegistrationWrapper<CommunicationLib.Model.Workflow> wrappedObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ItemUpdate(RegistrationWrapper<CommunicationLib.Model.Item> wrappedObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UserUpdate(RegistrationWrapper<CommunicationLib.Model.User> wrappedObject)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

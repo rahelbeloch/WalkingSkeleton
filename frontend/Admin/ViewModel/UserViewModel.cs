@@ -93,19 +93,19 @@ namespace Admin.ViewModel
             }
         }
 
-        void IDataReceiver.WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject)
+        void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
-            Console.WriteLine("Update UserViewModel: WorkflowID = " + wrappedObject.myObject.id);
+            Console.WriteLine("Update UserViewModel: WorkflowID = " + workflow.id);
         }
 
-        void IDataReceiver.ItemUpdate(RegistrationWrapper<Item> wrappedObject)
+        void IDataReceiver.ItemUpdate(Item item)
         {
-            Console.WriteLine("Update UserViewModel: ItemID = " + wrappedObject.myObject.id);
+            Console.WriteLine("Update UserViewModel: ItemID = " + item.id);
         }
 
-        void IDataReceiver.UserUpdate(RegistrationWrapper<User> wrappedObject)
+        void IDataReceiver.UserUpdate(User user)
         {
-            Console.WriteLine("Update UserViewModel: UserID = " + wrappedObject.myObject.username);
+            Console.WriteLine("Update UserViewModel: UserID = " + user.username);
         }
     }
 }
