@@ -31,6 +31,11 @@ import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
+/**
+ * Class enabling Clients to perform operations on Roles
+ * @author akoen001
+ *
+ */
 @Path("resource")
 public class RoleResource {
 
