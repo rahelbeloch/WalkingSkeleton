@@ -18,7 +18,15 @@ namespace CommunicationLib.Model
 
     public class ErrorMessageMapper
     {
-        private static Dictionary<int, Type> errorMessages = new Dictionary<int, Type>()
+        public static Dictionary<int, Type> errorMessages
+        {
+            get
+            {
+                return _errorMessages;
+            }
+        }
+
+        private static Dictionary<int, Type> _errorMessages = new Dictionary<int, Type>()
         {          
             // error if the error from server is not known/implemented
             {9999, typeof(UnknownException)},

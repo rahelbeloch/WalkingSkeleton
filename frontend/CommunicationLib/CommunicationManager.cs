@@ -34,6 +34,8 @@ namespace CommunicationLib
             {"del", "DeleteObject"}
         };
 
+        // RestRequester for server connection
+        private IRestRequester _sender;
         //client referenz
         private IDataReceiver _myClient;
         //default topic for workflow information
@@ -49,8 +51,10 @@ namespace CommunicationLib
         //client subscriptions <topicName, consumer>
         private Dictionary<string ,IMessageConsumer> _messageSubs;
 
-        public CommunicationManager()
+        public CommunicationManager(IRestRequester sender)
         {
+            _sender = sender;
+
             _messageSubs = new Dictionary<string, IMessageConsumer>();
 
             //build connection to message broker (not started yet)
@@ -72,7 +76,7 @@ namespace CommunicationLib
         /// </summary>
         /// <param name="myClient">the client to register for</param>
         /// <param name="isAdmin">if this is set to true, client will be set as admin</param>
-        public void registerClient(IDataReceiver myClient, bool isAdmin)
+        public void RegisterClient(IDataReceiver myClient, bool isAdmin)
         {
             this._myClient = myClient;
 
@@ -113,7 +117,7 @@ namespace CommunicationLib
         ///  The broker connection will be stopped.
         ///  (Client calls this method with logout)
         /// </summary>
-        public void unregisterClient()
+        public void UnregisterClient()
         {
             this._myClient = null;
             _messageSubs.Clear();
@@ -209,8 +213,7 @@ namespace CommunicationLib
              * If client has no access to requested resource,
              * server throws an exception --> abortion of method
              */
-            RestRequester obj = new RestRequester();
-            requestedObj = genericMethod.Invoke(obj, args);
+            requestedObj = genericMethod.Invoke(_sender, args);
 
             // Client update
             if (genericType == typeof(Workflow))
