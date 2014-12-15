@@ -1,5 +1,7 @@
 package de.hsrm.swt02.restserver.exceptions;
 
+import de.hsrm.swt02.persistence.exceptions.BasicException;
+
 public class ConnectionException extends BasicException {
 
     /**
