@@ -33,7 +33,7 @@ public interface ProcessManager extends Observer {
      * @param workflow which will be started
      * @param username indicates who wants to start a workflow
      */
-    int startWorkflow(Workflow workflow, String username) throws ItemNotExistentException, StorageFailedException;
+    String startWorkflow(Workflow workflow, String username) throws ItemNotExistentException, StorageFailedException;
 
     /**
      * This method selects the appropriate stepprocessor for a step.

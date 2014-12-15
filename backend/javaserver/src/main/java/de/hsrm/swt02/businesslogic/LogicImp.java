@@ -24,6 +24,7 @@ import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
@@ -76,7 +77,7 @@ public class LogicImp implements Logic {
     @Override
     public LogicResponse startWorkflow(String workflowID, String username) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
-        int itemID = pm.startWorkflow(workflow, username);
+        String itemID = pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
         
         logicResponse.add(new Message("ITEMS_FROM_" + workflowID, "item=def="
@@ -144,10 +145,13 @@ public class LogicImp implements Logic {
      * @throws UserNotExistentException
      * @throws ItemNotExistentException
      * @throws StorageFailedException 
+     * @throws StepNotExistentException 
+     * @throws WorkflowNotExistentException 
      */
     @Override
-    public void stepForward(String itemId, String stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException {        
-        pm.executeStep(p.loadStep(stepId), p.loadItem(itemId), p.loadUser(username));  
+    public void stepForward(String itemId, String stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException {
+        
+        pm.executeStep(p.loadStep(itemId, stepId), p.loadItem(itemId), p.loadUser(username));
     }
 
     /**
@@ -358,6 +362,7 @@ public class LogicImp implements Logic {
         
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
+
 
                 if ((wf.getStepById(item.getActStep().getKey()).getUsername())
                         .equals(username)) 
@@ -636,6 +641,7 @@ public class LogicImp implements Logic {
             throws WorkflowNotExistentException, StorageFailedException 
     {
         p.loadWorkflow(workflowID).setActive(false);
+        //TODO are there any active items?
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflowID));
         return logicResponse;
