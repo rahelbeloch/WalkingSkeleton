@@ -16,10 +16,10 @@ namespace CommunicationLib
         // RESSOURCE-METHODS - get, post, update, delete - do something on the ressources
 
         /// <summary>
-        ///  Method to retrieve all existent workflows on server.
+        ///  Method to retrieve all existent objects of given element on server.
         /// </summary>
-        /// <returns>List of all workflows</returns>
-        IList<Workflow> GetAllWorkflows();
+        /// <returns>List of all elements</returns>
+        IList<O> GetAllElements<O>();
 
         /// <summary>
         ///  Method to retrieve all existent workflows of one given user on server.
