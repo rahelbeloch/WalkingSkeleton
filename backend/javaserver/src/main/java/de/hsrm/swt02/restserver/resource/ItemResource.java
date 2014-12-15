@@ -40,9 +40,10 @@ public class ItemResource {
     
     /**
      * 
-     * This Method grants the Clients access to all Roles stored in persistence
+     * This Method grants the Clients access to an Item stored in persistence via the itemid
      * 
-     * @return All Roles in the persistence as string if successful, 500 Server Error if not
+     * @param itemid the id of the item
+     * @return the item as string if successful, else an exception
      */
     @GET
     @Path("item/{itemid}")
