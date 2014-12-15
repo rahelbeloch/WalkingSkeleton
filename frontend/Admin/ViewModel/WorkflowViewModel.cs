@@ -143,6 +143,23 @@ namespace Admin.ViewModel
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        private Workflow _actWorkflow = null;
+        public Workflow actWorkflow
+        {
+            get
+            {
+                return _actWorkflow;
+            }
+            set
+            {
+                _actWorkflow = value;
+                OnChanged("actWorkflow");
+            }
+        }
+
+        /// <summary>
         /// Property for input from step description text box.
         /// </summary>
         private string _stepDescription = "";
@@ -329,20 +346,22 @@ namespace Admin.ViewModel
 
         }
 
-        private ICommand _showDetails;
-        public ICommand showDetails
+        private ICommand _showDetailsCommand;
+        public ICommand showDetailsCommand
         {
             get
             {
-                if (_showDetails == null)
+                if (_showDetailsCommand == null)
                 {
-                    _showDetails = new ActionCommand(execute =>
-                    {
+                    _showDetailsCommand = new ActionCommand(execute =>
+                    { 
+                        
                         Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!Geklappt!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         MessageBox.Show("klappt");
+                      
                     }, canExecute => true);
                 }
-                return _showDetails;
+                return _showDetailsCommand;
             }
         }
 
