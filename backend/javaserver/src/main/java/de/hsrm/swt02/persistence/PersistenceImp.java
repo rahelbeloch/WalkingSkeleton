@@ -58,7 +58,7 @@ public class PersistenceImp implements Persistence {
     @Override
     public String storeWorkflow(Workflow workflow) throws StorageFailedException {
         Workflow workflowToRemove = null;
-        if (workflow.getId().equals("")) { // TODO: declare default value for empty ids
+        if (workflow.getId() == null) { // TODO: declare default value for empty ids
             workflow.setId(workflows.size() + 1 + "");
         } else {
             for (Workflow wf: workflows) {
