@@ -27,7 +27,7 @@ import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
  */
 
 @Singleton
-public class PersistenceImp_Deprecated implements Persistence_Deprecated {
+public class Copy_2_of_PersistenceImp implements Copy_2_of_Persistence {
 
     /** The logger. */
     private UseLogger logger;
@@ -51,7 +51,7 @@ public class PersistenceImp_Deprecated implements Persistence_Deprecated {
      * @param logger is the logger for logging.
      */
     @Inject
-    public PersistenceImp_Deprecated(UseLogger logger) {
+    public Copy_2_of_PersistenceImp(UseLogger logger) {
         this.logger = logger;
     }
     
