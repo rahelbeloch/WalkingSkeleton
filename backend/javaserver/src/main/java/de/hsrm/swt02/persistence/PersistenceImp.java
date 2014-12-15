@@ -15,6 +15,7 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
@@ -302,8 +303,24 @@ public class PersistenceImp implements Persistence {
     
     // temp load Step - to be completed
     @Override
-    public Step loadStep(String id) {
-        return null;
+    public Step loadStep(String itemId, String stepId) throws ItemNotExistentException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException {
+        Item item = loadItem(itemId);
+        String workflowId = item.getWorkflowId();
+        Workflow workflow = loadWorkflow(workflowId);
+        Step step = null;
+        
+        for (Step s : workflow.getSteps()){
+            if(s.getId().equals(stepId)){
+                step = s;
+            }
+        }
+        
+        if (step != null){
+            return step;
+        }else{
+            throw new StepNotExistentException("Step " + stepId + " is not existent.");
+        }
+
     }
     
     

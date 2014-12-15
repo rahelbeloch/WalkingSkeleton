@@ -10,6 +10,7 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.RoleHasAlreadyUserException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
@@ -93,8 +94,13 @@ public interface Persistence {
      * Only for the walking skeleton:  method for loading a step.
      * @param id is the id of the step.
      * @return step is the requested step
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
+     * @throws WorkflowNotExistentException 
+     * @throws StepNotExistentException 
      */
-    Step loadStep(String id);
+    Step loadStep(String itemId, String stepId) throws ItemNotExistentException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException;
+
 //
 //    /**
 //     * Method for loading a requested MetaEntry.
