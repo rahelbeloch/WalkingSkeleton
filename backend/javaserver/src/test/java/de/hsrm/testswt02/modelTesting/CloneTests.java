@@ -33,20 +33,18 @@ public class CloneTests {
     @Test
     public void actionCloneTest() throws CloneNotSupportedException {
         final Action a = new Action();
-        final int nextsId2 = 2;
-        final int nextsId3 = 3;
         Action clone = new Action();
 
-        a.setId(1);
+        a.setId("1");
         a.setDescription("desc");
         a.setUsername("user");
         a.setRolename("role");
-        a.getNextStepIds().add(nextsId2);
-        a.getNextStepIds().add(nextsId3);
+        a.getNextStepIds().add("2");
+        a.getNextStepIds().add("3");
 
         clone = (Action) a.clone();
 
-        assertTrue(clone.getId() == 1);
+        assertTrue(clone.getId().equals(a.getId()));
         assertTrue(clone.getDescription().equals(a.getDescription()));
         assertTrue(clone.getUsername().equals(a.getUsername()));
         assertTrue(clone.getRolename().equals(a.getRolename()));
@@ -68,19 +66,17 @@ public class CloneTests {
     @Test
     public void startStepCloneTest() throws CloneNotSupportedException {
         final StartStep ss = new StartStep();
-        final int nextsId2 = 2;
-        final int nextsId3 = 3;
         StartStep clone = new StartStep();
 
-        ss.setId(1);
+        ss.setId("1");
         ss.setUsername("user");
         ss.setRolename("role");
-        ss.getNextStepIds().add(nextsId2);
-        ss.getNextStepIds().add(nextsId3);
+        ss.getNextStepIds().add("2");
+        ss.getNextStepIds().add("3");
 
         clone = (StartStep) ss.clone();
 
-        assertTrue(clone.getId() == ss.getId());
+        assertTrue(clone.getId().equals(ss.getId()));
         assertTrue(clone.getUsername().equals(ss.getUsername()));
         assertTrue(clone.getRolename().equals(ss.getRolename()));
         assertTrue(clone.getNextStepIds().get(0) == ss.getNextStepIds().get(0));
@@ -101,23 +97,21 @@ public class CloneTests {
     @Test
     public void finalStepCloneTest() throws CloneNotSupportedException {
         final FinalStep fs = new FinalStep();
-        final int nextsId2 = 2;
-        final int nextsId3 = 3;
         FinalStep clone = new FinalStep();
 
-        fs.setId(1);
+        fs.setId("1");
         fs.setUsername("user");
         fs.setRolename("role");
-        fs.getNextStepIds().add(nextsId2);
-        fs.getNextStepIds().add(nextsId3);
+        fs.getNextStepIds().add("2");
+        fs.getNextStepIds().add("3");
 
         clone = (FinalStep) fs.clone();
 
-        assertTrue(clone.getId() == 1);
+        assertTrue(clone.getId().equals(fs.getId()));
         assertTrue(clone.getUsername().equals("user"));
         assertTrue(clone.getRolename().equals(fs.getRolename()));
-        assertTrue(clone.getNextStepIds().get(0) == nextsId2);
-        assertTrue(clone.getNextStepIds().get(1) == nextsId3);
+        assertTrue(clone.getNextStepIds().get(0).equals("2"));
+        assertTrue(clone.getNextStepIds().get(1).equals("3"));
 
     }
 
@@ -134,23 +128,21 @@ public class CloneTests {
     @Test
     public void stepCloneTest() throws CloneNotSupportedException {
         final Step s = new Step();
-        final int nextsId2 = 2;
-        final int nextsId3 = 3;
         Step clone = new Step();
 
-        s.setId(1);
+        s.setId("1");
         s.setUsername("user");
         s.setRolename("role");
-        s.getNextStepIds().add(nextsId2);
-        s.getNextStepIds().add(nextsId3);
+        s.getNextStepIds().add("2");
+        s.getNextStepIds().add("3");
 
         clone = (Step) s.clone();
 
-        assertTrue(clone.getId() == 1);
+        assertTrue(clone.getId().equals(s.getId()));
         assertTrue(clone.getUsername().equals("user"));
         assertTrue(clone.getRolename().equals(s.getRolename()));
-        assertTrue(clone.getNextStepIds().get(0) == nextsId2);
-        assertTrue(clone.getNextStepIds().get(1) == nextsId3);
+        assertTrue(clone.getNextStepIds().get(0).equals("2"));
+        assertTrue(clone.getNextStepIds().get(1).equals("3"));
 
     }
 
@@ -168,8 +160,8 @@ public class CloneTests {
         final MetaEntry m1 = new MetaEntry();
         final MetaEntry m2 = new MetaEntry();
 
-        i.setId(1);
-        i.setWorkflowId(1);
+        i.setId("1");
+        i.setWorkflowId("1");
         i.setFinished(false);
 
         m1.setGroup("group1");
@@ -184,7 +176,7 @@ public class CloneTests {
         clone = (Item) i.clone();
 
         assertTrue(clone.getId() == i.getId());
-        assertTrue(clone.getWorkflowId() == i.getWorkflowId());
+        assertTrue(clone.getWorkflowId().equals(i.getWorkflowId()));
         assertTrue(clone.isFinished() == i.isFinished());
         assertTrue(clone.getMetadata().get(0).getGroup()
                 .equals(i.getMetadata().get(0).getGroup()));
@@ -236,12 +228,12 @@ public class CloneTests {
         final Role r = new Role();
         Role clone = new Role();
 
-        r.setId(1);
+        r.setId("1");
         r.setRolename("rolename");
 
         clone = (Role) r.clone();
 
-        assertTrue(clone.getId() == r.getId());
+        assertTrue(clone.getId().equals(r.getId()));
         assertTrue(clone.getRolename().equals(r.getRolename()));
     }
 
@@ -257,11 +249,11 @@ public class CloneTests {
         final RootElement re = new RootElement();
         RootElement clone = new RootElement();
 
-        re.setId(1);
+        re.setId("1");
 
         clone = (RootElement) re.clone();
 
-        assertTrue(clone.getId() == re.getId());
+        assertTrue(clone.getId().equals(re.getId()));
     }
 
     /**
@@ -285,13 +277,13 @@ public class CloneTests {
         final MetaEntry m1 = new MetaEntry();
         final MetaEntry m2 = new MetaEntry();
 
-        w.setId(1);
+        w.setId("1");
         w.setActive(true);
-        s1.setId(1);
+        s1.setId("1");
         s1.setUsername("user1");
         s1.setRolename("role1");
-        s1.getNextStepIds().add(2);
-        s2.setId(2);
+        s1.getNextStepIds().add("2");
+        s2.setId("2");
         s2.setUsername("user2");
         s2.setRolename("role2");
         w.getSteps().add(s1);
@@ -310,11 +302,11 @@ public class CloneTests {
 
         clone = (Workflow) w.clone();
 
-        assertTrue(clone.getId() == w.getId());
+        assertTrue(clone.getId().equals(w.getId()));
         assertTrue(clone.isActive() == w.isActive());
 
-        assertTrue(clone.getSteps().get(0).getId() == w.getSteps().get(0)
-                .getId());
+        assertTrue(clone.getSteps().get(0).getId().equals(w.getSteps().get(0)
+                .getId()));
         assertTrue(clone.getSteps().get(0).getUsername()
                 .equals(w.getSteps().get(0).getUsername()));
         assertTrue(clone.getSteps().get(0).getRolename()
@@ -327,8 +319,8 @@ public class CloneTests {
                 .equals(w.getSteps().get(1).getRolename()));
 
         // Testing if convertIdsToReferences in cloning process works
-        assertTrue(clone.getSteps().get(0).getNextSteps().get(0).getId() == w
-                .getSteps().get(1).getId());
+        assertTrue(clone.getSteps().get(0).getNextSteps().get(0).getId().equals(w
+                .getSteps().get(1).getId()));
         assertTrue(clone.getSteps().get(0).getNextSteps().get(0).getUsername()
                 .equals(w.getSteps().get(1).getUsername()));
 
@@ -361,9 +353,9 @@ public class CloneTests {
         final Role r1 = new Role();
         final Role r2 = new Role();
 
-        u.setId(1);
+        u.setId("1");
         u.setUsername("user1");
-        r1.setId(1);
+        r1.setId("1");
         r1.setRolename("role1");
         r2.setRolename("role2");
         u.getRoles().add(r1);
@@ -373,12 +365,12 @@ public class CloneTests {
 
         assertTrue(clone.getId() == u.getId());
         assertTrue(clone.getUsername().equals(u.getUsername()));
-        assertTrue(clone.getRoles().get(0).getId() == u.getRoles().get(0)
-                .getId());
+        assertTrue(clone.getRoles().get(0).getId().equals(u.getRoles().get(0)
+                .getId()));
         assertTrue(clone.getRoles().get(0).getRolename()
                 .equals(u.getRoles().get(0).getRolename()));
-        assertTrue(clone.getRoles().get(1).getId() == u.getRoles().get(1)
-                .getId());
+        assertTrue(clone.getRoles().get(1).getId().equals(u.getRoles().get(1)
+                .getId()));
         assertTrue(clone.getRoles().get(1).getRolename()
                 .equals(u.getRoles().get(1).getRolename()));
     }
