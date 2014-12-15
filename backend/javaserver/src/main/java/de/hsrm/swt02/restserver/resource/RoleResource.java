@@ -32,7 +32,7 @@ import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
- * Class enabling Clients to perform operations on Roles
+ * Class enabling Clients to perform operations on Roles.
  * @author akoen001
  *
  */
@@ -48,7 +48,7 @@ public class RoleResource {
     
     /**
      * 
-     * This Method grants the Clients access to all Roles stored in persistence
+     * This Method grants the Clients access to all Roles stored in persistence.
      * 
      * @return All Roles in the persistence as string if successful, 500 Server Error if not
      */
@@ -60,12 +60,12 @@ public class RoleResource {
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         List<Role> roles;
-            try {
-                roles = LOGIC.getAllRoles();
-            } catch (RoleNotExistentException e) {
-                LOGGER.log(Level.INFO, e);
-                return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-            }
+        try {
+            roles = LOGIC.getAllRoles();
+        } catch (RoleNotExistentException e) {
+            LOGGER.log(Level.INFO, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        }
         String rolesAsString;
         
         try {
@@ -80,7 +80,7 @@ public class RoleResource {
     
     /**
      * 
-     * This Method enables Clients to save Roles into the persistence
+     * This Method enables Clients to save Roles into the persistence.
      * 
      * @param formParams the role to be saved is available via key "data"
      * @return 200 OK if successful, 500 Server Error if not
@@ -123,7 +123,7 @@ public class RoleResource {
     
     /**
      * 
-     * This Method enables Clients to update existing Roles
+     * This Method enables Clients to update existing Roles.
      * 
      * @param rolename the name of the Role to be updated
      * @param formParams the key "data" holds the instance of Role to be saved
@@ -167,8 +167,7 @@ public class RoleResource {
     }
     
     /**
-     * 
-     * This method enables Clients to delete Roles from the persistence
+     * This method enables Clients to delete Roles from the persistence.
      * 
      * @param rolename the name of the role to be deleted
      * @return 200 OK if successful, 500 ServerError if not
@@ -181,7 +180,7 @@ public class RoleResource {
         LOGGER.log(Level.INFO, loggingBody);
         
         try {
-            // TODO: get Role from logic, serialize it and send it with answer
+            // TODO get Role from logic, serialize it and send it with answer
             logicResponse = LOGIC.deleteRole(rolename);
         } catch (RoleNotExistentException e1) {
             LOGGER.log(Level.INFO,e1);

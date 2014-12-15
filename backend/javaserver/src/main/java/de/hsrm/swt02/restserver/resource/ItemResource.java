@@ -19,11 +19,12 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
  * 
- * Class enabling Clients to perform operations on items
+ * Class enabling Clients to perform operations on items.
  * 
  * @author akoen001
  *
@@ -40,7 +41,7 @@ public class ItemResource {
     
     /**
      * 
-     * This Method grants the Clients access to an Item stored in persistence via the itemid
+     * This Method grants the Clients access to an Item stored in persistence via the itemid.
      * 
      * @param itemid the id of the item
      * @return the item as string if successful, else an exception
@@ -58,6 +59,9 @@ public class ItemResource {
         } catch (ItemNotExistentException e1) {
             LOGGER.log(Level.INFO, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         String itemAsString;
         

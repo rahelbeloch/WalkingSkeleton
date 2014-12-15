@@ -32,6 +32,7 @@ import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
@@ -42,8 +43,9 @@ import de.hsrm.swt02.restserver.exceptions.JacksonException;
  */
 @Path("resource")
 public class WorkflowResource {
-    
-    public static final ConstructionFactory FACTORY = ConstructionFactory.getInstance();
+
+    public static final ConstructionFactory FACTORY = ConstructionFactory
+            .getInstance();
     public static final Logic LOGIC = FACTORY.getLogic();
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
@@ -72,24 +74,32 @@ public class WorkflowResource {
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, loggingBody
                     + " Non-existing workflow requested.");
-            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e1.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
         }
         try {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
-            return Response.serverError()
-                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+            return Response
+                    .serverError()
+                    .entity(String.valueOf(new JacksonException()
+                            .getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(workflowAsString).build();
     }
-    
+
     /**
      * This method returns all startable workflows for a given user.
      * 
-     * @param username the name of the user for whom the workflows shall be returned
+     * @param username the name of the user for whom the workflows shall be
+     *            returned
      * @return all startable workflows for user
      */
     @GET
@@ -97,20 +107,24 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response getStartablesByUser(@PathParam("username") String username) {
         final ObjectMapper mapper = new ObjectMapper();
-        final String loggingBody = PREFIX + "GET /workflows/startables/" + username;
+        final String loggingBody = PREFIX + "GET /workflows/startables/"
+                + username;
         LOGGER.log(Level.INFO, loggingBody);
         List<Integer> wIdList = null;
         try {
             wIdList = LOGIC.getStartableWorkflowsByUser(username);
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
-            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e1.getErrorCode())).build();
         } catch (UserNotExistentException e2) {
             LOGGER.log(Level.WARNING, e2);
-            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e2.getErrorCode())).build();
         } catch (LogicException e3) {
             LOGGER.log(Level.WARNING, e3);
-            return Response.serverError().entity(String.valueOf(e3.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e3.getErrorCode())).build();
         }
         String wIdListString;
 
@@ -120,36 +134,49 @@ public class WorkflowResource {
             LOGGER.log(Level.FINE, loggingBody + wIdListString);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + " Jackson parsing-error");
-            return Response.serverError()
-                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+            return Response
+                    .serverError()
+                    .entity(String.valueOf(new JacksonException()
+                            .getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(wIdListString).build();
     }
-    
+
     /**
      * This method returns all startable workflows for a given user.
      * 
-     * @param username the name of the user for whom the workflows shall be returned
+     * @param username the name of the user for whom the workflows shall be
+     *            returned
      * @param workflowid the id of the workflow.
      * @return all startable workflows for user
      */
     @GET
     @Path("items/{username}/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getRelevantItemsByUser(@PathParam("username") String username,@PathParam("workflowid") int workflowid) {
+    public Response getRelevantItemsByUser(
+            @PathParam("username") String username,
+            @PathParam("workflowid") int workflowid)
+    {
         final ObjectMapper mapper = new ObjectMapper();
-        final String loggingBody = PREFIX + "GET /items/" + username + "/" + workflowid;
+        final String loggingBody = PREFIX + "GET /items/" + username + "/"
+                + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         List<Item> itemList = null;
         try {
             itemList = LOGIC.getRelevantItemsByUser(workflowid, username);
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
-            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e1.getErrorCode())).build();
         } catch (UserNotExistentException e) {
             LOGGER.log(Level.WARNING, e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
         }
         String itemListString;
 
@@ -159,13 +186,15 @@ public class WorkflowResource {
             LOGGER.log(Level.FINE, loggingBody + itemListString);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + " Jackson parsing-error");
-            return Response.serverError()
-                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+            return Response
+                    .serverError()
+                    .entity(String.valueOf(new JacksonException()
+                            .getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(itemListString).build();
     }
-    
+
     /**
      * This method returns workflows where a user is involved.
      * 
@@ -187,13 +216,16 @@ public class WorkflowResource {
             }
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
-            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e1.getErrorCode())).build();
         } catch (UserNotExistentException e2) {
             LOGGER.log(Level.WARNING, e2);
-            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e2.getErrorCode())).build();
         } catch (LogicException e3) {
             LOGGER.log(Level.WARNING, e3);
-            return Response.serverError().entity(String.valueOf(e3.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e3.getErrorCode())).build();
         }
         String wListString;
 
@@ -203,8 +235,10 @@ public class WorkflowResource {
             LOGGER.log(Level.FINE, loggingBody + wListString);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
-            return Response.serverError()
-                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+            return Response
+                    .serverError()
+                    .entity(String.valueOf(new JacksonException()
+                            .getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(wListString).build();
@@ -233,8 +267,10 @@ public class WorkflowResource {
             workflow = mapper.readValue(workflowAsString, Workflow.class);
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
-            return Response.serverError()
-                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+            return Response
+                    .serverError()
+                    .entity(String.valueOf(new JacksonException()
+                            .getErrorCode())).build();
         }
         workflow.convertIdListToReferences();
         try {
@@ -243,6 +279,10 @@ public class WorkflowResource {
             LOGGER.log(Level.WARNING, loggingBody + e1);
             return Response.serverError()
                     .entity(String.valueOf(e1.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -268,7 +308,8 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateWorkflow(@PathParam("workflowid") int workflowid,
-            MultivaluedMap<String, String> formParams) {
+            MultivaluedMap<String, String> formParams) 
+    {
         final String loggingBody = PREFIX + "PUT /workflow/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
@@ -280,16 +321,21 @@ public class WorkflowResource {
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, loggingBody
                     + " JACKSON parsing-error occured.");
-            return Response.serverError()
-                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+            return Response
+                    .serverError()
+                    .entity(String.valueOf(new JacksonException()
+                            .getErrorCode())).build();
         }
         try {
             logicResponse = LOGIC.addWorkflow(workflow);
         } catch (IncompleteEleException e1) {
-            LOGGER.log(Level.WARNING, loggingBody
-                    + e1);
+            LOGGER.log(Level.WARNING, loggingBody + e1);
             return Response.serverError()
                     .entity(String.valueOf(e1.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -301,30 +347,40 @@ public class WorkflowResource {
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully updated.");
         return Response.ok().build();
     }
-    
+
     /**
      * This method sets a workflow's activity.
+     * 
      * @param workflowid indicates which workflow's activity should be updated
-     * @param state indicates if a workflow should be activated or deactivated 
+     * @param state indicates if a workflow should be activated or deactivated
      * @return ok if it worked
      */
     @PUT
     @Path("workflows/{workflowid}/{state}")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
-    public Response updateWorkflowActivity(@PathParam("workflowid") int workflowid, @PathParam("state") String state) {
-        final String loggingBody = PREFIX + "PUT /workflow/" + workflowid + state;
+    public Response updateWorkflowActivity(
+            @PathParam("workflowid") int workflowid,
+            @PathParam("state") String state) 
+    {
+        final String loggingBody = PREFIX + "PUT /workflow/" + workflowid
+                + state;
         LOGGER.log(Level.INFO, loggingBody);
-      
+
         try {
             if (state.equals("activate")) {
                 logicResponse = LOGIC.activateWorkflow(workflowid);
-            } else if (state.equals("deactivate")) { 
+            } else if (state.equals("deactivate")) {
                 logicResponse = LOGIC.deactivateWorkflow(workflowid);
             }
         } catch (WorkflowNotExistentException e) {
             LOGGER.log(Level.WARNING, e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -359,14 +415,21 @@ public class WorkflowResource {
             logicResponse = LOGIC.deleteWorkflow(workflowid);
         } catch (WorkflowNotExistentException e1) {
             LOGGER.log(Level.WARNING, e1);
-            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+            return Response.serverError()
+                    .entity(String.valueOf(e1.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
         }
         try {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
             LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
+            return Response
+                    .serverError()
+                    .entity(String.valueOf(new JacksonException()
+                            .getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {

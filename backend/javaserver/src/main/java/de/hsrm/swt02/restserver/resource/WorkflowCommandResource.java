@@ -2,6 +2,7 @@ package de.hsrm.swt02.restserver.resource;
 
 import java.util.logging.Level;
 
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -19,6 +20,7 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
@@ -44,10 +46,10 @@ public class WorkflowCommandResource {
      * @return 200 if successful, 500 + error code as String if not
      */
     @POST
-    @Path("start/{workflowid}/{username}")
+    @Path("start/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response startWorkflow(@PathParam("workflowid") int workflowid,
-            @PathParam("username") String username) 
+            @HeaderParam("username") String username) 
     {
         final String loggingBody = PREFIX + "POST /start/" + workflowid + "/" + username;
         LOGGER.log(Level.INFO, loggingBody);
@@ -55,7 +57,13 @@ public class WorkflowCommandResource {
         try {
             LOGIC.startWorkflow(workflowid, username);
         } catch (WorkflowNotExistentException e) {
-            LOGGER.log(Level.WARNING, loggingBody + " Workflow does not exist.");
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (ItemNotExistentException e) {
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         logicResponse = LOGIC.getProcessLogicResponse();
@@ -80,11 +88,11 @@ public class WorkflowCommandResource {
      * @return 200 if successful, 500 + error code as String if not
      */
     @POST
-    @Path("forward/{stepid}/{itemid}/{username}")
+    @Path("forward/{stepid}/{itemid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response forward(@PathParam("stepid") int stepid,
             @PathParam("itemid") int itemid,
-            @PathParam("username") String username) 
+            @HeaderParam("username") String username) 
     {
         final String loggingBody = PREFIX + "POST /forward/" + stepid + "/" + itemid + "/" + username;
         LOGGER.log(Level.INFO, loggingBody);
