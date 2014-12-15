@@ -207,7 +207,7 @@ public class PersistenceTest {
      * @throws ItemNotExistentException
      * @throws StorageFailedException 
      */
-    @Test(expected = ItemNotExistentException.class)
+    @Test
     public void testItemStorageIncludingMetaData() throws ItemNotExistentException, WorkflowNotExistentException, StorageFailedException {
         final Workflow wf000 = new Workflow();
         final Item item001 = new Item();
