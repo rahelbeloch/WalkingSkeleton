@@ -100,7 +100,6 @@ public interface Persistence {
      * @throws StepNotExistentException 
      */
     Step loadStep(String itemId, String stepId) throws ItemNotExistentException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException;
-
 //
 //    /**
 //     * Method for loading a requested MetaEntry.
