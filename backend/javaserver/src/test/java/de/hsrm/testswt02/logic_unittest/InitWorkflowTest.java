@@ -55,9 +55,10 @@ public class InitWorkflowTest {
     public void addStep() {
         final Workflow myWorkflow = new Workflow();
         final Step step = new Action("username", 0 + " Schritt");
+        step.setId("XXX"); //This is not possible in the actual run, because ids are given in the persistence, but in this test there isn't a connection to the persistence
         myWorkflow.addStep(step);
 
-        assertEquals(step, myWorkflow.getStepById(0));
+        assertEquals(step, myWorkflow.getStepById(step.getId()));
     }
 
     /**
