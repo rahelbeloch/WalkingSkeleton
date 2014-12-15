@@ -167,6 +167,12 @@ namespace Client.ViewModel
             // route to userViewModel etc. (update-method) to react to changes in my settings
         }
 
+        void IDataReceiver.RoleUpdate(Role role)
+        {
+            // route update-handling to subcomponents
+            // route to userViewModel etc. (update-method) to react to changes in my settings
+        }
+
         #endregion
     }
 }
