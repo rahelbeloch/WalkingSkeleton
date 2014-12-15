@@ -8,6 +8,8 @@ import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 
 /**
  * Interface for ProcessManager. (Due to Dependency Injection)
@@ -31,7 +33,7 @@ public interface ProcessManager extends Observer {
      * @param workflow which will be started
      * @param username indicates who wants to start a workflow
      */
-    int startWorkflow(Workflow workflow, String username);
+    int startWorkflow(Workflow workflow, String username) throws ItemNotExistentException, StorageFailedException;
 
     /**
      * This method selects the appropriate stepprocessor for a step.
@@ -51,7 +53,7 @@ public interface ProcessManager extends Observer {
      * @throws ItemNotForawrdableException
      * @throws UserHasNoPermissionException
      */
-    void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException;
+    void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException;
 
     /**
      * This method gets a LogicResponse object.

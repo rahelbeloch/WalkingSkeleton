@@ -19,6 +19,8 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
@@ -74,8 +76,10 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * @param workflow is the which should be started.
      * @param username is the name of the user who wants to start workflow.
      * @return itemID
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      */
-    public int startWorkflow(Workflow workflow, String username) {
+    public int startWorkflow(Workflow workflow, String username) throws ItemNotExistentException, StorageFailedException {
         final StartStep startStep = (StartStep) workflow.getStepByPos(0);
         int itemID = -1;
         selectProcessor(startStep);
@@ -111,8 +115,10 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * @exception UserHasNoPermissionException if the given user is not responsible for the step
      * @throws ItemNotForawrdableException
      * @throws UserHasNoPermissionException
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      */
-    public void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException {
+    public void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException {
         selectProcessor(step);
         if (step instanceof Action) {
             actionProcessor.addObserver(this);
