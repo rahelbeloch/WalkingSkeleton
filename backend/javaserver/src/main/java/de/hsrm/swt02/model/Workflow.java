@@ -180,7 +180,7 @@ public class Workflow extends RootElement {
      * @param itemId
      *            states which item should be removed
      */
-    public void removeItem(int itemId) {
+    public void removeItem(String itemId) {
 
         for (Item ai : items) {
             if (ai.getId().equals(itemId)) {
