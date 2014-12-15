@@ -94,7 +94,7 @@ public interface Logic {
      * @throws UserHasNoPermissionException
      * @exception UserNotExistentException if requested user doesn't exist
      */
-    void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException;
+    void stepForward(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, StorageFailedException;
 
     // /**
     // * This method finish a step in an item.

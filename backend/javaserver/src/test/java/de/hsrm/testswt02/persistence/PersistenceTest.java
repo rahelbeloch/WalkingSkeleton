@@ -22,7 +22,6 @@ import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.persistence.CopyOfPersistence;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.RoleHasAlreadyUserException;
@@ -66,36 +65,15 @@ public class PersistenceTest {
         final Workflow workflow006 = new Workflow();
         final Workflow workflow005 = new Workflow();
 
-        db.storeWorkflow(workflow005);
-        db.storeWorkflow(workflow006);
-        db.storeWorkflow(workflow007);
+        final int id5 = db.storeWorkflow(workflow005);
+        final int id6 = db.storeWorkflow(workflow006);
+        final int id7 = db.storeWorkflow(workflow007);
 
-        assertEquals(db.loadWorkflow(workflow005.getId()), workflow005);
-        assertEquals(db.loadWorkflow(workflow006.getId()), workflow006);
-        assertEquals(db.loadWorkflow(workflow007.getId()), workflow007);
+        assertEquals(db.loadWorkflow(id5), workflow005);
+        assertEquals(db.loadWorkflow(id6), workflow006);
+        assertEquals(db.loadWorkflow(id7), workflow007);
     }
 
-    /**
-     * Class for testing the storage of multiple duplicate workflows.
-     * @exception WorkflowNotExistentException if the requested workflow is not there
-     * @throws WorkflowNotExistentException
-     * @throws StorageFailedException 
-     */
-    @Test
-    public void testDuplicateWorkflowStorage() throws WorkflowNotExistentException, StorageFailedException {
-        final Workflow workflow001 = new Workflow();
-        final Workflow workflow002 = new Workflow();
-        
-
-        db.storeWorkflow(workflow001);
-        db.storeWorkflow(workflow002);
-        
-
-        // current assumption: second workflow entry should have overwritten the
-        // first one
-        assertNotEquals(workflow001, db.loadWorkflow(workflow002.getId()));
-        assertEquals(workflow002, db.loadWorkflow(workflow002.getId()));
-    }
 
     /**
      * Method for testing if it's possible to delete a workflow.
@@ -135,7 +113,7 @@ public class PersistenceTest {
         workflow007.addStep(step2);
         workflow007.addStep(step3);
 
-        db.storeWorkflow(workflow007);
+        final int id7 = db.storeWorkflow(workflow007);
 
         // step2, the action of workflow007, should be persistent
         // step1 and step2 cannot be tested because their ID is not yet
@@ -143,7 +121,7 @@ public class PersistenceTest {
         // assertEquals(step2, db.loadStep(step2.getId()));
 
         // a workflows steps should be the same before and after storage
-        assertEquals(workflow007.getSteps(), db.loadWorkflow(workflow007.getId()).getSteps());
+        assertEquals(workflow007.getSteps(), db.loadWorkflow(id7).getSteps());
         // no specific functions of a step can be tested, because db only
         // returns an AbstractWorkflow
         // assertEquals(workflow007.getStepByPos(2),
@@ -212,26 +190,29 @@ public class PersistenceTest {
         final Workflow wf000 = new Workflow();
         final Item item001 = new Item();
         
-        db.storeWorkflow(wf000);
-        item001.setWorkflowId(wf000.getId());
+        final String wfid = db.storeWorkflow(wf000);
+        item001.setWorkflowId(wfid);
         item001.set("key1", "group1", "value1");
         item001.set("key2", "group2", "value2");
 
         wf000.addItem(item001);
         db.storeWorkflow(wf000);
-        db.storeItem(item001);
+        final String itemId = db.storeItem(item001);
+        item001.setId(itemId);
 
-        item001.set("key1", "group1", "value1");
-        item001.set("key3", "group1", "value1");
-
-        db.storeItem(item001);
-
+//        item001.set("key1", "group1", "value1");
+//        item001.set("key3", "group3", "value3");
+//        db.storeItem(item001);
+        
+        assertEquals(wf000, db.loadWorkflow(wfid));
+        assertEquals(item001, db.loadItem(itemId));
+        
         // MetaEntries should be persistent
         //assertEquals(item001.getMetadata().get(0), db.loadMetaEntry("key1"));
         //assertEquals(item001.getMetadata().get(1), db.loadMetaEntry("key2"));
 
         // an items metaData should be the same before and after storage
-        assertEquals(item001.getMetadata(), db.loadItem(item001.getId()).getMetadata());
+        assertEquals(item001.getMetadata(), db.loadItem(itemId).getMetadata());
         //assertEquals(item001.getMetadata().get(0).getValue(),db.loadMetaEntry("key1").getValue());
 
         // item instances should still be the same
@@ -400,13 +381,13 @@ public class PersistenceTest {
         final Role role008 = new Role();
         final Role role009 = new Role();
 
-        db.storeRole(role007);
-        db.storeRole(role008);
-        db.storeRole(role009);
+        final String id7 = db.storeRole(role007);
+        final String id8 = db.storeRole(role008);
+        final String id9 = db.storeRole(role009);
 
-        assertEquals(db.loadRole(role007.getId()), role007);
-        assertEquals(db.loadRole(role008.getId()), role008);
-        assertEquals(db.loadRole(role009.getId()), role009);
+        assertEquals(db.loadRole(id7), role007);
+        assertEquals(db.loadRole(id8), role008);
+        assertEquals(db.loadRole(id9), role009);
     }
     
     /**
@@ -420,9 +401,10 @@ public class PersistenceTest {
      * @throws RoleHasAlreadyRoleException
      * @throws UserNotExistentException
      * @throws RoleNotExistentException 
+     * @throws StorageFailedException 
      */
     @Test
-    public void testRoleToUserAssignement() throws UserAlreadyExistsException, RoleNotExistentException, UserNotExistentException, RoleHasAlreadyUserException, UserHasAlreadyRoleException {
+    public void testRoleToUserAssignement() throws UserAlreadyExistsException, RoleNotExistentException, UserNotExistentException, RoleHasAlreadyUserException, UserHasAlreadyRoleException, StorageFailedException {
         final Role roletest = new Role();
         final User usertest = new User();
         usertest.setUsername("name");
