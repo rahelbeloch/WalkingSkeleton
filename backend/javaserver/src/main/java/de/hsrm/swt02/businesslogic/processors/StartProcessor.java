@@ -46,7 +46,7 @@ public class StartProcessor extends Observable {
      * @throws StorageFailedException 
      * @throws ItemNotExistentException 
      */
-    public int createItem(Workflow workflow) throws ItemNotExistentException, StorageFailedException {
+    public String createItem(Workflow workflow) throws ItemNotExistentException, StorageFailedException {
 
         currentItem = new Item();
         currentItem.setWorkflowId(workflow.getId());
