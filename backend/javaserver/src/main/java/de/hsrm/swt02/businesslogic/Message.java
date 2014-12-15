@@ -1,4 +1,4 @@
-package de.hsrm.swt02.restserver;
+package de.hsrm.swt02.businesslogic;
 
 /**
  * This class is used for the LogicResponse. It contains a topic and a value.
