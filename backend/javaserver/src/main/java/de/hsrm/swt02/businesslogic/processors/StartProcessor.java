@@ -11,6 +11,8 @@ import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
@@ -41,8 +43,10 @@ public class StartProcessor extends Observable {
      * 
      * @param workflow it's id will be noted within a new item
      * @return itemId 
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      */
-    public int createItem(Workflow workflow) {
+    public int createItem(Workflow workflow) throws ItemNotExistentException, StorageFailedException {
 
         currentItem = new Item();
         currentItem.setWorkflowId(workflow.getId());
@@ -59,8 +63,10 @@ public class StartProcessor extends Observable {
      * 
      * @param workflow provides a step list, which will be transformed into Metadatas
      * @param item is the freshly created item for a workflow
+     * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
      */
-    public void initiateItem(Workflow workflow, Item item) {
+    public void initiateItem(Workflow workflow, Item item) throws StorageFailedException, ItemNotExistentException {
 
         for (Step s : workflow.getSteps()) {
             if (s instanceof Action || s instanceof FinalStep) {
