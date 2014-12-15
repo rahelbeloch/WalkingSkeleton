@@ -234,10 +234,11 @@ public class LogicImp implements Logic {
      * @param username describes the user
      * @return a LinkedList of workflows
      * @throws LogicException
+     * @throws WorkflowNotExistentException 
      */
     @Override
     public List<Workflow> getAllWorkflowsByUser(String username)
-            throws LogicException, UserNotExistentException 
+            throws LogicException, UserNotExistentException, WorkflowNotExistentException 
     {
         p.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
@@ -362,7 +363,7 @@ public class LogicImp implements Logic {
     * @throws LogicException
     * @return List<Workflow> is the requested list of workflows
     */
-    public List<Integer> getStartableWorkflowsByUser(String username) throws LogicException {
+    public List<Integer> getStartableWorkflowsByUser(String username) throws LogicException, UserNotExistentException {
         final List<Integer> startableWorkflows = new LinkedList<>();
         for (Workflow workflow : getAllWorkflowsByUser(username)) {
             if (workflow.isActive()) {
