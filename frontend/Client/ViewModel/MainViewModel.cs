@@ -147,24 +147,21 @@ namespace Client.ViewModel
         }
 
 
-        void IDataReceiver.WorkflowUpdate(RegistrationWrapper<Workflow> wrappedObject) 
+        void IDataReceiver.WorkflowUpdate(Workflow workflow) 
         {
-            Workflow update = wrappedObject.myObject;
-            Console.WriteLine("Received Workflow for Update: ID = " + update.id);
+            Console.WriteLine("Received Workflow for Update: ID = " + workflow.id);
             // route update-handling to subcomponents
-            _dashboardViewModel.updateWorkflow(update);
+            _dashboardViewModel.updateWorkflow(workflow);
         }
 
-        void IDataReceiver.ItemUpdate(RegistrationWrapper<Item> wrappedObject)
+        void IDataReceiver.ItemUpdate(Item item)
         {
-            Item update = wrappedObject.myObject;
             // route update-handling to subcomponents
             // route to itemViewModel etc. (update-method) to react to changes in one of my items
         }
 
-        void IDataReceiver.UserUpdate(RegistrationWrapper<User> wrappedObject)
+        void IDataReceiver.UserUpdate(User user)
         {
-            User update = wrappedObject.myObject;
             // route update-handling to subcomponents
             // route to userViewModel etc. (update-method) to react to changes in my settings
         }
