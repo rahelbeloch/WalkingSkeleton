@@ -23,7 +23,7 @@ public class App {
         // setup log configuration
         LogConfigurator.setup();
         
-        //performance optimization
+        // performance optimization
         new Thread(new Runnable() {
             public void run() {
                 ConstructionFactory.getInstance();
@@ -33,7 +33,7 @@ public class App {
         // start rest-server instance
         server = new RestServer();
         
-        //ShutDownHook
+        // ShutDownHook
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 if (server != null) {
