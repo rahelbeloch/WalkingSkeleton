@@ -114,14 +114,14 @@ public interface Logic {
      * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException 
      */
-    void deactivateWorkflow(int workflowID) throws WorkflowNotExistentException;
+    LogicResponse deactivateWorkflow(int workflowID) throws WorkflowNotExistentException;
 
     /**
      * This method activate a workflow.
      * @param workflowID the id of the workflow which should be deactivate
      * @throws WorkflowNotExistentException 
      **/
-    void activateWorkflow(int workflowID) throws WorkflowNotExistentException;
+    LogicResponse activateWorkflow(int workflowID) throws WorkflowNotExistentException;
    
 
     /**
