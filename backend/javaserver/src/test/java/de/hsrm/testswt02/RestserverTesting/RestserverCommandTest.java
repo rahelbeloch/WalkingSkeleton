@@ -74,7 +74,7 @@ public class RestserverCommandTest {
         final ObjectMapper mapper = new ObjectMapper();
         Form dataform;
         String userAsString = null;
-        testUser.setId(0);
+        testUser.setId("0");
         testUser.setUsername("Alex");
         
         try {
