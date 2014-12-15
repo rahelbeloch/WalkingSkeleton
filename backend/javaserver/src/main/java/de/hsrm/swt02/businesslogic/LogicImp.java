@@ -209,7 +209,8 @@ public class LogicImp implements Logic {
         // check if there are duplicate messagingsubs
         final List<String> subs = user.getMessagingSubs();
         final List<String> definiteSubs = null;
-        for (String sub :subs) {
+        definiteSubs.add(subs.get(0));
+        for (String sub : subs) {
             if (!definiteSubs.contains(sub)) {
                 definiteSubs.add(sub);
             }
