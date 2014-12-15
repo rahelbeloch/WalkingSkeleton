@@ -20,6 +20,7 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
@@ -48,7 +49,7 @@ public class WorkflowCommandResource {
     @POST
     @Path("start/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response startWorkflow(@PathParam("workflowid") int workflowid,
+    public Response startWorkflow(@PathParam("workflowid") String workflowid,
             @HeaderParam("username") String username) 
     {
         final String loggingBody = PREFIX + "POST /start/" + workflowid + "/" + username;
@@ -90,8 +91,8 @@ public class WorkflowCommandResource {
     @POST
     @Path("forward/{stepid}/{itemid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response forward(@PathParam("stepid") int stepid,
-            @PathParam("itemid") int itemid,
+    public Response forward(@PathParam("stepid") String stepid,
+            @PathParam("itemid") String itemid,
             @HeaderParam("username") String username) 
     {
         final String loggingBody = PREFIX + "POST /forward/" + stepid + "/" + itemid + "/" + username;
@@ -112,6 +113,12 @@ public class WorkflowCommandResource {
             LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         } catch (StorageFailedException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (WorkflowNotExistentException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        } catch (StepNotExistentException e) {
             LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
