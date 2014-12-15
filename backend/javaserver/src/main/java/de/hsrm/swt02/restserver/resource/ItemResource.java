@@ -18,6 +18,7 @@ import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
@@ -51,7 +52,12 @@ public class ItemResource {
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         Item item = null;
-        //TODO: get item from logic
+        try {
+            item = LOGIC.getItem(itemid);
+        } catch (ItemNotExistentException e1) {
+            LOGGER.log(Level.INFO, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        }
         String itemAsString;
         
         try {
