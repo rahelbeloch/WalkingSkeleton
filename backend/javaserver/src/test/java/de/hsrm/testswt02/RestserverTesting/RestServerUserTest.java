@@ -138,8 +138,8 @@ public class RestServerUserTest {
      */
     @Test
     public void testGetNonExistentUser() {
-        final Response resp = client.target(targetUrl).path("resource/users/Testerxy")
-                .request().delete();
+        final Response resp = client.target(targetUrl).path("resource/users")
+                .request().header("username","Testerxy").delete();
         assertEquals(500, resp.getStatus());
     }
     /**
@@ -184,8 +184,8 @@ public class RestServerUserTest {
      */
     @Test
     public void testDeleteNonExistentUser() {
-        final Response resp = client.target(targetUrl).path("resource/users/Testerabc")
-                .request().delete();
+        final Response resp = client.target(targetUrl).path("resource/users")
+                .request().header("username", "Testerabc").delete();
         assertEquals(500, resp.getStatus());
     }
     
@@ -213,8 +213,8 @@ public class RestServerUserTest {
               .request()
               .post(Entity.entity(dataform,
                       MediaType.APPLICATION_FORM_URLENCODED));
-        final Response resp = client.target(targetUrl).path("resource/users/Tester3")
-                .request().delete();
+        final Response resp = client.target(targetUrl).path("resource/users")
+                .request().header("username", "Tester3").delete();
         assertEquals(200, resp.getStatus());
     }
     
