@@ -51,6 +51,7 @@ namespace CommunicationLib.Model
                 {11251, typeof(UserNotExistException)},
                 //{11252, typeof(WorkflowNotExistException)},
                 //{11253, typeof(ItemNotExistException)},
+                {11254, typeof(StepNotExistentException)},
             {11260, typeof(RoleException)},
                 {11261, typeof(RoleHasAlreadyUserException)},
                 {11262, typeof(RoleNotExistentException)},
