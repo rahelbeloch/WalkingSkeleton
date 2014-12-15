@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -83,43 +84,6 @@ public class WorkflowResource {
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(workflowAsString).build();
-    }
-
-    /**
-     * This method returns all workflows.
-     * 
-     * @return all workflows
-     */
-    @GET
-    @Path("workflows")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response getAllWorkflows() {
-        final ObjectMapper mapper = new ObjectMapper();
-        final String loggingBody = PREFIX + "GET /workflows";
-        LOGGER.log(Level.INFO, loggingBody);
-        List<Workflow> wflowList = null;
-        try {
-            wflowList = LOGIC.getAllWorkflows();
-            for(Workflow w : wflowList) {
-                w.convertReferencesToIdList();
-            }
-        } catch (WorkflowNotExistentException e1) {
-            LOGGER.log(Level.WARNING, e1);
-            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
-        }
-        String wListString;
-
-        try {
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            wListString = mapper.writeValueAsString(wflowList);
-            LOGGER.log(Level.FINE, loggingBody + wListString);
-        } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, loggingBody + " Jackson parsing-error");
-            return Response.serverError()
-                    .entity(String.valueOf(new JacksonException().getErrorCode())).build();
-        }
-        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
-        return Response.ok(wListString).build();
     }
     
     /**
@@ -209,9 +173,9 @@ public class WorkflowResource {
      * @return the requested workflow
      */
     @GET
-    @Path("workflows/{username}")
+    @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getWorkflowsByUser(@PathParam("username") String username) {
+    public Response getWorkflowsByUser(@HeaderParam("username") String username) {
         final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = PREFIX + "GET /workflow/" + username;
         LOGGER.log(Level.INFO, loggingBody);
