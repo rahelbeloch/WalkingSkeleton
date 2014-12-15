@@ -15,8 +15,8 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private int _workflowId;
-        public int workflowId { get { return _workflowId; } set { _workflowId = value; } }
+        private String _workflowId;
+        public String workflowId { get { return _workflowId; } set { _workflowId = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.

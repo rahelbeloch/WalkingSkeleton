@@ -15,7 +15,7 @@ namespace CommunicationLib.Model
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private string _username;
-        public string username { get { return _username; } set { _username = value; } }
+        public string username { get { return _id; } set { _id = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.

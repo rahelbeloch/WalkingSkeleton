@@ -15,7 +15,7 @@ namespace CommunicationLib.Model
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private string _rolename;
-        public string rolename { get { return _rolename; } set { _rolename = value; } }
+        public string rolename { get { return _id; } set { _id = value; } }
 
         /// <summary>
         /// Constructor for Workflow

@@ -535,7 +535,7 @@ namespace RestAPI
         {
             foreach (Step s in workflow.steps)
             {
-                foreach (int id in s.nextStepIds)
+                foreach (String id in s.nextStepIds)
                 {
                     s.nextSteps.Add(workflow.getStepById(id));
                 }

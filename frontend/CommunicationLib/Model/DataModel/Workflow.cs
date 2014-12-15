@@ -47,11 +47,11 @@ namespace CommunicationLib.Model
         public void addStep(Step step)
         {
             steps.Add(step);
-            step.id = steps.Count;
+            int stepsCount = steps.Count;
 
-            if (steps.Count >= 2)
+            if (stepsCount >= 2)
             {
-                steps[steps.Count - 2].nextStepIds.Add(step.id);
+                steps[stepsCount - 2].nextStepIds.Add(step.id);
             }
         }
 
@@ -83,11 +83,11 @@ namespace CommunicationLib.Model
         /// </summary>
         /// <param name="stepId"></param>
         /// <returns></returns>
-        public Step getStepById(int stepId)
+        public Step getStepById(String stepId)
         {
             foreach (Step s in steps)
             {
-                if (s.id == stepId)
+                if (s.id.Equals(stepId))
                 {
                     return s;
                 }
