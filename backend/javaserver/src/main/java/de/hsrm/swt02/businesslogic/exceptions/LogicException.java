@@ -1,6 +1,6 @@
 package de.hsrm.swt02.businesslogic.exceptions;
 
-import de.hsrm.swt02.restserver.exceptions.BasicException;
+import de.hsrm.swt02.persistence.exceptions.BasicException;
 
 /**
  * General Exception for LogicExceptionHandling.
