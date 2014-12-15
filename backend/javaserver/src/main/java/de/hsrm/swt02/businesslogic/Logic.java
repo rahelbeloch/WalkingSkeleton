@@ -34,8 +34,9 @@ public interface Logic {
      * @return logicResponse of starting a workflow
      * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException
+     * @throws ItemNotExistentException 
      */
-    LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException, StorageFailedException;
+    LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException;
 
     /**
      * This method store a workflow and distribute a id.

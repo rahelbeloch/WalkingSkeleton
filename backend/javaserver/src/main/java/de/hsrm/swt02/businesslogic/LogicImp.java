@@ -71,9 +71,10 @@ public class LogicImp implements Logic {
      * @exception WorkflowNotExistentException if the requested workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException
      * @throws StorageFailedException 
+     * @throws ItemNotExistentException 
     */
     @Override
-    public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException, StorageFailedException {
+    public LogicResponse startWorkflow(int workflowID, String username) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
         final Workflow workflow = (Workflow) p.loadWorkflow(workflowID);
         int itemID = pm.startWorkflow(workflow, username);
         setLogicResponse(new LogicResponse());
