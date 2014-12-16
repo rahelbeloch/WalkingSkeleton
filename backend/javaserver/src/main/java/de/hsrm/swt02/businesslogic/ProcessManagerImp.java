@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.businesslogic.processors.ActionProcessor;
 import de.hsrm.swt02.businesslogic.processors.StartProcessor;
@@ -20,6 +21,7 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
@@ -76,10 +78,9 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * @param workflow is the which should be started.
      * @param username is the name of the user who wants to start workflow.
      * @return itemID
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
+     * @throws PersistenceException 
      */
-    public String startWorkflow(Workflow workflow, String username) throws ItemNotExistentException, StorageFailedException {
+    public String startWorkflow(Workflow workflow, String username) throws PersistenceException {
         final StartStep startStep = (StartStep) workflow.getStepByPos(0);
         String itemID = "-1";
         selectProcessor(startStep);
@@ -111,14 +112,11 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * @param step is the step which is to be edited
      * @param item is the item which is currently active
      * @param user is the user who started tzhe operation
-     * @exception ItemNotForwardableException if the steplist corresponding to an item can't go any further
-     * @exception UserHasNoPermissionException if the given user is not responsible for the step
      * @throws ItemNotForawrdableException
      * @throws UserHasNoPermissionException
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
+     * @throws LogicException 
      */
-    public void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException {
+    public void executeStep(Step step, Item item, User user) throws LogicException {
         selectProcessor(step);
         if (step instanceof Action) {
             actionProcessor.addObserver(this);
