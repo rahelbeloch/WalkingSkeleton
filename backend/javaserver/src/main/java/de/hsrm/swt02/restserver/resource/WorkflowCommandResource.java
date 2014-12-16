@@ -14,12 +14,14 @@ import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
 import de.hsrm.swt02.businesslogic.Message;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
@@ -66,7 +68,10 @@ public class WorkflowCommandResource {
         } catch (ItemNotExistentException e) {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        }
+        } catch (PersistenceException e) {
+        	LOGGER.log(Level.WARNING, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+		}
         logicResponse = LOGIC.getProcessLogicResponse();
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -121,7 +126,10 @@ public class WorkflowCommandResource {
         } catch (StepNotExistentException e) {
             LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        }
+        } catch (LogicException e) {
+        	LOGGER.log(Level.WARNING, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+		}
         logicResponse = LOGIC.getProcessLogicResponse();
         for (Message m : logicResponse.getMessages()) {
             try {

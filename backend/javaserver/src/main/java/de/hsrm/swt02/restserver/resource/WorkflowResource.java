@@ -32,6 +32,7 @@ import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
@@ -80,7 +81,11 @@ public class WorkflowResource {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-        }
+        } catch (PersistenceException e) {
+        	LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
+		}
         try {
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             workflowAsString = mapper.writeValueAsString(workflow);
@@ -177,7 +182,11 @@ public class WorkflowResource {
             LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-        }
+        } catch (PersistenceException e) {
+        	 LOGGER.log(Level.WARNING, loggingBody + e);
+             return Response.serverError()
+                     .entity(String.valueOf(e.getErrorCode())).build();
+		}
         String itemListString;
 
         try {
@@ -283,7 +292,11 @@ public class WorkflowResource {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-        }
+        } catch (LogicException e) {
+        	LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
+		}
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -336,7 +349,11 @@ public class WorkflowResource {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-        }
+        } catch (LogicException e) {
+        	LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
+		}
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -381,7 +398,11 @@ public class WorkflowResource {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-        }
+        } catch (PersistenceException e) {
+        	LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
+		}
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -421,7 +442,11 @@ public class WorkflowResource {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-        }
+        } catch (PersistenceException e) {
+        	LOGGER.log(Level.WARNING, e);
+            return Response.serverError()
+                    .entity(String.valueOf(e.getErrorCode())).build();
+		}
         try {
             workflowAsString = mapper.writeValueAsString(workflow);
         } catch (JsonProcessingException e) {
