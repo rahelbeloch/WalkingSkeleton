@@ -80,6 +80,8 @@ public class WorkflowProcessTest {
     @Test
     public void addItem() {
         final Item item = new Item();
+      //setting an id is definitely wrong, but here's no connection to the persistence (not via logic) therefore the ids have to be manually added
+        item.setId("itemId");
         myWorkflow.addItem(item);
         assertEquals(item, myWorkflow.getItems().get(0));
     }
