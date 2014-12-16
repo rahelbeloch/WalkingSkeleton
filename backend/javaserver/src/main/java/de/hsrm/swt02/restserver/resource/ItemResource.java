@@ -19,6 +19,7 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
@@ -62,7 +63,10 @@ public class ItemResource {
         } catch (StorageFailedException e) {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        }
+        } catch (PersistenceException e) {
+        	LOGGER.log(Level.WARNING, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+		}
         String itemAsString;
         
         try {
