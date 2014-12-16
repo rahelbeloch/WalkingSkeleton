@@ -68,11 +68,15 @@ public class InitWorkflowTest {
     public void connectSteps() {
         final Workflow myWorkflow = new Workflow();
         final Step firstStep = new Action("username", 0 + " Schritt");
+        //setting an id is definitely wrong, but here's no connection to the persistence therefore the ids have to be manually added
+        firstStep.setId("1");
         final Step secondStep = new Action("username", 1 + " Schritt");
-
+        secondStep.setId("2");
         myWorkflow.addStep(firstStep);
         myWorkflow.addStep(secondStep);
 
+        System.out.println(secondStep);
+        System.out.println(firstStep.getNextSteps().get(0));
 
         assertEquals(secondStep, firstStep.getNextSteps().get(0));
     }
