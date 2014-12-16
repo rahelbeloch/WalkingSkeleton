@@ -61,8 +61,11 @@ public class RestServerUserTest {
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
         } catch (SecurityException e) {
+            e.printStackTrace();
         }
         targetUrl = properties.getProperty("RestServerURI");
     }
@@ -72,6 +75,7 @@ public class RestServerUserTest {
      */
     @Test
     public void testSaveUser() {
+        final int url200 = 200;
         final User testUser = new User();
         final ObjectMapper mapper = new ObjectMapper();
         final Form dataform;
@@ -91,7 +95,7 @@ public class RestServerUserTest {
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
-        assertEquals(200, resp.getStatus());
+        assertEquals(url200, resp.getStatus());
     }
     
     /**
@@ -101,6 +105,8 @@ public class RestServerUserTest {
      */
     @Test
     public void testSaveExistentUser() {
+        final int url200 = 200;
+        final int url500 = 500;
         final User testUser = new User();
         final ObjectMapper mapper = new ObjectMapper();
         final Form dataform;
@@ -121,7 +127,7 @@ public class RestServerUserTest {
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         
-        assertEquals(200, resp.getStatus());
+        assertEquals(url200, resp.getStatus());
         
         final Response resp2 = client
                 .target(targetUrl)
@@ -129,7 +135,7 @@ public class RestServerUserTest {
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
-        assertEquals(500, resp2.getStatus());
+        assertEquals(url500, resp2.getStatus());
     }
     
     /**

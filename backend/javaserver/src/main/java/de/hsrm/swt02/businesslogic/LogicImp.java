@@ -1,5 +1,6 @@
 package de.hsrm.swt02.businesslogic;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -203,14 +204,13 @@ public class LogicImp implements Logic {
      * @throws UserAlreadyExistsException
      * @throws StorageFailedException 
      */
-    @SuppressWarnings("null")
     @Override
     public LogicResponse addUser(User user) throws UserAlreadyExistsException, StorageFailedException {
         // check if there are duplicate messagingsubs
         final List<String> subs = user.getMessagingSubs();
-        final List<String> definiteSubs = null;
+        final ArrayList<String> definiteSubs = new ArrayList<String>();
         
-        if (subs != null) {
+        if (subs != null && subs.size() > 0) {
             definiteSubs.add(subs.get(0));
             for (String sub : subs) {
                 if (!definiteSubs.contains(sub)) {

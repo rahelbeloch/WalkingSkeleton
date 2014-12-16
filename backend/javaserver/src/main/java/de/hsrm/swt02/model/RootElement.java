@@ -1,5 +1,7 @@
 package de.hsrm.swt02.model;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * This class represents a RootElement.
  */
@@ -31,6 +33,7 @@ public class RootElement implements Cloneable {
     public Object clone() throws CloneNotSupportedException {
         final RootElement clone = new RootElement();
         clone.init(this);
+        super.clone();
 
         return clone;
     }
@@ -54,10 +57,16 @@ public class RootElement implements Cloneable {
         this.id = id;
     }
     
+    @Deprecated
+    @Override
+    public int hashCode() {
+        throw new NotImplementedException();
+    }
+    
     @Override
     public boolean equals(Object object) {
         if (object instanceof RootElement) {
-            if (this.getId() == ((RootElement)object).getId()) {
+            if (this.getId().equals(((RootElement)object).getId())) {
                 return true;
             }
         }
