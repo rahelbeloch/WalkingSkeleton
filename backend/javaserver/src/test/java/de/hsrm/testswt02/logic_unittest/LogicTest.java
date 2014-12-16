@@ -59,7 +59,7 @@ public class LogicTest {
     public void addGetWorkflowTest() throws WorkflowNotExistentException, IncompleteEleException, StorageFailedException {
         init();
         li.addWorkflow(w);
-        assertTrue(li.getWorkflow(w.getId()) == w);
+        assertTrue(li.getWorkflow(w.getId()).equals(w));
     }
 
     /**
@@ -83,7 +83,8 @@ public class LogicTest {
                                                          // expects String not
                                                          // user
 
-        assertFalse(w.getItems().isEmpty());
+        Workflow workflow = li.getWorkflow(w.getId());
+        assertFalse(workflow.getItems().isEmpty());
     }
 
     /**
@@ -173,7 +174,8 @@ public class LogicTest {
         } catch (UserAlreadyExistsException e) {
             assertTrue(false);
         }
-        assertTrue(li.getUser(user.getUsername()) == user);
+        
+        assertTrue(li.getUser(user.getUsername()).equals(user));
     }
 
     /**
@@ -322,8 +324,9 @@ public class LogicTest {
         init();
         initExtension();       
         final int before = li.getAllWorkflowsByUser(user.getUsername()).size();
-       
+        
         li.deactivateWorkflow(w.getId());
+        Workflow workflow = li.getWorkflow(w.getId());
         final int after = li.getAllWorkflowsByUser(user.getUsername()).size();
 
         assertTrue(before == after + 1);
