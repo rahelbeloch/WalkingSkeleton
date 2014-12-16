@@ -197,6 +197,13 @@ public class Workflow extends RootElement {
      * @return Object clone
      */
     public Object clone() throws CloneNotSupportedException {
+        int count = 1;
+        
+        for (Step step : this.steps){
+            step.setId(this.id + String.valueOf(count));
+            count ++;
+        }
+        
         this.convertReferencesToIdList();
 
         final Workflow clone = new Workflow();

@@ -93,7 +93,7 @@ public class LogicImp implements Logic {
      * @throws IncompleteEleException 
      * @throws StorageFailedException 
     */
-    @Override
+    @Override 
     public LogicResponse addWorkflow(Workflow workflow) throws IncompleteEleException, StorageFailedException {
         if ((workflow.getStepByPos(0) instanceof StartStep) && (workflow.getStepByPos(workflow.getSteps().size()-1) instanceof FinalStep)) {
             final String id = p.storeWorkflow(workflow);
@@ -647,7 +647,9 @@ public class LogicImp implements Logic {
     public LogicResponse deactivateWorkflow(String workflowID)
             throws WorkflowNotExistentException, StorageFailedException 
     {
-        p.loadWorkflow(workflowID).setActive(false);
+        Workflow workflow = p.loadWorkflow(workflowID);
+        workflow.setActive(false);
+        p.storeWorkflow(workflow);
         //TODO are there any active items?
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflowID));
