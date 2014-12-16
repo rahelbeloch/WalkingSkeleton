@@ -13,6 +13,7 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
@@ -37,7 +38,7 @@ public interface Logic {
      * @throws WorkflowNotExistentException
      * @throws ItemNotExistentException 
      */
-    LogicResponse startWorkflow(String workflowID, String username) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException;
+    LogicResponse startWorkflow(String workflowID, String username) throws PersistenceException;
 
     /**
      * This method store a workflow and distribute a id.
@@ -45,7 +46,7 @@ public interface Logic {
      * @param workflow is the workflow which should be added
      * @return logicResponse of adding a workflow
      */
-    LogicResponse addWorkflow(Workflow workflow) throws IncompleteEleException, StorageFailedException; // later a workflows name will be given a name
+    LogicResponse addWorkflow(Workflow workflow) throws LogicException; // later a workflows name will be given a name
                                                   
 
     /**
@@ -64,7 +65,7 @@ public interface Logic {
      * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException
      */
-    Workflow getWorkflow(String workflowID) throws WorkflowNotExistentException, StorageFailedException;
+    Workflow getWorkflow(String workflowID) throws PersistenceException;
 
     /**
      * This method delete a Workflow in Persistence.
@@ -99,8 +100,7 @@ public interface Logic {
      */
 
     void stepForward(String itemId, String stepId, String username) 
-            throws ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException,
-                   StorageFailedException, WorkflowNotExistentException, StepNotExistentException;
+            throws LogicException;
 
 
     // /**
@@ -123,14 +123,14 @@ public interface Logic {
      * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException 
      */
-    LogicResponse deactivateWorkflow(String workflowID) throws WorkflowNotExistentException, StorageFailedException;
+    LogicResponse deactivateWorkflow(String workflowID) throws PersistenceException;
 
     /**
      * This method activate a workflow.
      * @param workflowID the id of the workflow which should be deactivate
      * @throws WorkflowNotExistentException 
      **/
-    LogicResponse activateWorkflow(String workflowID) throws WorkflowNotExistentException, StorageFailedException;
+    LogicResponse activateWorkflow(String workflowID) throws PersistenceException;
    
 
     /**
@@ -142,7 +142,7 @@ public interface Logic {
      * @exception WorkflowNotExistentException if the given worklow doesnt exist in the persistence
      * @throws WorkflowNotExistentException 
      */
-    LogicResponse addStep(String workflowID, Step stepId) throws WorkflowNotExistentException, StorageFailedException;
+    LogicResponse addStep(String workflowID, Step stepId) throws PersistenceException;
 
     /**
      * This method delete a step from an existing Workflow.
@@ -153,7 +153,7 @@ public interface Logic {
      * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
      * @throws WorkflowNotExistentException 
      */
-    LogicResponse deleteStep(String workflowID, String stepID) throws WorkflowNotExistentException, StorageFailedException;
+    LogicResponse deleteStep(String workflowID, String stepID) throws PersistenceException;
 
     /**
      * This method store a workflow and distribute a id.
@@ -163,7 +163,7 @@ public interface Logic {
      * @exception UserAlreadyExistsException if the given user already exists in the persistence
      * @throws UserAlreadyExistsException 
      */
-    LogicResponse addUser(User user) throws UserAlreadyExistsException, StorageFailedException;
+    LogicResponse addUser(User user) throws PersistenceException;
 
     /**
      * This method loads a User.
@@ -209,7 +209,7 @@ public interface Logic {
      * @throws LogicException
      * @return a LinkedList of workflows
      */
-    List<Workflow> getAllWorkflowsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException, LogicException;
+    List<Workflow> getAllWorkflowsByUser(String username) throws LogicException;
 
     /**
      * Method for getting a list of the ids of workflows startable by a given user (if the user is responsible for the Startstep of the steplist).
@@ -224,7 +224,7 @@ public interface Logic {
      * @throws UserNotExistentException
      * @return List<Integer> list of Ids
      */
-    List<String> getStartableWorkflowsByUser(String username) throws UserNotExistentException, WorkflowNotExistentException, LogicException;
+    List<String> getStartableWorkflowsByUser(String username) throws LogicException;
 
     /**
      * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
@@ -236,7 +236,7 @@ public interface Logic {
      * @throws UserNotExistentException
      * @return List<Integer> list of stepIds
      */
-    List<Item> getRelevantItemsByUser(String workflowId, String username) throws WorkflowNotExistentException, UserNotExistentException, StorageFailedException;
+    List<Item> getRelevantItemsByUser(String workflowId, String username) throws PersistenceException;
 
     /**
      * This method gets a LogicResponse object.
@@ -257,7 +257,7 @@ public interface Logic {
      * @param itemID 
      * @return an Item
      */
-    Item getItem(String itemID) throws ItemNotExistentException, StorageFailedException;
+    Item getItem(String itemID) throws PersistenceException;
     
     
     // Business Logic Sprint 2
@@ -304,8 +304,7 @@ public interface Logic {
      * @throws UserHasAlreadyRoleException
      */
     LogicResponse addRoleToUser(String username, Role role)
-            throws UserNotExistentException, RoleNotExistentException,
-            UserHasAlreadyRoleException;
+            throws PersistenceException;
 
     /**
      * Method for deleting an existing role from the persistance. The users who
@@ -328,7 +327,7 @@ public interface Logic {
      * @throws UserNotExistentException
      * @return List<Item> is the list of items we want to get
      */
-    List<Item> getOpenItemsByUser(String username) throws WorkflowNotExistentException, UserNotExistentException, LogicException;
+    List<Item> getOpenItemsByUser(String username) throws LogicException;
 
     /**
     * Method for getting a list of startable workflows by a given user.
@@ -341,6 +340,6 @@ public interface Logic {
     * @return List<Workflow> is the requested list of workflows
      * @throws LogicException 
     */
-    List<Workflow> getStartableWorkflows(String username) throws WorkflowNotExistentException, UserNotExistentException, LogicException;
+    List<Workflow> getStartableWorkflows(String username) throws LogicException;
 
 }
