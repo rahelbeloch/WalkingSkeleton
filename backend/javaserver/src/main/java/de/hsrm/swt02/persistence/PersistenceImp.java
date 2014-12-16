@@ -132,7 +132,7 @@ public class PersistenceImp implements Persistence {
         Workflow parentWorkflow = null;
         Item itemToRemove = null;
         
-        if (Integer.parseInt(item.getId()) <= 0) {
+        if (item.getId() == null) {
             for (Workflow wf: workflows) {
                 if (item.getWorkflowId().equals(wf.getId())) {
                     parentWorkflow = wf;
@@ -140,7 +140,7 @@ public class PersistenceImp implements Persistence {
                 }
             }
             if (parentWorkflow != null) {
-                item.setId(Integer.parseInt(parentWorkflow.getId()) * ID_MULTIPLICATOR + parentWorkflow.getItems().size() + "");
+                item.setId(String.valueOf(Integer.parseInt(parentWorkflow.getId()) * ID_MULTIPLICATOR + parentWorkflow.getItems().size() + ""));
             } else {
                 throw new WorkflowNotExistentException("invalid parent workflow id in item " + item.getId());
             }
