@@ -223,7 +223,6 @@ public class PersistenceImp implements Persistence {
         this.logger.log(Level.INFO, "[persistence] successfully added user '" + userToStore.getUsername() + "'.");
     }
 
-    @SuppressWarnings("null")
     @Override
     public void updateUser(User user) throws UserNotExistentException, StorageFailedException {        
         User userToRemove = null;
@@ -309,15 +308,15 @@ public class PersistenceImp implements Persistence {
         final Workflow workflow = loadWorkflow(workflowId);
         Step step = null;
         
-        for (Step s : workflow.getSteps()){
-            if(s.getId().equals(stepId)){
+        for (Step s : workflow.getSteps()) {
+            if (s.getId().equals(stepId)) {
                 step = s;
             }
         }
         
-        if (step != null){
+        if (step != null) {
             return step;
-        }else{
+        } else {
             throw new StepNotExistentException("Step " + stepId + " is not existent.");
         }
     }
@@ -332,6 +331,7 @@ public class PersistenceImp implements Persistence {
     /**
      * Method for storing a role.
      * @param role is the role to store
+     * @return roleId is the Id of the stored role
      */
     public String storeRole(Role role) {
         if (Integer.parseInt(role.getId()) <= 0) {

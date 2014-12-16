@@ -114,6 +114,7 @@ public class Step extends RootElement {
     public Object clone() throws CloneNotSupportedException {
         final Step clone = new Step();
         clone.init(this);
+        super.clone();
 
         return clone;
     }

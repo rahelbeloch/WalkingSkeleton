@@ -182,26 +182,30 @@ public class Workflow extends RootElement {
      */
     public void removeItem(String itemId) {
 
+        Item itemToRemove = null;
         for (Item ai : items) {
             if (ai.getId().equals(itemId)) {
-                items.remove(ai);
+                itemToRemove = ai;
             }
+        }
+        if (itemToRemove != null) {
+            this.items.remove(itemToRemove);
         }
     }
 
     /**
      * Deep Copy - Cloning method for Workflows.
      * 
-     * @exception CloneNotSupportedException
+     * @exception CloneNotSupportedException convention
      * @throws CloneNotSupportedException
      * @return Object clone
      */
     public Object clone() throws CloneNotSupportedException {
         int count = 1;
         
-        for (Step step : this.steps){
+        for (Step step : this.steps) {
             step.setId(this.id + String.valueOf(count));
-            count ++;
+            count++;
         }
         
         this.convertReferencesToIdList();
@@ -211,10 +215,12 @@ public class Workflow extends RootElement {
         clone.setId(id);
         for (Step step : this.steps) {
             final Step cloneStep = (Step) step.clone();
+            clone.getSteps().add(cloneStep);
             clone.addStep(cloneStep);
         }
         for (Item item : this.items) {
             final Item cloneItem = (Item) item.clone();
+            clone.getItems().add(cloneItem);
             clone.addItem(cloneItem);
         }
 

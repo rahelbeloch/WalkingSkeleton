@@ -1,6 +1,6 @@
 package de.hsrm.testswt02.RestserverTesting;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -133,7 +133,7 @@ public class RestserverWorkflowTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        assertEquals(workflow.getId(), 1);
+        assertTrue(workflow.getId().equals("1"));
     }
 
     /**

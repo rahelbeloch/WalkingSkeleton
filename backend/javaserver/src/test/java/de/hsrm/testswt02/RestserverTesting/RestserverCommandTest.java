@@ -29,7 +29,7 @@ import de.hsrm.swt02.restserver.RestServer;
 
 /**
  * 
- * JUNIT Test Class for the REST servers command functions
+ * JUNIT Test Class for the REST servers command functions.
  *
  */
 public class RestserverCommandTest {
@@ -56,8 +56,11 @@ public class RestserverCommandTest {
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
         } catch (SecurityException e) {
+            e.printStackTrace();
         }
         targetUrl = properties.getProperty("RestServerURI");
     }
@@ -65,11 +68,11 @@ public class RestserverCommandTest {
     
     /**
      * This test creates a new User with username "Alex" and saves it into persistence,
-     * then tries to login with that name
+     * then tries to login with that name.
      */
     @Test
     public void testLogin() {
-        
+        final int url200 = 200;
         final User testUser = new User();
         final ObjectMapper mapper = new ObjectMapper();
         Form dataform;
@@ -96,7 +99,7 @@ public class RestserverCommandTest {
                 .request().header("username", "Alex").header("password", "test")
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
-        assertEquals(resp.getStatus(), 200);
+        assertEquals(resp.getStatus(), url200);
     }
     
     /**
