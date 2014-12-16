@@ -14,6 +14,7 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
@@ -106,7 +107,7 @@ public class PersistenceImp implements Persistence {
     }
 
     @Override
-    public Workflow loadWorkflow(String id) throws WorkflowNotExistentException, StorageFailedException {
+    public Workflow loadWorkflow(String id) throws PersistenceException {
         Workflow workflowToReturn = null;
         for (Workflow wf : workflows) {
             if (wf.getId().equals(id)) {
@@ -128,7 +129,7 @@ public class PersistenceImp implements Persistence {
     // Item Operations
     
     @Override
-    public String storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException {
+    public String storeItem(Item item) throws PersistenceException {
         Workflow parentWorkflow = null;
         Item itemToRemove = null;
         
@@ -186,7 +187,7 @@ public class PersistenceImp implements Persistence {
     }
 
     @Override
-    public Item loadItem(String id) throws ItemNotExistentException, StorageFailedException {
+    public Item loadItem(String id) throws PersistenceException {
         Item itemToReturn = null;
         for (Item item : items) {
             if (item.getId().equals(id)) {
@@ -207,7 +208,7 @@ public class PersistenceImp implements Persistence {
     // User Operations
     
     @Override
-    public void addUser(User user) throws UserAlreadyExistsException, StorageFailedException {
+    public void addUser(User user) throws PersistenceException {
         for (User u : users) {
             if (u.getUsername().equals(user.getUsername())) {
                 throw new UserAlreadyExistsException("username " + user.getUsername() + " is already assigned.");
@@ -224,7 +225,7 @@ public class PersistenceImp implements Persistence {
     }
 
     @Override
-    public void updateUser(User user) throws UserNotExistentException, StorageFailedException {        
+    public void updateUser(User user) throws PersistenceException {        
         User userToRemove = null;
         for (User u : users) {
             if (u.getUsername().equals(user.getUsername())) {
@@ -302,7 +303,7 @@ public class PersistenceImp implements Persistence {
     
     // temp load Step - to be completed
     @Override
-    public Step loadStep(String itemId, String stepId) throws ItemNotExistentException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException {
+    public Step loadStep(String itemId, String stepId) throws PersistenceException {
         final Item item = loadItem(itemId);
         final String workflowId = item.getWorkflowId();
         final Workflow workflow = loadWorkflow(workflowId);
@@ -424,7 +425,7 @@ public class PersistenceImp implements Persistence {
      * @throws RoleNotExistentException  
     */
     @Override
-    public void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException {
+    public void addRoleToUser(User user, Role role) throws PersistenceException {
         Role searchedRole = null;
         User searchedUser = null;
         for (Role r : roles) {

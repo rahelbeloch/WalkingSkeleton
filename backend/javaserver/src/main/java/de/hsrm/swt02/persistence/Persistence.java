@@ -8,6 +8,7 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleHasAlreadyUserException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
@@ -37,7 +38,7 @@ public interface Persistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there
      * @throws WorkflowNotExistentException
      */
-    String storeItem(Item item) throws WorkflowNotExistentException, StorageFailedException, ItemNotExistentException;
+    String storeItem(Item item) throws PersistenceException;
     
     /**
      * Method for adding a new user.
@@ -45,7 +46,7 @@ public interface Persistence {
      * @exception UserAlreadyExistsException if the user to store is already there.
      * @throws UserAlreadyExistsException
      */
-    void addUser(User user) throws UserAlreadyExistsException, StorageFailedException;
+    void addUser(User user) throws PersistenceException;
 
     /**
      * Method for updating an already existing user.
@@ -53,7 +54,7 @@ public interface Persistence {
      * @exception UserNotExistentException if the requested user is not there.
      * @throws UserNotExistentException
      */
-    void updateUser(User user) throws UserNotExistentException, StorageFailedException;
+    void updateUser(User user) throws PersistenceException;
 
     /**
      * Method for loading all workflows into a list of workflows.
@@ -70,7 +71,7 @@ public interface Persistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there.
      * @throws WorkflowNotExistentException
      */
-    Workflow loadWorkflow(String id) throws WorkflowNotExistentException, StorageFailedException;
+    Workflow loadWorkflow(String id) throws PersistenceException;
 
     /**
      * Method for loading an item.
@@ -79,7 +80,7 @@ public interface Persistence {
      * @exception ItemNotExistentException if the requested item is not there.
      * @throws ItemNotExistentException
      */
-    Item loadItem(String id) throws ItemNotExistentException, StorageFailedException;
+    Item loadItem(String id) throws PersistenceException;
 
     /**
      * Method for loading an user.
@@ -99,7 +100,7 @@ public interface Persistence {
      * @throws WorkflowNotExistentException 
      * @throws StepNotExistentException 
      */
-    Step loadStep(String itemId, String stepId) throws ItemNotExistentException, StorageFailedException, WorkflowNotExistentException, StepNotExistentException;
+    Step loadStep(String itemId, String stepId) throws PersistenceException;
 //
 //    /**
 //     * Method for loading a requested MetaEntry.
@@ -185,7 +186,7 @@ public interface Persistence {
      * @throws UserNotExistentException
      * @throws RoleNotExistentException 
      */
-    void addRoleToUser(User user, Role role) throws UserNotExistentException, RoleNotExistentException, UserHasAlreadyRoleException;  
+    void addRoleToUser(User user, Role role) throws PersistenceException;  
     
     /**
      * Method for removing a role from datbase.

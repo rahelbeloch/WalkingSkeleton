@@ -170,7 +170,7 @@ public class Workflow extends RootElement {
      *            which will be added to the item lsit of a workflow
      */
     public void addItem(Item item) {
-
+        
         items.add(item);
     }
 
