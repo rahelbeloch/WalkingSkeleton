@@ -215,12 +215,10 @@ public class Workflow extends RootElement {
         clone.setId(id);
         for (Step step : this.steps) {
             final Step cloneStep = (Step) step.clone();
-            clone.getSteps().add(cloneStep);
             clone.addStep(cloneStep);
         }
         for (Item item : this.items) {
             final Item cloneItem = (Item) item.clone();
-            clone.getItems().add(cloneItem);
             clone.addItem(cloneItem);
         }
 

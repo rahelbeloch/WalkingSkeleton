@@ -51,7 +51,6 @@ public class StartProcessor extends Observable {
         currentItem = new Item();
         currentItem.setWorkflowId(workflow.getId());
         initiateItem(workflow, currentItem);
-        
         return currentItem.getId();
     }
 
@@ -74,14 +73,14 @@ public class StartProcessor extends Observable {
             }
         }
         
-        workflow.addItem(item);
         if (!item.getForGroup("step").isEmpty()) {
             item.setFirstStepState(MetaState.OPEN.toString());
         }
 
         try {
-            p.storeWorkflow(workflow);
             p.storeItem(item);
+            workflow.addItem(item);
+            p.storeWorkflow(workflow);
         } catch (WorkflowNotExistentException e) {
             e.printStackTrace();
         }

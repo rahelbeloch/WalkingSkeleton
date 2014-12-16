@@ -216,6 +216,7 @@ public class LogicImp implements Logic {
                 if (!definiteSubs.contains(sub)) {
                     definiteSubs.add(sub);
                 }
+
             }
             //messagingsublist is cleared and filled with the new list
             user.getMessagingSubs().clear();

@@ -16,6 +16,7 @@ import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
+import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -44,9 +45,11 @@ public class LogicTest {
     StartStep startStep;
     StartStep startStep1;
     StartStep startStep2;
+    StartStep startStep3;
     Action action;
     Action action1;
     Action action2;
+    Action action3;
     FinalStep finalStep;
 
     /**
@@ -122,11 +125,17 @@ public class LogicTest {
         initExtension();
         li.addWorkflow(w);
         li.startWorkflow(w.getId(), user.getUsername());
-        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(action.getId())
+        Workflow workflow = li.getWorkflow(w.getId());
+        Item item = workflow.getItemByPos(0);
+        
+        li.stepForward(item.getId(), workflow.getStepById(action.getId())
                 .getId(), user.getUsername());
-        li.stepForward(w.getItemByPos(0).getId(), w.getStepById(action.getId())
+        
+        li.stepForward(item.getId(), workflow.getStepById(action.getId())
                 .getId(), user.getUsername());
-        assertTrue(w.getItemByPos(0).getStepState(action.getId()) == "DONE");
+
+        item = li.getItem(item.getId());
+        assertTrue(item.getStepState(action.getId()) == "DONE");
     }
 
     /**
@@ -141,7 +150,8 @@ public class LogicTest {
         li.addWorkflow(w);
         final int i = w.getSteps().size();
         li.addStep(w.getId(), new Action());
-        assertTrue(w.getSteps().size() == i + 1);
+        Workflow workflow = li.getWorkflow(w.getId());
+        assertTrue(workflow.getSteps().size() == i + 1);
 
     }
 
@@ -157,7 +167,8 @@ public class LogicTest {
         li.addWorkflow(w);
         final int i = w.getSteps().size();
         li.deleteStep(w.getId(), action.getId());
-        assertTrue(w.getSteps().size() == i - 1);
+        Workflow workflow = li.getWorkflow(w.getId());
+        assertTrue(workflow.getSteps().size() == i - 1);
 
     }
 
@@ -256,12 +267,9 @@ public class LogicTest {
         init();
         initExtension();
         
-        
-        for (Step step: w.getSteps()) {
-            
+        for (Step step: w2.getSteps()) {
             if (!(step instanceof FinalStep)) {
-                System.out.println(step.getId());
-                assertTrue(step.getNextSteps().size() != 0);
+                assertTrue(step.getNextSteps().size() == 1);
             }
         }
     }
@@ -278,7 +286,8 @@ public class LogicTest {
         init();
         initExtension();
         final int i = li.getStartableWorkflowsByUser(user2.getUsername()).size();
-        assertTrue(i == 1);
+
+        assertTrue(i == 2);
     }
 
     /**
@@ -369,8 +378,10 @@ public class LogicTest {
 
         startStep1 = new StartStep(user1.getUsername());
         startStep2 = new StartStep(user2.getUsername());
+        startStep3 = new StartStep(user2.getUsername());
         action1 = new Action(user1.getUsername(), "description");
         action2 = new Action(user2.getUsername(), "description");
+        action3 = new Action(user2.getUsername(), "description");
         finalStep = new FinalStep();
 
         w1 = new Workflow();
@@ -381,11 +392,11 @@ public class LogicTest {
         w2 = new Workflow();
         w2.addStep(startStep2);
         w2.addStep(action2);
-        w2.addStep(finalStep);
+        w2.addStep(new FinalStep());
 
         w3 = new Workflow();
-        w3.addStep(startStep1);
-        w3.addStep(action2);
+        w3.addStep(startStep3);
+        w3.addStep(action3);
         w3.addStep(new FinalStep());
 
         try {
