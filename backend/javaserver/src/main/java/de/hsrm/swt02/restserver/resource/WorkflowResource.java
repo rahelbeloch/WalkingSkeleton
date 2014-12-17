@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
 import de.hsrm.swt02.businesslogic.Message;
-import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
@@ -28,8 +27,6 @@ import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
-import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
@@ -63,23 +60,15 @@ public class WorkflowResource {
         String workflowAsString;
         Workflow workflow = null;
 
+
         try {
             workflow = LOGIC.getWorkflow(workflowid);
             workflow.convertReferencesToIdList();
-        } catch (WorkflowNotExistentException e1) {
-            LOGGER.log(Level.WARNING, loggingBody
-                    + " Non-existing workflow requested.");
-            return Response.serverError()
-                    .entity(String.valueOf(e1.getErrorCode())).build();
-        } catch (StorageFailedException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
-        } catch (PersistenceException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
+        } catch (PersistenceException e1) {
+            LOGGER.log(Level.WARNING, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
+
         try {
             workflowAsString = JsonParser.marshall(workflow);
             LOGGER.log(Level.FINE, loggingBody + workflowAsString);
@@ -108,21 +97,14 @@ public class WorkflowResource {
         final String loggingBody = PREFIX + "GET /workflows/startables";
         LOGGER.log(Level.INFO, loggingBody);
         List<String> wIdList = null;
+
         try {
             wIdList = LOGIC.getStartableWorkflowsByUser(username);
-        } catch (WorkflowNotExistentException e1) {
+        } catch (LogicException e1) {
             LOGGER.log(Level.WARNING, e1);
-            return Response.serverError()
-                    .entity(String.valueOf(e1.getErrorCode())).build();
-        } catch (UserNotExistentException e2) {
-            LOGGER.log(Level.WARNING, e2);
-            return Response.serverError()
-                    .entity(String.valueOf(e2.getErrorCode())).build();
-        } catch (LogicException e3) {
-            LOGGER.log(Level.WARNING, e3);
-            return Response.serverError()
-                    .entity(String.valueOf(e3.getErrorCode())).build();
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
+
         String wIdListString;
 
         try {
@@ -159,23 +141,11 @@ public class WorkflowResource {
         List<Item> itemList = null;
         try {
             itemList = LOGIC.getRelevantItemsByUser(workflowid, username);
-        } catch (WorkflowNotExistentException e1) {
+        } catch (PersistenceException e1) {
             LOGGER.log(Level.WARNING, e1);
-            return Response.serverError()
-                    .entity(String.valueOf(e1.getErrorCode())).build();
-        } catch (UserNotExistentException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
-        } catch (StorageFailedException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
-        } catch (PersistenceException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError()
-                     .entity(String.valueOf(e.getErrorCode())).build();
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
+
         String itemListString;
 
         try {
@@ -215,24 +185,15 @@ public class WorkflowResource {
             }
         } else {
             try {
-                
                 wflowList = LOGIC.getAllWorkflowsByUser(username);
                 for (Workflow w : wflowList) {
                     w.convertReferencesToIdList();
                 }
-            } catch (WorkflowNotExistentException e1) {
-                LOGGER.log(Level.WARNING, e1);
-                return Response.serverError()
-                        .entity(String.valueOf(e1.getErrorCode())).build();
-            } catch (UserNotExistentException e2) {
-                LOGGER.log(Level.WARNING, e2);
-                return Response.serverError()
-                        .entity(String.valueOf(e2.getErrorCode())).build();
-            } catch (LogicException e3) {
-                LOGGER.log(Level.WARNING, e3);
-                return Response.serverError()
-                        .entity(String.valueOf(e3.getErrorCode())).build();
+            } catch (LogicException e) {
+                LOGGER.log(Level.WARNING, e);
+                return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
             }
+
         }
         String wListString;
 
@@ -280,18 +241,10 @@ public class WorkflowResource {
         workflow.convertIdListToReferences();
         try {
             logicResponse = LOGIC.addWorkflow(workflow);
-        } catch (IncompleteEleException e1) {
-            LOGGER.log(Level.WARNING, loggingBody + e1);
+        } catch (LogicException e1) {
+            LOGGER.log(Level.WARNING, e1);
             return Response.serverError()
                     .entity(String.valueOf(e1.getErrorCode())).build();
-        } catch (StorageFailedException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
-        } catch (LogicException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -334,21 +287,15 @@ public class WorkflowResource {
                     .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
+
         try {
             logicResponse = LOGIC.addWorkflow(workflow);
-        } catch (IncompleteEleException e1) {
-            LOGGER.log(Level.WARNING, loggingBody + e1);
+        } catch (LogicException e1) {
+            LOGGER.log(Level.WARNING, e1);
             return Response.serverError()
                     .entity(String.valueOf(e1.getErrorCode())).build();
-        } catch (StorageFailedException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
-        } catch (LogicException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
         }
+
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -385,19 +332,12 @@ public class WorkflowResource {
             } else if (state.equals("deactivate")) {
                 logicResponse = LOGIC.deactivateWorkflow(workflowid);
             }
-        } catch (WorkflowNotExistentException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
-        } catch (StorageFailedException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
         }
+
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -428,19 +368,12 @@ public class WorkflowResource {
         try {
             workflow = LOGIC.getWorkflow(workflowid);
             logicResponse = LOGIC.deleteWorkflow(workflowid);
-        } catch (WorkflowNotExistentException e1) {
+        } catch (PersistenceException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError()
                     .entity(String.valueOf(e1.getErrorCode())).build();
-        } catch (StorageFailedException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
-        } catch (PersistenceException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
         }
+            
         try {
             workflowAsString = JsonParser.marshall(workflow);
         } catch (JacksonException e) {

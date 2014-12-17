@@ -1,6 +1,5 @@
 package de.hsrm.swt02.restserver.resource;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -15,9 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
