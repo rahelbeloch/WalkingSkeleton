@@ -6,8 +6,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  * Custom ConsoleHandler.
  * Logs messages to console.
@@ -20,15 +18,14 @@ public class ConsoleLogHandler extends Handler {
     private static final boolean SHOW_TRACE = true;
 
     @Override
-    @Deprecated
     public void close() {
-        throw new NotImplementedException();
+
     }
 
     @Override
-    @Deprecated
     public void flush() {
-        throw new NotImplementedException();
+        System.out.flush();
+        System.err.flush();
     }
     
     @Override
