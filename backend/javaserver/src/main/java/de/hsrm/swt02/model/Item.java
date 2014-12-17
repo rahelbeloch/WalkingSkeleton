@@ -19,10 +19,6 @@ public class Item extends RootElement {
     // Used for (de)serialization. Do not change.
     private boolean finished;
 
-    // When an Item object is (de)serializated: state will be ignored because in
-    // the client item, there is no state.
-    @JsonIgnore
-    private String state;
 
     /**
      * Constructor for Item.
@@ -77,25 +73,6 @@ public class Item extends RootElement {
      */
     public void setFinished(boolean finished) {
         this.finished = finished;
-    }
-
-    /**
-     * State getter.
-     * 
-     * @return state
-     */
-    public String getState() {
-        return state;
-    }
-
-    /**
-     * State setter.
-     * 
-     * @param state
-     *            is a string representing the state of a step
-     */
-    public void setState(String state) {
-        this.state = state;
     }
 
     /**
@@ -254,7 +231,6 @@ public class Item extends RootElement {
         clone.init(this);
         clone.setFinished(finished);
         clone.setWorkflowId(workflowId);
-        clone.setState(state);
 
         for (MetaEntry me : this.metadata) {
             final MetaEntry cloneMe = (MetaEntry) me.clone();
