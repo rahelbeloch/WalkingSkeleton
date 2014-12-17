@@ -23,10 +23,8 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Role;
-import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
@@ -46,7 +44,7 @@ public class RoleResource {
     
     /**
      * This method returns a requested role.
-     * @param username indicates which role is looked for
+     * @param rolename indicates which role is looked for
      * @return the requested role
      * @throws RoleNotExistentException 
      */
@@ -118,7 +116,7 @@ public class RoleResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveRole(MultivaluedMap<String, String> formParams) {
-        final String loggingBody = PREFIX + "POST /resource/role";
+        final String loggingBody = PREFIX + "POST /resource/roles";
         LOGGER.log(Level.INFO, loggingBody);
         final String roleAsString = formParams.get("data").get(0);
         Role role = new Role();
@@ -163,7 +161,7 @@ public class RoleResource {
     public Response updateRole(@PathParam("rolename") String rolename,
             MultivaluedMap<String, String> formParams) 
     {
-        final String loggingBody = PREFIX + "PUT /resource/role/" + rolename;
+        final String loggingBody = PREFIX + "PUT /resource/roles/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
         final String roleAsString = formParams.get("data").get(0);
         Role role = new Role();
@@ -202,7 +200,7 @@ public class RoleResource {
     @Path("roles/{rolename}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteRole(@PathParam("rolename") String rolename) {
-        final String loggingBody = PREFIX + "DELETE /resource/role/" + rolename;
+        final String loggingBody = PREFIX + "DELETE /resource/roles/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
         
         try {
