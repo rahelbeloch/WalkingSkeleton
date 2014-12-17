@@ -13,6 +13,7 @@ using System.Security;
 using CommunicationLib.Exception;
 using Action = CommunicationLib.Model.Action;
 using System.Diagnostics;
+using CommunicationLib;
 
 namespace UnitTestProject1
 {
@@ -50,14 +51,15 @@ namespace UnitTestProject1
             // generate some TestData
             string username = "Rahel";
             Boolean send = generateTestUserAndWorkflow(username);
-            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser(username);
+            myRequester.InitializeClientProperties(username, new SecureString());
+            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
             Workflow wf = eleList[0];
             
             Assert.IsTrue(send == true);
 
             // Clean up the stuff
             myRequester.DeleteObject<Workflow>(wf.id);
-            myRequester.DeleteUser(username);
+            myRequester.DeleteObject<User>(username);
         }
 
         /// <summary>
@@ -69,11 +71,13 @@ namespace UnitTestProject1
             // generate some TestData
             string username = "Melanie";
             generateTestUserAndWorkflow(username);
-            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser(username);
+            myRequester.InitializeClientProperties("Melanie", new SecureString());
+
+            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
             Workflow wf = eleList[0];
 
             // Test the real functionality
-            Boolean done = myRequester.StartWorkflow(wf.id, username);
+            Boolean done = myRequester.StartWorkflow(wf.id);
 
             Assert.IsTrue(done);
 
@@ -91,11 +95,14 @@ namespace UnitTestProject1
         {
             // generate some TestData
             string username = "Axel";
+            myRequester.InitializeClientProperties("Axel", new SecureString());
             generateTestUserAndWorkflow(username);
-            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser(username);
+            
+
+            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
 
             Workflow wf = eleList[0];
-            myRequester.StartWorkflow(wf.id, username);
+            myRequester.StartWorkflow(wf.id);
 
             // Test the real functionality
             Workflow stepWf = myRequester.GetObject<Workflow>(wf.id);
@@ -105,10 +112,10 @@ namespace UnitTestProject1
             // You must close or flush the trace listener to empty the output buffer.
             myListener.Flush();
             
-            int stepId = stepWf.steps[0].id;
-            int itemId = stepWf.items[0].id;
+            string stepId = stepWf.steps[0].id;
+            string itemId = stepWf.items[0].id;
 
-            Boolean done = myRequester.StepForward(stepId, itemId, username);
+            Boolean done = myRequester.StepForward(stepId, itemId);
             myListener.WriteLine("Gwforwarded " + done);
 
             Assert.IsTrue(done);
@@ -126,14 +133,16 @@ namespace UnitTestProject1
         public void testUpdateObject()
         {
             // generate some TestData
+            myRequester.InitializeClientProperties("Elizabeth", new SecureString());
             generateTestUserAndWorkflow("Elizabeth");
-            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser("Elizabeth");
+           
+            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
             Workflow wf = eleList[0];
 
             // Testing the funcionality
             Workflow changeWorkflow = myRequester.GetObject<Workflow>(wf.id);
             int stepCount = changeWorkflow.steps.Count;
-            changeWorkflow.addStep(new Action());
+            changeWorkflow.addStep(new FinalStep());
 
             myRequester.UpdateObject(changeWorkflow);
 
@@ -147,7 +156,7 @@ namespace UnitTestProject1
 
             // Clean up the stuff
             myRequester.DeleteObject<Workflow>(wf.id);
-            myRequester.DeleteUser("Elizabeth");
+            myRequester.DeleteObject<User>("Elizabeth");
         }
 
         /// <summary>
@@ -166,15 +175,16 @@ namespace UnitTestProject1
         {
             // generate some TestData
             generateTestUserAndWorkflow("Sebastian");
+            myRequester.InitializeClientProperties("Sebastian", new SecureString());
             
-            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser("Sebastian");
+            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
             
             Assert.IsTrue(eleList.Count >= 1);
 
             // Clean up the whole stuff
             Workflow wf = eleList[0];
             myRequester.DeleteObject<Workflow>(wf.id);
-            myRequester.DeleteUser("Sebastian");
+            myRequester.DeleteObject<User>("Sebastian");
         }
 
         /// <summary>
@@ -190,7 +200,9 @@ namespace UnitTestProject1
             // generate some TestData
             generateTestUserAndWorkflow("Simon");
 
-            IList<Workflow> wFList = myRequester.GetAllWorkflows();
+            myRequester.InitializeClientProperties("TestAdmin", new SecureString());
+
+            IList<Workflow> wFList = myRequester.GetAllElements<Workflow>();
 
             // Some Loggings
             myListener.WriteLine("Anzahl der workflows: " + wFList.Count());
@@ -210,6 +222,9 @@ namespace UnitTestProject1
         {
             User newUser = new User();
             newUser.username = "MaxMustermann";
+
+            myRequester.InitializeClientProperties("MaxMustermann", new SecureString());
+
             myRequester.PostObject<User>(newUser);
 
             string initString = "TestPasswort";
@@ -226,7 +241,7 @@ namespace UnitTestProject1
         ///     Test if the right exception is thrown if a non-existent user logs in.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(UserNotExistException))]
+        [ExpectedException(typeof(LogInException))]
         public void testCheckNotExistentUser()
         {
             string initString = "TestPasswort";
@@ -250,20 +265,24 @@ namespace UnitTestProject1
 
             // one Workflow
             Workflow newWf = new Workflow();
+            newWf.id = "";
 
             // a startStep
             StartStep startStep = new StartStep();
             startStep.username = username;
+            startStep.id = "";
             newWf.addStep(startStep);
 
             // an action
             Action act = new Action();
             act.username = username;
+            act.id = "";
             newWf.addStep(act);
 
             // a final step
             FinalStep fStep = new FinalStep();
             fStep.username = username;
+            fStep.id = "";
             newWf.addStep(fStep);
 
             myRequester.PostObject<User>(testUser);

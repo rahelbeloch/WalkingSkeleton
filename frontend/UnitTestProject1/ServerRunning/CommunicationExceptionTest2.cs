@@ -4,6 +4,7 @@ using CommunicationLib.Exception;
 using Action = CommunicationLib.Model.Action;
 using RestAPI;
 using CommunicationLib.Model;
+using System.Security;
 
 namespace UnitTestProject1
 {
@@ -16,6 +17,8 @@ namespace UnitTestProject1
     {
 
         public static RestRequester myRequester;
+       // myRequester.InitializeClientProperties("Rahel", new SecureString());
+        
 
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
@@ -31,7 +34,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(WorkflowNotExistException))]
         public void testServerConnectionGetObject()
         {
-            myRequester.GetObject<Workflow>(0);
+            myRequester.GetObject<Workflow>("0");
         }
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(ItemNotExistException))]
         public void testServerConnectionSendSimpleReq()
         {
-            myRequester.StepForward(1, 2, "Rahel");
+            myRequester.StepForward("1", "2");
         }
 
         /// <summary>
@@ -52,7 +55,7 @@ namespace UnitTestProject1
         public void testWorkflowDoesntExistsException()
         {
             int getWFId = -17;
-            myRequester.GetObject<Workflow>(getWFId);
+            myRequester.GetObject<Workflow>(getWFId.ToString());
         }
     }
 }
