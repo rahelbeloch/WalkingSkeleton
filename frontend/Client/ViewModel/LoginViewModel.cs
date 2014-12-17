@@ -74,6 +74,7 @@ namespace Client.ViewModel
                     {
                         try{
                             _restRequester.checkUser(username, securePwd);
+                            _mainViewModel.myComLib.Login(username, securePwd);
                             logger.Debug("Authentiaction userName: " + username);
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.dashboardViewModel;
                             _mainViewModel.username = _username;
