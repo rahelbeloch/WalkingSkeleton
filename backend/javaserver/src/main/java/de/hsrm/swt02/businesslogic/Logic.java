@@ -223,7 +223,8 @@ public interface Logic {
      * @return List<Integer> list of Ids
      */
     List<String> getStartableWorkflowsByUser(String username) throws LogicException;
-
+    
+    Workflow editWorkflow(String workflowId) throws PersistenceException;
     /**
      * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
      * @param workflowId is the id of the given workflow
