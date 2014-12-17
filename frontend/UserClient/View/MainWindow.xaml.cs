@@ -44,7 +44,7 @@ namespace UserClient
         {
             try
             {
-                RestRequester.checkUser(txtName.Text, txtPassword.SecurePassword);
+                InternalRequester.checkUser(txtName.Text, txtPassword.SecurePassword);
                 userName = txtName.Text;
                 Console.WriteLine("userName: "+userName);
                 //User user = RestRequester.GetObject<User>(); methode wird noch abgeändert
@@ -71,7 +71,7 @@ namespace UserClient
             try
             {
                 Console.WriteLine(userName);
-                workflows = RestRequester.GetAllObjects<Workflow>(userName);
+                workflows = InternalRequester.GetAllObjects<Workflow>(userName);
                 Console.WriteLine("test workflows");
                 foreach (Workflow workflow in workflows)
                 {
@@ -197,7 +197,7 @@ namespace UserClient
             {
                 Button button = sender as Button;
                 int id = (int)button.Tag;
-                RestRequester.StartWorkflow(id, userName);
+                InternalRequester.StartWorkflow(id, userName);
             }
             catch (Exception exc)
             {
