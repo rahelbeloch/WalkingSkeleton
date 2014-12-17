@@ -56,7 +56,7 @@ public class UserResource {
     @Path("users/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getUser(@PathParam("username") String username) {
-        final String loggingBody = PREFIX + "GET /resource/user/" + username;
+        final String loggingBody = PREFIX + "GET /resource/users/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         User user;
         try {
@@ -89,7 +89,7 @@ public class UserResource {
     @Consumes("application/x-www-form-urlencoded")
     public Response saveUser(MultivaluedMap<String, String> formParams) {
         final ObjectMapper mapper = new ObjectMapper();
-        final String loggingBody = PREFIX + "POST /resource/user";
+        final String loggingBody = PREFIX + "POST /resource/users";
         LOGGER.log(Level.INFO, loggingBody);
         final String userAsString = formParams.get("data").get(0);
         User user;
@@ -132,7 +132,7 @@ public class UserResource {
     public Response updateUser(@PathParam("username") String username,
             MultivaluedMap<String, String> formParams) 
     {
-        final String loggingBody = PREFIX + "PUT /resource/user/" + username;
+        final String loggingBody = PREFIX + "PUT /resource/users/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         final String userAsString = formParams.get("data").get(0);
         User user = new User();
@@ -171,7 +171,7 @@ public class UserResource {
     @Path("users")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser(@HeaderParam("username") String username) {
-        final String loggingBody = PREFIX + "DELETE /resource/user/" + username;
+        final String loggingBody = PREFIX + "DELETE /resource/users/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         User user = null;
         String userAsString;

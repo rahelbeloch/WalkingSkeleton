@@ -55,7 +55,7 @@ public class WorkflowResource {
     @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getWorkflow(@PathParam("workflowid") String workflowid) {
-        final String loggingBody = PREFIX + "GET /workflow/" + workflowid;
+        final String loggingBody = PREFIX + "GET /resource/workflows/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         String workflowAsString;
         Workflow workflow = null;
@@ -94,7 +94,7 @@ public class WorkflowResource {
     @Path("workflows/startables")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getStartablesByUser(@HeaderParam("username") String username) {
-        final String loggingBody = PREFIX + "GET /workflows/startables";
+        final String loggingBody = PREFIX + "GET /resource/workflows/startables";
         LOGGER.log(Level.INFO, loggingBody);
         List<String> wIdList = null;
 
@@ -136,7 +136,7 @@ public class WorkflowResource {
             @HeaderParam("username") String username,
             @PathParam("workflowid") String workflowid)
     {
-        final String loggingBody = PREFIX + "GET /items/" + workflowid;
+        final String loggingBody = PREFIX + "GET /resource/items/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         List<Item> itemList = null;
         try {
@@ -172,7 +172,7 @@ public class WorkflowResource {
     @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getWorkflowsByUser(@HeaderParam("username") String username) {
-        final String loggingBody = PREFIX + "GET /workflow/" + username;
+        final String loggingBody = PREFIX + "GET /resource/workflows";
         LOGGER.log(Level.INFO, loggingBody);
         List<Workflow> wflowList = null;
         if (username.equals("TestAdmin")) {
@@ -224,7 +224,7 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveWorkflow(MultivaluedMap<String, String> formParams) {
-        final String loggingBody = PREFIX + "POST /workflow";
+        final String loggingBody = PREFIX + "POST /resource/workflows";
         LOGGER.log(Level.INFO, loggingBody);
         final String workflowAsString = formParams.get("data").get(0);
         Workflow workflow = new Workflow();
@@ -272,7 +272,7 @@ public class WorkflowResource {
     public Response updateWorkflow(@PathParam("workflowid") int workflowid,
             MultivaluedMap<String, String> formParams) 
     {
-        final String loggingBody = PREFIX + "PUT /workflow/" + workflowid;
+        final String loggingBody = PREFIX + "PUT /resource/workflows/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         final String workflowAsString = formParams.get("data").get(0);
         Workflow workflow = new Workflow();
@@ -322,7 +322,7 @@ public class WorkflowResource {
             @PathParam("workflowid") String workflowid,
             @PathParam("state") String state) 
     {
-        final String loggingBody = PREFIX + "PUT /workflow/" + workflowid + "/" 
+        final String loggingBody = PREFIX + "PUT /resource/workflows/" + workflowid + "/" 
                 + state;
         LOGGER.log(Level.INFO, loggingBody);
 
@@ -360,7 +360,7 @@ public class WorkflowResource {
     @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteWorkflow(@PathParam("workflowid") String workflowid) {
-        final String loggingBody = PREFIX + "DELETE /workflow/" + workflowid;
+        final String loggingBody = PREFIX + "DELETE /resource/workflows/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         Workflow workflow = null;
         String workflowAsString;
