@@ -1,6 +1,5 @@
 package de.hsrm.swt02.restserver.resource;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -16,9 +15,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
@@ -44,7 +40,6 @@ public class UserResource {
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
     private static final String PREFIX = "[restserver] ";
-    LogicResponse logicResponse;
     
     /**
      * This method returns a requested user.
@@ -88,16 +83,16 @@ public class UserResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveUser(MultivaluedMap<String, String> formParams) {
-        final ObjectMapper mapper = new ObjectMapper();
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /resource/users";
         LOGGER.log(Level.INFO, loggingBody);
         final String userAsString = formParams.get("data").get(0);
-        User user;
+        User user = new User();
         try {
-            user = mapper.readValue(userAsString, User.class);
-        } catch (IOException e) {
-            LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
-            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode()))
+            user = (User)JsonParser.unmarshall(userAsString, user);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.INFO, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
         try {
@@ -132,6 +127,7 @@ public class UserResource {
     public Response updateUser(@PathParam("username") String username,
             MultivaluedMap<String, String> formParams) 
     {
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "PUT /resource/users/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         final String userAsString = formParams.get("data").get(0);
@@ -171,6 +167,7 @@ public class UserResource {
     @Path("users")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteUser(@HeaderParam("username") String username) {
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "DELETE /resource/users/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         User user = null;
@@ -211,7 +208,6 @@ public class UserResource {
     public Response getAllUsers() {
         final String loggingBody = PREFIX + "GET /resource/users";
         LOGGER.log(Level.INFO, loggingBody);
-        final ObjectMapper mapper = new ObjectMapper();
         List<User> users;
         try {
             users = LOGIC.getAllUsers();
@@ -222,8 +218,8 @@ public class UserResource {
         String usersAsString;
         
         try {
-            usersAsString = mapper.writeValueAsString(users);
-        } catch (JsonProcessingException e) {
+            usersAsString = JsonParser.marshall(users);
+        } catch (JacksonException e) {
             LOGGER.log(Level.INFO, e);
             return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode())).build();
         }

@@ -40,7 +40,6 @@ public class RoleResource {
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
     public static final String PREFIX = "[restserver] ";
-    LogicResponse logicResponse;
     
     /**
      * This method returns a requested role.
@@ -116,6 +115,7 @@ public class RoleResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveRole(MultivaluedMap<String, String> formParams) {
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /resource/roles";
         LOGGER.log(Level.INFO, loggingBody);
         final String roleAsString = formParams.get("data").get(0);
@@ -159,6 +159,7 @@ public class RoleResource {
     public Response updateRole(@PathParam("rolename") String rolename,
             MultivaluedMap<String, String> formParams) 
     {
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "PUT /resource/roles/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
         final String roleAsString = formParams.get("data").get(0);
@@ -197,6 +198,7 @@ public class RoleResource {
     @Path("roles/{rolename}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteRole(@PathParam("rolename") String rolename) {
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "DELETE /resource/roles/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
         Role role = null;

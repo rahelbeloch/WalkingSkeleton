@@ -32,7 +32,6 @@ public class WorkflowCommandResource {
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
     public static final String PREFIX = "[restserver] ";
-    LogicResponse logicResponse;
 
     /**
      * This method executes the request to start an existing workflow.
@@ -47,9 +46,9 @@ public class WorkflowCommandResource {
     public Response startWorkflow(@PathParam("workflowid") String workflowid,
             @HeaderParam("username") String username) 
     {
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /start/" + workflowid + "/" + username;
         LOGGER.log(Level.INFO, loggingBody);
-        LogicResponse logicResponse;
 
         try {
             logicResponse = LOGIC.startWorkflow(workflowid, username);
@@ -84,8 +83,8 @@ public class WorkflowCommandResource {
             @PathParam("itemid") String itemid,
             @HeaderParam("username") String username) 
     {
-        final String loggingBody = PREFIX + "POST /forward/" + stepid + "/" + itemid + "/" + username;
         LogicResponse logicResponse;
+        final String loggingBody = PREFIX + "POST /forward/" + stepid + "/" + itemid + "/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         
         try {
