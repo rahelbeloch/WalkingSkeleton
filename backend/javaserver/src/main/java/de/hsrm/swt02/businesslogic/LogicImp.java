@@ -558,6 +558,17 @@ public class LogicImp implements Logic {
     }
 
     // BusinessLogic Sprint 2
+    
+    /**
+     * This method loads a User.
+     * 
+     * @param username describe the user
+     * @return a User, if there is one, who has this username
+     * @throws UserNotExistentException
+     */
+    public Role getRole(String rolename) throws RoleNotExistentException {
+        return (Role) p.loadRole(rolename);
+    }
 
     /**
      * This method returns all roles in persistence.

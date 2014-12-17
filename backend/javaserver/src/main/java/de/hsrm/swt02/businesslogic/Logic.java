@@ -342,4 +342,6 @@ public interface Logic {
     */
     List<Workflow> getStartableWorkflows(String username) throws LogicException;
 
+    Role getRole(String rolename) throws RoleNotExistentException;
+
 }
