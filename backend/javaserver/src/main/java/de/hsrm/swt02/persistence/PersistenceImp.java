@@ -60,12 +60,7 @@ public class PersistenceImp implements Persistence {
         if (workflow.getId() == null || workflow.getId().equals("")) {
             workflow.setId(workflows.size() + 1 + "");
         } else {
-            for (Workflow wf: workflows) {
-                if (wf.getId().equals(workflow.getId())) {
-                    workflowToRemove = wf;
-                    break;
-                }
-            }
+            workflowToRemove = loadWorkflow(workflow.getId());
         }
         if (workflowToRemove != null) {
             try {
@@ -90,14 +85,8 @@ public class PersistenceImp implements Persistence {
     }
     
     @Override
-    public void deleteWorkflow(String id) throws WorkflowNotExistentException {
-        Workflow workflowToRemove = null;
-        for (Workflow wf : workflows) {
-            if (wf.getId().equals(id)) {
-                workflowToRemove = wf;
-                break;
-            }
-        }
+    public void deleteWorkflow(String id) throws PersistenceException {
+        final Workflow workflowToRemove = loadWorkflow(id);
         if (workflowToRemove != null) {
             workflows.remove(workflowToRemove);
             this.logger.log(Level.INFO,
@@ -144,11 +133,7 @@ public class PersistenceImp implements Persistence {
      */
     public String addItemToWorkflow(String workflowId, Item item) throws PersistenceException {
         Workflow workflow = null;
-        for (Workflow wf : workflows) {
-            if (wf.getId().equals(workflowId)) {
-                workflow = wf;
-            }
-        }
+        workflow = loadWorkflow(workflowId);
         Item itemToRemove = null;
         boolean itemExists = false;
         for (Item i : workflow.getItems()) {
@@ -181,24 +166,20 @@ public class PersistenceImp implements Persistence {
      * Method for getting the parentworkflow of an item.
      * @param itemId is the id of the item
      * @return parentWorkflow
+     * @throws PersistenceException 
      */
-    public Workflow getParentWorkflow(String itemId) {
+    public Workflow getParentWorkflow(String itemId) throws PersistenceException {
         final int integerItemId = Integer.parseInt(itemId);
         final int idDivider = 10;
         final int eliminatedItemId = integerItemId % (ID_MULTIPLICATOR / idDivider);
         final String parentWorkflowId = ((integerItemId - eliminatedItemId) / ID_MULTIPLICATOR) + "";        
         
-        Workflow parentWorkflow = null;
-        for (Workflow wf: workflows) {
-            if (wf.getId().equals(parentWorkflowId)) {
-                parentWorkflow = wf;
-            }
-        }
+        final Workflow parentWorkflow = loadWorkflow(parentWorkflowId);
         return parentWorkflow;
     }
     
     @Override
-    public void deleteItem(String itemId) throws ItemNotExistentException {
+    public void deleteItem(String itemId) throws PersistenceException {
         final Workflow parentWorkflow = getParentWorkflow(itemId);
         
         
@@ -221,7 +202,9 @@ public class PersistenceImp implements Persistence {
     public Item loadItem(String itemId) throws PersistenceException {
         final Workflow parentWorkflow = getParentWorkflow(itemId);
         Item itemToReturn = null;
-        
+        if (parentWorkflow == null) {
+            throw new WorkflowNotExistentException("there is no parent workflow for item " + itemId);
+        }
         for (Item item : parentWorkflow.getItems()) {
             if (item.getId().equals(itemId)) {
                 try {

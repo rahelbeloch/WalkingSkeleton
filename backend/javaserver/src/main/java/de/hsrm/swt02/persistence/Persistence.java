@@ -87,7 +87,7 @@ public interface Persistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there.
      * @throws WorkflowNotExistentException
      */
-    void deleteWorkflow(String id) throws WorkflowNotExistentException;
+    void deleteWorkflow(String id) throws PersistenceException;
 
     /**
      * Method for function to delete an item.
@@ -95,7 +95,7 @@ public interface Persistence {
      * @exception ItemNotExistentException if the requested item is not there
      * @throws ItemNotExistentException
      */
-    void deleteItem(String id) throws ItemNotExistentException;
+    void deleteItem(String id) throws PersistenceException;
 
     /**
      * Method for the function of deleting an user.
