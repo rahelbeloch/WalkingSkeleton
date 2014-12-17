@@ -70,9 +70,9 @@
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\UserHasNoPermissionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\StepNotExistentException.cs" />
-    <Compile Include="RestRequester.cs" />
-    <Compile Include="CommunicationManager.cs" />
-    <Compile Include="CustomSerializationBinder.cs" />
+    <Compile Include="REST\RestRequester.cs" />
+    <Compile Include="Messaging\CommunicationManager.cs" />
+    <Compile Include="REST\CustomSerializationBinder.cs" />
     <Compile Include="Model\DataModel\Role.cs" />
     <Compile Include="Model\DataModel\RootElement.cs" />
     <Compile Include="Model\Exception\BasicException.cs" />
@@ -96,8 +96,8 @@
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleNotExistentException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserAlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserNotExistException.cs" />
-    <Compile Include="IDataReceiver.cs" />
-    <Compile Include="IRestRequester.cs" />
+    <Compile Include="Messaging\IDataReceiver.cs" />
+    <Compile Include="REST\IRestRequester.cs" />
     <Compile Include="Model\DataModel\Action.cs" />
     <Compile Include="Model\DataModel\FinalStep.cs" />
     <Compile Include="Model\DataModel\Item.cs" />
@@ -110,9 +110,9 @@
     <Compile Include="Model\DataModel\Workflow.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\WorkflowNotExistException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegistrationWrapper.cs" />
-    <Compile Include="RestAPI.cs" />
-    <Compile Include="URLRooter.cs" />
+    <Compile Include="Messaging\RegistrationWrapper.cs" />
+    <Compile Include="REST\RestAPI.cs" />
+    <Compile Include="REST\URLRouter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config">
