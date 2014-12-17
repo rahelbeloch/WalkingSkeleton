@@ -43,8 +43,6 @@ namespace Admin.ViewModel
             IList<Role> allRoles =  _restRequester.GetAllElements<Role>();
             foreach(Role role in allRoles)
             {
-                Console.WriteLine(role.rolename);
-                // ueberpruefen ob der aktuell ausgewählte Nutzer die Rolle hat
                 roleCheckboxRows.Add(new RoleCheckboxRow(role, false));
                 roleCollection.Add(role);
             }
@@ -198,9 +196,6 @@ namespace Admin.ViewModel
                             newRole.rolename = rolename;
 
                             _restRequester.PostObject<Role>(newRole);
-
-                            // don't update view model
-                            //_roleCollection.Add(newRole);
                             rolename = "";
                         }
                         catch (BasicException be)
