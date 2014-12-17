@@ -678,7 +678,9 @@ public class LogicImp implements Logic {
     public LogicResponse activateWorkflow(String workflowID)
             throws PersistenceException 
     {
-        p.loadWorkflow(workflowID).setActive(true);
+        Workflow workflow = p.loadWorkflow(workflowID);
+        workflow.setActive(true);
+        p.storeWorkflow(workflow);
         setLogicResponse(new LogicResponse());
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflowID));
         return logicResponse;
@@ -716,7 +718,8 @@ public class LogicImp implements Logic {
         addUser(user1);
         addUser(user2);
         addUser(user3);
-
+        addUser(user4);
+        
         startStep1 = new StartStep(user1.getUsername());
 
         action1 = new Action(user1.getUsername(), "Action von "
