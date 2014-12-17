@@ -246,8 +246,7 @@ public class Workflow extends RootElement {
         for (Step step : this.getSteps()) {
             step.getNextStepIds().clear();
             for (Step next : step.getNextSteps()) {
-                if (!step.getNextStepIds().contains(next.getId())) { // Duplikate
-                                                                     // abfangen
+                if (!step.getNextStepIds().contains(next.getId())) { 
                     step.getNextStepIds().add(next.getId());
                 }
             }
