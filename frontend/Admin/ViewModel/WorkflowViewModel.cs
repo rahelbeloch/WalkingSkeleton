@@ -313,14 +313,16 @@ namespace Admin.ViewModel
                     {
                         if (_actWorkflow.active)
                         {
-                            var b = _restRequester.SwitchElementActivity<Workflow>(_actWorkflow.id, "deactivate");
+                            _actWorkflow.active = false;
+                            _restRequester.UpdateObject(_actWorkflow);
                         }
                         else
                         {
-                            var b = _restRequester.SwitchElementActivity<Workflow>(_actWorkflow.id, "activate");
+                            _actWorkflow.active = true;
+                            _restRequester.UpdateObject(_actWorkflow);
                         }
-                        
-                        
+                        _workflowActivity = "";
+                        OnChanged("workflowActivity");
                     }, canExecute => _actWorkflow != null);
                 }
                 return _toggleActivity;
