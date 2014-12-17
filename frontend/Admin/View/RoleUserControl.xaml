@@ -57,7 +57,7 @@
                                                 <GridViewColumn Header="Aktiv" Width="150">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <CheckBox IsChecked="{Binding isSelected, Mode=TwoWay}" />
+                                                            <CheckBox IsChecked="{Binding isSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
