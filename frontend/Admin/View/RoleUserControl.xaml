@@ -24,7 +24,7 @@
                         </Grid.ColumnDefinitions>
      
                         <DockPanel Grid.Column="0">
-                            <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding userCollection}">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding userCollection}">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns >
@@ -32,7 +32,11 @@
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
+                                
                             </ListView>
+                            <DockPanel DockPanel.Dock="Bottom">
+                                <Button HorizontalAlignment="Left"  VerticalAlignment="Bottom" Content="Alle abwählen" Height="25" Margin="10" Command="{Binding deselectCommand}"/>
+                            </DockPanel>
                         </DockPanel>
 
                         <DockPanel Grid.Column="1" VerticalAlignment="Top">
@@ -63,9 +67,10 @@
                                     </ListView.View>
                                 </ListView>
                             </DockPanel>
-                            
+
                             <DockPanel DockPanel.Dock="Bottom">
-                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Nutzer hinzufügen" Height="25" Margin="10" Command="{Binding addUserCommand}"/>
+                                <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Nutzer hinzufügen" Height="25" Margin="10" Command="{Binding addUserCommand}"/>
+                                <Button HorizontalAlignment="Right"  VerticalAlignment="Bottom" Content="Ändern" Height="25" Margin="10" Command="{Binding editUserCommand}"/>
                             </DockPanel>
                             
                         </DockPanel>
@@ -98,7 +103,7 @@
                                 <Label Content="Rolle: "  VerticalContentAlignment="Center"/>
                                 <TextBox Width="120" Height="25">
                                     <TextBox.Text>
-                                        <Binding Path="role" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                        <Binding Path="rolename" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
                                 </TextBox>
                             </DockPanel>
