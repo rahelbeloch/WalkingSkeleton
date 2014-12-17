@@ -13,6 +13,7 @@ import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.AlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
@@ -40,7 +41,7 @@ public class PersistenceImp implements Persistence {
      * user, step, metaEntry
      */
     private List<Workflow> workflows = new LinkedList<>();
-    private List<Item> items = new LinkedList<>();
+    //private List<Item> items = new LinkedList<>();
     private List<User> users = new LinkedList<>();
 
     private List<Role> roles = new LinkedList<>();
@@ -53,13 +54,12 @@ public class PersistenceImp implements Persistence {
         this.logger = logger;
     }
     
-    
     // Workflow Operations
     
     @Override
-    public String storeWorkflow(Workflow workflow) throws StorageFailedException {
+    public String storeWorkflow(Workflow workflow) throws PersistenceException {
         Workflow workflowToRemove = null;
-        if (workflow.getId() == null) { // TODO: declare default value for empty ids
+        if (workflow.getId() == null || workflow.getId().equals("")) { // TODO: declare default value for empty ids
             workflow.setId(workflows.size() + 1 + "");
         } else {
             for (Workflow wf: workflows) {
@@ -79,7 +79,11 @@ public class PersistenceImp implements Persistence {
         }
         try {
             final Workflow workflowToStore = (Workflow)workflow.clone();
+            workflowToStore.clearItems();
             workflows.add(workflowToStore);
+            for (Item item : workflow.getItems()) {
+                this.addItemToWorkflow(workflowToStore.getId(), item);
+            }
         } catch (CloneNotSupportedException e) {
             throw new StorageFailedException("storage of workflow" + workflow.getId() + "failed."); 
         }
@@ -128,133 +132,146 @@ public class PersistenceImp implements Persistence {
     
     // Item Operations
     
-    @Override
-    public String storeItem(Item item) throws PersistenceException {
-        Workflow parentWorkflow = null;
-        Item itemToRemove = null;
-        
-        if (item.getId() == null) {
-            for (Workflow wf: workflows) {
-                if (item.getWorkflowId().equals(wf.getId())) {
-                    parentWorkflow = wf;
-                    break;
-                }
-            }
-            if (parentWorkflow != null) {
-                item.setId(String.valueOf(Integer.parseInt(parentWorkflow.getId()) * ID_MULTIPLICATOR + parentWorkflow.getItems().size() + ""));
-            } else {
-                throw new WorkflowNotExistentException("invalid parent workflow id in item " + item.getId());
+    public String addItemToWorkflow(String workflowId, Item item) throws AlreadyExistsException, StorageFailedException {
+        Workflow workflow = null;
+        for (Workflow wf : workflows) {
+            if (wf.getId().equals(workflowId)) {
+                workflow = wf;
             }
         }
         
-        for (Item i : items) {
+        for (Item i : workflow.getItems()) {
             if (i.getId().equals(item.getId())) {
-                itemToRemove = i;
-                break;
+                throw new AlreadyExistsException("workflow " + workflow.getId() + "already has an item " + item.getId());
             }
         }
-        if (itemToRemove != null) {
-            this.deleteItem(itemToRemove.getId());
-            this.logger.log(Level.INFO, "[persistence] overwriting item " + itemToRemove.getId() + "...");
-        }
         
-        Item itemToStore;
+        item.setId(workflow.getItems().size() + 1 + "");      
         try {
-            itemToStore = (Item)item.clone();
+            workflow.addItem((Item)item.clone());
         } catch (CloneNotSupportedException e) {
-            throw new StorageFailedException("storage of item" + item.getId() + "failed."); 
+            throw new StorageFailedException("storage of item" + item.getId() + "to workflow " + workflowId + "failed."); 
         }
-        items.add(itemToStore);
-        this.logger.log(Level.INFO, "[persistence] successfully stored item " + item.getId() + ".");
         return item.getId();
     }
     
-    @Override
-    public void deleteItem(String id) throws ItemNotExistentException {
-        Item itemToRemove = null;
-        for (Item item : items) {
-            if (item.getId().equals(id)) {
-                itemToRemove = item;
-                break;
+//    @Override
+//    public String storeItem(Item item) throws PersistenceException {
+//        Workflow parentWorkflow = null;
+//        Item itemToRemove = null;
+//        
+//        if (item.getId() == null) {
+//            for (Workflow wf: workflows) {
+//                if (item.getWorkflowId().equals(wf.getId())) {
+//                    parentWorkflow = wf;
+//                    break;
+//                }
+//            }
+//            if (parentWorkflow != null) {
+//                item.setId(String.valueOf(Integer.parseInt(parentWorkflow.getId()) * ID_MULTIPLICATOR + parentWorkflow.getItems().size() + ""));
+//            } else {
+//                throw new WorkflowNotExistentException("invalid parent workflow id in item " + item.getId());
+//            }
+//        }
+//        
+//        for (Item i : items) {
+//            if (i.getId().equals(item.getId())) {
+//                itemToRemove = i;
+//                break;
+//            }
+//        }
+//        if (itemToRemove != null) {
+//            this.deleteItem(itemToRemove.getId());
+//            this.logger.log(Level.INFO, "[persistence] overwriting item " + itemToRemove.getId() + "...");
+//        }
+//        
+//        Item itemToStore;
+//        try {
+//            itemToStore = (Item)item.clone();
+//        } catch (CloneNotSupportedException e) {
+//            throw new StorageFailedException("storage of item" + item.getId() + "failed."); 
+//        }
+//        items.add(itemToStore);
+//        this.logger.log(Level.INFO, "[persistence] successfully stored item " + item.getId() + ".");
+//        return item.getId();
+//    }
+    public Workflow getParentWorkflow(String itemId) {
+        final int integerItemId = Integer.parseInt(itemId);
+        final int eliminatedItemId = integerItemId % ID_MULTIPLICATOR / 10;
+        final String parentWorkflowId = (integerItemId - eliminatedItemId) + "";        
+        
+        Workflow parentWorkflow = null;
+        for (Workflow wf: workflows) {
+            if (wf.getId().equals(parentWorkflowId)) {
+                parentWorkflow = wf;
             }
         }
+        return parentWorkflow;
+    }
+    
+    @Override
+    public void deleteItem(String itemId) throws ItemNotExistentException {
+        Workflow parentWorkflow = getParentWorkflow(itemId);
+        Item itemToRemove = null;
+        
+        for (Item item: parentWorkflow.getItems()) {
+            if (item.getId().equals(itemId)) {
+                itemToRemove = item;
+            }
+        }
+        
         if (itemToRemove != null) {
-            items.remove(itemToRemove);
-            this.logger.log(Level.INFO,"[persistence] successfully removed workflow " + itemToRemove.getId() + ".");
+            parentWorkflow.getItems().remove(itemToRemove);
+            this.logger.log(Level.INFO,"[persistence] successfully removed item " + itemToRemove.getId() + ".");
         } else {
-            throw new ItemNotExistentException("database has no item " + id);
+            throw new ItemNotExistentException("database has no item " + itemId);
         }
     }
 
     @Override
-    public Item loadItem(String id) throws PersistenceException {
+    public Item loadItem(String itemId) throws PersistenceException {
+        Workflow parentWorkflow = getParentWorkflow(itemId);
         Item itemToReturn = null;
-        for (Item item : items) {
-            if (item.getId().equals(id)) {
+        
+        for (Item item : parentWorkflow.getItems()) {
+            if (item.getId().equals(itemId)) {
                 try {
                     itemToReturn = (Item)item.clone();
                 } catch (CloneNotSupportedException e) {
-                    throw new StorageFailedException("loading of item" + id + "failed."); 
+                    throw new StorageFailedException("loading of item" + itemId + "failed."); 
                 }
             }
         }
         if (itemToReturn != null) {
             return itemToReturn;
         } else {
-            throw new ItemNotExistentException("database has no item " + id);
+            throw new ItemNotExistentException("database has no item " + itemId);
         }
     }
 
     // User Operations
     
     @Override
-    public void addUser(User user) throws PersistenceException {
-        for (User u : users) {
-            if (u.getUsername().equals(user.getUsername())) {
-                throw new UserAlreadyExistsException("username " + user.getUsername() + " is already assigned.");
-            }
-        }
-        User userToStore;
-        try {
-            userToStore = (User) user.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new StorageFailedException("storage of user '" + user.getUsername() + "' failed."); 
-        }
-        users.add(userToStore);
-        this.logger.log(Level.INFO, "[persistence] successfully added user '" + userToStore.getUsername() + "'.");
-    }
-
-    @Override
-    public void updateUser(User user) throws PersistenceException {        
+    public void storeUser(User user) throws PersistenceException {
         User userToRemove = null;
-        for (User u : users) {
+        for (User u: users) {
             if (u.getUsername().equals(user.getUsername())) {
                 userToRemove = u;
+                break;
             }
         }
         if (userToRemove != null) {
             this.deleteUser(userToRemove.getUsername());
-            this.logger.log(Level.INFO, "[persistence] overwriting user '" + userToRemove.getUsername() + "'...");
+            this.logger.log(Level.INFO, "[persistence] overwriting user " + user.getUsername() + "...");
         }
-        
-//            // check if there are duplicate messagingsubs
-//            final List<String> subs = user.getMessagingSubs();
-//            final List<String> definiteSubs = null;
-//            for (String sub :subs) {
-//                if (!definiteSubs.contains(sub)) {
-//                    definiteSubs.add(sub);
-//                }
-//            }
-            //messagingsublist is cleared and filled with the new list
-//            user.getMessagingSubs().clear();
-//            user.getMessagingSubs().addAll(definiteSubs);
-            //finally user is added
-
+        User userToStore;
         try {
-            this.addUser(user);
-        } catch (UserAlreadyExistsException e) {
-            throw new StorageFailedException("update user failure, duplicate users");
+            userToStore = (User)user.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new StorageFailedException("storage of user" + user.getUsername() + "failed.");
         }
+        users.add(userToStore);
+        this.logger.log(Level.INFO, "[persistence] successfully stored user " + user.getUsername() + ".");
     }
 
     @Override

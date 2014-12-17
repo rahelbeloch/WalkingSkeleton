@@ -29,16 +29,16 @@ public interface Persistence {
      * @param workflow is a workflow for storing
      * @return id of stored workflow
      */
-    String storeWorkflow(Workflow workflow) throws StorageFailedException;
+    String storeWorkflow(Workflow workflow) throws PersistenceException;
 
 
-    /**
-     * store functions to store an item.
-     * @param item is an item for storing
-     * @exception WorkflowNotExistentException if the requested workflow is not there
-     * @throws WorkflowNotExistentException
-     */
-    String storeItem(Item item) throws PersistenceException;
+//    /**
+//     * store functions to store an item.
+//     * @param item is an item for storing
+//     * @exception WorkflowNotExistentException if the requested workflow is not there
+//     * @throws WorkflowNotExistentException
+//     */
+//    String storeItem(Item item) throws PersistenceException;
     
     /**
      * Method for adding a new user.
@@ -46,15 +46,7 @@ public interface Persistence {
      * @exception UserAlreadyExistsException if the user to store is already there.
      * @throws UserAlreadyExistsException
      */
-    void addUser(User user) throws PersistenceException;
-
-    /**
-     * Method for updating an already existing user.
-     * @param user is the user we need
-     * @exception UserNotExistentException if the requested user is not there.
-     * @throws UserNotExistentException
-     */
-    void updateUser(User user) throws PersistenceException;
+    void storeUser(User user) throws PersistenceException;
 
     /**
      * Method for loading all workflows into a list of workflows.
