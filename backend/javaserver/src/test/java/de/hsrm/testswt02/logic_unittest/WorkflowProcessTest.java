@@ -23,9 +23,11 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
+
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
+
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 
 
@@ -44,10 +46,16 @@ public class WorkflowProcessTest {
 
     /**
      * build workingset before testing.
+<<<<<<< .mine
+     * @throws StorageFailedException 
+=======
      * @throws PersistenceException 
+>>>>>>> .r886
      */
     @Before
+
     public void setUp() throws PersistenceException {
+
         final Injector i = Guice.createInjector(new SingleModule());
         processManager = i.getInstance(ProcessManager.class);
         persistence = i.getInstance(Persistence.class);
