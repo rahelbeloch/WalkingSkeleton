@@ -109,8 +109,11 @@ public class LogicImp implements Logic {
         return persistence.loadWorkflow(workflowID);
     }
 
-    public Workflow editWorkflow(String workflowId){
-       return null;
+    public Workflow editWorkflow(String workflowId) throws PersistenceException{
+        
+        final Workflow editWorkflow = persistence.loadWorkflow(workflowId);
+        
+        return null;
     }
 
     /**
