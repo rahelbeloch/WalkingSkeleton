@@ -32,8 +32,15 @@ namespace Admin.ViewModel
 
         private void updateModel()
         {
-            IList<Role> allRoles =  _restRequester.GetAllElements<Role>();
+            // update userlist
+            IList<User> allUsers = _restRequester.GetAllElements<User>();
+            foreach (User user in allUsers)
+            {
+                userCollection.Add(user);
+            }
 
+            // update rolelist
+            IList<Role> allRoles =  _restRequester.GetAllElements<Role>();
             foreach(Role role in allRoles)
             {
                 // ueberpruefen ob der aktuell ausgewählte Nutzer die Rolle hat
