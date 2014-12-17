@@ -32,11 +32,11 @@ namespace CommunicationLib
         public static string generateUrl(UrlMethod method,Type objType, params string[] values)
         {
             String url = (method == UrlMethod.Resource) ? "resource" : "command";
-
+           
             if (objType != null)
             {
                 String typeName = objType.FullName.Split('.').Last().ToLower();
-                url += typeName + "s";
+                url += "/" + typeName + "s";
             }
 
             // append all url params to url; seperated by '/'
@@ -44,7 +44,7 @@ namespace CommunicationLib
             {
                 url += "/" + val;
             }
-
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + url);
             return url;
         }
     }
