@@ -21,7 +21,6 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
@@ -121,10 +120,10 @@ public class LogicImp implements Logic {
      * 
      * @param workflowID
      *            describe the Workflow
-     * @throws WorkflowNotExistentException
+     * @throws PersistenceException 
      */
     @Override
-    public LogicResponse deleteWorkflow(String workflowID) throws WorkflowNotExistentException {
+    public LogicResponse deleteWorkflow(String workflowID) throws PersistenceException {
         persistence.deleteWorkflow(workflowID);
         final LogicResponse logicResponse = new LogicResponse();
         
