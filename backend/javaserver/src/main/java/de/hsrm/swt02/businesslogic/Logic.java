@@ -74,7 +74,7 @@ public interface Logic {
      * @throws WorkflowNotExistentException .
      */
     LogicResponse deleteWorkflow(String workflowID)
-            throws WorkflowNotExistentException;
+            throws PersistenceException;
 
     /*
      * item
