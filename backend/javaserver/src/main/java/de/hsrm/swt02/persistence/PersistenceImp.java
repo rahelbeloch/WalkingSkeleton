@@ -136,10 +136,10 @@ public class PersistenceImp implements Persistence {
     
     /**
      * Method for adding an item to the workflow.
-     * @param workflowId is the needed workflowid
+     * @param workflowId is the needed workflowId
      * @param item is the needed item
      * @return itemId is the stored item
-     * @exception PersistenceException inidcates errors in storage methods
+     * @exception PersistenceException indicates errors in storage methods
      * @throws PersistenceException 
      */
     public String addItemToWorkflow(String workflowId, Item item) throws PersistenceException {
