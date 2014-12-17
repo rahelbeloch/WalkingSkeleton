@@ -231,6 +231,8 @@ namespace Admin.ViewModel
                     _deselectCommand = new ActionCommand(execute =>
                         {
                             _selectedUser = null;
+                            username = "";
+                            OnChanged("username");
                         }, canExecute => _selectedUser != null);
                 }
 
