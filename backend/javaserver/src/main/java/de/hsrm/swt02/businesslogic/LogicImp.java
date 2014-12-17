@@ -109,6 +109,10 @@ public class LogicImp implements Logic {
         return persistence.loadWorkflow(workflowID);
     }
 
+    public Workflow editWorkflow(String workflowId){
+       return null;
+    }
+
     /**
      * This method delete a Workflow in Persistence.
      * 
@@ -264,7 +268,7 @@ public class LogicImp implements Logic {
         persistence.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : persistence.loadAllWorkflows()) {
-            if (wf.isActive()) {
+            if (wf.isActive() || wf.getItems().size() > 0) {
                 for (Step step : wf.getSteps()) {
                     if (step.getUsername().equals(username)) {
                         Workflow copyOfWf;
@@ -431,7 +435,7 @@ public class LogicImp implements Logic {
                 
         return workflows;
     }
-
+    
     /**
      * This method check a User, later it will be extended for password.
      * 
