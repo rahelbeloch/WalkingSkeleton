@@ -562,9 +562,10 @@ public class LogicImp implements Logic {
     /**
      * This method loads a User.
      * 
-     * @param username describe the user
-     * @return a User, if there is one, who has this username
-     * @throws UserNotExistentException
+     * @param rolename describe the role
+     * @return a role, if there is one, who has this rolename
+     * @exception RoleNotExistentException if the requested role doesnt exist
+     * @throws RoleNotExistentException
      */
     public Role getRole(String rolename) throws RoleNotExistentException {
         return (Role) p.loadRole(rolename);
