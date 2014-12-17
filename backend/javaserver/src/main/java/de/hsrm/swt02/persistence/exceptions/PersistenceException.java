@@ -3,7 +3,7 @@ package de.hsrm.swt02.persistence.exceptions;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 
 /**
- * Exception responsible for all persistence exceptions.
+ * Exception responsible forr all persistence exceptions.
  */
 public class PersistenceException extends LogicException {
     

@@ -1,10 +1,10 @@
 package de.hsrm.swt02.persistence.exceptions;
 
+/**
+ * Exception for StepNotExistentExceptionhandling.
+ */
 public class StepNotExistentException extends NotExistentException {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -8607483435331612341L;
     public static final int ERRORCODE = 11254;
 
