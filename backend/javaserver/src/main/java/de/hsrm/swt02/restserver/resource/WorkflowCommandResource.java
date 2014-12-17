@@ -49,15 +49,15 @@ public class WorkflowCommandResource {
     {
         final String loggingBody = PREFIX + "POST /start/" + workflowid + "/" + username;
         LOGGER.log(Level.INFO, loggingBody);
+        LogicResponse logicResponse;
 
         try {
-            LOGIC.startWorkflow(workflowid, username);
+            logicResponse = LOGIC.startWorkflow(workflowid, username);
         } catch (PersistenceException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
 
-        logicResponse = LOGIC.getProcessLogicResponse();
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -65,7 +65,6 @@ public class WorkflowCommandResource {
                 LOGGER.log(Level.WARNING, e);
             }
         }
-        LOGIC.setProcessLogicResponse(new LogicResponse());
         LOGGER.log(Level.INFO, loggingBody + " Workflow started.");
         return Response.ok().build();
     }
@@ -86,16 +85,16 @@ public class WorkflowCommandResource {
             @HeaderParam("username") String username) 
     {
         final String loggingBody = PREFIX + "POST /forward/" + stepid + "/" + itemid + "/" + username;
+        LogicResponse logicResponse;
         LOGGER.log(Level.INFO, loggingBody);
         
         try {
-            LOGIC.stepForward(itemid, stepid, username);
+            logicResponse = LOGIC.stepForward(itemid, stepid, username);
         } catch (LogicException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
 
-        logicResponse = LOGIC.getProcessLogicResponse();
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -103,7 +102,7 @@ public class WorkflowCommandResource {
                 LOGGER.log(Level.WARNING, e);
             }
         }
-        LOGIC.setProcessLogicResponse(new LogicResponse());
+        
         LOGGER.log(Level.INFO, loggingBody + " Worfklow forwarded.");
         return Response.ok().build();
     }
