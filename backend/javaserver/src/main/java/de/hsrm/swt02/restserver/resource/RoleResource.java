@@ -23,6 +23,7 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Role;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
@@ -130,7 +131,7 @@ public class RoleResource {
         }
         try {
             logicResponse = LOGIC.addRole(role);
-        } catch (RoleAlreadyExistsException e1) {
+        } catch (PersistenceException e1) {
             LOGGER.log(Level.INFO, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
@@ -173,7 +174,7 @@ public class RoleResource {
         }
         try {
             logicResponse = LOGIC.addRole(role);
-        } catch (RoleAlreadyExistsException e1) {
+        } catch (PersistenceException e1) {
             LOGGER.log(Level.INFO, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }

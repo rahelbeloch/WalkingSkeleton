@@ -99,46 +99,6 @@ public class RestServerUserTest {
     }
     
     /**
-     * This test checks if an already existent user can be added again.
-     * Same user must be available in persistence.
-     * It should receive an error code 500.
-     */
-    @Test
-    public void testSaveExistentUser() {
-        final int httpstatus = 200;
-        final int httpstatus2 = 500;
-        final User testUser = new User();
-        final ObjectMapper mapper = new ObjectMapper();
-        final Form dataform;
-        String userAsString = null;
-        testUser.setId("0");
-        testUser.setUsername("Tester1");
-        
-        try {
-            userAsString = mapper.writeValueAsString(testUser);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        dataform = new Form().param("data", userAsString);
-        final Response resp = client
-                .target(targetUrl)
-                .path("resource/users")
-                .request()
-                .post(Entity.entity(dataform,
-                        MediaType.APPLICATION_FORM_URLENCODED));
-        
-        assertEquals(httpstatus, resp.getStatus());
-        
-        final Response resp2 = client
-                .target(targetUrl)
-                .path("resource/users")
-                .request()
-                .post(Entity.entity(dataform,
-                        MediaType.APPLICATION_FORM_URLENCODED));
-        assertEquals(httpstatus2, resp2.getStatus());
-    }
-    
-    /**
      * This test checks if a client can get a nonexistent user.
      * Error 500 should be received.
      */
