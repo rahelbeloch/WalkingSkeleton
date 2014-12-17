@@ -72,7 +72,7 @@ public class RestserverCommandTest {
      */
     @Test
     public void testLogin() {
-        final int url200 = 200;
+        final int httpstatus = 200;
         final User testUser = new User();
         final ObjectMapper mapper = new ObjectMapper();
         Form dataform;
@@ -99,7 +99,7 @@ public class RestserverCommandTest {
                 .request().header("username", "Alex").header("password", "test")
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
-        assertEquals(resp.getStatus(), url200);
+        assertEquals(resp.getStatus(), httpstatus);
     }
     
     /**

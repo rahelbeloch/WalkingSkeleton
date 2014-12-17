@@ -75,7 +75,7 @@ public class RestServerUserTest {
      */
     @Test
     public void testSaveUser() {
-        final int url200 = 200;
+        final int httpstatus = 200;
         final User testUser = new User();
         final ObjectMapper mapper = new ObjectMapper();
         final Form dataform;
@@ -95,7 +95,7 @@ public class RestServerUserTest {
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
-        assertEquals(url200, resp.getStatus());
+        assertEquals(httpstatus, resp.getStatus());
     }
     
     /**
@@ -105,8 +105,8 @@ public class RestServerUserTest {
      */
     @Test
     public void testSaveExistentUser() {
-        final int url200 = 200;
-        final int url500 = 500;
+        final int httpstatus = 200;
+        final int httpstatus2 = 500;
         final User testUser = new User();
         final ObjectMapper mapper = new ObjectMapper();
         final Form dataform;
@@ -127,7 +127,7 @@ public class RestServerUserTest {
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         
-        assertEquals(url200, resp.getStatus());
+        assertEquals(httpstatus, resp.getStatus());
         
         final Response resp2 = client
                 .target(targetUrl)
@@ -135,7 +135,7 @@ public class RestServerUserTest {
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
-        assertEquals(url500, resp2.getStatus());
+        assertEquals(httpstatus2, resp2.getStatus());
     }
     
     /**
@@ -144,9 +144,10 @@ public class RestServerUserTest {
      */
     @Test
     public void testGetNonExistentUser() {
+        final int httpstatus = 500;
         final Response resp = client.target(targetUrl).path("resource/users")
                 .request().header("username","Testerxy").delete();
-        assertEquals(500, resp.getStatus());
+        assertEquals(httpstatus, resp.getStatus());
     }
     /**
      * This test checks if the client can get a new user successfully.
@@ -190,9 +191,10 @@ public class RestServerUserTest {
      */
     @Test
     public void testDeleteNonExistentUser() {
+        final int httpstatus = 500;
         final Response resp = client.target(targetUrl).path("resource/users")
                 .request().header("username", "Testerabc").delete();
-        assertEquals(500, resp.getStatus());
+        assertEquals(httpstatus, resp.getStatus());
     }
     
     /**
@@ -201,6 +203,7 @@ public class RestServerUserTest {
      */
     @Test
     public void testDeleteExistentUser() {
+        final int httpstatus = 200;
         final User testUser = new User();
         final ObjectMapper mapper = new ObjectMapper();
         final Form dataform;
@@ -221,7 +224,7 @@ public class RestServerUserTest {
                       MediaType.APPLICATION_FORM_URLENCODED));
         final Response resp = client.target(targetUrl).path("resource/users")
                 .request().header("username", "Tester3").delete();
-        assertEquals(200, resp.getStatus());
+        assertEquals(httpstatus, resp.getStatus());
     }
     
     

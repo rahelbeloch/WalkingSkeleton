@@ -24,6 +24,7 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleHasAlreadyUserException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
@@ -60,7 +61,7 @@ public class PersistenceTest {
     
     
     @Test
-    public void testWorkflowStorage() throws WorkflowNotExistentException, StorageFailedException {
+    public void testWorkflowStorage() throws PersistenceException {
         final Workflow workflow007 = new Workflow();
         final Workflow workflow006 = new Workflow();
         final Workflow workflow005 = new Workflow();
@@ -77,12 +78,11 @@ public class PersistenceTest {
 
     /**
      * Method for testing if it's possible to delete a workflow.
-     * @exception WorkflowNotExistentException if the requested workflow is not there
      * @throws WorkflowNotExistentException
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test(expected = WorkflowNotExistentException.class)
-    public void testWorkflowDeletion() throws WorkflowNotExistentException, StorageFailedException {
+    public void testWorkflowDeletion() throws PersistenceException {
         final Workflow wf001 = new Workflow();
         final Workflow wf002 = new Workflow();
         db.storeWorkflow(wf001);
@@ -96,12 +96,11 @@ public class PersistenceTest {
 
     /**
      * Method for testing if it's possible to store a workflow with a few steps in the steplist.
-     * @exception WorkflowNotExistentException if the requested workflow is not there
      * @throws WorkflowNotExistentException
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test(expected = WorkflowNotExistentException.class)
-    public void testWorkflowStorageIncludingSteps() throws WorkflowNotExistentException, StorageFailedException {
+    public void testWorkflowStorageIncludingSteps() throws PersistenceException {
         final Workflow workflow007 = new Workflow();
 
         final StartStep step1 = new StartStep("username");
@@ -141,12 +140,11 @@ public class PersistenceTest {
 
     /**
      * Method for testing if it's possible to store an item.
-     * @exception ItemNotExistentException if the requested item is not there
      * @throws ItemNotExistentException
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test
-    public void testItemStorage() throws ItemNotExistentException, WorkflowNotExistentException, StorageFailedException {
+    public void testItemStorage() throws PersistenceException {
         final Workflow wf000 = new Workflow();
         final Item item001 = new Item();
         final Item item002 = new Item();
@@ -181,12 +179,11 @@ public class PersistenceTest {
  
     /**
      * Method for testing if it's possible to store an item with a few metadata entries.
-     * @exception ItemNotExistentException if the requested item is not there
      * @throws ItemNotExistentException
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test
-    public void testItemStorageIncludingMetaData() throws ItemNotExistentException, WorkflowNotExistentException, StorageFailedException {
+    public void testItemStorageIncludingMetaData() throws PersistenceException {
         final Workflow wf000 = new Workflow();
         final Item item001 = new Item();
         
@@ -229,14 +226,12 @@ public class PersistenceTest {
 
     /**
      * Method for testing if it's possible to store a user.
-     * @exception UserAlreadyExistsException if the requested user is already there
-     * @exception UserNotExistentException if the requested user is not there
      * @throws UserAlreadyExistsException
      * @throws UserNotExistentException
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test
-    public void testUserStorage() throws UserAlreadyExistsException, UserNotExistentException, StorageFailedException {
+    public void testUserStorage() throws PersistenceException {
         final User user001 = new User();
         final User user002 = new User();
         final User user003 = new User();
@@ -255,12 +250,11 @@ public class PersistenceTest {
 
     /**
      * Method for testing if a user is already there.
-     * @exception UserAlreadyExistsException if the requested user is already there
      * @throws UserAlreadyExistsException
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test(expected = UserAlreadyExistsException.class)
-    public void testUserAlreadyExistsException() throws UserAlreadyExistsException, StorageFailedException {
+    public void testUserAlreadyExistsException() throws PersistenceException {
         final User user001 = new User();
         final User user002 = new User();
         user001.setUsername("17");
@@ -274,12 +268,11 @@ public class PersistenceTest {
 
     /**
      * Method for testing if it's possible to store duplicate user.
-     * @exception UserNotExistentException if the requested user is not there
      * @throws UserNotExistentException
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test
-    public void testDuplicateUserStorage() throws UserNotExistentException, StorageFailedException {
+    public void testDuplicateUserStorage() throws PersistenceException {
         final User user001 = new User();
         final User user002 = new User();
         user001.setUsername("17");
@@ -301,14 +294,12 @@ public class PersistenceTest {
 
     /**
      * Method for testing if it's possible to delete an user.
-     * @exception UserAlreadyExistsException if the requested user is already there
-     * @exception UserNotExistentException if the requested user is not there
      * @throws UserAlreadyExistsException
      * @throws UserNotExistentException
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test(expected = UserNotExistentException.class) 
-    public void testUserDeletion() throws UserAlreadyExistsException, UserNotExistentException, StorageFailedException {
+    public void testUserDeletion() throws PersistenceException {
         final User user001 = new User();
         final User user002 = new User();
         user001.setUsername("1");
@@ -327,14 +318,12 @@ public class PersistenceTest {
 
     /**
      * Method for testing if it's possible to update an User.
-     * @exception UserNotExistentException if the requested user is not there
-     * @exception UserAlreadyExistsException if the requested user is already there
      * @throws UserNotExistentException
      * @throws UserAlreadyExistsException
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test
-    public void testUpdateOnUser() throws UserNotExistentException, UserAlreadyExistsException, StorageFailedException {
+    public void testUpdateOnUser() throws PersistenceException {
         final User user001 = new User();
         user001.setUsername("1");
         db.addUser(user001);
@@ -359,11 +348,10 @@ public class PersistenceTest {
 
     /**
      * Method for testing of updating a nonexistent user.
-     * @exception UserNotExistentException if the requested user is not there
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test(expected = UserNotExistentException.class)
-    public void testUpdateOnNonExistentUser() throws UserNotExistentException, StorageFailedException {
+    public void testUpdateOnNonExistentUser() throws PersistenceException {
         final User user001 = new User();
         user001.setUsername("1");
 
@@ -393,18 +381,14 @@ public class PersistenceTest {
     /**
      * Method for testing if it's possible to assign roles to users and vice-versa.
      * @exception RoleNotExistentException if the requested role is not there
-     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
-     * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
-     * @exception UserNotExistentException if the requested user is not there
-     * @exception RoleNotExistentException if the requested role is not there
      * @throws UserHasAlreadyRoleException
      * @throws RoleHasAlreadyRoleException
      * @throws UserNotExistentException
      * @throws RoleNotExistentException 
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test
-    public void testRoleToUserAssignement() throws UserAlreadyExistsException, RoleNotExistentException, UserNotExistentException, RoleHasAlreadyUserException, UserHasAlreadyRoleException, StorageFailedException {
+    public void testRoleToUserAssignement() throws PersistenceException {
         final Role roletest = new Role();
         final User usertest = new User();
         usertest.setUsername("name");

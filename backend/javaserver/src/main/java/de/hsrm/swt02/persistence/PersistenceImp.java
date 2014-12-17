@@ -335,7 +335,7 @@ public class PersistenceImp implements Persistence {
      * @return roleId is the Id of the stored role
      */
     public String storeRole(Role role) {
-        if (Integer.parseInt(role.getId()) <= 0) {
+        if (role.getId() == null) {
             role.setId(roles.size() + 1 + "");
         }
         Role roleToRemove = null;

@@ -22,6 +22,7 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
@@ -54,12 +55,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws WorkflowNotExistentException if Workflow doesnt exists.
-     * @throws IncompleteEleException 
-     * @throws StorageFailedException 
+     * @throws LogicException 
      */
     @Test
-    public void addGetWorkflowTest() throws WorkflowNotExistentException, IncompleteEleException, StorageFailedException {
+    public void addGetWorkflowTest() throws LogicException {
         init();
         li.addWorkflow(w);
         assertTrue(li.getWorkflow(w.getId()).equals(w));
@@ -67,13 +66,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws WorkflowNotExistentException if Worklow doesnt exists.
-     * @throws IncompleteEleException 
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
+     * @throws LogicException 
      */
     @Test
-    public void startWorkflowTest() throws WorkflowNotExistentException, IncompleteEleException, StorageFailedException, ItemNotExistentException {
+    public void startWorkflowTest() throws LogicException {
         init();
         initExtension();
 
@@ -92,12 +88,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws WorkflowNotExistentException if Worklow doesnt exists.
-     * @throws IncompleteEleException 
-     * @throws StorageFailedException 
+     * @throws LogicException 
      */
     @Test(expected = WorkflowNotExistentException.class)
-    public void deleteWortflowTest() throws WorkflowNotExistentException, IncompleteEleException, StorageFailedException {
+    public void deleteWortflowTest() throws LogicException {
         init();
         li.addWorkflow(w);
         li.deleteWorkflow(w.getId());
@@ -108,18 +102,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws WorkflowNotExistentException if Worklow doesnt exists.
-     * @throws ItemNotExistentException if Item doesnt exists.
-     * @throws UserNotExistentException if User doesnt exists.
-     * @throws UserHasNoPermissionException 
-     * @throws ItemNotForwardableException 
-     * @throws IncompleteEleException 
-     * @throws StorageFailedException 
-     * @throws StepNotExistentException 
+     * @throws LogicException 
      */
     @Test
-    public void stepOverTest() throws WorkflowNotExistentException,
-            ItemNotExistentException, UserNotExistentException, ItemNotForwardableException, UserHasNoPermissionException, IncompleteEleException, StorageFailedException, StepNotExistentException 
+    public void stepOverTest() throws LogicException 
     {
         init();
         initExtension();
@@ -140,12 +126,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws WorkflowNotExistentException if Worklow doesnt exists.
-     * @throws IncompleteEleException 
-     * @throws StorageFailedException 
+     * @throws LogicException 
      */
     @Test
-    public void addStepTest() throws WorkflowNotExistentException, IncompleteEleException, StorageFailedException {
+    public void addStepTest() throws LogicException {
         init();
         li.addWorkflow(w);
         final int i = w.getSteps().size();
@@ -157,12 +141,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws WorkflowNotExistentException if Worklow doesnt exists.
-     * @throws IncompleteEleException 
-     * @throws StorageFailedException 
+     * @throws LogicException 
      */
     @Test
-    public void deleteStepTest() throws WorkflowNotExistentException, IncompleteEleException, StorageFailedException {
+    public void deleteStepTest() throws LogicException {
         init();
         li.addWorkflow(w);
         final int i = w.getSteps().size();
@@ -174,11 +156,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws UserNotExistentException if User doesnt exists.
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test
-    public void addGetUserTest() throws UserNotExistentException, StorageFailedException {
+    public void addGetUserTest() throws PersistenceException {
         init();
         try {
             li.addUser(user);
@@ -191,11 +172,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws UserAlreadyExistsException if User Already exists in persistence.
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test(expected = UserAlreadyExistsException.class)
-    public void userAlreadyExistsTest() throws UserAlreadyExistsException, StorageFailedException {
+    public void userAlreadyExistsTest() throws PersistenceException {
         init();
         li.addUser(user);
         li.addUser(user);
@@ -204,11 +184,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws UserNotExistentException if User doesnt exists.
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Test(expected = UserNotExistentException.class)
-    public void deleteUserTest() throws UserNotExistentException, StorageFailedException {
+    public void deleteUserTest() throws PersistenceException {
         init();
         try {
             li.addUser(user);
@@ -238,14 +217,10 @@ public class LogicTest {
 
     /**
      * 
-     * @throws WorkflowNotExistentException if Worklow doesnt exists.
-     * @throws UserNotExistentException if User doesnt exists.
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
+     * @throws LogicException 
      */
     @Test
-    public void getOpenItemsByUserTest() throws WorkflowNotExistentException,
-            UserNotExistentException, ItemNotExistentException, StorageFailedException 
+    public void getOpenItemsByUserTest() throws LogicException 
     {
         init();
         initExtension();
@@ -260,10 +235,10 @@ public class LogicTest {
     
     /**
      * Check if steps in a workflow are connected.
-     * @throws StorageFailedException 
+     * @throws LogicException 
      */
     @Test
-    public void connectWorkflowSteps() throws StorageFailedException {
+    public void connectWorkflowSteps() throws LogicException {
         init();
         initExtension();
         
@@ -292,11 +267,10 @@ public class LogicTest {
 
     /**
      * This Method test deactivation.
-     * @throws IncompleteEleException 
-     * @throws StorageFailedException 
+     * @throws LogicException 
      */
     @Test
-    public void deactivateWorkflow() throws IncompleteEleException, StorageFailedException {
+    public void deactivateWorkflow() throws LogicException {
         init();
         li.addWorkflow(w);
         w.setActive(false);
@@ -304,12 +278,10 @@ public class LogicTest {
     }
     /**
      * 
-     * @throws WorkflowNotExistentException if workflow doesnt exists.
-     * @throws IncompleteEleException 
-     * @throws StorageFailedException 
+     * @throws LogicException 
      */
     @Test
-    public void getAllActiveWorkflowTest() throws WorkflowNotExistentException, IncompleteEleException, StorageFailedException {
+    public void getAllActiveWorkflowTest() throws LogicException {
         init();
         final int before = li.getAllWorkflows().size();
         li.addWorkflow(w);
@@ -366,10 +338,10 @@ public class LogicTest {
     
     /**
      * This method init more data for testing.
-     * @throws StorageFailedException 
+     * @throws LogicException 
 
      */
-    private void initExtension() throws StorageFailedException {
+    private void initExtension() throws LogicException {
         user2 = new User();
         user2.setUsername("2");
 

@@ -11,6 +11,7 @@ import com.google.inject.Injector;
 
 import de.hsrm.swt02.businesslogic.ProcessManager;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
@@ -23,6 +24,7 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 
@@ -42,10 +44,10 @@ public class WorkflowProcessTest {
 
     /**
      * build workingset before testing.
-     * @throws StorageFailedException 
+     * @throws PersistenceException 
      */
     @Before
-    public void setUp() throws StorageFailedException {
+    public void setUp() throws PersistenceException {
         final Injector i = Guice.createInjector(new SingleModule());
         processManager = i.getInstance(ProcessManager.class);
         persistence = i.getInstance(Persistence.class);
@@ -88,11 +90,10 @@ public class WorkflowProcessTest {
 
     /**
      * test start a workflow.
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
+     * @throws PersistenceException 
      */
     @Test
-    public void startWorkflow() throws ItemNotExistentException, StorageFailedException {
+    public void startWorkflow() throws PersistenceException {
 
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
@@ -102,11 +103,10 @@ public class WorkflowProcessTest {
     
     /**
      * test start a workflow, without authorization.
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
+     * @throws PersistenceException 
      */
     @Test
-    public void startWorkflowWithoutAutohrization() throws ItemNotExistentException, StorageFailedException {
+    public void startWorkflowWithoutAutohrization() throws PersistenceException {
         
         processManager.startWorkflow(myWorkflow, "ez");
         assertTrue(myWorkflow.getItems().size() == 0);
@@ -118,11 +118,10 @@ public class WorkflowProcessTest {
      * workflow steplist. The first one is a startStep and isn't available in an
      * item. The second one has to be open because it the workflow was recently
      * started so the next one will be inactive.
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
+     * @throws PersistenceException 
      */
     @Test
-    public void checkStateInaktive() throws ItemNotExistentException, StorageFailedException {
+    public void checkStateInaktive() throws PersistenceException {
         String stepId;
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
@@ -134,13 +133,10 @@ public class WorkflowProcessTest {
 
     /**
      * test handle an step in an Item.
-     * @throws UserHasNoPermissionException 
-     * @throws ItemNotForwardableException 
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
+     * @throws LogicException 
      */
     @Test
-    public void handleFirstStep() throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException {
+    public void handleFirstStep() throws LogicException {
         processManager.startWorkflow(myWorkflow, "benni");
         final Item item = (Item) myWorkflow.getItems().get(0);
         processManager.executeStep(firstStep, item, benni);
@@ -150,13 +146,12 @@ public class WorkflowProcessTest {
     }
     /**
      * 
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
+     * @throws LogicException 
      * @throws ItemNotForwardableException .
      * @throws UserHasNoPermissionException .
      */
     @Test
-    public void finishItemTest() throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException {
+    public void finishItemTest() throws LogicException {
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
