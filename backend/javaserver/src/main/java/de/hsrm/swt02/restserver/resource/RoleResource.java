@@ -175,7 +175,7 @@ public class RoleResource {
     @DELETE
     @Path("roles/{rolename}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteUser(@PathParam("rolename") String rolename) {
+    public Response deleteRole(@PathParam("rolename") String rolename) {
         final String loggingBody = PREFIX + "DELETE /resource/role/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
         
