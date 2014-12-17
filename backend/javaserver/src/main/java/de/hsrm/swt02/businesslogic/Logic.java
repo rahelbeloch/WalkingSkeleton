@@ -100,20 +100,6 @@ public interface Logic {
     LogicResponse stepForward(String itemId, String stepId, String username) 
             throws LogicException;
 
-
-    // /**
-    // * This method finish a step in an item.
-    // *
-    // * @param itemId the Item, which edited
-    // * @param stepId the step, which execute
-    // * @param username who execute the step in the Item
-    // * @exception ItemNotExistentException if requested item doesn't exist
-    // * @exception UserNotExistentException if requested user doesn't exist
-    // * @throws UserNotExistentException
-    // * @throws ItemNotExistentException
-    // */
-    // void stepFinished(int itemId, int stepId, String username) throws ItemNotExistentException, UserNotExistentException;
-
     /**
      * This method deactivates a workflow.
      * 
@@ -224,7 +210,6 @@ public interface Logic {
      */
     List<String> getStartableWorkflowsByUser(String username) throws LogicException;
     
-    Workflow editWorkflow(String workflowId) throws PersistenceException;
     /**
      * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
      * @param workflowId is the id of the given workflow
