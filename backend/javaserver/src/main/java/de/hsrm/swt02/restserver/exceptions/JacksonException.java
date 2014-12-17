@@ -9,7 +9,7 @@ public class JacksonException extends RestserverException {
     private int errorcode = 12210;
     
     public JacksonException() {
-        super();
+        super("Jackson parsing-error occured");
     }
 
     public JacksonException(String msg) {
