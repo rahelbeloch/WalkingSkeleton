@@ -108,12 +108,11 @@ public class WorkflowResource {
      * @return all startable workflows for user
      */
     @GET
-    @Path("workflows/startables/{username}")
+    @Path("workflows/startables")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getStartablesByUser(@PathParam("username") String username) {
+    public Response getStartablesByUser(@HeaderParam("username") String username) {
         final ObjectMapper mapper = new ObjectMapper();
-        final String loggingBody = PREFIX + "GET /workflows/startables/"
-                + username;
+        final String loggingBody = PREFIX + "GET /workflows/startables";
         LOGGER.log(Level.INFO, loggingBody);
         List<String> wIdList = null;
         try {

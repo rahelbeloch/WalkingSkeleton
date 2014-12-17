@@ -95,7 +95,6 @@ public class UserResource {
         LOGGER.log(Level.INFO, loggingBody);
         final String userAsString = formParams.get("data").get(0);
         User user;
-        System.out.println(userAsString);
         try {
             user = mapper.readValue(userAsString, User.class);
         } catch (IOException e) {
