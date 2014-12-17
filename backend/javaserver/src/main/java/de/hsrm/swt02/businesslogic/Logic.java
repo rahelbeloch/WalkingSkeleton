@@ -2,7 +2,6 @@ package de.hsrm.swt02.businesslogic;
 
 import java.util.List;
 
-import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
@@ -17,7 +16,6 @@ import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
@@ -99,7 +97,7 @@ public interface Logic {
      * @throws WorkflowNotExistentException 
      */
 
-    void stepForward(String itemId, String stepId, String username) 
+    LogicResponse stepForward(String itemId, String stepId, String username) 
             throws LogicException;
 
 
@@ -238,19 +236,6 @@ public interface Logic {
      */
     List<Item> getRelevantItemsByUser(String workflowId, String username) throws PersistenceException;
 
-    /**
-     * This method gets a LogicResponse object.
-     * 
-     * @return LogicResponse object
-     */
-    LogicResponse getProcessLogicResponse();
-
-    /**
-     * Setter for logicResponse.
-     * 
-     * @param lr is new value for logicResponse
-     */
-    void setProcessLogicResponse(LogicResponse lr);
 
     /**
      * Method gives an Item.

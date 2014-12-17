@@ -1,17 +1,14 @@
 package de.hsrm.swt02.businesslogic;
 
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
-import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.businesslogic.processors.ActionProcessor;
 import de.hsrm.swt02.businesslogic.processors.StartProcessor;
+import de.hsrm.swt02.businesslogic.processors.StepProcessor;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.Item;
@@ -20,9 +17,7 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
@@ -32,13 +27,11 @@ import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
  *
  */
 @Singleton
-public class ProcessManagerImp implements Observer, ProcessManager {
+public class ProcessManagerImp implements ProcessManager {
 
     private Persistence persistence;
-    private LogicResponse logicResponse;
     private UseLogger logger;
-    private ActionProcessor actionProcessor;
-    private StartProcessor startProcessor;
+
 
     /**
      * Constructor of ProcessManager. Per default is the LogicResponse gesettet.
@@ -49,7 +42,6 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     @Inject
     public ProcessManagerImp(Persistence p, UseLogger logger) {
         this.persistence = p;
-        setLogicResponse(new LogicResponse());
         this.logger = logger;
     }
 
@@ -83,9 +75,8 @@ public class ProcessManagerImp implements Observer, ProcessManager {
     public String startWorkflow(Workflow workflow, String username) throws PersistenceException {
         final StartStep startStep = (StartStep) workflow.getStepByPos(0);
         String itemID = "-1";
-        selectProcessor(startStep);
+        StartProcessor startProcessor = new StartProcessor(persistence);
         if (checkAuthorization(startStep, username)) {
-            startProcessor.addObserver(this);
             itemID = startProcessor.createItem(workflow);
         } else {
             logger.log(Level.WARNING, "Access denied, Authorization failed.");
@@ -98,12 +89,11 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * 
      * @param step is the step which will be executed
      */
-    public void selectProcessor(Step step) {
+    public StepProcessor selectProcessor(Step step) {
         if (step instanceof Action) {
-            actionProcessor = new ActionProcessor(persistence);
-        } else if (step instanceof StartStep) {
-            startProcessor = new StartProcessor(persistence);
+            return new ActionProcessor(persistence);
         }
+        return null;
     }
 
     /**
@@ -116,41 +106,14 @@ public class ProcessManagerImp implements Observer, ProcessManager {
      * @throws UserHasNoPermissionException
      * @throws LogicException 
      */
-    public void executeStep(Step step, Item item, User user) throws LogicException {
-        selectProcessor(step);
-        if (step instanceof Action) {
-            actionProcessor.addObserver(this);
-            actionProcessor.handle(item, step, user);
-        }
+    public String executeStep(Step step, Item item, User user) throws LogicException {
+        StepProcessor stepProcessor= selectProcessor(step);
+        String itemId;
+        
+        itemId = stepProcessor.handle(item, step, user);
+        
+        return itemId;
     }
 
-    /**
-     * This method is executed if its observables notifies changes.
-     * 
-     * @param o is the observed object, can be any object of the datamodels
-     * @param arg is an object which is received when notified
-     */
-    public void update(Observable o, Object arg) {
-        logicResponse.add(new Message("ITEMS_FROM"
-                + ((Item) arg).getWorkflowId(), "item="
-                + ((Item) arg).getState() + "=" + ((Item) arg).getId()));
-    }
 
-    /**
-     * Getter for LogicResponse-object.
-     * 
-     * @return logicResonse
-     */
-    public LogicResponse getLogicResponse() {
-        return logicResponse;
-    }
-
-    /**
-     * Setter for logicResonse.
-     * 
-     * @param lr will be the value of logicResponse
-     */
-    public void setLogicResponse(LogicResponse lr) {
-        this.logicResponse = lr;
-    }
 }
