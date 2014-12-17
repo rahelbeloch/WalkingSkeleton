@@ -15,13 +15,13 @@ namespace Client.ViewModel
     public class LoginViewModel : ViewModelBase
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private IRestRequester _restRequester;
+        //private IRestRequester _restRequester;
         private MainViewModel _mainViewModel;
         public LoginViewModel(MainViewModel mainViewModelInstanz)
             : base()
         {
             _mainViewModel = mainViewModelInstanz;
-            _restRequester = _mainViewModel.restRequester;
+            //_restRequester = _mainViewModel.restRequester;
         }
         public string Name
         {
@@ -73,14 +73,11 @@ namespace Client.ViewModel
                     _authenticate = new ActionCommand(execute =>
                     {
                         try{
-                            _restRequester.checkUser(username, securePwd);
+                            // Register mainViewModel to CommunicationLib (if login worked)
                             _mainViewModel.myComLib.Login(username, securePwd);
                             logger.Debug("Authentiaction userName: " + username);
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.dashboardViewModel;
                             _mainViewModel.username = _username;
-
-                            // Register mainViewModel to CommunicationLib (if login worked)
-                            _mainViewModel.myComLib.Login(_username, _securePwd);
                         }
                         catch (BasicException exc)
                         {
