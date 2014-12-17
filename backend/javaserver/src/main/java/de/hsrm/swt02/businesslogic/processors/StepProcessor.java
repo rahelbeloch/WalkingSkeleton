@@ -26,5 +26,5 @@ public interface StepProcessor {
      * @throws ItemNotForwardableException
      * @throws UserHasNoPermissionException
      */
-    void handle(Item item, Step step, User user) throws LogicException;
+    String handle(Item item, Step step, User user) throws LogicException;
 }

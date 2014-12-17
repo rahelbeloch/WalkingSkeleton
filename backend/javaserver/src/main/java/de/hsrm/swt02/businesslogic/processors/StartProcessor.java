@@ -1,7 +1,5 @@
 package de.hsrm.swt02.businesslogic.processors;
 
-import java.util.Observable;
-
 import com.google.inject.Inject;
 
 import de.hsrm.swt02.model.Action;
@@ -11,9 +9,7 @@ import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
@@ -21,7 +17,7 @@ import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
  * This class implements the function of StartTrigger. It creates a new item and
  * saves it.
  */
-public class StartProcessor extends Observable {
+public class StartProcessor {
 
     private Item currentItem;
     private Persistence p;
@@ -83,9 +79,5 @@ public class StartProcessor extends Observable {
         } catch (WorkflowNotExistentException e) {
             e.printStackTrace();
         }
-        
-        setChanged();
-        item.setState("def");
-        notifyObservers(item);
     }
 }

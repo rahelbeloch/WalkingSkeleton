@@ -1,6 +1,5 @@
 package de.hsrm.swt02.businesslogic.processors;
 
-import java.util.Observable;
 import java.util.logging.Level;
 
 import com.google.inject.Inject;
@@ -15,16 +14,13 @@ import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * This class executes "Action" step-objects.
  *
  */
-public class ActionProcessor extends Observable implements StepProcessor {
+public class ActionProcessor implements StepProcessor {
 
     private Item currentItem;
     private Persistence p;
@@ -53,7 +49,7 @@ public class ActionProcessor extends Observable implements StepProcessor {
      * @exception UserHasNoPermissionException if the given user has no right to operate on the step
      * @throws PersistenceException 
      */
-    public void handle(Item item, Step step, User user) throws LogicException {
+    public String handle(Item item, Step step, User user) throws LogicException {
         
         final String username = user.getUsername();
         
@@ -80,15 +76,11 @@ public class ActionProcessor extends Observable implements StepProcessor {
             throw new ItemNotForwardableException("no forwarding action on item " + currentItem.getId());
         } 
         
-        currentItem.setState("upd");
-        
         try {
             p.storeItem(currentItem);
         } catch (WorkflowNotExistentException e) {
             e.printStackTrace();
         }
-        
-        setChanged();
-        notifyObservers(currentItem);
+        return currentItem.getId();
     }
 }

@@ -5,6 +5,7 @@ import java.util.Observer;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
+import de.hsrm.swt02.businesslogic.processors.StepProcessor;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -17,7 +18,7 @@ import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
  * Interface for ProcessManager. (Due to Dependency Injection)
  *
  */
-public interface ProcessManager extends Observer {
+public interface ProcessManager {
 
     /**
      * This method checks if the user is authorized to do something (like
@@ -43,7 +44,7 @@ public interface ProcessManager extends Observer {
      * 
      * @param step which will be executed
      */
-    void selectProcessor(Step step);
+    StepProcessor selectProcessor(Step step);
 
     /**
      * This method executes the step operation.
@@ -57,19 +58,6 @@ public interface ProcessManager extends Observer {
      * @throws UserHasNoPermissionException
      * @throws LogicException 
      */
-    void executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException, LogicException;
+    String executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException, LogicException;
 
-    /**
-     * This method gets a LogicResponse object.
-     * 
-     * @return LogicResponse is the LogicResponse object
-     */
-    LogicResponse getLogicResponse();
-
-    /**
-     * This method sets a LogicResponse object.
-     * 
-     * @param lr is the new logicResponse
-     */
-    void setLogicResponse(LogicResponse lr);
 }
