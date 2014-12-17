@@ -276,22 +276,7 @@ public class LogicTest {
         w.setActive(false);
         assertFalse(w.isActive());
     }
-    /**
-     * 
-     * @throws LogicException 
-     */
-    @Test
-    public void getAllActiveWorkflowTest() throws LogicException {
-        init();
-        final int before = li.getAllWorkflows().size();
-        li.addWorkflow(w);
-        final int between = li.getAllWorkflows().size();
-        li.deactivateWorkflow(w.getId());
-        final int after = li.getAllWorkflows().size();
-
-        assertTrue(before == after);
-        assertTrue(before + 1 == between);
-    }
+    
     
     /**
      * 
