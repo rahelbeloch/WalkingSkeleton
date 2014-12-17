@@ -85,13 +85,13 @@ public class PersistenceTest {
     public void testWorkflowDeletion() throws PersistenceException {
         final Workflow wf001 = new Workflow();
         final Workflow wf002 = new Workflow();
-        db.storeWorkflow(wf001);
-        db.storeWorkflow(wf002);
+        final String id_1 = db.storeWorkflow(wf001);
+        final String id_2 = db.storeWorkflow(wf002);
 
-        db.deleteWorkflow(wf001.getId());
+        db.deleteWorkflow(id_1);
 
-        assertEquals(db.loadWorkflow("2"), wf002);
-        assertEquals(db.loadWorkflow("1"), null);
+        assertEquals(db.loadWorkflow(id_2), wf002);
+        assertEquals(db.loadWorkflow(id_1), wf001);
     }
 
     /**
@@ -121,10 +121,10 @@ public class PersistenceTest {
 
         // a workflows steps should be the same before and after storage
         assertEquals(workflow007.getSteps(), db.loadWorkflow(id7).getSteps());
+        
         // no specific functions of a step can be tested, because db only
         // returns an AbstractWorkflow
-        // assertEquals(workflow007.getStepByPos(2),
-        // db.loadWorkflow(7).getStepByPos(2));
+        assertEquals(workflow007.getStepByPos(2), db.loadWorkflow(id7).getStepByPos(2));
 
         // workflow instances should still be equal
         assertEquals(db.loadWorkflow(workflow007.getId()), workflow007);
