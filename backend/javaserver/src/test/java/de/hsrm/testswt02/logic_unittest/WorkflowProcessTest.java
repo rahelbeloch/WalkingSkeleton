@@ -46,11 +46,7 @@ public class WorkflowProcessTest {
 
     /**
      * build workingset before testing.
-<<<<<<< .mine
-     * @throws StorageFailedException 
-=======
      * @throws PersistenceException 
->>>>>>> .r886
      */
     @Before
 
@@ -64,7 +60,7 @@ public class WorkflowProcessTest {
         benni.setUsername("benni");
         
         try {
-            persistence.addUser(benni);
+            persistence.storeUser(benni);
         } catch (UserAlreadyExistsException e) {
             e.printStackTrace();
         }
