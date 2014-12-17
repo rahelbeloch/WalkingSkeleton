@@ -23,8 +23,10 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Role;
+import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
@@ -41,6 +43,37 @@ public class RoleResource {
     public static final UseLogger LOGGER = new UseLogger();
     public static final String PREFIX = "[restserver] ";
     LogicResponse logicResponse;
+    
+    /**
+     * This method returns a requested role.
+     * @param username indicates which role is looked for
+     * @return the requested role
+     * @throws RoleNotExistentException 
+     */
+    @GET
+    @Path("roles/{rolename}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getRole(@PathParam("rolename") String rolename) {
+        final String loggingBody = PREFIX + "GET /resource/roles/" + rolename;
+        LOGGER.log(Level.INFO, loggingBody);
+        Role role;
+        try {
+            role = LOGIC.getRole(rolename);
+        } catch (RoleNotExistentException e1) {
+            LOGGER.log(Level.INFO, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        }
+        String roleAsString;
+        
+        try {
+            roleAsString = JsonParser.marshall(role);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.INFO, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        }
+        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
+        return Response.ok(roleAsString).build();
+    }
     
     /**
      * 
