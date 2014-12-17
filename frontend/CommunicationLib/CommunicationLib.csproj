@@ -110,7 +110,6 @@
     <Compile Include="Model\DataModel\Workflow.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\WorkflowNotExistException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Messaging\RegistrationWrapper.cs" />
     <Compile Include="REST\RestAPI.cs" />
     <Compile Include="REST\URLRouter.cs" />
   </ItemGroup>
