@@ -60,7 +60,6 @@ namespace CommunicationLib
 
             //build connection to message broker (not started yet)
             _connectionFactory = new ConnectionFactory(Constants.BROKER_URL);
-            _connection = _connectionFactory.CreateConnection();
             try
             {
                 _connection = _connectionFactory.CreateConnection();
