@@ -30,7 +30,7 @@ namespace CommunicationLib
         private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
         {
             {"def", "GetObject"},
-            {"udp", "GetObject"},
+            {"upd", "GetObject"},
             {"del", "DeleteObject"}
         };
 
@@ -172,7 +172,6 @@ namespace CommunicationLib
             // object identifier
             string objId;
 
-            // for reflection
             Type genericType;
             string methodName;
             object requestedObj;
