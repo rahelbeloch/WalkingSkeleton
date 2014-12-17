@@ -19,7 +19,6 @@ import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
-import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
@@ -59,7 +58,7 @@ public class PersistenceImp implements Persistence {
     @Override
     public String storeWorkflow(Workflow workflow) throws PersistenceException {
         Workflow workflowToRemove = null;
-        if (workflow.getId() == null || workflow.getId().equals("")) { // TODO: declare default value for empty ids
+        if (workflow.getId() == null || workflow.getId().equals("")) {
             workflow.setId(workflows.size() + 1 + "");
         } else {
             for (Workflow wf: workflows) {
@@ -132,6 +131,16 @@ public class PersistenceImp implements Persistence {
     
     // Item Operations
     
+    /**
+     * Method for adding an item to the workflow.
+     * @param workflowId is the needed workflowid
+     * @param item is the needed item
+     * @return itemId is the stored item
+     * @exception AlreadyExistsException if the objects already exists in the persistence
+     * @exception StorageFailedException if the persistencestorage failed
+     * @throws AlreadyExistsException
+     * @throws StorageFailedException
+     */
     public String addItemToWorkflow(String workflowId, Item item) throws AlreadyExistsException, StorageFailedException {
         Workflow workflow = null;
         for (Workflow wf : workflows) {
@@ -195,9 +204,16 @@ public class PersistenceImp implements Persistence {
 //        this.logger.log(Level.INFO, "[persistence] successfully stored item " + item.getId() + ".");
 //        return item.getId();
 //    }
+    
+    /**
+     * Method for getting the parentworkflow of an item.
+     * @param itemId is the id of the item
+     * @return parentWorkflow
+     */
     public Workflow getParentWorkflow(String itemId) {
         final int integerItemId = Integer.parseInt(itemId);
-        final int eliminatedItemId = integerItemId % ID_MULTIPLICATOR / 10;
+        final int iddivider = 10;
+        final int eliminatedItemId = integerItemId % ID_MULTIPLICATOR / iddivider;
         final String parentWorkflowId = (integerItemId - eliminatedItemId) + "";        
         
         Workflow parentWorkflow = null;
@@ -211,7 +227,7 @@ public class PersistenceImp implements Persistence {
     
     @Override
     public void deleteItem(String itemId) throws ItemNotExistentException {
-        Workflow parentWorkflow = getParentWorkflow(itemId);
+        final Workflow parentWorkflow = getParentWorkflow(itemId);
         Item itemToRemove = null;
         
         for (Item item: parentWorkflow.getItems()) {
@@ -230,7 +246,7 @@ public class PersistenceImp implements Persistence {
 
     @Override
     public Item loadItem(String itemId) throws PersistenceException {
-        Workflow parentWorkflow = getParentWorkflow(itemId);
+        final Workflow parentWorkflow = getParentWorkflow(itemId);
         Item itemToReturn = null;
         
         for (Item item : parentWorkflow.getItems()) {
@@ -309,7 +325,7 @@ public class PersistenceImp implements Persistence {
 
     @Override
     public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
-    	return workflows;
+        return workflows;
     }
     
     
@@ -384,7 +400,7 @@ public class PersistenceImp implements Persistence {
      */
     @Override
     public List<User> loadAllUsers() throws UserNotExistentException {
-    	return users;
+        return users;
     }
 
     /**
