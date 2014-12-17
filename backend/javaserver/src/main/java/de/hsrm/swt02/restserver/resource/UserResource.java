@@ -1,6 +1,7 @@
 package de.hsrm.swt02.restserver.resource;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.ws.rs.Consumes;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.businesslogic.Logic;
@@ -25,8 +27,10 @@ import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
@@ -209,6 +213,38 @@ public class UserResource {
         }
         LOGGER.log(Level.INFO, loggingBody + " User successfully deleted.");
         return Response.ok(userAsString).build();
+    }
+    
+    /**
+     * 
+     * This Method grants the Clients access to all users stored in persistence.
+     * 
+     * @return All Users in the persistence as string if successful, 500 Server Error if not
+     */
+    @GET
+    @Path("users")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getAllUsers() {
+        final String loggingBody = PREFIX + "GET /resource/users";
+        LOGGER.log(Level.INFO, loggingBody);
+        final ObjectMapper mapper = new ObjectMapper();
+        List<User> users;
+        try {
+            users = LOGIC.getAllUsers();
+        } catch (UserNotExistentException e) {
+            LOGGER.log(Level.INFO, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        }
+        String usersAsString;
+        
+        try {
+            usersAsString = mapper.writeValueAsString(users);
+        } catch (JsonProcessingException e) {
+            LOGGER.log(Level.INFO, e);
+            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode())).build();
+        }
+        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
+        return Response.ok(usersAsString).build();
     }
 
 }
