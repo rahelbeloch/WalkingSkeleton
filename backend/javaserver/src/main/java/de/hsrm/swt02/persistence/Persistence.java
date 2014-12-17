@@ -9,12 +9,7 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.RoleHasAlreadyUserException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
-import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
-import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
@@ -27,6 +22,8 @@ public interface Persistence {
     /**
      * store functions to store workflows, items, and users into persistence.
      * @param workflow is a workflow for storing
+     * @exception PersistenceException if the storing process failed
+     * @throws PersistenceException
      * @return id of stored workflow
      */
     String storeWorkflow(Workflow workflow) throws PersistenceException;
@@ -43,8 +40,8 @@ public interface Persistence {
     /**
      * Method for adding a new user.
      * @param user is the needed user
-     * @exception UserAlreadyExistsException if the user to store is already there.
-     * @throws UserAlreadyExistsException
+     * @exception PersistenceException if the user to store is already there.
+     * @throws PersistenceException
      */
     void storeUser(User user) throws PersistenceException;
 
@@ -60,8 +57,8 @@ public interface Persistence {
      * Method for loading a workflow.
      * @param id is the id of the requested workflow.
      * @return workflow is the requested workflow
-     * @exception WorkflowNotExistentException if the requested workflow is not there.
-     * @throws WorkflowNotExistentException
+     * @exception PersistenceException if the requested workflow is not there.
+     * @throws PersistenceException
      */
     Workflow loadWorkflow(String id) throws PersistenceException;
 
@@ -69,8 +66,8 @@ public interface Persistence {
      * Method for loading an item.
      * @param id is the id of the requested item.
      * @return Item is the requested item.
-     * @exception ItemNotExistentException if the requested item is not there.
-     * @throws ItemNotExistentException
+     * @exception PersistenceException if the requested item is not there.
+     * @throws PersistenceException
      */
     Item loadItem(String id) throws PersistenceException;
 
@@ -85,12 +82,11 @@ public interface Persistence {
 
     /**
      * Only for the walking skeleton:  method for loading a step.
-     * @param id is the id of the step.
+     * @param itemId is the id of the item.
+     * @param stepId is the id of the step.
      * @return step is the requested step
-     * @throws StorageFailedException 
-     * @throws ItemNotExistentException 
-     * @throws WorkflowNotExistentException 
-     * @throws StepNotExistentException 
+     * @exception PersistenceException if the loading process failed
+     * @throws PersistenceException 
      */
     Step loadStep(String itemId, String stepId) throws PersistenceException;
 //
@@ -125,20 +121,16 @@ public interface Persistence {
      */
     void deleteUser(String name) throws UserNotExistentException;
     
-    
-    
-    
-    
-    
     // Sprint 2 Persistence
-    
-    
     
     /**
     * store function to store a role.
     * @param role is the role for storing
+    * @exception PersistenceException if the user to store is already there.
+    * @throws PersistenceExceptio
+    * @return roleId is the id of the role
     */
-    String storeRole(Role role);
+    String storeRole(Role role) throws PersistenceException;
     
     /**
      * Method for loading all existing roles.
@@ -177,7 +169,7 @@ public interface Persistence {
     /**
      * Method for removing a role from datbase.
      * @param rolename is the name of the role
-     * @exception RoleNotExistentException
+     * @exception RoleNotExistentException if the role doesnt exist in the persistence
      * @throws RoleNotExistentException
      */
     void deleteRole(String rolename) throws RoleNotExistentException;
