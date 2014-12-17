@@ -4,6 +4,7 @@ import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.LogConfigurator;
@@ -27,7 +28,6 @@ public class App {
      */
     public static void main(String[] args) {
 
-        
         // setup log configuration
         LogConfigurator.setup();
         
@@ -51,20 +51,12 @@ public class App {
             }
         });
         
-        //KeyEvents
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {  
-            @Override
-            public boolean dispatchKeyEvent(KeyEvent keyEvent) {
-                System.err.println("Bin da");
-                if (keyEvent.getKeyChar() == 'c' && keyEvent.isControlDown()) {
-                    server.stopHTTPServer(true);
-                    System.err.println("TOLL");
-                    return true;
-                } 
-                return false;
-            }
-        });
-        
         server.startHTTPServer();
+        
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }
