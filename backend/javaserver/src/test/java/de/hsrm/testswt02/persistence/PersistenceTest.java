@@ -1,7 +1,6 @@
 package de.hsrm.testswt02.persistence;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,11 +10,7 @@ import com.google.inject.Injector;
 
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.logging.LogConfigurator;
-import de.hsrm.swt02.model.Action;
-import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
-import de.hsrm.swt02.model.StartStep;
-import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
@@ -35,73 +30,18 @@ public class PersistenceTest {
     Persistence db = inj.getInstance(Persistence.class);
     
     /**
-     * configurate Logger in order to get Logging output
+     * configurate Logger in order to get Logging output.
      */
     @BeforeClass
     public static void setup() {
         LogConfigurator.setup();
     }
     
-//    @Test
-//    public void testIdAllocation() throws PersistenceException {
-//        final Workflow workflow1 = new Workflow();
-//        final Workflow workflow2 = new Workflow();
-//        
-//        String workflow1Id = db.storeWorkflow(workflow1);
-//        String workflow2Id = db.storeWorkflow(workflow2);
-//        
-//        final StartStep step1001 = new StartStep();
-//        final Action step1002 = new Action();
-//        final FinalStep step1003 = new FinalStep();
-//        workflow1.addStep(step1001);
-//        workflow1.addStep(step1002);
-//        workflow1.addStep(step1003);
-//        
-//        final StartStep step2001 = new StartStep();
-//        final Action step2002 = new Action();
-//        final FinalStep step2003 = new FinalStep();
-//        workflow2.addStep(step2001);
-//        workflow2.addStep(step2002);
-//        workflow2.addStep(step2003);
-//        
-//        final Item item1001 = new Item();
-//        final Item item1002 = new Item();
-//        item1001.setWorkflowId(workflow1Id);
-//        item1002.setWorkflowId(workflow1Id);
-//        workflow1.addItem(item1001);
-//        workflow1.addItem(item1002);
-//        
-//        final Item item2001 = new Item();
-//        final Item item2002 = new Item();
-//        item2001.setWorkflowId(workflow2Id);
-//        item2002.setWorkflowId(workflow2Id);
-//        workflow2.addItem(item2001);
-//        workflow2.addItem(item2002);
-//        
-//        workflow1Id = db.storeWorkflow(workflow1);
-//        workflow2Id = db.storeWorkflow(workflow2);
-//        
-//        assertEquals(db.loadWorkflow(workflow1Id).getId(), "1");
-//        assertEquals(db.loadWorkflow(workflow2Id).getId(), "2");
-//        
-//        assertEquals(db.loadWorkflow(workflow1Id).getItems(), workflow1.getItems());
-//        assertEquals(db.loadWorkflow(workflow1Id).getSteps(), workflow1.getSteps());
-//        assertEquals(db.loadWorkflow(workflow1Id).getItems(), workflow1.getItems());
-//        assertEquals(db.loadWorkflow(workflow1Id).getSteps(), workflow1.getSteps());
-//        
-//        assertEquals(db.loadWorkflow(workflow1Id).getStepById("1001"), step1001);
-//        assertEquals(db.loadWorkflow(workflow1Id).getStepById("1003"), step1002);
-//        assertEquals(db.loadWorkflow(workflow1Id).getStepById("1003"), step1003);        
-//        assertEquals(db.loadWorkflow(workflow2Id).getStepById("2001"), step1001);
-//        assertEquals(db.loadWorkflow(workflow2Id).getStepById("2002"), step1002);
-//        assertEquals(db.loadWorkflow(workflow2Id).getStepById("2003"), step1003);
-//        assertEquals(db.loadItem("1001"), item1001);
-//        assertEquals(db.loadItem("1002"), item1002);
-//        assertEquals(db.loadItem("2001"), item2001);
-//        assertEquals(db.loadItem("2002"), item2002);
-//        
-//    }
-    
+    /**
+     * store a workflow and check persistence functionality.
+     * @exception PersistenceException indicates errors in storage methods
+     * @throws PersistenceException 
+     */
     @Test
     public void testWorkflowStorage() throws PersistenceException {
         final Workflow workflow1 = new Workflow();
@@ -109,6 +49,11 @@ public class PersistenceTest {
         assertEquals(db.loadWorkflow(workflowId), workflow1);
     }
     
+    /**
+     * delete a workflow an check persistence functionality.
+     * @exception PersistenceException indicates errors in storage methods
+     * @throws PersistenceException
+     */
     @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowDeletion() throws PersistenceException {
         final Workflow workflow1 = new Workflow();
@@ -124,10 +69,13 @@ public class PersistenceTest {
 
         assertEquals(db.loadWorkflow(id1), workflow1);
         assertEquals(db.loadWorkflow(id2), workflow2);
-        
-        
     }
     
+    /**
+     * store a user and check persistence functionality.
+     * @exception PersistenceException indicates errors in storage methods
+     * @throws PersistenceException 
+     */
     @Test
     public void testUserStorage() throws PersistenceException {
         final User user007 = new User();
@@ -138,6 +86,11 @@ public class PersistenceTest {
         assertEquals(db.loadUser(username), user007);
     }
     
+    /**
+     * delete a user an check persistence functionality.
+     * @exception PersistenceException inidcates errors in storage methods
+     * @throws PersistenceException 
+     */
     @Test(expected = UserNotExistentException.class)
     public void testUserDeletion() throws PersistenceException {
         final User user001 = new User();
@@ -181,35 +134,12 @@ public class PersistenceTest {
         assertEquals(user001, db.loadUser("17"));
         assertEquals(db.loadAllUsers().size(), 1); //only one user should be existent
     }
-    
-//    /**
-//     * Method for testing if it's possible to update an User.
-//     * @throws UserNotExistentException
-//     * @throws UserAlreadyExistsException
-//     * @throws PersistenceException 
-//     */
-//    @Test(expected = UserNotExistentException.class)
-//    public void testUpdateOnUser() throws PersistenceException {
-//        final User user001 = new User();
-//        user001.setUsername("1");
-//        db.storeUser(user001);
-//
-//        assertEquals(user001, db.loadUser(user001.getUsername()));
-//
-//        // change a users username
-//       
-//        user001.setUsername("2");
-//        db.storeUser(user001);
-//
-//        assertEquals(user001, db.loadUser(user001.getUsername()));
-//        
-//        System.out.println(db.loadAllUsers().size());
-//        
-//        assertEquals(1, db.loadAllUsers().size());
-//        assertNotEquals(db.loadUser("1"), user001);
-//    }
-
         
+    /**
+     * store items and check persistence functionality.
+     * @exception PersistenceException inidcates errors in storage methods
+     * @throws PersistenceException 
+     */
     @Test
     public void testItemStorage() throws PersistenceException {
         final Workflow workflow1 = new Workflow();
@@ -231,6 +161,11 @@ public class PersistenceTest {
         assertEquals(db.loadWorkflow(workflowId).getItems(), workflow1.getItems());
     }
     
+    /**
+     * delete item and check persistence functionality.
+     * @exception PersistenceException inidcates errors in storage methods
+     * @throws PersistenceException 
+     */
     @Test
     public void testItemDeletion() throws PersistenceException {
         final Workflow workflow1 = new Workflow();
