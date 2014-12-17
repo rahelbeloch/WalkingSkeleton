@@ -1,9 +1,15 @@
 package de.hsrm.swt02;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
 
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.LogConfigurator;
+import de.hsrm.swt02.messaging.ServerPublisher;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.restserver.RestServer;
 
 /**
@@ -12,6 +18,8 @@ import de.hsrm.swt02.restserver.RestServer;
  * Starts the Rest-server.
  */
 public class App {
+    
+    private static boolean isShuttingDown;
     
     /**
      * Application startup method.
@@ -23,6 +31,8 @@ public class App {
     public static void main(String[] args) {
         
         final RestServer server;
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String userInput = "";
 
         // setup log configuration
         LogConfigurator.setup();
@@ -40,19 +50,68 @@ public class App {
         // ShutDownHook
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
-                if (server != null) {
-                    System.err.println("ausfuehrung");
-                    server.stopHTTPServer(true);
-                }
+                shutdown(server);             
             }
         });
         
         server.startHTTPServer();
+            
+        /*
+         * STOP MECHANISM
+         */  
+        while (!userInput.equals("stop")) {
+            try {
+                userInput = reader.readLine();
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
+        }
         
+        shutdown(server);
+    }
+    
+    /** Stops the HTTP-server.
+     *  Stops the message broker.
+     *  Closes all logging file handlers. 
+     * 
+     * @param server the server to shutdown
+     */
+    public static void shutdown(RestServer server) {
+        /* Prevents that a thread sets the shutdown-variable
+         * while another thread refers to it.
+         * Otherwise it could cause a double shutdown 
+         * which would not work at all.
+         */
+        synchronized (server) {
+            if (isShuttingDown) {
+                return;
+            }
+            isShuttingDown = true;
+        }
+        
+        final Logger rootLogger = Logger.getLogger("");
+        final Handler[] handlers = rootLogger.getHandlers();
+        final ConstructionFactory factory = ConstructionFactory.getInstance();
+        final ServerPublisher publisher;
+        
+        // stop the server    
+        if (server != null) {
+            server.stopHTTPServer(true);
+        }
+        
+        // stop the Message broker
         try {
-            System.in.read();
-        } catch (IOException e) {
+            publisher = factory.getPublisher();
+            if (publisher != null) {
+                publisher.stopBroker();
+            }
+        } catch (ServerPublisherBrokerException e) {
             System.err.println(e.getMessage());
+        }
+        
+        // close logging handler
+        for (Handler handler : handlers) {
+            handler.close();
         }
     }
 }
