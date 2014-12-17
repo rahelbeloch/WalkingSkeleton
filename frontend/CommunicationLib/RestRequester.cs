@@ -70,29 +70,6 @@ namespace RestAPI
             return eleList;
         }
 
-        /*
-        /// <summary>
-        ///  Method to retrieve all existent workflows on server.
-        /// </summary>
-        /// <returns>List of all workflows</returns>
-        private IList<Workflow> GetAllWorkflows()
-        {
-            String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
-            String url = _ressourceParam + typeName + "s";
-
-            IList<Workflow> eleList;
-            try
-            {
-                eleList = GetElementList<Workflow>(url,"");
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-            return eleList;
-        }
-         **/
-
         /// <summary>
         ///  Method to retrieve all existent workflows of one given user on server.
         /// </summary>
@@ -184,9 +161,7 @@ namespace RestAPI
             catch (BasicException e)
             {
                 System.Diagnostics.Trace.WriteLine("Exception " + e.Data);
-                System.Diagnostics.Trace.WriteLine("resp " + response.ErrorException);
-                System.Diagnostics.Trace.WriteLine("resp " + response.ErrorMessage);
-                System.Diagnostics.Trace.WriteLine("resp " + response.StatusCode);
+
                 throw;
             } 
 
@@ -317,7 +292,7 @@ namespace RestAPI
             
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
-
+            System.Diagnostics.Trace.WriteLine("--------SerializedObj: " + serializedObj); 
             var request = createRequest(url, Method.POST);
             
             try

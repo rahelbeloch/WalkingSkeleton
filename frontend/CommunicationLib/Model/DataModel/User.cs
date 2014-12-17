@@ -11,11 +11,13 @@ namespace CommunicationLib.Model
     /// </summary>
     public class User : RootElement
     {
+        
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private string _username;
-        public string username { get { return _id; } set { _id = value; } }
+        public string username { get { return id; } set { id = value; } }
+        
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.

@@ -14,7 +14,7 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public String _id;
+        private String _id;
         public String id { get { return _id; } set { _id = value; } }
     }
 }

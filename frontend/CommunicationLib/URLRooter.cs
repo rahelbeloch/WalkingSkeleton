@@ -29,7 +29,7 @@ namespace CommunicationLib
         /// <param name="objType">type of requestet resource</param>
         /// <param name="values">route params</param>
         /// <returns>the url</returns>
-        public static string generateUrl(UrlMethod method,Type objType, params string[] values)
+        public static string generateUrl(UrlMethod method, Type objType, params string[] values)
         {
             String url = (method == UrlMethod.Resource) ? "resource" : "command";
            
