@@ -106,6 +106,7 @@ namespace RestAPI
             // if no HttpException happened and although the StatusCode is not "OK", there must be on Exception of our own
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
             {
+                System.Diagnostics.Trace.WriteLine("!!!!!! " + response.Content);
                 int errorCode = Int32.Parse(response.Content);
 
                 //generate convenient exception
