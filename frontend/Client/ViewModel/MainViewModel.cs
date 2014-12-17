@@ -44,7 +44,7 @@ namespace Client.ViewModel
             {
                 if (_restRequester == null)
                 {
-                    _restRequester = _myComLib.sender;
+                    _restRequester = myComLib.sender;
                 }
                 return _restRequester; 
             }
