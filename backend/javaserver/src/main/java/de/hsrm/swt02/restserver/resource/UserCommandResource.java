@@ -42,7 +42,6 @@ public class UserCommandResource {
             LOGIC.checkLogIn(username);
         } catch (LogInException e) {
             LOGGER.log(Level.WARNING,e);
-            System.out.println(e.getErrorCode());
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         LOGGER.log(Level.INFO,loggingBody + " Login successful.");

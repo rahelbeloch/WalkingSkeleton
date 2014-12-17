@@ -241,13 +241,9 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(e1.getErrorCode())).build();
         }
-        for (Message m : logicResponse.getMessages()) {
-            try {
-                PUBLISHER.publish(m.getValue(), m.getTopic());
-            } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, e);
-            }
-        }
+        
+        PUBLISHER.publishEvent(logicResponse);
+        
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully saved.");
         return Response.ok().build();
     }
@@ -285,19 +281,13 @@ public class WorkflowResource {
 
         try {
             logicResponse = LOGIC.addWorkflow(workflow);
+            PUBLISHER.publishEvent(logicResponse);
         } catch (LogicException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError()
                     .entity(String.valueOf(e1.getErrorCode())).build();
         }
 
-        for (Message m : logicResponse.getMessages()) {
-            try {
-                PUBLISHER.publish(m.getValue(), m.getTopic());
-            } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, e);
-            }
-        }
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully updated.");
         return Response.ok().build();
     }
@@ -327,19 +317,19 @@ public class WorkflowResource {
             } else if (state.equals("deactivate")) {
                 logicResponse = LOGIC.deactivateWorkflow(workflowid);
             }
+            for (Message m : logicResponse.getMessages()) {
+                try {
+                    PUBLISHER.publish(m.getValue(), m.getTopic());
+                } catch (ServerPublisherBrokerException e) {
+                    LOGGER.log(Level.WARNING, e);
+                }
+            }
         } catch (PersistenceException e) {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
         }
 
-        for (Message m : logicResponse.getMessages()) {
-            try {
-                PUBLISHER.publish(m.getValue(), m.getTopic());
-            } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, e);
-            }
-        }
         LOGGER.log(Level.INFO, loggingBody + " Workflow successfully updated.");
         return Response.ok().build();
     }
@@ -378,13 +368,9 @@ public class WorkflowResource {
                     .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
-        for (Message m : logicResponse.getMessages()) {
-            try {
-                PUBLISHER.publish(m.getValue(), m.getTopic());
-            } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, e);
-            }
-        }
+        
+        PUBLISHER.publishEvent(logicResponse);
+        
         LOGGER.log(Level.INFO, loggingBody + " Workflow succesfully deleted.");
         return Response.ok(workflowAsString).build();
     }

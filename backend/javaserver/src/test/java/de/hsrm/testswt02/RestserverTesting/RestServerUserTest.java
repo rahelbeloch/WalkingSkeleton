@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.restserver.RestServer;
+import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 
 /**
  * Unit-Test class for user handling on REST-Server.
@@ -185,6 +186,21 @@ public class RestServerUserTest {
         final Response resp = client.target(targetUrl).path("resource/users")
                 .request().header("username", "Tester3").delete();
         assertEquals(httpstatus, resp.getStatus());
+    }
+    
+    /**
+     * 
+     * Testing if fail Logins are rejected
+     * 
+     */
+    @Test
+    public void testFailLogin() {
+        final int httpstatus = 500;
+        final String errorCode = String.valueOf(LogInException.ERRORCODE);
+        final Response resp = client.target(targetUrl).path("command/users/login")
+                .request().header("username","Testerxy").post(Entity.entity("a", MediaType.TEXT_PLAIN));
+        assertEquals(httpstatus, resp.getStatus());
+        assertEquals(errorCode, resp.readEntity(String.class));
     }
     
     

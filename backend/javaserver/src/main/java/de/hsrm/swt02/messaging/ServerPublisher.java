@@ -1,5 +1,7 @@
 package de.hsrm.swt02.messaging;
 
+import de.hsrm.swt02.businesslogic.LogicResponse;
+
 /**
  * Interface for ServerPublisher.
  */
@@ -21,6 +23,8 @@ public interface ServerPublisher {
      * @throws ServerPublisherBrokerException if broker start does not work
      */
     void startBroker() throws ServerPublisherBrokerException;
+    
+    void publishEvent(LogicResponse resp);
 
     /**
      * Stops the messaging broker.
