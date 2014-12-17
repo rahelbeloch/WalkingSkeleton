@@ -31,7 +31,7 @@ namespace CommunicationLib
         /// <returns>the url</returns>
         public static string generateUrl(UrlMethod method,Type objType, params string[] values)
         {
-            String url = (method == UrlMethod.Resource) ? "resource/" : "command/";
+            String url = (method == UrlMethod.Resource) ? "resource" : "command";
            
             if (objType != null)
             {
@@ -44,7 +44,7 @@ namespace CommunicationLib
             {
                 url += "/" + val;
             }
-            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + url);
+            
             return url;
         }
     }
