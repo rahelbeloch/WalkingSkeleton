@@ -292,12 +292,7 @@ public class PersistenceImp implements Persistence {
 
     @Override
     public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
-        if (workflows.size() > 0) {
-            return workflows;
-        }
-        else {
-            throw new WorkflowNotExistentException("no stored workflows on database");
-        }
+    	return workflows;
     }
     
     
@@ -361,14 +356,7 @@ public class PersistenceImp implements Persistence {
      * @return List<Workflow> is the list we want to load
      */
     public List<Role> loadAllRoles() throws RoleNotExistentException {
-        if (roles.size() > 0) {
-            return roles;
-        }
-        else {
-            final RoleNotExistentException e = new RoleNotExistentException("no stored roles in database");
-            this.logger.log(Level.INFO, e);
-            throw e;
-        }
+        return roles;
     }
     
     /**
@@ -379,14 +367,7 @@ public class PersistenceImp implements Persistence {
      */
     @Override
     public List<User> loadAllUsers() throws UserNotExistentException {
-        if (users.size() > 0) {
-            return users;
-        }
-        else {
-            final UserNotExistentException e = new UserNotExistentException("no stored users in database");
-            this.logger.log(Level.INFO, e);
-            throw e;
-        }
+    	return users;
     }
 
     /**
