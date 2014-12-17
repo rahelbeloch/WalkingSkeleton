@@ -596,7 +596,7 @@ public class LogicImp implements Logic {
         StartStep startStep1;
         Action action1, action2;
         FinalStep finalStep;
-        Role role1;
+        Role role1, role2;
 
         user1 = new User();
         user1.setUsername("Alex");
@@ -608,9 +608,15 @@ public class LogicImp implements Logic {
         user4.setUsername("TestAdmin");
         
         role1 = new Role();
-        role1.setId("1");
-        role1.setRolename("Rolle 1");
+        //role1.setId("1");
+        role1.setRolename("Manager");
+        addRole(role1);
+        role2 = new Role();
+        role2.setRolename("Sachbearbeiter");
+        addRole(role2);
+        
         user3.getRoles().add(role1);
+        user2.getRoles().add(role2);
 
         addUser(user1);
         addUser(user2);
