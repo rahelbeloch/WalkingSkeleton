@@ -13,5 +13,6 @@ namespace CommunicationLib
         void ItemUpdate(Item updatedItem);
         void UserUpdate(User updatedUser);
         void RoleUpdate(Role updatedRole);
+        void HandleError(System.Exception e);
     }
 }
