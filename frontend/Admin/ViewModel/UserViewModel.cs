@@ -165,6 +165,9 @@ namespace Admin.ViewModel
             }
         }
 
+        private string _postUserButtonText = "Nutzer hinzufügen";
+        public string postUserButtonText { get { return _postUserButtonText; } set { _postUserButtonText = value; } }
+
         private void postUser()
         {
             User newUser = new User();
@@ -179,7 +182,8 @@ namespace Admin.ViewModel
             }
 
             _restRequester.PostObject<User>(newUser);
-            username = "";
+
+            deselect();
         }
 
         /// <summary>
@@ -230,9 +234,7 @@ namespace Admin.ViewModel
                 {
                     _deselectCommand = new ActionCommand(execute =>
                         {
-                            _selectedUser = null;
-                            username = "";
-                            OnChanged("username");
+                            deselect();
                         }, canExecute => _selectedUser != null);
                 }
 
@@ -240,29 +242,25 @@ namespace Admin.ViewModel
             }
         }
 
-        private ICommand _editUserCommand;
-        public ICommand editUserCommand
+        private void deselect()
         {
-            get
-            {
-                if (_editUserCommand == null)
-                {
-                    _editUserCommand = new ActionCommand(execute =>
-                    {
-                        postUser();
-                    }, canExecute => _selectedUser != null);
-                }
+            _selectedUser = null;
+            username = "";
+            OnChanged("username");
 
-                return _editUserCommand;
+            foreach (RoleCheckboxRow rcr in roleCheckboxRows) 
+            {
+                rcr.isSelected = false;
             }
         }
 
         public void UserUpdate(User newUser)
         {
-            // TODO: check if users exists, if yes, update... else:
-            if (userCollection.Any(u => newUser.id == u.id))
+            User toUpdate = userCollection.First(u => newUser.id == u.id);
+            if (toUpdate != null)
             {
-                //userCollection.re
+                int indexToUpdate = userCollection.IndexOf(toUpdate);
+                Application.Current.Dispatcher.Invoke(new System.Action(() => userCollection[indexToUpdate] = newUser));
             }
             else
             {

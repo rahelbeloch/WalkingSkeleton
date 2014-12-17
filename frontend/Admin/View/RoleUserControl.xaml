@@ -69,8 +69,7 @@
                             </DockPanel>
 
                             <DockPanel DockPanel.Dock="Bottom">
-                                <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Nutzer hinzufügen" Height="25" Margin="10" Command="{Binding addUserCommand}"/>
-                                <Button HorizontalAlignment="Right"  VerticalAlignment="Bottom" Content="Ändern" Height="25" Margin="10" Command="{Binding editUserCommand}"/>
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding postUserButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="25" Margin="10" Command="{Binding addUserCommand}"/>
                             </DockPanel>
                             
                         </DockPanel>
