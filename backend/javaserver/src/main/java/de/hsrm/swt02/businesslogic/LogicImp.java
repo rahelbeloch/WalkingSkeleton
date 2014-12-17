@@ -65,10 +65,12 @@ public class LogicImp implements Logic {
     */
     @Override
     public LogicResponse startWorkflow(String workflowID, String username) throws PersistenceException {
-        final Workflow workflow = (Workflow) persistence.loadWorkflow(workflowID);
-        final String itemId = processManager.startWorkflow(workflow, username);
         final LogicResponse logicResponse = new LogicResponse();
-        
+        final Workflow workflow;
+        final String itemId; 
+
+        workflow = persistence.loadWorkflow(workflowID);
+        itemId = processManager.startWorkflow(workflow, username);
         logicResponse.add(new Message("ITEMS_FROM_" + workflowID, "item=def="
                 + itemId));
         return logicResponse;
@@ -83,11 +85,36 @@ public class LogicImp implements Logic {
     */
     @Override 
     public LogicResponse addWorkflow(Workflow workflow) throws LogicException {
+        Workflow oldWorkflow = null;
+        String id;
+        boolean finished = true;
+        final LogicResponse logicResponse = new LogicResponse();
+        
         if ((workflow.getStepByPos(0) instanceof StartStep) && (workflow.getStepByPos(workflow.getSteps().size() - 1) instanceof FinalStep)) {
-            final String id = persistence.storeWorkflow(workflow);
-            final LogicResponse logicResponse = new LogicResponse();
             
-            logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
+            if (workflow.getId() == null || workflow.getId().equals("")) {
+                id = persistence.storeWorkflow(workflow);
+                logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
+            } else {
+                oldWorkflow = persistence.loadWorkflow(workflow.getId());
+                if (oldWorkflow != null) {
+                    for (Item item : oldWorkflow.getItems()) {
+                        if (!item.isFinished()) {
+                            finished = false;
+                            break;
+                        }
+                    }
+                    if (finished) {
+                        id = persistence.storeWorkflow(workflow);
+                        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
+                    } else {
+                        oldWorkflow.setActive(false);
+                        workflow.setId("");
+                        id = persistence.storeWorkflow(workflow);
+                        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
+                    }
+                }
+            }
             return logicResponse;
         }
         else {
@@ -108,13 +135,6 @@ public class LogicImp implements Logic {
         return persistence.loadWorkflow(workflowID);
     }
 
-    public Workflow editWorkflow(String workflowId) throws PersistenceException{
-        
-        final Workflow editWorkflow = persistence.loadWorkflow(workflowId);
-        
-        return null;
-    }
-
     /**
      * This method delete a Workflow in Persistence.
      * 
@@ -124,9 +144,9 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse deleteWorkflow(String workflowID) throws PersistenceException {
-        persistence.deleteWorkflow(workflowID);
         final LogicResponse logicResponse = new LogicResponse();
         
+        persistence.deleteWorkflow(workflowID);
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=del="
                 + workflowID));
         return logicResponse;
@@ -144,11 +164,12 @@ public class LogicImp implements Logic {
     public LogicResponse stepForward(String itemId, String stepId, String username) 
             throws LogicException 
     {
-        
-        final String updatedItemId = processManager.executeStep(persistence.loadStep(itemId, stepId), persistence.loadItem(itemId), persistence.loadUser(username));
-        final String workflowId = persistence.loadItem(itemId).getWorkflowId();
+        final String updatedItemId; 
+        final String workflowId; 
         final LogicResponse logicResponse = new LogicResponse();
         
+        updatedItemId = processManager.executeStep(persistence.loadStep(itemId, stepId), persistence.loadItem(itemId), persistence.loadUser(username));
+        workflowId = persistence.loadItem(itemId).getWorkflowId();
         logicResponse.add(new Message("ITEMS_FROM_" + workflowId, "item=def="
                 + updatedItemId));
         return logicResponse;
@@ -165,11 +186,12 @@ public class LogicImp implements Logic {
     public LogicResponse addStep(String workflowID, Step step)
             throws PersistenceException 
     {
-        final Workflow workflow = (Workflow) persistence.loadWorkflow(workflowID);
+        final Workflow workflow;
         final LogicResponse logicResponse = new LogicResponse();
+        
+        workflow = persistence.loadWorkflow(workflowID);
         workflow.addStep(step);
         persistence.storeWorkflow(workflow);
-        
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
         return logicResponse;
     }
@@ -185,11 +207,12 @@ public class LogicImp implements Logic {
     public LogicResponse deleteStep(String workflowID, String stepID)
             throws PersistenceException 
     {
-        final Workflow workflow = (Workflow) persistence.loadWorkflow(workflowID);
+        final Workflow workflow; 
         final LogicResponse logicResponse = new LogicResponse();
+        
+        workflow = persistence.loadWorkflow(workflowID);
         workflow.removeStep(stepID);
         persistence.storeWorkflow(workflow);
-        
         logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
         return logicResponse;
     }
