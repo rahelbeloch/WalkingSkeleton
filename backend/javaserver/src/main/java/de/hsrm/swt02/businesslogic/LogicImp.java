@@ -531,9 +531,7 @@ public class LogicImp implements Logic {
     public List<Workflow> getAllWorkflows() throws WorkflowNotExistentException {
         final List<Workflow> workflows = new LinkedList<Workflow>();
         for (Workflow wf : p.loadAllWorkflows()) {
-            if (wf.isActive()) {
-                workflows.add(wf);
-            }
+            workflows.add(wf);
         }
                 
         return workflows;
