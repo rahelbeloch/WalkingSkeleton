@@ -33,7 +33,7 @@ namespace Client.ViewModel
             logger.Debug("updatedModel()");
 
             _workflows.Clear();
-            IList<Workflow> workflowList = _restRequester.GetAllWorkflowsByUser(_userName);
+            IList<Workflow> workflowList = _restRequester.GetAllWorkflowsByUser();
             if (workflowList == null)
             {
                 logger.Debug("WorkflowList is null");
@@ -42,11 +42,11 @@ namespace Client.ViewModel
             workflowList.ToList().ForEach(_workflows.Add);
 
             _startableWorkflows.Clear();
-            IList<int> startableList = _restRequester.GetStartablesByUser(_userName);
+            IList<string> startableList = _restRequester.GetStartablesByUser();
             if (startableList == null)
             {
                 logger.Debug("startableList is null");
-                startableList = new List<int>();
+                startableList = new List<string>();
             }
             startableList.ToList().ForEach(_startableWorkflows.Add);
             foreach (Workflow workflow in _workflows)
@@ -57,7 +57,7 @@ namespace Client.ViewModel
             _relevantItems.Clear();
             //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
         }
-        public void addWorkflowToModel(Workflow updatedWorkflow, IList<int> startableList)
+        public void addWorkflowToModel(Workflow updatedWorkflow, IList<string> startableList)
         {
             logger.Debug("addWorkflowToModel");
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
@@ -68,7 +68,7 @@ namespace Client.ViewModel
             {
                 _startableWorkflows.Clear();
                 logger.Debug("startableList is null");
-                startableList = _restRequester.GetStartablesByUser(_userName);
+                startableList = _restRequester.GetStartablesByUser();
                 startableList.ToList().ForEach(_startableWorkflows.Add);
             }
             if (_startableWorkflows.Contains(updatedWorkflow.id))
@@ -80,7 +80,7 @@ namespace Client.ViewModel
                 toUpdate.startPermission = false;
             }
             _relevantItems.Clear();
-            _restRequester.GetRelevantItemsByUser(updatedWorkflow.id, _userName).ToList().ForEach(_relevantItems.Add);
+            _restRequester.GetRelevantItemsByUser(updatedWorkflow.id).ToList().ForEach(_relevantItems.Add);
             Step activeStep;
             DashboardRow row;
             foreach (Item item in _relevantItems)
@@ -102,7 +102,7 @@ namespace Client.ViewModel
         {
             foreach (Step step in workflow.steps)
             {
-                if (id == step.id)
+                if (id.ToString().Equals(step.id))
                 {
                     return step;
                 }
@@ -117,12 +117,12 @@ namespace Client.ViewModel
             _relevantItems.Clear();
             _dashboardWorkflows.Clear();
         }
-        public void createWorkflow(int id, String userName)
+        public void createWorkflow(string id)
         {
             logger.Debug("createWorkflow()");
             try
             {
-                _restRequester.StartWorkflow(id, userName);
+                _restRequester.StartWorkflow(id);
             }
             catch (Exception exc)
             {
@@ -130,10 +130,10 @@ namespace Client.ViewModel
                 throw;
             }
         }
-        public void stepForward(int stepId, int itemId, String userName)
+        public void stepForward(string stepId, string itemId)
         {
             logger.Debug("stepForward()");
-            _restRequester.StepForward(stepId, itemId, userName);
+            _restRequester.StepForward(stepId, itemId);
         }
 
         private ICommand _stepForwardCommand;
@@ -146,7 +146,7 @@ namespace Client.ViewModel
                     _stepForwardCommand = new ActionCommand(execute => 
                     {
                         DashboardRow param = (DashboardRow) execute;
-                        stepForward(param.actStep.id, param.actItem.id, param.username);
+                        stepForward(param.actStep.id, param.actItem.id);
                     }, canExecute => true);
 
                     
@@ -190,7 +190,7 @@ namespace Client.ViewModel
                     _startWorkflowCommand = new ActionCommand(execute =>
                     {
                         DashboardWorkflow param = (DashboardWorkflow)execute;
-                        createWorkflow(param.actWorkflow.id, userName);
+                        createWorkflow(param.actWorkflow.id);
                     }, canExecute =>
                     {
                         return true;
@@ -232,8 +232,8 @@ namespace Client.ViewModel
         private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
         public ObservableCollection<Workflow> workflows { get { return _workflows; } }
 
-        private ObservableCollection<int> _startableWorkflows = new ObservableCollection<int>();
-        public ObservableCollection<int> startableWorkflows { get { return _startableWorkflows; } }
+        private ObservableCollection<string> _startableWorkflows = new ObservableCollection<string>();
+        public ObservableCollection<string> startableWorkflows { get { return _startableWorkflows; } }
 
         private ObservableCollection<DashboardWorkflow> _dashboardWorkflows = new ObservableCollection<DashboardWorkflow>();
         public ObservableCollection<DashboardWorkflow> dashboardWorkflows { get { return _dashboardWorkflows; } }

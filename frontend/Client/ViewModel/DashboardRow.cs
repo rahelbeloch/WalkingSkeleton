@@ -16,7 +16,7 @@ namespace Client.ViewModel
         private Step _actStep;
         public Step actStep { get { return _actStep; } set { _actStep = value; } }
 
-        public MyToggleButton toggleButton { get { return new MyToggleButton(actStep.id, actItem.id, username, _actItem.state); } }
+        //public MyToggleButton toggleButton { get { return new MyToggleButton(actStep.id, actItem.id, username, _actItem.state); } }
         private String _username;
         public String username { get { return _username; } }
 
