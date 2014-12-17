@@ -13,19 +13,12 @@ import javax.ws.rs.core.Response;
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
 import de.hsrm.swt02.businesslogic.Message;
-import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
-import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
-import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
-import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * This class is called if client sends request to operate on workflows.
@@ -59,19 +52,11 @@ public class WorkflowCommandResource {
 
         try {
             LOGIC.startWorkflow(workflowid, username);
-        } catch (WorkflowNotExistentException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (StorageFailedException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (ItemNotExistentException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (PersistenceException e) {
-        	LOGGER.log(Level.WARNING, e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-		}
+        } catch (PersistenceException e1) {
+            LOGGER.log(Level.WARNING, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        }
+
         logicResponse = LOGIC.getProcessLogicResponse();
         for (Message m : logicResponse.getMessages()) {
             try {
@@ -105,31 +90,11 @@ public class WorkflowCommandResource {
         
         try {
             LOGIC.stepForward(itemid, stepid, username);
-        } catch (ItemNotExistentException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (UserNotExistentException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (ItemNotForwardableException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (UserHasNoPermissionException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (StorageFailedException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (WorkflowNotExistentException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (StepNotExistentException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-        } catch (LogicException e) {
-        	LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-		}
+        } catch (LogicException e1) {
+            LOGGER.log(Level.WARNING, e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        }
+
         logicResponse = LOGIC.getProcessLogicResponse();
         for (Message m : logicResponse.getMessages()) {
             try {
