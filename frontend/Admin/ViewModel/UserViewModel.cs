@@ -32,14 +32,13 @@ namespace Admin.ViewModel
 
         private void updateModel()
         {
-            // _restRequester.GetAllRoles();
+            IList<Role> allRoles =  _restRequester.GetAllElements<Role>();
 
-            Role r1 = new Role();
-            Role r2 = new Role();
-            r1.rolename = "Manager";
-            r2.rolename = "Sachbearbeiter";
-            roleCheckboxRows.Add(new RoleCheckboxRow(r1, true));
-            roleCheckboxRows.Add(new RoleCheckboxRow(r2, false));
+            foreach(Role role in allRoles)
+            {
+                // ueberpruefen ob der aktuell ausgewählte Nutzer die Rolle hat
+                roleCheckboxRows.Add(new RoleCheckboxRow(role, false));
+            }
         }
 
         /// <summary>
@@ -109,7 +108,8 @@ namespace Admin.ViewModel
                         try
                         {
                             User newUser = new User();
-                            newUser.username = username;
+                            //newUser.username = username;
+                            newUser.id = username;
 
                             foreach(RoleCheckboxRow actRow in roleCheckboxRows) 
                             {
@@ -186,7 +186,7 @@ namespace Admin.ViewModel
             }
         }
 
-        public void RoleUpdate(Role updatedRole)
+        void IDataReceiver.RoleUpdate(Role updatedRole)
         {
             Console.WriteLine("Update UserViewModel: RoleID = " + updatedRole.id);
         }
