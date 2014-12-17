@@ -41,12 +41,20 @@ namespace RestAPI
             };
         }
 
+        /// <summary>
+        /// Set client properties in rest-interface.
+        /// </summary>
+        /// <param name="username">username of logged user in client</param>
+        /// <param name="password">the password</param>
         public void InitializeClientProperties(string username, SecureString password)
         {
             _myUsername = username;
             _myPassword = password;
         }
 
+        /// <summary>
+        /// Delete client properties in rest-interface.
+        /// </summary>
         public void DeleteClientProperties()
         {
             _myUsername = null;
@@ -150,9 +158,7 @@ namespace RestAPI
         private IList<O> GetElementList<O>(string url) 
         {
             IRestResponse response = null;
-
             var request = createRequest(url, Method.GET);
-            System.Diagnostics.Trace.WriteLine("URL: " + url);
             try
             {
                 response = InternalRequester.RetrieveRequest(request);
@@ -231,24 +237,6 @@ namespace RestAPI
             return response.StatusCode == HttpStatusCode.OK;
         }
 
-        public Boolean SwitchElementActivity<O>(string id, string state)
-        {
-            IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id, state });
-
-            var request = createRequest(url, Method.PUT);
-            
-            try
-            {
-                response = InternalRequester.RetrieveRequest(request);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-            return response.StatusCode == HttpStatusCode.OK;
-        }
-
         /// <summary>
         ///     Create an object on the server, with HTTP-Method POST. Path is: 'resource/<typename>'
         /// </summary>
@@ -291,20 +279,6 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///  Method to delete a user.
-        /// </summary>
-        /// <param name="username">The bad bad user to delete</param>
-        /// <returns>The deleted user</returns>
-        public User DeleteUser(string username)
-        {
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(User));
-            
-            var request = createRequest(url, Method.DELETE);
-            
-            return Delete<User>(request);
-        }
-
-        /// <summary>
         ///  General method to delete an object (RootElement: Workflow, Item, User).
         /// </summary>
         /// <typeparam name="O">Type of the object to delete</typeparam>
@@ -313,7 +287,6 @@ namespace RestAPI
         private O Delete<O>(RestRequest request) where O : new()
         {
             IRestResponse response;
-
             try
             {
                 // call Internal Requester to finally send the request
@@ -328,6 +301,31 @@ namespace RestAPI
             O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
 
             return desObj;
+        }
+
+        /// <summary>
+        ///  Method switches the state (active/inactive) of an element (user, role, workflow...).
+        /// </summary>
+        /// <typeparam name="O">type of element</typeparam>
+        /// <param name="id">id of element</param>
+        /// <param name="state">new state</param>
+        /// <returns>if it worked or not</returns>
+        public Boolean SwitchElementActivity<O>(string id, string state)
+        {
+            IRestResponse response;
+            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id, state });
+
+            var request = createRequest(url, Method.PUT);
+
+            try
+            {
+                response = InternalRequester.RetrieveRequest(request);
+            }
+            catch (BasicException)
+            {
+                throw;
+            }
+            return response.StatusCode == HttpStatusCode.OK;
         }
 
         /// <summary>
@@ -410,7 +408,12 @@ namespace RestAPI
             return response.StatusCode == HttpStatusCode.OK;
         }
 
-        
+        /// <summary>
+        ///  Create the request with needed header fields.
+        /// </summary>
+        /// <param name="url">the requested url</param>
+        /// <param name="method">the http method</param>
+        /// <returns>the generated request</returns>
         private RestRequest createRequest(string url, Method method)
         {
             var request = new RestRequest(url, method);
