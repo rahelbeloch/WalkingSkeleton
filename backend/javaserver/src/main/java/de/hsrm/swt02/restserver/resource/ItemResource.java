@@ -48,7 +48,7 @@ public class ItemResource {
      * @return the item as string if successful, else an exception
      */
     @GET
-    @Path("items/{itemid}")
+    @Path("itemsasdf/{itemid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getItemById(@PathParam("itemid") String itemid) {
         final String loggingBody = PREFIX + "GET /item/" + itemid;
