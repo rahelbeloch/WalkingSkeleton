@@ -174,18 +174,6 @@ public class LogicTest {
      * 
      * @throws PersistenceException 
      */
-    @Test(expected = UserAlreadyExistsException.class)
-    public void userAlreadyExistsTest() throws PersistenceException {
-        init();
-        li.addUser(user);
-        li.addUser(user);
-
-    }
-
-    /**
-     * 
-     * @throws PersistenceException 
-     */
     @Test(expected = UserNotExistentException.class)
     public void deleteUserTest() throws PersistenceException {
         init();
