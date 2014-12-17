@@ -79,10 +79,13 @@ namespace Admin.ViewModel
                 if (_selectedUser != null)
                 {
                     username = _selectedUser.username;
-                    OnChanged("username");
-                    foreach (RoleCheckboxRow rcr in _roleCheckboxRows) 
+
+                    postUserButtonText = "Nutzer ändern";
+                    enableUserTextBox = false;
+
+                    foreach (RoleCheckboxRow rcr in _roleCheckboxRows)
                     {
-                        
+
                         if (_selectedUser.roles.Any(i => i.id == rcr.role.id))
                         {
                             rcr.isSelected = true;
@@ -92,6 +95,10 @@ namespace Admin.ViewModel
                             rcr.isSelected = false;
                         }
                     }
+                }
+                else
+                {
+                    enableUserTextBox = true;
                 }
             }
         }
@@ -165,8 +172,33 @@ namespace Admin.ViewModel
             }
         }
 
+        private bool _enableUserTextBox = true;
+        public bool enableUserTextBox
+        {
+            get
+            {
+                return _enableUserTextBox;
+            }
+            set
+            {
+                _enableUserTextBox = value;
+                OnChanged("enableUserTextBox");
+            }
+        }
+
         private string _postUserButtonText = "Nutzer hinzufügen";
-        public string postUserButtonText { get { return _postUserButtonText; } set { _postUserButtonText = value; } }
+        public string postUserButtonText 
+        { 
+            get 
+            { 
+                return _postUserButtonText; 
+            } 
+            set 
+            { 
+                _postUserButtonText = value; 
+                OnChanged("postUserButtonText"); 
+            } 
+        }
 
         private void postUser()
         {
@@ -246,7 +278,8 @@ namespace Admin.ViewModel
         {
             _selectedUser = null;
             username = "";
-            OnChanged("username");
+            postUserButtonText = "Nutzer hinzufügen";
+            enableUserTextBox = true;
 
             foreach (RoleCheckboxRow rcr in roleCheckboxRows) 
             {
