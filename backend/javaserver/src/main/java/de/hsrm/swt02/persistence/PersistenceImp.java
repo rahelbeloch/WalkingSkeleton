@@ -127,7 +127,11 @@ public class PersistenceImp implements Persistence {
             throw new WorkflowNotExistentException("database has no workflow " + id);
         }
     }
-
+    
+    @Override
+    public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
+        return workflows;
+    }
     
     // Item Operations
     
@@ -136,11 +140,8 @@ public class PersistenceImp implements Persistence {
      * @param workflowId is the needed workflowid
      * @param item is the needed item
      * @return itemId is the stored item
-     * @exception AlreadyExistsException if the objects already exists in the persistence
-     * @exception StorageFailedException if the persistencestorage failed
-     * @throws AlreadyExistsException
-     * @throws StorageFailedException
-     * @throws ItemNotExistentException 
+     * @exception PersistenceException inidcates errors in storage methods
+     * @throws PersistenceException 
      */
     public String addItemToWorkflow(String workflowId, Item item) throws PersistenceException {
         Workflow workflow = null;
@@ -177,47 +178,6 @@ public class PersistenceImp implements Persistence {
         return item.getId();
     }
     
-//    @Override
-//    public String storeItem(Item item) throws PersistenceException {
-//        Workflow parentWorkflow = null;
-//        Item itemToRemove = null;
-//        
-//        if (item.getId() == null) {
-//            for (Workflow wf: workflows) {
-//                if (item.getWorkflowId().equals(wf.getId())) {
-//                    parentWorkflow = wf;
-//                    break;
-//                }
-//            }
-//            if (parentWorkflow != null) {
-//                item.setId(String.valueOf(Integer.parseInt(parentWorkflow.getId()) * ID_MULTIPLICATOR + parentWorkflow.getItems().size() + ""));
-//            } else {
-//                throw new WorkflowNotExistentException("invalid parent workflow id in item " + item.getId());
-//            }
-//        }
-//        
-//        for (Item i : items) {
-//            if (i.getId().equals(item.getId())) {
-//                itemToRemove = i;
-//                break;
-//            }
-//        }
-//        if (itemToRemove != null) {
-//            this.deleteItem(itemToRemove.getId());
-//            this.logger.log(Level.INFO, "[persistence] overwriting item " + itemToRemove.getId() + "...");
-//        }
-//        
-//        Item itemToStore;
-//        try {
-//            itemToStore = (Item)item.clone();
-//        } catch (CloneNotSupportedException e) {
-//            throw new StorageFailedException("storage of item" + item.getId() + "failed."); 
-//        }
-//        items.add(itemToStore);
-//        this.logger.log(Level.INFO, "[persistence] successfully stored item " + item.getId() + ".");
-//        return item.getId();
-//    }
-    
     /**
      * Method for getting the parentworkflow of an item.
      * @param itemId is the id of the item
@@ -227,7 +187,7 @@ public class PersistenceImp implements Persistence {
         final int integerItemId = Integer.parseInt(itemId);
         final int idDivider = 10;
         final int eliminatedItemId = integerItemId % (ID_MULTIPLICATOR / idDivider);
-        final String parentWorkflowId = ((integerItemId - eliminatedItemId)/ID_MULTIPLICATOR) + "";        
+        final String parentWorkflowId = ((integerItemId - eliminatedItemId) / ID_MULTIPLICATOR) + "";        
         
         Workflow parentWorkflow = null;
         for (Workflow wf: workflows) {
@@ -276,6 +236,28 @@ public class PersistenceImp implements Persistence {
             return itemToReturn;
         } else {
             throw new ItemNotExistentException("database has no item " + itemId);
+        }
+    }
+    
+    // Step Operations
+    
+    @Override
+    public Step loadStep(String itemId, String stepId) throws PersistenceException {
+        final Item item = loadItem(itemId);
+        final String workflowId = item.getWorkflowId();
+        final Workflow workflow = loadWorkflow(workflowId);
+        Step step = null;
+        
+        for (Step s : workflow.getSteps()) {
+            if (s.getId().equals(stepId)) {
+                step = s;
+            }
+        }
+        
+        if (step != null) {
+            return step;
+        } else {
+            throw new StepNotExistentException("Step " + stepId + " is not existent.");
         }
     }
 
@@ -334,40 +316,9 @@ public class PersistenceImp implements Persistence {
         } else {
             throw new UserNotExistentException("database has no user '" + username + "'.");
         }
-    }
-
-
-    @Override
-    public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
-        return workflows;
-    }
-    
-    
-    // temp load Step - to be completed
-    @Override
-    public Step loadStep(String itemId, String stepId) throws PersistenceException {
-        final Item item = loadItem(itemId);
-        final String workflowId = item.getWorkflowId();
-        final Workflow workflow = loadWorkflow(workflowId);
-        Step step = null;
-        
-        for (Step s : workflow.getSteps()) {
-            if (s.getId().equals(stepId)) {
-                step = s;
-            }
-        }
-        
-        if (step != null) {
-            return step;
-        } else {
-            throw new StepNotExistentException("Step " + stepId + " is not existent.");
-        }
-    }
-    
-    
+    }   
     
     // Sprint 2 Persistence  
-    
     
     /**
      * Method for storing a role.
