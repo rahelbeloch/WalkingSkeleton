@@ -98,6 +98,31 @@ namespace Client.ViewModel
                 toUpdate.addDashboardRow(row);
             }
         }
+        public void updateItem(Item item)
+        {
+            DashboardRow fittingRow = getWorkflowRowForItem(item);
+            Application.Current.Dispatcher.Invoke(new System.Action(() => fittingRow.actItem = item));
+        }
+        private DashboardRow getWorkflowRowForItem(Item item)
+        {
+            String workflowId = item.workflowId;
+            foreach (DashboardWorkflow workflow in _dashboardWorkflows)
+            {
+                if (workflowId.Equals(workflow.actWorkflow.id))
+                {
+                    foreach (DashboardRow dashboardRow in workflow.dashboardRows)
+                    {
+                        if (dashboardRow.actItem.id.Equals(item.id))
+                        {
+                            return dashboardRow;
+                        }
+                    }
+                    Console.WriteLine("No similar item was found for " + item.ToString());
+                }
+            }
+            Console.WriteLine("No parent workflow found for item " + item.ToString());
+            return null;
+        }
         private Step getStepById(int id, Workflow workflow)
         {
             foreach (Step step in workflow.steps)

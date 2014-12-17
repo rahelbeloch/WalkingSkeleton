@@ -12,16 +12,17 @@ using NLog;
 
 namespace Client.ViewModel
 {
+    /// <summary>
+    /// ViewModel class for the Login
+    /// </summary>
     public class LoginViewModel : ViewModelBase
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        //private IRestRequester _restRequester;
         private MainViewModel _mainViewModel;
         public LoginViewModel(MainViewModel mainViewModelInstanz)
             : base()
         {
             _mainViewModel = mainViewModelInstanz;
-            //_restRequester = _mainViewModel.restRequester;
         }
         public string Name
         {
@@ -62,6 +63,9 @@ namespace Client.ViewModel
                 OnChanged("username");
             }
         }
+        /// <summary>
+        /// ICommand which is called by the login button
+        /// </summary>
         private ICommand _authenticate;
         public ICommand authenticate
         {
