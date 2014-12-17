@@ -9,6 +9,8 @@ import java.util.logging.Level;
 
 
 
+
+
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -23,6 +25,8 @@ import org.apache.activemq.broker.BrokerService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.hsrm.swt02.businesslogic.LogicResponse;
+import de.hsrm.swt02.businesslogic.Message;
 import de.hsrm.swt02.logging.UseLogger;
 
 /**
@@ -163,6 +167,17 @@ public class ServerPublisherImp implements ServerPublisher {
             return false;
         } else {
             return broker.isStarted();
+        }
+    }
+
+    @Override
+    public void publishEvent(LogicResponse resp) {
+        for (Message m : resp.getMessages()) {
+            try {
+                publish(m.getValue(), m.getTopic());
+            } catch (ServerPublisherBrokerException e) {
+                logger.log(Level.WARNING, e);
+            }
         }
     }
 }

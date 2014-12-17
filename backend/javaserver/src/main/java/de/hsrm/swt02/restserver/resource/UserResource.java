@@ -18,11 +18,9 @@ import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
-import de.hsrm.swt02.businesslogic.Message;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
-import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
@@ -102,13 +100,8 @@ public class UserResource {
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
 
-        for (Message m : logicResponse.getMessages()) {
-            try {
-                PUBLISHER.publish(m.getValue(), m.getTopic());
-            } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, e);
-            }
-        }
+        PUBLISHER.publishEvent(logicResponse);
+        
         LOGGER.log(Level.INFO, loggingBody + " User successfully stored.");
         return Response.ok("User stored").build();
     }
@@ -146,13 +139,8 @@ public class UserResource {
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
 
-        for (Message m : logicResponse.getMessages()) {
-            try {
-                PUBLISHER.publish(m.getValue(), m.getTopic());
-            } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, e);
-            }
-        }
+        PUBLISHER.publishEvent(logicResponse);
+        
         LOGGER.log(Level.INFO, loggingBody + " User successfully updated.");
         return Response.ok().build();
     }
@@ -187,13 +175,9 @@ public class UserResource {
             return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
-        for (Message m : logicResponse.getMessages()) {
-            try {
-                PUBLISHER.publish(m.getValue(), m.getTopic());
-            } catch (ServerPublisherBrokerException e) {
-                LOGGER.log(Level.WARNING, e);
-            }
-        }
+        
+        PUBLISHER.publishEvent(logicResponse);
+        
         LOGGER.log(Level.INFO, loggingBody + " User successfully deleted.");
         return Response.ok(userAsString).build();
     }
