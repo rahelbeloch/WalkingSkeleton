@@ -270,10 +270,9 @@ public interface Logic {
      * 
      * @param role is the role we want to add
      * @return LogicResponse object
-     * @exception RoleAlreadyExistsException if the role we want to add is already there
-     * @throws RoleAlreadyExistsException
+     * @throws PersistenceException 
      */
-    LogicResponse addRole(Role role) throws RoleAlreadyExistsException;
+    LogicResponse addRole(Role role) throws RoleAlreadyExistsException, PersistenceException;
 
     /**
      * Method for adding an existing role to the rolelist of an existing user.

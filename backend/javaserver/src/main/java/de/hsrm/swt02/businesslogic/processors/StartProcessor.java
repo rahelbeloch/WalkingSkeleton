@@ -73,7 +73,6 @@ public class StartProcessor {
         }
 
         try {
-            p.storeItem(item);
             workflow.addItem(item);
             p.storeWorkflow(workflow);
         } catch (WorkflowNotExistentException e) {

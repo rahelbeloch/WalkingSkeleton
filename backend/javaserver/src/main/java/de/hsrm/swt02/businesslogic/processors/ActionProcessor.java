@@ -13,7 +13,9 @@ import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
+import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
@@ -45,13 +47,11 @@ public class ActionProcessor implements StepProcessor {
      * @param item which is currently edited
      * @param step which is currently executed
      * @param user who currently executes the step
-     * @exception ItemNotForwardableException if the steplist of the responding item can't go any further
-     * @exception UserHasNoPermissionException if the given user has no right to operate on the step
-     * @throws PersistenceException 
+     * @throws LogicException
      */
     public String handle(Item item, Step step, User user) throws LogicException {
-        
         final String username = user.getUsername();
+        final Workflow workflow = p.loadWorkflow(item.getWorkflowId());
         
         if (!username.equals(step.getUsername())) {
             throw new UserHasNoPermissionException("user " + username + "has no permission on this item");
@@ -77,7 +77,8 @@ public class ActionProcessor implements StepProcessor {
         } 
         
         try {
-            p.storeItem(currentItem);
+            workflow.addItem(currentItem);
+            p.storeWorkflow(workflow);
         } catch (WorkflowNotExistentException e) {
             e.printStackTrace();
         }
