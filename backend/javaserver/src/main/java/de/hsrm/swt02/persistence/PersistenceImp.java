@@ -140,22 +140,35 @@ public class PersistenceImp implements Persistence {
      * @exception StorageFailedException if the persistencestorage failed
      * @throws AlreadyExistsException
      * @throws StorageFailedException
+     * @throws ItemNotExistentException 
      */
-    public String addItemToWorkflow(String workflowId, Item item) throws AlreadyExistsException, StorageFailedException {
+    public String addItemToWorkflow(String workflowId, Item item) throws PersistenceException {
         Workflow workflow = null;
         for (Workflow wf : workflows) {
             if (wf.getId().equals(workflowId)) {
                 workflow = wf;
             }
         }
-        
+        Item itemToRemove = null;
+        boolean itemExists = false;
         for (Item i : workflow.getItems()) {
             if (i.getId().equals(item.getId())) {
-                throw new AlreadyExistsException("workflow " + workflow.getId() + "already has an item " + item.getId());
+                itemToRemove = i; 
+                itemExists = true;
+                break;
             }
         }
         
-        item.setId(workflow.getItems().size() + 1 + "");      
+        if (itemToRemove != null) {
+            this.deleteItem(itemToRemove.getId());
+            this.logger.log(Level.INFO, "[persistence] overwriting item " + itemToRemove.getId() + "...");
+        }
+        
+        
+        if (!itemExists) {
+            item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");      
+        }
+        
         try {
             workflow.addItem((Item)item.clone());
         } catch (CloneNotSupportedException e) {
@@ -212,9 +225,9 @@ public class PersistenceImp implements Persistence {
      */
     public Workflow getParentWorkflow(String itemId) {
         final int integerItemId = Integer.parseInt(itemId);
-        final int iddivider = 10;
-        final int eliminatedItemId = integerItemId % ID_MULTIPLICATOR / iddivider;
-        final String parentWorkflowId = (integerItemId - eliminatedItemId) + "";        
+        final int idDivider = 10;
+        final int eliminatedItemId = integerItemId % (ID_MULTIPLICATOR / idDivider);
+        final String parentWorkflowId = ((integerItemId - eliminatedItemId)/ID_MULTIPLICATOR) + "";        
         
         Workflow parentWorkflow = null;
         for (Workflow wf: workflows) {
@@ -228,8 +241,9 @@ public class PersistenceImp implements Persistence {
     @Override
     public void deleteItem(String itemId) throws ItemNotExistentException {
         final Workflow parentWorkflow = getParentWorkflow(itemId);
-        Item itemToRemove = null;
         
+        
+        Item itemToRemove = null;
         for (Item item: parentWorkflow.getItems()) {
             if (item.getId().equals(itemId)) {
                 itemToRemove = item;
