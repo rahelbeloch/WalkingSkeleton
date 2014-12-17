@@ -20,6 +20,7 @@ import de.hsrm.swt02.restserver.RestServer;
 public class App {
     
     private static boolean isShuttingDown;
+    private static Object synchronizer = new Object();
     
     /**
      * Application startup method.
@@ -82,7 +83,7 @@ public class App {
          * Otherwise it could cause a double shutdown 
          * which would not work at all.
          */
-        synchronized (server) {
+        synchronized (synchronizer) {
             if (isShuttingDown) {
                 return;
             }
