@@ -21,7 +21,8 @@ import de.hsrm.swt02.logging.UseLogger;
  */
 public class RestServer {
 
-    private static final int WAITING_TIME = 5;
+    private static final int WAITING_TIME = 5; //seconds
+    private static final int ADDITIONAL_TIME = 500; //millisecs
     private UseLogger logger = new UseLogger();
     private HttpServer server;
     private String baseURI;
@@ -63,6 +64,7 @@ public class RestServer {
     /**
      * Stops HTTP-server. The server waits a few seconds before it stops. Giving
      * all open requests enough time to run through.
+     * The HTTP-Server can be forced to stop immediately.
      * 
      * @param forceServerStop forces the HTTP-Server to stop without waiting
      */
@@ -70,11 +72,15 @@ public class RestServer {
         if (server == null) {
             return;
         }
-
-        if (forceServerStop) {
-            server.stop(0);
-        } else {
-            server.stop(WAITING_TIME);
+        
+        final int waitingTime = forceServerStop ? 0 : WAITING_TIME;
+        server.stop(waitingTime);        
+        
+        // wait for the server stop (make it sync.)
+        try {
+            Thread.sleep(waitingTime + ADDITIONAL_TIME);
+        } catch (InterruptedException e) {
+            logger.log(Level.SEVERE, "Sleep-Interrupt during stop of HTTP-Server");
         }
         logger.log(Level.INFO, "HTTP-Server stopped...");
     }
