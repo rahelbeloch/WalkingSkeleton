@@ -15,6 +15,19 @@ namespace CommunicationLib
     /// needed for the request are added. All single parts of the url are seperated by '/'.
     /// 
     /// Example of generated url: 'resource/<typename>s/<workflowId>'
+    /// 
+    /// All URLS in Rest-Kommunikation:
+    /// resource/<typename>s
+    /// resource/<typename>s 
+    /// resource/<typename>s/startables
+    /// resource/<typename>s/<workflowId>
+    /// resource/<typename>s/<id>
+    /// resource/<typename>s
+    /// resource/<typename>s
+    /// command/users/login
+    /// command/workflows/start/<id>
+    /// command/workflows/forward/<stepId>/<itemId>
+    /// 
     /// </summary>
     public static class URLRouter
     {
@@ -64,27 +77,4 @@ namespace CommunicationLib
         Resource,
         Operation
     };
-
-    /* Vorhandene URLS in Rest-Schnitstelle
-     * 
-     * resource/<typename>s
-     * 
-     * resource/<typename>s 
-     * 
-     * resource/<typename>s/startables
-     * 
-     * resource/<typename>s/<workflowId>
-     * 
-     * resource/<typename>s/<id>
-     * 
-     * resource/<typename>s
-     * 
-     * resource/<typename>s
-     * 
-     * command/users/login
-     * 
-     * command/workflows/start/<id>
-     * 
-     * command/workflows/forward/<stepId>/<itemId>
-     */
 }

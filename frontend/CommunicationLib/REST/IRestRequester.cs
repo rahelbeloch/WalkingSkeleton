@@ -79,13 +79,6 @@ namespace CommunicationLib
         /// <returns>The deleted Object</returns>
         O DeleteObject<O>(string id) where O : new();
 
-         /// <summary>
-        ///  Method to delete a user.
-        /// </summary>
-        /// <param name="username">The bad bad user to delete</param>
-        /// <returns>The deleted user</returns>
-        User DeleteUser(string username);
-
         // COMMAND-METHODS
 
         /// <summary>
