@@ -7,13 +7,24 @@ using System.Threading.Tasks;
 
 namespace Admin.ViewModel
 {
-    public class RoleCheckboxRow
+    public class RoleCheckboxRow : ViewModelBase
     {
         private Role _role;
         public Role role { get { return _role; } set { _role = value; } }
 
         private Boolean _isSelected;
-        public Boolean isSelected { get { return _isSelected; } set { _isSelected = value; } }
+        public Boolean isSelected 
+        { 
+            get 
+            { 
+                return _isSelected; 
+            } 
+            set 
+            { 
+                _isSelected = value; 
+                OnChanged("isSelected"); 
+            } 
+        }
 
         public RoleCheckboxRow(Role role, Boolean isSelected)
         {

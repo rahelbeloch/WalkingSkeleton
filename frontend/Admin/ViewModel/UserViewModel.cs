@@ -76,17 +76,14 @@ namespace Admin.ViewModel
             set
             {
                 _selectedUser = value;
-                Console.WriteLine("_selectedUser = " + _selectedUser.username);
-                Console.WriteLine("rolesCount = " + _selectedUser.roles.Count());
                 if (_selectedUser != null)
                 {
-                    foreach (RoleCheckboxRow rcr in roleCheckboxRows) 
+                    foreach (RoleCheckboxRow rcr in _roleCheckboxRows) 
                     {
                         
                         if (_selectedUser.roles.Any(i => i.id == rcr.role.id))
                         {
                             rcr.isSelected = true;
-                            Console.WriteLine("Role: " + rcr.role.rolename + " set to true");
                         }
                         else
                         {
