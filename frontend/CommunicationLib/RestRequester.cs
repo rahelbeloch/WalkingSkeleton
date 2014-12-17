@@ -107,7 +107,6 @@ namespace RestAPI
             {
                 // call Internal Requester to finally send the request
                 response = InternalRequester.RetrieveRequest(request);
-                Console.WriteLine(response.Content);
             }
             catch (BasicException)
             {
@@ -186,7 +185,6 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                //response = InternalRequester.RetrieveRequest(url, Method.GET);
                 response = InternalRequester.RetrieveRequest(request);
             }
             catch (BasicException)
@@ -251,34 +249,6 @@ namespace RestAPI
             return response.StatusCode == HttpStatusCode.OK;
         }
 
-        /*
-        /// <summary>
-        ///     Send workflow activity change to server. Path is always: '/ressourceParam/workflow/{workflowid}/{state}
-        /// </summary>
-        /// <param name="workflowId">Id of workflow which should be (de-)activated</param> 
-        /// <param name="state">state which indicates if workflow should be (de-)activated</param>
-        /// <returns></returns>
-        public Boolean WorkflowActivity(string workflowId, string state)
-        {
-            IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow), new string[] { workflowId, state });
-            //String url = _ressourceParam + "workflow/" + workflowId + "/" + state;
-
-            var request = new RestRequest(url, Method.PUT);
-            request.AddHeader("Accept", "text/plain");
-
-            try
-            {
-                response = InternalRequester.RetrieveRequest(request);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-            return response.StatusCode == HttpStatusCode.OK;
-        }
-         */
-
         /// <summary>
         ///     Create an object on the server, with HTTP-Method POST. Path is: 'resource/<typename>'
         /// </summary>
@@ -292,7 +262,7 @@ namespace RestAPI
             
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
-            System.Diagnostics.Trace.WriteLine("--------SerializedObj: " + serializedObj); 
+            // Create request
             var request = createRequest(url, Method.POST);
             
             try
@@ -304,7 +274,6 @@ namespace RestAPI
             {
                 throw;
             }
-
             return response.StatusCode == HttpStatusCode.OK;
         }
 
