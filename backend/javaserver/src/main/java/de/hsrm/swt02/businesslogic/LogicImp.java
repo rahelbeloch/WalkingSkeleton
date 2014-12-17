@@ -215,7 +215,7 @@ public class LogicImp implements Logic {
             
         }
         //finally user is added
-        persistence.addUser(user);
+        persistence.storeUser(user);
         logicResponse.add(new Message("USER_INFO", "user=def=" + user.getUsername()));
         return logicResponse;
     }
@@ -492,10 +492,10 @@ public class LogicImp implements Logic {
      * This method store a workflow and distribute a id.
      * 
      * @param user
-     * @throws UserAlreadyExistsException
+     * @throws PersistenceException 
      */
     @Override
-    public LogicResponse addRole(Role role) throws RoleAlreadyExistsException {
+    public LogicResponse addRole(Role role) throws PersistenceException {
         final LogicResponse logicResponse = new LogicResponse();
         
         persistence.storeRole(role);
