@@ -4,6 +4,7 @@ using CommunicationLib.Exception;
 using Action = CommunicationLib.Model.Action;
 using RestAPI;
 using CommunicationLib.Model;
+using System.Security;
 
 namespace UnitTestProject1
 {
@@ -21,6 +22,7 @@ namespace UnitTestProject1
         public static void ClassInit(TestContext context)
         {
             myRequester = new RestRequester();
+            myRequester.InitializeClientProperties("Rahel", new SecureString());
         }
 
         /// <summary>
@@ -30,7 +32,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(ServerNotRunningException))]
         public void testServerConnectionGetObject()
         {
-            myRequester.GetObject<Workflow>(0);
+            myRequester.GetObject<Workflow>("0");
         }
 
         /// <summary>
@@ -50,7 +52,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(ServerNotRunningException))]
         public void testServerConnectionSendSimpleReq()
         {
-            myRequester.StepForward(1, 2, "Rahel");
+            myRequester.StepForward("1", "2");
         }
     }
 }
