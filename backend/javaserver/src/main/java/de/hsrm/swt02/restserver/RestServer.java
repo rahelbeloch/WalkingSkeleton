@@ -58,7 +58,7 @@ public class RestServer {
         rc.register(RestExceptionListener.class);
         logger.log(Level.INFO, "Starting HTTP-Server...");
         server = JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
-        logger.log(Level.INFO, "HTTP-Server started");
+        logger.log(Level.INFO, "HTTP-Server started (type 'stop' for proper shutdown)");
     }
 
     /**
