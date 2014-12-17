@@ -117,7 +117,7 @@ public class RoleResource {
                 LOGGER.log(Level.WARNING, e);
             }
         }
-        LOGGER.log(Level.INFO, loggingBody + " User successfully stored.");
+        LOGGER.log(Level.INFO, loggingBody + " Role successfully stored.");
         return Response.ok("Role stored").build();
     }
     
