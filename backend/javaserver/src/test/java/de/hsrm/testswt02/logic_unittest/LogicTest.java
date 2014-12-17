@@ -280,13 +280,31 @@ public class LogicTest {
         final int before = li.getAllWorkflowsByUser(user.getUsername()).size();
         
         li.deactivateWorkflow(w.getId());
-        Workflow workflow = li.getWorkflow(w.getId());
+        
+         
         final int after = li.getAllWorkflowsByUser(user.getUsername()).size();
 
         assertTrue(before == after + 1);
         
     }
-    
+    /**
+     * open items should show even the workflow is deaktive.
+     * @throws LogicException .
+     */
+    @Test
+    public void showOpenItemInDeactiveWorkflow() throws LogicException {
+        init();
+        initExtension();
+        
+        final Workflow actWorkflow = li.getAllWorkflows().get(0);
+        final String actUser = actWorkflow.getStepByPos(0).getUsername();
+        actWorkflow.getStepByPos(0).getUsername();
+        li.startWorkflow(actWorkflow.getId(), actUser);
+        final int i = li.getAllWorkflowsByUser(actUser).size();
+        li.deactivateWorkflow(actWorkflow.getId());
+        final int j = li.getAllWorkflowsByUser(actUser).size();
+        assertTrue(i == j);
+    }
     
 
     /**
@@ -308,6 +326,8 @@ public class LogicTest {
         w.addStep(action);
         w.addStep(finalStep);
     }
+    
+    
     
     /**
      * This method init more data for testing.
