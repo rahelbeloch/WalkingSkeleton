@@ -43,7 +43,6 @@
     <module name="EqualsHashCode"/>
     <module name="FallThrough"/>
     <module name="FinalLocalVariable"/>
-    <module name="IllegalCatch"/>
     <module name="IllegalThrows"/>
     <module name="InnerAssignment"/>
     <module name="MagicNumber"/>
