@@ -27,15 +27,6 @@ public interface Persistence {
      * @return id of stored workflow
      */
     String storeWorkflow(Workflow workflow) throws PersistenceException;
-
-
-//    /**
-//     * store functions to store an item.
-//     * @param item is an item for storing
-//     * @exception WorkflowNotExistentException if the requested workflow is not there
-//     * @throws WorkflowNotExistentException
-//     */
-//    String storeItem(Item item) throws PersistenceException;
     
     /**
      * Method for adding a new user.
@@ -89,14 +80,7 @@ public interface Persistence {
      * @throws PersistenceException 
      */
     Step loadStep(String itemId, String stepId) throws PersistenceException;
-//
-//    /**
-//     * Method for loading a requested MetaEntry.
-//     * @param key is the key string.
-//     * @return MetaEntry is the requested MetaEntry of the list with the right key string.
-//     */
-//    MetaEntry loadMetaEntry(String key);
-//
+
     /**
      * delete functions to remove workflows, items, and users from persistence.
      * @param id is the id of the requested workflow
@@ -120,6 +104,7 @@ public interface Persistence {
      * @throws UserNotExistentException
      */
     void deleteUser(String name) throws UserNotExistentException;
+    
     
     // Sprint 2 Persistence
     
@@ -173,6 +158,6 @@ public interface Persistence {
      * @throws RoleNotExistentException
      */
     void deleteRole(String rolename) throws RoleNotExistentException;
-
+    
 }
 
