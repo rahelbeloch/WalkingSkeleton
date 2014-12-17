@@ -173,16 +173,20 @@ namespace RestAPI
         /// <returns>List of handled objects</returns>
         private IList<O> GetElementList<O>(string url) 
         {
-            IRestResponse response;
+            IRestResponse response = null;
 
             var request = createRequest(url, Method.GET);
-            
+            System.Diagnostics.Trace.WriteLine("URL: " + url);
             try
             {
                 response = InternalRequester.RetrieveRequest(request);
             }
-            catch (BasicException)
+            catch (BasicException e)
             {
+                System.Diagnostics.Trace.WriteLine("Exception " + e.Data);
+                System.Diagnostics.Trace.WriteLine("resp " + response.ErrorException);
+                System.Diagnostics.Trace.WriteLine("resp " + response.ErrorMessage);
+                System.Diagnostics.Trace.WriteLine("resp " + response.StatusCode);
                 throw;
             } 
 

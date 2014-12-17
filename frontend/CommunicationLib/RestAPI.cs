@@ -42,7 +42,9 @@ namespace RestAPI
         {
             // execute the request
             IRestResponse response = client.Execute(request);
-
+            System.Diagnostics.Trace.WriteLine("resp " + response.ErrorException);
+            System.Diagnostics.Trace.WriteLine("resp " + response.ErrorMessage);
+            System.Diagnostics.Trace.WriteLine("resp " + response.StatusCode);
             try
             {
                 ProofResponseErrors(response);
