@@ -217,8 +217,9 @@ namespace RestAPI
         public Boolean UpdateObject(RootElement sendObj)
         {
             IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(RootElement), new string[] { sendObj.id });
+            String url = URLRouter.generateUrl(UrlMethod.Resource, sendObj.GetType(), new string[] { sendObj.id });
             
+            Console.WriteLine("url: " + url);
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
 
