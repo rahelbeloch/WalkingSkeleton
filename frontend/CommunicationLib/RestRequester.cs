@@ -63,7 +63,7 @@ namespace RestAPI
             IList<O> eleList;
             try
             {
-                eleList = GetElementList<O>(url, "");
+                eleList = GetElementList<O>(url);
             }
             catch (BasicException)
             {
@@ -100,7 +100,7 @@ namespace RestAPI
         /// </summary>
         /// <param name="username">Requested username</param>
         /// <returns>List of all workflow of this user</returns>
-        public IList<Workflow> GetAllWorkflowsByUser(String userName)
+        public IList<Workflow> GetAllWorkflowsByUser()
         {
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow));
             //String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
@@ -109,7 +109,7 @@ namespace RestAPI
             IList<Workflow> eleList;
             try
             {
-                eleList = GetElementList<Workflow>(url, userName);
+                eleList = GetElementList<Workflow>(url);
             }
             catch (BasicException)
             {
@@ -123,7 +123,7 @@ namespace RestAPI
         /// </summary>
         /// <param name="username">Requested username</param>
         /// <returns>List of all startable workflows of this user</returns>
-        public IList<int> GetStartablesByUser(string userName)
+        public IList<string> GetStartablesByUser()
         {
             IRestResponse response;
 
@@ -132,7 +132,7 @@ namespace RestAPI
             //String url = _ressourceParam + typeName + "s/startables/";
 
             var request = new RestRequest(url, Method.GET);
-            request.AddParameter("username", userName, ParameterType.HttpHeader);
+            request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
             request.AddHeader("Accept", "text/plain");
 
             try
@@ -147,7 +147,7 @@ namespace RestAPI
             }
 
             // Deserialization
-            IList<int> eleList = JsonConvert.DeserializeObject<List<int>>(response.Content, _jsonSettings);
+            IList<string> eleList = JsonConvert.DeserializeObject<List<string>>(response.Content, _jsonSettings);
             
             return eleList;
         }
@@ -158,16 +158,16 @@ namespace RestAPI
         /// <param name="workflowID">The actual handled workflow</param>
         /// <param name="username">The requested user</param>
         /// <returns>List of relevant items</returns>
-        public IList<Item> GetRelevantItemsByUser(int workflowID, string userName)
+        public IList<Item> GetRelevantItemsByUser(string workflowID)
         {
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Item), new string[] { workflowID.ToString() });
+            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Item), new string[] { workflowID });
             //String typeName = typeof(Item).FullName.Split('.').Last().ToLower();
             //String url = _ressourceParam + typeName + "s" + "/" + workflowID;
 
             IList<Item> eleList;
             try
             {
-                eleList = GetElementList<Item>(url, userName);
+                eleList = GetElementList<Item>(url);
             } catch(BasicException)
             {
                 throw;
@@ -182,12 +182,12 @@ namespace RestAPI
         /// <typeparam name="O">Type of handled object</typeparam>
         /// <param name="url">Request URL</param>
         /// <returns>List of handled objects</returns>
-        private IList<O> GetElementList<O>(string url, string username) 
+        private IList<O> GetElementList<O>(string url) 
         {
             IRestResponse response;
 
             var request = new RestRequest(url, Method.GET);
-            request.AddParameter("username", username, ParameterType.HttpHeader);
+            request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
             request.AddHeader("Accept", "text/plain");
 
             try
@@ -210,11 +210,11 @@ namespace RestAPI
         /// <typeparam name="O">Type of the requested object</typeparam>
         /// <param name="id">Id of the requested object</param>
         /// <returns>The requested object</returns>
-        public O GetObject<O>(int id) where O : new()
+        public O GetObject<O>(string id) where O : new()
         {
             IRestResponse response;
 
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id.ToString() });
+            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id });
             //String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             //String url = _ressourceParam + typeName + "s/" + id;
 
@@ -252,7 +252,7 @@ namespace RestAPI
         {
             IRestResponse response;
 
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(RootElement), new string[] { sendObj.id.ToString() });
+            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(RootElement), new string[] { sendObj.id });
             //String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
             //String url = _ressourceParam + typeName + "s/";
             //url += sendObj.GetType() == typeof(User) ? "" : sendObj.id.ToString();
@@ -303,10 +303,10 @@ namespace RestAPI
         /// <param name="workflowId">Id of workflow which should be (de-)activated</param> 
         /// <param name="state">state which indicates if workflow should be (de-)activated</param>
         /// <returns></returns>
-        public Boolean WorkflowActivity(int workflowId, string state)
+        public Boolean WorkflowActivity(string workflowId, string state)
         {
             IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow), new string[] { workflowId.ToString(), state });
+            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow), new string[] { workflowId, state });
             //String url = _ressourceParam + "workflow/" + workflowId + "/" + state;
 
             var request = new RestRequest(url, Method.PUT);
@@ -361,9 +361,9 @@ namespace RestAPI
         /// <typeparam name="O">Type of the delete object</typeparam>
         /// <param name="id">ID of the object to delete</param>
         /// <returns>The deleted Object</returns>
-        public O DeleteObject<O>(int id) where O : new()
+        public O DeleteObject<O>(string id) where O : new()
         {
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id.ToString() });
+            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id });
             //String typeName = typeof(O).FullName.Split('.').Last().ToLower();
             //String url = _ressourceParam + typeName + "s/" + id;
 
@@ -453,15 +453,15 @@ namespace RestAPI
         /// </summary>
         /// <param name="wId">Workflow-Id</param>
         /// <param name="uId">Username</param>
-        public Boolean StartWorkflow(int wId, string username)
+        public Boolean StartWorkflow(string wId)
         {
             IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(Workflow), new string[] { "start", wId.ToString() });
+            String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(Workflow), new string[] { "start", wId });
             //String url = _operationParam + "workflows/" + "start/" + wId.ToString();
 
             // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
-            request.AddParameter("username", username, ParameterType.HttpHeader);
+            request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
             request.AddHeader("Accept", "text/plain");
 
             try
@@ -484,15 +484,15 @@ namespace RestAPI
         /// <param name="itemId">Id of the current item</param>
         /// <param name="uId">Name of the current user</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
-        public Boolean StepForward(int stepId, int itemId, string username)
+        public Boolean StepForward(string stepId, string itemId)
         {
             IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(Workflow), new string[] { "forward", stepId.ToString(), itemId.ToString() });
+            String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(Workflow), new string[] { "forward", stepId, itemId });
             //String url = _operationParam + "workflows/" + "forward/" + stepId + "/" + itemId;
 
             // Create the RestRequest to send to server.
             var request = new RestRequest(url, Method.POST);
-            request.AddParameter("username", username, ParameterType.HttpHeader);
+            request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
             request.AddHeader("Accept", "text/plain");
 
             try

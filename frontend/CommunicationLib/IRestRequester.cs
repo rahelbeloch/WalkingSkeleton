@@ -30,14 +30,14 @@ namespace CommunicationLib
         /// </summary>
         /// <param name="username">Requested username</param>
         /// <returns>List of all workflow of this user</returns>
-        IList<Workflow> GetAllWorkflowsByUser(String userName);
+        IList<Workflow> GetAllWorkflowsByUser();
 
         /// <summary>
         ///  Method to retrieve all startable workflows of one given user. 
         /// </summary>
         /// <param name="username">Requested username</param>
         /// <returns>List of all startable workflows of this user</returns>
-        IList<int> GetStartablesByUser(string userName);
+        IList<string> GetStartablesByUser();
 
         /// <summary>
         ///  Method to retrieve all relevant items of one given user. Relevant means all items where the user can accept or close actions.
@@ -45,7 +45,7 @@ namespace CommunicationLib
         /// <param name="workflowID">The actual handled workflow</param>
         /// <param name="username">The requested user</param>
         /// <returns>List of relevant items</returns>
-        IList<Item> GetRelevantItemsByUser(int workflowID, string userName);
+        IList<Item> GetRelevantItemsByUser(string workflowID);
 
         /// <summary>
         ///     Get an object from the server, with HTTP-Method GET.
@@ -54,7 +54,7 @@ namespace CommunicationLib
         /// <typeparam name="O">Type of the requested object</typeparam>
         /// <param name="id">Id of the requested object</param>
         /// <returns>The requested object</returns>
-        O GetObject<O>(int id) where O : new();
+        O GetObject<O>(string id) where O : new();
 
         /// <summary>
         ///     Update an object on the server, with HTTP-Method PUT. Path if sendObj is Workflow or Item: 'resource/<typename>/<id>', if user:  'resource/<typename>/<username>'
@@ -77,7 +77,7 @@ namespace CommunicationLib
         /// <typeparam name="O">Type of the delete object</typeparam>
         /// <param name="id">ID of the object to delete</param>
         /// <returns>The deleted Object</returns>
-        O DeleteObject<O>(int id) where O : new();
+        O DeleteObject<O>(string id) where O : new();
 
          /// <summary>
         ///  Method to delete a user.
@@ -101,7 +101,7 @@ namespace CommunicationLib
         /// </summary>
         /// <param name="wId">Workflow-Id</param>
         /// <param name="uId">Username</param>
-        Boolean StartWorkflow(int wId, string username);
+        Boolean StartWorkflow(string wId);
 
         /// <summary>
         ///     Sends a state change of an action to the server. Path is always:  '/command/workflow/forward/{stepId}/{itemId}/{username}'
@@ -110,6 +110,6 @@ namespace CommunicationLib
         /// <param name="itemId">Id of the current item</param>
         /// <param name="uId">Name of the current user</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
-        Boolean StepForward(int stepId, int itemId, string username);
+        Boolean StepForward(string stepId, string itemId);
     }
 }
