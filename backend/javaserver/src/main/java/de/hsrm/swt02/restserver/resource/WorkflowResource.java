@@ -126,13 +126,13 @@ public class WorkflowResource {
      * @return all startable workflows for user
      */
     @GET
-    @Path("items/{workflowid}")
+    @Path("workflows/{workflowid}/items")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getRelevantItemsByUser(
             @HeaderParam("username") String username,
             @PathParam("workflowid") String workflowid)
     {
-        final String loggingBody = PREFIX + "GET /resource/items/" + workflowid;
+        final String loggingBody = PREFIX + "GET /resource/workflows/" + workflowid + "/items";
         LOGGER.log(Level.INFO, loggingBody);
         List<Item> itemList = null;
         try {
