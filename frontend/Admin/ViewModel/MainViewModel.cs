@@ -129,9 +129,11 @@ namespace Admin.ViewModel
             CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel);
         }
 
-        public void WorkflowUpdate(Workflow worklfow)
+        public void WorkflowUpdate(Workflow workflow)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("neuer Workflow ist angekommen");
+            _workflowViewModel.updateWorkflows(workflow);
+            
         }
 
         public void ItemUpdate(Item item)

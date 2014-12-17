@@ -32,8 +32,7 @@ namespace Admin.View
         }
         protected void HandleDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Console.WriteLine("geklappt");
-
+           
             var lvi = sender as ListViewItem;
             if (lvi != null)
             {
@@ -42,8 +41,9 @@ namespace Admin.View
                 WorkflowViewModel wmv = (WorkflowViewModel)this.DataContext;
                 Console.WriteLine(wmv);
                 wmv.actWorkflow = wv;
-                
+                wmv.workflowActivity = "";
              }
+            
         }
             
         

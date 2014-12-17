@@ -50,7 +50,15 @@ namespace Admin.ViewModel
         public ObservableCollection<Step> workflow { get { return _workflow; } }
 
         private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
-        public ObservableCollection<Workflow> workflows { get { return _workflows; } }
+        public ObservableCollection<Workflow> workflows 
+        { 
+            get { return _workflows; }
+            //set
+            //{
+            //    _workflows = value;
+            //    OnChanged("workflows");
+            //}
+        }
         /// <summary>
         /// Property to fill combox box with choosable steps.
         /// TODO: change Step to Step (not possible at the moment)
@@ -75,6 +83,31 @@ namespace Admin.ViewModel
             }
         }
 
+        private String _workflowActivity = "";
+        public String workflowActivity
+        {
+            get
+            {
+                return _workflowActivity;
+            }
+            set
+            {
+                if (actWorkflow != null)
+                {
+                    if (actWorkflow.active)
+                    {
+                        _workflowActivity = "Deaktivieren";
+                    }
+                    else
+                    {
+                        _workflowActivity = "Aktivieren";
+                    }
+
+                    OnChanged("workflowActivity");
+                }
+
+            }
+        }
         /// <summary>
         /// Property to enable textbox for description input.
         /// </summary>
@@ -150,12 +183,14 @@ namespace Admin.ViewModel
         {
             get
             {
+                
                 return _actWorkflow;
             }
             set
             {
                 _actWorkflow = value;
                 OnChanged("actWorkflow");
+                
             }
         }
 
@@ -178,7 +213,7 @@ namespace Admin.ViewModel
 
         #endregion
 
-        private void updateModel()
+        public void updateModel()
         {
             Console.WriteLine("updatedModel()");
 
@@ -194,6 +229,27 @@ namespace Admin.ViewModel
             OnChanged("workflows");
         }
 
+        public void updateWorkflows(Workflow newWorkflow){
+            Console.WriteLine("updateWorkflows: " + newWorkflow.active);
+           
+            foreach (Workflow w in _workflows)
+            {
+                if (w.id.Equals(newWorkflow.id))
+                {
+                    Console.WriteLine("Workflow wurde geupdated");
+                    Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Remove(w)));
+                    break;
+                }
+            }
+            Console.WriteLine("workflow wurde neu hinzugefügt");
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(newWorkflow)));
+
+            _actWorkflow = null;
+            OnChanged("actWorkflow");
+            OnChanged("workflows");
+            
+            
+        }
         /// <summary>
         /// When the workflow is changed, reconfigure choosable steps for combobox (depending on currently allowed steps).
         /// </summary>
@@ -243,6 +299,31 @@ namespace Admin.ViewModel
                     }, canExecute => _workflow.Count > 0);
                 }
                 return _removeLastStepCommand;
+            }
+        }
+
+        private ICommand _toggleActivity;
+        public ICommand toggleActivity
+        {
+            get
+            {
+                if (_toggleActivity == null)
+                {
+                    _toggleActivity = new ActionCommand(execute =>
+                    {
+                        if (_actWorkflow.active)
+                        {
+                            var b = _restRequester.SwitchElementActivity<Workflow>(_actWorkflow.id, "deactivate");
+                        }
+                        else
+                        {
+                            var b = _restRequester.SwitchElementActivity<Workflow>(_actWorkflow.id, "activate");
+                        }
+                        
+                        
+                    }, canExecute => _actWorkflow != null);
+                }
+                return _toggleActivity;
             }
         }
 
@@ -357,23 +438,25 @@ namespace Admin.ViewModel
             }
 
         }
-
-        private ICommand _showDetailsCommand;
-        public ICommand showDetailsCommand
+        
+        //not used jet
+        private ICommand _editWorkflow;
+        public ICommand editWorkflow
         {
             get
             {
-                if (_showDetailsCommand == null)
+                if (_editWorkflow == null)
                 {
-                    _showDetailsCommand = new ActionCommand(execute =>
+                    _editWorkflow = new ActionCommand(execute =>
                     { 
+                        //check if open
                         
-                        Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!Geklappt!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        
                         MessageBox.Show("klappt");
                       
                     }, canExecute => true);
                 }
-                return _showDetailsCommand;
+                return _editWorkflow;
             }
         }
 

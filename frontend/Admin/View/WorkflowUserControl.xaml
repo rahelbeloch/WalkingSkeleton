@@ -75,14 +75,15 @@
                 </TabItem>
                 <TabItem Header="Alle Workflows anzeigen">
                     <DockPanel>
-                        <DockPanel Width="350">
+                        <DockPanel Width="320">
                             <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflows}" ItemContainerStyle="{StaticResource itemstyle}">
                                 <ListView.View>
                                     <GridView >
                                         <GridView.Columns>
                                                 <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
-                                                <GridViewColumn Width="120" Header="Anzahl der Steps" DisplayMemberBinding="{Binding steps.Count}" />
-                                                <GridViewColumn Width="150" Header="Anzahl der aktuellen Items" DisplayMemberBinding="{Binding items.Count}"/>
+                                                <GridViewColumn Width="100" Header="Anzahl der Steps" DisplayMemberBinding="{Binding steps.Count}" />
+                                                <GridViewColumn Width="100" Header="Anzahl der Items" DisplayMemberBinding="{Binding items.Count}"/>
+                                                <GridViewColumn Width="50" Header="aktiv"  DisplayMemberBinding="{Binding active}"/>
                                         </GridView.Columns>
                                         </GridView>
                                     </ListView.View>
@@ -104,7 +105,7 @@
                             </ListView>
                             <Label Content="Step" FontWeight="Medium" DockPanel.Dock="Top" />
 
-                            <ListView DockPanel.Dock="Top" VerticalAlignment="Center" Margin="10" ItemsSource="{Binding actWorkflow.steps}" ItemContainerStyle="{StaticResource itemstyle}">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actWorkflow.steps}" ItemContainerStyle="{StaticResource itemstyle}">
                                 <ListView.View>
                                     <GridView >
                                         <GridView.Columns>
@@ -116,7 +117,8 @@
                                     </GridView>
                                 </ListView.View>
                             </ListView>
-                            
+                            <Button DockPanel.Dock="Bottom" Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}"></Button>
+                           
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
