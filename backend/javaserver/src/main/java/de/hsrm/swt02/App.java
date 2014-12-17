@@ -17,8 +17,6 @@ import de.hsrm.swt02.restserver.RestServer;
  */
 public class App {
     
-    private static RestServer server;
-    
     /**
      * Application startup method.
      * Configures logging.
@@ -27,6 +25,8 @@ public class App {
      * @param args are the program start parameters
      */
     public static void main(String[] args) {
+        
+        final RestServer server;
 
         // setup log configuration
         LogConfigurator.setup();
