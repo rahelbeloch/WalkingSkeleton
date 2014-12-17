@@ -390,7 +390,7 @@ public class WorkflowResource {
             @PathParam("workflowid") String workflowid,
             @PathParam("state") String state) 
     {
-        final String loggingBody = PREFIX + "PUT /workflow/" + workflowid
+        final String loggingBody = PREFIX + "PUT /workflow/" + workflowid + "/" 
                 + state;
         LOGGER.log(Level.INFO, loggingBody);
 
