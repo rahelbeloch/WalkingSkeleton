@@ -186,7 +186,7 @@ namespace Admin.ViewModel
             }
         }
 
-        void IDataReceiver.RoleUpdate(Role updatedRole)
+        void RoleUpdate(Role updatedRole)
         {
             Console.WriteLine("Update UserViewModel: RoleID = " + updatedRole.id);
         }
