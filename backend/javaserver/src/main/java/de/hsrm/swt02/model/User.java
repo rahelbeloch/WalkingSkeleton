@@ -35,7 +35,7 @@ public class User extends RootElement {
      * @param username
      *            is the username
      */
-    public void setUsername(String username) {
+    protected void setUsername(String username) {
         this.id = username;
     }
 
