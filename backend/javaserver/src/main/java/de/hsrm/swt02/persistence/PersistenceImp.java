@@ -13,7 +13,6 @@ import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.persistence.exceptions.AlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
