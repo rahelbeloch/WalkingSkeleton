@@ -4,6 +4,7 @@ using RestAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -40,6 +41,8 @@ namespace Admin.ViewModel
         public MainViewModel()
         {
             _myComLib = new ComLib(this);
+            // Admin has to register to ComLib! 'TestAdmin' is a Dummy for one admin
+            _myComLib.Login("TestAdmin", new SecureString());
 
             _workflowViewModel = new WorkflowViewModel(this);
             _userViewModel = new UserViewModel(this);
