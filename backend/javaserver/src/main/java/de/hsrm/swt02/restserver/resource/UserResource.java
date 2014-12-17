@@ -202,9 +202,7 @@ public class UserResource {
     }
     
     /**
-     * 
      * This Method grants the Clients access to all users stored in persistence.
-     * 
      * @return All Users in the persistence as string if successful, 500 Server Error if not
      */
     @GET

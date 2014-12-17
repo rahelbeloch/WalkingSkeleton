@@ -47,7 +47,6 @@ public class WorkflowResource {
 
     /**
      * This method returns a requested workflow.
-     * 
      * @param workflowid indicates which workflow is requested
      * @return the requested workflow
      */
@@ -85,7 +84,6 @@ public class WorkflowResource {
 
     /**
      * This method returns all startable workflows for a given user.
-     * 
      * @param username the name of the user for whom the workflows shall be
      *            returned
      * @return all startable workflows for user
@@ -123,7 +121,6 @@ public class WorkflowResource {
 
     /**
      * This method returns all startable workflows for a given user.
-     * 
      * @param username the name of the user for whom the workflows shall be
      *            returned
      * @param workflowid the id of the workflow.
@@ -164,7 +161,6 @@ public class WorkflowResource {
 
     /**
      * This method returns workflows where a user is involved.
-     * 
      * @param username indicates which user's workflows are requested
      * @return the requested workflow
      */
@@ -214,7 +210,6 @@ public class WorkflowResource {
     /**
      * Receives a workflow and stores it into the database. This operation will
      * be published on the message broker.
-     * 
      * @param formParams wrapper for an sent workflow
      * @return "true" if everything was successful OR "jackson exception" if
      *         serialization crashed
@@ -260,7 +255,6 @@ public class WorkflowResource {
     /**
      * This method updates a workflow. This operation will be published on the
      * message broker.
-     * 
      * @param workflowid indicates which workflow should be updated
      * @param formParams wrapper for an sent workflow
      * @return String true or false
@@ -309,7 +303,6 @@ public class WorkflowResource {
 
     /**
      * This method sets a workflow's activity.
-     * 
      * @param workflowid indicates which workflow's activity should be updated
      * @param state indicates if a workflow should be activated or deactivated
      * @return ok if it worked
@@ -352,7 +345,6 @@ public class WorkflowResource {
     /**
      * This method deletes a workflow. This operation will be published on the
      * message broker.
-     * 
      * @param workflowid which indicates which workflow should be deleted
      * @return deleted workflow, if successful
      */

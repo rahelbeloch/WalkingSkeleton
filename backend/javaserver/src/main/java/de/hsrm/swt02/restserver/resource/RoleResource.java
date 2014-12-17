@@ -147,9 +147,7 @@ public class RoleResource {
     }
     
     /**
-     * 
      * This Method enables Clients to update existing Roles.
-     * 
      * @param rolename the name of the Role to be updated
      * @param formParams the key "data" holds the instance of Role to be saved
      * @return 200 OK if successful, 500 Server Error if not
@@ -192,7 +190,6 @@ public class RoleResource {
     
     /**
      * This method enables Clients to delete Roles from the persistence.
-     * 
      * @param rolename the name of the role to be deleted
      * @return 200 OK if successful, 500 ServerError if not
      */
@@ -202,15 +199,23 @@ public class RoleResource {
     public Response deleteRole(@PathParam("rolename") String rolename) {
         final String loggingBody = PREFIX + "DELETE /resource/roles/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
+        Role role = null;
+        String roleAsString;
         
         try {
-            // TODO get Role from logic, serialize it and send it with answer
+            role = LOGIC.getRole(rolename);
             logicResponse = LOGIC.deleteRole(rolename);
         } catch (RoleNotExistentException e1) {
             LOGGER.log(Level.INFO,e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
-        
+        try {
+            roleAsString = JsonParser.marshall(role);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.INFO, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode()))
+                    .build();
+        }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -218,8 +223,8 @@ public class RoleResource {
                 LOGGER.log(Level.WARNING, e);
             }
         }
-        LOGGER.log(Level.INFO, loggingBody + " User successfully deleted.");
-        return Response.ok().build();
+        LOGGER.log(Level.INFO, loggingBody + " Role successfully deleted.");
+        return Response.ok(roleAsString).build();
     }
     
 }

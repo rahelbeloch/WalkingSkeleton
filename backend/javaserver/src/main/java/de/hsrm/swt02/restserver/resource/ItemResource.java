@@ -41,9 +41,7 @@ public class ItemResource {
     LogicResponse logicResponse;
     
     /**
-     * 
      * This Method grants the Clients access to an Item stored in persistence via the itemid.
-     * 
      * @param itemid the id of the item
      * @return the item as string if successful, else an exception
      */
@@ -64,9 +62,9 @@ public class ItemResource {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
-        	LOGGER.log(Level.WARNING, loggingBody + e);
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-		}
+        }
         String itemAsString;
         
         try {

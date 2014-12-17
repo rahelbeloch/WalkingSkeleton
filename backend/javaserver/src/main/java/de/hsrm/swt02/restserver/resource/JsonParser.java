@@ -17,7 +17,7 @@ import de.hsrm.swt02.restserver.exceptions.JacksonException;
  */
 public class JsonParser {
 
-    final static ObjectMapper mapper = new ObjectMapper();
+    final static ObjectMapper MAPPER = new ObjectMapper();
     
     /**
      * 
@@ -27,9 +27,9 @@ public class JsonParser {
      */
     public static String marshall(Object o) throws JacksonException {
         String objectAsString;
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
         try {
-            objectAsString = mapper.writeValueAsString(o);
+            objectAsString = MAPPER.writeValueAsString(o);
         } catch (JsonProcessingException e) {
             throw new JacksonException();
         }
@@ -45,7 +45,7 @@ public class JsonParser {
      */
     public static Object unmarshall(String s, Object o) throws JacksonException {
         try {
-            o = mapper.readValue(s, o.getClass());
+            o = MAPPER.readValue(s, o.getClass());
         } catch (IOException e) {
             throw new JacksonException();
         }
