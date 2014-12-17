@@ -38,6 +38,7 @@ namespace Admin.ViewModel
             {
                 // ueberpruefen ob der aktuell ausgewählte Nutzer die Rolle hat
                 roleCheckboxRows.Add(new RoleCheckboxRow(role, false));
+                roleCollection.Add(role);
             }
         }
 
