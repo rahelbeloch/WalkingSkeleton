@@ -43,7 +43,6 @@ public class WorkflowResource {
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
     private static final String PREFIX = "[restserver] ";
-    LogicResponse logicResponse;
 
     /**
      * This method returns a requested workflow.
@@ -219,6 +218,7 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveWorkflow(MultivaluedMap<String, String> formParams) {
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /resource/workflows";
         LOGGER.log(Level.INFO, loggingBody);
         final String workflowAsString = formParams.get("data").get(0);
@@ -266,6 +266,7 @@ public class WorkflowResource {
     public Response updateWorkflow(@PathParam("workflowid") int workflowid,
             MultivaluedMap<String, String> formParams) 
     {
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "PUT /resource/workflows/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         final String workflowAsString = formParams.get("data").get(0);
@@ -315,6 +316,7 @@ public class WorkflowResource {
             @PathParam("workflowid") String workflowid,
             @PathParam("state") String state) 
     {
+        LogicResponse logicResponse = null;
         final String loggingBody = PREFIX + "PUT /resource/workflows/" + workflowid + "/" 
                 + state;
         LOGGER.log(Level.INFO, loggingBody);
@@ -352,6 +354,7 @@ public class WorkflowResource {
     @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteWorkflow(@PathParam("workflowid") String workflowid) {
+        LogicResponse logicResponse;
         final String loggingBody = PREFIX + "DELETE /resource/workflows/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         Workflow workflow = null;

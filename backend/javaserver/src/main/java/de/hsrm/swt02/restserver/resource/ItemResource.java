@@ -38,7 +38,6 @@ public class ItemResource {
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
     public static final String PREFIX = "[restserver] ";
-    LogicResponse logicResponse;
     
     /**
      * This Method grants the Clients access to an Item stored in persistence via the itemid.
