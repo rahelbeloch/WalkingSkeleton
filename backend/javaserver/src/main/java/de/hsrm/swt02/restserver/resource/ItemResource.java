@@ -44,10 +44,10 @@ public class ItemResource {
      * @return the item as string if successful, else an exception
      */
     @GET
-    @Path("itemsasdf/{itemid}")
+    @Path("items/{itemid}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getItemById(@PathParam("itemid") String itemid) {
-        final String loggingBody = PREFIX + "GET /item/" + itemid;
+        final String loggingBody = PREFIX + "GET /items/" + itemid;
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         Item item = null;
