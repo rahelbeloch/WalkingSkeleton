@@ -158,6 +158,7 @@ namespace Client.ViewModel
         void IDataReceiver.ItemUpdate(Item item)
         {
             logger.Debug("Update Item: " + item.ToString());
+            Console.WriteLine("Update Item: " + item.ToString());
             // route update-handling to subcomponents
             // route to itemViewModel etc. (update-method) to react to changes in one of my items
         }
