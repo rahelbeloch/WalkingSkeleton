@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using NLog;
 using CommunicationLib.Model;
-
+using System.Windows;
 namespace Client.ViewModel
 {
     /// <summary>
@@ -147,18 +147,25 @@ namespace Client.ViewModel
             CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel);
         }
 
-
+        /// <summary>
+        /// calls the update methode for a workflow in the dashboardViewModel
+        /// </summary>
+        /// <param name="workflow">instance of the new workflow</param>
         void IDataReceiver.WorkflowUpdate(Workflow workflow) 
         {
             Console.WriteLine("Received Workflow for Update: ID = " + workflow.id);
             // route update-handling to subcomponents
             _dashboardViewModel.addWorkflowToModel(workflow, null);
         }
-
+        /// <summary>
+        /// calls the update methode for items in the dashboardModel
+        /// </summary>
+        /// <param name="item">instance of the new item</param>
         void IDataReceiver.ItemUpdate(Item item)
         {
             logger.Debug("Update Item: " + item.ToString());
             Console.WriteLine("Update Item: " + item.ToString());
+            _dashboardViewModel.updateItem(item);
             // route update-handling to subcomponents
             // route to itemViewModel etc. (update-method) to react to changes in one of my items
         }
@@ -171,6 +178,12 @@ namespace Client.ViewModel
 
         void IDataReceiver.RoleUpdate(Role role)
         {
+            // route update-handling to subcomponents
+            // route to userViewModel etc. (update-method) to react to changes in my settings
+        }
+        void IDataReceiver.HandleError(System.Exception e)
+        {
+            MessageBox.Show(e.Message);
             // route update-handling to subcomponents
             // route to userViewModel etc. (update-method) to react to changes in my settings
         }

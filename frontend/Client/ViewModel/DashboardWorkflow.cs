@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Client.ViewModel
 {
+    /// <summary>
+    /// ViewModel class which holds the data for one workflow in the view
+    /// </summary>
     public class DashboardWorkflow
     {
         public string name { get; set; }
@@ -17,7 +20,6 @@ namespace Client.ViewModel
         public ObservableCollection<DashboardRow> dashboardRows { get { return _dashboardRows; } }
         private Boolean _startPermission;
         public Boolean startPermission { get { return _startPermission; } set { _startPermission = value; } }
-
         public DashboardWorkflow(Workflow actWorkflow)
         {
             this._actWorkflow = actWorkflow;
