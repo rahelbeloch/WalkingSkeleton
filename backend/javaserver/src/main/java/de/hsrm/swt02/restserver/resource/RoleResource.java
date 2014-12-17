@@ -58,7 +58,6 @@ public class RoleResource {
     public Response getAllRoles() {
         final String loggingBody = PREFIX + "GET /resource/roles";
         LOGGER.log(Level.INFO, loggingBody);
-        final ObjectMapper mapper = new ObjectMapper();
         List<Role> roles;
         try {
             roles = LOGIC.getAllRoles();
@@ -69,10 +68,10 @@ public class RoleResource {
         String rolesAsString;
         
         try {
-            rolesAsString = mapper.writeValueAsString(roles);
-        } catch (JsonProcessingException e) {
+            rolesAsString = JsonParser.marshall(roles);
+        } catch (JacksonException e) {
             LOGGER.log(Level.INFO, e);
-            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode())).build();
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(rolesAsString).build();
@@ -90,17 +89,16 @@ public class RoleResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveRole(MultivaluedMap<String, String> formParams) {
-        final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = PREFIX + "POST /resource/role";
         LOGGER.log(Level.INFO, loggingBody);
         final String roleAsString = formParams.get("data").get(0);
-        Role role;
+        Role role = new Role();
         
         try {
-            role = mapper.readValue(roleAsString, Role.class);
-        } catch (IOException e) {
-            LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
-            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode()))
+            role = (Role)JsonParser.unmarshall(roleAsString, role);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.INFO, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
         try {
@@ -138,15 +136,14 @@ public class RoleResource {
     {
         final String loggingBody = PREFIX + "PUT /resource/role/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
-        final ObjectMapper mapper = new ObjectMapper();
         final String roleAsString = formParams.get("data").get(0);
-        Role role;
+        Role role = new Role();
         
         try {
-            role = mapper.readValue(roleAsString, Role.class);
-        } catch (IOException e) {
-            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
-            return Response.serverError().build();
+            role = (Role)JsonParser.unmarshall(roleAsString, role);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.INFO,loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         try {
             logicResponse = LOGIC.addRole(role);

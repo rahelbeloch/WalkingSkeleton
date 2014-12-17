@@ -1,6 +1,5 @@
 package de.hsrm.swt02.restserver.resource;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -16,10 +15,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
@@ -65,7 +60,6 @@ public class WorkflowResource {
     public Response getWorkflow(@PathParam("workflowid") String workflowid) {
         final String loggingBody = PREFIX + "GET /workflow/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
-        final ObjectMapper mapper = new ObjectMapper();
         String workflowAsString;
         Workflow workflow = null;
 
@@ -82,18 +76,18 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
-        	LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-		}
+        }
         try {
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            workflowAsString = mapper.writeValueAsString(workflow);
-        } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
+            workflowAsString = JsonParser.marshall(workflow);
+            LOGGER.log(Level.FINE, loggingBody + workflowAsString);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response
                     .serverError()
-                    .entity(String.valueOf(new JacksonException()
+                    .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
@@ -111,7 +105,6 @@ public class WorkflowResource {
     @Path("workflows/startables")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getStartablesByUser(@HeaderParam("username") String username) {
-        final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = PREFIX + "GET /workflows/startables";
         LOGGER.log(Level.INFO, loggingBody);
         List<String> wIdList = null;
@@ -133,14 +126,13 @@ public class WorkflowResource {
         String wIdListString;
 
         try {
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            wIdListString = mapper.writeValueAsString(wIdList);
+            wIdListString = JsonParser.marshall(wIdList);
             LOGGER.log(Level.FINE, loggingBody + wIdListString);
-        } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, loggingBody + " Jackson parsing-error");
+        } catch (JacksonException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response
                     .serverError()
-                    .entity(String.valueOf(new JacksonException()
+                    .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
@@ -162,7 +154,6 @@ public class WorkflowResource {
             @HeaderParam("username") String username,
             @PathParam("workflowid") String workflowid)
     {
-        final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = PREFIX + "GET /items/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         List<Item> itemList = null;
@@ -181,21 +172,20 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
-        	 LOGGER.log(Level.WARNING, loggingBody + e);
-             return Response.serverError()
+            LOGGER.log(Level.WARNING, loggingBody + e);
+            return Response.serverError()
                      .entity(String.valueOf(e.getErrorCode())).build();
-		}
+        }
         String itemListString;
 
         try {
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            itemListString = mapper.writeValueAsString(itemList);
+            itemListString = JsonParser.marshall(itemList);
             LOGGER.log(Level.FINE, loggingBody + itemListString);
-        } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, loggingBody + " Jackson parsing-error");
+        } catch (JacksonException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response
                     .serverError()
-                    .entity(String.valueOf(new JacksonException()
+                    .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
@@ -212,7 +202,6 @@ public class WorkflowResource {
     @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getWorkflowsByUser(@HeaderParam("username") String username) {
-        final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = PREFIX + "GET /workflow/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         List<Workflow> wflowList = null;
@@ -243,19 +232,18 @@ public class WorkflowResource {
                 LOGGER.log(Level.WARNING, e3);
                 return Response.serverError()
                         .entity(String.valueOf(e3.getErrorCode())).build();
-        }
+            }
         }
         String wListString;
 
         try {
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            wListString = mapper.writeValueAsString(wflowList);
+            wListString = JsonParser.marshall(wflowList);
             LOGGER.log(Level.FINE, loggingBody + wListString);
-        } catch (JsonProcessingException e) {
-            LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
+        } catch (JacksonException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response
                     .serverError()
-                    .entity(String.valueOf(new JacksonException()
+                    .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
@@ -275,19 +263,18 @@ public class WorkflowResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response saveWorkflow(MultivaluedMap<String, String> formParams) {
-        final ObjectMapper mapper = new ObjectMapper();
         final String loggingBody = PREFIX + "POST /workflow";
         LOGGER.log(Level.INFO, loggingBody);
         final String workflowAsString = formParams.get("data").get(0);
-        Workflow workflow = null;
+        Workflow workflow = new Workflow();
 
         try {
-            workflow = mapper.readValue(workflowAsString, Workflow.class);
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, loggingBody + "Jackson parsing-error");
+            workflow = (Workflow)JsonParser.unmarshall(workflowAsString, workflow);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response
                     .serverError()
-                    .entity(String.valueOf(new JacksonException()
+                    .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
         workflow.convertIdListToReferences();
@@ -302,10 +289,10 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
         } catch (LogicException e) {
-        	LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-		}
+        }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -334,18 +321,17 @@ public class WorkflowResource {
     {
         final String loggingBody = PREFIX + "PUT /workflow/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
-        final ObjectMapper mapper = new ObjectMapper();
         final String workflowAsString = formParams.get("data").get(0);
-        Workflow workflow;
+        Workflow workflow = new Workflow();
 
         try {
-            workflow = mapper.readValue(workflowAsString, Workflow.class);
-        } catch (IOException e) {
+            workflow = (Workflow)JsonParser.unmarshall(workflowAsString, workflow);
+        } catch (JacksonException e) {
             LOGGER.log(Level.WARNING, loggingBody
-                    + " JACKSON parsing-error occured.");
+                    + e);
             return Response
                     .serverError()
-                    .entity(String.valueOf(new JacksonException()
+                    .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
         try {
@@ -359,10 +345,10 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
         } catch (LogicException e) {
-        	LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-		}
+        }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -408,10 +394,10 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
-        	LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-		}
+        }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -436,7 +422,6 @@ public class WorkflowResource {
     public Response deleteWorkflow(@PathParam("workflowid") String workflowid) {
         final String loggingBody = PREFIX + "DELETE /workflow/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
-        final ObjectMapper mapper = new ObjectMapper();
         Workflow workflow = null;
         String workflowAsString;
 
@@ -452,17 +437,17 @@ public class WorkflowResource {
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
-        	LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError()
                     .entity(String.valueOf(e.getErrorCode())).build();
-		}
+        }
         try {
-            workflowAsString = mapper.writeValueAsString(workflow);
-        } catch (JsonProcessingException e) {
+            workflowAsString = JsonParser.marshall(workflow);
+        } catch (JacksonException e) {
             LOGGER.log(Level.WARNING, e);
             return Response
                     .serverError()
-                    .entity(String.valueOf(new JacksonException()
+                    .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
         for (Message m : logicResponse.getMessages()) {

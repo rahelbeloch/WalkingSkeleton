@@ -16,7 +16,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.businesslogic.Logic;
@@ -59,7 +58,6 @@ public class UserResource {
     public Response getUser(@PathParam("username") String username) {
         final String loggingBody = PREFIX + "GET /resource/user/" + username;
         LOGGER.log(Level.INFO, loggingBody);
-        final ObjectMapper mapper = new ObjectMapper();
         User user;
         try {
             user = LOGIC.getUser(username);
@@ -70,10 +68,10 @@ public class UserResource {
         String userAsString;
         
         try {
-            userAsString = mapper.writeValueAsString(user);
-        } catch (JsonProcessingException e) {
+            userAsString = JsonParser.marshall(user);
+        } catch (JacksonException e) {
             LOGGER.log(Level.INFO, e);
-            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode())).build();
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         LOGGER.log(Level.INFO, loggingBody + " Request successful.");
         return Response.ok(userAsString).build();
@@ -111,9 +109,9 @@ public class UserResource {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
-        	LOGGER.log(Level.WARNING, loggingBody + e);
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-		}
+        }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -141,15 +139,14 @@ public class UserResource {
     {
         final String loggingBody = PREFIX + "PUT /resource/user/" + username;
         LOGGER.log(Level.INFO, loggingBody);
-        final ObjectMapper mapper = new ObjectMapper();
         final String userAsString = formParams.get("data").get(0);
-        User user;
+        User user = new User();
         
         try {
-            user = mapper.readValue(userAsString, User.class);
-        } catch (IOException e) {
-            LOGGER.log(Level.INFO,loggingBody + " JACKSON parsing-error occured.");
-            return Response.serverError().build();
+            user = (User)JsonParser.unmarshall(userAsString, user);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.INFO,loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         try {
             logicResponse = LOGIC.addUser(user);
@@ -160,9 +157,9 @@ public class UserResource {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
-        	LOGGER.log(Level.WARNING, loggingBody + e);
+            LOGGER.log(Level.WARNING, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
-		}
+        }
         for (Message m : logicResponse.getMessages()) {
             try {
                 PUBLISHER.publish(m.getValue(), m.getTopic());
@@ -186,7 +183,6 @@ public class UserResource {
     public Response deleteUser(@HeaderParam("username") String username) {
         final String loggingBody = PREFIX + "DELETE /resource/user/" + username;
         LOGGER.log(Level.INFO, loggingBody);
-        final ObjectMapper mapper = new ObjectMapper();
         User user = null;
         String userAsString;
         
@@ -198,10 +194,10 @@ public class UserResource {
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         try {
-            userAsString = mapper.writeValueAsString(user);
-        } catch (JsonProcessingException e) {
-            LOGGER.log(Level.INFO, loggingBody + " JACKSON parsing-error occured.");
-            return Response.serverError().entity(String.valueOf(new JacksonException().getErrorCode()))
+            userAsString = JsonParser.marshall(user);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.INFO, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
         for (Message m : logicResponse.getMessages()) {
