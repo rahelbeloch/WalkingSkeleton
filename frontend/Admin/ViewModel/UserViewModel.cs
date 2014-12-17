@@ -78,6 +78,8 @@ namespace Admin.ViewModel
                 _selectedUser = value;
                 if (_selectedUser != null)
                 {
+                    username = _selectedUser.username;
+                    OnChanged("username");
                     foreach (RoleCheckboxRow rcr in _roleCheckboxRows) 
                     {
                         
@@ -142,19 +144,7 @@ namespace Admin.ViewModel
                     {
                         try
                         {
-                            User newUser = new User();
-                            newUser.id = username;
-
-                            foreach(RoleCheckboxRow actRow in roleCheckboxRows) 
-                            {
-                                if (actRow.isSelected)
-                                {
-                                    newUser.roles.Add(actRow.role);
-                                }
-                            }
-
-                            _restRequester.PostObject<User>(newUser);
-                            username = "";
+                            postUser();
                         }
                         catch (BasicException be)
                         {
@@ -173,6 +163,23 @@ namespace Admin.ViewModel
 
                 return _addUserCommand;
             }
+        }
+
+        private void postUser()
+        {
+            User newUser = new User();
+            newUser.id = username;
+
+            foreach (RoleCheckboxRow actRow in roleCheckboxRows)
+            {
+                if (actRow.isSelected)
+                {
+                    newUser.roles.Add(actRow.role);
+                }
+            }
+
+            _restRequester.PostObject<User>(newUser);
+            username = "";
         }
 
         /// <summary>
@@ -231,10 +238,35 @@ namespace Admin.ViewModel
             }
         }
 
-        public void UserUpdate(User user)
+        private ICommand _editUserCommand;
+        public ICommand editUserCommand
+        {
+            get
+            {
+                if (_editUserCommand == null)
+                {
+                    _editUserCommand = new ActionCommand(execute =>
+                    {
+                        postUser();
+                    }, canExecute => _selectedUser != null);
+                }
+
+                return _editUserCommand;
+            }
+        }
+
+        public void UserUpdate(User newUser)
         {
             // TODO: check if users exists, if yes, update... else:
-            Application.Current.Dispatcher.Invoke(new System.Action(() => userCollection.Add(user)));
+            if (userCollection.Any(u => newUser.id == u.id))
+            {
+                //userCollection.re
+            }
+            else
+            {
+                Application.Current.Dispatcher.Invoke(new System.Action(() => userCollection.Add(newUser)));
+            }
+            
         }
 
         public void RoleUpdate(Role updatedRole)
