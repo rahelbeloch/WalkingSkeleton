@@ -182,32 +182,32 @@ public class NewPersistenceTest {
         assertEquals(db.loadAllUsers().size(), 1); //only one user should be existent
     }
     
-    /**
-     * Method for testing if it's possible to update an User.
-     * @throws UserNotExistentException
-     * @throws UserAlreadyExistsException
-     * @throws PersistenceException 
-     */
-    @Test(expected = UserNotExistentException.class)
-    public void testUpdateOnUser() throws PersistenceException {
-        final User user001 = new User();
-        user001.setUsername("1");
-        db.storeUser(user001);
-
-        assertEquals(user001, db.loadUser(user001.getUsername()));
-
-        // change a users username
-       
-        user001.setUsername("2");
-        db.storeUser(user001);
-
-        assertEquals(user001, db.loadUser(user001.getUsername()));
-        
-        System.out.println(db.loadAllUsers().size());
-        
-        assertEquals(1, db.loadAllUsers().size());
-        assertNotEquals(db.loadUser("1"), user001);
-    }
+//    /**
+//     * Method for testing if it's possible to update an User.
+//     * @throws UserNotExistentException
+//     * @throws UserAlreadyExistsException
+//     * @throws PersistenceException 
+//     */
+//    @Test(expected = UserNotExistentException.class)
+//    public void testUpdateOnUser() throws PersistenceException {
+//        final User user001 = new User();
+//        user001.setUsername("1");
+//        db.storeUser(user001);
+//
+//        assertEquals(user001, db.loadUser(user001.getUsername()));
+//
+//        // change a users username
+//       
+//        user001.setUsername("2");
+//        db.storeUser(user001);
+//
+//        assertEquals(user001, db.loadUser(user001.getUsername()));
+//        
+//        System.out.println(db.loadAllUsers().size());
+//        
+//        assertEquals(1, db.loadAllUsers().size());
+//        assertNotEquals(db.loadUser("1"), user001);
+//    }
 
         
     @Test
