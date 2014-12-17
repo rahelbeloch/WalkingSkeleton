@@ -327,8 +327,6 @@ public class PersistenceImp implements Persistence {
     // Sprint 2 Persistence  
     
     
-    
-    
     /**
      * Method for storing a role.
      * @param role is the role to store
@@ -393,24 +391,22 @@ public class PersistenceImp implements Persistence {
 
     /**
      * Method for loading a workflow.
-     * @param id is the id of the requested workflow.
+     * @param rolename is the name of the requested role
      * @return workflow is the requested workflow
      * @exception RoleNotExistentException if the requested role is not there
      * @throws RoleNotExistentException
      */
-    public Role loadRole(String id) throws RoleNotExistentException {
-        Role role = null;
+    public Role loadRole(String rolename) throws RoleNotExistentException {
+        Role roleToReturn = null;
         for (Role r : roles) {
-            if (r.getId().equals(id)) {
-                role = r;
+            if (r.getRolename().equals(rolename)) {
+                roleToReturn = r;
             }
         }
-        if (role != null) {
-            return role;
+        if (roleToReturn != null) {
+            return roleToReturn;
         } else {
-            final RoleNotExistentException e = new RoleNotExistentException("" + id);
-            this.logger.log(Level.WARNING, e);
-            throw e;
+            throw new RoleNotExistentException("database has no role '" + rolename + "'.");
         }
     }
 
@@ -468,27 +464,19 @@ public class PersistenceImp implements Persistence {
      * @exception RoleNotExistentException if the given role doesnt exist
      * @throws RoleNotExistentException
      */
-    public void deleteRole(String rolename) throws RoleNotExistentException {
+    public void deleteRole(String rolename) throws RoleNotExistentException {       
         Role roleToRemove = null;
-        for (Role r: roles) {
+        for (Role r : roles) {
             if (r.getRolename().equals(rolename)) {
                 roleToRemove = r;
                 break;
             }
         }
         if (roleToRemove != null) {
-            for (User u: users) {
-                for (Role r: u.getRoles()) {
-                    if (r.getRolename().equals(rolename)) {
-                        u.getRoles().remove(r);
-                    }
-                }
-            }
             roles.remove(roleToRemove);
+            this.logger.log(Level.INFO,"[persistence] successfully removed role " + roleToRemove.getId() + ".");
         } else {
-            final RoleNotExistentException e = new RoleNotExistentException(rolename);
-            this.logger.log(Level.WARNING, e);
-            throw e;
+            throw new RoleNotExistentException("database has no role '" + rolename + "'.");
         }
     }
     

@@ -177,20 +177,14 @@ public interface Persistence {
      * Method for adding a new user to a role.
      * @param user is the needed user
      * @param role is the needed role
-     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
-     * @exception RoleHasAlreadyUserException if we want to assign a user to a role and the role has him already
-     * @exception UserNotExistentException if the requested user is not there
-     * @exception RoleNotExistentException if the requested role is not there
-     * @throws UserHasAlreadyRoleException
-     * @throws RoleHasAlreadyRoleException
-     * @throws UserNotExistentException
-     * @throws RoleNotExistentException 
+     * @exception PersistenceException if there is a persistence exception
+     * @throws PersistenceException
      */
     void addRoleToUser(User user, Role role) throws PersistenceException;  
     
     /**
      * Method for removing a role from datbase.
-     * @param rolename
+     * @param rolename is the name of the role
      * @exception RoleNotExistentException
      * @throws RoleNotExistentException
      */
