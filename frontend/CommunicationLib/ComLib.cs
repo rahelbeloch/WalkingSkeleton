@@ -54,6 +54,7 @@ namespace CommunicationLib
         /// <param name="password">Password of the user logged in client</param>
         public void Login(string username, SecureString password)
         {
+            _sender.checkUser(username, password);
             _sender.InitializeClientProperties(username, password);
             _listener.RegisterClient(_myClient, true);
         }

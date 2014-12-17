@@ -61,6 +61,15 @@ namespace CommunicationLib
             //build connection to message broker (not started yet)
             _connectionFactory = new ConnectionFactory(Constants.BROKER_URL);
             _connection = _connectionFactory.CreateConnection();
+            try
+            {
+                _connection = _connectionFactory.CreateConnection();
+            }
+            catch (NMSConnectionException e)
+            {
+                Console.WriteLine(e.Message);
+                _myClient.HandleError(e);
+            }
             _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
         }
 
