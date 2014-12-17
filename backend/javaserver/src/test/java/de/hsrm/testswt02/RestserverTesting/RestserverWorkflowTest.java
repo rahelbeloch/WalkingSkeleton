@@ -64,8 +64,11 @@ public class RestserverWorkflowTest {
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
         } catch (SecurityException e) {
+            e.printStackTrace();
         }
         targetUrl = properties.getProperty("RestServerURI");
     }
@@ -76,6 +79,7 @@ public class RestserverWorkflowTest {
      */
     @Test
     public void testUpdate() {
+        final int httpstatus = 200;
         final Workflow workflow = new Workflow();
         final Step step1 = new StartStep();
         final Step step2 = new Step();
@@ -102,7 +106,7 @@ public class RestserverWorkflowTest {
                 .request()
                 .put(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
-        assertEquals(resp.getStatus(), 200);
+        assertEquals(resp.getStatus(), httpstatus);
     }
 
     /**
@@ -142,6 +146,7 @@ public class RestserverWorkflowTest {
      */
     @Test
     public void testPost() {
+        final int httpstatus = 200;
         final Workflow workflow = new Workflow();
         final Step step1 = new StartStep();
         final Step step2 = new Step();
@@ -166,7 +171,7 @@ public class RestserverWorkflowTest {
                 .request()
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
-        assertEquals(200, resp.getStatus());
+        assertEquals(httpstatus, resp.getStatus());
     }
 
     /**
@@ -175,9 +180,10 @@ public class RestserverWorkflowTest {
      */
     @Test
     public void testDelete() {
+        final int url500 = 500;
         final Response resp = client.target(targetUrl).path("resource/workflows/0")
                 .request().delete();
-        assertEquals(500, resp.getStatus());
+        assertEquals(url500, resp.getStatus());
     }
     
     /**
@@ -200,13 +206,13 @@ public class RestserverWorkflowTest {
         workflow.addStep(step2);
         workflow.addStep(step3);
         
-        final User BELEX = new User();
-        BELEX.setUsername("Belex");
+        final User belex = new User();
+        belex.setUsername("Belex");
         
         String workflowAsString = null;
         String userAsString = null;
         
-        final int HTTPStatus = 200;
+        final int httpstatus = 200;
         
         //Store Workflow in persistence
         try {
@@ -224,7 +230,7 @@ public class RestserverWorkflowTest {
         
         //Store User "Belex" in persistence
         try {
-            userAsString = mapper.writeValueAsString(BELEX);
+            userAsString = mapper.writeValueAsString(belex);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -259,7 +265,7 @@ public class RestserverWorkflowTest {
         }
         
         assertEquals(workflow.getSteps().get(0).getUsername(),recievedWorkflow.getSteps().get(0).getUsername());
-        assertEquals(HTTPStatus, resp.getStatus());
+        assertEquals(httpstatus, resp.getStatus());
         
     }
 
