@@ -43,6 +43,7 @@ namespace Admin.ViewModel
             IList<Role> allRoles =  _restRequester.GetAllElements<Role>();
             foreach(Role role in allRoles)
             {
+                Console.WriteLine(role.rolename);
                 // ueberpruefen ob der aktuell ausgewählte Nutzer die Rolle hat
                 roleCheckboxRows.Add(new RoleCheckboxRow(role, false));
                 roleCollection.Add(role);
@@ -66,6 +67,37 @@ namespace Admin.ViewModel
         /// </summary>
         private ObservableCollection<RoleCheckboxRow> _roleCheckboxRows = new ObservableCollection<RoleCheckboxRow>();
         public ObservableCollection<RoleCheckboxRow> roleCheckboxRows { get { return _roleCheckboxRows; } }
+
+        private User _selectedUser;
+        public User selectedUser
+        {
+            get
+            {
+                return _selectedUser;
+            }
+            set
+            {
+                _selectedUser = value;
+                Console.WriteLine("_selectedUser = " + _selectedUser.username);
+                Console.WriteLine("rolesCount = " + _selectedUser.roles.Count());
+                if (_selectedUser != null)
+                {
+                    foreach (RoleCheckboxRow rcr in roleCheckboxRows) 
+                    {
+                        
+                        if (_selectedUser.roles.Any(i => i.id == rcr.role.id))
+                        {
+                            rcr.isSelected = true;
+                            Console.WriteLine("Role: " + rcr.role.rolename + " set to true");
+                        }
+                        else
+                        {
+                            rcr.isSelected = false;
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Property for input from username text box.
@@ -116,7 +148,6 @@ namespace Admin.ViewModel
                         try
                         {
                             User newUser = new User();
-                            //newUser.username = username;
                             newUser.id = username;
 
                             foreach(RoleCheckboxRow actRow in roleCheckboxRows) 
@@ -128,9 +159,6 @@ namespace Admin.ViewModel
                             }
 
                             _restRequester.PostObject<User>(newUser);
-
-                            // update view model
-                            _userCollection.Add(newUser);
                             username = "";
                         }
                         catch (BasicException be)
@@ -171,8 +199,8 @@ namespace Admin.ViewModel
 
                             _restRequester.PostObject<Role>(newRole);
 
-                            // update view model
-                            _roleCollection.Add(newRole);
+                            // don't update view model
+                            //_roleCollection.Add(newRole);
                             rolename = "";
                         }
                         catch (BasicException be)
@@ -194,9 +222,33 @@ namespace Admin.ViewModel
             }
         }
 
-        void RoleUpdate(Role updatedRole)
+        private ICommand _deselectCommand;
+        public ICommand deselectCommand
         {
-            Console.WriteLine("Update UserViewModel: RoleID = " + updatedRole.id);
+            get
+            {
+                if (_deselectCommand == null)
+                {
+                    _deselectCommand = new ActionCommand(execute =>
+                        {
+                            _selectedUser = null;
+                        }, canExecute => _selectedUser != null);
+                }
+
+                return _deselectCommand;
+            }
+        }
+
+        public void UserUpdate(User user)
+        {
+            // TODO: check if users exists, if yes, update... else:
+            Application.Current.Dispatcher.Invoke(new System.Action(() => userCollection.Add(user)));
+        }
+
+        public void RoleUpdate(Role updatedRole)
+        {
+            Application.Current.Dispatcher.Invoke(new System.Action(() => roleCollection.Add(updatedRole)));
+            Application.Current.Dispatcher.Invoke(new System.Action(() => roleCheckboxRows.Add(new RoleCheckboxRow(updatedRole, false))));
         }
     }
 }

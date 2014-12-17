@@ -141,12 +141,12 @@ namespace Admin.ViewModel
 
         public void UserUpdate(User user)
         {
-            throw new NotImplementedException();
+            userViewModel.UserUpdate(user);
         }
 
         public void RoleUpdate(Role role)
         {
-            throw new NotImplementedException();
+            userViewModel.RoleUpdate(role);
         }
 
         #endregion
