@@ -693,7 +693,7 @@ public class LogicImp implements Logic {
      */
     private void initTestdata() throws LogicException {
         Workflow workflow1;
-        User user1, user2, user3;
+        User user1, user2, user3, user4;
         StartStep startStep1;
         Action action1, action2;
         FinalStep finalStep;
@@ -705,6 +705,8 @@ public class LogicImp implements Logic {
         user2.setUsername("Dominik");
         user3 = new User();
         user3.setUsername("Tilman");
+        user4 = new User();
+        user4.setUsername("TestAdmin");
         
         role1 = new Role();
         role1.setId("1");

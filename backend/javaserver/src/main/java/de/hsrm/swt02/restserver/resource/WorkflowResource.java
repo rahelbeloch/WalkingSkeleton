@@ -218,23 +218,34 @@ public class WorkflowResource {
         final String loggingBody = PREFIX + "GET /workflow/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         List<Workflow> wflowList = null;
-        try {
-            wflowList = LOGIC.getAllWorkflowsByUser(username);
-            for (Workflow w : wflowList) {
-                w.convertReferencesToIdList();
+        if (username.equals("TestAdmin")) {
+            try {
+                wflowList = LOGIC.getAllWorkflows();
+            } catch (WorkflowNotExistentException e) {
+                LOGGER.log(Level.WARNING, e);
+                return Response.serverError()
+                        .entity(String.valueOf(e.getErrorCode())).build();
             }
-        } catch (WorkflowNotExistentException e1) {
-            LOGGER.log(Level.WARNING, e1);
-            return Response.serverError()
-                    .entity(String.valueOf(e1.getErrorCode())).build();
-        } catch (UserNotExistentException e2) {
-            LOGGER.log(Level.WARNING, e2);
-            return Response.serverError()
-                    .entity(String.valueOf(e2.getErrorCode())).build();
-        } catch (LogicException e3) {
-            LOGGER.log(Level.WARNING, e3);
-            return Response.serverError()
-                    .entity(String.valueOf(e3.getErrorCode())).build();
+        } else {
+            try {
+                
+                wflowList = LOGIC.getAllWorkflowsByUser(username);
+                for (Workflow w : wflowList) {
+                    w.convertReferencesToIdList();
+                }
+            } catch (WorkflowNotExistentException e1) {
+                LOGGER.log(Level.WARNING, e1);
+                return Response.serverError()
+                        .entity(String.valueOf(e1.getErrorCode())).build();
+            } catch (UserNotExistentException e2) {
+                LOGGER.log(Level.WARNING, e2);
+                return Response.serverError()
+                        .entity(String.valueOf(e2.getErrorCode())).build();
+            } catch (LogicException e3) {
+                LOGGER.log(Level.WARNING, e3);
+                return Response.serverError()
+                        .entity(String.valueOf(e3.getErrorCode())).build();
+        }
         }
         String wListString;
 
