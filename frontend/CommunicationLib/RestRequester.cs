@@ -57,9 +57,7 @@ namespace RestAPI
         public IList<O> GetAllElements<O>()
         {
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O));
-            //String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            //String url = _ressourceParam + typeName + "s";
-
+            
             IList<O> eleList;
             try
             {
@@ -103,9 +101,7 @@ namespace RestAPI
         public IList<Workflow> GetAllWorkflowsByUser()
         {
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow));
-            //String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
-            //String url = _ressourceParam + typeName + "s";
-
+            
             IList<Workflow> eleList;
             try
             {
@@ -126,15 +122,10 @@ namespace RestAPI
         public IList<string> GetStartablesByUser()
         {
             IRestResponse response;
-
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow), new string[] { "startables" });
-            //String typeName = typeof(Workflow).FullName.Split('.').Last().ToLower();
-            //String url = _ressourceParam + typeName + "s/startables/";
-
-            var request = new RestRequest(url, Method.GET);
-            request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
-            request.AddHeader("Accept", "text/plain");
-
+            
+            var request = createRequest(url, Method.GET);
+            
             try
             {
                 // call Internal Requester to finally send the request
@@ -161,9 +152,7 @@ namespace RestAPI
         public IList<Item> GetRelevantItemsByUser(string workflowID)
         {
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Item), new string[] { workflowID });
-            //String typeName = typeof(Item).FullName.Split('.').Last().ToLower();
-            //String url = _ressourceParam + typeName + "s" + "/" + workflowID;
-
+            
             IList<Item> eleList;
             try
             {
@@ -186,10 +175,8 @@ namespace RestAPI
         {
             IRestResponse response;
 
-            var request = new RestRequest(url, Method.GET);
-            request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
-            request.AddHeader("Accept", "text/plain");
-
+            var request = createRequest(url, Method.GET);
+            
             try
             {
                 response = InternalRequester.RetrieveRequest(request);
@@ -213,14 +200,10 @@ namespace RestAPI
         public O GetObject<O>(string id) where O : new()
         {
             IRestResponse response;
-
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id });
-            //String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            //String url = _ressourceParam + typeName + "s/" + id;
-
-            var request = new RestRequest(url, Method.GET);
-            request.AddHeader("Accept", "text/plain");
-
+            
+            var request = createRequest(url, Method.GET);
+            
             try
             {
                 // call Internal Requester to finally send the request
@@ -251,20 +234,13 @@ namespace RestAPI
         public Boolean UpdateObject(RootElement sendObj)
         {
             IRestResponse response;
-
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(RootElement), new string[] { sendObj.id });
-            //String typeName = sendObj.GetType().FullName.Split('.').Last().ToLower();
-            //String url = _ressourceParam + typeName + "s/";
-            //url += sendObj.GetType() == typeof(User) ? "" : sendObj.id.ToString();
-
+            
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
 
-            var request = new RestRequest(url, Method.PUT);
-            if(sendObj.GetType() == typeof(User))
-                request.AddParameter("username", ((User)sendObj).username, ParameterType.HttpHeader);
-            request.AddHeader("Accept", "text/plain");
-
+            var request = createRequest(url, Method.PUT);
+            
             try
             {
                 // call Internal Requester to finally send the request
@@ -283,9 +259,8 @@ namespace RestAPI
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id, state });
 
-            var request = new RestRequest(url, Method.PUT);
-            request.AddHeader("Accept", "text/plain");
-
+            var request = createRequest(url, Method.PUT);
+            
             try
             {
                 response = InternalRequester.RetrieveRequest(request);
@@ -297,6 +272,7 @@ namespace RestAPI
             return response.StatusCode == HttpStatusCode.OK;
         }
 
+        /*
         /// <summary>
         ///     Send workflow activity change to server. Path is always: '/ressourceParam/workflow/{workflowid}/{state}
         /// </summary>
@@ -322,6 +298,7 @@ namespace RestAPI
             }
             return response.StatusCode == HttpStatusCode.OK;
         }
+         */
 
         /// <summary>
         ///     Create an object on the server, with HTTP-Method POST. Path is: 'resource/<typename>'
@@ -333,15 +310,12 @@ namespace RestAPI
         {
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O));
-            //String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            //String url = _ressourceParam + typeName + "s";
-
+            
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
 
-            var request = new RestRequest(url, Method.POST);
-            request.AddHeader("Accept", "text/plain");
-
+            var request = createRequest(url, Method.POST);
+            
             try
             {
                 // call Internal Requester to finally send the request
@@ -364,12 +338,7 @@ namespace RestAPI
         public O DeleteObject<O>(string id) where O : new()
         {
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id });
-            //String typeName = typeof(O).FullName.Split('.').Last().ToLower();
-            //String url = _ressourceParam + typeName + "s/" + id;
-
-            var request = new RestRequest(url, Method.DELETE);
-            request.AddHeader("Accept", "text/plain");
-
+            var request = createRequest(url, Method.DELETE);
             return Delete<O>(request);
         }
 
@@ -381,13 +350,9 @@ namespace RestAPI
         public User DeleteUser(string username)
         {
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(User));
-            //String typeName = typeof(User).FullName.Split('.').Last().ToLower();
-            //String url = _ressourceParam + typeName + "s";
-
-            var request = new RestRequest(url, Method.DELETE);
-            request.AddParameter("username", username, ParameterType.HttpHeader);
-            request.AddHeader("Accept", "text/plain");
-
+            
+            var request = createRequest(url, Method.DELETE);
+            
             return Delete<User>(request);
         }
 
@@ -427,14 +392,10 @@ namespace RestAPI
         {
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(User), new string[] { "login" });
-            //String url = _operationParam + "users/" + "login";
             
             // Create the RestRequest to send to server.
-            var request = new RestRequest(url, Method.POST);
-            request.AddHeader("Accept", "text/plain");
-            request.AddParameter("username", username, ParameterType.HttpHeader);
-            request.AddParameter("password", password, ParameterType.HttpHeader);
-
+            var request = createRequest(url, Method.POST);
+           
             try
             {
                 // call Internal Requester to finally send the request
@@ -457,13 +418,10 @@ namespace RestAPI
         {
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(Workflow), new string[] { "start", wId });
-            //String url = _operationParam + "workflows/" + "start/" + wId.ToString();
-
+            
             // Create the RestRequest to send to server.
-            var request = new RestRequest(url, Method.POST);
-            request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
-            request.AddHeader("Accept", "text/plain");
-
+            var request = createRequest(url, Method.POST);
+            
             try
             {
                 // call Internal Requester to finally send the request
@@ -488,13 +446,10 @@ namespace RestAPI
         {
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(Workflow), new string[] { "forward", stepId, itemId });
-            //String url = _operationParam + "workflows/" + "forward/" + stepId + "/" + itemId;
-
+            
             // Create the RestRequest to send to server.
-            var request = new RestRequest(url, Method.POST);
-            request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
-            request.AddHeader("Accept", "text/plain");
-
+            var request = createRequest(url, Method.POST);
+            
             try
             {
                 // call Internal Requester to finally send the request
@@ -507,14 +462,19 @@ namespace RestAPI
             return response.StatusCode == HttpStatusCode.OK;
         }
 
-        /*
-        private void addAuthentification(RestRequest request, string username, string password)
+        
+        private RestRequest createRequest(string url, Method method)
         {
-            request.AddParameter("username", username, ParameterType.HttpHeader);
-            if(password != null)
-                request.AddParameter("password", password, ParameterType.HttpHeader);
+            var request = new RestRequest(url, method);
+            request.AddHeader("Accept", "text/plain");
+
+            request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
+            if(_myPassword != null)
+                request.AddParameter("password", _myPassword, ParameterType.HttpHeader);
+
+            return request;
         }
-         * */
+        
 
         /// <summary>
         /// This method changes the type of a generic object.
