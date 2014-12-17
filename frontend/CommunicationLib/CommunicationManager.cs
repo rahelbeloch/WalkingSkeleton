@@ -24,7 +24,8 @@ namespace CommunicationLib
         {
             {"workflow", typeof(Workflow)}, 
             {"item", typeof(Item)},
-            {"user", typeof(User)}
+            {"user", typeof(User)},
+            {"role", typeof(Role)}
         };
         //funktion mapping 
         private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
