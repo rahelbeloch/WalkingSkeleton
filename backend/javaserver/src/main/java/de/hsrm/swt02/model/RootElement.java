@@ -57,10 +57,9 @@ public class RootElement implements Cloneable {
         this.id = id;
     }
     
-    @Deprecated
     @Override
     public int hashCode() {
-        throw new NotImplementedException();
+    	return getId().hashCode();
     }
     
     @Override
