@@ -167,7 +167,7 @@ public class Workflow extends RootElement {
      * This method adds a new item of a workflow.
      * 
      * @param item
-     *            which will be added to the item lsit of a workflow
+     *            which will be added to the item list of a workflow
      */
     public void addItem(Item item) {
         
