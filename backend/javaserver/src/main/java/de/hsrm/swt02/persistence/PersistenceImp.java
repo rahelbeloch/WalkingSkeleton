@@ -84,7 +84,6 @@ public class PersistenceImp implements Persistence {
             throw new StorageFailedException("storage of workflow" + workflow.getId() + "failed."); 
         }
         this.logger.log(Level.INFO, "[persistence] successfully stored workflow " + workflow.getId() + ".");
-        System.out.println("workflows: \n"+this.workflows);
         return workflow.getId();
     }
     
