@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.sun.org.apache.bcel.internal.generic.StoreInstruction;
 
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
@@ -71,16 +72,19 @@ public class PersistenceImp implements Persistence {
             }
         }
         try {
-            final Workflow workflowToStore = (Workflow)workflow.clone();
+            Workflow workflowToStore = (Workflow)workflow.clone();
             workflowToStore.clearItems();
-            workflows.add(workflowToStore);
-            for (Item item : workflow.getItems()) {
-                this.addItemToWorkflow(workflowToStore.getId(), item);
+            if (workflow.getItems().size() > 0) {
+                for (Item item : workflow.getItems()) {
+                    workflowToStore = this.addItemToWorkflow(workflowToStore, item);
+                }
             }
+            workflows.add(workflowToStore);
         } catch (CloneNotSupportedException e) {
             throw new StorageFailedException("storage of workflow" + workflow.getId() + "failed."); 
         }
         this.logger.log(Level.INFO, "[persistence] successfully stored workflow " + workflow.getId() + ".");
+        System.out.println("workflows: \n"+this.workflows);
         return workflow.getId();
     }
     
@@ -131,9 +135,7 @@ public class PersistenceImp implements Persistence {
      * @exception PersistenceException indicates errors in storage methods
      * @throws PersistenceException 
      */
-    public String addItemToWorkflow(String workflowId, Item item) throws PersistenceException {
-        Workflow workflow = null;
-        workflow = loadWorkflow(workflowId);
+    public Workflow addItemToWorkflow(Workflow workflow, Item item) throws PersistenceException {
         Item itemToRemove = null;
         boolean itemExists = false;
         for (Item i : workflow.getItems()) {
@@ -149,17 +151,17 @@ public class PersistenceImp implements Persistence {
             this.logger.log(Level.INFO, "[persistence] overwriting item " + itemToRemove.getId() + "...");
         }
         
-        
         if (!itemExists) {
-            item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");      
+            item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");
+            item.setWorkflowId(workflow.getId());
         }
         
         try {
             workflow.addItem((Item)item.clone());
         } catch (CloneNotSupportedException e) {
-            throw new StorageFailedException("storage of item" + item.getId() + "to workflow " + workflowId + "failed."); 
+            throw new StorageFailedException("storage of item" + item.getId() + "to workflow " + workflow.getId() + "failed."); 
         }
-        return item.getId();
+        return workflow;
     }
     
     /**
@@ -173,7 +175,6 @@ public class PersistenceImp implements Persistence {
         final int idDivider = 10;
         final int eliminatedItemId = integerItemId % (ID_MULTIPLICATOR / idDivider);
         final String parentWorkflowId = ((integerItemId - eliminatedItemId) / ID_MULTIPLICATOR) + "";        
-        
         final Workflow parentWorkflow = loadWorkflow(parentWorkflowId);
         return parentWorkflow;
     }

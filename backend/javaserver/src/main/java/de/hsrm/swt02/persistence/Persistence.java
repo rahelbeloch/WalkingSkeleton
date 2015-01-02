@@ -7,7 +7,6 @@ import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
@@ -84,16 +83,16 @@ public interface Persistence {
     /**
      * delete functions to remove workflows, items, and users from persistence.
      * @param id is the id of the requested workflow
-     * @exception WorkflowNotExistentException if the requested workflow is not there.
-     * @throws WorkflowNotExistentException
+     * @exception PersistenceException if the loading process failed
+     * @throws PersistenceException 
      */
     void deleteWorkflow(String id) throws PersistenceException;
 
     /**
      * Method for function to delete an item.
      * @param id is the id of the requested item.
-     * @exception ItemNotExistentException if the requested item is not there
-     * @throws ItemNotExistentException
+     * @exception PersistenceException if the loading process failed
+     * @throws PersistenceException 
      */
     void deleteItem(String id) throws PersistenceException;
 
