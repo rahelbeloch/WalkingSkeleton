@@ -3,12 +3,14 @@ package de.hsrm.swt02.businesslogic;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.google.inject.Inject;
 
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
@@ -164,7 +166,7 @@ public class LogicImp implements Logic {
     public LogicResponse stepForward(String itemId, String stepId, String username) 
             throws LogicException 
     {
-        final String updatedItemId;
+        final String updatedItemId; 
         final String workflowId; 
         final LogicResponse logicResponse = new LogicResponse();
         
@@ -287,7 +289,7 @@ public class LogicImp implements Logic {
      * @throws LogicException
      */
     @Override
-    public List<Workflow> getAllWorkflowsByUser(String username)
+    public List<Workflow> getAllWorkflowsForUser(String username)
             throws LogicException 
     {
         persistence.loadUser(username);
@@ -295,7 +297,7 @@ public class LogicImp implements Logic {
         for (Workflow wf : persistence.loadAllWorkflows()) {
             if (wf.isActive() || wf.getItems().size() > 0) {
                 for (Step step : wf.getSteps()) {
-                    if (step.getUsername().equals(username)) {
+                    if (checkAuthorization(step, username)) {
                         Workflow copyOfWf;
                         try {
                             copyOfWf = ((Workflow) wf.clone());
@@ -350,7 +352,7 @@ public class LogicImp implements Logic {
     @Override
     public List<Item> getOpenItemsByUser(String username) throws LogicException {
 
-        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getAllWorkflowsByUser(username);
+        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getAllWorkflowsForUser(username);
         final LinkedList<Item> items = new LinkedList<Item>();
 
         
@@ -376,14 +378,14 @@ public class LogicImp implements Logic {
     * @return List<Workflow> is the requested list of workflows
     */
 
-    public List<String> getStartableWorkflowsByUser(String username) throws LogicException {
+    public List<String> getStartableWorkflowsForUser(String username) throws LogicException {
 
         final List<String> startableWorkflows = new LinkedList<>();
-        for (Workflow workflow : getAllWorkflowsByUser(username)) {
+        for (Workflow workflow : getAllWorkflowsForUser(username)) {
             if (workflow.isActive()) {
                 final Step startStep = workflow.getSteps().get(0);
                 assert (startStep instanceof StartStep);
-                if (startStep.getUsername().equals(username)) {
+                if (checkAuthorization(startStep, username)) {
                     startableWorkflows.add(workflow.getId());
                 }
             }
@@ -402,7 +404,7 @@ public class LogicImp implements Logic {
     public List<Workflow> getStartableWorkflows(String username) throws LogicException {
 
         final LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
-        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getAllWorkflowsByUser(username);
+        final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getAllWorkflowsForUser(username);
 
         for (Workflow wf : workflows) {
             if (wf.getStepByPos(0).getUsername().equals(username)) {
@@ -419,7 +421,7 @@ public class LogicImp implements Logic {
      * @throws PersistenceException is thrown if errors occur while persisting objects
      * @return all relevant items for an user 
      */    
-    public List<Item> getRelevantItemsByUser(String workflowId, String username)
+    public List<Item> getRelevantItemsForUser(String workflowId, String username)
             throws PersistenceException 
     {
         final LinkedList<Item> relevantItems = new LinkedList<>();
@@ -427,8 +429,8 @@ public class LogicImp implements Logic {
         for (Item item : workflow.getItems()) {
             final MetaEntry me = item.getActStep();
             if (me != null) {
-                final String itemUsername = workflow.getStepById(me.getKey()).getUsername();
-                if (username.equals(itemUsername)) {
+                final Step step = workflow.getStepById(me.getKey());
+                if (checkAuthorization(step, username)) {
                     relevantItems.add(item);
                 }
             } 
@@ -477,6 +479,21 @@ public class LogicImp implements Logic {
             throw new LogInException();
         }
         return true;
+    }
+    
+    /**
+     * 
+     * @param step to be operated on
+     * @param username that has to be authorized
+     * @return boolean
+     * @throws PersistenceException to catch UserNotExistent or RoleNotExistent exceptions
+     */
+    public boolean checkAuthorization(Step step, String username)
+            throws PersistenceException 
+    {
+        final User userToCheck = persistence.loadUser(username);
+        final Role expectedRole = persistence.loadRole(step.getRolename());
+        return userToCheck.getRoles().contains(expectedRole);
     }
 
     // BusinessLogic Sprint 2
@@ -545,7 +562,6 @@ public class LogicImp implements Logic {
         final User user = persistence.loadUser(username);
         final LogicResponse logicResponse = new LogicResponse();
         
-        // TODO: Funktionalität raus aus Persistence, sollte alles hier passieren.
 //        persistence.addRoleToUser(user, role);
         logicResponse.add(new Message("USER_INFO", "user=upd=" + username));
         return logicResponse;
@@ -568,10 +584,10 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method deactivates a workflow.
+     * This method deactivate a workflow.
      * 
      * @param workflowId
-     *            the id of the workflow which should be deactivated
+     *            the id of the workflow which should be deactivate
      * @return logicResponse about update
      * @throws PersistenceException is thrown if errors occur while persisting objects
      */

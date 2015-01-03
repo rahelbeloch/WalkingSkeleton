@@ -198,7 +198,7 @@ public class LogicTest {
         init();
         initExtension();
 
-        final int i = li.getAllWorkflowsByUser(user.getUsername()).size();
+        final int i = li.getAllWorkflowsForUser(user.getUsername()).size();
         assertTrue(i == 1);
 
     }
@@ -216,7 +216,7 @@ public class LogicTest {
         li.startWorkflow(w.getId(), user.getUsername());
         li.startWorkflow(w.getId(), user.getUsername());
 
-        final int i = li.getRelevantItemsByUser(w.getId(), user.getUsername()).size();
+        final int i = li.getRelevantItemsForUser(w.getId(), user.getUsername()).size();
         assertTrue(i == 2);
 
     }
@@ -248,7 +248,7 @@ public class LogicTest {
     public void getStartableWorkflowsTest() throws LogicException, UserNotExistentException, WorkflowNotExistentException, StorageFailedException {
         init();
         initExtension();
-        final int i = li.getStartableWorkflowsByUser(user2.getUsername()).size();
+        final int i = li.getStartableWorkflowsForUser(user2.getUsername()).size();
 
         assertTrue(i == 2);
     }
@@ -277,12 +277,12 @@ public class LogicTest {
     public void getAllActiveWorkflowsByUserTest() throws UserNotExistentException, LogicException, WorkflowNotExistentException, StorageFailedException {
         init();
         initExtension();       
-        final int before = li.getAllWorkflowsByUser(user.getUsername()).size();
+        final int before = li.getAllWorkflowsForUser(user.getUsername()).size();
         
         li.deactivateWorkflow(w.getId());
         
          
-        final int after = li.getAllWorkflowsByUser(user.getUsername()).size();
+        final int after = li.getAllWorkflowsForUser(user.getUsername()).size();
 
         assertTrue(before == after + 1);
         
@@ -300,9 +300,9 @@ public class LogicTest {
         final String actUser = actWorkflow.getStepByPos(0).getUsername();
         actWorkflow.getStepByPos(0).getUsername();
         li.startWorkflow(actWorkflow.getId(), actUser);
-        final int i = li.getAllWorkflowsByUser(actUser).size();
+        final int i = li.getAllWorkflowsForUser(actUser).size();
         li.deactivateWorkflow(actWorkflow.getId());
-        final int j = li.getAllWorkflowsByUser(actUser).size();
+        final int j = li.getAllWorkflowsForUser(actUser).size();
         assertTrue(i == j);
     }
     
