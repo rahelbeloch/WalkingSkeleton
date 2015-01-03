@@ -1,7 +1,5 @@
 package de.hsrm.swt02.businesslogic;
 
-import java.util.Observer;
-
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
@@ -13,6 +11,7 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
  * Interface for ProcessManager. (Due to Dependency Injection)
@@ -28,7 +27,7 @@ public interface ProcessManager {
      * @param username who edits the step
      * @return true if user is "owner" of step and false if not
      */
-    boolean checkAuthorization(Step step, String username);
+    boolean checkAuthorization(Step step, String username) throws PersistenceException;
 
     /**
      * This method starts a workflow.

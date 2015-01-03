@@ -50,7 +50,7 @@ public class PersistenceTest {
     }
     
     /**
-     * delete a workflow an check persistence functionality.
+     * delete a workflow and check persistence functionality.
      * @exception PersistenceException indicates errors in storage methods
      * @throws PersistenceException
      */
@@ -87,8 +87,8 @@ public class PersistenceTest {
     }
     
     /**
-     * delete a user an check persistence functionality.
-     * @exception PersistenceException inidcates errors in storage methods
+     * delete a user and check persistence functionality.
+     * @exception PersistenceException indicates errors in storage methods
      * @throws PersistenceException 
      */
     @Test(expected = UserNotExistentException.class)
@@ -192,18 +192,18 @@ public class PersistenceTest {
         assertEquals(db.loadWorkflow(workflowId).getItems(), workflow1.getItems());
     }
     
-//    @Test
-//    public void testContinuityOfWorkflowIds() throws PersistenceException {
-//        final Workflow wf1 = new Workflow();
-//        final Workflow wf2 = new Workflow();
-//        final Workflow wf3 = new Workflow();
-//        
-//        final String id1 = db.storeWorkflow(wf1);
-//        final String id2 = db.storeWorkflow(wf2);
-//        
-//        db.deleteWorkflow(id1);
-//        final String id3 = db.storeWorkflow(wf3);
-//        
-//        assertNotEquals(db.loadWorkflow(id3).getId(), "2");   
-//    }
+    @Test
+    public void testContinuityOfWorkflowIds() throws PersistenceException {
+        final Workflow wf1 = new Workflow();
+        final Workflow wf2 = new Workflow();
+        final Workflow wf3 = new Workflow();
+        
+        final String id1 = db.storeWorkflow(wf1);
+        final String id2 = db.storeWorkflow(wf2);
+        
+        db.deleteWorkflow(id1);
+        final String id3 = db.storeWorkflow(wf3);
+        
+        assertEquals(db.loadWorkflow(id3).getId(), "2");
+    }
 }

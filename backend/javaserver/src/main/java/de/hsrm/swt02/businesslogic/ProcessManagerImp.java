@@ -6,18 +6,21 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.businesslogic.processors.ActionProcessor;
 import de.hsrm.swt02.businesslogic.processors.StartProcessor;
 import de.hsrm.swt02.businesslogic.processors.StepProcessor;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
@@ -52,15 +55,13 @@ public class ProcessManagerImp implements ProcessManager {
      * @param step is the step the user wants to edit
      * @param username is the name of the user to check
      * @return true if user is "owner" of step and false if not
+     * @throws PersistenceException if an error in persistence occurs
      */
-    public boolean checkAuthorization(Step step, String username) {
-        User checkUser = null;
-        try {
-            checkUser = persistence.loadUser(step.getUsername());
-        } catch (UserNotExistentException e) {
-            logger.log(Level.SEVERE, e);
-        }
-        return checkUser.getUsername().equals(username);
+    public boolean checkAuthorization(Step step, String username) throws PersistenceException {
+        final User userToCheck = persistence.loadUser(username);
+        final Role expectedRole = persistence.loadRole(step.getRolename());
+        
+        return userToCheck.getRoles().contains(expectedRole); 
     }
 
     /**
@@ -80,6 +81,7 @@ public class ProcessManagerImp implements ProcessManager {
             itemID = startProcessor.createItem(workflow);
         } else {
             logger.log(Level.WARNING, "Access denied, Authorization failed.");
+            // TODO: Exception needed here, to avoid returning an empty itemID?
         }
         return itemID;
     }
