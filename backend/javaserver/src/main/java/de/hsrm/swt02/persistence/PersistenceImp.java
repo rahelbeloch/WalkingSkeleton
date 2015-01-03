@@ -119,11 +119,6 @@ public class PersistenceImp implements Persistence {
         }
     }
     
-    @Override
-    public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
-        return workflows;
-    }
-    
     // Item Operations
     
     /**
@@ -300,54 +295,33 @@ public class PersistenceImp implements Persistence {
         }
     }   
     
-    // Sprint 2 Persistence  
+    // Role Operations
     
     /**
      * Method for storing a role.
      * @param role is the role to store
      * @return roleId is the Id of the stored role
+     * @throws RoleNotExistentException 
      */
-    public String storeRole(Role role) {
+    public void storeRole(Role role) throws RoleNotExistentException {
         if (role.getId() == null) {
             role.setId(roles.size() + 1 + "");
         }
         Role roleToRemove = null;
         for (Role r : roles) {
-            if (r.getId().equals(role.getId())) {
+            if (r.getRolename().equals(role.getRolename())) {
                 roleToRemove = r;
                 break;
             }
         }
         if (roleToRemove != null) {
-            roles.remove(roleToRemove);
-            this.logger.log(Level.INFO, "[persistence] removed existing role "
-                    + roleToRemove.getId() + ".");
+            this.logger.log(Level.INFO, "[persistence] overwriting role "
+                    + roleToRemove.getRolename() + "...");
+            this.deleteRole(roleToRemove.getRolename());
         }
         roles.add((Role) role);
         this.logger.log(Level.INFO, "[persistence] successfully stored role " + role.getId()
                 + ".");
-        return role.getId();
-    }
-
-    /**
-     * Method for loading all roles into a list of roles.
-     * @exception RoleNotExistentException if the requested role is not there
-     * @throws RoleNotExistentException
-     * @return List<Workflow> is the list we want to load
-     */
-    public List<Role> loadAllRoles() throws RoleNotExistentException {
-        return roles;
-    }
-    
-    /**
-     * Method for loeading all users into a list of users.
-     * @exception UserNotExistentException if the requested user is not there
-     * @throws UserNotExistentException
-     * @return List<User> is the list we want to load
-     */
-    @Override
-    public List<User> loadAllUsers() throws UserNotExistentException {
-        return users;
     }
 
     /**
@@ -367,57 +341,57 @@ public class PersistenceImp implements Persistence {
         if (roleToReturn != null) {
             return roleToReturn;
         } else {
-            throw new RoleNotExistentException("database has no role '" + rolename + "'.");
+            throw new RoleNotExistentException("[persistence] database has no role '" + rolename + "'.");
         }
     }
 
-    /**
-     * @param user is the user we want to add
-     * @param role is the role we want to give the user
-     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
-     * @exception UserNotExistentException if the requested user is not there
-     * @exception RoleNotExistentException if the requested role is not there
-     * @throws UserHasAlreadyRoleException
-     * @throws UserNotExistentException
-     * @throws RoleNotExistentException  
-    */
-    @Override
-    public void addRoleToUser(User user, Role role) throws PersistenceException {
-        Role searchedRole = null;
-        User searchedUser = null;
-        for (Role r : roles) {
-            if (r.getId().equals(role.getId())) {
-                searchedRole = r;
-            }
-        }
-        if (searchedRole == null) {
-            final RoleNotExistentException e = new RoleNotExistentException(role.getRolename());
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-        
-        for (User u : users) {
-            if (u.getId().equals(user.getId())) {
-                searchedUser = u;
-            }
-        }
-        if (searchedUser == null) {
-            final UserNotExistentException e = new UserNotExistentException(user.getUsername());
-            this.logger.log(Level.WARNING, e);
-            throw e;
-        }
-        
-        
-        for (Role r: user.getRoles()) {
-            if (role.getId().equals(r.getId())) {
-                final UserHasAlreadyRoleException e = new UserHasAlreadyRoleException(role.getRolename());
-                this.logger.log(Level.WARNING, e);
-                throw e;
-            }
-        }
-        
-        user.getRoles().add(role);
-    }
+//    /**
+//     * @param user is the user we want to add
+//     * @param role is the role we want to give the user
+//     * @exception UserHasAlreadyRoleException if we want to assign a role to a user and the user has it already
+//     * @exception UserNotExistentException if the requested user is not there
+//     * @exception RoleNotExistentException if the requested role is not there
+//     * @throws UserHasAlreadyRoleException
+//     * @throws UserNotExistentException
+//     * @throws RoleNotExistentException  
+//    */
+//    @Override
+//    public void addRoleToUser(User user, Role role) throws PersistenceException {
+//        Role searchedRole = null;
+//        User searchedUser = null;
+//        for (Role r : roles) {
+//            if (r.getId().equals(role.getId())) {
+//                searchedRole = r;
+//            }
+//        }
+//        if (searchedRole == null) {
+//            final RoleNotExistentException e = new RoleNotExistentException(role.getRolename());
+//            this.logger.log(Level.WARNING, e);
+//            throw e;
+//        }
+//        
+//        for (User u : users) {
+//            if (u.getId().equals(user.getId())) {
+//                searchedUser = u;
+//            }
+//        }
+//        if (searchedUser == null) {
+//            final UserNotExistentException e = new UserNotExistentException(user.getUsername());
+//            this.logger.log(Level.WARNING, e);
+//            throw e;
+//        }
+//        
+//        
+//        for (Role r: user.getRoles()) {
+//            if (role.getId().equals(r.getId())) {
+//                final UserHasAlreadyRoleException e = new UserHasAlreadyRoleException(role.getRolename());
+//                this.logger.log(Level.WARNING, e);
+//                throw e;
+//            }
+//        }
+//        
+//        user.getRoles().add(role);
+//    }
     
     /**
      * Method for deleting an existing role.
@@ -439,6 +413,34 @@ public class PersistenceImp implements Persistence {
         } else {
             throw new RoleNotExistentException("database has no role '" + rolename + "'.");
         }
+    }
+    
+    // General Operations on database
+    
+    @Override
+    public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
+        return workflows;
+    }
+    
+    /**
+     * Method for loading all roles into a list of roles.
+     * @exception RoleNotExistentException if the requested role is not there
+     * @throws RoleNotExistentException
+     * @return List<Workflow> is the list we want to load
+     */
+    public List<Role> loadAllRoles() throws RoleNotExistentException {
+        return this.roles;
+    }
+    
+    /**
+     * Method for loeading all users into a list of users.
+     * @exception UserNotExistentException if the requested user is not there
+     * @throws UserNotExistentException
+     * @return List<User> is the list we want to load
+     */
+    @Override
+    public List<User> loadAllUsers() throws UserNotExistentException {
+        return this.users;
     }
     
     

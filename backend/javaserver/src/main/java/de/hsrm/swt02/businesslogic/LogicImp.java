@@ -545,7 +545,8 @@ public class LogicImp implements Logic {
         final User user = persistence.loadUser(username);
         final LogicResponse logicResponse = new LogicResponse();
         
-        persistence.addRoleToUser(user, role);
+        // TODO: Funktionalität raus aus Persistence, sollte alles hier passieren.
+//        persistence.addRoleToUser(user, role);
         logicResponse.add(new Message("USER_INFO", "user=upd=" + username));
         return logicResponse;
     }
@@ -567,10 +568,10 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method deactivate a workflow.
+     * This method deactivates a workflow.
      * 
      * @param workflowId
-     *            the id of the workflow which should be deactivate
+     *            the id of the workflow which should be deactivated
      * @return logicResponse about update
      * @throws PersistenceException is thrown if errors occur while persisting objects
      */

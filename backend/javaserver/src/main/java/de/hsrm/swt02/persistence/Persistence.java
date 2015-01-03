@@ -114,7 +114,7 @@ public interface Persistence {
     * @throws PersistenceExceptio
     * @return roleId is the id of the role
     */
-    String storeRole(Role role) throws PersistenceException;
+    void storeRole(Role role) throws RoleNotExistentException;
     
     /**
      * Method for loading all existing roles.
@@ -141,14 +141,14 @@ public interface Persistence {
      */
     Role loadRole(String id) throws RoleNotExistentException;
     
-    /**
-     * Method for adding a new user to a role.
-     * @param user is the needed user
-     * @param role is the needed role
-     * @exception PersistenceException if there is a persistence exception
-     * @throws PersistenceException
-     */
-    void addRoleToUser(User user, Role role) throws PersistenceException;  
+//    /**
+//     * Method for adding a new user to a role.
+//     * @param user is the needed user
+//     * @param role is the needed role
+//     * @exception PersistenceException if there is a persistence exception
+//     * @throws PersistenceException
+//     */
+//    void addRoleToUser(User user, Role role) throws PersistenceException;  
     
     /**
      * Method for removing a role from datbase.
