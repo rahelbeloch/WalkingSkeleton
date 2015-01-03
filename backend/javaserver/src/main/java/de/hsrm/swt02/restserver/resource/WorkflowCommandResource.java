@@ -48,9 +48,10 @@ public class WorkflowCommandResource {
         final String loggingBody = PREFIX + "POST /start/" + workflowid + "/" + username;
         LOGGER.log(Level.INFO, loggingBody);
 
+        // added LogicException to the following try&catch block, should be correct. -- dneux001
         try {
             logicResponse = LOGIC.startWorkflow(workflowid, username);
-        } catch (PersistenceException e1) {
+        } catch (LogicException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }

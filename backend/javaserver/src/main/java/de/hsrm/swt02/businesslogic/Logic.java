@@ -36,7 +36,7 @@ public interface Logic {
      * @throws WorkflowNotExistentException
      * @throws ItemNotExistentException 
      */
-    LogicResponse startWorkflow(String workflowID, String username) throws PersistenceException;
+    LogicResponse startWorkflow(String workflowID, String username) throws LogicException;
 
     /**
      * This method store a workflow and distribute a id.
@@ -209,6 +209,7 @@ public interface Logic {
      * @return List<Integer> list of Ids
      */
     List<String> getStartableWorkflowsByUser(String username) throws LogicException;
+//    TODO: check by Role
     
     /**
      * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
@@ -221,7 +222,7 @@ public interface Logic {
      * @return List<Integer> list of stepIds
      */
     List<Item> getRelevantItemsByUser(String workflowId, String username) throws PersistenceException;
-
+// TODO: check by Role
 
     /**
      * Method gives an Item.
