@@ -193,7 +193,7 @@ public interface Logic {
      * @throws LogicException
      * @return a LinkedList of workflows
      */
-    List<Workflow> getAllWorkflowsByUser(String username) throws LogicException;
+    List<Workflow> getAllWorkflowsForUser(String username) throws LogicException;
 
     /**
      * Method for getting a list of the ids of workflows startable by a given user (if the user is responsible for the Startstep of the steplist).
@@ -208,7 +208,7 @@ public interface Logic {
      * @throws UserNotExistentException
      * @return List<Integer> list of Ids
      */
-    List<String> getStartableWorkflowsByUser(String username) throws LogicException;
+    List<String> getStartableWorkflowsForUser(String username) throws LogicException;
 //    TODO: check by Role
     
     /**
@@ -221,7 +221,7 @@ public interface Logic {
      * @throws UserNotExistentException
      * @return List<Integer> list of stepIds
      */
-    List<Item> getRelevantItemsByUser(String workflowId, String username) throws PersistenceException;
+    List<Item> getRelevantItemsForUser(String workflowId, String username) throws PersistenceException;
 // TODO: check by Role
 
     /**

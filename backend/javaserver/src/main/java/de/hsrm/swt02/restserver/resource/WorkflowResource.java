@@ -96,7 +96,7 @@ public class WorkflowResource {
         List<String> wIdList = null;
 
         try {
-            wIdList = LOGIC.getStartableWorkflowsByUser(username);
+            wIdList = LOGIC.getStartableWorkflowsForUser(username);
         } catch (LogicException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
@@ -136,7 +136,7 @@ public class WorkflowResource {
         LOGGER.log(Level.INFO, loggingBody);
         List<Item> itemList = null;
         try {
-            itemList = LOGIC.getRelevantItemsByUser(workflowid, username);
+            itemList = LOGIC.getRelevantItemsForUser(workflowid, username);
         } catch (PersistenceException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
@@ -180,7 +180,7 @@ public class WorkflowResource {
             }
         } else {
             try {
-                wflowList = LOGIC.getAllWorkflowsByUser(username);
+                wflowList = LOGIC.getAllWorkflowsForUser(username);
                 for (Workflow w : wflowList) {
                     w.convertReferencesToIdList();
                 }
