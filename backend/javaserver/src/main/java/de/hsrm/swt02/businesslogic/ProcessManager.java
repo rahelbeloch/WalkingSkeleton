@@ -36,7 +36,7 @@ public interface ProcessManager {
      * @param username indicates who wants to start a workflow
      * @throws PersistenceException 
      */
-    String startWorkflow(Workflow workflow, String username) throws ItemNotExistentException, StorageFailedException, PersistenceException;
+    String startWorkflow(Workflow workflow, String username) throws LogicException;
 
     /**
      * This method selects the appropriate stepprocessor for a step.

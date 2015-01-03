@@ -61,10 +61,10 @@ public class LogicImp implements Logic {
      * 
      * @param workflowID the workflow, which should be started
      * @param user the User, who starts the workflow
-     * @exception PersistenceException is thrown if errors occur while persisting objects
+     * @throws LogicException 
     */
     @Override
-    public LogicResponse startWorkflow(String workflowID, String username) throws PersistenceException {
+    public LogicResponse startWorkflow(String workflowID, String username) throws LogicException {
         final LogicResponse logicResponse = new LogicResponse();
         final Workflow workflow;
         final String itemId; 
@@ -164,7 +164,7 @@ public class LogicImp implements Logic {
     public LogicResponse stepForward(String itemId, String stepId, String username) 
             throws LogicException 
     {
-        final String updatedItemId; 
+        final String updatedItemId;
         final String workflowId; 
         final LogicResponse logicResponse = new LogicResponse();
         

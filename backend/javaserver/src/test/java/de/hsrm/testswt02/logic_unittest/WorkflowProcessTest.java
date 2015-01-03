@@ -94,10 +94,10 @@ public class WorkflowProcessTest {
 
     /**
      * test start a workflow.
-     * @throws PersistenceException 
+     * @throws LogicException 
      */
     @Test
-    public void startWorkflow() throws PersistenceException {
+    public void startWorkflow() throws LogicException {
 
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
@@ -107,10 +107,10 @@ public class WorkflowProcessTest {
     
     /**
      * test start a workflow, without authorization.
-     * @throws PersistenceException 
+     * @throws LogicException 
      */
     @Test
-    public void startWorkflowWithoutAutohrization() throws PersistenceException {
+    public void startWorkflowWithoutAutohrization() throws LogicException {
         
         processManager.startWorkflow(myWorkflow, "ez");
         assertTrue(myWorkflow.getItems().size() == 0);
@@ -122,10 +122,10 @@ public class WorkflowProcessTest {
      * workflow steplist. The first one is a startStep and isn't available in an
      * item. The second one has to be open because it the workflow was recently
      * started so the next one will be inactive.
-     * @throws PersistenceException 
+     * @throws LogicException 
      */
     @Test
-    public void checkStateInaktive() throws PersistenceException {
+    public void checkStateInaktive() throws LogicException {
         String stepId;
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
