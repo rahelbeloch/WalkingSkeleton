@@ -48,12 +48,6 @@ public class User extends RootElement {
         return this.roles;
     }
     
-    public void addRole(Role role) {
-        if(!this.roles.contains(role)) {
-            this.roles.add(role);
-        }
-    }
-    
     /**
      * Subs getter. There is no setter because roles is an ArrayList.
      * 
