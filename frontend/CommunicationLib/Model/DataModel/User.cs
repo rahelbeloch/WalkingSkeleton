@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security;
+using Newtonsoft.Json;
 
 namespace CommunicationLib.Model
 {
@@ -17,7 +18,11 @@ namespace CommunicationLib.Model
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private string _username;
+        [JsonIgnore]
         public string username { get { return id; } set { id = value; } }
+
+        private string _passowrd;
+        public string password { get { return _passowrd; } set { _passowrd = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
