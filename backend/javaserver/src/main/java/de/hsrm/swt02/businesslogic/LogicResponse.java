@@ -3,6 +3,8 @@ package de.hsrm.swt02.businesslogic;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.hsrm.swt02.messaging.Message;
+
 /**
  * This class is used for communication. LogicResponses are used for publishing messages to the message broker.
  *
