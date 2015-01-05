@@ -12,6 +12,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -83,43 +84,6 @@ public class WorkflowResource {
      * This method returns all startable workflows for a given user.
      * @param username the name of the user for whom the workflows shall be
      *            returned
-     * @return all startable workflows for user
-     */
-    @GET
-    @Path("workflows/startables")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response getStartablesByUser(@HeaderParam("username") String username) {
-        final String loggingBody = PREFIX + "GET /resource/workflows/startables";
-        LOGGER.log(Level.INFO, loggingBody);
-        List<String> wIdList = null;
-
-        try {
-            wIdList = LOGIC.getStartableWorkflowsForUser(username);
-        } catch (LogicException e1) {
-            LOGGER.log(Level.WARNING, e1);
-            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
-        }
-
-        String wIdListString;
-
-        try {
-            wIdListString = JsonParser.marshall(wIdList);
-            LOGGER.log(Level.FINE, loggingBody + wIdListString);
-        } catch (JacksonException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response
-                    .serverError()
-                    .entity(String.valueOf(e
-                            .getErrorCode())).build();
-        }
-        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
-        return Response.ok(wIdListString).build();
-    }
-
-    /**
-     * This method returns all startable workflows for a given user.
-     * @param username the name of the user for whom the workflows shall be
-     *            returned
      * @param workflowid the id of the workflow.
      * @return all startable workflows for user
      */
@@ -164,44 +128,78 @@ public class WorkflowResource {
     @GET
     @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getWorkflowsByUser(@HeaderParam("username") String username) {
-        final String loggingBody = PREFIX + "GET /resource/workflows";
-        LOGGER.log(Level.INFO, loggingBody);
-        List<Workflow> wflowList = null;
-        if (username.equals("TestAdmin")) {
-            try {
-                wflowList = LOGIC.getAllWorkflows();
-            } catch (WorkflowNotExistentException e) {
-                LOGGER.log(Level.WARNING, e);
-                return Response.serverError()
-                        .entity(String.valueOf(e.getErrorCode())).build();
+    public Response getWorkflows(@HeaderParam("username") String username,@QueryParam("state") String state) {
+        if (state != null) {
+            switch(state) {
+                case "startable":
+                    final String loggingBody = PREFIX + "GET /resource/workflows?state=startable";
+                    LOGGER.log(Level.INFO, loggingBody);
+                    List<String> wIdList = null;
+        
+                    try {
+                        wIdList = LOGIC.getStartableWorkflowsForUser(username);
+                    } catch (LogicException e1) {
+                        LOGGER.log(Level.WARNING, e1);
+                        return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+                    }
+        
+                    String wIdListString;
+        
+                    try {
+                        wIdListString = JsonParser.marshall(wIdList);
+                        LOGGER.log(Level.FINE, loggingBody + wIdListString);
+                    } catch (JacksonException e) {
+                        LOGGER.log(Level.WARNING, loggingBody + e);
+                        return Response
+                                .serverError()
+                                .entity(String.valueOf(e
+                                        .getErrorCode())).build();
+                    }
+                    LOGGER.log(Level.INFO, loggingBody + " Request successful.");
+                    return Response.ok(wIdListString).build();
+                default:
+                    final int notFoundCode = 404;
+                    return Response.status(notFoundCode).build();
             }
         } else {
-            try {
-                wflowList = LOGIC.getAllWorkflowsForUser(username);
-                for (Workflow w : wflowList) {
-                    w.convertReferencesToIdList();
+            final String loggingBody = PREFIX + "GET /resource/workflows";
+            LOGGER.log(Level.INFO, loggingBody);
+            List<Workflow> wflowList = null;
+            if (username.equals("TestAdmin")) {
+                try {
+                    wflowList = LOGIC.getAllWorkflows();
+                } catch (WorkflowNotExistentException e) {
+                    LOGGER.log(Level.WARNING, e);
+                    return Response.serverError()
+                            .entity(String.valueOf(e.getErrorCode())).build();
                 }
-            } catch (LogicException e) {
-                LOGGER.log(Level.WARNING, e);
-                return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+            } else {
+                try {
+                    wflowList = LOGIC.getAllWorkflowsForUser(username);
+                    for (Workflow w : wflowList) {
+                        w.convertReferencesToIdList();
+                    }
+                } catch (LogicException e) {
+                    LOGGER.log(Level.WARNING, e);
+                    return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+                }
+    
             }
-
+            String wListString;
+    
+            try {
+                wListString = JsonParser.marshall(wflowList);
+                LOGGER.log(Level.FINE, loggingBody + wListString);
+            } catch (JacksonException e) {
+                LOGGER.log(Level.WARNING, loggingBody + e);
+                return Response
+                        .serverError()
+                        .entity(String.valueOf(e
+                                .getErrorCode())).build();
+            }
+            LOGGER.log(Level.INFO, loggingBody + " Request successful.");
+            return Response.ok(wListString).build();
         }
-        String wListString;
-
-        try {
-            wListString = JsonParser.marshall(wflowList);
-            LOGGER.log(Level.FINE, loggingBody + wListString);
-        } catch (JacksonException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
-            return Response
-                    .serverError()
-                    .entity(String.valueOf(e
-                            .getErrorCode())).build();
-        }
-        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
-        return Response.ok(wListString).build();
     }
 
     /**
