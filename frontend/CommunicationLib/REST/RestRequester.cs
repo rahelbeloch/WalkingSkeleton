@@ -305,31 +305,6 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///  Method switches the state (active/inactive) of an element (user, role, workflow...).
-        /// </summary>
-        /// <typeparam name="O">type of element</typeparam>
-        /// <param name="id">id of element</param>
-        /// <param name="state">new state</param>
-        /// <returns>if it worked or not</returns>
-        public Boolean SwitchElementActivity<O>(string id, string state)
-        {
-            IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id, state });
-
-            var request = createRequest(url, Method.PUT);
-
-            try
-            {
-                response = InternalRequester.RetrieveRequest(request);
-            }
-            catch (BasicException)
-            {
-                throw;
-            }
-            return response.StatusCode == HttpStatusCode.OK;
-        }
-
-        /// <summary>
         ///     Does a login access to the server. Path ist always: '/command/user/login'
         /// </summary>
         /// <param name="username">Name of the user</param>
