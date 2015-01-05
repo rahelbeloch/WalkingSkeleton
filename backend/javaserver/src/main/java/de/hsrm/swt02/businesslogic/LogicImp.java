@@ -497,9 +497,15 @@ public class LogicImp implements Logic {
     }
 
     // BusinessLogic Sprint 2
+
+    @Override
+    public void addRoleToUser(User user, Role role) throws PersistenceException {
+        user.getRoles().add(persistence.loadRole(role.getRolename()));
+        persistence.storeUser(user);
+    }
     
     /**
-     * This method loads a User.
+     * This method loads a Role.
      * 
      * @param rolename describe the role
      * @return a role, if there is one, who has this rolename
