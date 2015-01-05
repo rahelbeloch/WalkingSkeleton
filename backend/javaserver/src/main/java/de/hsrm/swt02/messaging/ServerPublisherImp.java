@@ -169,8 +169,12 @@ public class ServerPublisherImp implements ServerPublisher {
             return broker.isStarted();
         }
     }
-
-    @Override
+    
+    /**Publishes multiple Messages.
+     * The method retrieves all messages from the given logicRsponse object 
+     * and publishes them on their specific topic.
+     * @param resp is the container for all messages that shall be published
+     */
     public void publishEvent(LogicResponse resp) {
         for (Message m : resp.getMessages()) {
             try {
