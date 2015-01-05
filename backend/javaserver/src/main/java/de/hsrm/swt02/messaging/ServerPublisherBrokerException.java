@@ -5,6 +5,7 @@ package de.hsrm.swt02.messaging;
  */
 public class ServerPublisherBrokerException extends Exception {
     private static final long serialVersionUID = 2850340582682788238L;
+    public static final int ERRORCODE = 12000;
     
     /**
      * Constructor 1.
@@ -20,5 +21,13 @@ public class ServerPublisherBrokerException extends Exception {
      */
     public ServerPublisherBrokerException(String msg) {
         super(msg);
+    }
+    
+    /**
+     * Getter for errorcode.
+     * @return ERRRORCODE for this exception
+     */
+    public int getErrorCode() {
+        return ERRORCODE;
     }
 }

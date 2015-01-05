@@ -52,6 +52,7 @@ public class ActionProcessor implements StepProcessor {
         final String username = user.getUsername();
         final Workflow workflow = p.loadWorkflow(item.getWorkflowId());
         
+
 //        if (!username.equals(step.getUsername())) {
 //            throw new UserHasNoPermissionException("user " + username + "has no permission on this item");
 //        }
