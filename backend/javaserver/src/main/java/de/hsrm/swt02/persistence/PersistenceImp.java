@@ -6,7 +6,6 @@ import java.util.logging.Level;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.sun.org.apache.bcel.internal.generic.StoreInstruction;
 
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Item;
@@ -19,7 +18,6 @@ import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
-import de.hsrm.swt02.persistence.exceptions.UserHasAlreadyRoleException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
@@ -72,16 +70,25 @@ public class PersistenceImp implements Persistence {
             }
         }
         
-            Workflow workflowToStore = workflow;
-            if (workflow.getItems().size() > 0) {
-                for (Item item : workflow.getItems()) {
-                    if(item.getId() == null || item.getId().equals("")){
-                        item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");
-                        item.setWorkflowId(workflow.getId());
-                    }
+        final Workflow workflowToStore = workflow;
+        if (workflow.getItems().size() > 0) {
+            for (Item item : workflow.getItems()) {
+                if (item.getId() == null || item.getId().equals("")) {
+                    item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");
+                    item.setWorkflowId(workflow.getId());
                 }
             }
-            workflows.add(workflowToStore);
+        }
+        
+        if (workflow.getSteps().size() > 0) {
+            for (Step step: workflow.getSteps()) {
+                if (step.getId() == null || step.getId().equals("")) {
+                    step.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getSteps().size() + 1) + "");
+                }
+            }
+        }
+        
+        workflows.add(workflowToStore);
         
         this.logger.log(Level.INFO, "[persistence] successfully stored workflow " + workflow.getId() + ".");
         return workflow.getId();
