@@ -259,7 +259,7 @@ namespace Admin.ViewModel
         }
 
         /// <summary>
-        /// Deselect 
+        /// Deselect a currently selected user.
         /// </summary>
         private void deselect()
         {
@@ -280,15 +280,16 @@ namespace Admin.ViewModel
         /// <param name="newUser">The user to be added or updated.</param>
         public void UserUpdate(User newUser)
         {
-            User toUpdate = _mainViewModel.userCollection.First(u => newUser.id == u.id);
+   
+            User toUpdate = _mainViewModel.userCollection.FirstOrDefault(u => newUser.id == u.id);
             if (toUpdate != null)
             {
                 int indexToUpdate = _mainViewModel.userCollection.IndexOf(toUpdate);
-                Application.Current.Dispatcher.Invoke(new System.Action(() => _mainViewModel.userCollection[indexToUpdate] = newUser));
+                _mainViewModel.userCollection[indexToUpdate] = newUser;
             }
             else
             {
-                Application.Current.Dispatcher.Invoke(new System.Action(() => _mainViewModel.userCollection.Add(newUser)));
+                _mainViewModel.userCollection.Add(newUser);
             }
             
         }
@@ -299,8 +300,8 @@ namespace Admin.ViewModel
         /// <param name="updatedRole">The role to be added.</param>
         public void RoleUpdate(Role updatedRole)
         {
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _mainViewModel.roleCollection.Add(updatedRole)));
-            Application.Current.Dispatcher.Invoke(new System.Action(() => roleCheckboxRows.Add(new RoleCheckboxRow(updatedRole, false))));
+            _mainViewModel.roleCollection.Add(updatedRole);
+            roleCheckboxRows.Add(new RoleCheckboxRow(updatedRole, false));
         }
     }
 }

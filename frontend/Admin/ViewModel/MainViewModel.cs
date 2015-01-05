@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Admin.ViewModel
@@ -159,12 +160,12 @@ namespace Admin.ViewModel
 
         public void UserUpdate(User user)
         {
-            userViewModel.UserUpdate(user);
+            Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.UserUpdate(user)));
         }
 
         public void RoleUpdate(Role role)
         {
-            userViewModel.RoleUpdate(role);
+            Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.RoleUpdate(role)));
         }
 
         void IDataReceiver.HandleError(System.Exception e)
