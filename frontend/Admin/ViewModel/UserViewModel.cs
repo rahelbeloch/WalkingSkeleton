@@ -83,6 +83,7 @@ namespace Admin.ViewModel
                 {
                     enableUserTextBox = true;
                 }
+                OnChanged("selectedUser");
             }
         }
 
@@ -262,7 +263,7 @@ namespace Admin.ViewModel
         /// </summary>
         private void deselect()
         {
-            _selectedUser = null;
+            selectedUser = null;
             username = "";
             postUserButtonText = "Nutzer hinzufügen";
             enableUserTextBox = true;
@@ -273,6 +274,10 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// Update or add a new user to the ViewModel.
+        /// </summary>
+        /// <param name="newUser">The user to be added or updated.</param>
         public void UserUpdate(User newUser)
         {
             User toUpdate = _mainViewModel.userCollection.First(u => newUser.id == u.id);
@@ -288,6 +293,10 @@ namespace Admin.ViewModel
             
         }
 
+        /// <summary>
+        /// Add a new role to the ViewModel and CheckboxList.
+        /// </summary>
+        /// <param name="updatedRole">The role to be added.</param>
         public void RoleUpdate(Role updatedRole)
         {
             Application.Current.Dispatcher.Invoke(new System.Action(() => _mainViewModel.roleCollection.Add(updatedRole)));
