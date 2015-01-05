@@ -69,7 +69,7 @@ namespace CommunicationLib
         /// <typeparam name="O">The type of the object to be created</typeparam>
         /// <param name="sendObj">The specified object to create</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
-        Boolean PostObject<O>(O sendObj);
+        Boolean PostObject(RootElement sendObj);
 
         /// <summary>
         ///  Delete an object (Item or Workflow) on the server, with HTTP-Method DEL. Path is: 'resource/<typename>/<resId>'
