@@ -45,7 +45,7 @@
                                         <Binding Path="username" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
                                 </TextBox>
-                                <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10" Command="{Binding deselectCommand}"/>
+                                <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10" Command="{Binding DeselectCommand}"/>
                             </DockPanel>
                             <DockPanel DockPanel.Dock="Top">
                                 <CheckBox IsChecked="{Binding selectedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
@@ -71,7 +71,7 @@
                             </DockPanel>
 
                             <DockPanel DockPanel.Dock="Bottom">
-                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding postUserButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="25" Margin="10" Command="{Binding addUserCommand}"/>
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding postUserButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="25" Margin="10" Command="{Binding AddUserCommand}"/>
                             </DockPanel>
                             
                         </DockPanel>
@@ -105,7 +105,7 @@
                                         <Binding Path="rolename" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
                                 </TextBox>
-                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle hinzufügen" Height="25" Margin="10" Command="{Binding addRoleCommand}"/>
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle hinzufügen" Height="25" Margin="10" Command="{Binding AddRoleCommand}"/>
                             </DockPanel>
                         </DockPanel>
                     </Grid>

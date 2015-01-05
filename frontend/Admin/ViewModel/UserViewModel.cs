@@ -157,7 +157,7 @@ namespace Admin.ViewModel
         /// Command to add a new user.
         /// </summary>
         private ICommand _addUserCommand;
-        public ICommand addUserCommand
+        public ICommand AddUserCommand
         {
             get
             {
@@ -190,7 +190,7 @@ namespace Admin.ViewModel
         /// Command to deselect a currently selected user.
         /// </summary>
         private ICommand _deselectCommand;
-        public ICommand deselectCommand
+        public ICommand DeselectCommand
         {
             get
             {
@@ -240,7 +240,7 @@ namespace Admin.ViewModel
         /// Command to add a new role.
         /// </summary>
         private ICommand _addRoleCommand;
-        public ICommand addRoleCommand
+        public ICommand AddRoleCommand
         {
             get
             {
