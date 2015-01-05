@@ -7,7 +7,7 @@
              d:DesignHeight="500" d:DesignWidth="800">
     
     
-<Grid>
+    <Grid>
         <DockPanel>
             <DockPanel.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding addUserCommand}" />
@@ -79,8 +79,6 @@
                 </TabItem>
                 
                 <TabItem Header="Rollenverwaltung" Height="23" VerticalAlignment="Bottom">
-
-
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -102,22 +100,15 @@
                         <DockPanel Grid.Column="1" VerticalAlignment="Top">
                             <DockPanel DockPanel.Dock="Top">
                                 <Label Content="Rolle: "  VerticalContentAlignment="Center"/>
-                                <TextBox Width="120" Height="25">
+                                <TextBox Width="230" Height="25">
                                     <TextBox.Text>
                                         <Binding Path="rolename" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
                                 </TextBox>
-                            </DockPanel>
-
-                            <DockPanel DockPanel.Dock="Bottom">
                                 <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle hinzufügen" Height="25" Margin="10" Command="{Binding addRoleCommand}"/>
                             </DockPanel>
-
                         </DockPanel>
                     </Grid>
-
-
-
                 </TabItem>
             </TabControl>
         </DockPanel>
