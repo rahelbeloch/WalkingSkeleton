@@ -107,10 +107,11 @@ namespace RestAPI
         public IList<string> GetStartablesByUser()
         {
             IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow), new string[] { "startables" });
+            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow), new string[] { });
             
             var request = createRequest(url, Method.GET);
-            
+            request.AddParameter("state", "startable", ParameterType.HttpHeader);
+
             try
             {
                 // call Internal Requester to finally send the request
@@ -135,7 +136,7 @@ namespace RestAPI
         /// <returns>List of relevant items</returns>
         public IList<Item> GetRelevantItemsByUser(string workflowID)
         {
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Item), new string[] { workflowID });
+            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow), new string[] { workflowID, typeof(Item).FullName.Split('.').Last().ToLower() + "s" });
             
             IList<Item> eleList;
             try
@@ -332,7 +333,7 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///     Sends a request to the server to start a workflow (create an item). Path is always: '/command/workflow/start/{workflowId}/{userName}'
+        ///     Sends a request to the server to start a workflow (create an item). Path is always: '/command/workflow/start/{workflowId}'
         /// </summary>
         /// <param name="wId">Workflow-Id</param>
         /// <param name="uId">Username</param>
@@ -358,7 +359,7 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///     Sends a state change of an action to the server. Path is always:  '/command/workflow/forward/{stepId}/{itemId}/{username}'
+        ///     Sends a state change of an action to the server. Path is always:  '/command/workflow/forward/{stepId}/{itemId}'
         /// </summary>
         /// <param name="stepId">Id of the current step</param>
         /// <param name="itemId">Id of the current item</param>
