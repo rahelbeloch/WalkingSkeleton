@@ -11,6 +11,8 @@ public class User extends RootElement {
     private List<Role> roles;
     // Used for (de)serialization. Do not change.
     private List<String> messagingSubs;
+    // a users private password
+    private String password;
 
     /**
      * Constructor for User.
@@ -37,6 +39,24 @@ public class User extends RootElement {
      */
     public void setUsername(String username) {
         this.id = username;
+    }
+    
+    /**
+     * Password getter.
+     * 
+     * @return password - a users password
+     */
+    public String getPassword() {
+        return this.password;
+    }
+    
+    /**
+     * Password setter.
+     * 
+     * @param password - a users password
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**
