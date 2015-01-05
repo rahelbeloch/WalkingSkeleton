@@ -54,12 +54,18 @@ public class ProcessManagerImp implements ProcessManager {
      * @return true if user is "owner" of step and false if not
      * @throws PersistenceException if an error in persistence occurs
      */
-    public boolean checkAuthorization(Step step, String username)
-            throws PersistenceException {
+    private boolean checkAuthorization(Step step, String username)
+            throws PersistenceException 
+    {
         final User userToCheck = persistence.loadUser(username);
-        final Role expectedRole = persistence.loadRole(step.getRolename());
-
-        return userToCheck.getRoles().contains(expectedRole);
+        boolean authorized = false;
+        for (String rolename: step.getRoles()) {
+            if (userToCheck.getRoles().contains(persistence.loadRole(rolename))) {
+                authorized = true;
+                break;
+            }
+        }
+        return authorized;
     }
 
     /**

@@ -20,16 +20,6 @@ import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 public interface ProcessManager {
 
     /**
-     * This method checks if the user is authorized to do something (like
-     * executing) with a step.
-     * 
-     * @param step which user wants to edit
-     * @param username who edits the step
-     * @return true if user is "owner" of step and false if not
-     */
-    boolean checkAuthorization(Step step, String username) throws PersistenceException;
-
-    /**
      * This method starts a workflow.
      * 
      * @param workflow which will be started

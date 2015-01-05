@@ -331,7 +331,7 @@ public class LogicImp implements Logic {
         for (Workflow wf : persistence.loadAllWorkflows()) {
             if (wf.isActive()) {
                 for (Step step : wf.getSteps()) {
-                    if (step.getUsername().equals(username)) {
+                    if (checkAuthorization(step, username)) {
                         final Workflow copyOfWf = (Workflow) wf.clone();
                         workflows.add(copyOfWf);
                         break;
@@ -360,9 +360,7 @@ public class LogicImp implements Logic {
             for (Item item : wf.getItems()) {
 
 
-                if ((wf.getStepById(item.getActStep().getKey()).getUsername())
-                        .equals(username)) 
-                {
+                if (checkAuthorization(wf.getStepById(item.getActStep().getKey()), username)) {
                     items.add(item);
                 }
             }
@@ -407,7 +405,7 @@ public class LogicImp implements Logic {
         final LinkedList<Workflow> workflows = (LinkedList<Workflow>)getAllWorkflowsForUser(username);
 
         for (Workflow wf : workflows) {
-            if (wf.getStepByPos(0).getUsername().equals(username)) {
+            if (checkAuthorization(wf.getStepByPos(0), username)) {
                 startableWorkflows.add(wf);
             }
         }
@@ -492,8 +490,14 @@ public class LogicImp implements Logic {
             throws PersistenceException 
     {
         final User userToCheck = persistence.loadUser(username);
-        final Role expectedRole = persistence.loadRole(step.getRolename());
-        return userToCheck.getRoles().contains(expectedRole);
+        boolean authorized = false;
+        for (String rolename: step.getRoles()) {
+            if (userToCheck.getRoles().contains(persistence.loadRole(rolename))) {
+                authorized = true;
+                break;
+            }
+        }
+        return authorized;
     }
 
     // BusinessLogic Sprint 2
