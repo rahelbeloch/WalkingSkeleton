@@ -58,6 +58,7 @@ public class ProcessManagerImp implements ProcessManager {
             throws PersistenceException 
     {
         final User userToCheck = persistence.loadUser(username);
+
         boolean authorized = false;
         for (String rolename: step.getRoles()) {
             if (userToCheck.getRoles().contains(persistence.loadRole(rolename))) {

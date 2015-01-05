@@ -664,7 +664,7 @@ public class LogicImp implements Logic {
         role2.setRolename("Sachbearbeiter");
         addRole(role2);
         
-        user3.getRoles().add(role1);
+        user1.getRoles().add(role1);
         user2.getRoles().add(role2);
 
         addUser(user1);
@@ -672,11 +672,16 @@ public class LogicImp implements Logic {
         addUser(user3);
         addUser(user4);
         
-        startStep1 = new StartStep(user1.getUsername());
+        ArrayList user1Roles = new <String>ArrayList();
+        user1Roles.add(role1);
+        ArrayList user2Roles = new <String>ArrayList();
+        user2Roles.add(role2);
+        
+        startStep1 = new StartStep(user1Roles);
 
-        action1 = new Action(user1.getUsername(), "Action von "
+        action1 = new Action(user1Roles, "Action von "
                 + user1.getUsername());
-        action2 = new Action(user2.getUsername(), "Action von "
+        action2 = new Action(user2Roles, "Action von "
                 + user2.getUsername());
 
         finalStep = new FinalStep();
