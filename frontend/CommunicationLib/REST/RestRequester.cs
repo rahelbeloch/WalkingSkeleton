@@ -26,13 +26,13 @@ namespace RestAPI
         private static JsonSerializerSettings _jsonSettings;
 
         private string _myUsername;
-        private User _myUser;
         private SecureString _myPassword;
+        private String _myClientID;
 
         /// <summary>
         /// Default constructor, initializes the serialization settings and pre-strings for urls.
         /// </summary>
-        public RestRequester()
+        public RestRequester(String clientID)
         {
             _jsonSettings = new JsonSerializerSettings
             {
@@ -40,6 +40,8 @@ namespace RestAPI
                 Formatting = Formatting.Indented,
                 Binder = new CustomSerializationBinder()
             };
+
+            _myClientID = clientID;
         }
 
         /// <summary>
@@ -396,13 +398,13 @@ namespace RestAPI
             var request = new RestRequest(url, method);
             request.AddHeader("Accept", "text/plain");
 
+            request.AddParameter("clientID", _myClientID, ParameterType.HttpHeader);
             request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
             if(_myPassword != null)
                 request.AddParameter("password", _myPassword, ParameterType.HttpHeader);
 
             return request;
         }
-        
 
         /// <summary>
         /// This method changes the type of a generic object.
