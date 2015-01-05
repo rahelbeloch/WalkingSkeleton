@@ -36,7 +36,7 @@ namespace Admin.ViewModel
             IList<User> allUsers = _restRequester.GetAllElements<User>();
             foreach (User user in allUsers)
             {
-                userCollection.Add(user);
+                _mainViewModel.userCollection.Add(user);
             }
 
             // update rolelist
@@ -44,21 +44,12 @@ namespace Admin.ViewModel
             foreach(Role role in allRoles)
             {
                 roleCheckboxRows.Add(new RoleCheckboxRow(role, false));
-                roleCollection.Add(role);
+                _mainViewModel.roleCollection.Add(role);
             }
         }
 
-        /// <summary>
-        /// Property _userCollection to fill list view with users.
-        /// </summary>
-        private ObservableCollection<User> _userCollection = new ObservableCollection<User>();
-        public ObservableCollection<User> userCollection { get { return _userCollection; } }
-
-        /// <summary>
-        /// Property _roleCollection to fill list view with users.
-        /// </summary>
-        private ObservableCollection<Role> _roleCollection = new ObservableCollection<Role>();
-        public ObservableCollection<Role> roleCollection { get { return _roleCollection; } }
+        public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
+        public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
 
         /// <summary>
         /// Property _roleCheckboxRoles to fill list view with selectable roles.
@@ -284,22 +275,22 @@ namespace Admin.ViewModel
 
         public void UserUpdate(User newUser)
         {
-            User toUpdate = userCollection.First(u => newUser.id == u.id);
+            User toUpdate = _mainViewModel.userCollection.First(u => newUser.id == u.id);
             if (toUpdate != null)
             {
-                int indexToUpdate = userCollection.IndexOf(toUpdate);
-                Application.Current.Dispatcher.Invoke(new System.Action(() => userCollection[indexToUpdate] = newUser));
+                int indexToUpdate = _mainViewModel.userCollection.IndexOf(toUpdate);
+                Application.Current.Dispatcher.Invoke(new System.Action(() => _mainViewModel.userCollection[indexToUpdate] = newUser));
             }
             else
             {
-                Application.Current.Dispatcher.Invoke(new System.Action(() => userCollection.Add(newUser)));
+                Application.Current.Dispatcher.Invoke(new System.Action(() => _mainViewModel.userCollection.Add(newUser)));
             }
             
         }
 
         public void RoleUpdate(Role updatedRole)
         {
-            Application.Current.Dispatcher.Invoke(new System.Action(() => roleCollection.Add(updatedRole)));
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _mainViewModel.roleCollection.Add(updatedRole)));
             Application.Current.Dispatcher.Invoke(new System.Action(() => roleCheckboxRows.Add(new RoleCheckboxRow(updatedRole, false))));
         }
     }

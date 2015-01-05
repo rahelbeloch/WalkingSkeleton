@@ -38,7 +38,8 @@ namespace Admin.ViewModel
             updateModel();
         }
 
-       
+        public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
+        public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
 
         #region properties
 
