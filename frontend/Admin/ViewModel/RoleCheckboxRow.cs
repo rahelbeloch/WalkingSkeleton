@@ -10,10 +10,10 @@ namespace Admin.ViewModel
     public class RoleCheckboxRow : ViewModelBase
     {
         private Role _role;
-        public Role role { get { return _role; } set { _role = value; } }
+        public Role Role { get { return _role; } set { _role = value; } }
 
         private Boolean _isSelected;
-        public Boolean isSelected 
+        public Boolean IsSelected 
         { 
             get 
             { 
@@ -22,14 +22,14 @@ namespace Admin.ViewModel
             set 
             { 
                 _isSelected = value; 
-                OnChanged("isSelected"); 
+                OnChanged("IsSelected"); 
             } 
         }
 
         public RoleCheckboxRow(Role role, Boolean isSelected)
         {
-            this.role = role;
-            this.isSelected = isSelected;
+            this.Role = role;
+            this.IsSelected = isSelected;
         }
     }
 }
