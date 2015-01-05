@@ -3,6 +3,7 @@ using CommunicationLib.Model;
 using RestAPI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security;
 using System.Text;
@@ -25,6 +26,18 @@ namespace Admin.ViewModel
 
         private UserViewModel _userViewModel;
         public UserViewModel userViewModel { get { return _userViewModel; }  }
+
+        /// <summary>
+        /// Property _userCollection to fill list view with users.
+        /// </summary>
+        private ObservableCollection<User> _userCollection = new ObservableCollection<User>();
+        public ObservableCollection<User> userCollection { get { return _userCollection; } }
+
+        /// <summary>
+        /// Property _roleCollection to fill list view with users.
+        /// </summary>
+        private ObservableCollection<Role> _roleCollection = new ObservableCollection<Role>();
+        public ObservableCollection<Role> roleCollection { get { return _roleCollection; } }
 
         private IRestRequester _restRequester;
         public IRestRequester restRequester

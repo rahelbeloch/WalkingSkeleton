@@ -23,7 +23,7 @@
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
      
-                        <DockPanel Grid.Column="0">
+                        <DockPanel Grid.Column="0">                            
                             <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding userCollection}" SelectedItem="{Binding selectedUser, Mode=TwoWay}">
                                 <ListView.View>
                                     <GridView>
