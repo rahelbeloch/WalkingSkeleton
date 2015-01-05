@@ -17,6 +17,9 @@ namespace Client.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase, IDataReceiver
     {
+        private String _clientID = "user";
+        public String clientID { get { return _clientID; } }
+
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private DashboardViewModel _dashboardViewModel;
         public DashboardViewModel dashboardViewModel { get { return _dashboardViewModel; } }
@@ -31,7 +34,7 @@ namespace Client.ViewModel
             {
                 if (_myComLib == null)
                 {
-                    _myComLib = new ComLib(this);
+                    _myComLib = new ComLib(this, clientID);
                 }
                 return _myComLib;
             }
