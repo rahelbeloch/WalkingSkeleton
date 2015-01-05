@@ -104,14 +104,5 @@ namespace CommunicationLib
         /// <param name="uId">Name of the current user</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
         Boolean StepForward(string stepId, string itemId);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="O"></typeparam>
-        /// <param name="id"></param>
-        /// <param name="state"></param>
-        /// <returns></returns>
-        Boolean SwitchElementActivity<O>(string id, string state);
     }
 }

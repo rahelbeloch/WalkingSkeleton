@@ -220,7 +220,6 @@ namespace RestAPI
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Resource, sendObj.GetType(), new string[] { sendObj.id });
             
-            Console.WriteLine("url: " + url);
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
 
@@ -276,6 +275,7 @@ namespace RestAPI
         public O DeleteObject<O>(string id) where O : new()
         {
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id });
+            
             var request = createRequest(url, Method.DELETE);
             return Delete<O>(request);
         }
