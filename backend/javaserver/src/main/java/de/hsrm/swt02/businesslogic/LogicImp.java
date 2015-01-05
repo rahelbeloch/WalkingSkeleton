@@ -39,9 +39,9 @@ public class LogicImp implements Logic {
      * Constructor for LogicImp.
      * 
      * @param p is a singleton instance of the persistence
-     * @param pm is a singleton instance of the processmanager
+     * @param pm is a singleton instance of the process manager
      * @param logger is the logger instance for this application
-     * @throws LogicException 
+     * @throws LogicException
     */
     @Inject
     public LogicImp(Persistence p, ProcessManager pm, UseLogger logger) throws LogicException {
@@ -500,12 +500,6 @@ public class LogicImp implements Logic {
     }
 
     // BusinessLogic Sprint 2
-
-    @Override
-    public void addRoleToUser(User user, Role role) throws PersistenceException {
-        user.getRoles().add(persistence.loadRole(role.getRolename()));
-        persistence.storeUser(user);
-    }
     
     /**
      * This method loads a Role.

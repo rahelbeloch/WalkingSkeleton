@@ -233,11 +233,6 @@ public interface Logic {
     
     
     // Business Logic Sprint 2
-
-    /**
-     * 
-     */
-    void addRoleToUser(User user, Role role) throws PersistenceException;
     
     /**
      * Method for getting a list of all the existing roles in the persistance.
