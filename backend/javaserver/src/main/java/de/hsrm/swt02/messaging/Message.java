@@ -1,20 +1,16 @@
 package de.hsrm.swt02.messaging;
 
 /**
- * This class is used for the LogicResponse. It contains a topic and a value.
- *
+ * This class is used for the LogicResponse. 
+ * It contains a topic and a value.
+ * A protocol conform can be built by calling build() or buildWithTopicId().
  */
 public class Message {
 
+    private static final String SEPARATOR = "=";
+    
     private String topic;
     private String value;
-
-    /**
-     * Default-Constructor.
-     */
-    public Message() {
-
-    }
 
     /**
      * Constructor of Message.
@@ -22,9 +18,38 @@ public class Message {
      * @param topic indicates its information group
      * @param value is the actual information
      */
-    public Message(String topic, String value) {
+    private Message(String topic, String value) {
         this.topic = topic;
         this.value = value;
+    }
+    
+    /**Builds a message protocol conform message.
+     * 
+     * @param topic defines which message topic shall be used
+     * @param operation defines the rest operation which shall be used
+     * @param sourceId is the identifier for the related object (persistence)
+     * @return a protocol conform message 
+     */
+    public static Message build(MessageTopic topic, MessageOperation operation, String sourceId) {
+        final String protocolMsg = topic.getProtocolString() + SEPARATOR + operation.getProtocolString() + SEPARATOR + sourceId;
+        final String topicName = topic.toString();
+        
+        return new Message(topicName, protocolMsg);
+    }
+   
+    /**Builds a message protocol conform message.
+     * 
+     * @param topic defines which message topic shall be used
+     * @param topicId is the identifier for the topic
+     * @param operation operation defines the rest operation which shall be used
+     * @param sourceId is the identifier for the related object (persistence)
+     * @return a protocol conform message
+     */
+    public static Message buildWithTopicId(MessageTopic topic, String topicId, MessageOperation operation, String sourceId) {
+        final String protocolMsg = topic.getProtocolString() + SEPARATOR + operation.getProtocolString() + SEPARATOR + sourceId;
+        final String topicName = topic.toString() + topicId;
+        
+        return new Message(topicName, protocolMsg);
     }
 
     /**
@@ -37,16 +62,6 @@ public class Message {
     }
 
     /**
-     * Setter for topic.
-     * 
-     * @param topic
-     *            under which the information should be saved
-     */
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    /**
      * Getter for value.
      * 
      * @return value
@@ -54,15 +69,4 @@ public class Message {
     public String getValue() {
         return value;
     }
-
-    /**
-     * Setter for value.
-     * 
-     * @param value
-     *            of the saved information
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
-
 }
