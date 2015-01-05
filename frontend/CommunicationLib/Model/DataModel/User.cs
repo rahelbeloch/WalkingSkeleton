@@ -22,6 +22,12 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
+        private bool _active;
+        public bool active { get { return _active; } set { _active = value; } }
+
+        /// <summary>
+        /// Used for (de)serialization. Do not change the property name.
+        /// </summary>
         private List<Role> _roles;
         public List<Role> roles { get { return _roles; } set { _roles = value; } }
 
@@ -34,6 +40,7 @@ namespace CommunicationLib.Model
         public User()
             : base()
         {
+            active = true;
             _roles = new List<Role>();
             _messagingSubs = new List<String>();
         }

@@ -52,7 +52,7 @@ namespace CommunicationLib
         /// </summary>
         /// <param name="username">Name of the user logged in client</param>
         /// <param name="password">Password of the user logged in client</param>
-        public void Login(string username, SecureString password)
+        public void Login(string username, String password)
         {
             _sender.InitializeClientProperties(username, password);
             _sender.checkUser(username, password);

@@ -26,7 +26,7 @@ namespace RestAPI
         private static JsonSerializerSettings _jsonSettings;
 
         private string _myUsername;
-        private SecureString _myPassword;
+        private String _myPassword;
         private String _myClientID;
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace RestAPI
         /// </summary>
         /// <param name="username">username of logged user in client</param>
         /// <param name="password">the password</param>
-        public void InitializeClientProperties(string username, SecureString password)
+        public void InitializeClientProperties(string username, String password)
         {
             _myUsername = username;
             _myPassword = password;
@@ -314,7 +314,7 @@ namespace RestAPI
         /// <param name="username">Name of the user</param>
         /// <param name="password">Password of the user</param>
         /// <returns>True if it worked, false otherwhise, or an exception</returns>
-        public Boolean checkUser(String username, SecureString password)
+        public Boolean checkUser(String username, String password)
         {
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(User), new string[] { "login" });
