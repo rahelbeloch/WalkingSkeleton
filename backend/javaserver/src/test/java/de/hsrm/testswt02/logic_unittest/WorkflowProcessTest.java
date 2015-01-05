@@ -3,6 +3,8 @@ package de.hsrm.testswt02.logic_unittest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,16 +20,15 @@ import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaState;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
-
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
-
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 
 
@@ -56,8 +57,17 @@ public class WorkflowProcessTest {
         processManager = i.getInstance(ProcessManager.class);
         persistence = i.getInstance(Persistence.class);
         
+        Role hiwi = new Role();
+        hiwi.setRolename("hiwi");
+        persistence.storeRole(hiwi);
+        
         benni = new User();
         benni.setUsername("benni");
+        benni.getRoles().add(hiwi);
+        persistence.storeUser(benni);
+        
+        ArrayList<String> bennisRoles = new ArrayList<String>();
+        bennisRoles.add("hiwi");
         
         try {
             persistence.storeUser(benni);
@@ -66,8 +76,10 @@ public class WorkflowProcessTest {
         }
         
         myWorkflow = new Workflow();
-        startStep = new StartStep(benni.getUsername());
-        firstStep = new Action(benni.getUsername(), 1 + " Schritt");
+        startStep = new StartStep(bennisRoles);
+        ArrayList<String> rules = new ArrayList<String>();
+        rules.add(hiwi.getRolename());
+        firstStep = new Action(rules, 1 + " Schritt");
         // adding steps in workflow
         myWorkflow.addStep(startStep);
         myWorkflow.addStep(firstStep);
@@ -141,7 +153,8 @@ public class WorkflowProcessTest {
      */
     @Test
     public void handleFirstStep() throws LogicException {
-        processManager.startWorkflow(myWorkflow, "benni");
+        processManager.startWorkflow(myWorkflow, benni.getUsername());
+        
         final Item item = (Item) myWorkflow.getItems().get(0);
         processManager.executeStep(firstStep, item, benni);
         processManager.executeStep(firstStep, item, benni);

@@ -46,6 +46,7 @@ public class StartProcessor {
 
         currentItem = new Item();
         currentItem.setWorkflowId(workflow.getId());
+        
         initiateItem(workflow, currentItem);
         return currentItem.getId();
     }
