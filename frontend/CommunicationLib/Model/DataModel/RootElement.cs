@@ -9,7 +9,7 @@ namespace CommunicationLib.Model
     /// <summary>
     /// This class represents a RootElement
     /// </summary>
-    public class RootElement : ViewModelBase
+    public class RootElement
     {
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
