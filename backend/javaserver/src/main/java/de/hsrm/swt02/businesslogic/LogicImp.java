@@ -11,6 +11,8 @@ import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.Message;
+import de.hsrm.swt02.messaging.MessageOperation;
+import de.hsrm.swt02.messaging.MessageTopic;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
@@ -41,7 +43,7 @@ public class LogicImp implements Logic {
      * @param p is a singleton instance of the persistence
      * @param pm is a singleton instance of the process manager
      * @param logger is the logger instance for this application
-     * @throws LogicException
+     * @throws LogicException if something goes wrong
     */
     @Inject
     public LogicImp(Persistence p, ProcessManager pm, UseLogger logger) throws LogicException {
@@ -72,8 +74,7 @@ public class LogicImp implements Logic {
 
         workflow = persistence.loadWorkflow(workflowID);
         itemId = processManager.startWorkflow(workflow, username);
-        logicResponse.add(new Message("ITEMS_FROM_" + workflowID, "item=def="
-                + itemId));
+        logicResponse.add( Message.buildWithTopicId(MessageTopic.ITEMS_FROM_, workflowID, MessageOperation.DEFINITION, itemId) );
         return logicResponse;
     }
 
@@ -95,7 +96,7 @@ public class LogicImp implements Logic {
             
             if (workflow.getId() == null || workflow.getId().equals("")) {
                 id = persistence.storeWorkflow(workflow);
-                logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
+                logicResponse.add( Message.build(MessageTopic.WORKFLOW_INFO, MessageOperation.DEFINITION, id));
             } else {
                 oldWorkflow = persistence.loadWorkflow(workflow.getId());
                 if (oldWorkflow != null) {
@@ -107,12 +108,12 @@ public class LogicImp implements Logic {
                     }
                     if (finished) {
                         id = persistence.storeWorkflow(workflow);
-                        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
+                        logicResponse.add( Message.build(MessageTopic.WORKFLOW_INFO, MessageOperation.DELETION, id) );
                     } else {
                         oldWorkflow.setActive(false);
                         workflow.setId("");
                         id = persistence.storeWorkflow(workflow);
-                        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=def=" + id));
+                        logicResponse.add( Message.build(MessageTopic.WORKFLOW_INFO, MessageOperation.DEFINITION, id));
                     }
                 }
             }
@@ -148,8 +149,7 @@ public class LogicImp implements Logic {
         final LogicResponse logicResponse = new LogicResponse();
         
         persistence.deleteWorkflow(workflowID);
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=del="
-                + workflowID));
+        logicResponse.add( Message.build(MessageTopic.WORKFLOW_INFO, MessageOperation.DELETION, workflowID) );
         return logicResponse;
     }
 
@@ -171,8 +171,7 @@ public class LogicImp implements Logic {
         
         updatedItemId = processManager.executeStep(persistence.loadStep(itemId, stepId), persistence.loadItem(itemId), persistence.loadUser(username));
         workflowId = persistence.loadItem(itemId).getWorkflowId();
-        logicResponse.add(new Message("ITEMS_FROM_" + workflowId, "item=def="
-                + updatedItemId));
+        logicResponse.add( Message.buildWithTopicId(MessageTopic.ITEMS_FROM_, workflowId, MessageOperation.DEFINITION, updatedItemId) );
         return logicResponse;
     }
 
@@ -193,7 +192,7 @@ public class LogicImp implements Logic {
         workflow = persistence.loadWorkflow(workflowID);
         workflow.addStep(step);
         persistence.storeWorkflow(workflow);
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
+        logicResponse.add( Message.build(MessageTopic.WORKFLOW_INFO, MessageOperation.UPDATE, workflow.getId()) );
         return logicResponse;
     }
 
@@ -214,7 +213,7 @@ public class LogicImp implements Logic {
         workflow = persistence.loadWorkflow(workflowID);
         workflow.removeStep(stepID);
         persistence.storeWorkflow(workflow);
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflow.getId()));
+        logicResponse.add( Message.build(MessageTopic.WORKFLOW_INFO, MessageOperation.UPDATE, workflow.getId()));
         return logicResponse;
     }
 
@@ -246,7 +245,7 @@ public class LogicImp implements Logic {
         }
         //finally user is added
         persistence.storeUser(user);
-        logicResponse.add(new Message("USER_INFO", "user=def=" + user.getUsername()));
+        logicResponse.add( Message.build(MessageTopic.USER_INFO, MessageOperation.DEFINITION, user.getUsername()) );
         return logicResponse;
     }
 
@@ -275,7 +274,7 @@ public class LogicImp implements Logic {
         final LogicResponse logicResponse = new LogicResponse();
         
         persistence.deleteUser(username);
-        logicResponse.add(new Message("USER_INFO", "user=del=" + username));
+        logicResponse.add( Message.build(MessageTopic.USER_INFO, MessageOperation.DELETION, username) );
         return logicResponse;
     }
 
@@ -548,7 +547,7 @@ public class LogicImp implements Logic {
         final LogicResponse logicResponse = new LogicResponse();
         
         persistence.storeRole(role);
-        logicResponse.add(new Message("ROLE_INFO", "role=def=" + role.getRolename()));
+        logicResponse.add( Message.build(MessageTopic.ROLE_INFO, MessageOperation.DEFINITION, role.getRolename()) );
         return logicResponse;
     }
 
@@ -566,7 +565,7 @@ public class LogicImp implements Logic {
         final LogicResponse logicResponse = new LogicResponse();
         
 //        persistence.addRoleToUser(user, role);
-        logicResponse.add(new Message("USER_INFO", "user=upd=" + username));
+        logicResponse.add( Message.build(MessageTopic.USER_INFO, MessageOperation.UPDATE, username) );
         return logicResponse;
     }
 
@@ -582,7 +581,7 @@ public class LogicImp implements Logic {
         final LogicResponse logicResponse = new LogicResponse();
         
         persistence.deleteRole(rolename);
-        logicResponse.add(new Message("ROLE_INFO", "role=del=" + rolename));
+        logicResponse.add( Message.build(MessageTopic.ROLE_INFO, MessageOperation.DELETION, rolename) );
         return logicResponse;
     }
 
@@ -602,7 +601,7 @@ public class LogicImp implements Logic {
         
         workflow.setActive(false);
         persistence.storeWorkflow(workflow);
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflowId));
+        logicResponse.add( Message.build(MessageTopic.WORKFLOW_INFO, MessageOperation.UPDATE, workflowId) );
         return logicResponse;
     }
 
@@ -622,7 +621,7 @@ public class LogicImp implements Logic {
         
         workflow.setActive(true);
         persistence.storeWorkflow(workflow);
-        logicResponse.add(new Message("WORKFLOW_INFO", "workflow=upd=" + workflowId));
+        logicResponse.add( Message.build(MessageTopic.WORKFLOW_INFO, MessageOperation.UPDATE, workflowId));
         return logicResponse;
     }
 
