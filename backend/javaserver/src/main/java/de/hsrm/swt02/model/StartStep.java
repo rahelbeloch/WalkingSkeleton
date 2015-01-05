@@ -1,5 +1,7 @@
 package de.hsrm.swt02.model;
 
+import java.util.ArrayList;
+
 /**
  * This class represents a StartStep. A StartStep is a manifestation of a Step.
  */
@@ -16,9 +18,9 @@ public class StartStep extends Step {
      * Constructor for StartStep with parameters.
      * @param username is the username of the user responsible for the startstep
      */
-    public StartStep(String roleName) {
+    public StartStep(ArrayList<String> roles) {
         super();
-        this.roles.add(roleName);
+        this.roles = roles;
     }
     
     /**
