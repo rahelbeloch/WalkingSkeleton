@@ -14,6 +14,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import com.sun.net.httpserver.HttpServer;
 
 import de.hsrm.swt02.logging.UseLogger;
+import de.hsrm.swt02.restserver.resource.CheckLoginFilter;
 
 /**
  * This class defines the REST-Server.
@@ -56,6 +57,7 @@ public class RestServer {
         final ResourceConfig rc = new ResourceConfig();
         rc.packages("de.hsrm.swt02.restserver.resource");
         rc.register(RestExceptionListener.class);
+        rc.register(CheckLoginFilter.class);
         logger.log(Level.INFO, "Starting HTTP-Server...");
         server = JdkHttpServerFactory.createHttpServer(URI.create(baseURI), rc);
         logger.log(Level.INFO, "HTTP-Server started (type 'stop' for proper shutdown)");

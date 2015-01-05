@@ -104,6 +104,8 @@ public class User extends RootElement {
             final Role cloneRole = (Role) role.clone();
             clone.getRoles().add(cloneRole);
         }
+        
+        clone.setPassword(this.password);
 
         return clone;
     }

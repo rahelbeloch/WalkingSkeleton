@@ -163,11 +163,13 @@ public interface Logic {
      * This method checks a User.
      * 
      * @param username of the user, to be checked
+     * @param password of the user, to be checked
+     * @param adminRequired flag whether or not admin check is necessary
      * @return if user correct true, else false
-     * @exception UserNotExistentException if the given user doesnt exist in the persistence
-     * @throws UserNotExistentException
+     * @exception LogInException if something is invalid
+     * @throws LogInException
      */
-    boolean checkLogIn(String username) throws LogInException; // later with passwordcheck
+    boolean checkLogIn(String username, String password, boolean adminRequired) throws LogInException;
 
     /**
      * This method deletes a User.

@@ -31,15 +31,16 @@ public class UserCommandResource {
     /**
      * This method is called if some client wants to login.
      * @param username The user to login
+     * @param password The users password
      * @return returns ok if it was successful and server error if it was not
      */
     @POST @Path("login")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response login(@HeaderParam("username") String username) {
+    public Response login(@HeaderParam("username") String username, @HeaderParam("password") String password) {
         final String loggingBody = PREFIX + "POST /command/user/login";
         LOGGER.log(Level.INFO, loggingBody);
         try {
-            LOGIC.checkLogIn(username);
+            LOGIC.checkLogIn(username,password,false);
         } catch (LogInException e) {
             LOGGER.log(Level.WARNING,e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();

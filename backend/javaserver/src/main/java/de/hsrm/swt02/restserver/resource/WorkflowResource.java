@@ -42,6 +42,7 @@ public class WorkflowResource {
     public static final ServerPublisher PUBLISHER = FACTORY.getPublisher();
     public static final UseLogger LOGGER = new UseLogger();
     private static final String PREFIX = "[restserver] ";
+    private static final int NOTFOUNDCODE = 404;
 
     /**
      * This method returns a requested workflow.
@@ -90,10 +91,7 @@ public class WorkflowResource {
     @GET
     @Path("workflows/{workflowid}/items")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getRelevantItemsByUser(
-            @HeaderParam("username") String username,
-            @PathParam("workflowid") String workflowid)
-    {
+    public Response getRelevantItemsByUser(@PathParam("workflowid") String workflowid,@HeaderParam("username") String username) {
         final String loggingBody = PREFIX + "GET /resource/workflows/" + workflowid + "/items";
         LOGGER.log(Level.INFO, loggingBody);
         List<Item> itemList = null;
@@ -123,16 +121,20 @@ public class WorkflowResource {
     /**
      * This method returns workflows where a user is involved.
      * @param username indicates which user's workflows are requested
+     * @param clientID signals which of the clients sent the request
+     * @param state optional selector to reduce the results
      * @return the requested workflow
      */
     @GET
     @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getWorkflows(@HeaderParam("username") String username,@QueryParam("state") String state) {
+    public Response getWorkflows(@HeaderParam("username") String username,@QueryParam("state") String state,
+            @HeaderParam("clientID") String clientID) 
+    {
         if (state != null) {
+            final String loggingBody = PREFIX + "GET /resource/workflows?state=" + state;
             switch(state) {
                 case "startable":
-                    final String loggingBody = PREFIX + "GET /resource/workflows?state=startable";
                     LOGGER.log(Level.INFO, loggingBody);
                     List<String> wIdList = null;
         
@@ -158,14 +160,13 @@ public class WorkflowResource {
                     LOGGER.log(Level.INFO, loggingBody + " Request successful.");
                     return Response.ok(wIdListString).build();
                 default:
-                    final int notFoundCode = 404;
-                    return Response.status(notFoundCode).build();
+                    return Response.status(NOTFOUNDCODE).build();
             }
         } else {
             final String loggingBody = PREFIX + "GET /resource/workflows";
             LOGGER.log(Level.INFO, loggingBody);
             List<Workflow> wflowList = null;
-            if (username.equals("TestAdmin")) {
+            if (clientID.equals("admin")) {
                 try {
                     wflowList = LOGIC.getAllWorkflows();
                 } catch (WorkflowNotExistentException e) {
@@ -300,7 +301,7 @@ public class WorkflowResource {
     @Consumes("application/x-www-form-urlencoded")
     public Response updateWorkflowActivity(
             @PathParam("workflowid") String workflowid,
-            @PathParam("state") String state) 
+            @PathParam("state") String state)
     {
         LogicResponse logicResponse = null;
         final String loggingBody = PREFIX + "PUT /resource/workflows/" + workflowid + "/" 
