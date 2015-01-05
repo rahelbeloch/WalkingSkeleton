@@ -10,7 +10,7 @@
     <Grid>
         <DockPanel>
             <DockPanel.InputBindings>
-                <KeyBinding Key="Enter" Command="{Binding addUserCommand}" />
+                <KeyBinding Key="Enter" Command="{Binding AddUserCommand}" />
             </DockPanel.InputBindings>
             
             <DockPanel DockPanel.Dock="Top">
@@ -26,7 +26,7 @@
                         </Grid.ColumnDefinitions>
 
                         <DockPanel Grid.Column="0">
-                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding userCollection}" SelectedValue="{Binding selectedUser, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding UserCollection}" SelectedValue="{Binding SelectedUser, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns >
@@ -40,30 +40,30 @@
                         <DockPanel Grid.Column="1" VerticalAlignment="Top">
                             <DockPanel DockPanel.Dock="Top">
                                 <Label Content="Nutzername: "  VerticalContentAlignment="Center"/>
-                                <TextBox Width="120" Height="25" IsEnabled="{Binding enableUserTextBox}">
+                                <TextBox Width="120" Height="25" IsEnabled="{Binding EnableUserTextBox}">
                                     <TextBox.Text>
-                                        <Binding Path="username" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                        <Binding Path="EnteredUsername" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
                                 </TextBox>
                                 <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10" Command="{Binding DeselectCommand}"/>
                             </DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <CheckBox IsChecked="{Binding selectedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
+                                <CheckBox IsChecked="{Binding SelectedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
                             </DockPanel>
 
                             <DockPanel DockPanel.Dock="Top">
-                                <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding roleCheckboxRows}">
+                                <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding RoleCheckboxRows}">
                                     <ListView.View>
                                         <GridView>
                                             <GridView.Columns >
                                                 <GridViewColumn Header="Aktiv" Width="150">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <CheckBox IsChecked="{Binding isSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-                                                <GridViewColumn Header="Rolle" Width="200" DisplayMemberBinding="{Binding role.rolename}" />
+                                                <GridViewColumn Header="Rolle" Width="200" DisplayMemberBinding="{Binding Role.rolename}" />
                                             </GridView.Columns>
                                         </GridView>
                                     </ListView.View>
@@ -71,7 +71,7 @@
                             </DockPanel>
 
                             <DockPanel DockPanel.Dock="Bottom">
-                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding postUserButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="25" Margin="10" Command="{Binding AddUserCommand}"/>
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding PostUserButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="25" Margin="10" Command="{Binding AddUserCommand}"/>
                             </DockPanel>
                             
                         </DockPanel>
@@ -86,7 +86,7 @@
                         </Grid.ColumnDefinitions>
 
                         <DockPanel Grid.Column="0">
-                            <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding roleCollection}">
+                            <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding RoleCollection}">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns >
@@ -102,7 +102,7 @@
                                 <Label Content="Rolle: "  VerticalContentAlignment="Center"/>
                                 <TextBox Width="230" Height="25">
                                     <TextBox.Text>
-                                        <Binding Path="rolename" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                        <Binding Path="EnteredRolename" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
                                 </TextBox>
                                 <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle hinzufügen" Height="25" Margin="10" Command="{Binding AddRoleCommand}"/>

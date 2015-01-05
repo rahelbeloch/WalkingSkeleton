@@ -46,7 +46,7 @@ namespace Admin.ViewModel
             IList<Role> allRoles =  _restRequester.GetAllElements<Role>();
             foreach(Role role in allRoles)
             {
-                roleCheckboxRows.Add(new RoleCheckboxRow(role, false));
+                RoleCheckboxRows.Add(new RoleCheckboxRow(role, false));
                 _mainViewModel.roleCollection.Add(role);
             }
         }
@@ -56,20 +56,20 @@ namespace Admin.ViewModel
         /// <summary>
         /// User collection with all (synchronized) users.
         /// </summary>
-        public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
+        public ObservableCollection<User> UserCollection { get { return _mainViewModel.userCollection; } }
 
         /// <summary>
         /// Property _roleCheckboxRoles to fill list view with selectable roles.
         /// </summary>
         private ObservableCollection<RoleCheckboxRow> _roleCheckboxRows = new ObservableCollection<RoleCheckboxRow>();
-        public ObservableCollection<RoleCheckboxRow> roleCheckboxRows { get { return _roleCheckboxRows; } }
+        public ObservableCollection<RoleCheckboxRow> RoleCheckboxRows { get { return _roleCheckboxRows; } }
 
         /// <summary>
         /// Currently selected user which can be changed afterwards.
         /// If a user is selected, update user information in the view.
         /// </summary>
         private User _selectedUser;
-        public User selectedUser
+        public User SelectedUser
         {
             get
             {
@@ -80,37 +80,37 @@ namespace Admin.ViewModel
                 _selectedUser = value;
                 if (_selectedUser != null)
                 {
-                    username = _selectedUser.username;
-                    postUserButtonText = "Nutzer ändern";
-                    enableUserTextBox = false;
+                    EnteredUsername = _selectedUser.username;
+                    PostUserButtonText = "Nutzer ändern";
+                    EnableUserTextBox = false;
 
                     foreach (RoleCheckboxRow roleCheckboxRow in _roleCheckboxRows)
                     {
-                        roleCheckboxRow.isSelected = _selectedUser.roles.Any(i => i.id == roleCheckboxRow.role.id);
+                        roleCheckboxRow.IsSelected = _selectedUser.roles.Any(i => i.id == roleCheckboxRow.Role.id);
                     }
                 }
                 else
                 {
-                    enableUserTextBox = true;
+                    EnableUserTextBox = true;
                 }
-                OnChanged("selectedUser");
+                OnChanged("SelectedUser");
             }
         }
 
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
-        private string _username = "";
-        public string username
+        private string _enteredUsername = "";
+        public string EnteredUsername
         {
             get
             {
-                return _username;
+                return _enteredUsername;
             }
             set
             {
-                _username = value;
-                OnChanged("username");
+                _enteredUsername = value;
+                OnChanged("EnteredUsername");
             }
         }
 
@@ -118,7 +118,7 @@ namespace Admin.ViewModel
         /// Property to enable the textbox to enter a username.
         /// </summary>
         private bool _enableUserTextBox = true;
-        public bool enableUserTextBox
+        public bool EnableUserTextBox
         {
             get
             {
@@ -127,7 +127,7 @@ namespace Admin.ViewModel
             set
             {
                 _enableUserTextBox = value;
-                OnChanged("enableUserTextBox");
+                OnChanged("EnableUserTextBox");
             }
         }
 
@@ -136,7 +136,7 @@ namespace Admin.ViewModel
         /// The text depends on whether the user is new or updated.
         /// </summary>
         private string _postUserButtonText = "Nutzer hinzufügen";
-        public string postUserButtonText
+        public string PostUserButtonText
         {
             get
             {
@@ -145,7 +145,7 @@ namespace Admin.ViewModel
             set
             {
                 _postUserButtonText = value;
-                OnChanged("postUserButtonText");
+                OnChanged("PostUserButtonText");
             }
         }
 
@@ -175,7 +175,7 @@ namespace Admin.ViewModel
                         }
                     }, canExecute =>
                     {
-                        if (username.Length == 0)
+                        if (EnteredUsername.Length == 0)
                         {
                             return false;
                         }
@@ -213,22 +213,22 @@ namespace Admin.ViewModel
         /// <summary>
         /// Role collection with all (synchronized) roles.
         /// </summary>
-        public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
+        public ObservableCollection<Role> RoleCollection { get { return _mainViewModel.roleCollection; } }
 
         /// <summary>
         /// Property for input from rolename text box.
         /// </summary>
-        private string _rolename = "";
-        public string rolename
+        private string _enteredRolename = "";
+        public string EnteredRolename
         {
             get
             {
-                return _rolename;
+                return _enteredRolename;
             }
             set
             {
-                _rolename = value;
-                OnChanged("rolename");
+                _enteredRolename = value;
+                OnChanged("EnteredRolename");
             }
         }
 
@@ -251,10 +251,10 @@ namespace Admin.ViewModel
                         try
                         {
                             Role newRole = new Role();
-                            newRole.rolename = rolename;
+                            newRole.rolename = EnteredRolename;
 
                             _restRequester.PostObject(newRole);
-                            rolename = "";
+                            EnteredRolename = "";
                         }
                         catch (BasicException be)
                         {
@@ -262,7 +262,7 @@ namespace Admin.ViewModel
                         }
                     }, canExecute =>
                     {
-                        if (rolename.Length == 0)
+                        if (EnteredRolename.Length == 0)
                         {
                             return false;
                         }
@@ -285,13 +285,13 @@ namespace Admin.ViewModel
         private void PostUser()
         {
             User newUser = new User();
-            newUser.username = username;
+            newUser.username = EnteredUsername;
 
-            foreach (RoleCheckboxRow actRow in roleCheckboxRows)
+            foreach (RoleCheckboxRow actRow in RoleCheckboxRows)
             {
-                if (actRow.isSelected)
+                if (actRow.IsSelected)
                 {
-                    newUser.roles.Add(actRow.role);
+                    newUser.roles.Add(actRow.Role);
                 }
             }
 
@@ -304,14 +304,14 @@ namespace Admin.ViewModel
         /// </summary>
         private void DeselectUser()
         {
-            selectedUser = null;
-            username = "";
-            postUserButtonText = "Nutzer hinzufügen";
-            enableUserTextBox = true;
+            SelectedUser = null;
+            EnteredUsername = "";
+            PostUserButtonText = "Nutzer hinzufügen";
+            EnableUserTextBox = true;
 
-            foreach (RoleCheckboxRow roleCheckboxRow in roleCheckboxRows)
+            foreach (RoleCheckboxRow roleCheckboxRow in RoleCheckboxRows)
             {
-                roleCheckboxRow.isSelected = false;
+                roleCheckboxRow.IsSelected = false;
             }
         }
 
@@ -342,7 +342,7 @@ namespace Admin.ViewModel
         public void RoleUpdate(Role updatedRole)
         {
             _mainViewModel.roleCollection.Add(updatedRole);
-            roleCheckboxRows.Add(new RoleCheckboxRow(updatedRole, false));
+            RoleCheckboxRows.Add(new RoleCheckboxRow(updatedRole, false));
         }
 
         # endregion
