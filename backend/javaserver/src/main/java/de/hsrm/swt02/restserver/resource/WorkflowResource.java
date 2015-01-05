@@ -18,12 +18,10 @@ import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
-import de.hsrm.swt02.businesslogic.Message;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
-import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
@@ -317,13 +315,7 @@ public class WorkflowResource {
             } else if (state.equals("deactivate")) {
                 logicResponse = LOGIC.deactivateWorkflow(workflowid);
             }
-            for (Message m : logicResponse.getMessages()) {
-                try {
-                    PUBLISHER.publish(m.getValue(), m.getTopic());
-                } catch (ServerPublisherBrokerException e) {
-                    LOGGER.log(Level.WARNING, e);
-                }
-            }
+            PUBLISHER.publishEvent(logicResponse);
         } catch (PersistenceException e) {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError()

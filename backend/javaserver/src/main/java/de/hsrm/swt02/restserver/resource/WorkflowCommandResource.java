@@ -16,7 +16,6 @@ import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
-import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 
 /**
  * This class is called if client sends request to operate on workflows.
