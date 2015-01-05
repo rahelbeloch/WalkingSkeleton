@@ -27,10 +27,10 @@ namespace Admin.ViewModel
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
 
-            updateModel();
+            initModel();
         }
 
-        private void updateModel()
+        private void initModel()
         {
             // update userlist
             IList<User> allUsers = _restRequester.GetAllElements<User>();
@@ -83,17 +83,9 @@ namespace Admin.ViewModel
                     postUserButtonText = "Nutzer ändern";
                     enableUserTextBox = false;
 
-                    foreach (RoleCheckboxRow rcr in _roleCheckboxRows)
+                    foreach (RoleCheckboxRow roleCheckboxRow in _roleCheckboxRows)
                     {
-
-                        if (_selectedUser.roles.Any(i => i.id == rcr.role.id))
-                        {
-                            rcr.isSelected = true;
-                        }
-                        else
-                        {
-                            rcr.isSelected = false;
-                        }
+                        roleCheckboxRow.isSelected = _selectedUser.roles.Any(i => i.id == roleCheckboxRow.role.id);
                     }
                 }
                 else
@@ -274,6 +266,9 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// Deselect 
+        /// </summary>
         private void deselect()
         {
             _selectedUser = null;
@@ -281,9 +276,9 @@ namespace Admin.ViewModel
             postUserButtonText = "Nutzer hinzufügen";
             enableUserTextBox = true;
 
-            foreach (RoleCheckboxRow rcr in roleCheckboxRows) 
+            foreach (RoleCheckboxRow roleCheckboxRow in roleCheckboxRows) 
             {
-                rcr.isSelected = false;
+                roleCheckboxRow.isSelected = false;
             }
         }
 
