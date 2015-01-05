@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security;
 
 namespace CommunicationLib.Model
 {
@@ -17,7 +18,6 @@ namespace CommunicationLib.Model
         /// </summary>
         private string _username;
         public string username { get { return id; } set { id = value; } }
-        
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.

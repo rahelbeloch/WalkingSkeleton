@@ -26,6 +26,7 @@ namespace RestAPI
         private static JsonSerializerSettings _jsonSettings;
 
         private string _myUsername;
+        private User _myUser;
         private SecureString _myPassword;
 
         /// <summary>
@@ -427,13 +428,6 @@ namespace RestAPI
                     s.nextSteps.Add(workflow.getStepById(id));
                 }
             }
-
-        }
-
-
-        public bool SwitchElementActivity<O>(string id, string state)
-        {
-            throw new NotImplementedException();
         }
     }
 }
