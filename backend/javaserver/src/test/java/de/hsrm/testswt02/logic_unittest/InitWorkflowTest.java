@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import de.hsrm.swt02.model.Action;
@@ -33,17 +35,23 @@ public class InitWorkflowTest {
      */
     @Test
     public void actionCheckUser() {
-        final Action step = new Action("username", 0 + " Schritt");
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add("role");
+               
+        final Action step = new Action(roles, 0 + " Schritt");
 
-        assertTrue(step.getUsername().equals("username"));
+        assertTrue(step.getRoles().get(0).equals("role"));
     }
 
     /**
      * test the initialization of Action and Actionname.
      */
     @Test
-    public void actionCheckName() {
-        final Action step = new Action("username", 0 + " Schritt");
+    public void actionCheckRole() {
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add("role");
+        
+        final Action step = new Action(roles, 0 + " Schritt");
 
         assertEquals(step.getDescription(), 0 + " Schritt");
     }
@@ -54,7 +62,10 @@ public class InitWorkflowTest {
     @Test
     public void addStep() {
         final Workflow myWorkflow = new Workflow();
-        final Step step = new Action("username", 0 + " Schritt");
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add("role");
+        
+        final Step step = new Action(roles, 0 + " Schritt");
         step.setId("XXX"); //This is not possible in the actual run, because ids are given in the persistence, but in this test there isn't a connection to the persistence
         myWorkflow.addStep(step);
 
@@ -67,10 +78,13 @@ public class InitWorkflowTest {
     @Test
     public void connectSteps() {
         final Workflow myWorkflow = new Workflow();
-        final Step firstStep = new Action("username", 0 + " Schritt");
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add("role");
+        
+        final Step firstStep = new Action(roles, 0 + " Schritt");
         //setting an id is definitely wrong, but here's no connection to the persistence therefore the ids have to be manually added
         firstStep.setId("1");
-        final Step secondStep = new Action("username", 1 + " Schritt");
+        final Step secondStep = new Action(roles, 1 + " Schritt");
         secondStep.setId("2");
         myWorkflow.addStep(firstStep);
         myWorkflow.addStep(secondStep);
@@ -87,8 +101,11 @@ public class InitWorkflowTest {
     @Test
     public void connectFinalStep() {
         final Workflow myWorkflow = new Workflow();
-        final Step firstStep = new Action("username", 0 + " Schritt");
-        final Step secondStep = new Action("username", 1 + " Schritt");
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add("role");
+        
+        final Step firstStep = new Action(roles, 0 + " Schritt");
+        final Step secondStep = new Action(roles, 1 + " Schritt");
         final Step finalStep = new FinalStep();
 
         myWorkflow.addStep(firstStep);

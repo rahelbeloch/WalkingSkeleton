@@ -46,15 +46,6 @@ public class Workflow extends RootElement {
     }
 
     /**
-     * sets items to an empty list.
-     * 
-     * @param i
-     */
-    public void clearItems() {
-        this.items.clear();
-    }
-
-    /**
      * Active Getter getter.
      * 
      * @return active if the workflow is active or not

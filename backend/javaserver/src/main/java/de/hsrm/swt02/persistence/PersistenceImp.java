@@ -40,7 +40,7 @@ public class PersistenceImp implements Persistence {
      * user, step, metaEntry
      */
     private List<Workflow> workflows = new LinkedList<>();
-    //private List<Item> items = new LinkedList<>();
+
     private List<User> users = new LinkedList<>();
 
     private List<Role> roles = new LinkedList<>();
@@ -71,18 +71,18 @@ public class PersistenceImp implements Persistence {
                 throw new StorageFailedException("storage of workflow" + workflow.getId() + "failed.");
             }
         }
-        try {
-            Workflow workflowToStore = (Workflow)workflow.clone();
-            workflowToStore.clearItems();
+        
+            Workflow workflowToStore = workflow;
             if (workflow.getItems().size() > 0) {
                 for (Item item : workflow.getItems()) {
-                    workflowToStore = this.addItemToWorkflow(workflowToStore, item);
+                    if(item.getId() == null || item.getId().equals("")){
+                        item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");
+                        item.setWorkflowId(workflow.getId());
+                    }
                 }
             }
             workflows.add(workflowToStore);
-        } catch (CloneNotSupportedException e) {
-            throw new StorageFailedException("storage of workflow" + workflow.getId() + "failed."); 
-        }
+        
         this.logger.log(Level.INFO, "[persistence] successfully stored workflow " + workflow.getId() + ".");
         return workflow.getId();
     }
@@ -121,42 +121,44 @@ public class PersistenceImp implements Persistence {
     
     // Item Operations
     
-    /**
-     * Method for adding an item to the workflow.
-     * @param workflowId is the needed workflowId
-     * @param item is the needed item
-     * @return itemId is the stored item
-     * @exception PersistenceException indicates errors in storage methods
-     * @throws PersistenceException 
-     */
-    public Workflow addItemToWorkflow(Workflow workflow, Item item) throws PersistenceException {
-        Item itemToRemove = null;
-        boolean itemExists = false;
-        for (Item i : workflow.getItems()) {
-            if (i.getId().equals(item.getId())) {
-                itemToRemove = i; 
-                itemExists = true;
-                break;
-            }
-        }
-        
-        if (itemToRemove != null) {
-            this.deleteItem(itemToRemove.getId());
-            this.logger.log(Level.INFO, "[persistence] overwriting item " + itemToRemove.getId() + "...");
-        }
-        
-        if (!itemExists) {
-            item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");
-            item.setWorkflowId(workflow.getId());
-        }
-        
-        try {
-            workflow.addItem((Item)item.clone());
-        } catch (CloneNotSupportedException e) {
-            throw new StorageFailedException("storage of item" + item.getId() + "to workflow " + workflow.getId() + "failed."); 
-        }
-        return workflow;
-    }
+//    /**
+//     * Method for adding an item to the workflow.
+//     * @param workflowId is the needed workflowId
+//     * @param item is the needed item
+//     * @return itemId is the stored item
+//     * @exception PersistenceException indicates errors in storage methods
+//     * @throws PersistenceException 
+//     */
+//    public Workflow addItemToWorkflow(Workflow workflow, Item item) throws PersistenceException {
+//        Item itemToRemove = null;
+//        boolean itemExists = false;
+//        
+//        if(item.getId() == null){
+//            item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");
+//            item.setWorkflowId(workflow.getId());
+//            itemExists = true;
+//        }
+//        if (!itemExists){
+//            for (Item i : workflow.getItems()) {
+//                if (i.getId().equals(item.getId())) {
+//                    itemToRemove = i; 
+//                    itemExists = true;
+//                    break;
+//                }
+//            }
+//        }
+//        if (itemToRemove != null) {
+//            this.deleteItem(itemToRemove.getId());
+//            this.logger.log(Level.INFO, "[persistence] overwriting item " + itemToRemove.getId() + "...");
+//        }
+//        
+//        try {
+//            workflow.addItem((Item)item.clone());
+//        } catch (CloneNotSupportedException e) {
+//            throw new StorageFailedException("storage of item" + item.getId() + "to workflow " + workflow.getId() + "failed."); 
+//        }
+//        return workflow;
+//    }
     
     /**
      * Method for getting the parentworkflow of an item.

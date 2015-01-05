@@ -299,7 +299,7 @@ public class LogicImp implements Logic {
                         Workflow copyOfWf;
                         try {
                             copyOfWf = ((Workflow) wf.clone());
-                            copyOfWf.clearItems(); // eliminate items
+                            copyOfWf.getItems().clear(); // eliminate items
                             workflows.add(copyOfWf);
                             break;
                         } catch (CloneNotSupportedException e) {
@@ -321,6 +321,7 @@ public class LogicImp implements Logic {
      * @throws PersistenceException is thrown if errors occur while persisting objects
      * @throws CloneNotSupportedException 
      */
+    
     public List<Workflow> getAllWorkflowsByUserWithItems(String username)
             throws PersistenceException, CloneNotSupportedException 
     {
