@@ -17,6 +17,9 @@ namespace Admin.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase, IDataReceiver
     {
+        private String _clientID = "admin";
+        public String clientID { get { return _clientID; } }
+
         private WorkflowViewModel _workflowViewModel;
         public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
 
@@ -40,7 +43,7 @@ namespace Admin.ViewModel
 
         public MainViewModel()
         {
-            _myComLib = new ComLib(this);
+            _myComLib = new ComLib(this, clientID);
             // Admin has to register to ComLib! 'TestAdmin' is a Dummy for one admin
             _myComLib.Login("TestAdmin", new SecureString());
 
