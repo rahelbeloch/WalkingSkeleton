@@ -16,7 +16,7 @@ namespace CommunicationLib
         // the associated client
         private IDataReceiver _myClient;
 
-        // Rest interface
+        // rest interface
         private IRestRequester _sender;
         public IRestRequester sender
         { 
@@ -40,10 +40,10 @@ namespace CommunicationLib
         ///  Constructor to set the associated client.
         /// </summary>
         /// <param name="myClient"></param>
-        public ComLib(IDataReceiver myClient)
+        public ComLib(IDataReceiver myClient, String clientId)
         {
             _myClient = myClient;
-            _sender = new RestRequester();
+            _sender = new RestRequester(clientId);
             _listener = new CommunicationManager(_sender, myClient);
         }
 
