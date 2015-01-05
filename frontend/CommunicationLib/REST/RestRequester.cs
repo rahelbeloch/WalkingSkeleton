@@ -244,10 +244,10 @@ namespace RestAPI
         /// <typeparam name="O">The type of the object to be created</typeparam>
         /// <param name="sendObj">The specified object to create</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
-        public Boolean PostObject<O>(O sendObj)
+        public Boolean PostObject(RootElement sendObj)
         {
             IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O));
+            String url = URLRouter.generateUrl(UrlMethod.Resource, sendObj.GetType());
             
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
@@ -336,7 +336,6 @@ namespace RestAPI
         ///     Sends a request to the server to start a workflow (create an item). Path is always: '/command/workflow/start/{workflowId}'
         /// </summary>
         /// <param name="wId">Workflow-Id</param>
-        /// <param name="uId">Username</param>
         public Boolean StartWorkflow(string wId)
         {
             IRestResponse response;
