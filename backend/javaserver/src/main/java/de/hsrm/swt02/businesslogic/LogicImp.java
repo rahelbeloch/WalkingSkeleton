@@ -468,10 +468,22 @@ public class LogicImp implements Logic {
      * @throws LogInException 
      */
     @Override
-    public boolean checkLogIn(String username) throws LogInException {
+    public boolean checkLogIn(String username,String password, boolean adminRequired) throws LogInException {
+        User user;
         try {
-            persistence.loadUser(username);
+            user = persistence.loadUser(username);
         } catch (UserNotExistentException e) {
+            throw new LogInException();
+        }
+        if (!user.getPassword().equals(password)) {
+            throw new LogInException();
+        }
+        if (adminRequired) {
+            for (Role aktRole:user.getRoles()) {
+                if (aktRole.getRolename().equals("admin")) {
+                    return true;
+                }
+            }
             throw new LogInException();
         }
         return true;
@@ -637,7 +649,7 @@ public class LogicImp implements Logic {
         StartStep startStep1;
         Action action1, action2;
         FinalStep finalStep;
-        Role role1, role2;
+        Role role1, role2,role3;
 
         user1 = new User();
         user1.setUsername("Alex");
@@ -647,6 +659,8 @@ public class LogicImp implements Logic {
         user3.setUsername("Tilman");
         user4 = new User();
         user4.setUsername("TestAdmin");
+        user4.setPassword("abc123");
+        
         
         role1 = new Role();
         //role1.setId("1");
@@ -655,9 +669,13 @@ public class LogicImp implements Logic {
         role2 = new Role();
         role2.setRolename("Sachbearbeiter");
         addRole(role2);
+        role3 = new Role();
+        role3.setRolename("admin");
+        addRole(role3);
         
         user1.getRoles().add(role1);
         user2.getRoles().add(role2);
+        user4.getRoles().add(role3);
 
         addUser(user1);
         addUser(user2);
