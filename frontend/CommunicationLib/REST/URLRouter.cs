@@ -57,7 +57,8 @@ namespace CommunicationLib
             {
 
                 String typeName = objType.FullName.Split('.').Last().ToLower();
-                url += typeName + (url.Equals("command") ? "" : "s");
+                url += "/" + typeName + "s";
+                //url += "/" + typeName + (url.Equals("command") ? "" : "s");
                 /*
                 if (url.Equals("command"))
                 {

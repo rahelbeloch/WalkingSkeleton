@@ -68,7 +68,8 @@ namespace CommunicationLib
             catch (NMSConnectionException e)
             {
                 Console.WriteLine(e.Message);
-                _myClient.HandleError(e);
+                // _myClient kann bzw ist an dieser Stelle null
+                //_myClient.HandleError(e);
             }
         }
 

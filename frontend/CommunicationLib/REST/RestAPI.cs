@@ -67,7 +67,6 @@ namespace RestAPI
         internal static IRestResponse SendRequest(RestRequest request, String serializedObj)
         {
             IRestResponse response;
-
             // if there is an object that shall be send to server
             if (serializedObj != null)
             {
