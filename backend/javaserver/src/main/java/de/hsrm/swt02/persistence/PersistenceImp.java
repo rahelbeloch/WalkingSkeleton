@@ -256,8 +256,12 @@ public class PersistenceImp implements Persistence {
         User userToStore;
         try {
             userToStore = (User)user.clone();
+            
         } catch (CloneNotSupportedException e) {
             throw new StorageFailedException("storage of user" + user.getUsername() + "failed.");
+        }
+        for (Role role: userToStore.getRoles()) {
+            this.loadRole(role.getRolename());
         }
         users.add(userToStore);
         this.logger.log(Level.INFO, "[persistence] successfully stored user " + user.getUsername() + ".");
