@@ -14,8 +14,8 @@ using CommunicationLib;
 namespace Admin.ViewModel
 {
     /// <summary>
-    /// The UserViewModel contains properties and commands to send new users to the server.
-    /// Furthermore, the properties and commands are used as DataBindings to show current users in the graphical user interface. 
+    /// The UserViewModel contains properties and commands to send new users and roles to the server.
+    /// Furthermore, the properties and commands are used as DataBindings to show current users and roles in the graphical user interface. 
     /// </summary>
     public class UserViewModel: ViewModelBase
     {
@@ -30,6 +30,9 @@ namespace Admin.ViewModel
             initModel();
         }
 
+        /// <summary>
+        /// Init the model via rest requests at first startup.
+        /// </summary>
         private void initModel()
         {
             // update userlist
@@ -48,8 +51,12 @@ namespace Admin.ViewModel
             }
         }
 
+        # region USER PROPERTIES
+
+        /// <summary>
+        /// User collection with all (synchronized) users.
+        /// </summary>
         public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
-        public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
 
         /// <summary>
         /// Property _roleCheckboxRoles to fill list view with selectable roles.
@@ -57,6 +64,10 @@ namespace Admin.ViewModel
         private ObservableCollection<RoleCheckboxRow> _roleCheckboxRows = new ObservableCollection<RoleCheckboxRow>();
         public ObservableCollection<RoleCheckboxRow> roleCheckboxRows { get { return _roleCheckboxRows; } }
 
+        /// <summary>
+        /// Currently selected user which can be changed afterwards.
+        /// If a user is selected, update user information in the view.
+        /// </summary>
         private User _selectedUser;
         public User selectedUser
         {
@@ -70,7 +81,6 @@ namespace Admin.ViewModel
                 if (_selectedUser != null)
                 {
                     username = _selectedUser.username;
-
                     postUserButtonText = "Nutzer ändern";
                     enableUserTextBox = false;
 
@@ -105,21 +115,43 @@ namespace Admin.ViewModel
         }
 
         /// <summary>
-        /// Property for input from rolename text box.
+        /// Property to enable the textbox to enter a username.
         /// </summary>
-        private string _rolename = "";
-        public string rolename
+        private bool _enableUserTextBox = true;
+        public bool enableUserTextBox
         {
             get
             {
-                return _rolename;
+                return _enableUserTextBox;
             }
             set
             {
-                _rolename = value;
-                OnChanged("rolename");
+                _enableUserTextBox = value;
+                OnChanged("enableUserTextBox");
             }
         }
+
+        /// <summary>
+        /// Property which sets the text of the post user button.
+        /// The text depends on whether the user is new or updated.
+        /// </summary>
+        private string _postUserButtonText = "Nutzer hinzufügen";
+        public string postUserButtonText
+        {
+            get
+            {
+                return _postUserButtonText;
+            }
+            set
+            {
+                _postUserButtonText = value;
+                OnChanged("postUserButtonText");
+            }
+        }
+
+        # endregion
+
+        # region USER COMMANDS
 
         /// <summary>
         /// Command to add a new user.
@@ -147,60 +179,62 @@ namespace Admin.ViewModel
                         {
                             return false;
                         }
-
                         return true;
                     });
                 }
-
                 return _addUserCommand;
             }
         }
 
-        private bool _enableUserTextBox = true;
-        public bool enableUserTextBox
+        /// <summary>
+        /// Command to deselect a currently selected user.
+        /// </summary>
+        private ICommand _deselectCommand;
+        public ICommand deselectCommand
         {
             get
             {
-                return _enableUserTextBox;
+                if (_deselectCommand == null)
+                {
+                    _deselectCommand = new ActionCommand(execute =>
+                    {
+                        deselectUser();
+                    }, canExecute => _selectedUser != null);
+                }
+
+                return _deselectCommand;
+            }
+        }
+
+        # endregion
+
+        # region ROLE PROPERTIES
+
+        /// <summary>
+        /// Role collection with all (synchronized) roles.
+        /// </summary>
+        public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
+
+        /// <summary>
+        /// Property for input from rolename text box.
+        /// </summary>
+        private string _rolename = "";
+        public string rolename
+        {
+            get
+            {
+                return _rolename;
             }
             set
             {
-                _enableUserTextBox = value;
-                OnChanged("enableUserTextBox");
+                _rolename = value;
+                OnChanged("rolename");
             }
         }
 
-        private string _postUserButtonText = "Nutzer hinzufügen";
-        public string postUserButtonText 
-        { 
-            get 
-            { 
-                return _postUserButtonText; 
-            } 
-            set 
-            { 
-                _postUserButtonText = value; 
-                OnChanged("postUserButtonText"); 
-            } 
-        }
+        # endregion
 
-        private void postUser()
-        {
-            User newUser = new User();
-            newUser.id = username;
-
-            foreach (RoleCheckboxRow actRow in roleCheckboxRows)
-            {
-                if (actRow.isSelected)
-                {
-                    newUser.roles.Add(actRow.role);
-                }
-            }
-
-            _restRequester.PostObject(newUser);
-
-            deselect();
-        }
+        # region ROLE COMMANDS
 
         /// <summary>
         /// Command to add a new role.
@@ -241,34 +275,41 @@ namespace Admin.ViewModel
             }
         }
 
-        private ICommand _deselectCommand;
-        public ICommand deselectCommand
-        {
-            get
-            {
-                if (_deselectCommand == null)
-                {
-                    _deselectCommand = new ActionCommand(execute =>
-                        {
-                            deselect();
-                        }, canExecute => _selectedUser != null);
-                }
+        # endregion
 
-                return _deselectCommand;
+        # region METHODS
+
+        /// <summary>
+        /// Send a new or updated user to the server.
+        /// </summary>
+        private void postUser()
+        {
+            User newUser = new User();
+            newUser.username = username;
+
+            foreach (RoleCheckboxRow actRow in roleCheckboxRows)
+            {
+                if (actRow.isSelected)
+                {
+                    newUser.roles.Add(actRow.role);
+                }
             }
+
+            _restRequester.PostObject(newUser);
+            deselectUser();
         }
 
         /// <summary>
         /// Deselect a currently selected user.
         /// </summary>
-        private void deselect()
+        private void deselectUser()
         {
             selectedUser = null;
             username = "";
             postUserButtonText = "Nutzer hinzufügen";
             enableUserTextBox = true;
 
-            foreach (RoleCheckboxRow roleCheckboxRow in roleCheckboxRows) 
+            foreach (RoleCheckboxRow roleCheckboxRow in roleCheckboxRows)
             {
                 roleCheckboxRow.isSelected = false;
             }
@@ -303,5 +344,7 @@ namespace Admin.ViewModel
             _mainViewModel.roleCollection.Add(updatedRole);
             roleCheckboxRows.Add(new RoleCheckboxRow(updatedRole, false));
         }
+
+        # endregion
     }
 }
