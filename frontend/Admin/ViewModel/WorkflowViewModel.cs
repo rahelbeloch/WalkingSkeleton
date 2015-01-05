@@ -83,6 +83,10 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// Property, which indicates if a selected workflow is de-/active.
+        /// This property is used for the de-/active button label.
+        /// </summary>
         private String _workflowActivity = "";
         public String workflowActivity
         {
@@ -176,21 +180,19 @@ namespace Admin.ViewModel
         }
 
         /// <summary>
-        ///
+        /// Property for selected workflow in workflow overview.
         /// </summary>
         private Workflow _actWorkflow = null;
         public Workflow actWorkflow
         {
             get
             {
-                
                 return _actWorkflow;
             }
             set
             {
                 _actWorkflow = value;
                 OnChanged("actWorkflow");
-                
             }
         }
 
@@ -229,6 +231,10 @@ namespace Admin.ViewModel
             OnChanged("workflows");
         }
 
+        /// <summary>
+        /// When a workflow is updated (for example its activity), update workflow overview and deselect a selected workflow.
+        /// </summary>
+        /// <param name="newWorkflow"></param>
         public void updateWorkflows(Workflow newWorkflow){
             Console.WriteLine("updateWorkflows: " + newWorkflow.active);
            
@@ -247,9 +253,8 @@ namespace Admin.ViewModel
             _actWorkflow = null;
             OnChanged("actWorkflow");
             OnChanged("workflows");
-            
-            
         }
+
         /// <summary>
         /// When the workflow is changed, reconfigure choosable steps for combobox (depending on currently allowed steps).
         /// </summary>
@@ -302,6 +307,9 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command to toggle workflow activity.
+        /// </summary>
         private ICommand _toggleActivity;
         public ICommand toggleActivity
         {
