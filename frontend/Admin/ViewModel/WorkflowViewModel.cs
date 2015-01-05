@@ -212,6 +212,26 @@ namespace Admin.ViewModel
                 OnChanged("stepDescription");
             }
         }
+        /// <summary>
+        /// Property for the displayed Tab
+        /// </summary>
+        private int _selectedTabId;
+        public int selectedTabId
+        {
+            get
+            {
+                if (_selectedTabId == null)
+                {
+                    _selectedTabId = 0;
+                }
+                return _selectedTabId;
+            }
+            set
+            {
+                _selectedTabId = value;
+                OnChanged("selectedTabId");
+            }
+        }
 
         #endregion
 
@@ -304,6 +324,28 @@ namespace Admin.ViewModel
                     }, canExecute => _workflow.Count > 0);
                 }
                 return _removeLastStepCommand;
+            }
+        }
+        /// <summary>
+        /// Command to edit the current workflow.
+        /// </summary>
+        private ICommand _editWorkflowCommand;
+        public ICommand editWorkflowCommand
+        {
+            get
+            {
+                if (_editWorkflowCommand == null)
+                {
+                    _editWorkflowCommand = new ActionCommand(execute =>
+                        {
+                            selectedTabId = 0;
+                            _workflowModel = actWorkflow;
+                            foreach(Step step in actWorkflow.steps) {
+                                _workflow.Add(step);
+                            }
+                        }, canExecute => _actWorkflow != null);
+                }
+                return _editWorkflowCommand;
             }
         }
 
@@ -447,27 +489,6 @@ namespace Admin.ViewModel
                 return _addStepCommand;
             }
 
-        }
-        
-        //not used jet
-        private ICommand _editWorkflow;
-        public ICommand editWorkflow
-        {
-            get
-            {
-                if (_editWorkflow == null)
-                {
-                    _editWorkflow = new ActionCommand(execute =>
-                    { 
-                        //check if open
-                        
-                        
-                        MessageBox.Show("klappt");
-                      
-                    }, canExecute => true);
-                }
-                return _editWorkflow;
-            }
         }
 
         #endregion
