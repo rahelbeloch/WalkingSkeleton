@@ -1,6 +1,7 @@
 package de.hsrm.swt02.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -32,7 +33,7 @@ public class Step extends RootElement {
      * Constructor for Step.
      */
     public Step() {
-        this.roles = new ArrayList<String>();
+        
     }
     
     /**
@@ -75,6 +76,10 @@ public class Step extends RootElement {
      * @return username is the username of the user responsible for the step
      */
     public ArrayList<String> getRoles() {
+        if (roles == null) {
+            this.roles = new ArrayList<String>();
+        }
+        
         return this.roles;
     }
     
@@ -104,9 +109,9 @@ public class Step extends RootElement {
     @Override
     public String toString() {
         String ret = "";
-        ret += "\tType: " + this.getClass().getName() + "\n";
+        ret += "\tType: " + this.getClass().getSimpleName() + "\n";
         ret += "\tId: " + this.id + "\n";
-        ret += "\tUsername: " + this.roles + "\n";
+        ret += "\tRollen: " + Arrays.toString(this.getRoles().toArray()) + "\n";
         ret += "\tNextStepIds: " + this.nextStepIds + "\n";
         
         return ret;

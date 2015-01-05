@@ -665,16 +665,17 @@ public class LogicImp implements Logic {
         addUser(user3);
         addUser(user4);
         
-        ArrayList user1Roles = new <String>ArrayList();
-        user1Roles.add(role1);
-        ArrayList user2Roles = new <String>ArrayList();
-        user2Roles.add(role2);
+        ArrayList<String> user1Roles = new ArrayList<String>();
+        user1Roles.add(role1.getRolename());
+        ArrayList<String> user2Roles = new ArrayList<String>();
+        user2Roles.add(role2.getRolename());
         
-        startStep1 = new StartStep(user1Roles);
+        startStep1 = new StartStep();
+        startStep1.getRoles().addAll(user1Roles);
 
-        action1 = new Action(user1Roles, "Action von "
+        action1 = new Action(new ArrayList<String>(), "Action von "
                 + user1.getUsername());
-        action2 = new Action(user2Roles, "Action von "
+        action2 = new Action(new ArrayList<String>(), "Action von "
                 + user2.getUsername());
 
         finalStep = new FinalStep();

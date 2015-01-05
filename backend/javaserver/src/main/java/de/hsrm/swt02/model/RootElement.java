@@ -1,6 +1,5 @@
 package de.hsrm.swt02.model;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * This class represents a RootElement.

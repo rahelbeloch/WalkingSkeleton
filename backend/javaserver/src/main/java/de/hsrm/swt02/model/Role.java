@@ -4,7 +4,7 @@ package de.hsrm.swt02.model;
  * This Class represents a role.
  */
 public class Role extends RootElement {
-    
+   
     /**
      * Constructor for Role.
      */
@@ -47,5 +47,10 @@ public class Role extends RootElement {
         final Role clone = new Role();
         clone.init(this);
         return clone;
+    }
+    
+    @Override
+    public String toString() {
+        return id;
     }
 }
