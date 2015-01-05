@@ -14,7 +14,7 @@ namespace CommunicationLib
     public interface IRestRequester
     {
         // Initialize Method
-        void InitializeClientProperties(string username, SecureString password);
+        void InitializeClientProperties(string username, String password);
         void DeleteClientProperties();
 
         // RESSOURCE-METHODS - get, post, update, delete - do something on the ressources
@@ -87,7 +87,7 @@ namespace CommunicationLib
         /// <param name="username">Name of the user</param>
         /// <param name="password">Password of the user</param>
         /// <returns>True if it worked, false otherwhise, or an exception</returns>
-        Boolean checkUser(String username, SecureString password);
+        Boolean checkUser(String username, String password);
 
         /// <summary>
         ///     Sends a request to the server to start a workflow (create an item). Path is always: '/command/workflow/start/{workflowId}/{userName}'
