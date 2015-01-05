@@ -1,5 +1,7 @@
 package de.hsrm.swt02.model;
 
+import java.util.ArrayList;
+
 /**
  * This class represents an Action. An Action is an manifestation of a Step.
  *
@@ -20,8 +22,8 @@ public class Action extends Step {
      * @param username name of user responsible for action
      * @param description short description of action
      */
-    public Action(String username, String description) {
-        this.username = username;
+    public Action(ArrayList<String> roles, String description) {
+        this.roles = roles;
         this.description = description;
     }
     
