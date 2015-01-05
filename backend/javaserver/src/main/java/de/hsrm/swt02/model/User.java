@@ -13,6 +13,8 @@ public class User extends RootElement {
     private List<String> messagingSubs;
     // a users private password
     private String password;
+    
+    private boolean active;
 
     /**
      * Constructor for User.
@@ -20,6 +22,7 @@ public class User extends RootElement {
     public User() {
         super();
         roles = new ArrayList<Role>();
+        setActive(true);
     }
 
     /**
@@ -109,4 +112,18 @@ public class User extends RootElement {
 
         return clone;
     }
+
+	/**
+	 * @return the active
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+	/**
+	 * @param active the active to set
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 }
