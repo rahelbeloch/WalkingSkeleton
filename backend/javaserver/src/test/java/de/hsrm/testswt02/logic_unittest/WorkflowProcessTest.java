@@ -113,8 +113,8 @@ public class WorkflowProcessTest {
 
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         final Item item = (Item) myWorkflow.getItems().get(0);
-        assertTrue(item.getStepState(firstStep.getId()) == MetaState.OPEN
-                .toString());
+        assertTrue(item.getStepState(firstStep.getId()).equals(MetaState.OPEN
+                .toString()));
     }
     
     /**
