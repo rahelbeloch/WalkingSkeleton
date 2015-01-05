@@ -27,13 +27,13 @@ namespace Admin.ViewModel
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
 
-            initModel();
+            InitModel();
         }
 
         /// <summary>
         /// Init the model via rest requests at first startup.
         /// </summary>
-        private void initModel()
+        private void InitModel()
         {
             // update userlist
             IList<User> allUsers = _restRequester.GetAllElements<User>();
@@ -167,7 +167,7 @@ namespace Admin.ViewModel
                     {
                         try
                         {
-                            postUser();
+                            PostUser();
                         }
                         catch (BasicException be)
                         {
@@ -198,7 +198,7 @@ namespace Admin.ViewModel
                 {
                     _deselectCommand = new ActionCommand(execute =>
                     {
-                        deselectUser();
+                        DeselectUser();
                     }, canExecute => _selectedUser != null);
                 }
 
@@ -282,7 +282,7 @@ namespace Admin.ViewModel
         /// <summary>
         /// Send a new or updated user to the server.
         /// </summary>
-        private void postUser()
+        private void PostUser()
         {
             User newUser = new User();
             newUser.username = username;
@@ -296,13 +296,13 @@ namespace Admin.ViewModel
             }
 
             _restRequester.PostObject(newUser);
-            deselectUser();
+            DeselectUser();
         }
 
         /// <summary>
         /// Deselect a currently selected user.
         /// </summary>
-        private void deselectUser()
+        private void DeselectUser()
         {
             selectedUser = null;
             username = "";
