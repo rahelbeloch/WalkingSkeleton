@@ -54,7 +54,6 @@ namespace CommunicationLib.Model
             return -1;
         }
 
-        private string _state;
         [JsonIgnore]
         public string state
         {
