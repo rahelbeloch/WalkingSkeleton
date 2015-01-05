@@ -25,16 +25,14 @@ public class Step extends RootElement {
     protected List<String> nextStepIds;
     
     // Used for (de)serialization. Do not change.
-    protected String username;
+    protected ArrayList<String> roles;
     
-    // Used for (de)serializsation. Do not change.
-    protected String rolename;
-
+    
     /**
      * Constructor for Step.
      */
     public Step() {
-        this.username = "";
+        this.roles = new ArrayList<String>();
     }
     
     /**
@@ -43,8 +41,7 @@ public class Step extends RootElement {
      */
     public void init(Step s) {
         super.init(s);
-        this.username = s.username;
-        this.rolename = s.rolename;
+        this.roles = s.roles;
         
         this.getNextStepIds().addAll(s.getNextStepIds());
     }
@@ -77,34 +74,19 @@ public class Step extends RootElement {
      * Username getter.
      * @return username is the username of the user responsible for the step
      */
-    public String getUsername() {
-        return this.username;
+    public ArrayList<String> getRoles() {
+        return this.roles;
     }
     
     /**
      * Username setter.
      * @param username is the username of the user responsible for the step
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void addRole(String role) {
+        this.roles.add(role);
     }
     
-    /**
-     * Rolename getter.
-     * @return rolename is the name of the role responsible for the step
-     */
-    public String getRolename() {
-        return this.rolename;
-    }
-    
-    /**
-     * Rolename setter.
-     * @param rolename is the name of the user responsible for the step
-     */
-    public void setRolename(String rolename) {
-        this.rolename = rolename;
-    }
-    
+   
     /**
      * Deep Copy - Cloning method for Steps.
      * @exception CloneNotSupportedException convention
@@ -124,7 +106,7 @@ public class Step extends RootElement {
         String ret = "";
         ret += "\tType: " + this.getClass().getName() + "\n";
         ret += "\tId: " + this.id + "\n";
-        ret += "\tUsername: " + this.username + "\n";
+        ret += "\tUsername: " + this.roles + "\n";
         ret += "\tNextStepIds: " + this.nextStepIds + "\n";
         
         return ret;
