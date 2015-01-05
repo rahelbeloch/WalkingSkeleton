@@ -150,6 +150,7 @@ namespace Admin.ViewModel
         {
             userViewModel.RoleUpdate(role);
         }
+
         void IDataReceiver.HandleError(System.Exception e)
         {
             // route update-handling to subcomponents

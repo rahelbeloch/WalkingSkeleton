@@ -213,7 +213,7 @@ namespace Admin.ViewModel
                 }
             }
 
-            _restRequester.PostObject<User>(newUser);
+            _restRequester.PostObject(newUser);
 
             deselect();
         }
@@ -235,7 +235,7 @@ namespace Admin.ViewModel
                             Role newRole = new Role();
                             newRole.rolename = rolename;
 
-                            _restRequester.PostObject<Role>(newRole);
+                            _restRequester.PostObject(newRole);
                             rolename = "";
                         }
                         catch (BasicException be)

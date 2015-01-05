@@ -362,7 +362,7 @@ namespace Admin.ViewModel
                                 step.id = "";
                             }
 
-                            _restRequester.PostObject<Workflow>(_workflowModel);
+                            _restRequester.PostObject(_workflowModel);
 
                             // remove steps from workflow
                             // update model AND viewmodel, because the model is not observable
