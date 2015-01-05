@@ -58,7 +58,7 @@ namespace Admin.ViewModel
         {
             _myComLib = new ComLib(this, clientID);
             // Admin has to register to ComLib! 'TestAdmin' is a Dummy for one admin
-            _myComLib.Login("TestAdmin", new SecureString());
+            _myComLib.Login("TestAdmin", "abc123");
 
             _workflowViewModel = new WorkflowViewModel(this);
             _userViewModel = new UserViewModel(this);

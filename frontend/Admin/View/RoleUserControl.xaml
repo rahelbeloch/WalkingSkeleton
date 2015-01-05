@@ -46,7 +46,10 @@
                                 </TextBox>
                                 <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10" Command="{Binding deselectCommand}"/>
                             </DockPanel>
-                            
+                            <DockPanel DockPanel.Dock="Top">
+                                <CheckBox IsChecked="{Binding selectedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
+                            </DockPanel>
+
                             <DockPanel DockPanel.Dock="Top">
                                 <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding roleCheckboxRows}">
                                     <ListView.View>
