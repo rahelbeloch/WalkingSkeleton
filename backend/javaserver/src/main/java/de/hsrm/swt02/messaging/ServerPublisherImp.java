@@ -11,6 +11,7 @@ import java.util.logging.Level;
 
 
 
+
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -26,7 +27,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import de.hsrm.swt02.businesslogic.LogicResponse;
-import de.hsrm.swt02.businesslogic.Message;
 import de.hsrm.swt02.logging.UseLogger;
 
 /**
