@@ -44,7 +44,7 @@ namespace CommunicationLib
         {
             _myClient = myClient;
             _sender = new RestRequester();
-            _listener = new CommunicationManager(_sender);
+            _listener = new CommunicationManager(_sender, myClient);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace CommunicationLib
         {
             _sender.checkUser(username, password);
             _sender.InitializeClientProperties(username, password);
-            _listener.RegisterClient(_myClient, true);
+            _listener.RegisterClient(true);
         }
 
         /// <summary>

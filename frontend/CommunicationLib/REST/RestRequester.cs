@@ -430,5 +430,11 @@ namespace RestAPI
             }
 
         }
+
+
+        public bool SwitchElementActivity<O>(string id, string state)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

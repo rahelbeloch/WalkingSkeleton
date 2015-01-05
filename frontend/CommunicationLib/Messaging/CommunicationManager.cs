@@ -52,10 +52,10 @@ namespace CommunicationLib
         //client subscriptions <topicName, consumer>
         private Dictionary<string ,IMessageConsumer> _messageSubs;
 
-        public CommunicationManager(IRestRequester sender)
+        public CommunicationManager(IRestRequester sender, IDataReceiver myClient)
         {
             _sender = sender;
-
+            _myClient = myClient;
             _messageSubs = new Dictionary<string, IMessageConsumer>();
 
             //build connection to message broker (not started yet)
@@ -63,13 +63,13 @@ namespace CommunicationLib
             try
             {
                 _connection = _connectionFactory.CreateConnection();
+                _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
             }
             catch (NMSConnectionException e)
             {
                 Console.WriteLine(e.Message);
                 _myClient.HandleError(e);
             }
-            _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
         }
 
         /// <summary>
@@ -85,9 +85,8 @@ namespace CommunicationLib
         /// </summary>
         /// <param name="myClient">the client to register for</param>
         /// <param name="isAdmin">if this is set to true, client will be set as admin</param>
-        public void RegisterClient(IDataReceiver myClient, bool isAdmin)
+        public void RegisterClient(bool isAdmin)
         {
-            this._myClient = myClient;
 
             // get the topis for this client (user)
             /* restRequester.getUser(userName);
