@@ -111,9 +111,9 @@ namespace RestAPI
         {
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow), new string[] { });
-            
+            Console.WriteLine("URL: " + url);
             var request = createRequest(url, Method.GET);
-            request.AddParameter("state", "startable", ParameterType.HttpHeader);
+            request.AddParameter("state", "startable", ParameterType.GetOrPost);
 
             try
             {
@@ -126,6 +126,7 @@ namespace RestAPI
             }
 
             // Deserialization
+            Console.WriteLine(response.Content);
             IList<string> eleList = JsonConvert.DeserializeObject<List<string>>(response.Content, _jsonSettings);
             
             return eleList;
@@ -172,8 +173,9 @@ namespace RestAPI
                 System.Diagnostics.Trace.WriteLine("Exception " + e.Data);
 
                 throw;
-            } 
+            }
 
+            Console.WriteLine(response.Content);
             IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, _jsonSettings);
             return eleList;
         }

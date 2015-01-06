@@ -34,8 +34,8 @@ namespace Client.ViewModel
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
-        private System.Security.SecureString _securePwd = new System.Security.SecureString();
-        public System.Security.SecureString securePwd
+        private String _securePwd = "";
+        public String securePwd
         {
             get
             {
