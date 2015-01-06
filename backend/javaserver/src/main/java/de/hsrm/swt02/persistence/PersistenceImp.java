@@ -56,6 +56,7 @@ public class PersistenceImp implements Persistence {
     @Override
     public String storeWorkflow(Workflow workflow) throws PersistenceException {
         Workflow workflowToRemove = null;
+        int idx = 0;
         if (workflow.getId() == null || workflow.getId().equals("")) {
             workflow.setId(workflows.size() + 1 + "");
         } else {
@@ -82,7 +83,8 @@ public class PersistenceImp implements Persistence {
         if (workflow.getSteps().size() > 0) {
             for (Step step: workflow.getSteps()) {
                 if (step.getId() == null || step.getId().equals("")) {
-                    step.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getSteps().size() + 1) + "");
+                    step.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + idx + 1) + "");
+                    idx++;
                 }
             }
         }
