@@ -20,6 +20,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 public class Step extends RootElement {
 
     @JsonIgnore
+    protected String opener;
+    
+    @JsonIgnore
     protected List<Step> nextSteps;
 
     // Used for (de)serialization. Do not change.
@@ -33,7 +36,7 @@ public class Step extends RootElement {
      * Constructor for Step.
      */
     public Step() {
-        
+        opener = null;
     }
     
     /**
@@ -43,7 +46,7 @@ public class Step extends RootElement {
     public void init(Step s) {
         super.init(s);
         this.roles = s.roles;
-        
+        this.opener = s.opener;
         this.getNextStepIds().addAll(s.getNextStepIds());
     }
 
@@ -81,6 +84,14 @@ public class Step extends RootElement {
         }
         
         return this.roles;
+    }
+    
+    public String getOpener() {
+        return opener;
+    }
+    
+    public void setOpener(String username) {
+        this.opener = username;
     }
     
     /**
