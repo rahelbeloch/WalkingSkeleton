@@ -395,7 +395,7 @@ namespace Admin.ViewModel
                         try
                         {
                             // set all ids in workflow to empty string, to avoid sending 'null'; otherwise problems with parsing!
-                            _workflowModel.id = "";
+                            //_workflowModel.id = "";
                             foreach (Step step in _workflowModel.steps)
                             {
                                 if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
