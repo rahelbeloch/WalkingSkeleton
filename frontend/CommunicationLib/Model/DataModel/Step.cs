@@ -27,7 +27,14 @@ namespace CommunicationLib.Model
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private string _username;
+        [JsonIgnore]
         public string username { get { return _username; } set { _username = value; } }
+
+        /// <summary>
+        /// Used for (de)serialization. Do not change the property name.
+        /// </summary>
+        private List<String> _roles;
+        public List<String> roles { get { return _roles; } set { _roles = value; } }
 
         /// <summary>
         /// The label represents the type of a Step as a string (e.g. "Startzustand", "Aktion", ...).
@@ -45,6 +52,7 @@ namespace CommunicationLib.Model
             username = "";
             _nextSteps = new List<Step>();
             _nextStepIds = new List<String>();
+            _roles = new List<String>();
         }
     }
 }

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800">
+             d:DesignHeight="500" d:DesignWidth="900">
     
     <UserControl.Resources>
        <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
@@ -34,6 +34,13 @@
                                       ItemsSource="{Binding Path=choosableSteps, UpdateSourceTrigger=PropertyChanged}" 
                                       DisplayMemberPath="label"
                                       SelectedItem="{Binding selectedStep}" />
+
+                            <Label Content="Rolle:" VerticalContentAlignment="Center"/>
+                            
+                            <ComboBox Height="25" Width="120" HorizontalAlignment="Left"  
+                                      ItemsSource="{Binding Path=roleCollection, UpdateSourceTrigger=PropertyChanged}" 
+                                      DisplayMemberPath="rolename"
+                                      SelectedItem="{Binding selectedRole}" />
 
                             <Label Content="Nutzername: " VerticalContentAlignment="Center"/>
                             <TextBox Width="120" Height="25" IsEnabled="{Binding enableUserTextBox, UpdateSourceTrigger=PropertyChanged}" >

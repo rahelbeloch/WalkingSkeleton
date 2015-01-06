@@ -18,6 +18,7 @@ namespace CommunicationLib.Model
         [JsonIgnore]
         public string rolename { get { return id; } set { id = value; } }
 
+
         /// <summary>
         /// Constructor for Workflow
         /// </summary>

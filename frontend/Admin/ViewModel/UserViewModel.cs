@@ -97,6 +97,7 @@ namespace Admin.ViewModel
             }
         }
 
+
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
