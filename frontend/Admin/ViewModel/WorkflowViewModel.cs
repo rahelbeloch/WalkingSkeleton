@@ -177,22 +177,6 @@ namespace Admin.ViewModel
             }
         }
 
-        /// <summary>
-        /// Property for input from username text box.
-        /// </summary>
-        private string _username = "";
-        public string username
-        {
-            get
-            {
-                return _username;
-            }
-            set
-            {
-                _username = value;
-                OnChanged("username");
-            }
-        }
 
         /// <summary>
         /// Property for selected workflow in workflow overview.
@@ -455,7 +439,7 @@ namespace Admin.ViewModel
                         if (_selectedStep is StartStep)
                         {
                             StartStep startStep = new StartStep();
-                            startStep.username = username;
+                            
                             Console.WriteLine("selectedRole: " + selectedRole.rolename);
                             startStep.roles.Add(selectedRole.rolename);
 
@@ -465,7 +449,7 @@ namespace Admin.ViewModel
                         else if (_selectedStep is Action)
                         {
                             Action action = new Action();
-                            action.username = username;
+                            
                             action.description = stepDescription;
                             action.roles.Add(selectedRole.rolename);
 
@@ -482,7 +466,7 @@ namespace Admin.ViewModel
                         }
 
                         // reset inputs
-                        username = "";
+                        
                         stepDescription = "";
                         // TODO: clear combobox for roles
                         
@@ -493,11 +477,11 @@ namespace Admin.ViewModel
                         {
                             return false;
                         }
-                        else if (selectedStep is Action && username.Length > 0 && stepDescription.Length > 0)
+                        else if (selectedStep is Action &&  stepDescription.Length > 0)
                         {
                             return true;
                         }
-                        else if (selectedStep is StartStep && username.Length > 0)
+                        else if (selectedStep is StartStep && selectedRole != null)
                         {
                             return true;
                         }
