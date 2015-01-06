@@ -53,8 +53,16 @@ public interface Logic {
      * @return list of all workflows.
      * @throws WorkflowNotExistentException .
      */
-    List<Workflow> getAllWorkflows() throws WorkflowNotExistentException;
+    List<Workflow> getAllWorkflows() throws PersistenceException;
 
+
+    /**
+     * This method return all workflows in persistence that are not marked inactive
+     * 
+     * @return all active workflows in persistence
+     */
+    List<Workflow> getAllActiveWorkflows() throws PersistenceException;
+    
     /**
      * This method loads a Workflow.
      * 
@@ -157,7 +165,7 @@ public interface Logic {
      * @exception UserNotExistentException if the given user doesnt exist in the persistence
      * @throws UserNotExistentException 
      */
-    User getUser(String username) throws UserNotExistentException; // not there yet
+    User getUser(String username) throws PersistenceException; // not there yet
 
     /**
      * This method checks a User.
@@ -169,7 +177,7 @@ public interface Logic {
      * @exception LogInException if something is invalid
      * @throws LogInException
      */
-    boolean checkLogIn(String username, String password, boolean adminRequired) throws LogInException;
+    boolean checkLogIn(String username, String password, boolean adminRequired) throws LogicException;
 
     /**
      * This method deletes a User.
@@ -243,7 +251,7 @@ public interface Logic {
      * @exception RoleNotExistentException if the requested Role is not there
      * @throws RoleNotExistentException
      */
-    List<Role> getAllRoles() throws RoleNotExistentException;
+    List<Role> getAllRoles() throws PersistenceException;
 
     /**
      * Method for returning a list of all the existing users in the persistance.
@@ -252,33 +260,26 @@ public interface Logic {
      * @exception UserNotExistentException if the requested user is not there
      * @throws UserNotExistentException
      */
-    List<User> getAllUsers() throws UserNotExistentException;
+    List<User> getAllUsers() throws PersistenceException;
 
     /**
      * Method for adding a new role in the persistance.
      * 
      * @param role is the role we want to add
      * @return LogicResponse object
-     * @throws PersistenceException 
+     * @throws PersistenceException if persistence errors occur
      */
-    LogicResponse addRole(Role role) throws RoleAlreadyExistsException, PersistenceException;
+    LogicResponse addRole(Role role) throws PersistenceException;
 
     /**
-     * Method for adding an existing role to the rolelist of an existing user.
      * 
-     * @param username is the username of the user
-     * @param role is the role we want to add
+     * @param username - id of a user
+     * @param role - role to be added
      * @return LogicResponse object
-     * @exception UserNotExistentException if the user is not in the persistance
-     * @exception RoleNotExistentException if the role is not in the persistance
-     * @exception UserHasAlreadyRoleException if the user has already the role in his rolelist
-     * @throws UserNotExistentException
-     * @throws RoleNotExistentException
-     * @throws UserHasAlreadyRoleException
+     * @throws PersistenceException if persistence errors occur
      */
-    LogicResponse addRoleToUser(String username, Role role)
-            throws PersistenceException;
-
+    LogicResponse addRoleToUser(String username, Role role) throws PersistenceException;
+    
     /**
      * Method for deleting an existing role from the persistance. The users who
      * have this role will lose it too.
@@ -288,7 +289,7 @@ public interface Logic {
      * @exception RoleNotExistentException if the requested role is not there
      * @throws RoleNotExistentException
      */
-    LogicResponse deleteRole(String rolename) throws RoleNotExistentException;
+    LogicResponse deleteRole(String rolename) throws PersistenceException;
 
     /**
      * Method for giving a List of items of a user which are all open.
@@ -315,6 +316,6 @@ public interface Logic {
     */
     List<Workflow> getStartableWorkflows(String username) throws LogicException;
 
-    Role getRole(String rolename) throws RoleNotExistentException;
+    Role getRole(String rolename) throws PersistenceException;
 
 }

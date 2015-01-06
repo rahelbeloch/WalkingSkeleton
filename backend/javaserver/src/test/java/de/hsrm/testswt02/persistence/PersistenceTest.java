@@ -206,4 +206,14 @@ public class PersistenceTest {
         
         assertEquals(db.loadWorkflow(id3).getId(), "2");
     }
+    
+    @Test
+    public void testUserOverwriting() throws PersistenceException {
+        User user = new User();
+        user.setUsername("testuser");
+        
+        db.storeUser(user);
+        db.storeUser(db.loadUser(user.getUsername()));
+        assertEquals(db.loadUser(user.getUsername()), user);
+    }
 }

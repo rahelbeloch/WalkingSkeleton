@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
@@ -41,7 +42,7 @@ public class UserCommandResource {
         LOGGER.log(Level.INFO, loggingBody);
         try {
             LOGIC.checkLogIn(username,password,false);
-        } catch (LogInException e) {
+        } catch (LogicException e) {
             LOGGER.log(Level.WARNING,e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }

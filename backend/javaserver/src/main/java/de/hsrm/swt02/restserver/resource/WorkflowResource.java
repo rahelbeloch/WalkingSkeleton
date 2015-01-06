@@ -169,7 +169,7 @@ public class WorkflowResource {
             if (clientID.equals("admin")) {
                 try {
                     wflowList = LOGIC.getAllWorkflows();
-                } catch (WorkflowNotExistentException e) {
+                } catch (PersistenceException e) {
                     LOGGER.log(Level.WARNING, e);
                     return Response.serverError()
                             .entity(String.valueOf(e.getErrorCode())).build();
