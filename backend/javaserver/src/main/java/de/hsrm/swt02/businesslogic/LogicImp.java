@@ -179,7 +179,7 @@ public class LogicImp implements Logic {
         final String updatedItemId;
         final String workflowId;
         final LogicResponse logicResponse = new LogicResponse();
-
+        
         updatedItemId = processManager.executeStep(
                 persistence.loadStep(itemId, stepId),
                 persistence.loadItem(itemId), persistence.loadUser(username));
@@ -444,6 +444,7 @@ public class LogicImp implements Logic {
             throws PersistenceException {
         final LinkedList<Item> relevantItems = new LinkedList<>();
         final Workflow workflow = getWorkflow(workflowId);
+        
         for (Item item : workflow.getItems()) {
             final MetaEntry me = item.getActStep();
             if (me != null) {
@@ -453,6 +454,7 @@ public class LogicImp implements Logic {
                 }
             }
         }
+        
         return relevantItems;
     }
 
@@ -514,9 +516,7 @@ public class LogicImp implements Logic {
         } catch (UserNotExistentException e) {
             throw new LogInException();
         }
-        if (!user.getPassword().equals(password)) {
-            throw new LogInException();
-        }
+
         if (adminRequired) {
             for (Role aktRole : user.getRoles()) {
                 if (aktRole.getRolename().equals("admin")) {

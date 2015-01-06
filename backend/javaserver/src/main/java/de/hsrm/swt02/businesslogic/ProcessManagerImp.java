@@ -110,13 +110,13 @@ public class ProcessManagerImp implements ProcessManager {
      * @param step is the step which is to be edited
      * @param item is the item which is currently active
      * @param user is the user who started tzhe operation
-     * @throws ItemNotForawrdableException
-     * @throws UserHasNoPermissionException
-     * @throws LogicException
+     * @throws LogicException if problem occured while editing item
+     * @return itemid of edited item
      */
     public String executeStep(Step step, Item item, User user)
-            throws LogicException {
-        StepProcessor stepProcessor = selectProcessor(step);
+            throws LogicException
+    {
+        final StepProcessor stepProcessor = selectProcessor(step);
         String itemId = "";
 
         if (checkAuthorization(step, user.getUsername())) {
