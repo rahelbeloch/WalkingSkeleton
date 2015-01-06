@@ -7,13 +7,13 @@ import java.util.List;
  * This class represents an User. A User is a manifestation of a RootElement.
  */
 public class User extends RootElement {
-    // Used for (de)serialization. Do not change.
+	// Used for (de)serialization. Do not change.
     private List<Role> roles;
     // Used for (de)serialization. Do not change.
     private List<String> messagingSubs;
     // a users private password
     private String password;
-    
+    // Used for (de)serializsation. Do not change.
     private boolean active;
 
     /**
@@ -60,6 +60,26 @@ public class User extends RootElement {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    /**
+     * Active Getter getter.
+     * 
+     * @return active if the user is active or not
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * Active setter.
+     * 
+     * 
+     * @param active
+     *            if the user is active or not
+     */
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     /**
@@ -112,18 +132,4 @@ public class User extends RootElement {
 
         return clone;
     }
-
-	/**
-	 * @return the active
-	 */
-	public boolean isActive() {
-		return active;
-	}
-
-	/**
-	 * @param active the active to set
-	 */
-	public void setActive(boolean active) {
-		this.active = active;
-	}
 }
