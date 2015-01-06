@@ -23,7 +23,6 @@ import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
  */
 public class ActionProcessor implements StepProcessor {
 
-    private Item currentItem;
     private Persistence p;
     public static final UseLogger LOGGER = new UseLogger();
 
@@ -46,38 +45,39 @@ public class ActionProcessor implements StepProcessor {
      * @param item which is currently edited
      * @param step which is currently executed
      * @param user who currently executes the step
-     * @throws LogicException
+     * @throws LogicException if there are problems while working on an item
+     * @return itemId of item which was edited
      */
     public String handle(Item item, Step step, User user) throws LogicException {
-        final String username = user.getUsername();
         final Workflow workflow = p.loadWorkflow(item.getWorkflowId());
         
+        final Item currentItem = workflow.getItemById(item.getId());
+        final Step currentStep = workflow.getStepById(step.getId());
 
-//        if (!username.equals(step.getUsername())) {
-//            throw new UserHasNoPermissionException("user " + username + "has no permission on this item");
-//        }
-
-        currentItem = item;
-
-        if (currentItem.getEntryValue(step.getId() + "", "step").equals(MetaState.OPEN.toString())) {
+        if (item.getEntryValue(step.getId() + "", "step").equals(MetaState.OPEN.toString())) {
+            currentStep.setOpener(user.getUsername());
             currentItem.setStepState(step.getId(), MetaState.BUSY.toString());
-        } else if (currentItem.getEntryValue(step.getId() + "", "step").equals(MetaState.BUSY.toString())) {
-            currentItem.setStepState(step.getId(), MetaState.DONE.toString());
-            for (Step s : step.getNextSteps()) {
-                if (!(s instanceof FinalStep)) {
-                    currentItem.setStepState(s.getId(), MetaState.OPEN.toString());
-                } else {
-                    currentItem.setStepState(s.getId(), MetaState.DONE.toString());
-                    currentItem.setFinished(true);
-                    LOGGER.log(Level.INFO, "[logic] Successfully finished item " + currentItem.getId() + " from workflow " + currentItem.getWorkflowId());
+        } else if (item.getEntryValue(step.getId() + "", "step").equals(MetaState.BUSY.toString())) {
+            if (currentStep.getOpener().equals(user.getUsername())) {
+                currentItem.setStepState(step.getId(), MetaState.DONE.toString());
+                for (Step s : currentStep.getNextSteps()) {
+                    if (!(s instanceof FinalStep)) {
+                        currentItem.setStepState(s.getId(), MetaState.OPEN.toString());
+                    } else {
+                        currentItem.setStepState(s.getId(), MetaState.DONE.toString());
+                        currentItem.setFinished(true);
+                        LOGGER.log(Level.INFO, "[logic] Successfully finished item " + currentItem.getId() + " from workflow " + currentItem.getWorkflowId());
+                    }
                 }
+            } else {
+                throw new UserHasNoPermissionException("Access denied. Current Operator is " + currentStep.getOpener());
             }
+            
         } else {
             throw new ItemNotForwardableException("no forwarding action on item " + currentItem.getId());
         } 
         
         try {
-            workflow.addItem(currentItem);
             p.storeWorkflow(workflow);
         } catch (WorkflowNotExistentException e) {
             e.printStackTrace();
