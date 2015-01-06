@@ -30,6 +30,7 @@ import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 
 /**
@@ -121,10 +122,18 @@ public class WorkflowProcessTest {
      * test start a workflow, without authorization.
      * @throws LogicException 
      */
-    @Test
+    @Test (expected = UserHasNoPermissionException.class)
     public void startWorkflowWithoutAutohrization() throws LogicException {
+        User ez = new User();
+        ez.setUsername("ez");
+    	Role test = new Role();
+        test.setRolename("test");
+        ez.getRoles().add(test);
         
-        processManager.startWorkflow(myWorkflow, "ez");
+        persistence.storeRole(test);
+        persistence.storeUser(ez);
+        
+        processManager.startWorkflow(myWorkflow, ez.getUsername());
         assertTrue(myWorkflow.getItems().size() == 0);
         
     }
@@ -155,9 +164,10 @@ public class WorkflowProcessTest {
     public void handleFirstStep() throws LogicException {
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         
-        final Item item = (Item) myWorkflow.getItems().get(0);
+        Item item = (Item) myWorkflow.getItems().get(0);
         processManager.executeStep(firstStep, item, benni);
         processManager.executeStep(firstStep, item, benni);
+        item = persistence.loadWorkflow(myWorkflow.getId()).getItemByPos(0);
         assertTrue(item.getStepState(firstStep.getId()) == MetaState.DONE
                 .toString());
     }
@@ -172,7 +182,7 @@ public class WorkflowProcessTest {
         processManager.startWorkflow(myWorkflow, benni.getUsername());
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
         processManager.executeStep(myWorkflow.getStepByPos(1), myWorkflow.getItems().get(0), benni);
-        assertTrue(myWorkflow.getItems().get(0).isFinished() == true);
+        assertTrue(persistence.loadWorkflow(myWorkflow.getId()).getItems().get(0).isFinished() == true);
         
     }
 }
