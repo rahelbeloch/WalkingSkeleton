@@ -39,6 +39,7 @@ namespace Admin.ViewModel
         }
 
         public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
+        
         public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
 
         #region properties
@@ -160,6 +161,19 @@ namespace Admin.ViewModel
                     enableUserTextBox = true;
                     enableDescriptionTextBox = true;
                 }
+            }
+        }
+
+        private Role _selectedRole = new Role();
+        public Role selectedRole
+        {
+            get
+            {
+                return _selectedRole;
+            }
+            set
+            {
+                _selectedRole = value;
             }
         }
 
@@ -303,6 +317,8 @@ namespace Admin.ViewModel
                 _choosableSteps.Add(action);
                 _choosableSteps.Add(finalStep);
             }
+
+            
         }
 
         #region commands
@@ -440,6 +456,8 @@ namespace Admin.ViewModel
                         {
                             StartStep startStep = new StartStep();
                             startStep.username = username;
+                            Console.WriteLine("selectedRole: " + selectedRole.rolename);
+                            startStep.roles.Add(selectedRole.rolename);
 
                             _workflow.Add(startStep);
                             _workflowModel.addStep(startStep);
@@ -449,6 +467,7 @@ namespace Admin.ViewModel
                             Action action = new Action();
                             action.username = username;
                             action.description = stepDescription;
+                            action.roles.Add(selectedRole.rolename);
 
                             _workflow.Add(action);
                             _workflowModel.addStep(action);
@@ -456,6 +475,7 @@ namespace Admin.ViewModel
                         else if (_selectedStep is FinalStep)
                         {
                             FinalStep finalStep = new FinalStep();
+                            finalStep.roles.Add(selectedRole.rolename);
 
                             _workflow.Add(finalStep);
                             _workflowModel.addStep(finalStep);
@@ -464,6 +484,9 @@ namespace Admin.ViewModel
                         // reset inputs
                         username = "";
                         stepDescription = "";
+                        // TODO: clear combobox for roles
+                        
+                        
                     }, canExecute =>
                     {
                         if (selectedStep == null)
