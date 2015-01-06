@@ -94,7 +94,7 @@ public class LogicImp implements Logic {
     @Override
     public LogicResponse addWorkflow(Workflow workflow) throws LogicException {
         Workflow oldWorkflow = null;
-        String id;
+        String id, oldWorkflowId;
         boolean finished = true;
         final LogicResponse logicResponse = new LogicResponse();
 
@@ -102,11 +102,13 @@ public class LogicImp implements Logic {
                 && (workflow.getStepByPos(workflow.getSteps().size() - 1) instanceof FinalStep)) {
 
             if (workflow.getId() == null || workflow.getId().equals("")) {
+                System.out.println("1");
                 id = persistence.storeWorkflow(workflow);
                 logicResponse.add(Message.build(MessageTopic.WORKFLOW_INFO,
                         MessageOperation.DEFINITION, id));
             } else {
                 oldWorkflow = persistence.loadWorkflow(workflow.getId());
+                System.out.println("2");
                 if (oldWorkflow != null) {
                     for (Item item : oldWorkflow.getItems()) {
                         if (!item.isFinished()) {
@@ -115,17 +117,37 @@ public class LogicImp implements Logic {
                         }
                     }
                     if (finished) {
-                        id = persistence.storeWorkflow(workflow);
-                        logicResponse.add(Message.build(
-                                MessageTopic.WORKFLOW_INFO,
-                                MessageOperation.DELETION, id));
-                    } else {
-                        oldWorkflow.setActive(false);
-                        workflow.setId("");
+                        System.out.println("3");
                         id = persistence.storeWorkflow(workflow);
                         logicResponse.add(Message.build(
                                 MessageTopic.WORKFLOW_INFO,
                                 MessageOperation.DEFINITION, id));
+                    } else {
+                        //TODO: unterscheidung ob nur aktivieren deaktivieren oder bearbeiten 
+                        //evtl schauen ob sich nur active flag geändert hat
+                        //das geht auch noch schoener
+                        
+                        if (oldWorkflow.isActive() != workflow.isActive()){
+                            System.out.println("4");
+                            oldWorkflow.setActive(workflow.isActive());
+                            oldWorkflowId = persistence.storeWorkflow(oldWorkflow);
+                            logicResponse.add(Message.build(
+                                    MessageTopic.WORKFLOW_INFO,
+                                    MessageOperation.UPDATE, oldWorkflowId));
+                        } else {
+                            System.out.println("5");
+                            oldWorkflow.setActive(false);
+                            oldWorkflowId = persistence.storeWorkflow(oldWorkflow);
+                            workflow.setId("");
+                            workflow.getItems().clear();
+                            id = persistence.storeWorkflow(workflow);
+                            logicResponse.add(Message.build(
+                                    MessageTopic.WORKFLOW_INFO,
+                                    MessageOperation.UPDATE, oldWorkflowId));
+                            logicResponse.add(Message.build(
+                                    MessageTopic.WORKFLOW_INFO,
+                                    MessageOperation.DEFINITION, id));
+                        }
                     }
                 }
             }
