@@ -42,13 +42,6 @@
                                       DisplayMemberPath="rolename"
                                       SelectedItem="{Binding selectedRole}" />
 
-                            <Label Content="Nutzername: " VerticalContentAlignment="Center"/>
-                            <TextBox Width="120" Height="25" IsEnabled="{Binding enableUserTextBox, UpdateSourceTrigger=PropertyChanged}" >
-                                <TextBox.Text>
-                                    <Binding Path="username" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
-                                </TextBox.Text>
-                            </TextBox>
-
                             <Label Content="Beschreibung: " Margin="0,0,0,10" VerticalContentAlignment="Center"/>
                             <TextBox Width="180" Height="25" IsEnabled="{Binding enableDescriptionTextBox, UpdateSourceTrigger=PropertyChanged}">
                                 <TextBox.Text>
