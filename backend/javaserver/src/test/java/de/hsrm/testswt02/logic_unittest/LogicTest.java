@@ -3,6 +3,8 @@ package de.hsrm.testswt02.logic_unittest;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import com.google.inject.Guice;
@@ -15,6 +17,7 @@ import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -39,6 +42,9 @@ public class LogicTest {
     User user;
     User user1;
     User user2;
+    Role role;
+    Role role1;
+    Role role2;
     StartStep startStep;
     StartStep startStep1;
     StartStep startStep2;
@@ -135,21 +141,7 @@ public class LogicTest {
 
     }
 
-    /**
-     * 
-     * @throws LogicException 
-     */
-    @Test
-    public void deleteStepTest() throws LogicException {
-        init();
-        li.addWorkflow(w);
-        final int i = w.getSteps().size();
-        li.deleteStep(w.getId(), action.getId());
-        Workflow workflow = li.getWorkflow(w.getId());
-        assertTrue(workflow.getSteps().size() == i - 1);
-
-    }
-
+  
     /**
      * 
      * @throws PersistenceException 
@@ -208,7 +200,7 @@ public class LogicTest {
     {
         init();
         initExtension();
-
+        
         li.startWorkflow(w.getId(), user.getUsername());
         li.startWorkflow(w.getId(), user.getUsername());
 
@@ -287,20 +279,7 @@ public class LogicTest {
      * open items should show even the workflow is deaktive.
      * @throws LogicException .
      */
-    @Test
-    public void showOpenItemInDeactiveWorkflow() throws LogicException {
-        init();
-        initExtension();
-        
-        final Workflow actWorkflow = li.getAllWorkflows().get(0);
-        final String actUser = actWorkflow.getStepByPos(0).getUsername();
-        actWorkflow.getStepByPos(0).getUsername();
-        li.startWorkflow(actWorkflow.getId(), actUser);
-        final int i = li.getAllWorkflowsForUser(actUser).size();
-        li.deactivateWorkflow(actWorkflow.getId());
-        final int j = li.getAllWorkflowsForUser(actUser).size();
-        assertTrue(i == j);
-    }
+ 
     
 
     /**
@@ -309,18 +288,37 @@ public class LogicTest {
     private void init() {
         final Injector i = Guice.createInjector(new SingleModule());
         li = i.getInstance(Logic.class);
-
+        
+        role = new Role();
+        role.setRolename("role");
+        
         user = new User();
         user.setUsername("0");
-
-        startStep = new StartStep(user.getUsername());
-        action = new Action(user.getUsername(), "description");
+        user.getRoles().add(role);
+        
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add(role.getRolename());
+        
+        startStep = new StartStep(roles);
+        action = new Action(roles, "description");
         finalStep = new FinalStep();
 
         w = new Workflow();
         w.addStep(startStep);
         w.addStep(action);
         w.addStep(finalStep);
+        
+        try {
+			li.addRole(role);
+			li.addUser(user);
+			li.addWorkflow(w);
+		} catch (PersistenceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (LogicException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     
@@ -331,18 +329,32 @@ public class LogicTest {
 
      */
     private void initExtension() throws LogicException {
-        user2 = new User();
-        user2.setUsername("2");
-
-        user1 = new User();
+    	
+    	role1 = new Role();
+    	role1.setRolename("role1");
+    	
+    	role2 = new Role();
+    	role2.setRolename("role2");
+    	
+    	user1 = new User();
         user1.setUsername("1");
-
-        startStep1 = new StartStep(user1.getUsername());
-        startStep2 = new StartStep(user2.getUsername());
-        startStep3 = new StartStep(user2.getUsername());
-        action1 = new Action(user1.getUsername(), "description");
-        action2 = new Action(user2.getUsername(), "description");
-        action3 = new Action(user2.getUsername(), "description");
+        user1.getRoles().add(role1);
+        
+    	user2 = new User();
+        user2.setUsername("2");
+        user2.getRoles().add(role2);
+        
+        ArrayList<String> roles1 = new ArrayList<String>();
+        roles1.add(role1.getRolename());
+        ArrayList<String> roles2 = new ArrayList<String>();
+        roles2.add(role2.getRolename());
+        
+        startStep1 = new StartStep(roles1);
+        startStep2 = new StartStep(roles2);
+        startStep3 = new StartStep(roles2);
+        action1 = new Action(roles1, "description");
+        action2 = new Action(roles2, "description");
+        action3 = new Action(roles2, "description");
         finalStep = new FinalStep();
 
         w1 = new Workflow();
@@ -361,7 +373,6 @@ public class LogicTest {
         w3.addStep(new FinalStep());
 
         try {
-            li.addWorkflow(w);
             li.addWorkflow(w1);
             li.addWorkflow(w2);
             li.addWorkflow(w3);
@@ -371,9 +382,11 @@ public class LogicTest {
         }
         
         try {
+        	li.addRole(role1);
+            li.addRole(role2);
             li.addUser(user2);
             li.addUser(user1);
-            li.addUser(user);
+            
         } catch (UserAlreadyExistsException e) {
             assertTrue(false);
         }
