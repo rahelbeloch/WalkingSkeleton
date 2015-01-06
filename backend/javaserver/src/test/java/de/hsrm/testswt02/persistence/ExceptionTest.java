@@ -45,7 +45,7 @@ public class ExceptionTest {
     }
     
     @Test(expected = UserNotExistentException.class)
-    public void testUserNotExistentException() throws UserNotExistentException {
+    public void testUserNotExistentException() throws PersistenceException {
         db.loadUser("JohnDoe");
     }
     

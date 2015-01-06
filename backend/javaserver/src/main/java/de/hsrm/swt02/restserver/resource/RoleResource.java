@@ -54,7 +54,7 @@ public class RoleResource {
         Role role;
         try {
             role = LOGIC.getRole(rolename);
-        } catch (RoleNotExistentException e1) {
+        } catch (PersistenceException e1) {
             LOGGER.log(Level.INFO, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
@@ -85,7 +85,7 @@ public class RoleResource {
         List<Role> roles;
         try {
             roles = LOGIC.getAllRoles();
-        } catch (RoleNotExistentException e) {
+        } catch (PersistenceException e) {
             LOGGER.log(Level.INFO, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
@@ -195,7 +195,7 @@ public class RoleResource {
         try {
             role = LOGIC.getRole(rolename);
             logicResponse = LOGIC.deleteRole(rolename);
-        } catch (RoleNotExistentException e1) {
+        } catch (PersistenceException e1) {
             LOGGER.log(Level.INFO,e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }

@@ -70,7 +70,6 @@ public class PersistenceImp implements Persistence {
             }
         }
         
-        final Workflow workflowToStore = workflow;
         if (workflow.getItems().size() > 0) {
             for (Item item : workflow.getItems()) {
                 if (item.getId() == null || item.getId().equals("")) {
@@ -86,6 +85,13 @@ public class PersistenceImp implements Persistence {
                     step.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getSteps().size() + 1) + "");
                 }
             }
+        }
+        
+        Workflow workflowToStore;
+        try {
+            workflowToStore = (Workflow)workflow.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new PersistenceException("Storage failed - Cloning did not work.");
         }
         
         workflows.add(workflowToStore);
@@ -236,7 +242,11 @@ public class PersistenceImp implements Persistence {
         
         for (Step s : workflow.getSteps()) {
             if (s.getId().equals(stepId)) {
-                step = s;
+                try {
+                    step = (Step)s.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new StorageFailedException("loading of step" + stepId + "failed.");
+                }
             }
         }
         
@@ -265,7 +275,6 @@ public class PersistenceImp implements Persistence {
         User userToStore;
         try {
             userToStore = (User)user.clone();
-            
         } catch (CloneNotSupportedException e) {
             throw new StorageFailedException("storage of user" + user.getUsername() + "failed.");
         }
@@ -277,11 +286,15 @@ public class PersistenceImp implements Persistence {
     }
 
     @Override
-    public User loadUser(String username) throws UserNotExistentException {
+    public User loadUser(String username) throws PersistenceException {
         User userToReturn = null;
         for (User u : users) {
-            if (u.getUsername().equals(username)) {
-                userToReturn = u;
+            if (u.getUsername().equals(username)) {            
+                try {
+                    userToReturn = (User) u.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new StorageFailedException("loading of user" + username + "failed.");
+                }                
             }
         }
         if (userToReturn != null) {
@@ -314,9 +327,9 @@ public class PersistenceImp implements Persistence {
      * Method for storing a role.
      * @param role is the role to store
      * @return roleId is the Id of the stored role
-     * @throws RoleNotExistentException 
+     * @throws PersistenceException 
      */
-    public void storeRole(Role role) throws RoleNotExistentException {
+    public void storeRole(Role role) throws PersistenceException {
         if (role.getId() == null) {
             role.setId(roles.size() + 1 + "");
         }
@@ -332,7 +345,11 @@ public class PersistenceImp implements Persistence {
                     + roleToRemove.getRolename() + "...");
             this.deleteRole(roleToRemove.getRolename());
         }
-        roles.add((Role) role);
+        try {
+            roles.add((Role) role.clone());
+        } catch (CloneNotSupportedException e) {
+            throw new PersistenceException("Storage failed - Cloning did not work.");
+        }
         this.logger.log(Level.INFO, "[persistence] successfully stored role " + role.getId()
                 + ".");
     }
@@ -344,11 +361,15 @@ public class PersistenceImp implements Persistence {
      * @exception RoleNotExistentException if the requested role is not there
      * @throws RoleNotExistentException
      */
-    public Role loadRole(String rolename) throws RoleNotExistentException {
+    public Role loadRole(String rolename) throws PersistenceException {
         Role roleToReturn = null;
         for (Role r : roles) {
             if (r.getRolename().equals(rolename)) {
-                roleToReturn = r;
+                try {
+                    roleToReturn = (Role)r.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new StorageFailedException("loading of Role" + rolename + "failed.");
+                }
             }
         }
         if (roleToReturn != null) {
@@ -383,29 +404,41 @@ public class PersistenceImp implements Persistence {
     // General Operations on database
     
     @Override
-    public List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException {
-        return workflows;
+    public List<Workflow> loadAllWorkflows() throws PersistenceException {
+        List<Workflow> retList = new LinkedList<>();
+        for (Workflow wf: this.workflows) {
+            retList.add(this.loadWorkflow(wf.getId()));
+        }
+        return retList;
     }
     
     /**
      * Method for loading all roles into a list of roles.
-     * @exception RoleNotExistentException if the requested role is not there
      * @throws RoleNotExistentException
      * @return List<Workflow> is the list we want to load
+     * @throws PersistenceException 
      */
-    public List<Role> loadAllRoles() throws RoleNotExistentException {
-        return this.roles;
+    public List<Role> loadAllRoles() throws PersistenceException {
+        List<Role> retList = new LinkedList<>();
+        for (Role role: this.roles) {
+            retList.add(this.loadRole(role.getRolename()));
+        }
+        return retList;
     }
     
     /**
      * Method for loeading all users into a list of users.
-     * @exception UserNotExistentException if the requested user is not there
      * @throws UserNotExistentException
      * @return List<User> is the list we want to load
+     * @throws PersistenceException 
      */
     @Override
-    public List<User> loadAllUsers() throws UserNotExistentException {
-        return this.users;
+    public List<User> loadAllUsers() throws PersistenceException {
+        List<User> retList = new LinkedList<>();
+        for (User user: this.users) {
+            retList.add(this.loadUser(user.getUsername()));
+        }
+        return retList;
     }
     
     

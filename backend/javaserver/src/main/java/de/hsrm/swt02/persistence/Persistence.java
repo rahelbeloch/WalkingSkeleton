@@ -41,7 +41,7 @@ public interface Persistence {
      * @exception WorkflowNotExistentException if the requested workflow is not there
      * @throws WorkflowNotExistentException
      */
-    List<Workflow> loadAllWorkflows() throws WorkflowNotExistentException;
+    List<Workflow> loadAllWorkflows() throws PersistenceException;
     
     /**
      * Method for loading a workflow.
@@ -68,7 +68,7 @@ public interface Persistence {
      * @exception UserNotExistentException if the requested user is not there.
      * @throws UserNotExistentException
      */
-    User loadUser(String username) throws UserNotExistentException;
+    User loadUser(String username) throws PersistenceException;
 
     /**
      * Only for the walking skeleton:  method for loading a step.
@@ -114,7 +114,7 @@ public interface Persistence {
     * @throws PersistenceExceptio
     * @return roleId is the id of the role
     */
-    void storeRole(Role role) throws RoleNotExistentException;
+    void storeRole(Role role) throws PersistenceException;
     
     /**
      * Method for loading all existing roles.
@@ -122,7 +122,7 @@ public interface Persistence {
      * @throws RoleNotExistentException
      * @return roles is the list of all existing roles
      */
-    List<Role> loadAllRoles() throws RoleNotExistentException;
+    List<Role> loadAllRoles() throws PersistenceException;
     
     /**
      * Method for loading all existing users.
@@ -130,16 +130,15 @@ public interface Persistence {
      * @throws UserNotExistentException
      * @return users is the list of all existing users
      */
-    List<User> loadAllUsers() throws UserNotExistentException;
+    List<User> loadAllUsers() throws PersistenceException;
     
     /**
      * Method for loading a role.
      * @param id is the id of the requested role.
      * @return role is the requested role
-     * @exception RoleNotExistentException if the requested role is not there.
-     * @throws RoleNotExistentException
+     * @exception PersistenceException if the requested role is not there.
      */
-    Role loadRole(String id) throws RoleNotExistentException;
+    Role loadRole(String id) throws PersistenceException;
     
 //    /**
 //     * Method for adding a new user to a role.

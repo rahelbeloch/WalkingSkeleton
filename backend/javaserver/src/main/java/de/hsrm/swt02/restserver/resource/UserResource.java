@@ -54,7 +54,7 @@ public class UserResource {
         User user;
         try {
             user = LOGIC.getUser(username);
-        } catch (UserNotExistentException e1) {
+        } catch (PersistenceException e1) {
             LOGGER.log(Level.INFO, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
@@ -164,7 +164,7 @@ public class UserResource {
         try {
             user = LOGIC.getUser(username);
             logicResponse = LOGIC.deleteUser(username);
-        } catch (UserNotExistentException e1) {
+        } catch (PersistenceException e1) {
             LOGGER.log(Level.INFO,e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
@@ -195,7 +195,7 @@ public class UserResource {
         List<User> users;
         try {
             users = LOGIC.getAllUsers();
-        } catch (UserNotExistentException e) {
+        } catch (PersistenceException e) {
             LOGGER.log(Level.INFO, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
