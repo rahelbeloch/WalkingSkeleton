@@ -1,5 +1,7 @@
 package de.hsrm.swt02.model;
 
+import java.util.ArrayList;
+
 /**
  * This class represents a Final Step. A final step is a manifestation of a Step.
  *
@@ -11,6 +13,10 @@ public class FinalStep extends Step {
     */
     public FinalStep() {
         super();
+    }
+    
+    public FinalStep(ArrayList<String> roles) {
+        this.roles = roles;
     }
     
     /**
