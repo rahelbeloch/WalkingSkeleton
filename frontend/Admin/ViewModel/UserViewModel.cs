@@ -83,6 +83,8 @@ namespace Admin.ViewModel
                     EnteredUsername = _selectedUser.username;
                     PostUserButtonText = "Nutzer ändern";
                     EnableUserTextBox = false;
+                    SelectedUserActivity = _selectedUser.active;
+                    Console.WriteLine(_selectedUser.active);
 
                     foreach (RoleCheckboxRow roleCheckboxRow in _roleCheckboxRows)
                     {
@@ -147,6 +149,24 @@ namespace Admin.ViewModel
             {
                 _postUserButtonText = value;
                 OnChanged("PostUserButtonText");
+            }
+        }
+
+        /// <summary>
+        /// Property to the change the users activity.
+        /// </summary>
+        private bool _selectedUserActivity = false;
+        public bool SelectedUserActivity
+        {
+            get
+            {
+                return _selectedUserActivity;
+            }
+            set
+            {
+                _selectedUserActivity = value;
+                SelectedUser.active = value;
+                OnChanged("SelectedUserActivity");
             }
         }
 
@@ -287,6 +307,7 @@ namespace Admin.ViewModel
         {
             User newUser = new User();
             newUser.username = EnteredUsername;
+            newUser.active = SelectedUserActivity;
 
             foreach (RoleCheckboxRow actRow in RoleCheckboxRows)
             {
