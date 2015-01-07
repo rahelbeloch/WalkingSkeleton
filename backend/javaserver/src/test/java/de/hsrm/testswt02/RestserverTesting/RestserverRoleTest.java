@@ -41,6 +41,9 @@ public class RestserverRoleTest {
     public static RestServer restServer;
     public static Client client;
     public static String targetUrl;
+    public static String headerUsername = "TestAdmin";
+    public static String headerPW = "abc123";
+    public static String headerClientID = "admin";
 
     /**
      * This method sets and starts the REST-Server. Additionally it provides a test client.
@@ -91,6 +94,9 @@ public class RestserverRoleTest {
                 .target(targetUrl)
                 .path("resource/roles")
                 .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         assertEquals(httpstatus, resp.getStatus());
@@ -104,7 +110,11 @@ public class RestserverRoleTest {
     public void testGetNonExistentRole() {
         final int httpstatus = 500;
         final Response resp = client.target(targetUrl).path("resource/roles/testroleabc")
-                .request().delete();
+                .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
+                .delete();
         assertEquals(httpstatus, resp.getStatus());
     }
     
@@ -129,11 +139,18 @@ public class RestserverRoleTest {
         client.target(targetUrl)
               .path("resource/roles")
               .request()
+              .header("username", headerUsername)
+              .header("password", headerPW)
+              .header("clientID",headerClientID)
               .post(Entity.entity(dataform,
                       MediaType.APPLICATION_FORM_URLENCODED));
         
         roleAsString = client.target(targetUrl)
-                .path("resource/roles/testrole2").request().get(String.class);
+                .path("resource/roles/testrole2").request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
+                .get(String.class);
         
         try {
             testRole = (Role)JsonParser.unmarshall(roleAsString, testRole);
@@ -151,7 +168,11 @@ public class RestserverRoleTest {
     public void testDeleteNonExistentRole() {
         final int httpstatus = 500;
         final Response resp = client.target(targetUrl).path("resource/roles/abc")
-                .request().delete();
+                .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
+                .delete();
         assertEquals(httpstatus, resp.getStatus());
     }
     
@@ -177,10 +198,17 @@ public class RestserverRoleTest {
         client.target(targetUrl)
               .path("resource/roles")
               .request()
+              .header("username", headerUsername)
+              .header("password", headerPW)
+              .header("clientID",headerClientID)
               .post(Entity.entity(dataform,
                       MediaType.APPLICATION_FORM_URLENCODED));
         final Response resp = client.target(targetUrl).path("resource/roles/testrole3")
-                .request().delete();
+                .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
+                .delete();
         assertEquals(httpstatus, resp.getStatus());
     }
     
