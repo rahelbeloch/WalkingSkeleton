@@ -29,10 +29,9 @@ namespace Client.ViewModel
             _mainViewModel = mainViewModelInstanz;
             _restRequester = _mainViewModel.restRequester;
         }
-        
+
         /// <summary>
-        /// Method is called when the user has changed on server. Clears the old dashboard and displays new
-        /// by means of the repeated requested user.
+        /// init update-Methode used while the login
         /// </summary>
         private void updateModel()
         {
@@ -65,7 +64,11 @@ namespace Client.ViewModel
             _relevantItems.Clear();
             //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
         }
-
+        /// <summary>
+        /// update a single workflow
+        /// </summary>
+        /// <param name="updatedWorkflow">workflow which has to be updated</param>
+        /// <param name="startableList">List of startables Workflows</param>
         public void addWorkflowToModel(Workflow updatedWorkflow, IList<string> startableList)
         {
             logger.Debug("addWorkflowToModel");
@@ -108,12 +111,21 @@ namespace Client.ViewModel
             }
         }
 
+        /// <summary>
+        /// updates a single item
+        /// </summary>
+        /// <param name="item"></param>
         public void updateItem(Item item)
         {
             DashboardRow fittingRow = getWorkflowRowForItem(item);
             Application.Current.Dispatcher.Invoke(new System.Action(() => fittingRow.actItem = item));
         }
-        
+
+        /// <summary>
+        /// the method searches the dashboardRow for the given item
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>the fitting dashboardrow or null</returns>
         private DashboardRow getWorkflowRowForItem(Item item)
         {
             String workflowId = item.workflowId;
@@ -135,6 +147,12 @@ namespace Client.ViewModel
             return null;
         }
 
+        /// <summary>
+        /// finds the step for the given id in a single workflow
+        /// </summary>
+        /// <param name="id">id of the step</param>
+        /// <param name="workflow"></param>
+        /// <returns>the fitting step or null</returns>
         private Step getStepById(int id, Workflow workflow)
         {
             foreach (Step step in workflow.steps)
@@ -147,6 +165,9 @@ namespace Client.ViewModel
             return null;
         }
 
+        /// <summary>
+        /// clears all data in the model
+        /// </summary>
         private void deleteModel()
         {
             logger.Debug("clear Model()");
@@ -156,6 +177,10 @@ namespace Client.ViewModel
             _dashboardWorkflows.Clear();
         }
 
+        /// <summary>
+        /// starts a workflow with the given id
+        /// </summary>
+        /// <param name="id"></param>
         public void createWorkflow(string id)
         {
             logger.Debug("createWorkflow()");
@@ -170,12 +195,19 @@ namespace Client.ViewModel
             }
         }
 
+        /// <summary>
+        /// set an item a step forward
+        /// </summary>
+        /// <param name="stepId"></param>
+        /// <param name="itemId"></param>
         public void stepForward(string stepId, string itemId)
         {
             logger.Debug("stepForward()");
             _restRequester.StepForward(stepId, itemId);
         }
-
+        /// <summary>
+        /// command to step forward, called from the gui
+        /// </summary>
         private ICommand _stepForwardCommand;
         public ICommand stepForwardCommand
         {
@@ -195,7 +227,10 @@ namespace Client.ViewModel
                 return _stepForwardCommand;
             }
         }
-
+        /// <summary>
+        /// logout command for the user
+        /// the data is deleted an view changes to to login view
+        /// </summary>
         private ICommand _logoutCommand;
         public ICommand logoutCommand
         {
