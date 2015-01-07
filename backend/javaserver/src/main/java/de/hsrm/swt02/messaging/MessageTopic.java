@@ -8,6 +8,7 @@ public enum MessageTopic {
     WORKFLOW_INFO("workflow"),
     USER_INFO("user"),
     ROLE_INFO("role"),
+    FORM_INFO("form"),
     ITEMS_FROM_("item");
     
     private final String protocolInfo;
@@ -21,7 +22,7 @@ public enum MessageTopic {
     }
     
     /**
-     * @return the protocol representation for this MessateTopic 
+     * @return the protocol representation for this MessageTopic 
      */
     public String getProtocolString() {
         return protocolInfo;

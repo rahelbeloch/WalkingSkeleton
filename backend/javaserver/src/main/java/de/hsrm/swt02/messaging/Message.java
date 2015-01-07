@@ -41,7 +41,7 @@ public class Message {
      * 
      * @param topic defines which message topic shall be used
      * @param topicId is the identifier for the topic
-     * @param operation operation defines the rest operation which shall be used
+     * @param operation defines the rest operation which shall be used
      * @param sourceId is the identifier for the related object (persistence)
      * @return a protocol conform message
      */
