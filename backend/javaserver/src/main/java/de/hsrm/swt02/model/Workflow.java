@@ -48,12 +48,21 @@ public class Workflow extends RootElement {
     }
     
     /**
+     * 
+     * @param formular
+     */
+    public void setFormular(Form formular){
+    	this.formular = formular;
+    }
+    
+    /**
      * Formular getter.
      * @return formular
      */
-    public Form getForm() {
+    public Form getFormular() {
         return formular;
     }
+    
     /**
      * Active Getter getter.
      * 

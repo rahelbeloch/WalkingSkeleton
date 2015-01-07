@@ -110,6 +110,8 @@ public class User extends RootElement {
     public void init(User u) {
         super.init(u);
         setUsername(u.getUsername());
+        setActive(u.isActive());
+        setPassword(u.getPassword());
     }
 
     /**
