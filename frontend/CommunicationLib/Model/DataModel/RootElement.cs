@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,12 @@ namespace CommunicationLib.Model
         public override int GetHashCode()
         {
             return this.id.GetHashCode();
+        }
+
+        public T Clone<T>()
+        {
+            var serialized = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<T>(serialized);
         }
     }
 }
