@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -23,6 +22,7 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
+import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
@@ -151,9 +151,9 @@ public class UserResource {
      * @return deleted user, if successful
      */
     @DELETE
-    @Path("users")
+    @Path("users/{username}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteUser(@HeaderParam("username") String username) {
+    public Response deleteUser(@PathParam("username") String username) {
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "DELETE /resource/users/" + username;
         LOGGER.log(Level.INFO, loggingBody);
