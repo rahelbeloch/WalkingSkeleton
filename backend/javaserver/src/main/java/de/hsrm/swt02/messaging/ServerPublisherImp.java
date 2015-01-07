@@ -25,7 +25,7 @@ import de.hsrm.swt02.businesslogic.LogicResponse;
 import de.hsrm.swt02.logging.UseLogger;
 
 /**
- * Class for message publishing on server-side. Uses ActiveMQ as message broker.
+ * Class for message publishing on server-side. Uses Apache's ActiveMQ as message broker.
  * Enables string publishing on a specified message topic.
  */
 @Singleton
