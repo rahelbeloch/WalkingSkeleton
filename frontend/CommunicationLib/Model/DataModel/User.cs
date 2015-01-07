@@ -47,6 +47,7 @@ namespace CommunicationLib.Model
             active = true;
             _roles = new List<Role>();
             _messagingSubs = new List<String>();
+            password = "";
         }
     }
 }
