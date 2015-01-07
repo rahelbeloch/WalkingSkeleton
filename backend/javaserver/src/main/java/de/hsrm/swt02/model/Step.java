@@ -78,7 +78,7 @@ public class Step extends RootElement {
      * Username getter.
      * @return username is the username of the user responsible for the step
      */
-    public ArrayList<String> getRoles() {
+    public ArrayList<String> getRoleIDs() {
         if (roles == null) {
             this.roles = new ArrayList<String>();
         }
@@ -122,7 +122,7 @@ public class Step extends RootElement {
         String ret = "";
         ret += "\tType: " + this.getClass().getSimpleName() + "\n";
         ret += "\tId: " + this.id + "\n";
-        ret += "\tRollen: " + Arrays.toString(this.getRoles().toArray()) + "\n";
+        ret += "\tRollen: " + Arrays.toString(this.getRoleIDs().toArray()) + "\n";
         ret += "\tNextStepIds: " + this.nextStepIds + "\n";
         
         return ret;

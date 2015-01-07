@@ -9,11 +9,18 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.logging.LogConfigurator;
+import de.hsrm.swt02.model.Action;
+import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Role;
+import de.hsrm.swt02.model.StartStep;
+import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
+import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 
 /**
  * This Class tests the initialization of a workflow with Steps.
@@ -73,10 +80,63 @@ public class RoleHandlingTest {
         li.addRoleToUser(assistant.getUsername(), handkerchief);
         li.addRoleToUser(assistant.getUsername(), employee);
         
-        li.deleteRole("employee");
-        System.out.println(li.getAllRoles());
-        System.out.println(li.getUser(boss.getUsername()).getRoles());
+        li.deleteRole(employee.getRolename());
         
         assertEquals(li.getUser(boss.getUsername()).getRoles().size(), 1);
     }
+    
+    @Test(expected = RoleNotExistentException.class)
+    public void DeletionOfRoleStillInUse() throws LogicException {
+        Role chief = new Role();
+        chief.setRolename("chief");
+        Role handkerchief = new Role();
+        handkerchief.setRolename("handkerchief");
+        Role employee = new Role();
+        employee.setRolename("employeee");
+        
+        li.addRole(chief);
+        li.addRole(handkerchief);
+        li.addRole(employee);
+        
+        User boss = new User();
+        boss.setUsername("boss");
+        User assistant = new User();
+        assistant.setUsername("assistant");
+        
+        li.addUser(boss);
+        li.addUser(assistant);
+        
+        li.addRoleToUser(boss.getUsername(), chief);
+        li.addRoleToUser(boss.getUsername(), employee);
+        
+        li.addRoleToUser(assistant.getUsername(), handkerchief);
+        li.addRoleToUser(assistant.getUsername(), employee);
+        
+        StartStep ss = new StartStep();
+        ss.getRoleIDs().add(employee.getRolename());
+        
+        Action action = new Action();
+        action.setDescription("Erste Action");
+        action.getRoleIDs().add(employee.getRolename());
+        
+        FinalStep finalStep = new FinalStep();
+        
+        Workflow workflow = new Workflow();
+        workflow.addStep(ss);
+        workflow.addStep(action);
+        workflow.addStep(finalStep);
+//      even if a role is part of a deactivated workflow the role cannot be deleted
+//      workflow.setActive(false);
+        
+        li.addWorkflow(workflow);
+        
+        assertEquals(li.getWorkflow(workflow.getId()), workflow);
+        assertEquals(li.getRole(employee.getRolename()), employee);
+        assertEquals(li.getWorkflow(workflow.getId()).getStepById(ss.getId()).getRoleIDs(), ss.getRoleIDs());
+        
+        li.deleteRole(employee.getRolename());
+        System.out.println("-- durchgelaufen -- ");
+    }
+    
+    
 }
