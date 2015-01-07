@@ -135,7 +135,6 @@ public class RoleHandlingTest {
         assertEquals(li.getWorkflow(workflow.getId()).getStepById(ss.getId()).getRoleIDs(), ss.getRoleIDs());
         
         li.deleteRole(employee.getRolename());
-        System.out.println("-- durchgelaufen -- ");
     }
     
     

@@ -174,13 +174,8 @@ public class PersistenceTest {
         final Item item1001 = new Item();
         final Item item1002 = new Item();
         workflow1.addItem(item1001);
-        System.out.println("id1 :" + item1001.getId());
         workflow1.addItem(item1002);
-        System.out.println("id2 :" + item1002.getId());
-        
-        System.out.println(workflow1);
         workflowId = db.storeWorkflow(workflow1);
-        System.out.println(db.loadWorkflow(workflowId));
         
         assertEquals(db.loadWorkflow(workflowId), workflow1);
 //      assertEquals(db.loadWorkflow(workflowId).getItems(), workflow1.getItems());
