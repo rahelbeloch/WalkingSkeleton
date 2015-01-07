@@ -26,7 +26,6 @@ import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
