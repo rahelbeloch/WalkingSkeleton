@@ -124,7 +124,7 @@ namespace RestAPI
             {
                 throw;
             }
-
+            Console.WriteLine("resp " + response.Content);
             // Deserialization
             Console.WriteLine(response.Content);
             IList<string> eleList = JsonConvert.DeserializeObject<List<string>>(response.Content, _jsonSettings);
