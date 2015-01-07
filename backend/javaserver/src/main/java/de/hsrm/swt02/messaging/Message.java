@@ -3,7 +3,7 @@ package de.hsrm.swt02.messaging;
 /**
  * This class is used for the LogicResponse. 
  * It contains a topic and a value.
- * A protocol conform can be built by calling build() or buildWithTopicId().
+ * A protocol conform Message can be built by calling build() or buildWithTopicId().
  */
 public class Message {
 
