@@ -19,11 +19,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import de.hsrm.swt02.logging.LogConfigurator;
-import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.restserver.RestServer;
 
 
