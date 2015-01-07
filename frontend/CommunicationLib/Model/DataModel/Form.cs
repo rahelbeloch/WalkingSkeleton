@@ -9,22 +9,24 @@ namespace CommunicationLib.Model
     public class Form : RootElement
     {
         private Dictionary<string, string> _formDef;
-        public Dictionary<string, string> formDef { get { return _formDef; } }
-
+        public Dictionary<string, string> formDef { get { return _formDef; } set { _formDef = value; } }
         private string _description;
         public string description { get { return _description; } set { _description = value; } }
 
         public Form()
             : base()
         {
-            this._formDef = new Dictionary<string, string>();
-            this._description = "";
+            _formDef = new Dictionary<string, string>();
+            _formDef.Add("key", "value");
+            _description = "";
         }
+
         public Form(string description)
             : base()
         {
-            this._formDef = new Dictionary<string, string>();
-            this._description = description;
+            _formDef = new Dictionary<string, string>();
+            _formDef.Add("key", "value");
+            _description = description;
         }
     }
 }

@@ -111,7 +111,7 @@ namespace RestAPI
         {
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow), new string[] { });
-            Console.WriteLine("URL: " + url);
+            
             var request = createRequest(url, Method.GET);
             request.AddParameter("state", "startable", ParameterType.GetOrPost);
 
@@ -124,9 +124,8 @@ namespace RestAPI
             {
                 throw;
             }
-            Console.WriteLine("resp " + response.Content);
+
             // Deserialization
-            Console.WriteLine(response.Content);
             IList<string> eleList = JsonConvert.DeserializeObject<List<string>>(response.Content, _jsonSettings);
             
             return eleList;
@@ -175,7 +174,6 @@ namespace RestAPI
                 throw;
             }
 
-            Console.WriteLine(response.Content);
             IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, _jsonSettings);
             return eleList;
         }
@@ -206,7 +204,6 @@ namespace RestAPI
 
             //Deserialize JSON
             O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
-
             if (desObj.GetType() == typeof(Workflow))
             {
                 convertIdListToReferences(ChangeType<Workflow>(desObj));
@@ -256,6 +253,7 @@ namespace RestAPI
             
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
+            
             // Create request
             var request = createRequest(url, Method.POST);
             
