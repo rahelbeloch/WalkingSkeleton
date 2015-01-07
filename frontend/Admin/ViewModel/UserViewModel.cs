@@ -76,29 +76,41 @@ namespace Admin.ViewModel
                 return _selectedUser;
             }
             set
-            {
+            { 
                 _selectedUser = value;
+
                 if (_selectedUser != null)
                 {
-                    EnteredUsername = _selectedUser.username;
                     PostUserButtonText = "Nutzer ändern";
-                    EnableUserTextBox = false;
-                    SelectedUserActivity = _selectedUser.active;
-                    Console.WriteLine(_selectedUser.active);
-
+                    DetailedUser = _selectedUser.Clone<User>();
                     foreach (RoleCheckboxRow roleCheckboxRow in _roleCheckboxRows)
                     {
-                        roleCheckboxRow.IsSelected = _selectedUser.roles.Any(i => i.id == roleCheckboxRow.Role.id);
+                        roleCheckboxRow.IsSelected = DetailedUser.roles.Any(i => i.id == roleCheckboxRow.Role.id);
                     }
                 }
-                else
-                {
-                    EnableUserTextBox = true;
-                }
+
+                EnableUserTextBox = _selectedUser == null;
                 OnChanged("SelectedUser");
             }
         }
 
+        /// <summary>
+        /// Property to fill detail information with this user.
+        /// This user can either have the data of the SelectedUser, or new inputted data.
+        /// </summary>
+        private User _detailedUser = new User();
+        public User DetailedUser
+        {
+            get
+            {
+                return _detailedUser;
+            }
+            set
+            {
+                _detailedUser = value;
+                OnChanged("DetailedUser");
+            }
+        }
 
         /// <summary>
         /// Property for input from username text box.
@@ -165,7 +177,6 @@ namespace Admin.ViewModel
             set
             {
                 _selectedUserActivity = value;
-                SelectedUser.active = value;
                 OnChanged("SelectedUserActivity");
             }
         }
@@ -188,7 +199,14 @@ namespace Admin.ViewModel
                     {
                         try
                         {
-                            PostUser();
+                            foreach (RoleCheckboxRow actRow in RoleCheckboxRows)
+                            {
+                                if (actRow.IsSelected)
+                                {
+                                    DetailedUser.roles.Add(actRow.Role);
+                                }
+                            }
+                            PostUser(DetailedUser);
                         }
                         catch (BasicException be)
                         {
@@ -196,11 +214,7 @@ namespace Admin.ViewModel
                         }
                     }, canExecute =>
                     {
-                        if (EnteredUsername.Length == 0)
-                        {
-                            return false;
-                        }
-                        return true;
+                        return DetailedUser.id.Length > 0;
                     });
                 }
                 return _addUserCommand;
@@ -331,28 +345,42 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command to delete a role from a user.
+        /// </summary>
+        private ICommand _deleteRoleFromUserCommand;
+        public ICommand DeleteRoleFromUserCommand
+        {
+            get
+            {
+                if (_deleteRoleFromUserCommand == null)
+                {
+                    _deleteRoleFromUserCommand = new ActionCommand(execute =>
+                    {
+                        if (SelectedRole != null)
+                        {
+                            User user = ((User) execute).Clone<User>();
+                            user.roles.Remove(SelectedRole);
+                            PostUser(user);
+                        }
+                    }, canExecute => true);
+                }
+
+                return _deleteRoleFromUserCommand;
+            }
+        }
+
         # endregion
 
         # region METHODS
 
         /// <summary>
-        /// Send a new or updated user to the server.
+        /// Post a given user to the server.
         /// </summary>
-        private void PostUser()
+        /// <param name="user"></param>
+        private void PostUser(User user)
         {
-            User newUser = new User();
-            newUser.username = EnteredUsername;
-            newUser.active = SelectedUserActivity;
-
-            foreach (RoleCheckboxRow actRow in RoleCheckboxRows)
-            {
-                if (actRow.IsSelected)
-                {
-                    newUser.roles.Add(actRow.Role);
-                }
-            }
-
-            _restRequester.PostObject(newUser);
+            _restRequester.PostObject(user);
             DeselectUser();
         }
 
@@ -362,10 +390,9 @@ namespace Admin.ViewModel
         private void DeselectUser()
         {
             SelectedUser = null;
-            EnteredUsername = "";
-            PostUserButtonText = "Nutzer hinzufügen";
-            EnableUserTextBox = true;
+            DetailedUser = new User();
 
+            PostUserButtonText = "Nutzer hinzufügen";
             foreach (RoleCheckboxRow roleCheckboxRow in RoleCheckboxRows)
             {
                 roleCheckboxRow.IsSelected = false;
