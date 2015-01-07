@@ -27,8 +27,7 @@ namespace CommunicationLib.Model
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         private Form _formular;
-        public Form formular { get { return _formular; } }
-
+        public Form formular { get { return _formular; } set { _formular = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.

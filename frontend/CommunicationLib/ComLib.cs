@@ -28,7 +28,7 @@ namespace CommunicationLib
 
         // messaging
         private CommunicationManager _listener;
-        private CommunicationManager listener
+        public CommunicationManager listener
         { 
             get 
             { 
@@ -55,7 +55,7 @@ namespace CommunicationLib
         public void Login(string username, String password)
         {
             _sender.InitializeClientProperties(username, password);
-            _sender.checkUser(username, password);
+            _sender.checkUser(username, password == null? "" : password);
             _listener.RegisterClient(true);
         }
 
