@@ -1,6 +1,7 @@
 package de.hsrm.testswt02.RestserverTesting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -45,6 +46,9 @@ public class RestserverWorkflowTest {
     public static RestServer restServer;
     public static Client client;
     public static String targetUrl;
+    public static String headerUsername = "TestAdmin";
+    public static String headerPW = "abc123";
+    public static String headerClientID = "admin";
 
     /**
      * This method sets and starts the REST-Server. Additionally it provides a test client.
@@ -104,6 +108,9 @@ public class RestserverWorkflowTest {
                 .target(targetUrl)
                 .path("resource/workflows/17")
                 .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
                 .put(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         assertEquals(resp.getStatus(), httpstatus);
@@ -127,6 +134,9 @@ public class RestserverWorkflowTest {
         client.target(targetUrl)
                 .path("resource/workflows")
                 .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         workflowAsString = client.target(targetUrl)
@@ -169,6 +179,9 @@ public class RestserverWorkflowTest {
                 .target(targetUrl)
                 .path("resource/workflows")
                 .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         assertEquals(httpstatus, resp.getStatus());
@@ -225,6 +238,9 @@ public class RestserverWorkflowTest {
                 .target(targetUrl)
                 .path("resource/workflows")
                 .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         
@@ -239,6 +255,9 @@ public class RestserverWorkflowTest {
                 .target(targetUrl)
                 .path("resource/users")
                 .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         

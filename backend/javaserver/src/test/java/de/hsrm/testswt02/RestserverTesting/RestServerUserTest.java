@@ -22,10 +22,10 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.restserver.RestServer;
-import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 
 /**
  * Unit-Test class for user handling on REST-Server.
@@ -43,6 +43,9 @@ public class RestServerUserTest {
     public static RestServer restServer;
     public static Client client;
     public static String targetUrl;
+    public static String headerUsername = "TestAdmin";
+    public static String headerPW = "abc123";
+    public static String headerClientID = "admin";
 
     /**
      * This method sets and starts the REST-Server. Additionally it provides a test client.
@@ -94,6 +97,9 @@ public class RestServerUserTest {
                 .target(targetUrl)
                 .path("resource/users")
                 .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
                 .post(Entity.entity(dataform,
                         MediaType.APPLICATION_FORM_URLENCODED));
         assertEquals(httpstatus, resp.getStatus());
@@ -107,7 +113,7 @@ public class RestServerUserTest {
     public void testGetNonExistentUser() {
         final int httpstatus = 500;
         final Response resp = client.target(targetUrl).path("resource/users")
-                .request().header("username","Testerxy").delete();
+                .request().header("username","Testerxy").get();
         assertEquals(httpstatus, resp.getStatus());
     }
     /**
@@ -132,11 +138,18 @@ public class RestServerUserTest {
         client.target(targetUrl)
               .path("resource/users")
               .request()
+              .header("username", headerUsername)
+              .header("password", headerPW)
+              .header("clientID",headerClientID)
               .post(Entity.entity(dataform,
                       MediaType.APPLICATION_FORM_URLENCODED));
         
         userAsString = client.target(targetUrl)
-                .path("resource/users/Tester2").request().get(String.class);
+                .path("resource/users/Tester2").request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
+                .get(String.class);
         
         try {
             testUser = mapper.readValue(userAsString, User.class);
@@ -153,8 +166,11 @@ public class RestServerUserTest {
     @Test
     public void testDeleteNonExistentUser() {
         final int httpstatus = 500;
-        final Response resp = client.target(targetUrl).path("resource/users")
-                .request().header("username", "Testerabc").delete();
+        final Response resp = client.target(targetUrl).path("resource/users/Testerabc")
+                .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID).delete();
         assertEquals(httpstatus, resp.getStatus());
     }
     
@@ -181,16 +197,23 @@ public class RestServerUserTest {
         client.target(targetUrl)
               .path("resource/users")
               .request()
+              .header("username", headerUsername)
+              .header("password", headerPW)
+              .header("clientID",headerClientID)
               .post(Entity.entity(dataform,
                       MediaType.APPLICATION_FORM_URLENCODED));
-        final Response resp = client.target(targetUrl).path("resource/users")
-                .request().header("username", "Tester3").delete();
+        final Response resp = client.target(targetUrl).path("resource/users/Tester3")
+                .request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("clientID",headerClientID)
+                .delete();
         assertEquals(httpstatus, resp.getStatus());
     }
     
     /**
      * 
-     * Testing if fail Logins are rejected
+     * Testing if fail Logins are rejected.
      * 
      */
     @Test
