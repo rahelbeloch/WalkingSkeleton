@@ -146,32 +146,35 @@ namespace Admin.ViewModel
             CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel);
         }
 
-        public void WorkflowUpdate(Workflow workflow)
+        void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
             Console.WriteLine("neuer Workflow ist angekommen");
-            _workflowViewModel.updateWorkflows(workflow);
-            
+            _workflowViewModel.updateWorkflows(workflow);       
         }
 
-        public void ItemUpdate(Item item)
+        void IDataReceiver.ItemUpdate(Item item)
         {
-            throw new NotImplementedException();
+            // updated items arrive here
         }
 
-        public void UserUpdate(User user)
+        void IDataReceiver.UserUpdate(User user)
         {
             Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.UserUpdate(user)));
         }
 
-        public void RoleUpdate(Role role)
+        void IDataReceiver.RoleUpdate(Role role)
         {
             Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.RoleUpdate(role)));
         }
 
+        void IDataReceiver.FormUpdate(Form form)
+        {
+            // updated forms arrive here
+        }
+
         void IDataReceiver.HandleError(System.Exception e)
         {
-            // route update-handling to subcomponents
-            // route to userViewModel etc. (update-method) to react to changes in my settings
+            // exceptions arrive here
         }
         #endregion
     }
