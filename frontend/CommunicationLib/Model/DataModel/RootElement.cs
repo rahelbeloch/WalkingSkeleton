@@ -16,5 +16,19 @@ namespace CommunicationLib.Model
         /// </summary>
         private String _id;
         public String id { get { return _id; } set { _id = value; } }
+
+        public override bool Equals(object obj)
+        {
+            if(obj.GetType() == this.GetType())
+            {
+                return (obj as RootElement).id == this.id;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.id.GetHashCode();
+        }
     }
 }
