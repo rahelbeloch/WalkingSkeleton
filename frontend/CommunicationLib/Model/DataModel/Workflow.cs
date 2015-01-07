@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using CommunicationLib.Model.DataModel;
+ 
 namespace CommunicationLib.Model
 {
     /// <summary>
@@ -22,6 +23,13 @@ namespace CommunicationLib.Model
         /// </summary>
         private List<Item> _items;
         public List<Item> items { get { return _items; } set { _items = value; } }
+
+        /// <summary>
+        /// Used for (de)serialization. Do not change the property name.
+        /// </summary>
+        private Form _formular;
+        public Form formular { get { return _formular; } }
+
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
