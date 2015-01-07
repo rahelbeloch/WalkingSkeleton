@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComLib.cs" />
+    <Compile Include="Model\DataModel\Form.cs" />
     <Compile Include="Model\DataModel\ViewModelBase.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\ItemNotForwardableException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\UserHasNoPermissionException.cs" />
