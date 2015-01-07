@@ -88,9 +88,9 @@ public class RestserverWorkflowTest {
         final Step step1 = new StartStep();
         final Step step2 = new Step();
         final Step step3 = new FinalStep();
-        step1.setUsername("A");
-        step2.setUsername("B");
-        step3.setUsername("D");
+        step1.getRoles().add("A");
+        step2.getRoles().add("B");
+        step3.getRoles().add("D");
         workflow.addStep(step1);
         workflow.addStep(step2);
         workflow.addStep(step3);
@@ -161,9 +161,9 @@ public class RestserverWorkflowTest {
         final Step step1 = new StartStep();
         final Step step2 = new Step();
         final Step step3 = new FinalStep();
-        step1.setUsername("A");
-        step2.setUsername("B");
-        step3.setUsername("C");
+        step1.getRoles().add("A");
+        step2.getRoles().add("B");
+        step3.getRoles().add("D");
         workflow.addStep(step1);
         workflow.addStep(step2);
         workflow.addStep(step3);
@@ -212,9 +212,9 @@ public class RestserverWorkflowTest {
         final Step step1 = new StartStep();
         final Step step2 = new Step();
         final Step step3 = new FinalStep();
-        step1.setUsername("Belex");
-        step2.setUsername("Belex");
-        step3.setUsername("Belex");
+        step1.getRoles().add("Belex");
+        step2.getRoles().add("Belex");
+        step3.getRoles().add("Belex");
         workflow.addStep(step1);
         workflow.addStep(step2);
         workflow.addStep(step3);
@@ -283,9 +283,8 @@ public class RestserverWorkflowTest {
             recievedWorkflow = wList.get(0);
         }
         
-        assertEquals(workflow.getSteps().get(0).getUsername(),recievedWorkflow.getSteps().get(0).getUsername());
+        assertEquals(workflow.getSteps().get(0).getRoles(),recievedWorkflow.getSteps().get(0).getRoles());
         assertEquals(httpstatus, resp.getStatus());
-        
     }
 
     /**

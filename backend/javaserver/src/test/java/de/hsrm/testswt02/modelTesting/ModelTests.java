@@ -4,6 +4,9 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import de.hsrm.swt02.model.Action;
@@ -29,7 +32,11 @@ public class ModelTests {
     */
     @Test
     public void actionTest() {
-        final Action a = new Action("usernametest", "desctest");
+        Role role = new Role();
+        role.setRolename("testrole");
+        ArrayList<String> roleList = new ArrayList<>();
+        roleList.add(role.getRolename());
+        final Action a = new Action(roleList, "description");
         assertThat(a, instanceOf(Action.class));
     }
 
@@ -83,7 +90,11 @@ public class ModelTests {
      */
     @Test
     public void startStepTest() {
-        final StartStep ss = new StartStep("usernametest");
+        Role role = new Role();
+        role.setRolename("testrole");
+        ArrayList<String> roleList = new ArrayList<>();
+        roleList.add(role.getRolename());
+        final StartStep ss = new StartStep(roleList);
         assertThat(ss, instanceOf(StartStep.class));
     }
 
