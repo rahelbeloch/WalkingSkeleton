@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import de.hsrm.swt02.logging.UseLogger;
+import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
@@ -387,11 +388,17 @@ public class PersistenceImp implements Persistence {
     }
     
     // Form Operations
-    
+    @Override
     public void storeForm() throws PersistenceException {};
-    
+    @Override
     public void deleteForm(String formname) throws PersistenceException {};
-    
-    //public List<Form> loadAllForms() throws PersistenceException {};
+    @Override
+    public Form loadForm(String formname) throws PersistenceException {
+        return null;
+    };
+    @Override
+    public List<Form> loadAllForms() throws PersistenceException {
+        return null;
+    };
     
 }
