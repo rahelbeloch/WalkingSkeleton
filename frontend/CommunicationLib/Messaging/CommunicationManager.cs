@@ -16,40 +16,47 @@ using CommunicationLib.Exception;
 
 namespace CommunicationLib
 {
-
     public class CommunicationManager
     {
-        //type mapping
+        // protocol operations
+        private const string DEFINE_OPERATION = "def";
+        private const string UPDATE_OPERATION = "upd";
+        private const string DELETE_OPERATION = "del";
+
+        // default protocol topics
+        const string WORKFLOW_TOPIC = "WORKFLOW_INFO";
+        // default admin protocol topics
+        const string USER_TOPIC = "USER_INFO";
+        const string ROLE_TOPIC = "ROLE_INFO";
+        const string FORM_TOPIC = "FORM_INFO";
+
+        // type mapping
         private static Dictionary<string, Type> _dataStructures = new Dictionary<string, Type>
         {
             {"workflow", typeof(Workflow)}, 
             {"item", typeof(Item)},
             {"user", typeof(User)},
-            {"role", typeof(Role)}
+            {"role", typeof(Role)},
+            {"form", typeof(Form)}
         };
-        //funktion mapping 
+        // funktion mapping 
         private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
         {
-            {"def", "GetObject"},
-            {"upd", "GetObject"},
-            {"del", "DeleteObject"}
+            {DEFINE_OPERATION, "GetObject"},
+            {UPDATE_OPERATION, "GetObject"},
+            {DELETE_OPERATION, "DeleteObject"}
         };
 
         // RestRequester for server connection
         private IRestRequester _sender;
-        //client referenz
+        // client referenz
         private IDataReceiver _myClient;
-        //default topic for workflow information
-        const string WORKFLOW_TOPIC = "WORKFLOW_INFO";
-        //default topics for user and role information (admin)
-        const string USER_TOPIC = "USER_INFO";
-        const string ROLE_TOPIC = "ROLE_INFO";
 
-        //jms attributes
+        // jms attributes
         private IConnection _connection;
         private IConnectionFactory _connectionFactory;
         private ISession _session;
-        //client subscriptions <topicName, consumer>
+        // client subscriptions <topicName, consumer>
         private Dictionary<string ,IMessageConsumer> _messageSubs;
 
         public CommunicationManager(IRestRequester sender, IDataReceiver myClient)
@@ -58,7 +65,7 @@ namespace CommunicationLib
             _myClient = myClient;
             _messageSubs = new Dictionary<string, IMessageConsumer>();
 
-            //build connection to message broker (not started yet)
+            // build connection to message broker (not started yet)
             _connectionFactory = new ConnectionFactory(Constants.BROKER_URL);
             try
             {
@@ -76,30 +83,17 @@ namespace CommunicationLib
         /// <summary>
         ///  Register the client which uses the ComLib to CommunicationManager.
         ///  Starts a connection to the message broker.
-        ///  Loads all message subscriptions for the client from the server.
-        ///  If there are no subscriptions the default topics will be set.
         ///  Default topics are:
         ///     WORKFLOW_INFO -> for all workflow changes and definitions
-        ///     USER_INFO     -> for all user changes and defintions
-        ///     ROLE_INFO     -> for all role changes and defintions
+        ///     USER_INFO     -> for all user changes and definitions
+        ///     ROLE_INFO     -> for all role changes and definitions
+        ///     FORM_INFO     -> for all form changes and definitions
         ///  (client calls this method if login works)
         /// </summary>
         /// <param name="myClient">the client to register for</param>
-        /// <param name="isAdmin">if this is set to true, client will be set as admin</param>
+        /// <param name="isAdmin">if true, client will be set as admin</param>
         public void RegisterClient(bool isAdmin)
         {
-
-            // get the topis for this client (user)
-            /* restRequester.getUser(userName);
-             * if (subs not empty)
-             * for (topic in topics) {
-             *          messageConsumer
-             *          add to messageSubs
-             * }
-             * else
-             * {
-             */
-
             // workflow topic
             IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(WORKFLOW_TOPIC));
             messageConsumer.Listener += OnMessageReceived;
@@ -115,6 +109,10 @@ namespace CommunicationLib
                 messageConsumer = _session.CreateConsumer(new ActiveMQTopic(ROLE_TOPIC));
                 messageConsumer.Listener += OnMessageReceived;
                 _messageSubs.Add(ROLE_TOPIC, messageConsumer);
+                // form topic
+                messageConsumer = _session.CreateConsumer(new ActiveMQTopic(FORM_TOPIC));
+                messageConsumer.Listener += OnMessageReceived;
+                _messageSubs.Add(FORM_TOPIC, messageConsumer);
             }
 
             _connection.Start();
@@ -128,7 +126,6 @@ namespace CommunicationLib
         /// </summary>
         public void UnregisterClient()
         {
-            this._myClient = null;
             _messageSubs.Clear();
             _connection.Stop();
         }
@@ -145,7 +142,7 @@ namespace CommunicationLib
             if (msg is ITextMessage)
             {
                 ITextMessage tm = msg as ITextMessage;
-                //Logging on Console 
+                // Logging on Console 
                 System.Diagnostics.Trace.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
                 try
                 {
@@ -201,9 +198,7 @@ namespace CommunicationLib
             objId = msgParams[2];
             args = new object [1] { objId };
 
-            /* Problem: generic method can not be called with dynamic generics
-             * -> Reflection: deciding during runtime which generic is placed in which method
-             */
+            // create a generic method object
             MethodInfo method = typeof( RestRequester ).GetMethod( methodName );
             MethodInfo genericMethod = method.MakeGenericMethod( genericType );
 
@@ -218,12 +213,12 @@ namespace CommunicationLib
             // Client update
             if (genericType == typeof(Workflow))
             {
-                _myClient.WorkflowUpdate((Workflow)requestedObj);
+                _myClient.WorkflowUpdate( (Workflow)requestedObj );
                 
                 // register client for item updates from this new workflow
-                if (methodName.Equals("def")) 
+                if (msgParams[1].Equals( DEFINE_OPERATION ) ) 
                 {
-                    Register((Workflow)requestedObj);
+                    RegisterItemSource( (Workflow)requestedObj );
                 }
             }
             else if (genericType == typeof(Item))
@@ -238,6 +233,10 @@ namespace CommunicationLib
             {
                 _myClient.RoleUpdate( (Role)requestedObj );
             }
+            else if (genericType == typeof(Form))
+            {
+                _myClient.FormUpdate( (Form)requestedObj );
+            }
         }
 
         /// <summary>
@@ -245,15 +244,19 @@ namespace CommunicationLib
         /// item activities from this workflow will be received by the CommunicationManager
         /// </summary>
         /// <param name="itemSource">the workflow form which the item info shall be noticed</param>
-        public void Register(Workflow itemSource)
+        public void RegisterItemSource(Workflow itemSource)
         {
             string topicName;
-            
+
             // Create fitting topic
             topicName = "ITEMS_FROM_" + itemSource.id;
-            IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(topicName));
-            messageConsumer.Listener += OnMessageReceived;
-            _messageSubs.Add(topicName, messageConsumer);
+            if (!_messageSubs.ContainsKey(topicName))
+            {
+                System.Diagnostics.Trace.WriteLine("Registration for " + topicName);
+                IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(topicName));
+                messageConsumer.Listener += OnMessageReceived;
+                _messageSubs.Add(topicName, messageConsumer);
+            }
         }
     }
 }
