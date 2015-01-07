@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommunicationLib.Model.DataModel;
  
 namespace CommunicationLib.Model
 {
@@ -46,6 +45,7 @@ namespace CommunicationLib.Model
             active = true;
             _steps = new List<Step>();
             _items = new List<Item>();
+            _formular = new Form();
         }
 
         /// <summary>
