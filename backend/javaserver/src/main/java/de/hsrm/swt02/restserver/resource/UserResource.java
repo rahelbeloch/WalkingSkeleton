@@ -81,7 +81,7 @@ public class UserResource {
     @Consumes("application/x-www-form-urlencoded")
     public Response saveUser(MultivaluedMap<String, String> formParams) {
         LogicResponse logicResponse;
-        final String loggingBody = PREFIX + "POST /resource/users";
+        final String loggingBody = PREFIX + "POST /resource/users ";
         LOGGER.log(Level.INFO, loggingBody);
         final String userAsString = formParams.get("data").get(0);
         User user = new User();
@@ -101,7 +101,7 @@ public class UserResource {
 
         PUBLISHER.publishEvent(logicResponse);
         
-        LOGGER.log(Level.INFO, loggingBody + " User successfully stored.");
+        LOGGER.log(Level.INFO, loggingBody + " User successfully stored." + " Value of active: " + user.isActive());
         return Response.ok("User stored").build();
     }
 
