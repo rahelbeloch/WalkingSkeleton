@@ -24,6 +24,11 @@ public interface ServerPublisher {
      */
     void startBroker() throws ServerPublisherBrokerException;
     
+    /**Publishes multiple Messages from one event(response object).
+     * The method retrieves all messages from the given logicRsponse object 
+     * and publishes them on their specific topic.
+     * @param resp is the container for all messages that shall be published
+     */
     void publishEvent(LogicResponse resp);
 
     /**
