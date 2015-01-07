@@ -23,11 +23,17 @@ namespace Client.ViewModel
     public class DashboardViewModel : ViewModelBase
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        
         public DashboardViewModel(MainViewModel mainViewModelInstanz)
         {
             _mainViewModel = mainViewModelInstanz;
             _restRequester = _mainViewModel.restRequester;
         }
+        
+        /// <summary>
+        /// Method is called when the user has changed on server. Clears the old dashboard and displays new
+        /// by means of the repeated requested user.
+        /// </summary>
         private void updateModel()
         {
             logger.Debug("updatedModel()");
@@ -49,20 +55,22 @@ namespace Client.ViewModel
                 startableList = new List<string>();
             }
             startableList.ToList().ForEach(_startableWorkflows.Add);
+            
             foreach (Workflow workflow in _workflows)
             {
                 addWorkflowToModel(workflow, startableList);
             }
+            
             logger.Debug("Model update finished. Workflows-size: "+_workflows.Count());
             _relevantItems.Clear();
             //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
         }
+
         public void addWorkflowToModel(Workflow updatedWorkflow, IList<string> startableList)
         {
             logger.Debug("addWorkflowToModel");
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
             Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
-
 
             if (startableList == null)
             {
@@ -71,6 +79,7 @@ namespace Client.ViewModel
                 startableList = _restRequester.GetStartablesByUser();
                 startableList.ToList().ForEach(_startableWorkflows.Add);
             }
+
             if (_startableWorkflows.Contains(updatedWorkflow.id))
             {
                 toUpdate.startPermission = true;
@@ -98,11 +107,13 @@ namespace Client.ViewModel
                 toUpdate.addDashboardRow(row);
             }
         }
+
         public void updateItem(Item item)
         {
             DashboardRow fittingRow = getWorkflowRowForItem(item);
             Application.Current.Dispatcher.Invoke(new System.Action(() => fittingRow.actItem = item));
         }
+        
         private DashboardRow getWorkflowRowForItem(Item item)
         {
             String workflowId = item.workflowId;
@@ -123,6 +134,7 @@ namespace Client.ViewModel
             Console.WriteLine("No parent workflow found for item " + item.ToString());
             return null;
         }
+
         private Step getStepById(int id, Workflow workflow)
         {
             foreach (Step step in workflow.steps)
@@ -134,6 +146,7 @@ namespace Client.ViewModel
             }
             return null;
         }
+
         private void deleteModel()
         {
             logger.Debug("clear Model()");
@@ -142,6 +155,7 @@ namespace Client.ViewModel
             _relevantItems.Clear();
             _dashboardWorkflows.Clear();
         }
+
         public void createWorkflow(string id)
         {
             logger.Debug("createWorkflow()");
@@ -155,6 +169,7 @@ namespace Client.ViewModel
                 throw;
             }
         }
+
         public void stepForward(string stepId, string itemId)
         {
             logger.Debug("stepForward()");
@@ -205,6 +220,7 @@ namespace Client.ViewModel
                 return _logoutCommand;
             }
         }
+
         private ICommand _startWorkflowCommand;
         public ICommand startWorkflowCommand
         {
@@ -224,6 +240,7 @@ namespace Client.ViewModel
                 return _startWorkflowCommand;
             }
         }
+
         #region properties
         private IRestRequester _restRequester;
         private MainViewModel _mainViewModel;
@@ -254,6 +271,7 @@ namespace Client.ViewModel
                 }
             }
         }
+
         private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
         public ObservableCollection<Workflow> workflows { get { return _workflows; } }
 
