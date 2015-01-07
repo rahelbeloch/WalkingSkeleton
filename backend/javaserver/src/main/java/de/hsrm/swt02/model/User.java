@@ -23,6 +23,7 @@ public class User extends RootElement {
         super();
         roles = new ArrayList<Role>();
         setActive(true);
+        password = "";
     }
 
     /**
