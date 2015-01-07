@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800">
+             d:DesignHeight="500" d:DesignWidth="800"
+             xmlns:view="clr-namespace:Admin.View">
     
     
     <Grid>
@@ -42,13 +43,13 @@
                                 <Label Content="Nutzername: "  VerticalContentAlignment="Center"/>
                                 <TextBox Width="120" Height="25" IsEnabled="{Binding EnableUserTextBox}">
                                     <TextBox.Text>
-                                        <Binding Path="EnteredUsername" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                        <Binding Path="DetailedUser.id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                     </TextBox.Text>
                                 </TextBox>
                                 <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10" Command="{Binding DeselectCommand}"/>
                             </DockPanel>
                             <DockPanel DockPanel.Dock="Top">
-                                <CheckBox IsChecked="{Binding SelectedUserActivity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
+                                <CheckBox IsChecked="{Binding DetailedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
                             </DockPanel>
 
                             <DockPanel DockPanel.Dock="Top">
@@ -115,7 +116,19 @@
                                     <ListView.View>
                                         <GridView>
                                             <GridView.Columns >
-                                                <GridViewColumn Header="Nutzer in dieser Rolle" DisplayMemberBinding="{Binding id}"/>
+                                                <GridViewColumn Header="Nutzer in dieser Rolle" DisplayMemberBinding="{Binding id}" Width="180"/>
+                                                <GridViewColumn Header="Nutzer aus Rolle entfernen" Width="170">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button
+                                                               Content="Entfernen"
+                                                               Margin="0"
+                                                               VerticalAlignment="Center"
+                                                               Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:RoleUserControl}, Path=DataContext.DeleteRoleFromUserCommand}" 
+                                                               CommandParameter="{Binding }"/>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
                                             </GridView.Columns>
                                         </GridView>
                                     </ListView.View>
