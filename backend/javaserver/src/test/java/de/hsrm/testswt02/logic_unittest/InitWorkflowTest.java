@@ -88,10 +88,6 @@ public class InitWorkflowTest {
         secondStep.setId("2");
         myWorkflow.addStep(firstStep);
         myWorkflow.addStep(secondStep);
-
-        System.out.println(secondStep);
-        System.out.println(firstStep.getNextSteps().get(0));
-
         assertEquals(secondStep, firstStep.getNextSteps().get(0));
     }
 
