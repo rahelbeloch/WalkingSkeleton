@@ -7,11 +7,6 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 
-
-
-
-
-
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
 import javax.jms.JMSException;
@@ -170,7 +165,7 @@ public class ServerPublisherImp implements ServerPublisher {
         }
     }
     
-    /**Publishes multiple Messages.
+    /**Publishes multiple Messages from one event(response object).
      * The method retrieves all messages from the given logicRsponse object 
      * and publishes them on their specific topic.
      * @param resp is the container for all messages that shall be published
