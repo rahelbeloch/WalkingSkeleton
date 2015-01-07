@@ -277,7 +277,7 @@ public interface Logic {
      * @return LogicResponse object
      * @throws PersistenceException if persistence errors occur
      */
-    LogicResponse addRoleToUser(String username, Role role) throws PersistenceException;
+    LogicResponse addRoleToUser(User user, Role role) throws PersistenceException;
     
     /**
      * Method for deleting an existing role from the persistance. The users who

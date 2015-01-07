@@ -223,6 +223,7 @@ public class PersistenceImp implements Persistence {
     
     @Override
     public void storeUser(User user) throws PersistenceException {
+        assert (user.getUsername() != null);
         User userToRemove = null;
         for (User u: users) {
             if (u.getUsername().equals(user.getUsername())) {

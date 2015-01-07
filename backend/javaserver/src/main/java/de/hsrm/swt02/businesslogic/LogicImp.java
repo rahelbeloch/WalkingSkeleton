@@ -566,7 +566,7 @@ public class LogicImp implements Logic {
         final User userToCheck = persistence.loadUser(username);
         boolean authorized = false;
         for (String rolename : step.getRoleIDs()) {
-            if (userToCheck.getRoles().contains(persistence.loadRole(rolename))) {
+            if (userToCheck.hasRole(persistence.loadRole(rolename))) {
                 authorized = true;
                 break;
             }
@@ -636,18 +636,18 @@ public class LogicImp implements Logic {
      *             objects
      */
     @Override
-    public LogicResponse addRoleToUser(String username, Role role)
+    public LogicResponse addRoleToUser(User user, Role role)
             throws PersistenceException 
     {
-        final User user = persistence.loadUser(username);
+        final User userToUpdate = persistence.loadUser(user.getUsername());
         final Role roleToAdd = persistence.loadRole(role.getRolename());
-        user.getRoles().add(roleToAdd);
-        persistence.storeUser(user);
+        userToUpdate.addRole(roleToAdd);
+        persistence.storeUser(userToUpdate);
         
         final LogicResponse logicResponse = new LogicResponse();
 
         logicResponse.add(Message.build(MessageTopic.USER_INFO,
-                MessageOperation.UPDATE, username));
+                MessageOperation.UPDATE, user.getUsername()));
         return logicResponse;
     } 
     
@@ -659,8 +659,8 @@ public class LogicImp implements Logic {
      */
     public void deleteRoleFromUser(User user, Role role) throws PersistenceException {
         final User userToUpdate = persistence.loadUser(user.getUsername()); 
-        if (userToUpdate.getRoles().contains(role)) {
-            userToUpdate.getRoles().remove(role);
+        if (userToUpdate.hasRole(role)) {
+            userToUpdate.removeRole(role);
             persistence.storeUser(userToUpdate);
             logger.log(Level.INFO, "[Logic] successfully removed role " + role.getRolename() + " from user " + user.getUsername() + ".");
         }
@@ -681,7 +681,6 @@ public class LogicImp implements Logic {
         // check if role is used in any step of an workflow 
         boolean roleInUse = false;
         for (Workflow workflow : this.getAllWorkflows()) {
-            System.out.println(workflow);
             for (Step step : workflow.getSteps()) {
                 if (step.getRoleIDs().contains(persistence.loadRole(rolename).getId())) {
                     roleInUse = true;
@@ -786,9 +785,9 @@ public class LogicImp implements Logic {
         role3.setRolename("admin");
         addRole(role3);
 
-        user1.getRoles().add(role1);
-        user2.getRoles().add(role2);
-        user4.getRoles().add(role3);
+        user1.addRole(role1);
+        user2.addRole(role2);
+        user4.addRole(role3);
 
         addUser(user1);
         addUser(user2);

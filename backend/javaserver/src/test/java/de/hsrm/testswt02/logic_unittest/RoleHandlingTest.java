@@ -16,7 +16,6 @@ import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
-import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
@@ -54,6 +53,22 @@ public class RoleHandlingTest {
     }
     
     @Test
+    public void GiveRoleOnlyOnce() throws PersistenceException {
+        Role employee = new Role();
+        employee.setRolename("employee");
+        li.addRole(employee);
+        
+        User testuser = new User();
+        testuser.setUsername("testuser");
+        li.addUser(testuser);
+        
+        li.addRoleToUser(testuser, employee);
+        li.addRoleToUser(testuser, employee);
+        
+        assertEquals(li.getUser(testuser.getUsername()).getRoles().size(), 1);
+    }
+    
+    @Test
     public void DeletionOfRolesTest() throws PersistenceException {
         Role chief = new Role();
         chief.setRolename("chief");
@@ -74,11 +89,11 @@ public class RoleHandlingTest {
         li.addUser(boss);
         li.addUser(assistant);
         
-        li.addRoleToUser(boss.getUsername(), chief);
-        li.addRoleToUser(boss.getUsername(), employee);
+        li.addRoleToUser(boss, chief);
+        li.addRoleToUser(boss, employee);
         
-        li.addRoleToUser(assistant.getUsername(), handkerchief);
-        li.addRoleToUser(assistant.getUsername(), employee);
+        li.addRoleToUser(assistant, handkerchief);
+        li.addRoleToUser(assistant, employee);
         
         li.deleteRole(employee.getRolename());
         
@@ -92,7 +107,7 @@ public class RoleHandlingTest {
         Role handkerchief = new Role();
         handkerchief.setRolename("handkerchief");
         Role employee = new Role();
-        employee.setRolename("employeee");
+        employee.setRolename("employee");
         
         li.addRole(chief);
         li.addRole(handkerchief);
@@ -106,11 +121,11 @@ public class RoleHandlingTest {
         li.addUser(boss);
         li.addUser(assistant);
         
-        li.addRoleToUser(boss.getUsername(), chief);
-        li.addRoleToUser(boss.getUsername(), employee);
+        li.addRoleToUser(boss, chief);
+        li.addRoleToUser(boss, employee);
         
-        li.addRoleToUser(assistant.getUsername(), handkerchief);
-        li.addRoleToUser(assistant.getUsername(), employee);
+        li.addRoleToUser(assistant, handkerchief);
+        li.addRoleToUser(assistant, employee);
         
         StartStep ss = new StartStep();
         ss.getRoleIDs().add(employee.getRolename());

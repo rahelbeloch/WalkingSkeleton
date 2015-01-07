@@ -93,6 +93,37 @@ public class User extends RootElement {
     }
     
     /**
+     * adds a new role to this user.
+     * 
+     * @param role to add
+     */
+    public void addRole(Role role) {
+        if (!this.roles.contains(role)) {
+            this.roles.add(role);
+        }
+    }
+    
+    /**
+     * removes a role from this user.
+     * 
+     * @param role to remove
+     */
+    public void removeRole(Role role) {
+        if (this.roles.contains(role)) {
+            this.roles.remove(role);            
+        }
+    }
+    
+    /**
+     * checks if this user has a certain role.
+     * 
+     * @param role to check
+     */
+    public boolean hasRole(Role role) {
+        return this.roles.contains(role);
+    }
+    
+    /**
      * Subs getter. There is no setter because roles is an ArrayList.
      * 
      * @return roles is the list of roles of the user
