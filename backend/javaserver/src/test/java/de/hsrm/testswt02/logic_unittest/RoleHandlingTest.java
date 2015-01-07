@@ -14,7 +14,6 @@ import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.RoleAlreadyExistsException;
 
 /**
  * This Class tests the initialization of a workflow with Steps.

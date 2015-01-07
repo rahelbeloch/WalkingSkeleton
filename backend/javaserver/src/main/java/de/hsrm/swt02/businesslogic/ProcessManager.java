@@ -11,7 +11,6 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
-import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
  * Interface for ProcessManager. (Due to Dependency Injection)
