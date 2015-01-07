@@ -74,6 +74,8 @@ public class RoleHandlingTest {
         li.addRoleToUser(assistant.getUsername(), employee);
         
         li.deleteRole("employee");
+        System.out.println(li.getAllRoles());
+        System.out.println(li.getUser(boss.getUsername()).getRoles());
         
         assertEquals(li.getUser(boss.getUsername()).getRoles().size(), 1);
     }

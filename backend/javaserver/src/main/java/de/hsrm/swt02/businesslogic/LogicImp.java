@@ -16,6 +16,7 @@ import de.hsrm.swt02.messaging.MessageOperation;
 import de.hsrm.swt02.messaging.MessageTopic;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
+import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
 import de.hsrm.swt02.model.Role;

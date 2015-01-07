@@ -6,6 +6,7 @@ import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
+import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
