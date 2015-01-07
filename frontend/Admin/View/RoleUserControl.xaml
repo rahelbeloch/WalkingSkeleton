@@ -86,7 +86,7 @@
                         </Grid.ColumnDefinitions>
 
                         <DockPanel Grid.Column="0">
-                            <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding RoleCollection}">
+                            <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding RoleCollection}" SelectedValue="{Binding SelectedRole, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
                                 <ListView.View>
                                     <GridView>
                                         <GridView.Columns >
@@ -106,6 +106,20 @@
                                     </TextBox.Text>
                                 </TextBox>
                                 <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle hinzufügen" Height="25" Margin="10" Command="{Binding AddRoleCommand}"/>
+                            </DockPanel>
+                            
+                            <DockPanel DockPanel.Dock="Top" >
+                                <Label Content="Nutzer in dieser Rolle: " DockPanel.Dock="Top"/>
+
+                                <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding UserInSelectedRole}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridView.Columns >
+                                                <GridViewColumn Header="Nutzer in dieser Rolle" DisplayMemberBinding="{Binding id}"/>
+                                            </GridView.Columns>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
                             </DockPanel>
                         </DockPanel>
                     </Grid>

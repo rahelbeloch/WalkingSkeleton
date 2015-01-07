@@ -253,6 +253,41 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// Property for currently selected Role.
+        /// </summary>
+        private Role _selectedRole;
+        public Role SelectedRole
+        {
+            get
+            {
+                return _selectedRole;
+            }
+            set
+            {
+                _selectedRole = value;
+                UpdateUserInSelectedRoles();
+                OnChanged("SelectedRole");
+            }
+        }
+
+        /// <summary>
+        /// Property to show users who have the currently selected Role.
+        /// </summary>
+        private ObservableCollection<User> _userInSelectedRole = new ObservableCollection<User>();
+        public ObservableCollection<User> UserInSelectedRole
+        {
+            get
+            {
+                return _userInSelectedRole;
+            }
+            set
+            {
+                _userInSelectedRole = value;
+                OnChanged("UserInSelectedRole");
+            }
+        }
+
         # endregion
 
         # region ROLE COMMANDS
@@ -354,7 +389,7 @@ namespace Admin.ViewModel
             {
                 _mainViewModel.userCollection.Add(newUser);
             }
-            
+            UpdateUserInSelectedRoles();
         }
 
         /// <summary>
@@ -365,6 +400,22 @@ namespace Admin.ViewModel
         {
             _mainViewModel.roleCollection.Add(updatedRole);
             RoleCheckboxRows.Add(new RoleCheckboxRow(updatedRole, false));
+            UpdateUserInSelectedRoles();
+        }
+
+        /// <summary>
+        /// Update the list view which shows all users who have the selected role.
+        /// </summary>
+        private void UpdateUserInSelectedRoles()
+        {
+            if (SelectedRole != null)
+            {
+                UserInSelectedRole = new ObservableCollection<User>(_mainViewModel.userCollection.Where(u => u.roles.Contains(_selectedRole)));
+            }
+            else
+            {
+                UserInSelectedRole.Clear();
+            }
         }
 
         # endregion
