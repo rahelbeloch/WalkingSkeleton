@@ -277,6 +277,20 @@ namespace Client.ViewModel
         }
 
         #region properties
+        private DashboardRow _selectedRow;
+        public DashboardRow selectedRow
+        {
+            get
+            {
+                return _selectedRow;
+            }
+            set
+            {
+                _selectedRow = value;
+                OnChanged("selectedRow");
+            }
+        }
+
         private IRestRequester _restRequester;
         private MainViewModel _mainViewModel;
 
