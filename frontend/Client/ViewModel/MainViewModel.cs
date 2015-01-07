@@ -184,6 +184,13 @@ namespace Client.ViewModel
             // route update-handling to subcomponents
             // route to userViewModel etc. (update-method) to react to changes in my settings
         }
+
+        void IDataReceiver.FormUpdate(Form form)
+        {
+            // route update-handling to subcomponents
+            // route to userViewModel etc. (update-method) to react to changes in my settings
+        }
+
         void IDataReceiver.HandleError(System.Exception e)
         {
             MessageBox.Show(e.Message);

@@ -58,6 +58,7 @@ namespace Client.ViewModel
             foreach (Workflow workflow in _workflows)
             {
                 addWorkflowToModel(workflow, startableList);
+                _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
             }
             
             logger.Debug("Model update finished. Workflows-size: "+_workflows.Count());
@@ -141,6 +142,12 @@ namespace Client.ViewModel
                         }
                     }
                     Console.WriteLine("No similar item was found for " + item.ToString());
+                    
+                    // create DashboardRow for item
+                    Step actStep = getStepById(item.getActiveStepId(), workflow.actWorkflow);
+                    DashboardRow newDashbRow = new DashboardRow(item, actStep, userName);
+                    workflow.addDashboardRow(newDashbRow);
+                    return newDashbRow;
                 }
             }
             Console.WriteLine("No parent workflow found for item " + item.ToString());
