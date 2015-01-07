@@ -315,5 +315,10 @@ public interface Logic {
     List<Workflow> getStartableWorkflows(String username) throws LogicException;
 
     Role getRole(String rolename) throws PersistenceException;
+    
+    LogicResponse addForm(Form form);
+    LogicResponse deleteForm(String formId);
+    LogicResponse updateItem(Item item);
+    List <Form> getAllForms();
 
 }

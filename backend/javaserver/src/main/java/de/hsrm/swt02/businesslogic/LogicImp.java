@@ -85,7 +85,12 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method store a workflow and distribute a id.
+     * This method stores a workflow and distribute a id. This method is used for saving a new workflow and
+     * for editting a workflow. It is also used for updating a workflow. If a completely new workflow should be saved
+     * it doesn't have an id (means it's null or ""). If a workflow is to be edited it already has an id. 
+     * If a workflow doesn't have any unfinished items (or none at all) it will be overwritten. Otherwise the "original" workflow
+     * will be deactivated and a new workflow (with only steps, other attributes are reseted) will be saved.
+     * Should a workflow be de-/activated then its state will be setted on the original one which will be saved.
      * 
      * @param workflow is new workflow which should be stored
      * @throws LogicException is thrown if errors occur while storing the
@@ -99,16 +104,14 @@ public class LogicImp implements Logic {
         final LogicResponse logicResponse = new LogicResponse();
 
         if ((workflow.getStepByPos(0) instanceof StartStep)
-                && (workflow.getStepByPos(workflow.getSteps().size() - 1) instanceof FinalStep)) {
-
+                && (workflow.getStepByPos(workflow.getSteps().size() - 1) instanceof FinalStep)) 
+        {
             if (workflow.getId() == null || workflow.getId().equals("")) {
-                System.out.println("1");
                 id = persistence.storeWorkflow(workflow);
                 logicResponse.add(Message.build(MessageTopic.WORKFLOW_INFO,
                         MessageOperation.DEFINITION, id));
             } else {
                 oldWorkflow = persistence.loadWorkflow(workflow.getId());
-                System.out.println("2");
                 if (oldWorkflow != null) {
                     for (Item item : oldWorkflow.getItems()) {
                         if (!item.isFinished()) {
@@ -117,28 +120,23 @@ public class LogicImp implements Logic {
                         }
                     }
                     if (finished) {
-                        System.out.println("3");
                         id = persistence.storeWorkflow(workflow);
                         logicResponse.add(Message.build(
                                 MessageTopic.WORKFLOW_INFO,
                                 MessageOperation.DEFINITION, id));
                     } else {
-                        //TODO: unterscheidung ob nur aktivieren deaktivieren oder bearbeiten 
-                        //evtl schauen ob sich nur active flag geändert hat
-                        //das geht auch noch schoener
                         
-                        if (oldWorkflow.isActive() != workflow.isActive()){
-                            System.out.println("4");
+                        if (oldWorkflow.isActive() != workflow.isActive()) {
                             oldWorkflow.setActive(workflow.isActive());
                             oldWorkflowId = persistence.storeWorkflow(oldWorkflow);
                             logicResponse.add(Message.build(
                                     MessageTopic.WORKFLOW_INFO,
                                     MessageOperation.UPDATE, oldWorkflowId));
                         } else {
-                            System.out.println("5");
                             oldWorkflow.setActive(false);
                             oldWorkflowId = persistence.storeWorkflow(oldWorkflow);
                             workflow.setId("");
+                            workflow.setActive(true);
                             workflow.getItems().clear();
                             id = persistence.storeWorkflow(workflow);
                             logicResponse.add(Message.build(
@@ -820,5 +818,29 @@ public class LogicImp implements Logic {
         workflow1.addStep(finalStep);
 
         addWorkflow(workflow1);
+    }
+
+    @Override
+    public LogicResponse addForm(Form form) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public LogicResponse deleteForm(String formId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public LogicResponse updateItem(Item item) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Form> getAllForms() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
