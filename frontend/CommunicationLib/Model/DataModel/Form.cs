@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunicationLib.Model.DataModel
+namespace CommunicationLib.Model
 {
-    class Form : RootElement
+    public class Form : RootElement
     {
         private Dictionary<string, string> _formDef;
         public Dictionary<string, string> formDef { get { return _formDef; } }
