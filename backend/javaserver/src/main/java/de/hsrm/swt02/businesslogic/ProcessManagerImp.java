@@ -13,7 +13,6 @@ import de.hsrm.swt02.businesslogic.processors.StepProcessor;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.Item;
-import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;

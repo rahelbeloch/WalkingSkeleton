@@ -1,7 +1,7 @@
 package de.hsrm.swt02.logging;
 
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Logging class Can be used for any class. The logger has a logging level which

@@ -3,8 +3,6 @@ package de.hsrm.swt02.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * This class represents an Item. It extends the class RootElement, so it can
  * have an Id.
