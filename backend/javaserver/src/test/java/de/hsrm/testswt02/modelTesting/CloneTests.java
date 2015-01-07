@@ -34,20 +34,22 @@ public class CloneTests {
     public void actionCloneTest() throws CloneNotSupportedException {
         final Action a = new Action();
         Action clone = new Action();
+        Role role = new Role();
+        role.setRolename("testrolle");
 
         a.setId("1");
         a.setDescription("desc");
-        a.setUsername("user");
-        a.setRolename("role");
+        a.getRoles().add(role.getRolename());
         a.getNextStepIds().add("2");
         a.getNextStepIds().add("3");
+        a.setOpener("user4711");
 
         clone = (Action) a.clone();
 
         assertTrue(clone.getId().equals(a.getId()));
         assertTrue(clone.getDescription().equals(a.getDescription()));
-        assertTrue(clone.getUsername().equals(a.getUsername()));
-        assertTrue(clone.getRolename().equals(a.getRolename()));
+        assertTrue(clone.getRoles().equals(a.getRoles()));
+        assertTrue(clone.getOpener().equals(a.getOpener()));
         assertTrue(clone.getNextStepIds().get(0) == a.getNextStepIds().get(0));
         assertTrue(clone.getNextStepIds().get(1) == a.getNextStepIds().get(1));
 
@@ -67,18 +69,19 @@ public class CloneTests {
     public void startStepCloneTest() throws CloneNotSupportedException {
         final StartStep ss = new StartStep();
         StartStep clone = new StartStep();
+        Role role = new Role();
+        role.setRolename("testrolle");
 
         ss.setId("1");
-        ss.setUsername("user");
-        ss.setRolename("role");
+        ss.getRoles().add(role.getRolename());
         ss.getNextStepIds().add("2");
         ss.getNextStepIds().add("3");
-
+        ss.setOpener("user4711");
         clone = (StartStep) ss.clone();
 
         assertTrue(clone.getId().equals(ss.getId()));
-        assertTrue(clone.getUsername().equals(ss.getUsername()));
-        assertTrue(clone.getRolename().equals(ss.getRolename()));
+        assertTrue(clone.getRoles().equals(ss.getRoles()));
+        assertTrue(clone.getOpener().equals(ss.getOpener()));
         assertTrue(clone.getNextStepIds().get(0) == ss.getNextStepIds().get(0));
         assertTrue(clone.getNextStepIds().get(1) == ss.getNextStepIds().get(1));
 
@@ -98,18 +101,20 @@ public class CloneTests {
     public void finalStepCloneTest() throws CloneNotSupportedException {
         final FinalStep fs = new FinalStep();
         FinalStep clone = new FinalStep();
+        Role role = new Role();
+        role.setRolename("testrolle");
 
         fs.setId("1");
-        fs.setUsername("user");
-        fs.setRolename("role");
+        fs.getRoles().add(role.getRolename());
+        fs.setOpener("user4711");
         fs.getNextStepIds().add("2");
         fs.getNextStepIds().add("3");
 
         clone = (FinalStep) fs.clone();
 
         assertTrue(clone.getId().equals(fs.getId()));
-        assertTrue(clone.getUsername().equals("user"));
-        assertTrue(clone.getRolename().equals(fs.getRolename()));
+        assertTrue(clone.getOpener().equals("user4711"));
+        assertTrue(clone.getRoles().equals(fs.getRoles()));
         assertTrue(clone.getNextStepIds().get(0).equals("2"));
         assertTrue(clone.getNextStepIds().get(1).equals("3"));
 
@@ -129,18 +134,20 @@ public class CloneTests {
     public void stepCloneTest() throws CloneNotSupportedException {
         final Step s = new Step();
         Step clone = new Step();
+        Role role = new Role();
+        role.setRolename("testrolle");
 
         s.setId("1");
-        s.setUsername("user");
-        s.setRolename("role");
+        s.getRoles().add(role.getRolename());
+        s.setOpener("user4711");
         s.getNextStepIds().add("2");
         s.getNextStepIds().add("3");
 
         clone = (Step) s.clone();
 
         assertTrue(clone.getId().equals(s.getId()));
-        assertTrue(clone.getUsername().equals("user"));
-        assertTrue(clone.getRolename().equals(s.getRolename()));
+        assertTrue(clone.getOpener().equals("user4711"));
+        assertTrue(clone.getRoles().equals(s.getRoles()));
         assertTrue(clone.getNextStepIds().get(0).equals("2"));
         assertTrue(clone.getNextStepIds().get(1).equals("3"));
 
@@ -277,15 +284,21 @@ public class CloneTests {
         final MetaEntry m1 = new MetaEntry();
         final MetaEntry m2 = new MetaEntry();
 
+        Role role1 = new Role();
+        Role role2 = new Role();
+        role1.setRolename("testrolle_1");
+        role2.setRolename("testrolle_2");
+
+        
         w.setId("1");
         w.setActive(true);
         s1.setId("1");
-        s1.setUsername("user1");
-        s1.setRolename("role1");
+        s1.getRoles().add(role1.getRolename());
+        s1.setOpener("user4711");
         s1.getNextStepIds().add("2");
         s2.setId("2");
-        s2.setUsername("user2");
-        s2.setRolename("role2");
+        s2.getRoles().add(role2.getRolename());
+        s2.setOpener("user4711");
         w.getSteps().add(s1);
         w.getSteps().add(s2);
 
@@ -307,22 +320,22 @@ public class CloneTests {
 
         assertTrue(clone.getSteps().get(0).getId().equals(w.getSteps().get(0)
                 .getId()));
-        assertTrue(clone.getSteps().get(0).getUsername()
-                .equals(w.getSteps().get(0).getUsername()));
-        assertTrue(clone.getSteps().get(0).getRolename()
-                .equals(w.getSteps().get(0).getRolename()));
+        assertTrue(clone.getSteps().get(0).getOpener()
+                .equals(w.getSteps().get(0).getOpener()));
+        assertTrue(clone.getSteps().get(0).getRoles()
+                .equals(w.getSteps().get(0).getRoles()));
         assertTrue(clone.getSteps().get(1).getId() == w.getSteps().get(1)
                 .getId());
-        assertTrue(clone.getSteps().get(1).getUsername()
-                .equals(w.getSteps().get(1).getUsername()));
-        assertTrue(clone.getSteps().get(1).getRolename()
-                .equals(w.getSteps().get(1).getRolename()));
+        assertTrue(clone.getSteps().get(1).getOpener()
+                .equals(w.getSteps().get(1).getOpener()));
+        assertTrue(clone.getSteps().get(1).getRoles()
+                .equals(w.getSteps().get(1).getRoles()));
 
         // Testing if convertIdsToReferences in cloning process works
         assertTrue(clone.getSteps().get(0).getNextSteps().get(0).getId().equals(w
                 .getSteps().get(1).getId()));
-        assertTrue(clone.getSteps().get(0).getNextSteps().get(0).getUsername()
-                .equals(w.getSteps().get(1).getUsername()));
+        assertTrue(clone.getSteps().get(0).getNextSteps().get(0).getRoles()
+                .equals(w.getSteps().get(1).getRoles()));
 
         assertTrue(clone.getItems().get(0).getMetadata().get(0).getGroup()
                 .equals(w.getItems().get(0).getMetadata().get(0).getGroup()));

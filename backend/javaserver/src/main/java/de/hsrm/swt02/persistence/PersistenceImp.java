@@ -134,47 +134,6 @@ public class PersistenceImp implements Persistence {
         }
     }
     
-    // Item Operations
-    
-//    /**
-//     * Method for adding an item to the workflow.
-//     * @param workflowId is the needed workflowId
-//     * @param item is the needed item
-//     * @return itemId is the stored item
-//     * @exception PersistenceException indicates errors in storage methods
-//     * @throws PersistenceException 
-//     */
-//    public Workflow addItemToWorkflow(Workflow workflow, Item item) throws PersistenceException {
-//        Item itemToRemove = null;
-//        boolean itemExists = false;
-//        
-//        if(item.getId() == null){
-//            item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");
-//            item.setWorkflowId(workflow.getId());
-//            itemExists = true;
-//        }
-//        if (!itemExists){
-//            for (Item i : workflow.getItems()) {
-//                if (i.getId().equals(item.getId())) {
-//                    itemToRemove = i; 
-//                    itemExists = true;
-//                    break;
-//                }
-//            }
-//        }
-//        if (itemToRemove != null) {
-//            this.deleteItem(itemToRemove.getId());
-//            this.logger.log(Level.INFO, "[persistence] overwriting item " + itemToRemove.getId() + "...");
-//        }
-//        
-//        try {
-//            workflow.addItem((Item)item.clone());
-//        } catch (CloneNotSupportedException e) {
-//            throw new StorageFailedException("storage of item" + item.getId() + "to workflow " + workflow.getId() + "failed."); 
-//        }
-//        return workflow;
-//    }
-    
     /**
      * Method for getting the parentworkflow of an item.
      * @param itemId is the id of the item
@@ -324,13 +283,7 @@ public class PersistenceImp implements Persistence {
     }   
     
     // Role Operations
-    
-    /**
-     * Method for storing a role.
-     * @param role is the role to store
-     * @return roleId is the Id of the stored role
-     * @throws PersistenceException 
-     */
+    @Override
     public void storeRole(Role role) throws PersistenceException {
         if (role.getId() == null) {
             role.setId(roles.size() + 1 + "");
@@ -363,6 +316,7 @@ public class PersistenceImp implements Persistence {
      * @exception RoleNotExistentException if the requested role is not there
      * @throws RoleNotExistentException
      */
+    @Override
     public Role loadRole(String rolename) throws PersistenceException {
         Role roleToReturn = null;
         for (Role r : roles) {
@@ -387,6 +341,7 @@ public class PersistenceImp implements Persistence {
      * @exception RoleNotExistentException if the given role doesnt exist
      * @throws RoleNotExistentException
      */
+    @Override
     public void deleteRole(String rolename) throws RoleNotExistentException {       
         Role roleToRemove = null;
         for (Role r : roles) {
@@ -414,12 +369,7 @@ public class PersistenceImp implements Persistence {
         return retList;
     }
     
-    /**
-     * Method for loading all roles into a list of roles.
-     * @throws RoleNotExistentException
-     * @return List<Workflow> is the list we want to load
-     * @throws PersistenceException 
-     */
+    @Override
     public List<Role> loadAllRoles() throws PersistenceException {
         List<Role> retList = new LinkedList<>();
         for (Role role: this.roles) {
@@ -427,13 +377,6 @@ public class PersistenceImp implements Persistence {
         }
         return retList;
     }
-    
-    /**
-     * Method for loeading all users into a list of users.
-     * @throws UserNotExistentException
-     * @return List<User> is the list we want to load
-     * @throws PersistenceException 
-     */
     @Override
     public List<User> loadAllUsers() throws PersistenceException {
         List<User> retList = new LinkedList<>();
@@ -443,5 +386,12 @@ public class PersistenceImp implements Persistence {
         return retList;
     }
     
+    // Form Operations
+    
+    public void storeForm() throws PersistenceException {};
+    
+    public void deleteForm(String formname) throws PersistenceException {};
+    
+    //public List<Form> loadAllForms() throws PersistenceException {};
     
 }
