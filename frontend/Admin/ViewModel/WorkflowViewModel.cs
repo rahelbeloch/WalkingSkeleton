@@ -219,10 +219,6 @@ namespace Admin.ViewModel
         {
             get
             {
-                if (_selectedTabId == null)
-                {
-                    _selectedTabId = 0;
-                }
                 return _selectedTabId;
             }
             set
