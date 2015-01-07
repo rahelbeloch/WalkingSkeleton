@@ -8,7 +8,6 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
-import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
@@ -33,8 +32,6 @@ public class CheckLoginFilter implements ContainerRequestFilter {
         final String username = requestContext.getHeaderString("username");
         final String password = requestContext.getHeaderString("password");
         final String clientID = requestContext.getHeaderString("clientID");
-        
-        System.out.println("Username: " + username + ", Password: " + password + ", clientID: " + clientID);
         
         try {
             logic.checkLogIn(username,password,"admin".equals(clientID));
