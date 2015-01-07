@@ -19,7 +19,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.LogConfigurator;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
+import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.restserver.RestServer;
 
 
@@ -92,6 +95,11 @@ public class RestserverCommandTest {
      */
     @AfterClass
     public static void cleanUp() {
+        try {
+            ConstructionFactory.getInstance().getPublisher().stopBroker();
+        } catch (ServerPublisherBrokerException e) {
+            e.printStackTrace();
+        }
         restServer.stopHTTPServer(true);
     }
     

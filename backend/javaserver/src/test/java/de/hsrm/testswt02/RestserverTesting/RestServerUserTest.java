@@ -24,8 +24,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.logging.LogConfigurator;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.restserver.RestServer;
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 
 /**
  * Unit-Test class for user handling on REST-Server.
@@ -232,6 +234,11 @@ public class RestServerUserTest {
      */
     @AfterClass
     public static void cleanUp() {
+        try {
+            ConstructionFactory.getInstance().getPublisher().stopBroker();
+        } catch (ServerPublisherBrokerException e) {
+            e.printStackTrace();
+        }
         restServer.stopHTTPServer(true);
     }
 }

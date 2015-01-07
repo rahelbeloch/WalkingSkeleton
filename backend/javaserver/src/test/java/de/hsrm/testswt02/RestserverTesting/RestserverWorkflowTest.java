@@ -23,7 +23,9 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.LogConfigurator;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
@@ -209,6 +211,11 @@ public class RestserverWorkflowTest {
      */
     @AfterClass
     public static void cleanUp() {
+        try {
+            ConstructionFactory.getInstance().getPublisher().stopBroker();
+        } catch (ServerPublisherBrokerException e) {
+            e.printStackTrace();
+        }
         restServer.stopHTTPServer(true);
     }
 }
