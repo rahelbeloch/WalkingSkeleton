@@ -23,7 +23,7 @@ namespace UnitTestProject1
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
-            myRequester = new RestRequester();
+            myRequester = new RestRequester("admin");
         }
 
 

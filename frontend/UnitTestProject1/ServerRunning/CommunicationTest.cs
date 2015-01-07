@@ -35,7 +35,7 @@ namespace UnitTestProject1
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
-            myRequester = new RestRequester();
+            myRequester = new RestRequester("admin");
 
             // Some Loggings
             myListener = new TextWriterTraceListener("../../CommunicationTestLog.log", "myListener");
@@ -51,7 +51,7 @@ namespace UnitTestProject1
             // generate some TestData
             string username = "Rahel";
             Boolean send = generateTestUserAndWorkflow(username);
-            myRequester.InitializeClientProperties(username, new SecureString());
+            myRequester.InitializeClientProperties(username, "");
             IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
             Workflow wf = eleList[0];
             
@@ -71,7 +71,7 @@ namespace UnitTestProject1
             // generate some TestData
             string username = "Melanie";
             generateTestUserAndWorkflow(username);
-            myRequester.InitializeClientProperties("Melanie", new SecureString());
+            myRequester.InitializeClientProperties("Melanie", "");
 
             IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
             Workflow wf = eleList[0];
@@ -95,20 +95,23 @@ namespace UnitTestProject1
         {
             // generate some TestData
             string username = "Axel";
-            myRequester.InitializeClientProperties("Axel", new SecureString());
+            // set testuser as client
+            myRequester.InitializeClientProperties("Axel", "");
             generateTestUserAndWorkflow(username);
-            
 
+            // retrieve all workflows
             IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
 
+            // get the generated workflow
             Workflow wf = eleList[0];
+            // start it
             myRequester.StartWorkflow(wf.id);
 
             // Test the real functionality
             Workflow stepWf = myRequester.GetObject<Workflow>(wf.id);
             
             myListener.WriteLine("Anzahl der Steps: " + stepWf.steps.Count());
-            myListener.WriteLine("Anzahl der Items: " + stepWf.steps.Count());
+            myListener.WriteLine("Anzahl der Items: " + stepWf.items.Count());
             // You must close or flush the trace listener to empty the output buffer.
             myListener.Flush();
             
@@ -133,7 +136,7 @@ namespace UnitTestProject1
         public void testUpdateObject()
         {
             // generate some TestData
-            myRequester.InitializeClientProperties("Elizabeth", new SecureString());
+            myRequester.InitializeClientProperties("Elizabeth", "");
             generateTestUserAndWorkflow("Elizabeth");
            
             IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
@@ -175,7 +178,7 @@ namespace UnitTestProject1
         {
             // generate some TestData
             generateTestUserAndWorkflow("Sebastian");
-            myRequester.InitializeClientProperties("Sebastian", new SecureString());
+            myRequester.InitializeClientProperties("Sebastian", "");
             
             IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
             
@@ -200,7 +203,7 @@ namespace UnitTestProject1
             // generate some TestData
             generateTestUserAndWorkflow("Simon");
 
-            myRequester.InitializeClientProperties("TestAdmin", new SecureString());
+            myRequester.InitializeClientProperties("TestAdmin", "");
 
             IList<Workflow> wFList = myRequester.GetAllElements<Workflow>();
 
@@ -223,15 +226,11 @@ namespace UnitTestProject1
             User newUser = new User();
             newUser.username = "MaxMustermann";
 
-            myRequester.InitializeClientProperties("MaxMustermann", new SecureString());
+            myRequester.InitializeClientProperties("MaxMustermann", "");
 
-            myRequester.PostObject<User>(newUser);
+            myRequester.PostObject(newUser);
 
-            string initString = "TestPasswort";
-            SecureString testpwd = new SecureString();
-            foreach (char ch in initString)
-               testpwd.AppendChar(ch);
-
+            string testpwd = "TestPasswort";
             Boolean done = myRequester.checkUser("MaxMustermann", testpwd);
           
             Assert.IsTrue(done);
@@ -244,11 +243,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(LogInException))]
         public void testCheckNotExistentUser()
         {
-            string initString = "TestPasswort";
-            SecureString testpwd = new SecureString();
-            foreach (char ch in initString)
-                testpwd.AppendChar(ch);
-
+            string testpwd = "TestPasswort";
             Boolean done = myRequester.checkUser("Jane", testpwd);
         }
         
@@ -259,9 +254,13 @@ namespace UnitTestProject1
         /// <returns></returns>
         private Boolean generateTestUserAndWorkflow(string username)
         {
+            Role testRole = new Role();
+            testRole.rolename = "Testrole";
+
             // one User
             User testUser = new User();
             testUser.username = username;
+            testUser.roles.Add(testRole);
 
             // one Workflow
             Workflow newWf = new Workflow();
@@ -269,24 +268,24 @@ namespace UnitTestProject1
 
             // a startStep
             StartStep startStep = new StartStep();
-            startStep.username = username;
+            startStep.roles.Add("Testrole");
             startStep.id = "";
             newWf.addStep(startStep);
 
             // an action
             Action act = new Action();
-            act.username = username;
+            act.roles.Add("Testrole");
             act.id = "";
             newWf.addStep(act);
 
             // a final step
             FinalStep fStep = new FinalStep();
-            fStep.username = username;
+            fStep.roles.Add("Testrole");
             fStep.id = "";
             newWf.addStep(fStep);
 
-            myRequester.PostObject<User>(testUser);
-            myRequester.PostObject<Workflow>(newWf);
+            myRequester.PostObject(testUser);
+            myRequester.PostObject(newWf);
 
             return true;
         }

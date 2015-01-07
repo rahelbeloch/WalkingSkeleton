@@ -21,8 +21,9 @@ namespace UnitTestProject1
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
-            myRequester = new RestRequester();
-            myRequester.InitializeClientProperties("Rahel", new SecureString());
+
+            myRequester = new RestRequester("admin");
+            myRequester.InitializeClientProperties("Rahel", "");
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace UnitTestProject1
         [ExpectedException(typeof(ServerNotRunningException))]
         public void testServerConnectionSendObjectRequest()
         {
-           myRequester.PostObject<Workflow>(new Workflow());
+           myRequester.PostObject(new Workflow());
         }
 
         /// <summary>
