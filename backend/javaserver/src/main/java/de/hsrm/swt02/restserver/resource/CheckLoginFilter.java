@@ -14,13 +14,16 @@ import de.hsrm.swt02.logging.UseLogger;
 
 /**
  * 
+ * Filter class managing every Request on the REST API and checking it.
+ * 
  * @author akoen001
  *
  */
 public class CheckLoginFilter implements ContainerRequestFilter {
 
     /**
-     * 
+     * Checks if the user is authorized for the requested action. Will continue as normal if that is the case, abort
+     * the request with 500 Server Error if not.
      */
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
