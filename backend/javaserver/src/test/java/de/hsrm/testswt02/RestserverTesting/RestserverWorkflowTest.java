@@ -85,9 +85,9 @@ public class RestserverWorkflowTest {
         final Step step1 = new StartStep();
         final Step step2 = new Step();
         final Step step3 = new FinalStep();
-        step1.getRoles().add("A");
-        step2.getRoles().add("B");
-        step3.getRoles().add("D");
+        step1.getRoleIDs().add("A");
+        step2.getRoleIDs().add("B");
+        step3.getRoleIDs().add("D");
         workflow.addStep(step1);
         workflow.addStep(step2);
         workflow.addStep(step3);
@@ -162,9 +162,9 @@ public class RestserverWorkflowTest {
         final Step step1 = new StartStep();
         final Step step2 = new Step();
         final Step step3 = new FinalStep();
-        step1.getRoles().add("A");
-        step2.getRoles().add("B");
-        step3.getRoles().add("D");
+        step1.getRoleIDs().add("A");
+        step2.getRoleIDs().add("B");
+        step3.getRoleIDs().add("D");
         workflow.addStep(step1);
         workflow.addStep(step2);
         workflow.addStep(step3);

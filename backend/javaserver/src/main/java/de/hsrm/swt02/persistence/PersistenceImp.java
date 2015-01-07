@@ -66,7 +66,7 @@ public class PersistenceImp implements Persistence {
         if (workflowToRemove != null) {
             try {
                 this.deleteWorkflow(workflowToRemove.getId());
-                this.logger.log(Level.INFO, "[persistence] overwriting workflow " + workflowToRemove.getId() + "...");
+                this.logger.log(Level.FINE, "[persistence] overwriting workflow " + workflowToRemove.getId() + "...");
             } catch (WorkflowNotExistentException e) {
                 throw new StorageFailedException("storage of workflow" + workflow.getId() + "failed.");
             }
@@ -99,7 +99,7 @@ public class PersistenceImp implements Persistence {
         
         workflows.add(workflowToStore);
         
-        this.logger.log(Level.INFO, "[persistence] successfully stored workflow " + workflow.getId() + ".");
+        this.logger.log(Level.INFO, "[persistence] successfully stored/updated workflow " + workflow.getId() + ".");
         return workflow.getId();
     }
     
@@ -232,7 +232,7 @@ public class PersistenceImp implements Persistence {
         }
         if (userToRemove != null) {
             this.deleteUser(userToRemove.getUsername());
-            this.logger.log(Level.INFO, "[persistence] overwriting user " + user.getUsername() + "...");
+            this.logger.log(Level.FINE, "[persistence] overwriting user " + user.getUsername() + "...");
         }
         User userToStore;
         try {
@@ -244,7 +244,7 @@ public class PersistenceImp implements Persistence {
             this.loadRole(role.getRolename());
         }
         users.add(userToStore);
-        this.logger.log(Level.INFO, "[persistence] successfully stored user " + user.getUsername() + ".");
+        this.logger.log(Level.INFO, "[persistence] successfully stored/updated user " + user.getUsername() + ".");
     }
 
     @Override
@@ -286,7 +286,7 @@ public class PersistenceImp implements Persistence {
     // Role Operations
     @Override
     public void storeRole(Role role) throws PersistenceException {
-        if (role.getId() == null) {
+        if (role.getId() == null || role.getId().equals("")) {
             role.setId(roles.size() + 1 + "");
         }
         Role roleToRemove = null;
@@ -297,7 +297,7 @@ public class PersistenceImp implements Persistence {
             }
         }
         if (roleToRemove != null) {
-            this.logger.log(Level.INFO, "[persistence] overwriting role "
+            this.logger.log(Level.FINE, "[persistence] overwriting role "
                     + roleToRemove.getRolename() + "...");
             this.deleteRole(roleToRemove.getRolename());
         }
@@ -306,7 +306,7 @@ public class PersistenceImp implements Persistence {
         } catch (CloneNotSupportedException e) {
             throw new PersistenceException("Storage failed - Cloning did not work.");
         }
-        this.logger.log(Level.INFO, "[persistence] successfully stored role " + role.getId()
+        this.logger.log(Level.INFO, "[persistence] successfully stored/updated role " + role.getId()
                 + ".");
     }
 

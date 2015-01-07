@@ -565,7 +565,7 @@ public class LogicImp implements Logic {
             throws PersistenceException {
         final User userToCheck = persistence.loadUser(username);
         boolean authorized = false;
-        for (String rolename : step.getRoles()) {
+        for (String rolename : step.getRoleIDs()) {
             if (userToCheck.getRoles().contains(persistence.loadRole(rolename))) {
                 authorized = true;
                 break;
@@ -661,6 +661,7 @@ public class LogicImp implements Logic {
         final User userToUpdate = persistence.loadUser(user.getUsername()); 
         if (userToUpdate.getRoles().contains(role)) {
             userToUpdate.getRoles().remove(role);
+            persistence.storeUser(userToUpdate);
             logger.log(Level.INFO, "[Logic] successfully removed role " + role.getRolename() + " from user " + user.getUsername() + ".");
         }
     }
@@ -679,9 +680,10 @@ public class LogicImp implements Logic {
     {
         // check if role is used in any step of an workflow 
         boolean roleInUse = false;
-        for (Workflow workflow : this.getAllWorkflows()) { //TODO: only active?
+        for (Workflow workflow : this.getAllWorkflows()) {
+            System.out.println(workflow);
             for (Step step : workflow.getSteps()) {
-                if (step.getRoles().contains(persistence.loadRole(rolename))) {
+                if (step.getRoleIDs().contains(persistence.loadRole(rolename).getId())) {
                     roleInUse = true;
                     break;
                 }
@@ -701,11 +703,7 @@ public class LogicImp implements Logic {
         // delete role from all existent users as well
         for (User user: persistence.loadAllUsers()) {
             this.deleteRoleFromUser(user, roleToRemove);
-        }           
-//        for (User user: persistence.loadAllUsers()) {
-//            persistence.storeUser(user);
-//        }           
-
+        }
         
         final LogicResponse logicResponse = new LogicResponse();
         logicResponse.add(Message.build(MessageTopic.ROLE_INFO,
@@ -803,7 +801,7 @@ public class LogicImp implements Logic {
         user2Roles.add(role2.getRolename());
 
         startStep1 = new StartStep();
-        startStep1.getRoles().addAll(user1Roles);
+        startStep1.getRoleIDs().addAll(user1Roles);
 
         action1 = new Action(new ArrayList<String>(), "Action von "
                 + user1.getUsername());
