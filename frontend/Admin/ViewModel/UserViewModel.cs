@@ -37,7 +37,7 @@ namespace Admin.ViewModel
         {
             // update userlist
             IList<User> allUsers = _restRequester.GetAllElements<User>();
-            foreach (User user in allUsers)
+            foreach(User user in allUsers)
             {
                 _mainViewModel.userCollection.Add(user);
             }
@@ -369,6 +369,40 @@ namespace Admin.ViewModel
                 return _deleteRoleFromUserCommand;
             }
         }
+
+        /// <summary>
+        /// Command to delete a role.
+        /// </summary>
+        private ICommand _deleteRoleCommand;
+        public ICommand DeleteRoleCommand
+        {
+            get
+            {
+                if (_deleteRoleCommand == null)
+                {
+                    _deleteRoleCommand = new ActionCommand(execute =>
+                    {
+                        if (SelectedRole != null)
+                        {
+                            if (SelectedRole != null)
+                            {
+                                try
+                                {
+                                    _restRequester.DeleteObject<Role>(SelectedRole.rolename);
+                                }
+                                catch (BasicException be)
+                                {
+                                    MessageBox.Show(be.Message);
+                                }
+                            }
+                        }
+                    }, canExecute => true);
+                }
+
+                return _deleteRoleCommand;
+            }
+        }
+
 
         # endregion
 
