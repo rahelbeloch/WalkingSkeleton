@@ -43,5 +43,4 @@ public class CheckLoginFilter implements ContainerRequestFilter {
             requestContext.abortWith(Response.serverError().entity(String.valueOf(e2.getErrorCode())).build());
         }
     }
-
 }

@@ -57,7 +57,6 @@ public class WorkflowResource {
         String workflowAsString;
         Workflow workflow = null;
 
-
         try {
             workflow = LOGIC.getWorkflow(workflowid);
             workflow.convertReferencesToIdList();
@@ -65,7 +64,7 @@ public class WorkflowResource {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
-
+        
         try {
             workflowAsString = JsonParser.marshall(workflow);
             LOGGER.log(Level.FINE, loggingBody + workflowAsString);

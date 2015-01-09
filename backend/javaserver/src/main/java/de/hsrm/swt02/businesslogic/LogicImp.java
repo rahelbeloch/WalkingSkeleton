@@ -530,7 +530,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public boolean checkLogIn(String username, String password,
-            boolean adminRequired) throws LogicException {
+            boolean adminRequired) throws LogicException, LogInException {
         User user;
         try {
             user = persistence.loadUser(username);
