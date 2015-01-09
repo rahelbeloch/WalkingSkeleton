@@ -55,7 +55,7 @@ namespace CommunicationLib
         public void Login(string username, String password)
         {
             _sender.InitializeClientProperties(username, password);
-            _sender.checkUser(username, password == null? "" : password);
+            _sender.checkUser();
             _listener.RegisterClient(true);
         }
 
