@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import de.hsrm.swt02.businesslogic.LogicResponse;
+import de.hsrm.swt02.businesslogic.protocol.Message;
 import de.hsrm.swt02.logging.UseLogger;
 
 /**
