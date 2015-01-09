@@ -16,7 +16,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public JacksonException()
-            : base("Es ist ein Fehler in der Restschnittstelle passiert.")
+            : base("Es ist ein Fehler beim Serialisieren passiert.")
         {
 
         }

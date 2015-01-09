@@ -16,7 +16,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public RoleException()
-            : base("Es sind Rollen Probleme aufgetreten")
+            : base("Es sind Rollen Probleme aufgetreten.")
         {
 
         }

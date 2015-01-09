@@ -15,8 +15,9 @@ namespace CommunicationLib.Exception
     {
         private int _number = 9999;
         new public int number { get { return _number; }}
-        
+
         public UnknownException()
+            : base("Es ist ein unbekannter Fehler aufgetreten.")
         {
 
         }

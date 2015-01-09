@@ -16,9 +16,8 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public LogInException()
-            :base("Der LogIn war nicht erfolgreich")
+            :base("Der LogIn war nicht erfolgreich.")
         {
-
         }
 
         /// <summary>

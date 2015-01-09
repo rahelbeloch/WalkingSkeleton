@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class UserHasNoPermissionException : LogInException
+    class AdminRoleDeletionException : NoPermissionException
     {
-        private int _number = 11321;
+        private int _number = 11330;
         new public int number { get { return _number; } }
 
-        public UserHasNoPermissionException()
-            : base("Der Nutzer hat keine Erlaubnis.")
+        public AdminRoleDeletionException()
+            : base("Die Rolle Admin darf nicht gelöscht werden.")
         {
 
         }
 
-        public UserHasNoPermissionException(string message)
+        public AdminRoleDeletionException(string message)
             : base(message)
         {
         }
 
-        public UserHasNoPermissionException(string message, System.Exception inner)
+        public AdminRoleDeletionException(string message, System.Exception inner)
             : base(message, inner)
         {
         }

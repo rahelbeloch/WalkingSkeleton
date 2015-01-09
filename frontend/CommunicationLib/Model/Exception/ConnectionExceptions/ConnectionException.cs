@@ -18,7 +18,6 @@ namespace CommunicationLib.Exception
         public ConnectionException()
             : base("Es ist ein Fehler bei der Übertragung passiert.")
         {
-
         }
 
         /// <summary>

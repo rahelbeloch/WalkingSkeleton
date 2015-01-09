@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class UserHasNoPermissionException : LogInException
+    class LastAdminDeletedException : NoPermissionException
     {
-        private int _number = 11321;
+        private int _number = 11340;
         new public int number { get { return _number; } }
 
-        public UserHasNoPermissionException()
-            : base("Der Nutzer hat keine Erlaubnis.")
+        public LastAdminDeletedException()
+            : base("Der letzte Admin darf nicht gelöscht werden.")
         {
 
         }
 
-        public UserHasNoPermissionException(string message)
+        public LastAdminDeletedException(string message)
             : base(message)
         {
         }
 
-        public UserHasNoPermissionException(string message, System.Exception inner)
+        public LastAdminDeletedException(string message, System.Exception inner)
             : base(message, inner)
         {
         }
