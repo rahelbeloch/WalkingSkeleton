@@ -27,7 +27,6 @@ public class CheckLoginFilter implements ContainerRequestFilter {
      */
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        
         final ConstructionFactory factory = ConstructionFactory.getInstance();
         final Logic logic = factory.getLogic();
         final UseLogger logger = new UseLogger();
@@ -37,6 +36,7 @@ public class CheckLoginFilter implements ContainerRequestFilter {
         final String clientID = requestContext.getHeaderString("clientID");
         
         try {
+        	System.out.println("username: " + username + ", password: " + password + ", clientID: " + clientID);
             logic.checkLogIn(username,password,"admin".equals(clientID));
         } catch (LogicException e2) {
             logger.log(Level.WARNING, e2);
