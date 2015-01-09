@@ -11,7 +11,6 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * Interface for the dependency injection of the persistence implementation.
@@ -153,12 +152,36 @@ public interface Persistence {
     List<Role> loadAllRoles() throws PersistenceException;
     
     // Form Operations
-    
+    /**
+     * stores a new form to database.
+     * 
+     * @param form to store
+     * @throws PersistenceException if an error in persistence occurs
+     */
     void storeForm(Form form) throws PersistenceException;
 
-    String deleteForm(String formname) throws PersistenceException;
+    /**
+     * deletes a form, given by formname, from database.
+     * 
+     * @param formname of form to be deleted
+     * @throws PersistenceException if an error in persistence occurs
+     */
+    void deleteForm(String formname) throws PersistenceException;
     
+    /**
+     * loads form from database.
+     * 
+     * @param formname of form to be loaded
+     * @return the requested form
+     * @throws PersistenceException if an error in persistence occurs
+     */
     Form loadForm(String formname) throws PersistenceException;
     
+    /**
+     * getter for all forms.
+     * 
+     * @return List of all forms
+     * @throws PersistenceException if an error in persistence occurs
+     */
     List<Form> loadAllForms() throws PersistenceException;
 }
