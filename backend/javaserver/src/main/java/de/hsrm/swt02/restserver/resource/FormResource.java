@@ -18,6 +18,7 @@ import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Form;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
@@ -40,6 +41,7 @@ public class FormResource {
      * This Method grants the Clients access to all Forms stored in persistence.
      * 
      * @return All Forms in the persistence as string if successful, 500 Server Error if not
+     * @throws PersistenceException 
      */
     @GET
     @Path("forms")
@@ -49,7 +51,13 @@ public class FormResource {
         LOGGER.log(Level.INFO, loggingBody);
         List<Form> forms;
 
-        forms = LOGIC.getAllForms();
+        try {
+			forms = LOGIC.getAllForms();
+		} catch (PersistenceException e1) {
+			LOGGER.log(Level.INFO, loggingBody + e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode()))
+                    .build();
+		}
 
         String formsAsString;
         
@@ -89,8 +97,13 @@ public class FormResource {
                     .build();
         }
 
-        logicResponse = LOGIC.addForm(form);
-
+        try {
+			logicResponse = LOGIC.addForm(form);
+		} catch (PersistenceException e) {
+			LOGGER.log(Level.INFO, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode()))
+                    .build();
+		}
 
         //PUBLISHER.publishEvent(logicResponse);
         
