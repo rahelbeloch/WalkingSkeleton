@@ -16,7 +16,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public ServerPublisherBrokerException()
-            :base("Es ist ein fehler beim Aktualisieren aufgetreten.")
+            :base("Es ist ein Fehler beim Server Publisher Broker passiert.")
         {
         }
 

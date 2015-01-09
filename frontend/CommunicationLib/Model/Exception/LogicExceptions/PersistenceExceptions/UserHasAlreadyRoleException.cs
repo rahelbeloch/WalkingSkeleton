@@ -16,6 +16,7 @@ namespace CommunicationLib.Exception
         new public int number { get { return _number; } }
 
         public UserHasAlreadyRoleException()
+            : base("Der User hat diese Rolle bereits.")
         {
 
         }

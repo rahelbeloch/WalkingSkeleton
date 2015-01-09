@@ -12,10 +12,11 @@ namespace CommunicationLib.Exception
         /// This Exception es a child of RoleException. 
         /// Each Exception has an number, here it is 11262. 
         /// </summary>
-        private int _number = 11262;
+        private int _number = 11256;
         new public int number { get { return _number; } }
 
         public RoleNotExistentException()
+            : base("Die Rolle existiert nicht.")
         {
 
         }
