@@ -1,9 +1,5 @@
 package de.hsrm.swt02.messaging;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -50,24 +46,6 @@ public class ServerPublisherImp implements ServerPublisher {
     public ServerPublisherImp(UseLogger logger) {
         // set the logger
         this.logger = logger;
-        final Properties properties = new Properties();
-        BufferedInputStream stream;
-        // read configuration file for broker properties
-        try {
-            stream = new BufferedInputStream(new FileInputStream(
-                    "server.config"));
-            properties.load(stream);
-            stream.close();
-        } catch (FileNotFoundException e) {
-            this.logger.log(Level.WARNING, e);
-        } catch (IOException e) {
-            this.logger.log(Level.WARNING, e);
-        } catch (SecurityException e) {
-            this.logger.log(Level.WARNING, e);
-        }
-        brokerURL = properties.getProperty("BrokerURL");
-        connectionURL = properties.getProperty("BrokerConnectionURL");
-        factory = new ActiveMQConnectionFactory(brokerURL);
         // disable apache's log4j-system (we don't use it)
         org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
     }
@@ -97,6 +75,17 @@ public class ServerPublisherImp implements ServerPublisher {
             throw new ServerPublisherBrokerException("Publishing-Error: "
                     + e.getMessage());
         }
+    }
+    
+    /**
+     * 
+     * @param properties that have been read out of the config file
+     */
+    @Override
+    public void applyProperties(Properties properties) {
+        brokerURL = properties.getProperty("BrokerURL");
+        connectionURL = properties.getProperty("BrokerConnectionURL");
+        factory = new ActiveMQConnectionFactory(brokerURL);
     }
 
     /**

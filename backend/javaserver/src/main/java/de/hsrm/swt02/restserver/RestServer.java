@@ -30,8 +30,19 @@ public class RestServer {
 
     /** 
      * Constructor.
+     * @param properties that have been read out of the config file
+     */
+    public RestServer(Properties properties) {
+
+        baseURI = properties.getProperty("RestServerURI");
+        
+    }
+    
+    /** 
+     * Constructor for testing.
      */
     public RestServer() {
+
         final Properties properties = new Properties();
         BufferedInputStream stream;
         // read configuration file for rest properties
@@ -47,7 +58,9 @@ public class RestServer {
         } catch (SecurityException e) {
             logger.log(Level.SEVERE, "Read Access not granted!");
         }
+        
         baseURI = properties.getProperty("RestServerURI");
+        
     }
 
     /**

@@ -1,5 +1,10 @@
 package de.hsrm.swt02.constructionfactory;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import com.google.inject.Guice;
@@ -26,10 +31,12 @@ public class ConstructionFactory {
 
     /**
      * Constructor.
+     * @param properties that have been read out of the config file
      */
-    private ConstructionFactory() {
+    private ConstructionFactory(Properties properties) {
         logic = INJECTOR.getInstance(Logic.class);
         serverPublisher = INJECTOR.getInstance(ServerPublisher.class);
+        serverPublisher.applyProperties(properties);
         try {
             serverPublisher.startBroker();
         } catch (ServerPublisherBrokerException e) {
@@ -40,11 +47,40 @@ public class ConstructionFactory {
     
     /**
      * Return the instance for this class.
+     * @param properties that have been read out of the config file
+     * @return the instance
+     */
+    public synchronized static ConstructionFactory getInstance(Properties properties) {
+        if (theInstance == null) {
+            theInstance = new ConstructionFactory(properties);
+        }
+        return theInstance;
+    }
+    
+    /**
+     * Return the instance for this class(for testing).
      * @return the instance
      */
     public synchronized static ConstructionFactory getInstance() {
+        
         if (theInstance == null) {
-            theInstance = new ConstructionFactory(); 
+            final UseLogger logger = new UseLogger();
+            final Properties properties = new Properties();
+            BufferedInputStream stream;
+            // read configuration file for rest properties
+            try {
+                stream = new BufferedInputStream(new FileInputStream(
+                        "server.config"));
+                properties.load(stream);
+                stream.close();
+            } catch (FileNotFoundException e) {
+                logger.log(Level.SEVERE, "Configuration file not found!");
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Can't read file!");
+            } catch (SecurityException e) {
+                logger.log(Level.SEVERE, "Read Access not granted!");
+            }
+            theInstance = new ConstructionFactory(properties);
         }
         return theInstance;
     }

@@ -105,7 +105,7 @@ public class RestserverWorkflowTest {
         final Form dataform = new Form().param("data", workflowAsString);
         final Response resp = client
                 .target(targetUrl)
-                .path("resource/workflows")
+                .path("resource/workflows/1")
                 .request()
                 .header("username", headerUsername)
                 .header("password", headerPW)

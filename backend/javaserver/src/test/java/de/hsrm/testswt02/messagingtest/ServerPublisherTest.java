@@ -2,8 +2,13 @@ package de.hsrm.testswt02.messagingtest;
 
 import static org.junit.Assert.assertEquals;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.Level;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,6 +30,7 @@ public class ServerPublisherTest {
     private static final int MULTIPUBLISH_ATTEMPTS = 3;
     private static ServerPublisher publisher;
     private static TestMessagingListener listener;
+    private static UseLogger logger = new UseLogger();
     
     /**
      * Disables the log4j-system (no need for it).
@@ -33,8 +39,23 @@ public class ServerPublisherTest {
      */
     @BeforeClass
     public static void setup() throws ServerPublisherBrokerException {
-        Logger.getRootLogger().setLevel(Level.OFF);
         publisher = new ServerPublisherImp(new UseLogger());
+        final Properties properties = new Properties();
+        BufferedInputStream stream;
+        // read configuration file for rest properties
+        try {
+            stream = new BufferedInputStream(new FileInputStream(
+                    "server.config"));
+            properties.load(stream);
+            stream.close();
+        } catch (FileNotFoundException e) {
+            logger.log(Level.SEVERE, "Configuration file not found!");
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Can't read file!");
+        } catch (SecurityException e) {
+            logger.log(Level.SEVERE, "Read Access not granted!");
+        }
+        publisher.applyProperties(properties);
         publisher.startBroker();
         listener = new TestMessagingListener();
         listener.start();
