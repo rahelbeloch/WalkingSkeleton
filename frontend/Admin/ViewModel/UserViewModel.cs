@@ -27,7 +27,14 @@ namespace Admin.ViewModel
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
 
-            InitModel();
+            try
+            {
+                InitModel();
+            }
+            catch (BasicException e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         /// <summary>
@@ -322,7 +329,6 @@ namespace Admin.ViewModel
                         {
                             Role newRole = new Role();
                             newRole.rolename = EnteredRolename;
-
                             _restRequester.PostObject(newRole);
                             EnteredRolename = "";
                         }
@@ -414,8 +420,15 @@ namespace Admin.ViewModel
         /// <param name="user"></param>
         private void PostUser(User user)
         {
-            _restRequester.PostObject(user);
-            DeselectUser();
+            try
+            {
+                _restRequester.PostObject(user);
+                DeselectUser();
+            }
+            catch (BasicException e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         /// <summary>
