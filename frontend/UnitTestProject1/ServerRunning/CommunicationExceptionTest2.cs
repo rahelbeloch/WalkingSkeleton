@@ -15,18 +15,15 @@ namespace UnitTestProject1
     [TestClass]
     public class CommunicationExceptionTest2
     {
-
         public static RestRequester myRequester;
-       // myRequester.InitializeClientProperties("Rahel", new SecureString());
-        
-
+     
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
+            // initialize admin client requester
             myRequester = new RestRequester("admin");
             myRequester.InitializeClientProperties("TestAdmin", "abc123");
         }
-
 
         /// <summary>
         /// Test the private method 'GetObjectRequest' in RestRequester. Tests the ExceptionHandling if server is not running.

@@ -15,15 +15,14 @@ namespace UnitTestProject1
     [TestClass]
     public class CommunicationExceptionTest1
     {
-
         public static RestRequester myRequester;
 
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
-
+            // initialize admin client requester
             myRequester = new RestRequester("admin");
-            myRequester.InitializeClientProperties("Rahel", "");
+            myRequester.InitializeClientProperties("TestAdmin", "abc123");
         }
 
         /// <summary>
