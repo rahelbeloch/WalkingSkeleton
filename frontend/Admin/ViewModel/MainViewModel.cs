@@ -1,5 +1,6 @@
 ﻿using CommunicationLib;
 using CommunicationLib.Model;
+using CommunicationLib.Exception;
 using RestAPI;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Diagnostics;
 
 namespace Admin.ViewModel
 {
@@ -54,6 +56,25 @@ namespace Admin.ViewModel
         }
 
         private ComLib _myComLib;
+        public ComLib myComLib
+        {
+            get
+            {
+                if (_myComLib == null)
+                {
+                    try
+                    {
+                        _myComLib = new ComLib(this, clientID);
+                    }
+                    catch (BasicException e)
+                    {
+                        MessageBox.Show(e.Message);
+                        Environment.Exit(0);
+                    }
+                }
+                return _myComLib;
+            }
+        }
 
         public MainViewModel()
         {
@@ -148,7 +169,7 @@ namespace Admin.ViewModel
 
         void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
-            Console.WriteLine("neuer Workflow ist angekommen");
+            Debug.WriteLine("neuer Workflow ist angekommen");
             _workflowViewModel.updateWorkflows(workflow);       
         }
 
@@ -175,6 +196,23 @@ namespace Admin.ViewModel
         void IDataReceiver.DataDeletion(Type sourceType, string sourceId)
         {
             //Deletion handling here
+            Role roleToDelete;
+
+            if (sourceType == typeof(Role))
+            {
+                Debug.WriteLine("check");
+                foreach(Role role in roleCollection)
+                {
+                    if (role.rolename.Equals(sourceId))
+                    {
+                        Debug.WriteLine("found penis");
+                        roleToDelete = role;
+                        roleCollection.Remove(roleToDelete);
+                        break;
+                    }
+                }
+            }
+            
         }
 
         #endregion
