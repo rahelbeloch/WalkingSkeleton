@@ -1,14 +1,15 @@
 package de.hsrm.swt02.model;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class represents an User. A User is a manifestation of a RootElement.
  */
 public class User extends RootElement {
-	// Used for (de)serialization. Do not change.
-    private List<Role> roles;
+    // Used for (de)serialization. Do not change.
+    private Set<Role> roles;
     // Used for (de)serialization. Do not change.
     private List<String> messagingSubs;
     // a users private password
@@ -21,7 +22,7 @@ public class User extends RootElement {
      */
     public User() {
         super();
-        roles = new ArrayList<Role>();
+        roles = new HashSet<Role>();
         setActive(true);
         password = "";
     }
@@ -84,11 +85,11 @@ public class User extends RootElement {
     }
 
     /**
-     * Roles getter. There is no setter because roles is an ArrayList.
+     * Roles getter. There is no setter because roles is an HashSet.
      * 
      * @return roles is the list of roles of the user
      */
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return this.roles;
     }
     
@@ -98,9 +99,7 @@ public class User extends RootElement {
      * @param role to add
      */
     public void addRole(Role role) {
-        if (!this.roles.contains(role)) {
-            this.roles.add(role);
-        }
+        this.roles.add(role);
     }
     
     /**
@@ -118,6 +117,7 @@ public class User extends RootElement {
      * checks if this user has a certain role.
      * 
      * @param role to check
+     * @return boolean if this user has role
      */
     public boolean hasRole(Role role) {
         return this.roles.contains(role);

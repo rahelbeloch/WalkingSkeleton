@@ -3,8 +3,6 @@ package de.hsrm.swt02.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * This class represents a Workflow. A Workflow is a manifestation of a
  * RootElement
