@@ -36,6 +36,7 @@ namespace UnitTestProject1
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
+            // initialize admin client requester
             myRequester = new RestRequester("admin");
 
             // Some Loggings

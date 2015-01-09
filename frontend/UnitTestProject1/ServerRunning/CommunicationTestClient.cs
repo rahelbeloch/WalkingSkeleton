@@ -36,9 +36,11 @@ namespace UnitTestProject1
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
         {
+            // initialize admin client requester
             myRequester = new RestRequester("admin");
             myRequester.InitializeClientProperties("TestAdmin", "abc123");
 
+            // initialize user client requester
             myClientRequester = new RestRequester("client");
             
             // Some Loggings
@@ -54,8 +56,10 @@ namespace UnitTestProject1
         {
             // generate some TestData
             Boolean send = generateTestUserAndWorkflow("Rahel");
-
+            // set the right authentication settings to user client
             myClientRequester.InitializeClientProperties("Rahel", "password");
+            
+            // retrieve workflows from the registered user (test the functionality)
             IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
             int amountWfs = eleList.Count();
             
@@ -74,7 +78,7 @@ namespace UnitTestProject1
         {
             // generate some TestData
             generateTestUserAndWorkflow("Melanie");
-            
+            // set the right authentication settings to user client
             myClientRequester.InitializeClientProperties("Melanie", "password");
 
             IList<Workflow> eleList = myClientRequester.GetAllWorkflowsByUser();
@@ -99,7 +103,7 @@ namespace UnitTestProject1
         {
             generateTestUserAndWorkflow("Axel");
 
-            // set testuser as client
+            // set the right authentication settings to user client
             myClientRequester.InitializeClientProperties("Axel", "password");
 
             // retrieve all workflows
@@ -141,7 +145,7 @@ namespace UnitTestProject1
             // generate some TestData
             generateTestUserAndWorkflow("Elizabeth");
 
-            // set Userdata in Client Requester
+            // set the right authentication settings to user client
             myClientRequester.InitializeClientProperties("Elizabeth", "password");
            
             IList<Workflow> eleList = myClientRequester.GetAllWorkflowsByUser();
@@ -179,7 +183,7 @@ namespace UnitTestProject1
         {
             // generate some TestData
             generateTestUserAndWorkflow("Sebastian");
-
+            // set the right authentication settings to user client
             myClientRequester.InitializeClientProperties("Sebastian", "password");
 
             IList<Workflow> eleList = myClientRequester.GetAllWorkflowsByUser();
@@ -198,8 +202,6 @@ namespace UnitTestProject1
         [TestMethod]
         public void testGetAllWorkflows()
         {
-            myRequester.InitializeClientProperties("TestAdmin", "abc123");
-
             // generate some TestData
             generateTestUserAndWorkflow("Slubisch");
             // generate some TestData
@@ -264,7 +266,6 @@ namespace UnitTestProject1
             myRequester.PostObject(testUser);
             myRequester.PostObject(newWf);
             
-
             return true;
         }
     }
