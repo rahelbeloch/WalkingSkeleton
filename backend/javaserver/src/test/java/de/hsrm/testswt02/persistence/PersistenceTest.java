@@ -190,14 +190,14 @@ public class PersistenceTest {
     @Test
     public void testContinuityOfWorkflowIds() throws PersistenceException {
         final Workflow wf1 = new Workflow();
-        final Workflow wf3 = new Workflow();
+        final Workflow wf2 = new Workflow();
         
         final String id1 = db.storeWorkflow(wf1);
-        
         db.deleteWorkflow(id1);
-        final String id3 = db.storeWorkflow(wf3);
         
-        assertEquals(db.loadWorkflow(id3).getId(), "2");
+        final String id2 = db.storeWorkflow(wf2);
+        
+        assertEquals(db.loadWorkflow(id2).getId(), id1);
     }
     
     @Test
