@@ -52,12 +52,12 @@ public class FormResource {
         List<Form> forms;
 
         try {
-			forms = LOGIC.getAllForms();
-		} catch (PersistenceException e1) {
-			LOGGER.log(Level.INFO, loggingBody + e1);
+            forms = LOGIC.getAllForms();
+        } catch (PersistenceException e1) {
+            LOGGER.log(Level.INFO, loggingBody + e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode()))
                     .build();
-		}
+        }
 
         String formsAsString;
         
@@ -98,14 +98,15 @@ public class FormResource {
         }
 
         try {
-			logicResponse = LOGIC.addForm(form);
-		} catch (PersistenceException e) {
-			LOGGER.log(Level.INFO, loggingBody + e);
+            logicResponse = LOGIC.addForm(form);
+            PUBLISHER.publishEvent(logicResponse);
+        } catch (PersistenceException e) {
+            LOGGER.log(Level.INFO, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
-		}
+        }
 
-        //PUBLISHER.publishEvent(logicResponse);
+        
         
         LOGGER.log(Level.INFO, loggingBody + " Form successfully stored.");
         return Response.ok("Form stored").build();
