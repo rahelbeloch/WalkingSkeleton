@@ -14,6 +14,7 @@ import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.FormNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
@@ -35,7 +36,7 @@ public class PersistenceImp implements Persistence {
     private static final int ID_MULTIPLICATOR = 1000;
     
     /**
-     * abstraction of a database, that persists the data objects workflow, item,
+     * abstraction of a database, that persists the data objects workflow, item.
      * user, step, metaEntry
      */
     private List<Workflow> workflows = new LinkedList<>();
@@ -368,7 +369,7 @@ public class PersistenceImp implements Persistence {
     
     @Override
     public List<Workflow> loadAllWorkflows() throws PersistenceException {
-        List<Workflow> retList = new LinkedList<>();
+        final List<Workflow> retList = new LinkedList<>();
         for (Workflow wf: this.workflows) {
             retList.add(this.loadWorkflow(wf.getId()));
         }
@@ -377,7 +378,7 @@ public class PersistenceImp implements Persistence {
     
     @Override
     public List<Role> loadAllRoles() throws PersistenceException {
-        List<Role> retList = new LinkedList<>();
+        final List<Role> retList = new LinkedList<>();
         for (Role role: this.roles) {
             retList.add(this.loadRole(role.getRolename()));
         }
@@ -388,6 +389,15 @@ public class PersistenceImp implements Persistence {
         final List<User> retList = new LinkedList<>();
         for (User user: this.users) {
             retList.add(this.loadUser(user.getUsername()));
+        }
+        return retList;
+    }
+    
+    @Override
+    public List<Form> loadAllForms() throws PersistenceException {
+        final List<Form> retList = new LinkedList<>();
+        for (Form f: this.forms) {
+            retList.add(this.loadForm(f.getId()));
         }
         return retList;
     }
@@ -419,21 +429,46 @@ public class PersistenceImp implements Persistence {
         this.logger.log(Level.INFO, "[persistence] successfully stored/updated form " + form.getId() + ".");
     }
     
-   
-    public Form loadForm(String formname) throws PersistenceException {
-        return null;
+    /**
+     * loads a form from database by formId.
+     * 
+     * @param formId - a forms unique id
+     * @return form that was requested
+     * @throws PersistenceException if an error in databse occurs
+     */
+    public Form loadForm(String formId) throws PersistenceException {
+        Form formToReturn = null;
+        for (Form f: forms) {
+            if (f.getId().equals(formId)) {            
+                try {
+                    formToReturn = (Form) f.clone();
+                } catch (CloneNotSupportedException e) {
+                    throw new StorageFailedException("loading of form" + formId + "failed.");
+                }                
+            }
+        }
+        if (formToReturn != null) {
+            return formToReturn;
+        } else {
+            throw new FormNotExistentException("database has no form '" + formId + "'.");
+        }
     };
-    
-    @Override
-    public List<Form> loadAllForms() throws PersistenceException {
-        return null;
-    }
-
 
     @Override
-    public String deleteForm(String formname) throws PersistenceException {
-        // TODO Auto-generated method stub
-        return null;
+    public void deleteForm(String formId) throws PersistenceException {
+        Form formToRemove = null;
+        for (Form f: forms) {
+            if (f.getId().equals(formId)) {
+                formToRemove = f;
+                break;
+            }
+        }
+        if (formToRemove != null) {
+            forms.remove(formToRemove);
+            this.logger.log(Level.INFO,"[persistence] successfully removed form " + formToRemove.getId() + ".");
+        } else {
+            throw new FormNotExistentException("database has no form '" + formId + "'.");
+        }
     };
     
 }
