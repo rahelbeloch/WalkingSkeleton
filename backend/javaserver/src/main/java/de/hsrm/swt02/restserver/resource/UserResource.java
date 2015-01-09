@@ -88,7 +88,8 @@ public class UserResource {
         try {
             user = (User)JsonParser.unmarshall(userAsString, user);
         } catch (JacksonException e) {
-            LOGGER.log(Level.INFO, loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
@@ -128,7 +129,8 @@ public class UserResource {
         try {
             user = (User)JsonParser.unmarshall(userAsString, user);
         } catch (JacksonException e) {
-            LOGGER.log(Level.INFO,loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         try {
@@ -170,7 +172,8 @@ public class UserResource {
         try {
             userAsString = JsonParser.marshall(user);
         } catch (JacksonException e) {
-            LOGGER.log(Level.INFO, loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }

@@ -60,7 +60,8 @@ public class ItemResource {
             LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         String itemAsString;
