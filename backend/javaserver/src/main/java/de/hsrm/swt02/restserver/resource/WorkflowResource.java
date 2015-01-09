@@ -252,19 +252,16 @@ public class WorkflowResource {
     /**
      * This method updates a workflow. This operation will be published on the
      * message broker.
-     * @param workflowid indicates which workflow should be updated
      * @param formParams wrapper for an sent workflow
      * @return String true or false
      */
     @PUT
-    @Path("workflows/{workflowid}")
+    @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
-    public Response updateWorkflow(@PathParam("workflowid") int workflowid,
-            MultivaluedMap<String, String> formParams) 
-    {
+    public Response updateWorkflow(MultivaluedMap<String, String> formParams) {
         LogicResponse logicResponse;
-        final String loggingBody = PREFIX + "PUT /resource/workflows/" + workflowid;
+        final String loggingBody = PREFIX + "PUT /resource/workflows";
         LOGGER.log(Level.INFO, loggingBody);
         final String workflowAsString = formParams.get("data").get(0);
         Workflow workflow = new Workflow();
