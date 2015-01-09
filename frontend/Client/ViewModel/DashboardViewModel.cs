@@ -74,7 +74,6 @@ namespace Client.ViewModel
         {
             logger.Debug("addWorkflowToModel");
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
 
             if (startableList == null)
             {
@@ -110,6 +109,7 @@ namespace Client.ViewModel
                 }
                 toUpdate.addDashboardRow(row);
             }
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
         }
 
         /// <summary>
