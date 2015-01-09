@@ -6,7 +6,7 @@ package de.hsrm.swt02.persistence.exceptions;
 public class RoleNotExistentException extends NotExistentException {
 
     private static final long serialVersionUID = 2095701291993027112L;
-    public static final int ERRORCODE = 11262;
+    public static final int ERRORCODE = 11256;
 
     /**
      * Constructor for the Exception.
