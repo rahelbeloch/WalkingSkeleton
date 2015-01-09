@@ -38,7 +38,7 @@ public class LogConfigurator {
         unmodifiableMap.put("finest", Level.FINEST);
         levelMap = Collections.unmodifiableMap(unmodifiableMap);
     }
-
+    
     /**
      * Setup method to load the logger configuration from the 'server.config'
      * file. Keep in mind that the configuration is a global setting for the
@@ -49,32 +49,75 @@ public class LogConfigurator {
      */
     public static void setup() {
         final Logger logger = Logger.getLogger(UseLogger.class.getName());
+        
         final Properties properties = new Properties();
         BufferedInputStream stream;
-        // properties
-        Level logLevel = levelMap.get(properties.getProperty("LogLevel"));
-        String consoleLogging = properties.getProperty("ConsoleLogging");
-        String logFile = properties.getProperty("LogFile");
-
-        // read configuration file for logging properties
+        // read configuration file for rest properties
         try {
             stream = new BufferedInputStream(new FileInputStream(
                     "server.config"));
             properties.load(stream);
             stream.close();
         } catch (FileNotFoundException e) {
-            logger.log(Level.WARNING,
-                    "Couldn't find the 'server.config' for logger setup.");
+            logger.log(Level.SEVERE, "Configuration file not found!");
         } catch (IOException e) {
-            logger.log(Level.WARNING,
-                    "Couldn't read the 'server.config' for logger setup.");
+            logger.log(Level.SEVERE, "Can't read file!");
+        } catch (SecurityException e) {
+            logger.log(Level.SEVERE, "Read Access not granted!");
+        }
+        
+        // properties
+        final Level logLevel = levelMap.get(properties.getProperty("LogLevel"));
+        final String consoleLogging = properties.getProperty("ConsoleLogging");
+        final String logFile = properties.getProperty("LogFile");
+
+        // default level for logging
+        logger.setLevel(logLevel);
+        // set handler for a specific log file
+        try {
+            fileHTMLHandler = new FileHandler(logFile, LOGFILE_SIZE, LOGFILE_AMOUNT);
         } catch (SecurityException e) {
             logger.log(Level.WARNING,
-                    "Couldn't read the 'server.config' for logger setup (PERMISSION DENIED).");
+                    "Couldn't create a file handler for the logging file.");
+        } catch (IOException e) {
+            logger.log(Level.WARNING,
+                    "Couldn't create a file handler for the logging file.");
         }
-        logLevel = levelMap.get(properties.getProperty("LogLevel"));
-        consoleLogging = properties.getProperty("ConsoleLogging");
-        logFile = properties.getProperty("LogFile");
+        // set HTML-Formatter for a logging handler
+        formatterHTML = new HTMLFormatter();
+        fileHTMLHandler.setFormatter(formatterHTML);
+        logger.addHandler(fileHTMLHandler);
+
+        // disable console logging and remove the default
+        final Logger rootLogger = Logger.getLogger("");
+        final Handler[] handlers = rootLogger.getHandlers();
+        if (handlers[0] instanceof ConsoleHandler) {
+            rootLogger.removeHandler(handlers[0]);
+        }
+        // add consoleHandler if necessary
+        if (consoleLogging.equals("true")) {
+            final ConsoleLogHandler ourConsoleHandler = new ConsoleLogHandler();
+            rootLogger.addHandler(ourConsoleHandler);
+        }
+    }
+    
+    
+    /**
+     * Setup method to load the logger configuration from the 'server.config'
+     * file. Keep in mind that the configuration is a global setting for the
+     * UseLogger.class. That means you have to call this method just once to
+     * setup your configuration.
+     * 
+     * @throws IOException if server.config file can't be found
+     * @param properties that have been read out of the config file
+     */
+    public static void setup(Properties properties) {
+        final Logger logger = Logger.getLogger(UseLogger.class.getName());
+        
+        // properties
+        final Level logLevel = levelMap.get(properties.getProperty("LogLevel"));
+        final String consoleLogging = properties.getProperty("ConsoleLogging");
+        final String logFile = properties.getProperty("LogFile");
 
         // default level for logging
         logger.setLevel(logLevel);

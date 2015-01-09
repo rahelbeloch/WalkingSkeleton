@@ -1,5 +1,7 @@
 package de.hsrm.swt02.messaging;
 
+import java.util.Properties;
+
 import de.hsrm.swt02.businesslogic.LogicResponse;
 
 /**
@@ -30,6 +32,12 @@ public interface ServerPublisher {
      * @param resp is the container for all messages that shall be published
      */
     void publishEvent(LogicResponse resp);
+    
+    /**
+     * applies the config file information to the publisher.
+     * @param properties that have been read out of the config file
+     */
+    void applyProperties(Properties properties);
 
     /**
      * Stops the messaging broker.
