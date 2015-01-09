@@ -10,6 +10,7 @@ using CommunicationLib.Model;
 using CommunicationLib.Exception;
 using System.Windows;
 using CommunicationLib;
+using System.Diagnostics;
 
 namespace Admin.ViewModel
 {
@@ -365,9 +366,18 @@ namespace Admin.ViewModel
                     {
                         if (SelectedRole != null)
                         {
+
                             User user = ((User) execute).Clone<User>();
                             user.roles.Remove(SelectedRole);
-                            PostUser(user);
+
+                            try
+                            {
+                                PostUser(user);
+                            }
+                            catch (BasicException be)
+                            {
+                                MessageBox.Show(be.Message);
+                            }
                         }
                     }, canExecute => true);
                 }
@@ -475,6 +485,25 @@ namespace Admin.ViewModel
             _mainViewModel.roleCollection.Add(updatedRole);
             RoleCheckboxRows.Add(new RoleCheckboxRow(updatedRole, false));
             UpdateUserInSelectedRoles();
+        }
+
+        /// <summary>
+        /// Remove the deleted role from the ViewModel and CheckboxList
+        /// </summary>
+        /// <param name="deletedRole">The role to remove</param>
+        public void RoleDeletion(String sourceId)
+        {
+            //Deletion handling here
+            Role roleToDelete;
+            foreach(Role role in _mainViewModel.roleCollection)
+            {
+                if (role.rolename.Equals(sourceId))
+                {
+                    roleToDelete = role;
+                    _mainViewModel.roleCollection.Remove(roleToDelete);
+                    break;
+                }
+            }
         }
 
         /// <summary>
