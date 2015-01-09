@@ -32,8 +32,8 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private List<Role> _roles;
-        public List<Role> roles { get { return _roles; } set { _roles = value; } }
+        private HashSet<Role> _roles;
+        public HashSet<Role> roles { get { return _roles; } set { _roles = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
@@ -45,7 +45,7 @@ namespace CommunicationLib.Model
             : base()
         {
             active = true;
-            _roles = new List<Role>();
+            _roles = new HashSet<Role>();
             _messagingSubs = new List<String>();
             password = "";
         }
