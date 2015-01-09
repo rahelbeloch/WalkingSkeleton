@@ -29,7 +29,7 @@ public class AdminRoleDeletionException extends NoPermissionException {
      * @return ERRORCODE is the errorcode
      */
     public int getErrorCode() {
-        return IncompleteEleException.ERRORCODE;
+        return AdminRoleDeletionException.ERRORCODE;
     }
 
 }

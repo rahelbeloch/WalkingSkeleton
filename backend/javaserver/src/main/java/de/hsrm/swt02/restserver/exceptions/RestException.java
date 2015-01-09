@@ -3,7 +3,7 @@ package de.hsrm.swt02.restserver.exceptions;
 /**
  * Exception for RestServerExceptionhandling.
  */
-public class RestException extends ConnectionException {
+public class RestException extends ConnectException {
 
     private static final long serialVersionUID = 7591430845597579348L;
     public static final int ERRORCODE = 12100;

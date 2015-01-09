@@ -6,7 +6,7 @@ package de.hsrm.swt02.persistence.exceptions;
 public class StorageFailedException extends PersistenceException {
 
     private static final long serialVersionUID = 1037333767813860667L;
-    public static final int ERRORCODE = 11270;
+    public static final int ERRORCODE = 11210;
     
     /**
      * Constructor for the Exception.
