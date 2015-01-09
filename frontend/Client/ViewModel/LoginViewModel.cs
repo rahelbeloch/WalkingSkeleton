@@ -76,7 +76,8 @@ namespace Client.ViewModel
 
                     _authenticate = new ActionCommand(execute =>
                     {
-                        try{
+                        try
+                        {
                             // Register mainViewModel to CommunicationLib (if login worked)
                             _mainViewModel.myComLib.Login(username, securePwd);
                             logger.Debug("Authentiaction userName: " + username);
@@ -86,6 +87,7 @@ namespace Client.ViewModel
                         catch (BasicException exc)
                         {
                             logger.Debug("Login fehlgeschlagen:");
+
                             MessageBox.Show(exc.Message);
                             Console.WriteLine(exc.ToString());
                         }

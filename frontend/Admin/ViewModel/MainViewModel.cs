@@ -177,10 +177,6 @@ namespace Admin.ViewModel
             //Deletion handling here
         }
 
-        void IDataReceiver.HandleError(System.Exception e)
-        {
-            // exceptions arrive here
-        }
         #endregion
     }
 }
