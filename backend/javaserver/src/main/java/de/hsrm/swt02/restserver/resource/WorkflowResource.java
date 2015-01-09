@@ -24,6 +24,7 @@ import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
@@ -169,6 +170,7 @@ public class WorkflowResource {
             List<Workflow> wflowList = null;
             if (clientID.equals("admin")) {
                 try {
+                    
                     wflowList = LOGIC.getAllWorkflows();
                 } catch (PersistenceException e) {
                     LOGGER.log(Level.WARNING, e);
@@ -236,6 +238,7 @@ public class WorkflowResource {
         }
         workflow.convertIdListToReferences();
         try {
+            
             logicResponse = LOGIC.addWorkflow(workflow);
         } catch (LogicException e1) {
             LOGGER.log(Level.WARNING, e1);
@@ -256,12 +259,12 @@ public class WorkflowResource {
      * @return String true or false
      */
     @PUT
-    @Path("workflows")
+    @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
-    public Response updateWorkflow(MultivaluedMap<String, String> formParams) {
+    public Response updateWorkflow(MultivaluedMap<String, String> formParams, @PathParam("workflowid") String workflowid) {
         LogicResponse logicResponse;
-        final String loggingBody = PREFIX + "PUT /resource/workflows";
+        final String loggingBody = PREFIX + "PUT /resource/workflows/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
         final String workflowAsString = formParams.get("data").get(0);
         Workflow workflow = new Workflow();
