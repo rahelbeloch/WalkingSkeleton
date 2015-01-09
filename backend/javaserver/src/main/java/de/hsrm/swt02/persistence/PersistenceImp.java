@@ -34,7 +34,7 @@ public class PersistenceImp implements Persistence {
     private UseLogger logger;
     private static final int ID_MULTIPLICATOR = 1000;
     
-    /*
+    /**
      * abstraction of a database, that persists the data objects workflow, item,
      * user, step, metaEntry
      */
@@ -43,6 +43,9 @@ public class PersistenceImp implements Persistence {
     private List<User> users = new LinkedList<>();
 
     private List<Role> roles = new LinkedList<>();
+    
+    private List<Form> forms = new LinkedList<>();
+    
     /**
      * Constructor for PersistenceImp.
      * @param logger is the logger for logging.
@@ -381,22 +384,48 @@ public class PersistenceImp implements Persistence {
     }
     @Override
     public List<User> loadAllUsers() throws PersistenceException {
-        List<User> retList = new LinkedList<>();
+        final List<User> retList = new LinkedList<>();
         for (User user: this.users) {
             retList.add(this.loadUser(user.getUsername()));
         }
         return retList;
     }
     
+    
     // Form Operations
+    
     @Override
-    public void storeForm() throws PersistenceException {};
+    public void storeForm(Form form) throws PersistenceException {
+        assert (form.getId() != null);
+        Form formToRemove = null;
+        for (Form f: forms) {
+            if (f.getId().equals(f.getId())) {
+                formToRemove = f;
+                break;
+            }
+        }
+        if (formToRemove != null) {
+            this.deleteForm(formToRemove.getId());
+            this.logger.log(Level.FINE, "[persistence] overwriting form " + form.getId() + "...");
+        }
+        Form formToStore;
+        try {
+            formToStore = (Form)form.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new StorageFailedException("storage of form" + form.getId() + "failed.");
+        }
+        forms.add(formToStore);
+        this.logger.log(Level.INFO, "[persistence] successfully stored/updated form " + form.getId() + ".");
+    }
+    
     @Override
     public void deleteForm(String formname) throws PersistenceException {};
+    
     @Override
     public Form loadForm(String formname) throws PersistenceException {
         return null;
     };
+    
     @Override
     public List<Form> loadAllForms() throws PersistenceException {
         return null;
