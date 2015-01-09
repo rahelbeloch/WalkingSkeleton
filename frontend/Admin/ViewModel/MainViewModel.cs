@@ -195,24 +195,25 @@ namespace Admin.ViewModel
 
         void IDataReceiver.DataDeletion(Type sourceType, string sourceId)
         {
-            //Deletion handling here
-            Role roleToDelete;
-
-            if (sourceType == typeof(Role))
+            if(sourceType == typeof(Workflow))
             {
-                Debug.WriteLine("check");
-                foreach(Role role in roleCollection)
-                {
-                    if (role.rolename.Equals(sourceId))
-                    {
-                        Debug.WriteLine("found penis");
-                        roleToDelete = role;
-                        roleCollection.Remove(roleToDelete);
-                        break;
-                    }
-                }
+                // No WorkflowDeletion yet needed
+                // Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.WorkflowDeletion(sourceId)));
             }
-            
+            else if (sourceType == typeof(Role))
+            {
+                Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.RoleDeletion(sourceId)));
+            }
+            else if(sourceType == typeof(Item))
+            {
+                // No ItemDeletion yet needed
+                // Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.ItemDeletion(sourceId)));
+            }
+            else if(sourceType == typeof(User))
+            {
+                // No UserDeletion yet needed
+                // Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.UserDeletion(sourceId)));
+            }
         }
 
         #endregion
