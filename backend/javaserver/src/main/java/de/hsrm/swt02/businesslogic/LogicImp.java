@@ -127,7 +127,6 @@ public class LogicImp implements Logic {
                                 MessageTopic.WORKFLOW_INFO,
                                 MessageOperation.DEFINITION, id));
                     } else {
-                        
                         if (oldWorkflow.isActive() != workflow.isActive()) {
                             oldWorkflow.setActive(workflow.isActive());
                             oldWorkflowId = persistence.storeWorkflow(oldWorkflow);
