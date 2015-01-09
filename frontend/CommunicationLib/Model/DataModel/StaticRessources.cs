@@ -49,8 +49,8 @@ namespace CommunicationLib.Model
             {11240, typeof(ElementChangedException)},
             {11250, typeof(DoesntExistsException)},
                 {11251, typeof(UserNotExistException)},
-                //{11252, typeof(WorkflowNotExistException)},
-                //{11253, typeof(ItemNotExistException)},
+                {11252, typeof(WorkflowNotExistException)},
+                {11253, typeof(ItemNotExistException)},
                 {11254, typeof(StepNotExistentException)},
             {11260, typeof(RoleException)},
                 {11261, typeof(RoleHasAlreadyUserException)},
@@ -61,16 +61,16 @@ namespace CommunicationLib.Model
                 {11310, typeof(UserHasNoPermissionException)},
                 {11320, typeof(ItemNotForwardableException)},
             {11400, typeof(IncompleteEleException)},
-                //Error codes for connection errors
+                
+            //Error codes for connection errors
             {12000,typeof(ConnectionException)},
+                {12100,typeof(RestException)},
+                    {12110,typeof(JacksonException)},
 
-            //Error codes for messaging errors
-            {12100,typeof(MessagingException)},
-            
-            //Error codes for rest errors
-            {12200,typeof(RestException)},
+                 {12200,typeof(MessagingException)},
+                    {12210,typeof(ServerPublisherBrokerException)},
 
-            {12210,typeof(ServerNotRunningException)}
+                {12300,typeof(ServerNotRunningException)}
         };
 
         public static Type GetErrorType(int code)

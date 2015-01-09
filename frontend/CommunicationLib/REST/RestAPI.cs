@@ -106,6 +106,7 @@ namespace RestAPI
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 System.Diagnostics.Trace.WriteLine("!!!!!! " + response.Content);
+                Console.WriteLine("!!!!!! " + response.Content);
                 int errorCode = Int32.Parse(response.Content);
 
                 //generate convenient exception

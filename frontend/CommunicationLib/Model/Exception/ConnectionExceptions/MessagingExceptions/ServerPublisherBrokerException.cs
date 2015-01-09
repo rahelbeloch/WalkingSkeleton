@@ -6,26 +6,25 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    public class RestException : ConnectionException
+    public class ServerPublisherBrokerException : MessagingException
     {
         /// <summary>
         /// This Exception es a child of ConnectionException. 
-        /// Each Exception has an number, here it is 12200. 
+        /// Each Exception has an number, here it is 12100. 
         /// </summary>
-        private int _number = 12100;
+        private int _number = 12210;
         new public int number { get { return _number; } }
 
-        public RestException()
-            : base("Es ist ein Fehler in der Restschnittstelle passiert.")
+        public ServerPublisherBrokerException()
+            :base("Es ist ein fehler beim Aktualisieren aufgetreten.")
         {
-
         }
 
         /// <summary>
         /// This constructor allows to add a spezial message.
         /// </summary>
         /// <param name="message">the message</param>
-        public RestException(string message)
+        public ServerPublisherBrokerException(string message)
          : base(message)
         {
         }
@@ -35,7 +34,7 @@ namespace CommunicationLib.Exception
         /// </summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        public RestException(string message, System.Exception inner)
+        public ServerPublisherBrokerException(string message, System.Exception inner)
             : base(message, inner)
         {
         }
