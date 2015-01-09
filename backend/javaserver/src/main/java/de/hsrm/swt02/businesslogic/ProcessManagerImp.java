@@ -119,6 +119,8 @@ public class ProcessManagerImp implements ProcessManager {
         String itemId = "";
 
         if (checkAuthorization(step, user.getUsername())) {
+        	System.out.println("Item: " + item + " Step: " + step + " user: " + user.getId() + " " + user.getPassword());
+        	System.out.println("StepProcessor: " + stepProcessor);
             itemId = stepProcessor.handle(item, step, user);
             return itemId;
         } else {

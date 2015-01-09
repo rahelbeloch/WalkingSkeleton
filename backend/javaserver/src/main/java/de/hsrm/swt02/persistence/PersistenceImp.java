@@ -147,6 +147,7 @@ public class PersistenceImp implements Persistence {
     public Workflow getParentWorkflow(String itemId) throws PersistenceException {
         final int integerItemId = Integer.parseInt(itemId);
         final int idDivider = 10;
+        
         final int eliminatedItemId = integerItemId % (ID_MULTIPLICATOR / idDivider);
         final String parentWorkflowId = ((integerItemId - eliminatedItemId) / ID_MULTIPLICATOR) + "";        
         final Workflow parentWorkflow = loadWorkflow(parentWorkflowId);
