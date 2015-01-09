@@ -42,9 +42,9 @@ namespace RestAPI
         {
             // execute the request
             IRestResponse response = client.Execute(request);
-            System.Diagnostics.Trace.WriteLine("resp " + response.ErrorException);
-            System.Diagnostics.Trace.WriteLine("resp " + response.ErrorMessage);
-            System.Diagnostics.Trace.WriteLine("resp " + response.StatusCode);
+            Debug.WriteLine("resp " + response.ErrorException);
+            Debug.WriteLine("resp " + response.ErrorMessage);
+            Debug.WriteLine("resp " + response.StatusCode);
             try
             {
                 ProofResponseErrors(response);
@@ -105,7 +105,7 @@ namespace RestAPI
             // if no HttpException happened and although the StatusCode is not "OK", there must be on Exception of our own
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
             {
-                System.Diagnostics.Trace.WriteLine("!!!!!! " + response.Content);
+                Debug.WriteLine("!!!!!! " + response.Content);
                 Console.WriteLine("!!!!!! " + response.Content);
                 int errorCode = Int32.Parse(response.Content);
 
