@@ -10,10 +10,10 @@ import com.google.inject.Inject;
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.protocol.Message;
+import de.hsrm.swt02.businesslogic.protocol.MessageOperation;
+import de.hsrm.swt02.businesslogic.protocol.MessageTopic;
 import de.hsrm.swt02.logging.UseLogger;
-import de.hsrm.swt02.messaging.Message;
-import de.hsrm.swt02.messaging.MessageOperation;
-import de.hsrm.swt02.messaging.MessageTopic;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Form;
@@ -49,8 +49,8 @@ public class LogicImp implements Logic {
      * @throws LogicException if something goes wrong
      */
     @Inject
-    public LogicImp(Persistence p, ProcessManager pm, UseLogger logger)
-            throws LogicException {
+    public LogicImp(Persistence p, ProcessManager pm, UseLogger logger) 
+        throws LogicException {
         this.persistence = p;
         this.processManager = pm;
         this.logger = logger;
