@@ -68,6 +68,11 @@
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\UserHasNoPermissionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\StepNotExistentException.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="REST\RestRequester.cs" />
     <Compile Include="Messaging\CommunicationManager.cs" />
     <Compile Include="REST\CustomSerializationBinder.cs" />
@@ -116,7 +121,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
