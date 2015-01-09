@@ -1,16 +1,21 @@
 package de.hsrm.swt02.messaging;
 
+import de.hsrm.swt02.restserver.exceptions.ConnectException;
+
 /**
- * Exception class for message broker Errors coming from the ServerPublisher.
+ * Exception class for messaging Errors.
  */
-public class ServerPublisherBrokerException extends MessagingException {
-    private static final long serialVersionUID = 2850340582682788238L;
-    public static final int ERRORCODE = 12210;
+public class MessagingException extends ConnectException {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 2806651554510892036L;
+    public static final int ERRORCODE = 12200;
     
     /**
      * Constructor 1.
      */
-    public ServerPublisherBrokerException() {
+    public MessagingException() {
         super();
     }
     
@@ -19,7 +24,7 @@ public class ServerPublisherBrokerException extends MessagingException {
      * 
      * @param msg is the message for the exception to set
      */
-    public ServerPublisherBrokerException(String msg) {
+    public MessagingException(String msg) {
         super(msg);
     }
     
