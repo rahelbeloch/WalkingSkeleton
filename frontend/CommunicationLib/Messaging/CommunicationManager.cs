@@ -74,7 +74,7 @@ namespace CommunicationLib
             }
             catch (NMSConnectionException e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 // _myClient kann bzw ist an dieser Stelle null
                 //_myClient.HandleError(e);
             }
@@ -143,7 +143,7 @@ namespace CommunicationLib
             {
                 ITextMessage tm = msg as ITextMessage;
                 // Logging on Console 
-                System.Diagnostics.Trace.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
+                Debug.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
                 try
                 {
                     HandleRequest(tm.Text);  
@@ -153,7 +153,7 @@ namespace CommunicationLib
                     if (ErrorMessageMapper.errorMessages.ContainsKey(e.number))
                     {
                         Type exceptionType = ErrorMessageMapper.GetErrorType(e.number);
-                        System.Diagnostics.Trace.WriteLine(exceptionType);
+                        Debug.WriteLine(exceptionType);
                     }
                 }
             }
@@ -163,7 +163,7 @@ namespace CommunicationLib
             }
             else
             {
-                Console.WriteLine("\ndifferent message-Type: " + msg + "\n");
+                Debug.WriteLine("\ndifferent message-Type: " + msg + "\n");
             }
         }
 
@@ -171,6 +171,12 @@ namespace CommunicationLib
         /// Invoked by the OnMessageReceived method.
         /// Uses reflection for dynamic rest requests.
         /// The request information is retrieved from the given message string.
+        /// Define and update operations result a GET-restrequest for the given source information.
+        /// The restrequest returns the updated source. 
+        /// This source will be sent to the client(IDataReceiver) by invoking a callback method.
+        /// 
+        /// Deletion operations obviously skip the restrequest, because there is no source for 'GET'.
+        /// The client(IDataReceiver) receives the necessary delete information via callback method(DataDeletion()).
         /// </summary>
         /// <param name="requestMsg">information string for rest-request</param>
         private void HandleRequest(string requestMsg)
@@ -198,9 +204,60 @@ namespace CommunicationLib
             objId = msgParams[2];
             args = new object [1] { objId };
 
+            // deletion, update or definition
+            if (msgParams[1].Equals(DELETE_OPERATION))
+            {
+                _myClient.DataDeletion(genericType, objId);
+            }
+            else
+            {
+                // do refletive invocation
+                requestedObj = reflectiveRestRequest(methodName, genericType, args);
+
+                // Client update
+                if (genericType == typeof(Workflow))
+                {
+                    _myClient.WorkflowUpdate((Workflow)requestedObj);
+
+                    // register client for item updates from this new workflow
+                    if (msgParams[1].Equals(DEFINE_OPERATION))
+                    {
+                        RegisterItemSource((Workflow)requestedObj);
+                    }
+                }
+                else if (genericType == typeof(Item))
+                {
+                    _myClient.ItemUpdate((Item)requestedObj);
+                }
+                else if (genericType == typeof(User))
+                {
+                    _myClient.UserUpdate((User)requestedObj);
+                }
+                else if (genericType == typeof(Role))
+                {
+                    _myClient.RoleUpdate((Role)requestedObj);
+                }
+                else if (genericType == typeof(Form))
+                {
+                    _myClient.FormUpdate((Form)requestedObj);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Invoked by the HandleRequest()-method.
+        /// Generates a reflective generic method for restrequests and invokes it.
+        /// </summary>
+        /// <param name="methodName">MethodName for the reflective invocation</param>
+        /// <param name="genericType">generic for the generic method invocation</param>
+        /// <param name="args">parameters for the reflective invocation</param>
+        /// <returns>the requested source from the server</returns>
+        private object reflectiveRestRequest(string methodName, Type genericType, object[] args)
+        {
+            object requestedObj;
             // create a generic method object
-            MethodInfo method = typeof( RestRequester ).GetMethod( methodName );
-            MethodInfo genericMethod = method.MakeGenericMethod( genericType );
+            MethodInfo method = typeof(RestRequester).GetMethod(methodName);
+            MethodInfo genericMethod = method.MakeGenericMethod(genericType);
 
             /* Invoke the dynamically generated method
              * 1. param is the method location
@@ -210,41 +267,16 @@ namespace CommunicationLib
              */
             requestedObj = genericMethod.Invoke(_sender, args);
 
-            // Client update
-            if (genericType == typeof(Workflow))
-            {
-                _myClient.WorkflowUpdate( (Workflow)requestedObj );
-                
-                // register client for item updates from this new workflow
-                if (msgParams[1].Equals( DEFINE_OPERATION ) ) 
-                {
-                    RegisterItemSource( (Workflow)requestedObj );
-                }
-            }
-            else if (genericType == typeof(Item))
-            {
-                _myClient.ItemUpdate( (Item)requestedObj );
-            }
-            else if (genericType == typeof(User))
-            {
-                _myClient.UserUpdate( (User)requestedObj );
-            }
-            else if (genericType == typeof(Role))
-            {
-                _myClient.RoleUpdate( (Role)requestedObj );
-            }
-            else if (genericType == typeof(Form))
-            {
-                _myClient.FormUpdate( (Form)requestedObj );
-            }
+            return requestedObj;  
         }
 
         /// <summary>
+        /// Invoked by the HandleRequest()-method.
         /// Subscribes to an general item messaging topic for the given workflow.
-        /// item activities from this workflow will be received by the CommunicationManager
+        /// Item activities from this workflow will be received by the CommunicationManager.
         /// </summary>
         /// <param name="itemSource">the workflow form which the item info shall be noticed</param>
-        public void RegisterItemSource(Workflow itemSource)
+        private void RegisterItemSource(Workflow itemSource)
         {
             string topicName;
 
@@ -252,7 +284,7 @@ namespace CommunicationLib
             topicName = "ITEMS_FROM_" + itemSource.id;
             if (!_messageSubs.ContainsKey(topicName))
             {
-                System.Diagnostics.Trace.WriteLine("Registration for " + topicName);
+                Debug.WriteLine("Registration for " + topicName);
                 IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(topicName));
                 messageConsumer.Listener += OnMessageReceived;
                 _messageSubs.Add(topicName, messageConsumer);
