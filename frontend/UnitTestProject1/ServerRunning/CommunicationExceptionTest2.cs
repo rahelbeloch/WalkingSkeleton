@@ -24,6 +24,7 @@ namespace UnitTestProject1
         public static void ClassInit(TestContext context)
         {
             myRequester = new RestRequester("admin");
+            myRequester.InitializeClientProperties("TestAdmin", "abc123");
         }
 
 
@@ -34,16 +35,46 @@ namespace UnitTestProject1
         [ExpectedException(typeof(WorkflowNotExistException))]
         public void testServerConnectionGetObject()
         {
-            myRequester.GetObject<Workflow>("0");
+            myRequester.GetObject<Workflow>("15");
         }
 
         /// <summary>
         /// Test the private method 'SendSimpleRequest' in RestRequester. Tests the ExceptionHandling if server is not running.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ItemNotExistException))]
+        [ExpectedException(typeof(WorkflowNotExistException))]
         public void testServerConnectionSendSimpleReq()
         {
+            Role testRole = new Role();
+            testRole.rolename = "Testrole";
+
+            // one User
+            User testUser = new User();
+            testUser.username = "Rahel";
+            testUser.roles.Add(testRole);
+
+            // one Workflow
+            Workflow newWf = new Workflow();
+
+            // a startStep
+            StartStep startStep = new StartStep();
+            startStep.roleIds.Add("Testrole");
+            newWf.addStep(startStep);
+
+            // an action
+            Action act = new Action();
+            act.roleIds.Add("Testrole");
+            newWf.addStep(act);
+
+            // a final step
+            FinalStep fStep = new FinalStep();
+            fStep.roleIds.Add("Testrole");
+            newWf.addStep(fStep);
+
+            myRequester.PostObject(testRole);
+            myRequester.PostObject(testUser);
+            myRequester.PostObject(newWf);
+
             myRequester.StepForward("1", "2");
         }
 
