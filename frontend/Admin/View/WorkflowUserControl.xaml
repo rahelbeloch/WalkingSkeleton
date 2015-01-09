@@ -59,7 +59,7 @@
                                     <GridView.Columns >
                                         <GridViewColumn Width="120" Header="Typ" DisplayMemberBinding="{Binding label}"/>
                                         <GridViewColumn Width="290" Header="Beschreibung" DisplayMemberBinding="{Binding description}" />
-                                        <GridViewColumn Width="130" Header="Rollen" DisplayMemberBinding="{Binding rolelabel}"/>
+                                        <GridViewColumn Width="130" Header="Rollen" DisplayMemberBinding="{Binding roleIds[0]}"/>
                                     </GridView.Columns>
                                 </GridView>
                             </ListView.View>
@@ -114,7 +114,7 @@
                                         <GridView.Columns>
                                             <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
                                             <GridViewColumn Width="120" Header="Beschreibung" DisplayMemberBinding="{Binding label}" />
-                                            <GridViewColumn Width="120" Header="BearbeiterIn" DisplayMemberBinding="{Binding rolelabel}" />
+                                            <GridViewColumn Width="120" Header="BearbeiterIn" DisplayMemberBinding="{Binding roleIds[0]}" />
                                             
                                         </GridView.Columns>
                                     </GridView>

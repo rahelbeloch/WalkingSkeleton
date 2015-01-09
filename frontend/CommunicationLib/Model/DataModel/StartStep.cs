@@ -18,6 +18,8 @@ namespace CommunicationLib.Model
             : base()
         {
             label = "Startzustand";
+            
+            
         }
     }
 }
