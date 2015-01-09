@@ -1,6 +1,9 @@
 package de.hsrm.testswt02.modelTesting;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -365,12 +368,15 @@ public class CloneTests {
         User clone = new User();
         final Role r1 = new Role();
         final Role r2 = new Role();
+        r1.setRolename("role1");
+        r2.setRolename("role2");
+        Set<Role> roles = new HashSet<>();
+        roles.add(r1);
+        roles.add(r2);
 
         u.setId("1");
         u.setUsername("user1");
         r1.setId("1");
-        r1.setRolename("role1");
-        r2.setRolename("role2");
         u.getRoles().add(r1);
         u.getRoles().add(r2);
 
@@ -378,14 +384,10 @@ public class CloneTests {
 
         assertTrue(clone.getId() == u.getId());
         assertTrue(clone.getUsername().equals(u.getUsername()));
-        assertTrue(clone.getRoles().get(0).getId().equals(u.getRoles().get(0)
-                .getId()));
-        assertTrue(clone.getRoles().get(0).getRolename()
-                .equals(u.getRoles().get(0).getRolename()));
-        assertTrue(clone.getRoles().get(1).getId().equals(u.getRoles().get(1)
-                .getId()));
-        assertTrue(clone.getRoles().get(1).getRolename()
-                .equals(u.getRoles().get(1).getRolename()));
-    }
 
+        assertEquals(clone.getRoles(),roles);
+        
+        assertTrue(clone.getRoles().contains(r1));
+        assertTrue(clone.getRoles().contains(r2));
+    }
 }
