@@ -173,17 +173,22 @@ namespace Client.ViewModel
 
         void IDataReceiver.UserUpdate(User user)
         {
-            // Updates kommen hier an
+            // update handling
         }
 
         void IDataReceiver.RoleUpdate(Role role)
         {
-            // Updates kommen hier an
+            // update handling
         }
 
         void IDataReceiver.FormUpdate(Form updatedForm)
         {
-            // Updates kommen hier an
+            // update handling
+        }
+
+        void IDataReceiver.DataDeletion(Type sourceType, string sourceId)
+        {
+            //Deletion handling here
         }
 
         void IDataReceiver.HandleError(System.Exception e)
