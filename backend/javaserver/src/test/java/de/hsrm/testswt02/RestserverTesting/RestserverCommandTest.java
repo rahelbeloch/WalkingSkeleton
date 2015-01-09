@@ -22,7 +22,6 @@ import org.junit.Test;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
-import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.restserver.RestServer;
 
 
