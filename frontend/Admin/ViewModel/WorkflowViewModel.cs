@@ -35,7 +35,15 @@ namespace Admin.ViewModel
 
             // fill choosable steps with default values
             _choosableSteps.Add(new StartStep());
-            updateModel();
+
+            try
+            {
+                updateModel();
+            }
+            catch (BasicException e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
@@ -357,18 +365,26 @@ namespace Admin.ViewModel
                 {
                     _toggleActivity = new ActionCommand(execute =>
                     {
-                        if (_actWorkflow.active)
+                        try
                         {
-                            _actWorkflow.active = false;
-                            _restRequester.UpdateObject(_actWorkflow);
+
+                            if (_actWorkflow.active)
+                            {
+                                _actWorkflow.active = false;
+                                _restRequester.UpdateObject(_actWorkflow);
+                            }
+                            else
+                            {
+                                _actWorkflow.active = true;
+                                _restRequester.UpdateObject(_actWorkflow);
+                            }
+                            _workflowActivity = "";
+                            OnChanged("workflowActivity");
                         }
-                        else
+                        catch (BasicException e)
                         {
-                            _actWorkflow.active = true;
-                            _restRequester.UpdateObject(_actWorkflow);
+                            MessageBox.Show(e.Message);
                         }
-                        _workflowActivity = "";
-                        OnChanged("workflowActivity");
                     }, canExecute => _actWorkflow != null);
                 }
                 return _toggleActivity;
