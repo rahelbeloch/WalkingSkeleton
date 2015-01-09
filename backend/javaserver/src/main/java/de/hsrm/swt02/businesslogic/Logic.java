@@ -5,6 +5,7 @@ import java.util.List;
 import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
@@ -285,11 +286,12 @@ public interface Logic {
      * 
      * @param rolename of the role
      * @return LogicResponce object
+     * @throws NoPermissionException 
+     * @throws LogicException 
      * @exception RoleNotExistentException if the requested role is not there
-     * @throws RoleNotExistentException
      */
-    LogicResponse deleteRole(String rolename) throws PersistenceException;
-
+    LogicResponse deleteRole(String rolename) throws LogicException;
+    
     /**
      * Method for giving a List of items of a user which are all open.
      * 
