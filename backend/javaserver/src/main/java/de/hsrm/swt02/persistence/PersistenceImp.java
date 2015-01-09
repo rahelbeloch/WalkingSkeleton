@@ -395,7 +395,7 @@ public class PersistenceImp implements Persistence {
     // Form Operations
     
     @Override
-    public void storeForm(Form form) throws PersistenceException {
+    public String storeForm(Form form) throws PersistenceException {
         assert (form.getId() != null);
         Form formToRemove = null;
         for (Form f: forms) {
@@ -416,18 +416,24 @@ public class PersistenceImp implements Persistence {
         }
         forms.add(formToStore);
         this.logger.log(Level.INFO, "[persistence] successfully stored/updated form " + form.getId() + ".");
+        
+        return form.getId();
     }
     
-    @Override
-    public void deleteForm(String formname) throws PersistenceException {};
-    
-    @Override
+   
     public Form loadForm(String formname) throws PersistenceException {
         return null;
     };
     
     @Override
     public List<Form> loadAllForms() throws PersistenceException {
+        return null;
+    }
+
+
+    @Override
+    public String deleteForm(String formname) throws PersistenceException {
+        // TODO Auto-generated method stub
         return null;
     };
     
