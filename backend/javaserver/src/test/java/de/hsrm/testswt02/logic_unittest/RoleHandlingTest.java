@@ -69,7 +69,7 @@ public class RoleHandlingTest {
     }
     
     @Test
-    public void DeletionOfRolesTest() throws PersistenceException {
+    public void DeletionOfRolesTest() throws LogicException {
         Role chief = new Role();
         chief.setRolename("chief");
         Role handkerchief = new Role();
