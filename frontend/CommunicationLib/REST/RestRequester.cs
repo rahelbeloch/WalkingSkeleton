@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Net;
 using System.Security;
 using CommunicationLib;
+using System.Diagnostics;
 
 namespace RestAPI
 {
@@ -169,7 +170,7 @@ namespace RestAPI
             }
             catch (BasicException e)
             {
-                System.Diagnostics.Trace.WriteLine("Exception " + e.Data);
+                Debug.WriteLine("Exception " + e.Data);
 
                 throw;
             }
