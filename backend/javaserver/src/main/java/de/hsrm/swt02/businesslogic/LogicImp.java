@@ -786,10 +786,9 @@ public class LogicImp implements Logic {
     @Override
     public LogicResponse deleteForm(String formId) throws PersistenceException {
         final LogicResponse logicResponse = new LogicResponse();
-        String id;
         
-        id = persistence.deleteForm(formId);
-        logicResponse.add(Message.build(MessageTopic.FORM_INFO, MessageOperation.DELETION, id));
+        persistence.deleteForm(formId);
+        logicResponse.add(Message.build(MessageTopic.FORM_INFO, MessageOperation.DELETION, formId));
         return logicResponse;
     }
 
