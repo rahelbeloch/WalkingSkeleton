@@ -8,7 +8,7 @@ import de.hsrm.swt02.persistence.exceptions.BasicException;
 public class ConnectionException extends BasicException {
 
     private static final long serialVersionUID = 1614570197373745612L;
-    public static final int ERRORCODE = 12200;
+    public static final int ERRORCODE = 12000;
     
     /**
      * Constructor.

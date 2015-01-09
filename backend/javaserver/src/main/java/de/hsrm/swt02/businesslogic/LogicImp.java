@@ -73,7 +73,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse startWorkflow(String workflowID, String username)
-            throws LogicException {
+            throws LogicException, PersistenceException {
         final LogicResponse logicResponse = new LogicResponse();
         final Workflow workflow;
         final String itemId;
