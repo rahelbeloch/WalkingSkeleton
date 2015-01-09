@@ -1,6 +1,7 @@
 package de.hsrm.testswt02.RestserverTesting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -25,7 +26,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.logging.LogConfigurator;
-import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.restserver.RestServer;
 
 /**
