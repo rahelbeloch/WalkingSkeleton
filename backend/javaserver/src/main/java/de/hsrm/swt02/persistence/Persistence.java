@@ -154,7 +154,7 @@ public interface Persistence {
     
     // Form Operations
     
-    String storeForm(Form form) throws PersistenceException;
+    void storeForm(Form form) throws PersistenceException;
 
     String deleteForm(String formname) throws PersistenceException;
     
