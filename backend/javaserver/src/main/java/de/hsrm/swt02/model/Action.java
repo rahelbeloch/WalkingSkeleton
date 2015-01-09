@@ -22,8 +22,8 @@ public class Action extends Step {
      * @param username name of user responsible for action
      * @param description short description of action
      */
-    public Action(ArrayList<String> roles, String description) {
-        this.roles = roles;
+    public Action(ArrayList<String> roleIds, String description) {
+        this.roleIds = roleIds;
         this.description = description;
     }
     

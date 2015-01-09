@@ -29,9 +29,8 @@ public class Step extends RootElement {
     protected List<String> nextStepIds;
     
     // Used for (de)serialization. Do not change.
-    protected ArrayList<String> roles;
-    
-    
+    protected ArrayList<String> roleIds;
+
     /**
      * Constructor for Step.
      */
@@ -45,7 +44,7 @@ public class Step extends RootElement {
      */
     public void init(Step s) {
         super.init(s);
-        this.roles = s.roles;
+        this.roleIds = s.roleIds;
         this.opener = s.opener;
         this.getNextStepIds().addAll(s.getNextStepIds());
     }
@@ -78,14 +77,18 @@ public class Step extends RootElement {
      * Username getter.
      * @return username is the username of the user responsible for the step
      */
-    public ArrayList<String> getRoleIDs() {
-        if (roles == null) {
-            this.roles = new ArrayList<String>();
+    public ArrayList<String> getRoleIds() {
+        if (roleIds == null) {
+            this.roleIds = new ArrayList<String>();
         }
         
-        return this.roles;
+        return this.roleIds;
     }
     
+    public void setRoleIds(ArrayList<String> roleIds) {
+        this.roleIds = roleIds;
+    }
+
     public String getOpener() {
         return opener;
     }
@@ -99,7 +102,7 @@ public class Step extends RootElement {
      * @param username is the username of the user responsible for the step
      */
     public void addRole(String role) {
-        this.roles.add(role);
+        this.roleIds.add(role);
     }
     
    
@@ -122,7 +125,7 @@ public class Step extends RootElement {
         String ret = "";
         ret += "\tType: " + this.getClass().getSimpleName() + "\n";
         ret += "\tId: " + this.id + "\n";
-        ret += "\tRollen: " + Arrays.toString(this.getRoleIDs().toArray()) + "\n";
+        ret += "\tRollen: " + Arrays.toString(this.getRoleIds().toArray()) + "\n";
         ret += "\tNextStepIds: " + this.nextStepIds + "\n";
         
         return ret;
