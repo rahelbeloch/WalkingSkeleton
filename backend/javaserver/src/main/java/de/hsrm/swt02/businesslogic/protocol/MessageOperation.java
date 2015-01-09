@@ -1,4 +1,4 @@
-package de.hsrm.swt02.messaging;
+package de.hsrm.swt02.businesslogic.protocol;
 
 /** Enumeration for message operations.
  *  Every operation has its own protocol representation.
