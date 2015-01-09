@@ -164,6 +164,7 @@ namespace RestAPI
         {
             IRestResponse response = null;
             var request = createRequest(url, Method.GET);
+            System.Diagnostics.Trace.WriteLine(url);
             try
             {
                 response = InternalRequester.RetrieveRequest(request);
@@ -310,12 +311,12 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///     Does a login access to the server. Path ist always: '/command/user/login'
+        ///     Does a login access to the server. Path ist always: '/command/users/login'
         /// </summary>
         /// <param name="username">Name of the user</param>
         /// <param name="password">Password of the user</param>
         /// <returns>True if it worked, false otherwhise, or an exception</returns>
-        public Boolean checkUser(String username, String password)
+        public Boolean checkUser()
         {
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(User), new string[] { "login" });
