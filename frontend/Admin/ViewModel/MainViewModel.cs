@@ -172,6 +172,11 @@ namespace Admin.ViewModel
             // updated forms arrive here
         }
 
+        void IDataReceiver.DataDeletion(Type sourceType, string sourceId)
+        {
+            //Deletion handling here
+        }
+
         void IDataReceiver.HandleError(System.Exception e)
         {
             // exceptions arrive here
