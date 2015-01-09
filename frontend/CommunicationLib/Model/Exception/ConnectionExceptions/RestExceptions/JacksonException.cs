@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    public class ServerNotRunningException : RestException
+    public class JacksonException : RestException
     {
         /// <summary>
-        /// This Exception es a child of RestException. 
-        /// Each Exception has an number, here it is 12210. 
+        /// This Exception es a child of ConnectionException. 
+        /// Each Exception has an number, here it is 12200. 
         /// </summary>
-        private int _number = 12210;
+        private int _number = 12110;
         new public int number { get { return _number; } }
 
-        public ServerNotRunningException()
-            : base("Die Verbindung zum Server ist fehlgeschlagen")
+        public JacksonException()
+            : base("Es ist ein Fehler in der Restschnittstelle passiert.")
         {
 
         }
@@ -25,7 +25,7 @@ namespace CommunicationLib.Exception
         /// This constructor allows to add a spezial message.
         /// </summary>
         /// <param name="message">the message</param>
-        public ServerNotRunningException(string message)
+        public JacksonException(string message)
          : base(message)
         {
         }
@@ -35,7 +35,7 @@ namespace CommunicationLib.Exception
         /// </summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        public ServerNotRunningException(string message, System.Exception inner)
+        public JacksonException(string message, System.Exception inner)
             : base(message, inner)
         {
         }

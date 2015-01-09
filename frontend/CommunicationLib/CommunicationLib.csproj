@@ -62,6 +62,8 @@
     <Compile Include="ComLib.cs" />
     <Compile Include="Model\DataModel\Form.cs" />
     <Compile Include="Model\DataModel\ViewModelBase.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\MessagingExceptions\ServerPublisherBrokerException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\JacksonException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\ItemNotForwardableException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\UserHasNoPermissionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleException.cs" />
@@ -87,7 +89,7 @@
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\NoPermissionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\PersistenceException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\RestException.cs" />
-    <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\ServerNotRuningException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\ServerNotRuningException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleHasAlreadyUserException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleNotExistentException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserAlreadyExistsException.cs" />

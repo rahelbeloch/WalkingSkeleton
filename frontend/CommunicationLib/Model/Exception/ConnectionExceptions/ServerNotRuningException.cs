@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    public class RestException : ConnectionException
+    public class ServerNotRunningException : RestException
     {
         /// <summary>
-        /// This Exception es a child of ConnectionException. 
-        /// Each Exception has an number, here it is 12200. 
+        /// This Exception es a child of RestException. 
+        /// Each Exception has an number, here it is 12210. 
         /// </summary>
-        private int _number = 12100;
+        private int _number = 12300;
         new public int number { get { return _number; } }
 
-        public RestException()
-            : base("Es ist ein Fehler in der Restschnittstelle passiert.")
+        public ServerNotRunningException()
+            : base("Die Verbindung zum Server ist fehlgeschlagen")
         {
 
         }
@@ -25,7 +25,7 @@ namespace CommunicationLib.Exception
         /// This constructor allows to add a spezial message.
         /// </summary>
         /// <param name="message">the message</param>
-        public RestException(string message)
+        public ServerNotRunningException(string message)
          : base(message)
         {
         }
@@ -35,7 +35,7 @@ namespace CommunicationLib.Exception
         /// </summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        public RestException(string message, System.Exception inner)
+        public ServerNotRunningException(string message, System.Exception inner)
             : base(message, inner)
         {
         }
