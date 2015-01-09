@@ -69,7 +69,8 @@ public class WorkflowResource {
             workflowAsString = JsonParser.marshall(workflow);
             LOGGER.log(Level.FINE, loggingBody + workflowAsString);
         } catch (JacksonException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response
                     .serverError()
                     .entity(String.valueOf(e
@@ -106,7 +107,8 @@ public class WorkflowResource {
             itemListString = JsonParser.marshall(itemList);
             LOGGER.log(Level.FINE, loggingBody + itemListString);
         } catch (JacksonException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response
                     .serverError()
                     .entity(String.valueOf(e
@@ -149,7 +151,8 @@ public class WorkflowResource {
                         wIdListString = JsonParser.marshall(wIdList);
                         LOGGER.log(Level.FINE, loggingBody + wIdListString);
                     } catch (JacksonException e) {
-                        LOGGER.log(Level.WARNING, loggingBody + e);
+                        LOGGER.log(Level.INFO, loggingBody);
+                        LOGGER.log(Level.WARNING, e);
                         return Response
                                 .serverError()
                                 .entity(String.valueOf(e
@@ -190,7 +193,8 @@ public class WorkflowResource {
                 wListString = JsonParser.marshall(wflowList);
                 LOGGER.log(Level.FINE, loggingBody + wListString);
             } catch (JacksonException e) {
-                LOGGER.log(Level.WARNING, loggingBody + e);
+                LOGGER.log(Level.INFO, loggingBody);
+                LOGGER.log(Level.WARNING, e);
                 return Response
                         .serverError()
                         .entity(String.valueOf(e
@@ -223,7 +227,8 @@ public class WorkflowResource {
         try {
             workflow = (Workflow)JsonParser.unmarshall(workflowAsString, workflow);
         } catch (JacksonException e) {
-            LOGGER.log(Level.WARNING, loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response
                     .serverError()
                     .entity(String.valueOf(e
@@ -267,8 +272,8 @@ public class WorkflowResource {
         try {
             workflow = (Workflow)JsonParser.unmarshall(workflowAsString, workflow);
         } catch (JacksonException e) {
-            LOGGER.log(Level.WARNING, loggingBody
-                    + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response
                     .serverError()
                     .entity(String.valueOf(e

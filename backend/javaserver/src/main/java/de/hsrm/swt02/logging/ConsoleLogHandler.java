@@ -54,7 +54,7 @@ public class ConsoleLogHandler extends Handler {
                 ex.printStackTrace();
             }
             else {
-                System.err.println(logMessage);
+                System.err.println(logMessage);    
             }
         }
         else {

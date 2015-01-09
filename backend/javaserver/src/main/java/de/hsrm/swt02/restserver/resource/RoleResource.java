@@ -121,7 +121,8 @@ public class RoleResource {
         try {
             role = (Role)JsonParser.unmarshall(roleAsString, role);
         } catch (JacksonException e) {
-            LOGGER.log(Level.INFO, loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
@@ -160,7 +161,8 @@ public class RoleResource {
         try {
             role = (Role)JsonParser.unmarshall(roleAsString, role);
         } catch (JacksonException e) {
-            LOGGER.log(Level.INFO,loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         try {
@@ -201,7 +203,8 @@ public class RoleResource {
         try {
             roleAsString = JsonParser.marshall(role);
         } catch (JacksonException e) {
-            LOGGER.log(Level.INFO, loggingBody + e);
+            LOGGER.log(Level.INFO, loggingBody);
+            LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
