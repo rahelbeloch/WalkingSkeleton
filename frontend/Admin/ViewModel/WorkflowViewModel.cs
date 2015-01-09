@@ -13,6 +13,8 @@ using System.Windows;
 using Action = CommunicationLib.Model.Action;
 using CommunicationLib.Exception;
 
+using System.Diagnostics;
+
 
 namespace Admin.ViewModel
 {
@@ -239,7 +241,8 @@ namespace Admin.ViewModel
 
         public void updateModel()
         {
-            Console.WriteLine("updatedModel()");
+            Debug.WriteLine("updatedModel()");
+            Debug.WriteLine("check");
 
             _workflows.Clear();
             // IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>(); <-- changed method in REST; is generic now; this is the old line
@@ -248,7 +251,13 @@ namespace Admin.ViewModel
             {
                 workflowList = new List<Workflow>();
             }
-           
+            
+            // register workflows as ItemSoure
+            foreach (Workflow workflow in workflowList) 
+            {
+                _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
+            }
+            
             workflowList.ToList().ForEach(_workflows.Add);
             OnChanged("workflows");
         }
@@ -258,18 +267,19 @@ namespace Admin.ViewModel
         /// </summary>
         /// <param name="newWorkflow"></param>
         public void updateWorkflows(Workflow newWorkflow){
-            Console.WriteLine("updateWorkflows: " + newWorkflow.active);
+            Debug.WriteLine("updateWorkflows: " + newWorkflow.active);
+            Debug.WriteLine("Method1 CHECK");
            
             foreach (Workflow w in _workflows)
             {
                 if (w.id.Equals(newWorkflow.id))
                 {
-                    Console.WriteLine("Workflow wurde geupdated");
+                    Debug.WriteLine("Workflow wurde geupdated");
                     Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Remove(w)));
                     break;
                 }
             }
-            Console.WriteLine("workflow wurde neu hinzugefügt");
+            Debug.WriteLine("workflow wurde neu hinzugefügt");
             Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(newWorkflow)));
 
             _actWorkflow = null;
@@ -452,7 +462,7 @@ namespace Admin.ViewModel
                         {
                             StartStep startStep = new StartStep();
                             
-                            Console.WriteLine("selectedRole: " + selectedRole.rolename);
+                            Debug.WriteLine("selectedRole: " + selectedRole.rolename);
                             startStep.roleIds.Add(selectedRole.rolename);
                             startStep.rolelabel = selectedRole.rolename;
 
