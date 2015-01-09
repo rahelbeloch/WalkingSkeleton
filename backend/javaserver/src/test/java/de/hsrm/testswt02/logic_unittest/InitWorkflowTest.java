@@ -40,7 +40,7 @@ public class InitWorkflowTest {
                
         final Action step = new Action(roles, 0 + " Schritt");
 
-        assertTrue(step.getRoleIDs().get(0).equals("role"));
+        assertTrue(step.getRoleIds().get(0).equals("role"));
     }
 
     /**

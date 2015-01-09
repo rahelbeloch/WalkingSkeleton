@@ -565,7 +565,7 @@ public class LogicImp implements Logic {
             throws PersistenceException {
         final User userToCheck = persistence.loadUser(username);
         boolean authorized = false;
-        for (String rolename : step.getRoleIDs()) {
+        for (String rolename : step.getRoleIds()) {
             if (userToCheck.hasRole(persistence.loadRole(rolename))) {
                 authorized = true;
                 break;
@@ -682,7 +682,7 @@ public class LogicImp implements Logic {
         boolean roleInUse = false;
         for (Workflow workflow : this.getAllWorkflows()) {
             for (Step step : workflow.getSteps()) {
-                if (step.getRoleIDs().contains(persistence.loadRole(rolename).getId())) {
+                if (step.getRoleIds().contains(persistence.loadRole(rolename).getId())) {
                     roleInUse = true;
                     break;
                 }
@@ -800,7 +800,7 @@ public class LogicImp implements Logic {
         user2Roles.add(role2.getRolename());
 
         startStep1 = new StartStep();
-        startStep1.getRoleIDs().addAll(user1Roles);
+        startStep1.getRoleIds().addAll(user1Roles);
 
         action1 = new Action(new ArrayList<String>(), "Action von "
                 + user1.getUsername());

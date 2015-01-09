@@ -128,11 +128,11 @@ public class RoleHandlingTest {
         li.addRoleToUser(assistant, employee);
         
         StartStep ss = new StartStep();
-        ss.getRoleIDs().add(employee.getRolename());
+        ss.getRoleIds().add(employee.getRolename());
         
         Action action = new Action();
         action.setDescription("Erste Action");
-        action.getRoleIDs().add(employee.getRolename());
+        action.getRoleIds().add(employee.getRolename());
         
         FinalStep finalStep = new FinalStep();
         
@@ -147,7 +147,7 @@ public class RoleHandlingTest {
         
         assertEquals(li.getWorkflow(workflow.getId()), workflow);
         assertEquals(li.getRole(employee.getRolename()), employee);
-        assertEquals(li.getWorkflow(workflow.getId()).getStepById(ss.getId()).getRoleIDs(), ss.getRoleIDs());
+        assertEquals(li.getWorkflow(workflow.getId()).getStepById(ss.getId()).getRoleIds(), ss.getRoleIds());
         
         li.deleteRole(employee.getRolename());
     }

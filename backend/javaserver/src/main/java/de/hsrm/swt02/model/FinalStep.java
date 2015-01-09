@@ -15,8 +15,8 @@ public class FinalStep extends Step {
         super();
     }
     
-    public FinalStep(ArrayList<String> roles) {
-        this.roles = roles;
+    public FinalStep(ArrayList<String> roleIds) {
+        this.roleIds = roleIds;
     }
     
     /**

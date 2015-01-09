@@ -18,9 +18,9 @@ public class StartStep extends Step {
      * Constructor for StartStep with parameters.
      * @param username is the username of the user responsible for the startstep
      */
-    public StartStep(ArrayList<String> roles) {
+    public StartStep(ArrayList<String> roleIds) {
         super();
-        this.roles = roles;
+        this.roleIds = roleIds;
     }
     
     /**
