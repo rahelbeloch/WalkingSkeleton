@@ -317,9 +317,35 @@ public interface Logic {
 
     Role getRole(String rolename) throws PersistenceException;
     
-    LogicResponse addForm(Form form);
-    LogicResponse deleteForm(String formId);
-    LogicResponse updateItem(Item item);
-    List <Form> getAllForms();
+    /**
+     * Method for adding a form to persistence.
+     * @param form which should be added
+     * @return logicResponse which contains definition notification
+     * @throws PersistenceException if problems occurs in persistence
+     */
+    LogicResponse addForm(Form form) throws PersistenceException;
+    
+    /**
+     * Method for deleting a form in persistence. Only possible if form isn't currently used.
+     * @param formId indicates which form should be deleted
+     * @return logicResponse which contains deletion notification
+     * @throws PersistenceException 
+     */
+    LogicResponse deleteForm(String formId) throws PersistenceException;
+    
+    /**
+     * Method for updating an item. Suitable item from a workflow in persistence will be overwritten.
+     * @param item contains changes, will be used to overwrite item in workflow
+     * @return logicResposne which contains update notification
+     * @throws PersistenceException 
+     */
+    LogicResponse updateItem(Item item) throws PersistenceException;
+    
+    /**
+     * Method for getting all available forms in persistence.
+     * @return list of of all forms in persistence
+     * @throws PersistenceException 
+     */
+    List<Form> getAllForms() throws PersistenceException;
 
 }

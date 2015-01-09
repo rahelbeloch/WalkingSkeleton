@@ -122,6 +122,7 @@ public class LogicImp implements Logic {
                     }
                     if (finished) {
                         id = persistence.storeWorkflow(workflow);
+                        
                         logicResponse.add(Message.build(
                                 MessageTopic.WORKFLOW_INFO,
                                 MessageOperation.DEFINITION, id));
@@ -748,6 +749,52 @@ public class LogicImp implements Logic {
                 MessageOperation.UPDATE, workflowId));
         return logicResponse;
     }
+    
+    @Override
+    public LogicResponse addForm(Form form) throws PersistenceException {
+        final LogicResponse logicResponse = new LogicResponse();
+        String id;
+        
+        id = persistence.storeForm(form);
+        logicResponse.add(Message.build(MessageTopic.FORM_INFO, MessageOperation.DEFINITION, id));
+        return logicResponse;
+    }
+
+    @Override
+    public LogicResponse deleteForm(String formId) throws PersistenceException {
+        final LogicResponse logicResponse = new LogicResponse();
+        String id;
+        
+        id = persistence.deleteForm(formId);
+        logicResponse.add(Message.build(MessageTopic.FORM_INFO, MessageOperation.DELETION, id));
+        return logicResponse;
+    }
+
+    @Override
+    public LogicResponse updateItem(Item item) throws PersistenceException {
+        final LogicResponse logicResponse = new LogicResponse();
+        Workflow workflow;
+        String workflowId, itemId;
+        
+        itemId = item.getId();
+        workflowId = item.getWorkflowId();
+        workflow = persistence.loadWorkflow(workflowId);
+        workflow.removeItem(itemId);
+        workflow.addItem(item);
+        persistence.storeWorkflow(workflow);
+        logicResponse.add(Message.buildWithTopicId(MessageTopic.ITEMS_FROM_, workflowId, MessageOperation.UPDATE, itemId));
+        return logicResponse;
+    }
+
+    @Override
+    public List<Form> getAllForms() throws PersistenceException {
+        final List<Form> forms = new LinkedList<Form>();
+        
+        for (Form form : persistence.loadAllForms()) {
+            forms.add(form);
+        }
+        return forms;
+    }
 
     /**
      * Initialize test datas.
@@ -818,27 +865,5 @@ public class LogicImp implements Logic {
         addWorkflow(workflow1);
     }
 
-    @Override
-    public LogicResponse addForm(Form form) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
-    @Override
-    public LogicResponse deleteForm(String formId) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public LogicResponse updateItem(Item item) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Form> getAllForms() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }
