@@ -37,6 +37,13 @@ namespace CommunicationLib.Model
         public string label { get; set; }
 
         /// <summary>
+        /// This label represents the roles of an step as a string (e.g. "Manger", "Admin", ...)
+        /// Will be ignored when serialized.
+        /// </summary>
+        [JsonIgnore]
+        public String rolelabel { get; set; }
+
+        /// <summary>
         /// Constructor for Step
         /// </summary>
         public Step()
