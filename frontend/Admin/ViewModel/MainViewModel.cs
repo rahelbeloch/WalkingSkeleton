@@ -170,7 +170,7 @@ namespace Admin.ViewModel
         void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
             Debug.WriteLine("neuer Workflow ist angekommen");
-            _workflowViewModel.updateWorkflows(workflow);       
+            _workflowViewModel.updateWorkflows(workflow);
         }
 
         void IDataReceiver.ItemUpdate(Item item)

@@ -416,8 +416,11 @@ namespace Admin.ViewModel
                         try
                         {
                             // set all ids in workflow to empty string, to avoid sending 'null'; otherwise problems with parsing!
-                            //_workflowModel.id = "";
-                            _workflowModel.active = true;
+                            if (_workflowModel != actWorkflow)
+                            {
+                                _workflowModel.id = "";     
+                            }
+
                             foreach (Step step in _workflowModel.steps)
                             {
                                 if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
@@ -432,6 +435,7 @@ namespace Admin.ViewModel
                             // remove steps from workflow
                             // update model AND viewmodel, because the model is not observable
                             _workflowModel.clearWorkflow();
+                            _workflowModel = new Workflow();
                             _workflow.Clear();
                         }
                         catch (BasicException be)
@@ -464,7 +468,6 @@ namespace Admin.ViewModel
                             
                             Debug.WriteLine("selectedRole: " + selectedRole.rolename);
                             startStep.roleIds.Add(selectedRole.rolename);
-                            startStep.rolelabel = selectedRole.rolename;
 
                             _workflow.Add(startStep);
                             _workflowModel.addStep(startStep);
@@ -475,7 +478,6 @@ namespace Admin.ViewModel
                             
                             action.description = stepDescription;
                             action.roleIds.Add(selectedRole.rolename);
-                            action.rolelabel = selectedRole.rolename;
 
                             _workflow.Add(action);
                             _workflowModel.addStep(action);
@@ -484,7 +486,6 @@ namespace Admin.ViewModel
                         {
                             FinalStep finalStep = new FinalStep();
                             finalStep.roleIds.Add(selectedRole.rolename);
-                            finalStep.rolelabel = selectedRole.rolename;
 
                             _workflow.Add(finalStep);
                             _workflowModel.addStep(finalStep);
