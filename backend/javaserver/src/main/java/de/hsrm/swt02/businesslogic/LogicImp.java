@@ -752,10 +752,9 @@ public class LogicImp implements Logic {
     @Override
     public LogicResponse addForm(Form form) throws PersistenceException {
         final LogicResponse logicResponse = new LogicResponse();
-        String id;
         
-        id = persistence.storeForm(form);
-        logicResponse.add(Message.build(MessageTopic.FORM_INFO, MessageOperation.DEFINITION, id));
+        persistence.storeForm(form);
+        logicResponse.add(Message.build(MessageTopic.FORM_INFO, MessageOperation.DEFINITION, form.getId()));
         return logicResponse;
     }
 
