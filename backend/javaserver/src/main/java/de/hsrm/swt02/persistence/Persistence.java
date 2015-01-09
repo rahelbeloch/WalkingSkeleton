@@ -160,7 +160,5 @@ public interface Persistence {
     
     Form loadForm(String formname) throws PersistenceException;
     
-    List loadAllForms() throws PersistenceException;
-    
+    List<Form> loadAllForms() throws PersistenceException;
 }
-
