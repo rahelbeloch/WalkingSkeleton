@@ -26,8 +26,8 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private List<String> _roles;
-        public List<String> roles { get { return _roles; } set { _roles = value; } }
+        private List<String> _roleIds;
+        public List<String> roleIds { get { return _roleIds; } set { _roleIds = value; } }
 
         /// <summary>
         /// The label represents the type of a Step as a string (e.g. "Startzustand", "Aktion", ...).
@@ -51,7 +51,7 @@ namespace CommunicationLib.Model
         {
             _nextSteps = new List<Step>();
             _nextStepIds = new List<String>();
-            _roles = new List<String>();
+            _roleIds = new List<String>();
         }
     }
 }

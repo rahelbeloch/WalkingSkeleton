@@ -437,7 +437,7 @@ namespace Admin.ViewModel
                             StartStep startStep = new StartStep();
                             
                             Console.WriteLine("selectedRole: " + selectedRole.rolename);
-                            startStep.roles.Add(selectedRole.rolename);
+                            startStep.roleIds.Add(selectedRole.rolename);
                             startStep.rolelabel = selectedRole.rolename;
 
                             _workflow.Add(startStep);
@@ -448,7 +448,7 @@ namespace Admin.ViewModel
                             Action action = new Action();
                             
                             action.description = stepDescription;
-                            action.roles.Add(selectedRole.rolename);
+                            action.roleIds.Add(selectedRole.rolename);
                             action.rolelabel = selectedRole.rolename;
 
                             _workflow.Add(action);
@@ -457,7 +457,7 @@ namespace Admin.ViewModel
                         else if (_selectedStep is FinalStep)
                         {
                             FinalStep finalStep = new FinalStep();
-                            finalStep.roles.Add(selectedRole.rolename);
+                            finalStep.roleIds.Add(selectedRole.rolename);
                             finalStep.rolelabel = selectedRole.rolename;
 
                             _workflow.Add(finalStep);
