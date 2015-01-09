@@ -18,6 +18,7 @@ namespace CommunicationLib.Model
             : base()
         {
             label = "Endzustand";
+            
         }
     }
 }
