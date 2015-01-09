@@ -169,33 +169,26 @@ namespace Client.ViewModel
             logger.Debug("Update Item: " + item.ToString());
             Console.WriteLine("Update Item: " + item.ToString());
             _dashboardViewModel.updateItem(item);
-            // route update-handling to subcomponents
-            // route to itemViewModel etc. (update-method) to react to changes in one of my items
         }
 
         void IDataReceiver.UserUpdate(User user)
         {
-            // route update-handling to subcomponents
-            // route to userViewModel etc. (update-method) to react to changes in my settings
+            // Updates kommen hier an
         }
 
         void IDataReceiver.RoleUpdate(Role role)
         {
-            // route update-handling to subcomponents
-            // route to userViewModel etc. (update-method) to react to changes in my settings
+            // Updates kommen hier an
         }
 
-        void IDataReceiver.FormUpdate(Form form)
+        void IDataReceiver.FormUpdate(Form updatedForm)
         {
-            // route update-handling to subcomponents
-            // route to userViewModel etc. (update-method) to react to changes in my settings
+            // Updates kommen hier an
         }
 
         void IDataReceiver.HandleError(System.Exception e)
         {
             MessageBox.Show(e.Message);
-            // route update-handling to subcomponents
-            // route to userViewModel etc. (update-method) to react to changes in my settings
         }
         #endregion
     }
