@@ -72,11 +72,9 @@ namespace CommunicationLib
                 _connection = _connectionFactory.CreateConnection();
                 _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
             }
-            catch (NMSConnectionException e)
+            catch (NMSConnectionException)
             {
-                Debug.WriteLine(e.Message);
-                // _myClient kann bzw ist an dieser Stelle null
-                //_myClient.HandleError(e);
+                throw new ServerNotRunningException();
             }
         }
 
@@ -214,35 +212,35 @@ namespace CommunicationLib
                 // do refletive invocation
                 requestedObj = reflectiveRestRequest(methodName, genericType, args);
 
-                // Client update
-                if (genericType == typeof(Workflow))
-                {
+            // Client update
+            if (genericType == typeof(Workflow))
+            {
                     _myClient.WorkflowUpdate((Workflow)requestedObj);
-
-                    // register client for item updates from this new workflow
+                
+                // register client for item updates from this new workflow
                     if (msgParams[1].Equals(DEFINE_OPERATION))
-                    {
+                {
                         RegisterItemSource((Workflow)requestedObj);
-                    }
                 }
-                else if (genericType == typeof(Item))
-                {
+            }
+            else if (genericType == typeof(Item))
+            {
                     _myClient.ItemUpdate((Item)requestedObj);
-                }
-                else if (genericType == typeof(User))
-                {
+            }
+            else if (genericType == typeof(User))
+            {
                     _myClient.UserUpdate((User)requestedObj);
-                }
-                else if (genericType == typeof(Role))
-                {
+            }
+            else if (genericType == typeof(Role))
+            {
                     _myClient.RoleUpdate((Role)requestedObj);
-                }
-                else if (genericType == typeof(Form))
-                {
+            }
+            else if (genericType == typeof(Form))
+            {
                     _myClient.FormUpdate((Form)requestedObj);
                 }
             }
-        }
+            }
 
         /// <summary>
         /// Invoked by the HandleRequest()-method.
@@ -271,12 +269,12 @@ namespace CommunicationLib
         }
 
         /// <summary>
-        /// Invoked by the HandleRequest()-method.
+        /// Invoked by the HandleRequest()-method and client login.
         /// Subscribes to an general item messaging topic for the given workflow.
         /// Item activities from this workflow will be received by the CommunicationManager.
         /// </summary>
         /// <param name="itemSource">the workflow form which the item info shall be noticed</param>
-        private void RegisterItemSource(Workflow itemSource)
+        public void RegisterItemSource(Workflow itemSource)
         {
             string topicName;
 

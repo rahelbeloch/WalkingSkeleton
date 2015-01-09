@@ -51,12 +51,5 @@ namespace CommunicationLib
         /// <param name="sourceType">type of the deleted source</param>
         /// <param name="sourceId">identifier of the deleted source</param>
         void DataDeletion(Type sourceType, string sourceId);
-
-        /// <summary>
-        /// Callback method for exception handling.
-        /// This will be called for all exception occurrences within the comLib.
-        /// </summary>
-        /// <param name="e">occurred exception</param>
-        void HandleError(System.Exception e);
     }
 }

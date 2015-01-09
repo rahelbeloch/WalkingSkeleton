@@ -9,6 +9,7 @@ using System.Windows.Input;
 using NLog;
 using CommunicationLib.Model;
 using System.Windows;
+using CommunicationLib.Exception;
 namespace Client.ViewModel
 {
     /// <summary>
@@ -34,7 +35,15 @@ namespace Client.ViewModel
             {
                 if (_myComLib == null)
                 {
+                    try
+                    {
                     _myComLib = new ComLib(this, clientID);
+                }
+                    catch (BasicException e)
+                    {
+                        MessageBox.Show(e.Message);
+                        Environment.Exit(0);
+                    }
                 }
                 return _myComLib;
             }
@@ -189,11 +198,6 @@ namespace Client.ViewModel
         void IDataReceiver.DataDeletion(Type sourceType, string sourceId)
         {
             //Deletion handling here
-        }
-
-        void IDataReceiver.HandleError(System.Exception e)
-        {
-            MessageBox.Show(e.Message);
         }
         #endregion
     }
