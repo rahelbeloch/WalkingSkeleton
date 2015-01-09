@@ -17,7 +17,7 @@ public class Form extends RootElement {
     public Form() {
         super();
         this.id = "";
-        //formDef = new HashMap<String, String>();
+        formDef = new HashMap<String, String>();
         description = "";
     }
     
@@ -29,7 +29,7 @@ public class Form extends RootElement {
         super();
         this.id = "";
         this.description = description;
-        //formDef = new HashMap<String, String>();
+        formDef = new HashMap<String, String>();
     }
     
     /**

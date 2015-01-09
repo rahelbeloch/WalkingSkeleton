@@ -3,15 +3,15 @@ package de.hsrm.swt02.restserver.exceptions;
 /**
  * Exception for RestServerExceptionhandling.
  */
-public class RestserverException extends ConnectionException {
+public class RestException extends ConnectionException {
 
     private static final long serialVersionUID = 7591430845597579348L;
-    public static final int ERRORCODE = 12200;
+    public static final int ERRORCODE = 12100;
     
     /**
      * Constructor.
      */
-    public RestserverException() {
+    public RestException() {
         super();
     }
 
@@ -19,7 +19,7 @@ public class RestserverException extends ConnectionException {
      * Method dealing the exception message.
      * @param msg exception message
      */
-    public RestserverException(String msg) {
+    public RestException(String msg) {
         super(msg);
     }
     
@@ -28,7 +28,7 @@ public class RestserverException extends ConnectionException {
      * @return errorcode is the error code
      */
     public int getErrorCode() {
-        return RestserverException.ERRORCODE;
+        return RestException.ERRORCODE;
     }
     
 }

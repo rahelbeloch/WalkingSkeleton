@@ -3,10 +3,10 @@ package de.hsrm.swt02.restserver.exceptions;
 /**
  * Exception for JacksonExceptionhandling.
  */
-public class JacksonException extends RestserverException {
+public class JacksonException extends RestException {
 
     private static final long serialVersionUID = 5071158186141166613L;
-    public static final int ERRORCODE = 12210;
+    public static final int ERRORCODE = 12110;
     
     /**
      * Constructor.
