@@ -7,9 +7,12 @@ import java.util.logging.Level;
 
 import com.google.inject.Inject;
 
+import de.hsrm.swt02.businesslogic.exceptions.AdminRoleDeletionException;
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
+import de.hsrm.swt02.businesslogic.exceptions.LastAdminDeletedException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
 import de.hsrm.swt02.businesslogic.protocol.Message;
 import de.hsrm.swt02.businesslogic.protocol.MessageOperation;
 import de.hsrm.swt02.businesslogic.protocol.MessageTopic;
@@ -39,6 +42,7 @@ public class LogicImp implements Logic {
     private Persistence persistence;
     private ProcessManager processManager;
     private UseLogger logger;
+    private String adminRolename = "admin";
 
     /**
      * Constructor for LogicImp.
@@ -655,9 +659,23 @@ public class LogicImp implements Logic {
      * 
      * @param user - user from database
      * @param role - role to be deleted
-     * @throws PersistenceException - is thrown if user or role are not existent
+     * @throws LogicException if there is a needed Exception
      */
-    public void deleteRoleFromUser(User user, Role role) throws PersistenceException {
+    public void deleteRoleFromUser(User user, Role role) throws LogicException {
+        boolean atLeastOneAdmin = true;
+        final Role adminRole = persistence.loadRole(adminRolename);
+        
+        if (role.getRolename().equals(adminRolename)) {
+            for (User userToCheck : persistence.loadAllUsers()) {
+                if (userToCheck.hasRole(adminRole)) {
+                    atLeastOneAdmin = false;
+                }
+            }
+        }
+        if (atLeastOneAdmin == false) {
+            throw new LastAdminDeletedException("[Logic] No Deletion allowed - Role " + adminRolename + " needs to have one assigned User.");
+        }
+        
         final User userToUpdate = persistence.loadUser(user.getUsername()); 
         if (userToUpdate.hasRole(role)) {
             userToUpdate.removeRole(role);
@@ -671,15 +689,21 @@ public class LogicImp implements Logic {
      * 
      * @param rolename indicates which should be deleted
      * @return logicResponse about delete
+     * @throws NoPermissionException 
      * @throws WorkflowNotExistentException
      * @throws PersistenceException.
      */
     @Override
     public LogicResponse deleteRole(String rolename)
-            throws PersistenceException 
+            throws LogicException 
     {
-        // check if role is used in any step of an workflow 
         boolean roleInUse = false;
+        
+        if (rolename.equals(adminRolename)) {
+            throw new AdminRoleDeletionException("[Logic] No Deletion allowed - Role " + rolename + " is the role assigned to admins.");
+        }
+        
+        // check if role is used in any step of an workflow 
         for (Workflow workflow : this.getAllWorkflows()) {
             for (Step step : workflow.getSteps()) {
                 if (step.getRoleIds().contains(persistence.loadRole(rolename).getId())) {
@@ -693,16 +717,17 @@ public class LogicImp implements Logic {
         }
         
         if (roleInUse) {
-            throw new RoleNotExistentException("[Logic] No Deletion allowed - Role " + rolename + "is still in use.");
+            throw new RoleNotExistentException("[Logic] No Deletion allowed - Role " + rolename + " is still in use.");
         }
         
         final Role roleToRemove = persistence.loadRole(rolename);
-        persistence.deleteRole(roleToRemove.getRolename());
         
         // delete role from all existent users as well
         for (User user: persistence.loadAllUsers()) {
             this.deleteRoleFromUser(user, roleToRemove);
         }
+        
+        persistence.deleteRole(roleToRemove.getRolename());
         
         final LogicResponse logicResponse = new LogicResponse();
         logicResponse.add(Message.build(MessageTopic.ROLE_INFO,

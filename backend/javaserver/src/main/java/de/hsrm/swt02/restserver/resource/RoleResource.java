@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
@@ -121,8 +122,7 @@ public class RoleResource {
         try {
             role = (Role)JsonParser.unmarshall(roleAsString, role);
         } catch (JacksonException e) {
-            LOGGER.log(Level.INFO, loggingBody);
-            LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.INFO, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
@@ -161,8 +161,7 @@ public class RoleResource {
         try {
             role = (Role)JsonParser.unmarshall(roleAsString, role);
         } catch (JacksonException e) {
-            LOGGER.log(Level.INFO, loggingBody);
-            LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.INFO,loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         }
         try {
@@ -194,17 +193,15 @@ public class RoleResource {
         String roleAsString;
         
         try {
-            role = LOGIC.getRole(rolename);
             logicResponse = LOGIC.deleteRole(rolename);
-        } catch (PersistenceException e1) {
+        } catch (LogicException e1) {
             LOGGER.log(Level.INFO,e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         try {
             roleAsString = JsonParser.marshall(role);
         } catch (JacksonException e) {
-            LOGGER.log(Level.INFO, loggingBody);
-            LOGGER.log(Level.WARNING, e);
+            LOGGER.log(Level.INFO, loggingBody + e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
