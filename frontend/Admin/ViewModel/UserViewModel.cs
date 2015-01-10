@@ -58,6 +58,15 @@ namespace Admin.ViewModel
             }
         }
 
+        public void ClearModel()
+        {
+            UserCollection.Clear();
+            RoleCollection.Clear();
+            RoleCheckboxRows.Clear();
+            SelectedUser = null;
+            SelectedRole = null;
+        }
+
         # region USER PROPERTIES
 
         /// <summary>
@@ -206,6 +215,7 @@ namespace Admin.ViewModel
                     {
                         try
                         {
+                            DetailedUser.roles.Clear();
                             foreach (RoleCheckboxRow actRow in RoleCheckboxRows)
                             {
                                 if (actRow.IsSelected)
