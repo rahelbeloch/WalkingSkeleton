@@ -157,6 +157,8 @@ namespace Admin.ViewModel
                     _currentPageViewModel = value;
                     OnChanged("CurrentPageViewModel");
                 }
+
+                MenuVisibility = _currentPageViewModel == _loginViewModel ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 
@@ -183,6 +185,23 @@ namespace Admin.ViewModel
                     });
                 }
                 return _logoutCommand;
+            }
+        }
+
+        /// <summary>
+        /// Property to set the visibility of the menu.
+        /// </summary>
+        private Visibility _menuVisibility = Visibility.Collapsed;
+        public Visibility MenuVisibility
+        {
+            get
+            {
+                return _menuVisibility;
+            }
+            set
+            {
+                _menuVisibility = value;
+                OnChanged("MenuVisibility");
             }
         }
 
