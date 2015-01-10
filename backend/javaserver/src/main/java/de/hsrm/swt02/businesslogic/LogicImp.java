@@ -841,7 +841,7 @@ public class LogicImp implements Logic {
         user3.setUsername("Tilman");
         user4 = new User();
         user4.setUsername("TestAdmin");
-        user4.setPassword("abc123");
+        user4.setPassword("");
 
         role1 = new Role();
         // role1.setId("1");
