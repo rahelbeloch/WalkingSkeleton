@@ -34,9 +34,6 @@ namespace Admin.ViewModel
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
             _workflow.CollectionChanged += OnWorkflowChanged;
-
-            // fill choosable steps with default values
-            _choosableSteps.Add(new StartStep());
         }
 
         public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
@@ -236,6 +233,7 @@ namespace Admin.ViewModel
             {
                 Debug.WriteLine("updatedModel()");
                 Debug.WriteLine("check");
+                _choosableSteps.Add(new StartStep());
 
                 _workflows.Clear();
                 // IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>(); <-- changed method in REST; is generic now; this is the old line
@@ -258,6 +256,17 @@ namespace Admin.ViewModel
                 MessageBox.Show(e.Message);
             }
             OnChanged("workflows");
+        }
+
+        public void ClearModel()
+        {
+            userCollection.Clear();
+            roleCollection.Clear();
+            workflow.Clear();
+            choosableSteps.Clear();
+            selectedStep = null;
+            selectedRole = null;
+            actWorkflow = null;
         }
 
         /// <summary>

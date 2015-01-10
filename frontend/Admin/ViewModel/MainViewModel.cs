@@ -75,7 +75,7 @@ namespace Admin.ViewModel
                         Environment.Exit(0);
                     }
                 }
-                Console.WriteLine("RETURN MY_COM_LIB");
+
                 return _myComLib;
             }
         }
@@ -103,16 +103,7 @@ namespace Admin.ViewModel
         #region Commands and Properties
 
         private String _admin = "";
-        public String admin
-        {
-            get { return _admin; }
-            set
-            {
-                _admin = value;
-                //_dashboardViewModel.admin = value;
-                //logger.Debug("username gesetzt.");
-            }
-        }
+        public String admin { get { return _admin; } set { _admin = value; } }
 
         /// <summary>
         /// Command to change the current View/ViewModel.
@@ -169,6 +160,32 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command to log out the current admin.
+        /// </summary>
+        private ICommand _logoutCommand;
+        public ICommand LogoutCommand
+        {
+            get
+            {
+                if (_logoutCommand == null)
+                {
+                    _logoutCommand = new ActionCommand(execute =>
+                    {
+                        admin = "";
+                        ClearModel();
+                        CurrentPageViewModel = loginViewModel;
+
+                        myComLib.Logout();
+                    }, canExecute =>
+                    {
+                        return true;
+                    });
+                }
+                return _logoutCommand;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -185,6 +202,24 @@ namespace Admin.ViewModel
             }
                 
             CurrentPageViewModel = PageViewModels.FirstOrDefault(vm => vm == viewModel);
+        }
+
+        /// <summary>
+        /// Init model after successful login.
+        /// </summary>
+        public void InitModel()
+        {
+            _workflowViewModel.InitModel();
+            _userViewModel.InitModel();
+        }
+
+        /// <summary>
+        /// Clear model after logout.
+        /// </summary>
+        private void ClearModel()
+        {
+            _workflowViewModel.ClearModel();
+            _userViewModel.ClearModel();
         }
 
         void IDataReceiver.WorkflowUpdate(Workflow workflow)

@@ -81,8 +81,7 @@ namespace Admin.ViewModel
                             // Register mainViewModel to CommunicationLib (if login worked)
                             _mainViewModel.myComLib.Login(admin, securePwd);
                             logger.Debug("Authentiaction userName: " + admin);
-                            _mainViewModel.workflowViewModel.InitModel();
-                            _mainViewModel.userViewModel.InitModel();
+                            _mainViewModel.InitModel();
 
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
                             _mainViewModel.admin = _admin;
