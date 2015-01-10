@@ -45,6 +45,9 @@ namespace Admin.ViewModel
         private ObservableCollection<Role> _roleCollection = new ObservableCollection<Role>();
         public ObservableCollection<Role> roleCollection { get { return _roleCollection; } }
 
+        /// <summary>
+        /// RestRequester is used for rest request.
+        /// </summary>
         private IRestRequester _restRequester;
         public IRestRequester restRequester
         {
@@ -58,6 +61,9 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// ComLib is used for messaging.
+        /// </summary>
         private ComLib _myComLib;
         public ComLib myComLib
         {
@@ -82,10 +88,6 @@ namespace Admin.ViewModel
 
         public MainViewModel()
         {
-            //_myComLib = new ComLib(this, clientID);
-            // Admin has to register to ComLib! 'TestAdmin' is a Dummy for one admin
-            //_myComLib.Login("TestAdmin", "abc123");
-
             _loginViewModel = new LoginViewModel(this);
             _workflowViewModel = new WorkflowViewModel(this);
             _userViewModel = new UserViewModel(this);
@@ -98,10 +100,11 @@ namespace Admin.ViewModel
             CurrentPageViewModel = loginViewModel;
         }
 
-
-
         #region Commands and Properties
 
+        /// <summary>
+        /// Property to store the currently logged in admin name.
+        /// </summary>
         private String _admin = "";
         public String admin { get { return _admin; } set { _admin = value; } }
 

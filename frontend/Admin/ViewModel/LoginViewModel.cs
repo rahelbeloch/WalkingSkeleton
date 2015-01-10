@@ -13,24 +13,18 @@ using NLog;
 namespace Admin.ViewModel
 {
     /// <summary>
-    /// ViewModel class for the Login
+    /// ViewModel class for the Login.
     /// </summary>
     public class LoginViewModel : ViewModelBase
     {
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private MainViewModel _mainViewModel;
-        public LoginViewModel(MainViewModel mainViewModelInstanz)
+        
+        public LoginViewModel(MainViewModel mainViewModel)
             : base()
         {
-            _mainViewModel = mainViewModelInstanz;
+            _mainViewModel = mainViewModel;
         }
-        public string Name
-        {
-            get
-            {
-                return "Login Model";
-            }
-        }
+
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
@@ -80,7 +74,6 @@ namespace Admin.ViewModel
                         {
                             // Register mainViewModel to CommunicationLib (if login worked)
                             _mainViewModel.myComLib.Login(admin, securePwd);
-                            logger.Debug("Authentiaction userName: " + admin);
                             _mainViewModel.InitModel();
 
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
@@ -88,14 +81,8 @@ namespace Admin.ViewModel
                         }
                         catch (BasicException exc)
                         {
-                            logger.Debug("Login fehlgeschlagen:");
-
                             MessageBox.Show(exc.Message);
                             Console.WriteLine(exc.ToString());
-                        }
-                        finally
-                        {
-
                         }
                     }, canExecute =>
                     {
