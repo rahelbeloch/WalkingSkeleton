@@ -11,6 +11,9 @@
         <DataTemplate DataType="{x:Type viewmodel:UserViewModel}">
             <view:RoleUserControl />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
+            <view:LoginUserControl />
+        </DataTemplate>
     </Application.Resources>
 
 </Application>

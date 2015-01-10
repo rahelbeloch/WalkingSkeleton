@@ -57,11 +57,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\ActionCommand.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RoleCheckboxRow.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\WorkflowViewModel.cs" />
+    <Compile Include="View\LoginUserControl.xaml.cs">
+      <DependentUpon>LoginUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RoleUserControl.xaml.cs">
       <DependentUpon>RoleUserControl.xaml</DependentUpon>
     </Compile>
@@ -80,6 +84,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\LoginUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\RoleUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

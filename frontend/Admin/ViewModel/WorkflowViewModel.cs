@@ -37,15 +37,6 @@ namespace Admin.ViewModel
 
             // fill choosable steps with default values
             _choosableSteps.Add(new StartStep());
-
-            try
-            {
-                updateModel();
-            }
-            catch (BasicException e)
-            {
-                MessageBox.Show(e.Message);
-            }
         }
 
         public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
@@ -239,26 +230,33 @@ namespace Admin.ViewModel
 
         #endregion
 
-        public void updateModel()
+        public void InitModel()
         {
-            Debug.WriteLine("updatedModel()");
-            Debug.WriteLine("check");
+            try
+            {
+                Debug.WriteLine("updatedModel()");
+                Debug.WriteLine("check");
 
-            _workflows.Clear();
-            // IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>(); <-- changed method in REST; is generic now; this is the old line
-            IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
-            if (workflowList == null)
-            {
-                workflowList = new List<Workflow>();
+                _workflows.Clear();
+                // IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>(); <-- changed method in REST; is generic now; this is the old line
+                IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
+                if (workflowList == null)
+                {
+                    workflowList = new List<Workflow>();
+                }
+
+                // register workflows as ItemSoure
+                foreach (Workflow workflow in workflowList)
+                {
+                    _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
+                }
+
+                workflowList.ToList().ForEach(_workflows.Add);
             }
-            
-            // register workflows as ItemSoure
-            foreach (Workflow workflow in workflowList) 
+            catch (BasicException e)
             {
-                _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
+                MessageBox.Show(e.Message);
             }
-            
-            workflowList.ToList().ForEach(_workflows.Add);
             OnChanged("workflows");
         }
 

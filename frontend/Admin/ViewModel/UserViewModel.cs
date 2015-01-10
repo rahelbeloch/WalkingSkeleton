@@ -27,35 +27,34 @@ namespace Admin.ViewModel
         {
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
-
-            try
-            {
-                InitModel();
-            }
-            catch (BasicException e)
-            {
-                MessageBox.Show(e.Message);
-            }
         }
 
         /// <summary>
         /// Init the model via rest requests at first startup.
         /// </summary>
-        private void InitModel()
+        public void InitModel()
         {
-            // update userlist
-            IList<User> allUsers = _restRequester.GetAllElements<User>();
-            foreach(User user in allUsers)
+            try
             {
-                _mainViewModel.userCollection.Add(user);
-            }
 
-            // update rolelist
-            IList<Role> allRoles =  _restRequester.GetAllElements<Role>();
-            foreach(Role role in allRoles)
+                // update userlist
+                IList<User> allUsers = _restRequester.GetAllElements<User>();
+                foreach (User user in allUsers)
+                {
+                    _mainViewModel.userCollection.Add(user);
+                }
+
+                // update rolelist
+                IList<Role> allRoles = _restRequester.GetAllElements<Role>();
+                foreach (Role role in allRoles)
+                {
+                    RoleCheckboxRows.Add(new RoleCheckboxRow(role, false));
+                    _mainViewModel.roleCollection.Add(role);
+                }
+            }
+            catch (BasicException e)
             {
-                RoleCheckboxRows.Add(new RoleCheckboxRow(role, false));
-                _mainViewModel.roleCollection.Add(role);
+                MessageBox.Show(e.Message);
             }
         }
 
