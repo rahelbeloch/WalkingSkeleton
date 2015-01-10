@@ -30,6 +30,9 @@ namespace Admin.ViewModel
         private UserViewModel _userViewModel;
         public UserViewModel userViewModel { get { return _userViewModel; }  }
 
+        private LoginViewModel _loginViewModel;
+        public LoginViewModel loginViewModel { get { return _loginViewModel; } }
+
         /// <summary>
         /// Property _userCollection to fill list view with users.
         /// </summary>
@@ -49,7 +52,7 @@ namespace Admin.ViewModel
             {
                 if (_restRequester == null)
                 {
-                    _restRequester = _myComLib.sender;
+                    _restRequester = myComLib.sender;
                 }
                 return _restRequester;
             }
@@ -72,27 +75,44 @@ namespace Admin.ViewModel
                         Environment.Exit(0);
                     }
                 }
+                Console.WriteLine("RETURN MY_COM_LIB");
                 return _myComLib;
             }
         }
 
         public MainViewModel()
         {
-            _myComLib = new ComLib(this, clientID);
+            //_myComLib = new ComLib(this, clientID);
             // Admin has to register to ComLib! 'TestAdmin' is a Dummy for one admin
-            _myComLib.Login("TestAdmin", "abc123");
+            //_myComLib.Login("TestAdmin", "abc123");
 
+            _loginViewModel = new LoginViewModel(this);
             _workflowViewModel = new WorkflowViewModel(this);
             _userViewModel = new UserViewModel(this);
 
+            PageViewModels.Add(loginViewModel);
             PageViewModels.Add(workflowViewModel);
             PageViewModels.Add(userViewModel);
 
             // set starting ViewModel
-            CurrentPageViewModel = workflowViewModel;
+            CurrentPageViewModel = loginViewModel;
         }
 
+
+
         #region Commands and Properties
+
+        private String _admin = "";
+        public String admin
+        {
+            get { return _admin; }
+            set
+            {
+                _admin = value;
+                //_dashboardViewModel.admin = value;
+                //logger.Debug("username gesetzt.");
+            }
+        }
 
         /// <summary>
         /// Command to change the current View/ViewModel.
