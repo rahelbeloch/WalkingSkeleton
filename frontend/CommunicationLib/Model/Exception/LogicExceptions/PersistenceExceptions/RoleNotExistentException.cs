@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class RoleNotExistentException : RoleException
+    class RoleNotExistentException : DoesntExistsException
     {
         /// <summary>
         /// This Exception es a child of RoleException. 
-        /// Each Exception has an number, here it is 11262. 
+        /// Each Exception has an number, here it is 11256. 
         /// </summary>
         private int _number = 11256;
         new public int number { get { return _number; } }

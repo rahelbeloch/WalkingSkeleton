@@ -69,7 +69,7 @@
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\LastAdminDeletedException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\UserHasNoPermissionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\FormNotExistentException.cs" />
-    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleAlreadyExistsException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\StepNotExistentException.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
