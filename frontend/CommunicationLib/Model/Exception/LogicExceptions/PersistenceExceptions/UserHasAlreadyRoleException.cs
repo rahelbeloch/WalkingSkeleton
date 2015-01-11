@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class UserHasAlreadyRoleException : RoleException
+    class UserHasAlreadyRoleException : AlreadyExistsException
     {
         /// <summary>
         /// This Exception es a child of RoleException. 
-        /// Each Exception has an number, here it is 11263.
+        /// Each Exception has an number, here it is 11223.
         /// </summary>
-        private int _number = 11263;
+        private int _number = 11223;
         new public int number { get { return _number; } }
 
         public UserHasAlreadyRoleException()
