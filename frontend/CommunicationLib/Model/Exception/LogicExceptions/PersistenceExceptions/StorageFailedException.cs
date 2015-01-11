@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunicationLib.Exception;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    public class WorkflowNotExistException : DoesntExistsException
+    class StorageFailedExceptionException : PersistenceException
     {
-        /// <summary>
+         /// <summary>
         /// This Exception es a child of DoesntExistsException. 
-        /// Each Exception has an number, here it is 11252. 
+        /// Each Exception has an number, here it is 11210. 
         /// </summary>
-        private int _number = 11252;
+        private int _number = 11210;
         new public int number { get { return _number; } }
 
-        public WorkflowNotExistException()
-            : base("Der Workflow existiert nicht.")
+        public StorageFailedExceptionException()
+            : base("Das Persistieren eines Elements schlug fehl.")
         {
 
         }
@@ -25,7 +26,7 @@ namespace CommunicationLib.Exception
         /// This constructor allows to add a spezial message.
         /// </summary>
         /// <param name="message">the message</param>
-        public WorkflowNotExistException(string message)
+        public StorageFailedExceptionException(string message)
             : base(message)
         {
         }
@@ -35,7 +36,7 @@ namespace CommunicationLib.Exception
         /// </summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        public WorkflowNotExistException(string message, System.Exception inner)
+        public StorageFailedExceptionException(string message, System.Exception inner)
             : base(message, inner)
         {
         }

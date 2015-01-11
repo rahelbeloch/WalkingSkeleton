@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    public class DoesntExistsException : PersistenceException
+    public class WorkflowNotExistentException : NotExistentException
     {
         /// <summary>
-        /// This Exception es a child of PersistenceException. 
-        /// Each Exception has an number, here it is 11250. 
+        /// This Exception es a child of DoesntExistsException. 
+        /// Each Exception has an number, here it is 11252. 
         /// </summary>
-        private int _number = 11250;
+        private int _number = 11252;
         new public int number { get { return _number; } }
 
-        public DoesntExistsException()
-            : base("Das Element existiert nicht.")
+        public WorkflowNotExistentException()
+            : base("Der Workflow existiert nicht.")
         {
 
         }
@@ -25,8 +25,8 @@ namespace CommunicationLib.Exception
         /// This constructor allows to add a spezial message.
         /// </summary>
         /// <param name="message">the message</param>
-        public DoesntExistsException(string message)
-         : base(message)
+        public WorkflowNotExistentException(string message)
+            : base(message)
         {
         }
 
@@ -35,7 +35,7 @@ namespace CommunicationLib.Exception
         /// </summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        public DoesntExistsException(string message, System.Exception inner)
+        public WorkflowNotExistentException(string message, System.Exception inner)
             : base(message, inner)
         {
         }

@@ -1,5 +1,4 @@
-﻿using CommunicationLib.Exception;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class FormNotExistentException : NotExistentException
+    public class NotExistentException : PersistenceException
     {
-         /// <summary>
-        /// This Exception es a child of DoesntExistsException. 
-        /// Each Exception has an number, here it is 11254. 
+        /// <summary>
+        /// This Exception es a child of PersistenceException. 
+        /// Each Exception has an number, here it is 11250. 
         /// </summary>
-        private int _number = 11255;
+        private int _number = 11250;
         new public int number { get { return _number; } }
 
-        public FormNotExistentException()
-            : base("Das Formular existiert nicht.")
+        public NotExistentException()
+            : base("Das Element existiert nicht.")
         {
 
         }
@@ -26,8 +25,8 @@ namespace CommunicationLib.Exception
         /// This constructor allows to add a spezial message.
         /// </summary>
         /// <param name="message">the message</param>
-        public FormNotExistentException(string message)
-            : base(message)
+        public NotExistentException(string message)
+         : base(message)
         {
         }
 
@@ -36,7 +35,7 @@ namespace CommunicationLib.Exception
         /// </summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        public FormNotExistentException(string message, System.Exception inner)
+        public NotExistentException(string message, System.Exception inner)
             : base(message, inner)
         {
         }

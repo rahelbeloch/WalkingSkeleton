@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-
-    public class UserNotExistException : DoesntExistsException
+    public class ItemNotExistentException : NotExistentException
     {
         /// <summary>
         /// This Exception es a child of DoesntExistsException. 
-        /// Each Exception has an number, here it is 11251.
+        /// Each Exception has an number, here it is 11253. 
         /// </summary>
-        private int _number = 11251;
+        private int _number = 11253;
         new public int number { get { return _number; } }
 
-        public UserNotExistException()
-            : base("Der Nutzer existiert nicht.")
+        public ItemNotExistentException()
+            :base("Das Item existiert nicht.")
         {
 
         }
@@ -26,8 +25,8 @@ namespace CommunicationLib.Exception
         /// This constructor allows to add a spezial message.
         /// </summary>
         /// <param name="message">the message</param>
-        public UserNotExistException(string message)
-         : base(message)
+        public ItemNotExistentException(string message)
+            : base(message)
         {
         }
 
@@ -36,7 +35,7 @@ namespace CommunicationLib.Exception
         /// </summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        public UserNotExistException(string message, System.Exception inner)
+        public ItemNotExistentException(string message, System.Exception inner)
             : base(message, inner)
         {
         }
