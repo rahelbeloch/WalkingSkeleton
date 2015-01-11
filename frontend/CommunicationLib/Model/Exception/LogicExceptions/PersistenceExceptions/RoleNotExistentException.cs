@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class RoleNotExistentException : DoesntExistsException
+    class RoleNotExistentException : NotExistentException
     {
         /// <summary>
         /// This Exception es a child of RoleException. 

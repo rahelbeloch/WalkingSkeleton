@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class UserHasNoPermissionException : LogInException
+    class UserHasNoPermissionException : NoPermissionException
     {
-        private int _number = 11321;
+        private int _number = 11310;
         new public int number { get { return _number; } }
 
         public UserHasNoPermissionException()

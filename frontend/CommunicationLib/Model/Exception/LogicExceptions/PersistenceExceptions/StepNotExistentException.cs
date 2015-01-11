@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
-    class StepNotExistentException : DoesntExistsException
+    class StepNotExistentException : NotExistentException
     {
          /// <summary>
         /// This Exception es a child of DoesntExistsException. 
