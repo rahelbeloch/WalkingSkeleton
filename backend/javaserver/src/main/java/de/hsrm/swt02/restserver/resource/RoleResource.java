@@ -189,7 +189,7 @@ public class RoleResource {
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "DELETE /resource/roles/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
-        Role role = null;
+        final Role role = null;
         String roleAsString;
         
         try {

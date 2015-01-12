@@ -1,25 +1,16 @@
 package de.hsrm.swt02.businesslogic;
 
 import java.util.List;
-
-import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
-import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
-import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
-import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
+
 
 /**
  * This interface is used for the business logic.
@@ -43,6 +34,7 @@ public interface Logic {
      * 
      * @param workflow is the workflow which should be added
      * @return logicResponse of adding a workflow
+     * @throws LogicException
      */
     LogicResponse addWorkflow(Workflow workflow) throws LogicException; // later a workflows name will be given a name
                                                   
@@ -56,8 +48,8 @@ public interface Logic {
     List<Workflow> getAllWorkflows() throws PersistenceException;
 
 
-    /**
-     * This method return all workflows in persistence that are not marked inactive
+     /**
+     * This method return all workflows in persistence that are not marked inactive.
      * 
      * @return all active workflows in persistence
      */
@@ -103,8 +95,8 @@ public interface Logic {
      * @exception UserNotExistentException if requested user doesn't exist
      * @throws StepNotExistentException 
      * @throws WorkflowNotExistentException 
+     * @return the logicResponse of stepForward
      */
-
     LogicResponse stepForward(String itemId, String stepId, String username) 
             throws LogicException;
 
@@ -113,7 +105,8 @@ public interface Logic {
      * 
      * @param workflowID the id of the workflow which should be deactivate
      * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
-     * @throws WorkflowNotExistentException 
+     * @throws WorkflowNotExistentException
+     * @return the LogicResponse of deactivating a workflow
      */
     LogicResponse deactivateWorkflow(String workflowID) throws PersistenceException;
 
@@ -273,7 +266,7 @@ public interface Logic {
 
     /**
      * 
-     * @param username - id of a user
+     * @param user - the user to which the role shall be added
      * @param role - role to be added
      * @return LogicResponse object
      * @throws PersistenceException if persistence errors occur
@@ -350,4 +343,9 @@ public interface Logic {
      */
     List<Form> getAllForms() throws PersistenceException;
 
+    /**
+     * Method for saving all relevant data from server. Calls the method persistence.save().
+     * @param storagePath the path to the DataModel storage path
+     */
+    void save(String storagePath);
 }

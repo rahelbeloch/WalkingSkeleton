@@ -184,4 +184,11 @@ public interface Persistence {
      * @throws PersistenceException if an error in persistence occurs
      */
     List<Form> loadAllForms() throws PersistenceException;
+
+    /**
+     * Method for saving all relevant data on server during shutdown. All DataModels are
+     * serialized in a file which path is configured in server configuration file.
+     * @param storagePath the path to the DataModel storage path
+     */
+    void save(String storagePath);
 }

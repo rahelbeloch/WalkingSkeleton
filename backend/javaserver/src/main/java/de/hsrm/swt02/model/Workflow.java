@@ -49,10 +49,10 @@ public class Workflow extends RootElement {
     
     /**
      * 
-     * @param formular
+     * @param formular the formular to set
      */
-    public void setFormular(Form formular){
-    	this.formular = formular;
+    public void setFormular(Form formular) {
+        this.formular = formular;
     }
     
     /**

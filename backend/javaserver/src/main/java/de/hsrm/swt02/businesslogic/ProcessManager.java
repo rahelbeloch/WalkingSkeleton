@@ -9,7 +9,6 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 
 /**
@@ -23,7 +22,8 @@ public interface ProcessManager {
      * 
      * @param workflow which will be started
      * @param username indicates who wants to start a workflow
-     * @throws PersistenceException 
+     * @throws PersistenceException
+     * @return 
      */
     String startWorkflow(Workflow workflow, String username) throws LogicException;
 
@@ -44,7 +44,9 @@ public interface ProcessManager {
      * @exception UserHasNoPermissionException if the given user is not responsible for the step
      * @throws ItemNotForawrdableException
      * @throws UserHasNoPermissionException
-     * @throws LogicException 
+     * @throws LogicException
+     * @throws ItemNotExistentException
+     * @throws StorageFailedException
      */
     String executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException, LogicException;
 

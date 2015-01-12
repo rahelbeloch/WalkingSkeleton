@@ -93,13 +93,17 @@ public class Step extends RootElement {
         return opener;
     }
     
+    /**
+     * 
+     * @param username the opener of this step
+     */
     public void setOpener(String username) {
         this.opener = username;
     }
     
     /**
      * Username setter.
-     * @param username is the username of the user responsible for the step
+     * @param role the role to add
      */
     public void addRole(String role) {
         this.roleIds.add(role);

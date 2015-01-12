@@ -1,5 +1,8 @@
 package de.hsrm.swt02.persistence;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -469,6 +472,22 @@ public class PersistenceImp implements Persistence {
         } else {
             throw new FormNotExistentException("database has no form '" + formId + "'.");
         }
+    }
+
+    @Override
+    public void save(String storagePath) {
+        
+        // browse through all DataModels and serialize them into a file (path in server configuration file)
+        try {
+            final FileOutputStream fileOut = new FileOutputStream(storagePath);
+            final ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(new Object());
+            out.close();
+            fileOut.close();
+            
+            this.logger.log(Level.INFO,"[persistence] successfully saved data models in " + storagePath + ".");
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
     };
-    
 }

@@ -78,7 +78,8 @@ public class ProcessManagerImp implements ProcessManager {
      * @throws LogicException to catch Persistence and Permission Exceptions
      */
     public String startWorkflow(Workflow workflow, String username)
-            throws LogicException {
+            throws LogicException
+    {
         final StartStep startStep = (StartStep) workflow.getStepByPos(0);
         String itemID = "";
         final StartProcessor startProcessor = new StartProcessor(persistence);
@@ -119,8 +120,6 @@ public class ProcessManagerImp implements ProcessManager {
         String itemId = "";
 
         if (checkAuthorization(step, user.getUsername())) {
-        	System.out.println("Item: " + item + " Step: " + step + " user: " + user.getId() + " " + user.getPassword());
-        	System.out.println("StepProcessor: " + stepProcessor);
             itemId = stepProcessor.handle(item, step, user);
             return itemId;
         } else {

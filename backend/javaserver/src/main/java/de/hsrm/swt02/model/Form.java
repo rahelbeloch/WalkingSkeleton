@@ -12,7 +12,7 @@ public class Form extends RootElement {
     private String description;
     
     /**
-     * Default Constructor 
+     * Default Constructor.
      */
     public Form() {
         super();
@@ -42,7 +42,7 @@ public class Form extends RootElement {
     
     /**
      * 
-     * @param the formDef Map
+     * @param formDef Map
      */
     public void setFormDef(HashMap<String,String> formDef) {
         this.formDef = formDef;

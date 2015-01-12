@@ -19,7 +19,7 @@ public class Action extends Step {
 
     /**
      * Constructor for Action with parameters.
-     * @param username name of user responsible for action
+     * @param roleIds ids if the responsible roles for action
      * @param description short description of action
      */
     public Action(ArrayList<String> roleIds, String description) {
