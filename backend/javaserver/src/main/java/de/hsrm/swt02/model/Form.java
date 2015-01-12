@@ -68,4 +68,26 @@ public class Form extends RootElement {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    /**
+     * Init method.
+     * @param f is the form we want to init
+     */
+    public void init(Form f) {
+        super.init(f);
+        setDescription(f.getDescription());
+        setFormDef(f.getFormDef());
+    }
+    
+    /**
+     * Deep Copy - Cloning method for Actions.
+     * @exception CloneNotSupportedException clone convention
+     * @throws CloneNotSupportedException
+     * @return clone is the clone of the action
+     */
+    public Object clone() throws CloneNotSupportedException {
+        final Form clone = new Form();
+        clone.init(this);
+        return clone;
+    }
 }
