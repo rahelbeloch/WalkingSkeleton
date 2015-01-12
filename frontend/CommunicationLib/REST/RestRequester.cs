@@ -398,7 +398,7 @@ namespace RestAPI
         /// <returns>the generated request</returns>
         private RestRequest createRequest(string url, Method method)
         {
-            logger.Info(url);
+            logger.Info(" " + method.ToString() + " " + url);
 
             var request = new RestRequest(url, method);
             request.AddHeader("Accept", "text/plain");
