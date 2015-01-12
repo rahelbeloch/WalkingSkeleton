@@ -174,7 +174,7 @@ namespace RestAPI
             }
             catch (BasicException e)
             {
-                logger.Debug("Exception " + e.Data);
+                logger.Warn("Exception " + e.Data);
 
                 throw;
             }

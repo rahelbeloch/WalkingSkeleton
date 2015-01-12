@@ -86,10 +86,10 @@ namespace Client.ViewModel
                         }
                         catch (BasicException exc)
                         {
-                            logger.Debug("Login fehlgeschlagen:");
+                            logger.Warn("Login fehlgeschlagen:");
 
                             MessageBox.Show(exc.Message);
-                            logger.Debug(exc.ToString());
+                            logger.Warn(exc.ToString());
                         }
                         finally
                         {
