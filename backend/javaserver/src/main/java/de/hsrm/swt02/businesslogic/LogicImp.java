@@ -41,7 +41,6 @@ public class LogicImp implements Logic {
     private ProcessManager processManager;
     private UseLogger logger;
     private String adminRolename = "admin";
-    private String storagePath = null;
 
     /**
      * Constructor for LogicImp.

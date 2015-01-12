@@ -3,6 +3,7 @@ package de.hsrm.swt02.persistence;
 import java.util.List;
 import java.util.Properties;
 
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
@@ -12,6 +13,7 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * Interface for the dependency injection of the persistence implementation.

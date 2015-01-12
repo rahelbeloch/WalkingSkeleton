@@ -65,9 +65,8 @@ public class PersistenceImp implements Persistence {
      * @param logger is the logger for logging.
      */
     @Inject
-    public PersistenceImp(UseLogger logger, Properties propConfig) {
+    public PersistenceImp(UseLogger logger) {
         this.logger = logger;
-        this.propConfig = propConfig;
     }
     
     // Workflow Operations
