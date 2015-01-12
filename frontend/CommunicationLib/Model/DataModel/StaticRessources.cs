@@ -46,7 +46,7 @@ namespace CommunicationLib.Model
 
             {11220, typeof(AlreadyExistsException)},
                 {11221, typeof(UserAlreadyExistsException)},
-                {11221, typeof(RoleAlreadyExistsException)},
+                {11222, typeof(RoleAlreadyExistsException)},
                 {11223, typeof(UserHasAlreadyRoleException)},
             {11240, typeof(ElementChangedException)},
             {11250, typeof(NotExistentException)},
