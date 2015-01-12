@@ -197,7 +197,7 @@ namespace Client.ViewModel
             }
             catch (Exception exc)
             {
-                logger.Debug(exc.ToString());
+                logger.Warn(exc.ToString());
                 throw;
             }
         }
@@ -322,7 +322,7 @@ namespace Client.ViewModel
                     }
                     catch (Exception e)
                     {
-                        logger.Debug(e.ToString());
+                        logger.Warn(e.ToString());
                     }
                 }
             }
