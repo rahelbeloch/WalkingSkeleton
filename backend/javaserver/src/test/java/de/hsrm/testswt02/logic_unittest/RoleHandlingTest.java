@@ -10,6 +10,7 @@ import com.google.inject.Injector;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.Action;
@@ -19,7 +20,6 @@ import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 
 /**
  * This Class tests the initialization of a workflow with Steps.
@@ -100,7 +100,7 @@ public class RoleHandlingTest {
         assertEquals(li.getUser(boss.getUsername()).getRoles().size(), 1);
     }
     
-    @Test(expected = RoleNotExistentException.class)
+    @Test(expected = NoPermissionException.class)
     public void DeletionOfRoleStillInUse() throws LogicException {
         Role chief = new Role();
         chief.setRolename("chief");
