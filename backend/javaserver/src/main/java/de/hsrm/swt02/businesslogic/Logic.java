@@ -329,6 +329,13 @@ public interface Logic {
     LogicResponse deleteForm(String formId) throws PersistenceException;
     
     /**
+     * 
+     * @param formId
+     * @return
+     */
+    Form getForm(String formId) throws PersistenceException;
+    
+    /**
      * Method for updating an item. Suitable item from a workflow in persistence will be overwritten.
      * @param item contains changes, will be used to overwrite item in workflow
      * @return logicResposne which contains update notification

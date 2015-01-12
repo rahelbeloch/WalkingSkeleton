@@ -29,7 +29,6 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserAlreadyExistsException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
@@ -792,6 +791,9 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
     
+    
+    // Form Operations
+    
     @Override
     public LogicResponse addForm(Form form) throws PersistenceException {
         final LogicResponse logicResponse = new LogicResponse();
@@ -807,6 +809,11 @@ public class LogicImp implements Logic {
         persistence.deleteForm(formId);
         logicResponse.add(Message.build(MessageTopic.FORM_INFO, MessageOperation.DELETION, formId));
         return logicResponse;
+    }
+    
+    @Override
+    public Form getForm(String formId) throws PersistenceException {
+        return persistence.loadForm(formId);
     }
 
     @Override
