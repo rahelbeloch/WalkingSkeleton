@@ -103,6 +103,7 @@ namespace Client.ViewModel
         {
             DashboardRow fittingRow = getWorkflowRowForItem(item);
             fittingRow.actItem = item;
+            OnChanged("selectedRow");
         }
 
         /// <summary>
