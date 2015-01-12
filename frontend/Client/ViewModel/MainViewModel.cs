@@ -198,6 +198,12 @@ namespace Client.ViewModel
         {
             //Deletion handling here
         }
+
+        public void HandleError(Exception e)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

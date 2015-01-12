@@ -298,6 +298,14 @@ namespace Admin.ViewModel
             }
         }
 
+        public void HandleError(Exception e)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
+
+
+        
     }
 }
