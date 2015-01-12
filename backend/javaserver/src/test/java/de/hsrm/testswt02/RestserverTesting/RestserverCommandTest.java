@@ -36,7 +36,7 @@ public class RestserverCommandTest {
     public static Client client;
     public static String targetUrl;
     public static String headerUsername = "TestAdmin";
-    public static String headerPW = "abc123";
+    public static String headerPW = "";
     public static String headerClientID = "admin";
 
     /**
