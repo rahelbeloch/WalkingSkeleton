@@ -20,6 +20,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 public class Step extends RootElement {
 
     @JsonIgnore
+    private static final long serialVersionUID = 7421352527667358620L;
+
+    @JsonIgnore
     protected String opener;
     
     @JsonIgnore
@@ -69,7 +72,7 @@ public class Step extends RootElement {
         if (nextStepIds == null) {
             nextStepIds = new ArrayList<String>();
         }
-        
+      
         return this.nextStepIds;
     }
 
@@ -81,7 +84,6 @@ public class Step extends RootElement {
         if (roleIds == null) {
             this.roleIds = new ArrayList<String>();
         }
-        
         return this.roleIds;
     }
     
@@ -108,7 +110,6 @@ public class Step extends RootElement {
     public void addRole(String role) {
         this.roleIds.add(role);
     }
-    
    
     /**
      * Deep Copy - Cloning method for Steps.

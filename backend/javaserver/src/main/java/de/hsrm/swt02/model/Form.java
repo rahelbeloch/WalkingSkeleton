@@ -2,12 +2,17 @@ package de.hsrm.swt02.model;
 
 import java.util.HashMap;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This class represents an Form.
  *
  */
 public class Form extends RootElement {
 
+    @JsonIgnore
+    private static final long serialVersionUID = 2664726035666948658L;
+    
     private HashMap<String,String> formDef; 
     private String description;
     

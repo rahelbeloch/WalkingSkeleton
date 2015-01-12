@@ -1,10 +1,15 @@
 package de.hsrm.swt02.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This Class represents a role.
  */
 public class Role extends RootElement {
    
+    @JsonIgnore
+    private static final long serialVersionUID = 7066827168930875656L;
+
     /**
      * Constructor for Role.
      */

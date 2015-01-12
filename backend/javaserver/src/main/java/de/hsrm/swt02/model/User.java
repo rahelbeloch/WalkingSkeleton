@@ -4,11 +4,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This class represents an User. A User is a manifestation of a RootElement.
  */
 public class User extends RootElement {
-    // Used for (de)serialization. Do not change.
+   
+    @JsonIgnore
+    private static final long serialVersionUID = 2333696087836440391L;
+    
+   // Used for (de)serialization. Do not change.
     private Set<Role> roles;
     // Used for (de)serialization. Do not change.
     private List<String> messagingSubs;

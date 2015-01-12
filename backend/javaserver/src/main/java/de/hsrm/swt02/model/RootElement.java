@@ -1,10 +1,18 @@
 package de.hsrm.swt02.model;
 
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * This class represents a RootElement.
  */
-public class RootElement implements Cloneable {
+public class RootElement implements Cloneable, Serializable {
+    
+    @JsonIgnore
+    private static final long serialVersionUID = -5434330163538855058L;
+    
     // Used for (de)serialization. Do not change.
     protected String id;
 

@@ -2,12 +2,17 @@ package de.hsrm.swt02.model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This class represents a Final Step. A final step is a manifestation of a Step.
  *
  */
 public class FinalStep extends Step {
     
+    @JsonIgnore
+    private static final long serialVersionUID = 5753195185732582026L;
+
     /**
     * Constructor for FinalStep.
     */

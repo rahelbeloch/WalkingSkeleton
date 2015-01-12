@@ -481,7 +481,23 @@ public class PersistenceImp implements Persistence {
         try {
             final FileOutputStream fileOut = new FileOutputStream(storagePath);
             final ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(new Object());
+            
+            for (Workflow serWorkflow: workflows) {
+                out.writeObject(serWorkflow);
+            }
+            
+            for (User serUser: users) {
+                out.writeObject(serUser);
+            }
+            
+            for (Role serRole: roles) {
+                out.writeObject(serRole);
+            }
+            
+            for (Form serForm: forms) {
+                out.writeObject(serForm);
+            }
+
             out.close();
             fileOut.close();
             

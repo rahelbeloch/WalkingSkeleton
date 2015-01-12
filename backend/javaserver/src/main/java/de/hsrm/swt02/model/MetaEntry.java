@@ -1,5 +1,7 @@
 package de.hsrm.swt02.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This class represents an Entry for the MetaEntryList for an item It's made of
  * a key string and group string to better identify the value string represents
@@ -7,6 +9,9 @@ package de.hsrm.swt02.model;
  */
 public class MetaEntry extends RootElement {
     
+    @JsonIgnore
+    private static final long serialVersionUID = 7063325675172371786L;
+
     // Used for (de)serialization. Do not change.
     private String value;
 

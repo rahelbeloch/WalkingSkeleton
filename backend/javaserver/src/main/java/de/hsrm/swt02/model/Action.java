@@ -2,11 +2,17 @@ package de.hsrm.swt02.model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This class represents an Action. An Action is an manifestation of a Step.
  *
  */
 public class Action extends Step {
+    
+    @JsonIgnore
+    private static final long serialVersionUID = -1862700189228538796L;
+    
     // Used for (de)-serialization. Do not change.
     private String description;
 

@@ -2,10 +2,15 @@ package de.hsrm.swt02.model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This class represents a StartStep. A StartStep is a manifestation of a Step.
  */
 public class StartStep extends Step {
+
+    @JsonIgnore
+    private static final long serialVersionUID = 1L;
 
     /**
     * Constructor for StartStep without parameters.
