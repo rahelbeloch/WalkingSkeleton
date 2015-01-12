@@ -58,7 +58,7 @@ public class RootElement implements Cloneable {
     
     @Override
     public int hashCode() {
-    	return getId().hashCode();
+        return getId().hashCode();
     }
     
     @Override

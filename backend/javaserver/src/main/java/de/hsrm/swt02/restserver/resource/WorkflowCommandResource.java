@@ -81,8 +81,6 @@ public class WorkflowCommandResource {
         LOGGER.log(Level.INFO, loggingBody);
         
         try {
-        	System.out.println(LOGIC);
-        	System.out.println(username);     
             logicResponse = LOGIC.stepForward(itemid, stepid, username);
         } catch (LogicException e1) {
             LOGGER.log(Level.WARNING, e1);

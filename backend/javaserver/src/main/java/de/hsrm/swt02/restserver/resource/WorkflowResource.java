@@ -255,6 +255,7 @@ public class WorkflowResource {
      * This method updates a workflow. This operation will be published on the
      * message broker.
      * @param formParams wrapper for an sent workflow
+     * @param workflowid - the workflow to update
      * @return String true or false
      */
     @PUT
