@@ -294,41 +294,6 @@ public class WorkflowResource {
     }
 
     /**
-     * This method sets a workflow's activity.
-     * @param workflowid indicates which workflow's activity should be updated
-     * @param state indicates if a workflow should be activated or deactivated
-     * @return ok if it worked
-     */
-    @PUT
-    @Path("workflows/{workflowid}/{state}")
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes("application/x-www-form-urlencoded")
-    public Response updateWorkflowActivity(
-            @PathParam("workflowid") String workflowid,
-            @PathParam("state") String state)
-    {
-        LogicResponse logicResponse = null;
-        final String loggingBody = PREFIX + "PUT /resource/workflows/" + workflowid + "/" 
-                + state;
-        LOGGER.log(Level.INFO, loggingBody);
-
-        try {
-            if (state.equals("activate")) {
-                logicResponse = LOGIC.activateWorkflow(workflowid);
-            } else if (state.equals("deactivate")) {
-                logicResponse = LOGIC.deactivateWorkflow(workflowid);
-            }
-            PUBLISHER.publishEvent(logicResponse);
-        } catch (PersistenceException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError()
-                    .entity(String.valueOf(e.getErrorCode())).build();
-        }
-        LOGGER.log(Level.INFO, loggingBody + " Workflow successfully updated.");
-        return Response.ok().build();
-    }
-
-    /**
      * This method deletes a workflow. This operation will be published on the
      * message broker.
      * @param workflowid which indicates which workflow should be deleted
