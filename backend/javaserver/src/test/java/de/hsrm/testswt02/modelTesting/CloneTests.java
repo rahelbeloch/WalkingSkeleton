@@ -45,14 +45,12 @@ public class CloneTests {
         a.getRoleIds().add(role.getRolename());
         a.getNextStepIds().add("2");
         a.getNextStepIds().add("3");
-        a.setOpener("user4711");
 
         clone = (Action) a.clone();
 
         assertTrue(clone.getId().equals(a.getId()));
         assertTrue(clone.getDescription().equals(a.getDescription()));
         assertTrue(clone.getRoleIds().equals(a.getRoleIds()));
-        assertTrue(clone.getOpener().equals(a.getOpener()));
         assertTrue(clone.getNextStepIds().get(0) == a.getNextStepIds().get(0));
         assertTrue(clone.getNextStepIds().get(1) == a.getNextStepIds().get(1));
 
@@ -79,12 +77,10 @@ public class CloneTests {
         ss.getRoleIds().add(role.getRolename());
         ss.getNextStepIds().add("2");
         ss.getNextStepIds().add("3");
-        ss.setOpener("user4711");
         clone = (StartStep) ss.clone();
 
         assertTrue(clone.getId().equals(ss.getId()));
         assertTrue(clone.getRoleIds().equals(ss.getRoleIds()));
-        assertTrue(clone.getOpener().equals(ss.getOpener()));
         assertTrue(clone.getNextStepIds().get(0) == ss.getNextStepIds().get(0));
         assertTrue(clone.getNextStepIds().get(1) == ss.getNextStepIds().get(1));
 
@@ -109,14 +105,12 @@ public class CloneTests {
 
         fs.setId("1");
         fs.getRoleIds().add(role.getRolename());
-        fs.setOpener("user4711");
         fs.getNextStepIds().add("2");
         fs.getNextStepIds().add("3");
 
         clone = (FinalStep) fs.clone();
 
         assertTrue(clone.getId().equals(fs.getId()));
-        assertTrue(clone.getOpener().equals("user4711"));
         assertTrue(clone.getRoleIds().equals(fs.getRoleIds()));
         assertTrue(clone.getNextStepIds().get(0).equals("2"));
         assertTrue(clone.getNextStepIds().get(1).equals("3"));
@@ -142,14 +136,12 @@ public class CloneTests {
 
         s.setId("1");
         s.getRoleIds().add(role.getRolename());
-        s.setOpener("user4711");
         s.getNextStepIds().add("2");
         s.getNextStepIds().add("3");
 
         clone = (Step) s.clone();
 
         assertTrue(clone.getId().equals(s.getId()));
-        assertTrue(clone.getOpener().equals("user4711"));
         assertTrue(clone.getRoleIds().equals(s.getRoleIds()));
         assertTrue(clone.getNextStepIds().get(0).equals("2"));
         assertTrue(clone.getNextStepIds().get(1).equals("3"));
@@ -177,9 +169,11 @@ public class CloneTests {
         m1.setGroup("group1");
         m1.setKey("key1");
         m1.setValue("value1");
+        m1.setOpener("opener1");
         m2.setGroup("group1");
         m2.setKey("key2");
         m2.setValue("value2");
+        m2.setOpener("opener2");
         i.getMetadata().add(m1);
         i.getMetadata().add(m2);
 
@@ -194,12 +188,16 @@ public class CloneTests {
                 .equals(i.getMetadata().get(0).getKey()));
         assertTrue(clone.getMetadata().get(0).getValue()
                 .equals(i.getMetadata().get(0).getValue()));
+        assertTrue(clone.getMetadata().get(0).getOpener()
+                .equals(i.getMetadata().get(0).getOpener()));
         assertTrue(clone.getMetadata().get(1).getGroup()
                 .equals(i.getMetadata().get(1).getGroup()));
         assertTrue(clone.getMetadata().get(1).getKey()
                 .equals(i.getMetadata().get(1).getKey()));
         assertTrue(clone.getMetadata().get(1).getValue()
                 .equals(i.getMetadata().get(1).getValue()));
+        assertTrue(clone.getMetadata().get(1).getOpener()
+                .equals(i.getMetadata().get(1).getOpener()));
 
     }
 
@@ -218,12 +216,14 @@ public class CloneTests {
         me.setGroup("group1");
         me.setKey("key1");
         me.setValue("value1");
+        me.setOpener("opener1");
 
         clone = (MetaEntry) me.clone();
 
         assertTrue(clone.getGroup().equals(me.getGroup()));
         assertTrue(clone.getKey().equals(me.getKey()));
         assertTrue(clone.getValue().equals(me.getValue()));
+        assertTrue(clone.getOpener().equals(me.getOpener()));
     }
 
     /**
@@ -292,25 +292,24 @@ public class CloneTests {
         role1.setRolename("testrolle_1");
         role2.setRolename("testrolle_2");
 
-        
         w.setId("1");
         w.setActive(true);
         s1.setId("1");
         s1.getRoleIds().add(role1.getRolename());
-        s1.setOpener("user4711");
         s1.getNextStepIds().add("2");
         s2.setId("2");
         s2.getRoleIds().add(role2.getRolename());
-        s2.setOpener("user4711");
         w.getSteps().add(s1);
         w.getSteps().add(s2);
 
         m1.setGroup("group1");
         m1.setKey("key1");
         m1.setValue("value1");
+        m1.setOpener("opener1");
         m2.setGroup("group2");
         m2.setKey("key2");
         m2.setValue("value2");
+        m2.setOpener("opener2");
         i1.getMetadata().add(m1);
         i2.getMetadata().add(m2);
         w.getItems().add(i1);
@@ -321,22 +320,18 @@ public class CloneTests {
         assertTrue(clone.getId().equals(w.getId()));
         assertTrue(clone.isActive() == w.isActive());
 
-        assertTrue(clone.getSteps().get(0).getId().equals(w.getSteps().get(0)
-                .getId()));
-        assertTrue(clone.getSteps().get(0).getOpener()
-                .equals(w.getSteps().get(0).getOpener()));
+        assertTrue(clone.getSteps().get(0).getId()
+                .equals(w.getSteps().get(0).getId()));
         assertTrue(clone.getSteps().get(0).getRoleIds()
                 .equals(w.getSteps().get(0).getRoleIds()));
         assertTrue(clone.getSteps().get(1).getId() == w.getSteps().get(1)
                 .getId());
-        assertTrue(clone.getSteps().get(1).getOpener()
-                .equals(w.getSteps().get(1).getOpener()));
         assertTrue(clone.getSteps().get(1).getRoleIds()
                 .equals(w.getSteps().get(1).getRoleIds()));
 
         // Testing if convertIdsToReferences in cloning process works
-        assertTrue(clone.getSteps().get(0).getNextSteps().get(0).getId().equals(w
-                .getSteps().get(1).getId()));
+        assertTrue(clone.getSteps().get(0).getNextSteps().get(0).getId()
+                .equals(w.getSteps().get(1).getId()));
         assertTrue(clone.getSteps().get(0).getNextSteps().get(0).getRoleIds()
                 .equals(w.getSteps().get(1).getRoleIds()));
 
@@ -346,12 +341,16 @@ public class CloneTests {
                 .equals(w.getItems().get(0).getMetadata().get(0).getKey()));
         assertTrue(clone.getItems().get(0).getMetadata().get(0).getValue()
                 .equals(w.getItems().get(0).getMetadata().get(0).getValue()));
+        assertTrue(clone.getItems().get(0).getMetadata().get(0).getOpener()
+                .equals(w.getItems().get(0).getMetadata().get(0).getOpener()));
         assertTrue(clone.getItems().get(1).getMetadata().get(0).getGroup()
                 .equals(w.getItems().get(1).getMetadata().get(0).getGroup()));
         assertTrue(clone.getItems().get(1).getMetadata().get(0).getKey()
                 .equals(w.getItems().get(1).getMetadata().get(0).getKey()));
         assertTrue(clone.getItems().get(1).getMetadata().get(0).getValue()
                 .equals(w.getItems().get(1).getMetadata().get(0).getValue()));
+        assertTrue(clone.getItems().get(1).getMetadata().get(0).getOpener()
+                .equals(w.getItems().get(1).getMetadata().get(0).getOpener()));
 
     }
 
@@ -384,10 +383,9 @@ public class CloneTests {
 
         assertTrue(clone.getId() == u.getId());
         assertTrue(clone.getUsername().equals(u.getUsername()));
-
         assertEquals(clone.getRoles(),roles);
-        
         assertTrue(clone.getRoles().contains(r1));
         assertTrue(clone.getRoles().contains(r2));
+
     }
 }
