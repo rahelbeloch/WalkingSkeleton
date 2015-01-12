@@ -99,7 +99,7 @@
                 <Label Grid.Row="1" HorizontalAlignment="Center" Content="{Binding selectedRow.actItem.id, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label Grid.Row="2" Content="State: "/>
                 <Label Grid.Row="2" HorizontalAlignment="Center" Content="{Binding selectedRow.actItem.state, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Grid.Row="3" Content="Annehmen" Height="25"
+                <Button Grid.Row="3" Content="Annehmen" Height="25" Visibility="{Binding selectedRow.visibilityStepForwardButton}"
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
                                                             CommandParameter="{Binding selectedRow}" HorizontalAlignment="Left"/>
             </Grid>
