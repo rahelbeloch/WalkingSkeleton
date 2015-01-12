@@ -35,6 +35,9 @@ public class ConstructionFactory {
      */
     private ConstructionFactory(Properties properties) {
         logic = INJECTOR.getInstance(Logic.class);
+        logic.setPropConfig(properties);
+        logic.loadData();
+        
         serverPublisher = INJECTOR.getInstance(ServerPublisher.class);
         serverPublisher.applyProperties(properties);
         try {

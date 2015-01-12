@@ -1,6 +1,7 @@
 package de.hsrm.swt02.persistence;
 
 import java.util.List;
+import java.util.Properties;
 
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
@@ -190,5 +191,9 @@ public interface Persistence {
      * serialized in a file which path is configured in server configuration file.
      * @param storagePath the path to the DataModel storage path
      */
-    void save(String storagePath);
+    void save();
+    
+    void load();
+
+    void setPropConfig(Properties propConfig);
 }

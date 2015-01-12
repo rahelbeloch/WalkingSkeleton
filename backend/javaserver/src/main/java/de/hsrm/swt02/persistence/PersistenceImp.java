@@ -1,19 +1,28 @@
 package de.hsrm.swt02.persistence;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import de.hsrm.swt02.logging.UseLogger;
+import de.hsrm.swt02.model.Action;
+import de.hsrm.swt02.model.DataStorage;
+import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
+import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
@@ -49,13 +58,16 @@ public class PersistenceImp implements Persistence {
     
     private List<Form> forms = new LinkedList<>();
     
+    private Properties propConfig;
+    
     /**
      * Constructor for PersistenceImp.
      * @param logger is the logger for logging.
      */
     @Inject
-    public PersistenceImp(UseLogger logger) {
+    public PersistenceImp(UseLogger logger, Properties propConfig) {
         this.logger = logger;
+        this.propConfig = propConfig;
     }
     
     // Workflow Operations
@@ -474,35 +486,134 @@ public class PersistenceImp implements Persistence {
     }
 
     @Override
-    public void save(String storagePath) {
+    public void save() {
         
         // browse through all DataModels and serialize them into a file (path in server configuration file)
         try {
-            final FileOutputStream fileOut = new FileOutputStream(storagePath);
+            final FileOutputStream fileOut = new FileOutputStream(propConfig.getProperty("StoragePath"));
             final ObjectOutputStream out = new ObjectOutputStream(fileOut);
             
-            for (Workflow serWorkflow: workflows) {
-                out.writeObject(serWorkflow);
-            }
-            
-            for (User serUser: users) {
-                out.writeObject(serUser);
-            }
-            
-            for (Role serRole: roles) {
-                out.writeObject(serRole);
-            }
-            
-            for (Form serForm: forms) {
-                out.writeObject(serForm);
-            }
-
+            DataStorage ds = new DataStorage(workflows, users, roles, forms);
+            out.writeObject(ds);
             out.close();
             fileOut.close();
             
-            this.logger.log(Level.INFO,"[persistence] successfully saved data models in " + storagePath + ".");
+            this.logger.log(Level.INFO,"[persistence] successfully saved data models in " + propConfig.getProperty("StoragePath") + ".");
         } catch (IOException i) {
             i.printStackTrace();
         }
-    };
+    }
+    
+    @Override
+    public void load() {
+        String storagePath = propConfig.getProperty("StoragePath");
+        final File f = new File(storagePath);
+        
+        if (storagePath != null && storagePath.contains(".ser") && f.exists()) {
+            
+            if (f.isFile()) {
+
+                try {
+                    final FileInputStream fileIn = new FileInputStream(storagePath);
+                    final ObjectInputStream in = new ObjectInputStream(fileIn);
+                         
+                    // get lists from DataStorage object
+                    final DataStorage newDs = (DataStorage)in.readObject();
+                    workflows = newDs.getWorkflows();
+                    users = newDs.getUsers();
+                    roles = newDs.getRoles();
+                    forms = newDs.getForms();
+                    
+                    in.close();
+                    fileIn.close();
+                } catch (IOException i) {
+                    i.printStackTrace();
+                    return;
+                } catch (ClassNotFoundException c) {
+                    System.out.println("Employee class not found");
+                    c.printStackTrace();
+                    return;
+                }
+            }
+        } else {
+            // if storage file == null
+            try {
+                initTestdata();
+            } catch (PersistenceException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    /**
+     * Initialize test datas.
+     * 
+     * @throws PersistenceException
+     */
+    private void initTestdata() throws PersistenceException {
+        Workflow workflow1;
+        User user1, user2, user3, user4;
+        StartStep startStep1;
+        Action action1, action2;
+        FinalStep finalStep;
+        Role role1, role2, role3;
+
+        user1 = new User();
+        user1.setUsername("Alex");
+        user2 = new User();
+        user2.setUsername("Dominik");
+        user3 = new User();
+        user3.setUsername("Tilman");
+        user4 = new User();
+        user4.setUsername("TestAdmin");
+        user4.setPassword("");
+
+        role1 = new Role();
+        // role1.setId("1");
+        role1.setRolename("Manager");
+        storeRole(role1);
+        role2 = new Role();
+        role2.setRolename("Sachbearbeiter");
+        storeRole(role2);
+        role3 = new Role();
+        role3.setRolename("admin");
+        storeRole(role3);
+
+        user1.addRole(role1);
+        user2.addRole(role2);
+        user4.addRole(role3);
+
+        storeUser(user1);
+        storeUser(user2);
+        storeUser(user3);
+        storeUser(user4);
+
+        final ArrayList<String> user1Roles = new ArrayList<String>();
+        user1Roles.add(role1.getRolename());
+        final ArrayList<String> user2Roles = new ArrayList<String>();
+        user2Roles.add(role2.getRolename());
+
+        startStep1 = new StartStep();
+        startStep1.getRoleIds().addAll(user1Roles);
+
+        action1 = new Action(new ArrayList<String>(), "Action von "
+                + user1.getUsername());
+        action2 = new Action(new ArrayList<String>(), "Action von "
+                + user2.getUsername());
+
+        finalStep = new FinalStep();
+
+        workflow1 = new Workflow();
+        workflow1.addStep(startStep1);
+        workflow1.addStep(action1);
+        workflow1.addStep(action2);
+        workflow1.addStep(finalStep);
+
+        storeWorkflow(workflow1);
+    }
+
+    @Override
+    public void setPropConfig(Properties propConfig) {
+        this.propConfig = propConfig;
+    }
 }
