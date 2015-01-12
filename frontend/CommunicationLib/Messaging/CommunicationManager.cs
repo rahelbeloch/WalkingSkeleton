@@ -142,8 +142,8 @@ namespace CommunicationLib
             if (msg is ITextMessage)
             {
                 ITextMessage tm = msg as ITextMessage;
-                // Logging on Console 
-                logger.Info("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
+                logger.Info(" Received Message='" + tm.Text + "'");
+
                 try
                 {
                     HandleRequest(tm.Text);  
@@ -163,7 +163,7 @@ namespace CommunicationLib
             }
             else
             {
-                logger.Info("\ndifferent message-Type: " + msg + "\n");
+                logger.Warn("Received different message-Type: " + msg + "\n");
             }
         }
 
@@ -284,7 +284,7 @@ namespace CommunicationLib
             topicName = "ITEMS_FROM_" + itemSource.id;
             if (!_messageSubs.ContainsKey(topicName))
             {
-                logger.Info("Registration for " + topicName);
+                logger.Info("Registration ItemSource='" + topicName + "'");
                 IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(topicName));
                 messageConsumer.Listener += OnMessageReceived;
                 _messageSubs.Add(topicName, messageConsumer);

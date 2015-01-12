@@ -248,12 +248,13 @@ namespace Admin.ViewModel
 
         void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
-            logger.Info("neuer Workflow ist angekommen.");
+            logger.Info("Received Workflow for Update: ID=" + workflow.id);
             _workflowViewModel.updateWorkflows(workflow);
         }
 
         void IDataReceiver.ItemUpdate(Item item)
         {
+            logger.Info("Received Item for Update: ID=" + item.id);
             _workflowViewModel.updateItemFromWorkflow(item);
         }
 
@@ -274,6 +275,7 @@ namespace Admin.ViewModel
 
         void IDataReceiver.DataDeletion(Type sourceType, string sourceId)
         {
+            logger.Info("Delete " + sourceType.ToString() + " ID=" + sourceId);
             if(sourceType == typeof(Workflow))
             {
                 // No WorkflowDeletion yet needed
@@ -281,6 +283,7 @@ namespace Admin.ViewModel
             }
             else if (sourceType == typeof(Role))
             {
+                logger.Info("Received Role for Update: Name=" + sourceId);
                 Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.RoleDeletion(sourceId)));
             }
             else if(sourceType == typeof(Item))
