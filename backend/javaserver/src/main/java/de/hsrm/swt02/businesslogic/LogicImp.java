@@ -717,7 +717,8 @@ public class LogicImp implements Logic {
         }
         
         if (roleInUse) {
-            throw new RoleNotExistentException("[Logic] No Deletion allowed - Role " + rolename + " is still in use.");
+            // role is still active - can not be deleted, it is in use --> write a new exception
+            throw new NoPermissionException("[Logic] No Deletion allowed - Role " + rolename + " is still in use.");
         }
         
         final Role roleToRemove = persistence.loadRole(rolename);
