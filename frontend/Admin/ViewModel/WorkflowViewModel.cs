@@ -295,6 +295,23 @@ namespace Admin.ViewModel
             OnChanged("workflows");
         }
 
+        public void updateItemFromWorkflow(Item item)
+        {
+            foreach (Workflow w in _workflows)
+            {
+                if (w.id.Equals(item.workflowId))
+                {
+                    Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Remove(w)));
+                    Application.Current.Dispatcher.Invoke(new System.Action(() => w.items.Remove(item)));
+                    Application.Current.Dispatcher.Invoke(new System.Action(() => w.items.Add(item)));
+                    Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(w)));
+                    break;
+                }
+            }
+            OnChanged("workflows");
+        }
+            
+
         /// <summary>
         /// When the workflow is changed, reconfigure choosable steps for combobox (depending on currently allowed steps).
         /// </summary>
