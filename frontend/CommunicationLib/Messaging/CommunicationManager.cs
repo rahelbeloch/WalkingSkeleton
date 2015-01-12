@@ -186,7 +186,7 @@ namespace CommunicationLib
 
             Type genericType;
             string methodName;
-            object requestedObj;
+            object requestedObj = null;
             object [] args;
 
             /* msgParams[0] --> requested Type (workflow/item/user)
@@ -212,37 +212,43 @@ namespace CommunicationLib
             else
             {
                 // do refletive invocation
-                requestedObj = reflectiveRestRequest(methodName, genericType, args);
-
-            // Client update
-            if (genericType == typeof(Workflow))
-            {
-                    _myClient.WorkflowUpdate((Workflow)requestedObj);
-                
-                // register client for item updates from this new workflow
-                if (msgParams[1].Equals(DEFINE_OPERATION))
+                try
                 {
-                        RegisterItemSource((Workflow)requestedObj);
+                    requestedObj = reflectiveRestRequest(methodName, genericType, args);
+                    // Client update
+                    if (genericType == typeof(Workflow))
+                    {
+                        _myClient.WorkflowUpdate((Workflow)requestedObj);
+
+                        // register client for item updates from this new workflow
+                        if (msgParams[1].Equals(DEFINE_OPERATION))
+                        {
+                            RegisterItemSource((Workflow)requestedObj);
+                        }
+                    }
+                    else if (genericType == typeof(Item))
+                    {
+                        _myClient.ItemUpdate((Item)requestedObj);
+                    }
+                    else if (genericType == typeof(User))
+                    {
+                        _myClient.UserUpdate((User)requestedObj);
+                    }
+                    else if (genericType == typeof(Role))
+                    {
+                        _myClient.RoleUpdate((Role)requestedObj);
+                    }
+                    else if (genericType == typeof(Form))
+                    {
+                        _myClient.FormUpdate((Form)requestedObj);
+                    }  
+                }
+                catch (System.Exception e)
+                {
+                    _myClient.HandleError(e);
                 }
             }
-            else if (genericType == typeof(Item))
-            {
-                    _myClient.ItemUpdate((Item)requestedObj);
-            }
-            else if (genericType == typeof(User))
-            {
-                    _myClient.UserUpdate((User)requestedObj);
-            }
-            else if (genericType == typeof(Role))
-            {
-                    _myClient.RoleUpdate((Role)requestedObj);
-            }
-            else if (genericType == typeof(Form))
-            {
-                    _myClient.FormUpdate((Form)requestedObj);
-                }
-            }
-            }
+        }
 
         /// <summary>
         /// Invoked by the HandleRequest()-method.
@@ -254,7 +260,7 @@ namespace CommunicationLib
         /// <returns>the requested source from the server</returns>
         private object reflectiveRestRequest(string methodName, Type genericType, object[] args)
         {
-            object requestedObj;
+            object requestedObj = null;
             // create a generic method object
             MethodInfo method = typeof(RestRequester).GetMethod(methodName);
             MethodInfo genericMethod = method.MakeGenericMethod(genericType);
@@ -265,9 +271,21 @@ namespace CommunicationLib
              * If client has no access to requested resource,
              * server throws an exception --> abortion of method
              */
+
             requestedObj = genericMethod.Invoke(_sender, args);
 
-            return requestedObj;  
+            /*try
+            {
+                System.Action action = (System.Action)Delegate.CreateDelegate
+                                       (typeof(System.Action), genericMethod);
+                action();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }*/
+
+            return requestedObj;
         }
 
         /// <summary>
