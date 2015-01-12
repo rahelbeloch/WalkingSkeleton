@@ -39,8 +39,7 @@ public class PersistenceImp implements Persistence {
     private static final int ID_MULTIPLICATOR = 1000;
     
     /**
-     * abstraction of a database, that persists the data objects workflow, item.
-     * user, step, metaEntry
+     * abstraction of a database, that persists the basic data mdoels. 
      */
     private List<Workflow> workflows = new LinkedList<>();
 
