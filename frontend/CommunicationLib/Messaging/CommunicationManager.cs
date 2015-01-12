@@ -218,7 +218,7 @@ namespace CommunicationLib
                     _myClient.WorkflowUpdate((Workflow)requestedObj);
                 
                 // register client for item updates from this new workflow
-                    if (msgParams[1].Equals(DEFINE_OPERATION))
+                if (msgParams[1].Equals(DEFINE_OPERATION))
                 {
                         RegisterItemSource((Workflow)requestedObj);
                 }
