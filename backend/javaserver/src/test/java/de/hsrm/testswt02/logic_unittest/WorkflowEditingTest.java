@@ -140,8 +140,8 @@ public class WorkflowEditingTest {
      */
     @Test
     public void editWorkflowWithUnfinishedItems() throws LogicException {
-        final int oldSize = 2;
-        final int newSize = 3;
+        final int oldSize = 1;
+        final int newSize = 2;
         
         logic.startWorkflow(workflow.getId(), user.getId());
         workflow2.setId(workflow.getId());
@@ -165,8 +165,8 @@ public class WorkflowEditingTest {
      */
     @Test
     public void editDeactivatedWorkflowWithUnfinishedItems() throws LogicException {
-        final int oldSize = 2;
-        final int newSize = 3;
+        final int oldSize = 1;
+        final int newSize = 2;
         
         logic.startWorkflow(workflow.getId(), user.getId());
         workflow.setActive(false);
@@ -181,8 +181,8 @@ public class WorkflowEditingTest {
         assertTrue(logic.getWorkflow(workflow.getId()).getItems().size() == 1);
         assertTrue(logic.getWorkflow(workflow.getId()).getItemByPos(0).isFinished() == false);
         assertTrue(logic.getAllWorkflows().size() == newSize);
-        //new workflow added therefore index 2
-        assertTrue(logic.getAllWorkflows().get(2).getItems().size() == 0);
+        //new workflow added therefore index 1
+        assertTrue(logic.getAllWorkflows().get(1).getItems().size() == 0);
     }
     
     /**
