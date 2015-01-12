@@ -52,6 +52,7 @@ public class ActionProcessor implements StepProcessor {
         final Workflow workflow = p.loadWorkflow(item.getWorkflowId());      
         final Item currentItem = workflow.getItemById(item.getId());
         final String stepId = step.getId();
+        final Step currentStep = workflow.getStepById(stepId);
         final String itemId = currentItem.getId();
         
         if (currentItem.getEntryValue(stepId + "", "step").equals(MetaState.OPEN.toString())) {
@@ -60,7 +61,8 @@ public class ActionProcessor implements StepProcessor {
         } else if (currentItem.getEntryValue(stepId + "", "step").equals(MetaState.BUSY.toString())) {
             if (currentItem.getEntryOpener(stepId, "step").equals(user.getUsername())) {
                 currentItem.setStepState(stepId, MetaState.DONE.toString());
-                for (Step s : step.getNextSteps()) {
+                System.out.println("size: " + currentStep.getNextSteps().size());
+                for (Step s : currentStep.getNextSteps()) {
                     if (!(s instanceof FinalStep)) {
                         currentItem.setStepState(s.getId(), MetaState.OPEN.toString());
                     } else {
