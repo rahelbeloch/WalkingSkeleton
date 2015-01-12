@@ -3,12 +3,18 @@ package de.hsrm.swt02.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This class represents a Workflow. A Workflow is a manifestation of a
  * RootElement
  *
  */
 public class Workflow extends RootElement {
+   
+    @JsonIgnore
+    private static final long serialVersionUID = 6064167361250573486L;
+
     // Used for (de)serialization. Do not change.
     private List<Step> steps;
 
