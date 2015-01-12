@@ -13,11 +13,13 @@ using CommunicationLib.Model;
 
 using System.Diagnostics;
 using CommunicationLib.Exception;
+using NLog;
 
 namespace CommunicationLib
 {
     public class CommunicationManager
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         // protocol operations
         private const string DEFINE_OPERATION = "def";
         private const string UPDATE_OPERATION = "upd";
@@ -141,7 +143,7 @@ namespace CommunicationLib
             {
                 ITextMessage tm = msg as ITextMessage;
                 // Logging on Console 
-                Debug.WriteLine("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
+                logger.Info("TextMessage: ID=" + tm.GetType() + "\n" + tm.Text + "\n");
                 try
                 {
                     HandleRequest(tm.Text);  
@@ -151,7 +153,7 @@ namespace CommunicationLib
                     if (ErrorMessageMapper.errorMessages.ContainsKey(e.number))
                     {
                         Type exceptionType = ErrorMessageMapper.GetErrorType(e.number);
-                        Debug.WriteLine(exceptionType);
+                        logger.Info(exceptionType);
                     }
                 }
             }
@@ -161,7 +163,7 @@ namespace CommunicationLib
             }
             else
             {
-                Debug.WriteLine("\ndifferent message-Type: " + msg + "\n");
+                logger.Info("\ndifferent message-Type: " + msg + "\n");
             }
         }
 
@@ -282,7 +284,7 @@ namespace CommunicationLib
             topicName = "ITEMS_FROM_" + itemSource.id;
             if (!_messageSubs.ContainsKey(topicName))
             {
-                Debug.WriteLine("Registration for " + topicName);
+                logger.Info("Registration for " + topicName);
                 IMessageConsumer messageConsumer = _session.CreateConsumer(new ActiveMQTopic(topicName));
                 messageConsumer.Listener += OnMessageReceived;
                 _messageSubs.Add(topicName, messageConsumer);

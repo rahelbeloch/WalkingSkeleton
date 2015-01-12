@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Diagnostics;
+using NLog;
 
 namespace Admin.ViewModel
 {
@@ -21,6 +22,7 @@ namespace Admin.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase, IDataReceiver
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         private String _clientID = "admin";
         public String clientID { get { return _clientID; } }
 
@@ -246,7 +248,7 @@ namespace Admin.ViewModel
 
         void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
-            Debug.WriteLine("neuer Workflow ist angekommen");
+            logger.Info("neuer Workflow ist angekommen.");
             _workflowViewModel.updateWorkflows(workflow);
         }
 

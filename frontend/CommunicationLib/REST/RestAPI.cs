@@ -15,6 +15,7 @@ using System.Net;
 using System.Security;
 using CommunicationLib;
 using System.Diagnostics;
+using NLog;
 
 namespace RestAPI
 {
@@ -24,6 +25,7 @@ namespace RestAPI
     public class InternalRequester
     {
         public static RestClient client;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         ///<summary>
         ///     Static Constructor - is called automatically at first use of the class.
@@ -42,9 +44,9 @@ namespace RestAPI
         {
             // execute the request
             IRestResponse response = client.Execute(request);
-            Debug.WriteLine("resp " + response.ErrorException);
-            Debug.WriteLine("resp " + response.ErrorMessage);
-            Debug.WriteLine("resp " + response.StatusCode);
+            logger.Info(" resp " + response.ErrorException);
+            logger.Info(" resp " + response.ErrorMessage);
+            logger.Info(" resp " + response.StatusCode);
             try
             {
                 ProofResponseErrors(response);
@@ -105,7 +107,7 @@ namespace RestAPI
             // if no HttpException happened and although the StatusCode is not "OK", there must be on Exception of our own
             if (response.StatusCode != HttpStatusCode.OK && response.StatusCode == HttpStatusCode.InternalServerError)
             {
-                Debug.WriteLine("!!!!!! " + response.Content);
+                logger.Debug("!!!!!! " + response.Content);
                 int errorCode = Int32.Parse(response.Content);
 
                 //generate convenient exception

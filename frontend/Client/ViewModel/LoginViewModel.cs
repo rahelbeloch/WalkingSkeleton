@@ -80,7 +80,7 @@ namespace Client.ViewModel
                         {
                             // Register mainViewModel to CommunicationLib (if login worked)
                             _mainViewModel.myComLib.Login(username, securePwd);
-                            logger.Debug("Authentiaction userName: " + username);
+                            logger.Info("Authentiaction userName: " + username);
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.dashboardViewModel;
                             _mainViewModel.username = _username;
                         }
@@ -89,7 +89,7 @@ namespace Client.ViewModel
                             logger.Debug("Login fehlgeschlagen:");
 
                             MessageBox.Show(exc.Message);
-                            Console.WriteLine(exc.ToString());
+                            logger.Debug(exc.ToString());
                         }
                         finally
                         {
