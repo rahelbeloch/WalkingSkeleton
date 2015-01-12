@@ -162,6 +162,16 @@ public class Item extends RootElement {
         }
         return null;
     }
+    
+    /**
+     * This method returns the opener of an entry.
+     * @param key indicates which entry is looked for
+     * @param group indicates the type of an entry
+     * @return opener name
+     */
+    public String getEntryOpener(String key, String group) {
+        return getEntry(key, group).getOpener();
+    }
 
     /**
      * This method sets the value of an entry or adds a new entry.
@@ -210,6 +220,18 @@ public class Item extends RootElement {
     public void setFirstStepState(String value) {
 
         getForGroup("step").get(0).setValue(value);
+    }
+    
+    /**
+     * This methods sets an opener to a process step.
+     * @param key indicates which entry is looked for
+     * @param group indicates the type of a entry
+     * @param opener indicates which opener will be setted
+     */
+    public void setEntryOpener(String key, String group, String opener) {
+        final MetaEntry ame = getEntry(key, group);
+        
+        ame.setOpener(opener);
     }
 
     /**
