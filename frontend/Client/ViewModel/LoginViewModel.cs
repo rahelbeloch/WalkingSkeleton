@@ -9,6 +9,7 @@ using CommunicationLib.Exception;
 using System.Windows;
 using CommunicationLib;
 using NLog;
+using System.Diagnostics;
 
 namespace Client.ViewModel
 {
@@ -80,16 +81,14 @@ namespace Client.ViewModel
                         {
                             // Register mainViewModel to CommunicationLib (if login worked)
                             _mainViewModel.myComLib.Login(username, securePwd);
-                            logger.Info("Authentiaction userName: " + username);
+                            logger.Info("Login successful for username="+ username + " password="+ securePwd);
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.dashboardViewModel;
                             _mainViewModel.username = _username;
                         }
                         catch (BasicException exc)
                         {
-                            logger.Warn("Login fehlgeschlagen:");
-
+                            logger.Info("Login failed for username=" + username + " password=" + securePwd);
                             MessageBox.Show(exc.Message);
-                            logger.Warn(exc.ToString());
                         }
                         finally
                         {

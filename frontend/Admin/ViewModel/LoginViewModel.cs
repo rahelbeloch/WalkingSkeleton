@@ -83,7 +83,6 @@ namespace Admin.ViewModel
                         catch (BasicException exc)
                         {
                             MessageBox.Show(exc.Message);
-                            //logger.Warn(exc.ToString());
                         }
                     }, canExecute =>
                     {

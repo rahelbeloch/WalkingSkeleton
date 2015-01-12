@@ -232,8 +232,7 @@ namespace Admin.ViewModel
         {
             try
             {
-                logger.Info("updatedModel()");
-                logger.Info("check");
+                logger.Info("Initialize");
                 _choosableSteps.Add(new StartStep());
 
                 _workflows.Clear();
@@ -275,20 +274,20 @@ namespace Admin.ViewModel
         /// </summary>
         /// <param name="newWorkflow"></param>
         public void updateWorkflows(Workflow newWorkflow){
-            logger.Info("updateWorkflows: " + newWorkflow.active);
-            logger.Info("Method1 CHECK");
-           
+            bool changed = false;
+
             foreach (Workflow w in _workflows)
             {
                 if (w.id.Equals(newWorkflow.id))
                 {
-                    logger.Info("Workflow wurde geupdated");
                     Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Remove(w)));
+                    changed = true;
                     break;
                 }
             }
-            logger.Info("workflow wurde neu hinzugefuegt");
+
             Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(newWorkflow)));
+            logger.Info("Workflow ID=" + newWorkflow.id + (changed ? " changed" : " added"));
 
             _actWorkflow = null;
             OnChanged("actWorkflow");
@@ -490,8 +489,6 @@ namespace Admin.ViewModel
                         if (_selectedStep is StartStep)
                         {
                             StartStep startStep = new StartStep();
-
-                            logger.Info("selectedRole: " + selectedRole.rolename);
                             startStep.roleIds.Add(selectedRole.rolename);
 
                             _workflow.Add(startStep);

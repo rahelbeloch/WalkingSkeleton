@@ -10,6 +10,7 @@ using NLog;
 using CommunicationLib.Model;
 using System.Windows;
 using CommunicationLib.Exception;
+using System.Diagnostics;
 namespace Client.ViewModel
 {
     /// <summary>
@@ -70,7 +71,6 @@ namespace Client.ViewModel
             {
                 _userName = value;
                 _dashboardViewModel.userName = value;
-                logger.Info("username gesetzt.");
             }
         }
         public MainViewModel()
@@ -165,7 +165,7 @@ namespace Client.ViewModel
         /// <param name="workflow">instance of the new workflow</param>
         void IDataReceiver.WorkflowUpdate(Workflow workflow) 
         {
-            logger.Info("Received Workflow for Update: ID = " + workflow.id);
+            logger.Info("Received Workflow for Update: ID=" + workflow.id);
             // route update-handling to subcomponents
             _dashboardViewModel.addWorkflowToModel(workflow, null);
         }
@@ -175,9 +175,8 @@ namespace Client.ViewModel
         /// <param name="item">instance of the new item</param>
         void IDataReceiver.ItemUpdate(Item item)
         {
-            logger.Info("Update Item: " + item.ToString());
-            logger.Info("Update Item: " + item.ToString());
-            _dashboardViewModel.updateItem(item);
+            logger.Info("Received Item for Update: ID=" + item.id);
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.updateItem(item)));
         }
 
         void IDataReceiver.UserUpdate(User user)

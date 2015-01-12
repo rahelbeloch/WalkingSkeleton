@@ -86,7 +86,9 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///  Method to retrieve all existent workflows of one given user on server.
+        ///  Method to 
+        ///  
+        /// all existent workflows of one given user on server.
         /// </summary>
         /// <param name="username">Requested username</param>
         /// <returns>List of all workflow of this user</returns>
@@ -167,15 +169,12 @@ namespace RestAPI
         {
             IRestResponse response = null;
             var request = createRequest(url, Method.GET);
-            logger.Info(" " + url);
             try
             {
                 response = InternalRequester.RetrieveRequest(request);
             }
-            catch (BasicException e)
+            catch (BasicException)
             {
-                logger.Warn("Exception " + e.Data);
-
                 throw;
             }
 
@@ -196,7 +195,6 @@ namespace RestAPI
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id });
             
             var request = createRequest(url, Method.GET);
-            
             try
             {
                 // call Internal Requester to finally send the request
@@ -229,7 +227,6 @@ namespace RestAPI
             
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
-
             var request = createRequest(url, Method.PUT);
             
             try
@@ -283,8 +280,9 @@ namespace RestAPI
         public O DeleteObject<O>(string id) where O : new()
         {
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O), new string[] { id });
-            
+
             var request = createRequest(url, Method.DELETE);
+
             return Delete<O>(request);
         }
 
@@ -400,6 +398,8 @@ namespace RestAPI
         /// <returns>the generated request</returns>
         private RestRequest createRequest(string url, Method method)
         {
+            logger.Info(url);
+
             var request = new RestRequest(url, method);
             request.AddHeader("Accept", "text/plain");
 
