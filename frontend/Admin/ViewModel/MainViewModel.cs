@@ -254,7 +254,7 @@ namespace Admin.ViewModel
 
         void IDataReceiver.ItemUpdate(Item item)
         {
-            // updated items arrive here
+            _workflowViewModel.updateItemFromWorkflow(item);
         }
 
         void IDataReceiver.UserUpdate(User user)
