@@ -212,7 +212,7 @@ public class LogicImp implements Logic {
                 persistence.loadItem(itemId), persistence.loadUser(username));
         workflowId = persistence.loadItem(itemId).getWorkflowId();
         logicResponse.add(Message.buildWithTopicId(MessageTopic.ITEMS_FROM_,
-                workflowId, MessageOperation.DEFINITION, updatedItemId));
+                workflowId, MessageOperation.UPDATE, updatedItemId));
         return logicResponse;
     }
 

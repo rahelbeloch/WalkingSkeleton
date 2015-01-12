@@ -21,9 +21,6 @@ public class Step extends RootElement {
 
     @JsonIgnore
     private static final long serialVersionUID = 7421352527667358620L;
-
-    @JsonIgnore
-    protected String opener;
     
     @JsonIgnore
     protected List<Step> nextSteps;
@@ -38,7 +35,6 @@ public class Step extends RootElement {
      * Constructor for Step.
      */
     public Step() {
-        opener = null;
     }
     
     /**
@@ -48,7 +44,6 @@ public class Step extends RootElement {
     public void init(Step s) {
         super.init(s);
         this.roleIds = s.roleIds;
-        this.opener = s.opener;
         this.getNextStepIds().addAll(s.getNextStepIds());
     }
 
@@ -89,18 +84,6 @@ public class Step extends RootElement {
     
     public void setRoleIds(ArrayList<String> roleIds) {
         this.roleIds = roleIds;
-    }
-
-    public String getOpener() {
-        return opener;
-    }
-    
-    /**
-     * 
-     * @param username the opener of this step
-     */
-    public void setOpener(String username) {
-        this.opener = username;
     }
     
     /**

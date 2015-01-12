@@ -49,32 +49,32 @@ public class ActionProcessor implements StepProcessor {
      * @return itemId of item which was edited
      */
     public String handle(Item item, Step step, User user) throws LogicException {
-        final Workflow workflow = p.loadWorkflow(item.getWorkflowId());
-        
+        final Workflow workflow = p.loadWorkflow(item.getWorkflowId());      
         final Item currentItem = workflow.getItemById(item.getId());
-        final Step currentStep = workflow.getStepById(step.getId());
-
-        if (currentItem.getEntryValue(currentStep.getId() + "", "step").equals(MetaState.OPEN.toString())) {
-            currentStep.setOpener(user.getUsername());
-            currentItem.setStepState(currentStep.getId(), MetaState.BUSY.toString());
-        } else if (currentItem.getEntryValue(currentStep.getId() + "", "step").equals(MetaState.BUSY.toString())) {
-            if (currentStep.getOpener().equals(user.getUsername())) {
-                currentItem.setStepState(step.getId(), MetaState.DONE.toString());
-                for (Step s : currentStep.getNextSteps()) {
+        final String stepId = step.getId();
+        final String itemId = currentItem.getId();
+        
+        if (currentItem.getEntryValue(stepId + "", "step").equals(MetaState.OPEN.toString())) {
+            currentItem.setEntryOpener(stepId, "step", user.getUsername());
+            currentItem.setStepState(stepId, MetaState.BUSY.toString());
+        } else if (currentItem.getEntryValue(stepId + "", "step").equals(MetaState.BUSY.toString())) {
+            if (currentItem.getEntryOpener(stepId, "step").equals(user.getUsername())) {
+                currentItem.setStepState(stepId, MetaState.DONE.toString());
+                for (Step s : step.getNextSteps()) {
                     if (!(s instanceof FinalStep)) {
                         currentItem.setStepState(s.getId(), MetaState.OPEN.toString());
                     } else {
                         currentItem.setStepState(s.getId(), MetaState.DONE.toString());
                         currentItem.setFinished(true);
-                        LOGGER.log(Level.INFO, "[logic] Successfully finished item " + currentItem.getId() + " from workflow " + currentItem.getWorkflowId());
+                        LOGGER.log(Level.INFO, "[logic] Successfully finished item " + itemId + " from workflow " + currentItem.getWorkflowId());
                     }
                 }
             } else {
-                throw new UserHasNoPermissionException("Access denied. Current Operator is " + currentStep.getOpener());
+                throw new UserHasNoPermissionException("Access denied. Current Operator is " + currentItem.getEntryOpener(stepId, "step"));
             }
             
         } else {
-            throw new ItemNotForwardableException("no forwarding action on item " + currentItem.getId());
+            throw new ItemNotForwardableException("no forwarding action on item " + itemId);
         } 
         
         try {
@@ -82,6 +82,6 @@ public class ActionProcessor implements StepProcessor {
         } catch (WorkflowNotExistentException e) {
             e.printStackTrace();
         }
-        return currentItem.getId();
+        return itemId;
     }
 }
