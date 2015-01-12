@@ -35,13 +35,13 @@ namespace Client.ViewModel
         /// </summary>
         private void updateModel()
         {
-            logger.Debug("updatedModel()");
+            logger.Info("updatedModel()");
 
             _workflows.Clear();
             IList<Workflow> workflowList = _restRequester.GetAllWorkflowsByUser();
             if (workflowList == null)
             {
-                logger.Debug("WorkflowList is null");
+                logger.Info("WorkflowList is null");
                 workflowList = new List<Workflow>();
             }
             workflowList.ToList().ForEach(_workflows.Add);
@@ -50,7 +50,7 @@ namespace Client.ViewModel
             IList<string> startableList = _restRequester.GetStartablesByUser();
             if (startableList == null)
             {
-                logger.Debug("startableList is null");
+                logger.Info("startableList is null");
                 startableList = new List<string>();
             }
             startableList.ToList().ForEach(_startableWorkflows.Add);
@@ -61,7 +61,7 @@ namespace Client.ViewModel
                 _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
             }
             
-            logger.Debug("Model update finished. Workflows-size: "+_workflows.Count());
+            logger.Info("Model update finished. Workflows-size: "+_workflows.Count());
             _relevantItems.Clear();
             //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
         }
@@ -72,13 +72,13 @@ namespace Client.ViewModel
         /// <param name="startableList">List of startables Workflows</param>
         public void addWorkflowToModel(Workflow updatedWorkflow, IList<string> startableList)
         {
-            logger.Debug("addWorkflowToModel");
+            logger.Info("addWorkflowToModel");
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
             if (startableList == null)
             {
                 _startableWorkflows.Clear();
-                logger.Debug("startableList is null");
+                logger.Info("startableList is null");
                 startableList = _restRequester.GetStartablesByUser();
                 startableList.ToList().ForEach(_startableWorkflows.Add);
             }
@@ -101,11 +101,11 @@ namespace Client.ViewModel
                 row = new DashboardRow(item, activeStep, _userName);
                 if (activeStep == null)
                 {
-                    logger.Debug("activeStep.label is null");
+                    logger.Info("activeStep.label is null");
                 }
                 else
                 {
-                    logger.Debug("addWorkflowRow activeStep: " + activeStep.label + ", item.id: " + item.id);
+                    logger.Info("addWorkflowRow activeStep: " + activeStep.label + ", item.id: " + item.id);
                 }
                 toUpdate.addDashboardRow(row);
             }
@@ -141,7 +141,7 @@ namespace Client.ViewModel
                             return dashboardRow;
                         }
                     }
-                    Console.WriteLine("No similar item was found for " + item.ToString());
+                    logger.Info("No similar item was found for " + item.ToString());
                     
                     // create DashboardRow for item
                     Step actStep = getStepById(item.getActiveStepId(), workflow.actWorkflow);
@@ -150,7 +150,7 @@ namespace Client.ViewModel
                     return newDashbRow;
                 }
             }
-            Console.WriteLine("No parent workflow found for item " + item.ToString());
+            logger.Info("No parent workflow found for item " + item.ToString());
             return null;
         }
 
@@ -177,7 +177,7 @@ namespace Client.ViewModel
         /// </summary>
         private void deleteModel()
         {
-            logger.Debug("clear Model()");
+            logger.Info("clear Model()");
             _workflows.Clear();
             _startableWorkflows.Clear();
             _relevantItems.Clear();
@@ -190,14 +190,14 @@ namespace Client.ViewModel
         /// <param name="id"></param>
         public void createWorkflow(string id)
         {
-            logger.Debug("createWorkflow()");
+            logger.Info("createWorkflow()");
             try
             {
                 _restRequester.StartWorkflow(id);
             }
             catch (Exception exc)
             {
-                Console.WriteLine(exc.ToString());
+                logger.Debug(exc.ToString());
                 throw;
             }
         }
@@ -209,7 +209,7 @@ namespace Client.ViewModel
         /// <param name="itemId"></param>
         public void stepForward(string stepId, string itemId)
         {
-            logger.Debug("stepForward()");
+            logger.Info("stepForward()");
             _restRequester.StepForward(stepId, itemId);
         }
         /// <summary>
@@ -247,7 +247,7 @@ namespace Client.ViewModel
                 {
                     _logoutCommand = new ActionCommand(excute =>
                         {
-                            logger.Debug("button clicked");
+                            logger.Info("button clicked");
                             userName = "";
                             deleteModel();
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
@@ -308,7 +308,7 @@ namespace Client.ViewModel
             set
             {
                 _userName = value;
-                logger.Debug("Workflows holen mit user " + _userName);
+                logger.Info("Workflows holen mit user " + _userName);
 
                 if (_userName.Equals(""))
                 {
@@ -322,7 +322,7 @@ namespace Client.ViewModel
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.ToString());
+                        logger.Debug(e.ToString());
                     }
                 }
             }

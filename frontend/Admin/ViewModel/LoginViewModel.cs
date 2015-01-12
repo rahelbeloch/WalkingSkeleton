@@ -18,6 +18,7 @@ namespace Admin.ViewModel
     public class LoginViewModel : ViewModelBase
     {
         private MainViewModel _mainViewModel;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         
         public LoginViewModel(MainViewModel mainViewModel)
             : base()
@@ -82,7 +83,7 @@ namespace Admin.ViewModel
                         catch (BasicException exc)
                         {
                             MessageBox.Show(exc.Message);
-                            Console.WriteLine(exc.ToString());
+                            //logger.Warn(exc.ToString());
                         }
                     }, canExecute =>
                     {

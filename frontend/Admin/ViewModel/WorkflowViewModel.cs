@@ -12,8 +12,8 @@ using CommunicationLib;
 using System.Windows;
 using Action = CommunicationLib.Model.Action;
 using CommunicationLib.Exception;
-
 using System.Diagnostics;
+using NLog;
 
 
 namespace Admin.ViewModel
@@ -25,6 +25,7 @@ namespace Admin.ViewModel
     public class WorkflowViewModel : ViewModelBase
     {
         private Workflow _workflowModel = new Workflow();
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;       
@@ -231,8 +232,8 @@ namespace Admin.ViewModel
         {
             try
             {
-                Debug.WriteLine("updatedModel()");
-                Debug.WriteLine("check");
+                logger.Info("updatedModel()");
+                logger.Info("check");
                 _choosableSteps.Add(new StartStep());
 
                 _workflows.Clear();
@@ -274,19 +275,19 @@ namespace Admin.ViewModel
         /// </summary>
         /// <param name="newWorkflow"></param>
         public void updateWorkflows(Workflow newWorkflow){
-            Debug.WriteLine("updateWorkflows: " + newWorkflow.active);
-            Debug.WriteLine("Method1 CHECK");
+            logger.Info("updateWorkflows: " + newWorkflow.active);
+            logger.Info("Method1 CHECK");
            
             foreach (Workflow w in _workflows)
             {
                 if (w.id.Equals(newWorkflow.id))
                 {
-                    Debug.WriteLine("Workflow wurde geupdated");
+                    logger.Info("Workflow wurde geupdated");
                     Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Remove(w)));
                     break;
                 }
             }
-            Debug.WriteLine("workflow wurde neu hinzugefügt");
+            logger.Info("workflow wurde neu hinzugefuegt");
             Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(newWorkflow)));
 
             _actWorkflow = null;
@@ -472,8 +473,8 @@ namespace Admin.ViewModel
                         if (_selectedStep is StartStep)
                         {
                             StartStep startStep = new StartStep();
-                            
-                            Debug.WriteLine("selectedRole: " + selectedRole.rolename);
+
+                            logger.Info("selectedRole: " + selectedRole.rolename);
                             startStep.roleIds.Add(selectedRole.rolename);
 
                             _workflow.Add(startStep);

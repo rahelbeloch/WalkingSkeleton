@@ -15,6 +15,7 @@ using System.Net;
 using System.Security;
 using CommunicationLib;
 using System.Diagnostics;
+using NLog;
 
 namespace RestAPI
 {
@@ -29,6 +30,8 @@ namespace RestAPI
         private string _myUsername;
         private String _myPassword;
         private String _myClientID;
+
+        private static Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Default constructor, initializes the serialization settings and pre-strings for urls.
@@ -164,14 +167,14 @@ namespace RestAPI
         {
             IRestResponse response = null;
             var request = createRequest(url, Method.GET);
-            System.Diagnostics.Trace.WriteLine(url);
+            logger.Info(" " + url);
             try
             {
                 response = InternalRequester.RetrieveRequest(request);
             }
             catch (BasicException e)
             {
-                Debug.WriteLine("Exception " + e.Data);
+                logger.Debug("Exception " + e.Data);
 
                 throw;
             }
