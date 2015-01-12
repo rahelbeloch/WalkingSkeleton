@@ -413,7 +413,7 @@ public class PersistenceImp implements Persistence {
         assert (form.getId() != null);
         Form formToRemove = null;
         for (Form f: forms) {
-            if (f.getId().equals(f.getId())) {
+            if (f.getId().equals(form.getId())) {
                 formToRemove = f;
                 break;
             }
