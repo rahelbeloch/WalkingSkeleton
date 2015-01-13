@@ -96,7 +96,7 @@
                                 <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}"/>
                                 <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Edit Workflow"/>
                             </DockPanel>
-                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actWorkflow.items}" ItemContainerStyle="{StaticResource itemstyle}">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding items, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource itemstyle}">
                                 <ListView.View>
                                     <GridView >
                                         <GridView.Columns>

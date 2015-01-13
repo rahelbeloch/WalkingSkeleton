@@ -61,6 +61,12 @@ namespace Admin.ViewModel
             //}
         }
         /// <summary>
+        /// Property for itemlist of an selected (_actWorkflow) workflow in workflow view.
+        /// NOTICE: temporare solution for item view. (There has to be another way...)
+        /// </summary>
+        private ObservableCollection<Item> _items = new ObservableCollection<Item>();
+        public ObservableCollection<Item> items { get { return _items; } } 
+        /// <summary>
         /// Property to fill combox box with choosable steps.
         /// TODO: change Step to Step (not possible at the moment)
         /// </summary>
@@ -189,7 +195,10 @@ namespace Admin.ViewModel
             set
             {
                 _actWorkflow = value;
+                _items.Clear();
+                _actWorkflow.items.ForEach(_items.Add);
                 OnChanged("actWorkflow");
+                OnChanged("items");
             }
         }
 
@@ -290,24 +299,43 @@ namespace Admin.ViewModel
             logger.Info("Workflow ID=" + newWorkflow.id + (changed ? " changed" : " added"));
 
             _actWorkflow = null;
+            _items.Clear();
             OnChanged("actWorkflow");
             OnChanged("workflows");
+            OnChanged("items");
         }
 
+        /// <summary>
+        /// When an item has to be updated (e. g. forward, finish), update the workflow overview and update the item view
+        /// </summary>
+        /// <param name="item"></param>
         public void updateItemFromWorkflow(Item item)
         {
+            Workflow workflowToUpdate = null;
+            
+
             foreach (Workflow w in _workflows)
             {
                 if (w.id.Equals(item.workflowId))
                 {
+                    workflowToUpdate = w;
                     Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Remove(w)));
-                    Application.Current.Dispatcher.Invoke(new System.Action(() => w.items.Remove(item)));
-                    Application.Current.Dispatcher.Invoke(new System.Action(() => w.items.Add(item)));
-                    Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(w)));
+                    Application.Current.Dispatcher.Invoke(new System.Action(() => workflowToUpdate.items.Remove(item)));
                     break;
                 }
             }
+            Application.Current.Dispatcher.Invoke(new System.Action(() => workflowToUpdate.items.Add(item)));
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(workflowToUpdate)));
+
+            if (_actWorkflow != null)
+            {
+                Application.Current.Dispatcher.Invoke(new System.Action(() => _items.Clear()));
+                Application.Current.Dispatcher.Invoke(new System.Action(() => _actWorkflow.items.ForEach(_items.Add)));
+                OnChanged("items");
+            }
+            
             OnChanged("workflows");
+            
         }
             
 
