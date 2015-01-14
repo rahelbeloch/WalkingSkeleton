@@ -20,6 +20,10 @@ public class FinalStep extends Step {
         super();
     }
     
+    /**
+     * Constructur expecting a list of roleIds (roles, that may execute this step).
+     * @param roleIds list of roleIds, of roles which may execute this step
+     */
     public FinalStep(ArrayList<String> roleIds) {
         this.roleIds = roleIds;
     }

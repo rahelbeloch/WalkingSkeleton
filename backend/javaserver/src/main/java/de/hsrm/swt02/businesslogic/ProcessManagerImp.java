@@ -68,15 +68,7 @@ public class ProcessManagerImp implements ProcessManager {
         return authorized;
     }
 
-    /**
-     * This method checks if the inquired user can actually start the workflow.
-     * If she/he can a workflow is started.
-     * 
-     * @param workflow is the which should be started.
-     * @param username is the name of the user who wants to start workflow.
-     * @return itemID
-     * @throws LogicException to catch Persistence and Permission Exceptions
-     */
+    @Override
     public String startWorkflow(Workflow workflow, String username)
             throws LogicException
     {
@@ -92,11 +84,7 @@ public class ProcessManagerImp implements ProcessManager {
         }
     }
 
-    /**
-     * This method selects the appropriate stepprocessor for a step.
-     * 
-     * @param step is the step which will be executed
-     */
+    @Override
     public StepProcessor selectProcessor(Step step) {
         if (step instanceof Action) {
             return new ActionProcessor(persistence);
@@ -104,15 +92,7 @@ public class ProcessManagerImp implements ProcessManager {
         return null;
     }
 
-    /**
-     * This method executes step operations.
-     * 
-     * @param step is the step which is to be edited
-     * @param item is the item which is currently active
-     * @param user is the user who started tzhe operation
-     * @throws LogicException if problem occured while editing item
-     * @return itemid of edited item
-     */
+    @Override
     public String executeStep(Step step, Item item, User user)
             throws LogicException
     {
