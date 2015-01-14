@@ -77,7 +77,7 @@ namespace Admin.ViewModel
                             _mainViewModel.myComLib.Login(admin, securePwd);
                             _mainViewModel.InitModel();
 
-                            _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
+                            _mainViewModel.CurrentPageViewModel = _mainViewModel.oldWorkflowViewModel;
                             _mainViewModel.admin = _admin;
                         }
                         catch (BasicException exc)

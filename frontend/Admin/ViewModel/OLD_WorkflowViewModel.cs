@@ -22,7 +22,7 @@ namespace Admin.ViewModel
     /// The WorkflowViewModel contains properties and commands to create a new workflow and to send it to the server.
     /// Furthermore, the properties and commands are used as DataBindings in the graphical user interface.
     /// </summary>
-    public class WorkflowViewModel : ViewModelBase
+    public class OLD_WorkflowViewModel : ViewModelBase
     {
         private Workflow _workflowModel = new Workflow();
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -30,7 +30,7 @@ namespace Admin.ViewModel
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;       
         
-        public WorkflowViewModel(MainViewModel mainViewModel)
+        public OLD_WorkflowViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;

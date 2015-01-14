@@ -26,8 +26,8 @@ namespace Admin.ViewModel
         private String _clientID = "admin";
         public String clientID { get { return _clientID; } }
 
-        private WorkflowViewModel _workflowViewModel;
-        public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
+        private OLD_WorkflowViewModel _oldWorkflowViewModel;
+        public OLD_WorkflowViewModel oldWorkflowViewModel { get { return _oldWorkflowViewModel; } }
 
         private UserViewModel _userViewModel;
         public UserViewModel userViewModel { get { return _userViewModel; }  }
@@ -94,11 +94,11 @@ namespace Admin.ViewModel
         public MainViewModel()
         {
             _loginViewModel = new LoginViewModel(this);
-            _workflowViewModel = new WorkflowViewModel(this);
+            _oldWorkflowViewModel = new OLD_WorkflowViewModel(this);
             _userViewModel = new UserViewModel(this);
 
             PageViewModels.Add(loginViewModel);
-            PageViewModels.Add(workflowViewModel);
+            PageViewModels.Add(oldWorkflowViewModel);
             PageViewModels.Add(userViewModel);
 
             // set starting ViewModel
@@ -236,7 +236,7 @@ namespace Admin.ViewModel
         /// </summary>
         public void InitModel()
         {
-            _workflowViewModel.InitModel();
+            _oldWorkflowViewModel.InitModel();
             _userViewModel.InitModel();
         }
 
@@ -245,7 +245,7 @@ namespace Admin.ViewModel
         /// </summary>
         private void ClearModel()
         {
-            _workflowViewModel.ClearModel();
+            _oldWorkflowViewModel.ClearModel();
             _userViewModel.ClearModel();
         }
 
@@ -256,13 +256,13 @@ namespace Admin.ViewModel
         void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
             logger.Info("Received Workflow for Update: ID=" + workflow.id);
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflowViewModel.updateWorkflows(workflow)));
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _oldWorkflowViewModel.updateWorkflows(workflow)));
         }
 
         void IDataReceiver.ItemUpdate(Item item)
         {
             logger.Info("Received Item for Update: ID=" + item.id);
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflowViewModel.updateItemFromWorkflow(item)));
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _oldWorkflowViewModel.updateItemFromWorkflow(item)));
         }
 
         void IDataReceiver.UserUpdate(User user)
