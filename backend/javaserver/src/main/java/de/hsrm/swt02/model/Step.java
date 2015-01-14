@@ -35,6 +35,7 @@ public class Step extends RootElement {
      * Constructor for Step.
      */
     public Step() {
+        this.roleIds = new ArrayList<String>();
     }
     
     /**
@@ -94,8 +95,8 @@ public class Step extends RootElement {
      * Username setter.
      * @param role the role to add
      */
-    public void addRole(String role) {
-        this.roleIds.add(role);
+    public void addRole(String rolename) {
+        this.roleIds.add(rolename);
     }
    
     /**

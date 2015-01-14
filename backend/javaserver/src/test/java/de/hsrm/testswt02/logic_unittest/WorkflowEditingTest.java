@@ -21,6 +21,7 @@ import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 
 /**
  * This class tests the process of editting a workflow.
@@ -39,9 +40,10 @@ public class WorkflowEditingTest {
     
     /**
      * Setup before starting Test.
+     * @throws StorageFailedException 
      */
     @Before
-    public void startup() {
+    public void startup() throws StorageFailedException {
         final Injector i = Guice.createInjector(new SingleModule());
         logic = i.getInstance(Logic.class);
         

@@ -34,6 +34,23 @@ public class FormHandlingTest {
     }
     
     @Test
+    public void deletionOfFormsTest() throws LogicException {
+        int sizeBefore = li.getAllForms().size();
+        final Form form1 = new Form();
+        form1.setId("1");
+        final Form form2 = new Form();
+        form2.setId("2");
+        
+        li.addForm(form1);
+        li.addForm(form2);
+                        
+        li.deleteForm(form1.getId());
+        
+        assertEquals(li.getAllForms().size(), sizeBefore+1);
+    }
+
+    
+    @Test
     public void testFormStorage() throws PersistenceException {    
         final Form form1 = new Form();
         form1.setId("form1");
@@ -48,6 +65,7 @@ public class FormHandlingTest {
     
     @Test
     public void testDuplicateFormStorage() throws PersistenceException {
+        int sizeBefore = li.getAllForms().size();
         final Form form1 = new Form();
         form1.setId("1");
         li.addForm(form1);
@@ -56,24 +74,9 @@ public class FormHandlingTest {
         form2.setId("1");
         li.addForm(form2);
         
-        assertEquals(li.getAllForms().size(), 1);
+        assertEquals(li.getAllForms().size(), sizeBefore+1);
     }
-    
-    @Test
-    public void deletionOfFormsTest() throws LogicException {
-        final Form form1 = new Form();
-        form1.setId("1");
-        final Form form2 = new Form();
-        form2.setId("2");
         
-        li.addForm(form1);
-        li.addForm(form2);
-                        
-        li.deleteForm(form1.getId());
-        
-        assertEquals(li.getAllForms().size(), 1);
-    }
-    
     @Test
     public void deletionOfFormsStillInUse() throws LogicException {
         // TODO: not implemented yet

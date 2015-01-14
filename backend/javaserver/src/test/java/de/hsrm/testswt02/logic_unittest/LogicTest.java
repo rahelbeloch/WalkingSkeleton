@@ -53,7 +53,8 @@ public class LogicTest {
     Action action1;
     Action action2;
     Action action3;
-    FinalStep finalStep;
+    FinalStep finalStep1;
+    FinalStep finalStep2;
 
     /**
      * 
@@ -109,20 +110,49 @@ public class LogicTest {
     @Test
     public void stepOverTest() throws LogicException {
         init();
-        initExtension();
-        li.startWorkflow(w.getId(), user.getUsername());
-        final Workflow workflow = li.getWorkflow(w.getId());
+        initExtension();        
+        
+        Workflow testwf = new Workflow();
+        Role r = new Role();
+        StartStep ss = new StartStep();
+        Action a = new Action();
+        Action a2 = new Action();
+        FinalStep fs = new FinalStep();
+        User u = new User();
+
+        r.setRolename("role");
+        ss.addRole(r.getRolename());
+        a.addRole(r.getRolename());
+        a2.addRole(r.getRolename());
+        fs.addRole(r.getRolename());
+        testwf.addStep(ss);
+        testwf.addStep(a);
+        testwf.addStep(a2);
+        testwf.addStep(fs);
+        u.setUsername("user");
+        u.addRole(r);
+        
+        li.addRole(r);
+        li.addUser(u);
+        li.addWorkflow(testwf);
+        
+        li.startWorkflow(testwf.getId(), u.getUsername());
+        
+        final Workflow workflow = li.getWorkflow(testwf.getId());
         Item item = workflow.getItemByPos(0);
+        System.out.println(item.getId());
+        Item item2 = li.getItem(item.getId(), u.getUsername());
+        System.out.println(item2.getId());
         
-        li.stepForward(item.getId(), workflow.getStepById(action.getId())
-                .getId(), user.getUsername());
+        li.stepForward(item.getId(), workflow.getStepById(a.getId())
+                .getId(), u.getUsername());
         
-        li.stepForward(item.getId(), workflow.getStepById(action.getId())
-                .getId(), user.getUsername());
+        li.stepForward(item.getId(), workflow.getStepById(a.getId())
+                .getId(), u.getUsername());
+
         
-        // TODO: update test due to change in getItem(item, username)
-        item = li.getItem(item.getId(), user.getUsername());
-        assertTrue(item.getStepState(action.getId()) == "DONE");
+        item = li.getItem(item.getId(), u.getUsername());
+        assertTrue(item.getStepState(a.getId()) == "DONE");
     }
 
     /**
@@ -134,7 +164,9 @@ public class LogicTest {
         init();
         li.addWorkflow(w);
         final int i = w.getSteps().size();
-        li.addStep(w.getId(), new Action());
+        StartStep testStep = new StartStep();
+        testStep.getRoleIds().add("role1");
+        li.addStep(w.getId(), testStep);
         final Workflow workflow = li.getWorkflow(w.getId());
         assertTrue(workflow.getSteps().size() == i + 1);
 
@@ -235,8 +267,7 @@ public class LogicTest {
         init();
         initExtension();
         final int i = li.getStartableWorkflowsForUser(user2.getUsername()).size();
-
-        assertTrue(i == 2);
+        assertTrue(i == 3);
     }
 
     /**
@@ -282,8 +313,9 @@ public class LogicTest {
 
     /**
      * this method init basic data for testing.
+     * @throws StorageFailedException 
      */
-    private void init() {
+    private void init() throws StorageFailedException {
         final Injector i = Guice.createInjector(new SingleModule());
         li = i.getInstance(Logic.class);
         
@@ -299,12 +331,15 @@ public class LogicTest {
         
         startStep = new StartStep(roles);
         action = new Action(roles, "description");
-        finalStep = new FinalStep();
+        finalStep1 = new FinalStep();
+        startStep.getRoleIds().add(role.getRolename());
+        action.getRoleIds().add(role.getRolename());
+        finalStep1.getRoleIds().add(role.getRolename());
 
         w = new Workflow();
         w.addStep(startStep);
         w.addStep(action);
-        w.addStep(finalStep);
+        w.addStep(finalStep1);
         
         try {
             li.addRole(role);
@@ -349,22 +384,32 @@ public class LogicTest {
         action1 = new Action(roles1, "description");
         action2 = new Action(roles2, "description");
         action3 = new Action(roles2, "description");
-        finalStep = new FinalStep();
+        finalStep1 = new FinalStep();
+        finalStep2 = new FinalStep();
+        
+        startStep1.getRoleIds().add(role1.getRolename());
+        startStep2.getRoleIds().add(role1.getRolename());
+        startStep3.getRoleIds().add(role1.getRolename());
+        action1.getRoleIds().add(role2.getRolename());
+        action2.getRoleIds().add(role2.getRolename());
+        action3.getRoleIds().add(role2.getRolename());
+        finalStep1.getRoleIds().add(role2.getRolename());
+        finalStep2.getRoleIds().add(role2.getRolename());
         
         w1 = new Workflow();
         w1.addStep(startStep1);
         w1.addStep(action1);
-        w1.addStep(finalStep);
+        w1.addStep(finalStep1);
         
         w2 = new Workflow();
         w2.addStep(startStep2);
         w2.addStep(action2);
-        w2.addStep(new FinalStep());
+        w2.addStep(finalStep2);
         
         w3 = new Workflow();
         w3.addStep(startStep3);
         w3.addStep(action3);
-        w3.addStep(new FinalStep());
+        w3.addStep(finalStep2);
         
         try {
             li.addWorkflow(w1);

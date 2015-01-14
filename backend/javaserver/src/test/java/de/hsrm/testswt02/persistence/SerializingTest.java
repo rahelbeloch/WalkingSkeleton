@@ -104,6 +104,12 @@ public class SerializingTest {
         final Item testItem2 = new Item();
         final Step testStep1 = new Step();
         final Step testStep2 = new Step();
+        final Role role1 = new Role();
+        final Role role2 = new Role();
+        role1.setRolename("role1");
+        testStep1.getRoleIds().add(role1.getRolename());
+        role2.setRolename("role2");
+        testStep2.getRoleIds().add(role2.getRolename());
         wf.addStep(testStep1);
         wf.addStep(testStep2);
         wf.addItem(testItem1);
