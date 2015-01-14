@@ -14,7 +14,7 @@ import de.hsrm.swt02.logging.UseLogger;
 
 /**
  * 
- * Filter class managing every Request on the REST API and checking it.
+ * Filter class managing every request on the REST API and checking it.
  * 
  * @author akoen001
  *
@@ -23,7 +23,7 @@ public class CheckLoginFilter implements ContainerRequestFilter {
 
     /**
      * Checks if the user is authorized for the requested action. Will continue as normal if that is the case, abort
-     * the request with 500 Server Error if not.
+     * the request with 500 server error if not.
      */
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -36,7 +36,6 @@ public class CheckLoginFilter implements ContainerRequestFilter {
         final String clientID = requestContext.getHeaderString("client_id");
         
         try {
-            System.out.println(username + " " + password + " " + clientID);
             logic.checkLogIn(username, password, "admin".equals(clientID));
         } catch (LogicException e2) {
             logger.log(Level.WARNING, e2);

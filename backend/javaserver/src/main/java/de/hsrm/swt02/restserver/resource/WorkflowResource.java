@@ -167,9 +167,9 @@ public class WorkflowResource {
             final String loggingBody = PREFIX + "GET /resource/workflows";
             LOGGER.log(Level.INFO, loggingBody);
             List<Workflow> wflowList = null;
+            
             if (clientID.equals("admin")) {
                 try {
-                    
                     wflowList = LOGIC.getAllWorkflows();
                 } catch (PersistenceException e) {
                     LOGGER.log(Level.WARNING, e);
@@ -186,8 +186,8 @@ public class WorkflowResource {
                     LOGGER.log(Level.WARNING, e);
                     return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
                 }
-    
             }
+            
             String wListString;
     
             try {
