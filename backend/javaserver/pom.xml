@@ -130,8 +130,10 @@
 					<formats>
 						<format>xml</format>
 					</formats>
-					<ignoreTrivial>true</ignoreTrivial>
 				</configuration>
+				<instrumentation>
+		            <ignoreTrivial>true</ignoreTrivial>
+		        </instrumentation>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
