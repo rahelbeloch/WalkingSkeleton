@@ -34,8 +34,8 @@ namespace CommunicationLib.Model
 
         public T Clone<T>()
         {
-            var serialized = JsonConvert.SerializeObject(this);
-            return JsonConvert.DeserializeObject<T>(serialized);
+            var serialized = JsonConvert.SerializeObject(this, Constants.JSON_SETTINGS);
+            return JsonConvert.DeserializeObject<T>(serialized, Constants.JSON_SETTINGS);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommunicationLib.Model;
+using Newtonsoft.Json;
 
 namespace CommunicationLib.Model
 {
@@ -14,6 +15,13 @@ namespace CommunicationLib.Model
         public static String SERVER_URL = "http://localhost:18887";
         public static String MODEL_NAMESPACE = "CommunicationLib.Model";
         public static String BROKER_URL = "tcp://localhost:61616";
+
+        public static JsonSerializerSettings JSON_SETTINGS = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            Formatting = Formatting.Indented,
+            Binder = new CustomSerializationBinder()
+        };
     }
 
     public class ErrorMessageMapper

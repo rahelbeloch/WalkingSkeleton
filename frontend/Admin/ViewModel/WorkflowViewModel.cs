@@ -401,9 +401,10 @@ namespace Admin.ViewModel
                     _editWorkflowCommand = new ActionCommand(execute =>
                         {
                             selectedTabId = 0;
-                            _workflowModel = actWorkflow;
+                            _workflowModel = actWorkflow.Clone<Workflow>();
                             _workflow.Clear();
-                            foreach(Step step in actWorkflow.steps) {
+                            foreach (Step step in _workflowModel.steps)
+                            {
                                 _workflow.Add(step);
                             }
                         }, canExecute => _actWorkflow != null);
@@ -449,7 +450,22 @@ namespace Admin.ViewModel
                 return _toggleActivity;
             }
         }
-
+        private ICommand _resetWorkflowCommand;
+        public ICommand resetWorkflowCommand
+        {
+            get
+            {
+                if (_resetWorkflowCommand == null)
+                {
+                    _resetWorkflowCommand = new ActionCommand(execute =>
+                        {
+                            _workflowModel.clearWorkflow();
+                            workflow.Clear();
+                        }, canExecute => true);
+                }
+                return _resetWorkflowCommand;
+            }
+        }
         /// <summary>
         /// Command to submit workflow if last step is a final step.
         /// </summary>
