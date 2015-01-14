@@ -33,7 +33,7 @@ public class CheckLoginFilter implements ContainerRequestFilter {
 
         final String username = requestContext.getHeaderString("username");
         final String password = requestContext.getHeaderString("password");
-        final String clientID = requestContext.getHeaderString("clientID");
+        final String clientID = requestContext.getHeaderString("client_id");
         
         try {
             System.out.println(username + " " + password + " " + clientID);

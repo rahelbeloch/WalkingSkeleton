@@ -129,7 +129,7 @@ public class WorkflowResource {
     @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getWorkflows(@HeaderParam("username") String username,@QueryParam("state") String state,
-            @HeaderParam("clientID") String clientID) 
+            @HeaderParam("client_id") String clientID) 
     {
         if (state != null) {
             final String loggingBody = PREFIX + "GET /resource/workflows?state=" + state;
