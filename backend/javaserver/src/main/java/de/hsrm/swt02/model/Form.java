@@ -1,6 +1,8 @@
 package de.hsrm.swt02.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,8 +14,8 @@ public class Form extends RootElement {
 
     @JsonIgnore
     private static final long serialVersionUID = 2664726035666948658L;
-    
-    private HashMap<String,String> formDef; 
+//    private HashMap<String,String> formDef; 
+    private List<FormEntry> formDef;
     private String description;
     
     /**
@@ -22,7 +24,8 @@ public class Form extends RootElement {
     public Form() {
         super();
         this.id = "";
-        formDef = new HashMap<String, String>();
+//        formDef = new HashMap<String, String>();
+        formDef = new ArrayList<FormEntry>();
         description = "";
     }
     
@@ -34,22 +37,39 @@ public class Form extends RootElement {
         super();
         this.id = "";
         this.description = description;
-        formDef = new HashMap<String, String>();
+//        formDef = new HashMap<String, String>();
+        formDef = new ArrayList<FormEntry>();
     }
     
-    /**
-     * 
-     * @return the formDef
-     */
-    public HashMap<String, String> getFormDef() {
-        return formDef;
-    }
+//    /**
+//     * 
+//     * @return the formDef
+//     */
+//    public HashMap<String, String> getFormDef() {
+//        return formDef;
+//    }
     
     /**
-     * 
-     * @param formDef Map
+     * Getter for formDef.
+     * @return formDef list
      */
-    public void setFormDef(HashMap<String,String> formDef) {
+    public List<FormEntry> getFormDef() {
+        return this.formDef;
+    }
+    
+//    /**
+//     * 
+//     * @param formDef Map
+//     */
+//    public void setFormDef(HashMap<String,String> formDef) {
+//        this.formDef = formDef;
+//    }
+    
+    /**
+     * Setter for formDef.
+     * @param formDef indicates value which is setted
+     */
+    public void setFormDef(List<FormEntry> formDef) {
         this.formDef = formDef;
     }
     
