@@ -60,7 +60,7 @@ namespace UnitTestProject1
             myClientRequester.InitializeClientProperties("Rahel", "password");
             
             // retrieve workflows from the registered user (test the functionality)
-            IList<Workflow> eleList = myRequester.GetAllWorkflowsByUser();
+            IList<Workflow> eleList = myRequester.GetAllElements<Workflow>();
             int amountWfs = eleList.Count();
             
             Assert.IsTrue(amountWfs > 0);
@@ -81,7 +81,7 @@ namespace UnitTestProject1
             // set the right authentication settings to user client
             myClientRequester.InitializeClientProperties("Melanie", "password");
 
-            IList<Workflow> eleList = myClientRequester.GetAllWorkflowsByUser();
+            IList<Workflow> eleList = myClientRequester.GetAllElements<Workflow>();
             Workflow wf = eleList[0];
 
             // Test the real functionality
@@ -107,7 +107,7 @@ namespace UnitTestProject1
             myClientRequester.InitializeClientProperties("Axel", "password");
 
             // retrieve all workflows
-            IList<Workflow> eleList = myClientRequester.GetAllWorkflowsByUser();
+            IList<Workflow> eleList = myClientRequester.GetAllElements<Workflow>();
 
             // get the generated workflow
             Workflow wf = eleList[0];
@@ -147,8 +147,8 @@ namespace UnitTestProject1
 
             // set the right authentication settings to user client
             myClientRequester.InitializeClientProperties("Elizabeth", "password");
-           
-            IList<Workflow> eleList = myClientRequester.GetAllWorkflowsByUser();
+
+            IList<Workflow> eleList = myClientRequester.GetAllElements<Workflow>();
             Workflow wf = eleList[0];
 
             // Testing the funcionality
@@ -186,7 +186,7 @@ namespace UnitTestProject1
             // set the right authentication settings to user client
             myClientRequester.InitializeClientProperties("Sebastian", "password");
 
-            IList<Workflow> eleList = myClientRequester.GetAllWorkflowsByUser();
+            IList<Workflow> eleList = myClientRequester.GetAllElements<Workflow>();
 
             Assert.IsTrue(eleList.Count >= 1);
 
