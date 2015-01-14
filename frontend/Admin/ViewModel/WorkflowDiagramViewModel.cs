@@ -562,6 +562,22 @@ namespace Admin.ViewModel
                             }
                             _workflowModel = new Workflow();
 
+
+                            foreach (var designerItem in DiagramViewModel.Items)
+                            {
+                                if(designerItem.GetType() == typeof(ConnectorViewModel)) 
+                                {
+                                    DesignerItemViewModelBase startItem = ((FullyCreatedConnectorInfo)((ConnectorViewModel)designerItem).SourceConnectorInfo).DataItem;
+                                    DesignerItemViewModelBase endItem = ((FullyCreatedConnectorInfo)((ConnectorViewModel)designerItem).SinkConnectorInfo).DataItem;
+                                    designerItem.
+
+                                    Console.WriteLine("start: "+ startItem +", ende: "+ endItem);
+                                }
+                                
+                                
+                            }
+
+                            /*
                             //Save all PersistDesignerItemViewModel
                             foreach (var startStep in DiagramViewModel.Items.OfType<StartStepViewModel>())
                             {
@@ -595,7 +611,7 @@ namespace Admin.ViewModel
                                 //actionStep.Id, actionStep.Left, actionStep.Top, actionStep.HostUrl);
                                 //_workflowModel.addStep(persistFinalStep);
 
-                            }
+                            } */
 
 
 
