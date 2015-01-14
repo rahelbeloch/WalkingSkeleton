@@ -224,7 +224,7 @@ public class RestServerUserTest {
         final String errorCode = String.valueOf(LogInException.ERRORCODE);
         final Response resp = client.target(targetUrl).path("command/users/login")
                 .request()
-                .header("username", headerUsername)
+                .header("username", "xaxa")
                 .header("password", "1111")
                 .header("clientID",headerClientID).post(Entity.entity("a", MediaType.TEXT_PLAIN));
         assertEquals(httpstatus, resp.getStatus());
