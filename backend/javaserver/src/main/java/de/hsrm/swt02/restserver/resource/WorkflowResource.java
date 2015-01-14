@@ -131,8 +131,6 @@ public class WorkflowResource {
     public Response getWorkflows(@HeaderParam("username") String username,@QueryParam("state") String state,
             @HeaderParam("clientID") String clientID) 
     {
-    	
-    	
         if (state != null) {
             final String loggingBody = PREFIX + "GET /resource/workflows?state=" + state;
             switch(state) {
