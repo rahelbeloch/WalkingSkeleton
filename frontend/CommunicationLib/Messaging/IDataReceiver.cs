@@ -1,6 +1,7 @@
 ﻿using System;
 using CommunicationLib.Model;
 using System.Security;
+using CommunicationLib.Exception
 
 namespace CommunicationLib
 {
@@ -56,6 +57,6 @@ namespace CommunicationLib
         /// Callback method for exceptions caused by messaging instructions (resulting rest requests).
         /// </summary>
         /// <param name="e">ouccurred exception</param>
-        void HandleError(System.Exception e);
+        void HandleError(BasicException e);
     }
 }
