@@ -42,10 +42,10 @@ public class RoleHandlingTest {
     }
     
     @Test
-    public void RoleStorageTest() throws PersistenceException {    
-        Role role1 = new Role();
+    public void roleStorageTest() throws PersistenceException {    
+        final Role role1 = new Role();
         role1.setRolename("chief");
-        Role role2 = new Role();
+        final Role role2 = new Role();
         role2.setRolename("handkerchief");
         li.addRole(role1);
         li.addRole(role2);
@@ -55,12 +55,12 @@ public class RoleHandlingTest {
     }
     
     @Test
-    public void GiveRoleOnlyOnce() throws PersistenceException {
-        Role employee = new Role();
+    public void giveRoleOnlyOnce() throws PersistenceException {
+        final Role employee = new Role();
         employee.setRolename("employee");
         li.addRole(employee);
         
-        User testuser = new User();
+        final User testuser = new User();
         testuser.setUsername("testuser");
         li.addUser(testuser);
         
@@ -71,21 +71,21 @@ public class RoleHandlingTest {
     }
     
     @Test
-    public void DeletionOfRolesTest() throws LogicException {
-        Role chief = new Role();
+    public void deletionOfRolesTest() throws LogicException {
+        final Role chief = new Role();
         chief.setRolename("chief");
-        Role handkerchief = new Role();
+        final Role handkerchief = new Role();
         handkerchief.setRolename("handkerchief");
-        Role employee = new Role();
+        final Role employee = new Role();
         employee.setRolename("employee");
         
         li.addRole(chief);
         li.addRole(handkerchief);
         li.addRole(employee);
         
-        User boss = new User();
+        final User boss = new User();
         boss.setUsername("boss");
-        User assistant = new User();
+        final User assistant = new User();
         assistant.setUsername("assistant");
         
         li.addUser(boss);
@@ -103,21 +103,21 @@ public class RoleHandlingTest {
     }
     
     @Test(expected = NoPermissionException.class)
-    public void DeletionOfRoleStillInUse() throws LogicException {
-        Role chief = new Role();
+    public void deletionOfRoleStillInUse() throws LogicException {
+        final Role chief = new Role();
         chief.setRolename("chief");
-        Role handkerchief = new Role();
+        final Role handkerchief = new Role();
         handkerchief.setRolename("handkerchief");
-        Role employee = new Role();
+        final Role employee = new Role();
         employee.setRolename("employee");
         
         li.addRole(chief);
         li.addRole(handkerchief);
         li.addRole(employee);
         
-        User boss = new User();
+        final User boss = new User();
         boss.setUsername("boss");
-        User assistant = new User();
+        final User assistant = new User();
         assistant.setUsername("assistant");
         
         li.addUser(boss);
@@ -129,16 +129,16 @@ public class RoleHandlingTest {
         li.addRoleToUser(assistant, handkerchief);
         li.addRoleToUser(assistant, employee);
         
-        StartStep ss = new StartStep();
+        final StartStep ss = new StartStep();
         ss.getRoleIds().add(employee.getRolename());
         
-        Action action = new Action();
+        final Action action = new Action();
         action.setDescription("Erste Action");
         action.getRoleIds().add(employee.getRolename());
         
-        FinalStep finalStep = new FinalStep();
+        final FinalStep finalStep = new FinalStep();
         
-        Workflow workflow = new Workflow();
+        final Workflow workflow = new Workflow();
         workflow.addStep(ss);
         workflow.addStep(action);
         workflow.addStep(finalStep);
@@ -153,6 +153,4 @@ public class RoleHandlingTest {
         
         li.deleteRole(employee.getRolename());
     }
-    
-    
 }

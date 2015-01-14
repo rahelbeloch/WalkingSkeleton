@@ -54,7 +54,7 @@ public class WorkflowProcessTest {
         processManager = i.getInstance(ProcessManager.class);
         persistence = i.getInstance(Persistence.class);
         
-        Role hiwi = new Role();
+        final Role hiwi = new Role();
         hiwi.setRolename("hiwi");
         persistence.storeRole(hiwi);
         
@@ -63,7 +63,7 @@ public class WorkflowProcessTest {
         benni.getRoles().add(hiwi);
         persistence.storeUser(benni);
         
-        ArrayList<String> bennisRoles = new ArrayList<String>();
+        final ArrayList<String> bennisRoles = new ArrayList<String>();
         bennisRoles.add("hiwi");
         
         try {
@@ -74,7 +74,7 @@ public class WorkflowProcessTest {
         
         myWorkflow = new Workflow();
         startStep = new StartStep(bennisRoles);
-        ArrayList<String> rules = new ArrayList<String>();
+        final ArrayList<String> rules = new ArrayList<String>();
         rules.add(hiwi.getRolename());
         firstStep = new Action(rules, 1 + " Schritt");
         // adding steps in workflow
@@ -120,9 +120,9 @@ public class WorkflowProcessTest {
      */
     @Test (expected = UserHasNoPermissionException.class)
     public void startWorkflowWithoutAutohrization() throws LogicException {
-        User ez = new User();
+        final User ez = new User();
         ez.setUsername("ez");
-    	Role test = new Role();
+        final Role test = new Role();
         test.setRolename("test");
         ez.getRoles().add(test);
         

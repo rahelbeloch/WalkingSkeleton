@@ -35,7 +35,7 @@ public class InitWorkflowTest {
      */
     @Test
     public void actionCheckUser() {
-        ArrayList<String> roles = new ArrayList<String>();
+        final ArrayList<String> roles = new ArrayList<String>();
         roles.add("role");
                
         final Action step = new Action(roles, 0 + " Schritt");
@@ -48,7 +48,7 @@ public class InitWorkflowTest {
      */
     @Test
     public void actionCheckRole() {
-        ArrayList<String> roles = new ArrayList<String>();
+        final ArrayList<String> roles = new ArrayList<String>();
         roles.add("role");
         
         final Action step = new Action(roles, 0 + " Schritt");
@@ -62,7 +62,7 @@ public class InitWorkflowTest {
     @Test
     public void addStep() {
         final Workflow myWorkflow = new Workflow();
-        ArrayList<String> roles = new ArrayList<String>();
+        final ArrayList<String> roles = new ArrayList<String>();
         roles.add("role");
         
         final Step step = new Action(roles, 0 + " Schritt");
@@ -78,7 +78,7 @@ public class InitWorkflowTest {
     @Test
     public void connectSteps() {
         final Workflow myWorkflow = new Workflow();
-        ArrayList<String> roles = new ArrayList<String>();
+        final ArrayList<String> roles = new ArrayList<String>();
         roles.add("role");
         
         final Step firstStep = new Action(roles, 0 + " Schritt");
@@ -97,7 +97,7 @@ public class InitWorkflowTest {
     @Test
     public void connectFinalStep() {
         final Workflow myWorkflow = new Workflow();
-        ArrayList<String> roles = new ArrayList<String>();
+        final ArrayList<String> roles = new ArrayList<String>();
         roles.add("role");
         
         final Step firstStep = new Action(roles, 0 + " Schritt");

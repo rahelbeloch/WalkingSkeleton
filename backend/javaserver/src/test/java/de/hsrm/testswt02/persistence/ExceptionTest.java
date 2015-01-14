@@ -54,9 +54,9 @@ public class ExceptionTest {
         final Workflow wf = new Workflow();
         final Item item = new Item();
         wf.addItem(item);
-        final String wf_id = db.storeWorkflow(wf);
-        final String item_id = db.loadWorkflow(wf_id).getItemByPos(0).getId();
-        db.loadStep(item_id, "0815");
+        final String wfId = db.storeWorkflow(wf);
+        final String itemId = db.loadWorkflow(wfId).getItemByPos(0).getId();
+        db.loadStep(itemId, "0815");
     }
     
 
