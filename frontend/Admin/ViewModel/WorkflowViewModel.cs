@@ -407,17 +407,8 @@ namespace Admin.ViewModel
                     {
                         try
                         {
-
-                            if (_actWorkflow.active)
-                            {
-                                _actWorkflow.active = false;
-                                _restRequester.UpdateObject(_actWorkflow);
-                            }
-                            else
-                            {
-                                _actWorkflow.active = true;
-                                _restRequester.UpdateObject(_actWorkflow);
-                            }
+                            _actWorkflow.active = !_actWorkflow.active;
+                            _restRequester.UpdateObject(_actWorkflow);
                             _workflowActivity = "";
                             OnChanged("workflowActivity");
                         }
@@ -445,7 +436,7 @@ namespace Admin.ViewModel
                     {
                         try
                         {
-                            //aus demo anfang
+                            // from demo start
                             if (!DiagramViewModel.Items.Any())
                             {
                                 messageBoxService.ShowError("There must be at least one item in order save a diagram");
