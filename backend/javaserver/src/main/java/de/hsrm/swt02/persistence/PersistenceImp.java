@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 import java.util.logging.Level;
 
 import com.google.inject.Inject;
@@ -540,12 +539,10 @@ public class PersistenceImp implements Persistence {
                     in.close();
                     fileIn.close();
                 } catch (IOException i) {
-                    i.printStackTrace();
-                    return;
-                } catch (ClassNotFoundException c) {
-                    System.out.println("Employee class not found");
-                    c.printStackTrace();
-                    return;
+                    this.logger.log(Level.INFO,"[persistence] could not read/load data model file " + propConfig.getProperty("StoragePath") + ".");
+                } catch (ClassNotFoundException e) {
+                    this.logger.log(Level.INFO,"[persistence] could not find fitting class"
+                            + " for serialization of file " + propConfig.getProperty("StoragePath") + ".");
                 }
             }
         } else {
