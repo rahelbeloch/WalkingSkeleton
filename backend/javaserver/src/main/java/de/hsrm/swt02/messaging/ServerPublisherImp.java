@@ -47,9 +47,15 @@ public class ServerPublisherImp implements ServerPublisher {
     public ServerPublisherImp(UseLogger logger) {
         // set the logger
         this.logger = logger;
+        // load properties
+        final Properties properties = ConfigProperties.getInstance().getProperties();
+        brokerURL = properties.getProperty("BrokerURL");
+        connectionURL = properties.getProperty("BrokerConnectionURL");
+
+        factory = new ActiveMQConnectionFactory(brokerURL);
+        
         // disable apache's log4j-system (we don't use it)
         org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
-        this.applyProperties(ConfigProperties.getInstance().getProperties());
     }
 
     /**
@@ -77,17 +83,6 @@ public class ServerPublisherImp implements ServerPublisher {
             throw new ServerPublisherBrokerException("Publishing-Error: "
                     + e.getMessage());
         }
-    }
-    
-    /**
-     * 
-     * @param properties that have been read out of the config file
-     */
-    @Override
-    public void applyProperties(Properties properties) {
-        brokerURL = properties.getProperty("BrokerURL");
-        connectionURL = properties.getProperty("BrokerConnectionURL");
-        factory = new ActiveMQConnectionFactory(brokerURL);
     }
 
     /**
