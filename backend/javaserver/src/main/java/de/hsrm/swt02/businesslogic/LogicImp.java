@@ -51,8 +51,7 @@ public class LogicImp implements Logic {
      */
     @Inject
     public LogicImp(Persistence p, ProcessManager pm, UseLogger logger)
-            throws LogicException
-    {
+            throws LogicException {
         this.persistence = p;
         this.processManager = pm;
         this.logger = logger;
@@ -60,7 +59,7 @@ public class LogicImp implements Logic {
 
     @Override
     public LogicResponse startWorkflow(String workflowID, String username)
-            throws LogicException, PersistenceException
+            throws LogicException, PersistenceException 
     {
         final LogicResponse logicResponse = new LogicResponse();
         final Workflow workflow;
@@ -96,7 +95,7 @@ public class LogicImp implements Logic {
         final LogicResponse logicResponse = new LogicResponse();
 
         if ((workflow.getStepByPos(0) instanceof StartStep)
-                && (workflow.getStepByPos(workflow.getSteps().size() - 1) instanceof FinalStep))
+                && (workflow.getStepByPos(workflow.getSteps().size() - 1) instanceof FinalStep)) 
         {
             if (workflow.getId() == null || workflow.getId().equals("")) {
                 id = persistence.storeWorkflow(workflow);
@@ -170,7 +169,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse deleteWorkflow(String workflowID)
-            throws PersistenceException
+            throws PersistenceException 
     {
         final LogicResponse logicResponse = new LogicResponse();
 
@@ -190,7 +189,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse stepForward(String itemId, String stepId,
-            String username) throws LogicException
+            String username) throws LogicException 
     {
         final String updatedItemId;
         final String workflowId;
@@ -215,7 +214,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse addStep(String workflowID, Step step)
-            throws PersistenceException
+            throws PersistenceException 
     {
         final Workflow workflow;
         final LogicResponse logicResponse = new LogicResponse();
@@ -238,7 +237,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse deleteStep(String workflowID, String stepID)
-            throws PersistenceException
+            throws PersistenceException 
     {
         final Workflow workflow;
         final LogicResponse logicResponse = new LogicResponse();
@@ -305,7 +304,7 @@ public class LogicImp implements Logic {
      */
     @Override
     public LogicResponse deleteUser(String username)
-            throws UserNotExistentException
+            throws UserNotExistentException 
     {
         final LogicResponse logicResponse = new LogicResponse();
 
@@ -541,9 +540,9 @@ public class LogicImp implements Logic {
             throw new LogInException();
         }
 
-//        if (!user.getPassword().equals(password)) {
-//            throw new LogInException();
-//        }
+        // if (!user.getPassword().equals(password)) {
+        // throw new LogInException();
+        // }
 
         if (adminRequired) {
             for (Role aktRole : user.getRoles()) {
@@ -787,9 +786,8 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    
     // Form Operations
-    
+
     @Override
     public LogicResponse addForm(Form form) throws PersistenceException {
         final LogicResponse logicResponse = new LogicResponse();
@@ -809,7 +807,7 @@ public class LogicImp implements Logic {
                 MessageOperation.DELETION, formId));
         return logicResponse;
     }
-    
+
     @Override
     public Form getForm(String formId) throws PersistenceException {
         return persistence.loadForm(formId);
