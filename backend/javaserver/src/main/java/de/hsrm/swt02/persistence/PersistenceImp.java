@@ -488,10 +488,11 @@ public class PersistenceImp implements Persistence {
 
     @Override
     public void save() {
+        final String storagePath = propConfig.getProperty("StoragePath");
         
         // browse through all DataModels and serialize them into a file (path in server configuration file)
         try {
-            final FileOutputStream fileOut = new FileOutputStream(propConfig.getProperty("StoragePath"));
+            final FileOutputStream fileOut = new FileOutputStream(storagePath);
             final ObjectOutputStream out = new ObjectOutputStream(fileOut);
             
             final DataStorage ds = new DataStorage(workflows, users, roles, forms);
@@ -499,7 +500,7 @@ public class PersistenceImp implements Persistence {
             out.close();
             fileOut.close();
             
-            this.logger.log(Level.INFO,"[persistence] successfully saved data models in " + propConfig.getProperty("StoragePath") + ".");
+            this.logger.log(Level.INFO,"[persistence] successfully saved data models in " + storagePath + ".");
         } catch (IOException i) {
             i.printStackTrace();
         }
