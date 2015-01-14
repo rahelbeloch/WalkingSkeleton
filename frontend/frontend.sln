@@ -9,13 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin", "Admin\Admin.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{0E6BB8B6-20C9-45D5-AF29-159E6E00E75B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramDesigner", "..\AdminDiagrammDesigner\DiagramDesigner\DiagramDesigner.csproj", "{74872A86-6809-476B-95AB-6F3512317059}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp", "DemoApp\DemoApp.csproj", "{8CA63B86-3402-4DB8-AD90-1BF131352896}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp", "..\AdminDiagrammDesigner\DemoApp\DemoApp.csproj", "{8CA63B86-3402-4DB8-AD90-1BF131352896}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.Persistence.Common", "DemoApp.Persistence.Common\DemoApp.Persistence.Common.csproj", "{91AD5A26-30A4-438C-B4F0-D0DCF92140A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.Persistence.Common", "..\AdminDiagrammDesigner\DemoApp.Persistence.Common\DemoApp.Persistence.Common.csproj", "{91AD5A26-30A4-438C-B4F0-D0DCF92140A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.Persistence.RavenDB", "DemoApp.Persistence.RavenDB\DemoApp.Persistence.RavenDB.csproj", "{9B198EC8-182F-44C8-8E4E-2060472467E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoApp.Persistence.RavenDB", "..\AdminDiagrammDesigner\DemoApp.Persistence.RavenDB\DemoApp.Persistence.RavenDB.csproj", "{9B198EC8-182F-44C8-8E4E-2060472467E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramDesigner", "DiagramDesigner\DiagramDesigner.csproj", "{74872A86-6809-476B-95AB-6F3512317059}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -71,16 +71,6 @@ Global
 		{0E6BB8B6-20C9-45D5-AF29-159E6E00E75B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0E6BB8B6-20C9-45D5-AF29-159E6E00E75B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0E6BB8B6-20C9-45D5-AF29-159E6E00E75B}.Release|x86.ActiveCfg = Release|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{74872A86-6809-476B-95AB-6F3512317059}.Release|x86.ActiveCfg = Release|Any CPU
 		{8CA63B86-3402-4DB8-AD90-1BF131352896}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{8CA63B86-3402-4DB8-AD90-1BF131352896}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{8CA63B86-3402-4DB8-AD90-1BF131352896}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -111,6 +101,16 @@ Global
 		{9B198EC8-182F-44C8-8E4E-2060472467E4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9B198EC8-182F-44C8-8E4E-2060472467E4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9B198EC8-182F-44C8-8E4E-2060472467E4}.Release|x86.ActiveCfg = Release|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{74872A86-6809-476B-95AB-6F3512317059}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
