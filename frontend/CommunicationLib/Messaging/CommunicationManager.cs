@@ -136,19 +136,7 @@ namespace CommunicationLib
             {
                 ITextMessage tm = msg as ITextMessage;
                 logger.Info(" Received Message='" + tm.Text + "'");
-
-                try
-                {
-                    HandleRequest(tm.Text);  
-                }
-                catch (BasicException e)
-                {
-                    if (ErrorMessageMapper.errorMessages.ContainsKey(e.number))
-                    {
-                        Type exceptionType = ErrorMessageMapper.GetErrorType(e.number);
-                        logger.Info(exceptionType);
-                    }
-                }
+                HandleRequest(tm.Text);  
             }
             else if (msg is IMapMessage)
             {
@@ -232,8 +220,15 @@ namespace CommunicationLib
                         _myClient.FormUpdate((Form)requestedObj);
                     }
                 }
-                catch (System.Exception e)
+                catch (BasicException e)
                 {
+                    /*
+                    if (ErrorMessageMapper.errorMessages.ContainsKey(e.number))
+                    {
+                        Type exceptionType = ErrorMessageMapper.GetErrorType(e.number);
+                        logger.Info(exceptionType);
+                    }
+                     */
                     _myClient.HandleError(e);
                 }
             }
