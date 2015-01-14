@@ -25,9 +25,6 @@ namespace RestAPI
     /// </summary>
     public class RestRequester : CommunicationLib.IRestRequester
     {
-
-        private static JsonSerializerSettings _jsonSettings;
-
         private string _myUsername;
         private String _myPassword;
         private String _myClientID;
@@ -40,13 +37,6 @@ namespace RestAPI
         /// </summary>
         public RestRequester(String clientID)
         {
-            _jsonSettings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto,
-                Formatting = Formatting.Indented,
-                Binder = new CustomSerializationBinder()
-            };
-
             _myClientID = clientID;
         }
 
@@ -134,7 +124,7 @@ namespace RestAPI
             }
 
             // Deserialization
-            IList<string> eleList = JsonConvert.DeserializeObject<List<string>>(response.Content, _jsonSettings);
+            IList<string> eleList = JsonConvert.DeserializeObject<List<string>>(response.Content, Constants.JSON_SETTINGS);
             
             return eleList;
         }
@@ -180,7 +170,7 @@ namespace RestAPI
                 throw;
             }
 
-            IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, _jsonSettings);
+            IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, Constants.JSON_SETTINGS);
             return eleList;
         }
 
@@ -208,7 +198,7 @@ namespace RestAPI
             }
 
             //Deserialize JSON
-            O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
+            O desObj = JsonConvert.DeserializeObject<O>(response.Content, Constants.JSON_SETTINGS);
             if (desObj.GetType() == typeof(Workflow))
             {
                 convertIdListToReferences(ChangeType<Workflow>(desObj));
@@ -228,7 +218,7 @@ namespace RestAPI
             String url = URLRouter.generateUrl(UrlMethod.Resource, sendObj.GetType(), new string[] { sendObj.id });
             
             // Serialize to JSON
-            String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
+            String serializedObj = JsonConvert.SerializeObject(sendObj, Constants.JSON_SETTINGS);
             var request = createRequest(url, Method.PUT);
             
             try
@@ -256,7 +246,7 @@ namespace RestAPI
             String url = URLRouter.generateUrl(UrlMethod.Resource, sendObj.GetType());
             
             // Serialize to JSON
-            String serializedObj = JsonConvert.SerializeObject(sendObj, _jsonSettings);
+            String serializedObj = JsonConvert.SerializeObject(sendObj, Constants.JSON_SETTINGS);
             
             // Create request
             var request = createRequest(url, Method.POST);
@@ -308,7 +298,7 @@ namespace RestAPI
             }
 
             //Deserialize JSON
-            O desObj = JsonConvert.DeserializeObject<O>(response.Content, _jsonSettings);
+            O desObj = JsonConvert.DeserializeObject<O>(response.Content, Constants.JSON_SETTINGS);
 
             return desObj;
         }
