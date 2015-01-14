@@ -361,10 +361,11 @@ public class LogicImp implements Logic {
      *             objects
      * @throws CloneNotSupportedException is thrown if the clone method is not
      *             implemented
+     * @throws NoPermissionException 
      */
 
     public List<Workflow> getAllWorkflowsByUserWithItems(String username)
-            throws PersistenceException, CloneNotSupportedException
+            throws PersistenceException, CloneNotSupportedException, NoPermissionException
     {
         persistence.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
@@ -496,7 +497,7 @@ public class LogicImp implements Logic {
     public Item getItem(String itemId, String username) throws LogicException {
         Item item = persistence.loadItem(itemId);
         if (!checkAuthorization(item, username)) {
-            throw new NoPermissionException("[logic] user " + username + "has no permission on item " + itemId);
+            throw new NoPermissionException("[logic] user " + username + " has no permission on item " + itemId);
         }
         return persistence.loadItem(itemId);
     }
@@ -592,7 +593,7 @@ public class LogicImp implements Logic {
      * @return
      * @throws PersistenceException
      */
-    public boolean checkAuthorization(Item item, String username) throws PersistenceException {
+    public boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException {
         final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
         final Step actStep = workflowToCheck.getStepById((item.getActStep().getKey()));
         return checkAuthorization(actStep, username);

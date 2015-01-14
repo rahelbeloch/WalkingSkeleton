@@ -94,9 +94,9 @@ public class Form extends RootElement {
     @Override
     public String toString() {
         String ret = "";
-        ret += "Form:";
-        ret += "\tid: " + this.id + "\n";
-        ret += "\tDescr.: " + this.description + "\n";
+        ret += "Form: ";
+        ret += this.id;
+        ret += " - " + this.description;
         
         return ret;
     }

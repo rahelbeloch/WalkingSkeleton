@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
@@ -124,12 +125,13 @@ public class WorkflowResource {
      * @param clientID signals which of the clients sent the request
      * @param state optional selector to reduce the results
      * @return the requested workflow
+     * @throws NoPermissionException 
      */
     @GET
     @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getWorkflows(@HeaderParam("username") String username,@QueryParam("state") String state,
-            @HeaderParam("client_id") String clientID) 
+            @HeaderParam("client_id") String clientID) throws NoPermissionException 
     {
         if (state != null) {
             final String loggingBody = PREFIX + "GET /resource/workflows?state=" + state;
