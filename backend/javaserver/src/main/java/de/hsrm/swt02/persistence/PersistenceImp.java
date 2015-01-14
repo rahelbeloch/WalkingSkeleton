@@ -539,15 +539,18 @@ public class PersistenceImp implements Persistence {
                     in.close();
                     fileIn.close();
                 } catch (IOException i) {
-                    this.logger.log(Level.INFO,"[persistence] could not read/load data model file " + propConfig.getProperty("StoragePath") + ".");
+                    this.logger.log(Level.WARNING,"[persistence] could not read/load data model file " + propConfig.getProperty("StoragePath") + ".");
+                    this.logger.log(Level.WARNING, i);
                 } catch (ClassNotFoundException e) {
-                    this.logger.log(Level.INFO,"[persistence] could not find fitting class"
+                    this.logger.log(Level.WARNING,"[persistence] could not find fitting class"
                             + " for serialization of file " + propConfig.getProperty("StoragePath") + ".");
+                    this.logger.log(Level.WARNING, e);
                 }
             }
         } else {
             // if storage file == null
             try {
+                this.logger.log(Level.INFO,"[persistence] load test data.");
                 initTestdata();
             } catch (PersistenceException e) {
                 e.printStackTrace();
