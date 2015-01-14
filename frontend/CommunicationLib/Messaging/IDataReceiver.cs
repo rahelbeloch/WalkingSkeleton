@@ -1,7 +1,7 @@
 ﻿using System;
 using CommunicationLib.Model;
 using System.Security;
-using CommunicationLib.Exception
+using CommunicationLib.Exception;
 
 namespace CommunicationLib
 {
