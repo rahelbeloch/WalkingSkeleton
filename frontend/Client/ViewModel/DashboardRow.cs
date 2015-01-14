@@ -40,12 +40,16 @@ namespace Client.ViewModel
 
         private Visibility _visibilityFinishButton;
         public Visibility visibilityFinishButton { get { return _visibilityFinishButton; } }
+
+        private Form _form;
+        public Form form { get { return _form; } }
         
-        public DashboardRow(Item actItem, Step actStep, String username)
+        public DashboardRow(Item actItem, Step actStep, String username, Form form)
         {
             _username = username;
             this.actItem = actItem;
             _actStep = actStep;
+            _form = form;
         }
     }
 }
