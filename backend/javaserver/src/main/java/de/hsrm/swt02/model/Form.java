@@ -1,5 +1,6 @@
 package de.hsrm.swt02.model;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -89,5 +90,15 @@ public class Form extends RootElement {
         final Form clone = new Form();
         clone.init(this);
         return clone;
+    }
+    
+    @Override
+    public String toString() {
+        String ret = "";
+        ret += "Form:";
+        ret += "\tid: " + this.id + "\n";
+        ret += "\tDescr.: " + this.description + "\n";
+        
+        return ret;
     }
 }

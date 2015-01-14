@@ -1,6 +1,7 @@
 package de.hsrm.swt02.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -77,5 +78,14 @@ public class RootElement implements Cloneable, Serializable {
             }
         }
         return false;
+    }
+    
+    @Override
+    public String toString() {
+        String ret = "";
+        ret += this.getClass().getSimpleName() + " ";
+        ret += this.id;
+        
+        return ret;
     }
 }
