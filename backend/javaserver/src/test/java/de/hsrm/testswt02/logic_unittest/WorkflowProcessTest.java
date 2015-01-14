@@ -74,14 +74,18 @@ public class WorkflowProcessTest {
         
         myWorkflow = new Workflow();
         startStep = new StartStep(bennisRoles);
+        startStep.getRoleIds().add(hiwi.getRolename());
         final ArrayList<String> rules = new ArrayList<String>();
         rules.add(hiwi.getRolename());
         firstStep = new Action(rules, 1 + " Schritt");
+        firstStep.getRoleIds().add(hiwi.getRolename());
+        FinalStep finalStep = new FinalStep(bennisRoles);
+        finalStep.getRoleIds().add(hiwi.getRolename());
         // adding steps in workflow
         myWorkflow.addStep(startStep);
         myWorkflow.addStep(firstStep);
 
-        myWorkflow.addStep(new FinalStep());
+        myWorkflow.addStep(finalStep);
         // generates straight neighbors for steps in steplist
         
 

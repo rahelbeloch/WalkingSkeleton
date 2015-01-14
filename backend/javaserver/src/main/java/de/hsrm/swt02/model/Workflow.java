@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
+
 /**
  * This class represents a Workflow. A Workflow is a manifestation of a
  * RootElement
@@ -153,9 +155,13 @@ public class Workflow extends RootElement {
      * 
      * @param step
      *            which will be added to the step list of a workflow
+     * @throws StorageFailedException 
      */
-    public void addStep(Step step) {
+    public void addStep(Step step) throws StorageFailedException {
 
+        if (step.getRoleIds().size() < 1) {
+            throw new StorageFailedException("[logic] a step without roles cannot be added.");
+        }
         steps.add(step);
 
         if (steps.size() >= 2) {
@@ -223,7 +229,7 @@ public class Workflow extends RootElement {
         clone.setId(id);
         for (Step step : this.steps) {
             final Step cloneStep = (Step) step.clone();
-            clone.addStep(cloneStep);
+            clone.getSteps().add(cloneStep);
         }
         for (Item item : this.items) {
             final Item cloneItem = (Item) item.clone();

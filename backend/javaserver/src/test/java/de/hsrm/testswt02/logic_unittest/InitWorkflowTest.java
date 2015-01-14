@@ -12,6 +12,7 @@ import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 
 /**
  * This Class tests the initialization of a workflow with Steps.
@@ -58,9 +59,10 @@ public class InitWorkflowTest {
 
     /**
      * test add Steps into an existing workflow.
+     * @throws StorageFailedException 
      */
     @Test
-    public void addStep() {
+    public void addStep() throws StorageFailedException {
         final Workflow myWorkflow = new Workflow();
         final ArrayList<String> roles = new ArrayList<String>();
         roles.add("role");
@@ -74,9 +76,10 @@ public class InitWorkflowTest {
 
     /**
      * test right connection.
+     * @throws StorageFailedException 
      */
     @Test
-    public void connectSteps() {
+    public void connectSteps() throws StorageFailedException {
         final Workflow myWorkflow = new Workflow();
         final ArrayList<String> roles = new ArrayList<String>();
         roles.add("role");
@@ -93,9 +96,10 @@ public class InitWorkflowTest {
 
     /**
      * test right connection FinalStep.
+     * @throws StorageFailedException 
      */
     @Test
-    public void connectFinalStep() {
+    public void connectFinalStep() throws StorageFailedException {
         final Workflow myWorkflow = new Workflow();
         final ArrayList<String> roles = new ArrayList<String>();
         roles.add("role");
@@ -103,6 +107,9 @@ public class InitWorkflowTest {
         final Step firstStep = new Action(roles, 0 + " Schritt");
         final Step secondStep = new Action(roles, 1 + " Schritt");
         final Step finalStep = new FinalStep();
+        firstStep.getRoleIds().add("role");
+        secondStep.getRoleIds().add("role");
+        finalStep.getRoleIds().add("role");
 
         myWorkflow.addStep(firstStep);
         myWorkflow.addStep(secondStep);

@@ -18,9 +18,11 @@ import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
+import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 
 /**
  * This Class tests the initialization of a workflow with Steps.
@@ -39,6 +41,14 @@ public class RoleHandlingTest {
     public static void setup() {
         LogConfigurator.setup();
         ConstructionFactory.getInstance();
+    }
+    
+    @Test(expected = StorageFailedException.class)
+    public void testStepWithoutRole() throws LogicException {
+        Workflow wf = new Workflow();
+        Step startStep = new StartStep();
+        wf.addStep(startStep);
+        li.addWorkflow(wf);
     }
     
     @Test
@@ -78,6 +88,7 @@ public class RoleHandlingTest {
         handkerchief.setRolename("handkerchief");
         final Role employee = new Role();
         employee.setRolename("employee");
+        
         
         li.addRole(chief);
         li.addRole(handkerchief);
@@ -137,6 +148,7 @@ public class RoleHandlingTest {
         action.getRoleIds().add(employee.getRolename());
         
         final FinalStep finalStep = new FinalStep();
+        finalStep.getRoleIds().add(employee.getRolename());
         
         final Workflow workflow = new Workflow();
         workflow.addStep(ss);

@@ -26,6 +26,7 @@ import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.properties.ConfigProperties;
 import de.hsrm.swt02.restserver.RestServer;
 
@@ -61,9 +62,10 @@ public class RestserverWorkflowTest {
     /**
      * This Test checks if an workflow can be successfully updated.
      * Its success is granted if the response equals code 200.
+     * @throws StorageFailedException 
      */
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws StorageFailedException {
         final int httpstatus = 200;
         final Workflow workflow = new Workflow();
         final Step step1 = new StartStep();
@@ -138,9 +140,10 @@ public class RestserverWorkflowTest {
     /**
      * This Test checks if a client can post a flawless workflow to the server.
      * It's successful if the response code is 200.
+     * @throws StorageFailedException 
      */
     @Test
-    public void testPost() {
+    public void testPost() throws StorageFailedException {
         final int httpstatus = 200;
         final Workflow workflow = new Workflow();
         final Step step1 = new StartStep();
