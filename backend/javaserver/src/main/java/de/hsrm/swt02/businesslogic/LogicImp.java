@@ -55,7 +55,7 @@ public class LogicImp implements Logic {
         this.persistence = p;
         this.processManager = pm;
         this.logger = logger;
-        persistence.load();
+        loadData();
     }
 
     @Override
@@ -850,10 +850,4 @@ public class LogicImp implements Logic {
     public void saveData() {
         persistence.save();
     }
-    
-    @Override
-    public void load() {
-        persistence.load();
-    }
-
 }
