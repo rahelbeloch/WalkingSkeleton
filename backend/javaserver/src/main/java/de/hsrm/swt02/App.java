@@ -1,22 +1,15 @@
 package de.hsrm.swt02;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.LogConfigurator;
-import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
-import de.hsrm.swt02.properties.ConfigProperties;
 import de.hsrm.swt02.restserver.RestServer;
 
 /**
@@ -28,7 +21,6 @@ public class App {
     
     private static boolean isShuttingDown;
     private static Object synchronizer = new Object();
-    private static UseLogger logger = new UseLogger();
     
     /**
      * Application startup method.
@@ -43,24 +35,8 @@ public class App {
         final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String userInput = "";
 
-        if (!searchConfig()) { 
-            try {
-                final PrintWriter pWriter = new PrintWriter(new BufferedWriter(new FileWriter("server.config")));
-                pWriter.println("BrokerURL = vm://localhost");
-                pWriter.println("BrokerConnectionURL = tcp://0.0.0.0:61616");
-                pWriter.println("RestServerURI = http://0.0.0.0:18887/");
-                pWriter.println("LogFile = serverlog.html");
-                pWriter.println("LogLevel = info");
-                pWriter.println("ConsoleLogging = true");
-                pWriter.flush();
-                pWriter.close(); 
-            } catch (IOException e) {
-                logger.log(Level.SEVERE, "Configuration file could not be generated!");
-            }
-        }
-        
         // setup log configuration
-        LogConfigurator.setup(ConfigProperties.getInstance().getProperties());
+        LogConfigurator.setup();
         
         // performance optimization
         new Thread(new Runnable() {
@@ -71,14 +47,12 @@ public class App {
         
         // start rest-server instance
         server = new RestServer();
-        
         // ShutDownHook
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 shutdown(server);             
             }
         });
-        
         server.startHTTPServer();
             
         /*
@@ -94,26 +68,6 @@ public class App {
 
         shutdown(server);
 
-    }
-    
-    /**
-     * Method to determine whether or not a config file is already existing.
-     * @return true if the config file is existing, false if not
-     */
-    private static boolean searchConfig() {
-        
-        final File dir = new File(".");
-        final String configName = ("server.config");
-        
-        final File[] files = dir.listFiles();
-        if (files != null) {
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].getName().equalsIgnoreCase(configName)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
     
     /** Stops the HTTP-server.
