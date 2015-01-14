@@ -76,7 +76,9 @@ public class PersistenceImp implements Persistence {
     @Override
     public String storeWorkflow(Workflow workflow) throws PersistenceException {
         Workflow workflowToRemove = null;
-        int idx = 0;
+        int stepIdx = 0;
+        int itemIdx = 1;
+        final int idDivider = 10;
         if (workflow.getId() == null || workflow.getId().equals("")) {
             workflow.setId(workflows.size() + 1 + "");
         } else {
@@ -92,10 +94,20 @@ public class PersistenceImp implements Persistence {
         }
         
         if (workflow.getItems().size() > 0) {
+            String maxId = "0";
             for (Item item : workflow.getItems()) {
+                if (!(item.getId() == null || item.getId().equals(""))) {
+                    if (Integer.parseInt(item.getId()) > Integer.parseInt(maxId)) {
+                        maxId = item.getId();
+                    }
+                }
+            }
+            
+            for (Item item : workflow.getItems()) {          
                 if (item.getId() == null || item.getId().equals("")) {
-                    item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + workflow.getItems().size() + 1) + "");
+                    item.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + (Integer.parseInt(maxId) % (ID_MULTIPLICATOR / idDivider)) + itemIdx) + "");
                     item.setWorkflowId(workflow.getId());
+                    itemIdx++;
                 }
             }
         }
@@ -103,8 +115,8 @@ public class PersistenceImp implements Persistence {
         if (workflow.getSteps().size() > 0) {
             for (Step step: workflow.getSteps()) {
                 if (step.getId() == null || step.getId().equals("")) {
-                    step.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + idx + 1) + "");
-                    idx++;
+                    step.setId((Integer.parseInt(workflow.getId()) * ID_MULTIPLICATOR + stepIdx + 1) + "");
+                    stepIdx++;
                 }
             }
         }
@@ -165,7 +177,7 @@ public class PersistenceImp implements Persistence {
         final int idDivider = 10;
         
         final int eliminatedItemId = integerItemId % (ID_MULTIPLICATOR / idDivider);
-        final String parentWorkflowId = ((integerItemId - eliminatedItemId) / ID_MULTIPLICATOR) + "";        
+        final String parentWorkflowId = ((integerItemId - eliminatedItemId) / ID_MULTIPLICATOR) + "";  
         final Workflow parentWorkflow = loadWorkflow(parentWorkflowId);
         return parentWorkflow;
     }
@@ -557,6 +569,7 @@ public class PersistenceImp implements Persistence {
         Action action1, action2;
         FinalStep finalStep;
         Role role1, role2, role3;
+        Form form1, form2;
 
         user1 = new User();
         user1.setUsername("Alex");
@@ -610,5 +623,14 @@ public class PersistenceImp implements Persistence {
         workflow1.addStep(finalStep);
 
         storeWorkflow(workflow1);
+        
+        form1 = new Form("das ist ein Formular");
+        form2 = new Form("FORM");
+        form1.setId("form1");
+        form2.setId("form2");
+        
+        storeForm(form1);
+        storeForm(form2);
+        
     }
 }
