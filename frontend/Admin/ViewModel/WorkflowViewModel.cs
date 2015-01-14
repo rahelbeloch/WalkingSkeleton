@@ -94,7 +94,7 @@ namespace Admin.ViewModel
         /// Property, which indicates if a selected workflow is de-/active.
         /// This property is used for the de-/active button label.
         /// </summary>
-        private String _workflowActivity = "";
+        private String _workflowActivity = "Deaktivieren";
         public String workflowActivity
         {
             get
@@ -103,20 +103,15 @@ namespace Admin.ViewModel
             }
             set
             {
-                if (actWorkflow != null)
+                if (actWorkflow != null && !actWorkflow.active)
                 {
-                    if (actWorkflow.active)
-                    {
-                        _workflowActivity = "Deaktivieren";
-                    }
-                    else
-                    {
-                        _workflowActivity = "Aktivieren";
-                    }
-
-                    OnChanged("workflowActivity");
+                    _workflowActivity = "Aktivieren";
                 }
-
+                else
+                {
+                    _workflowActivity = "Deaktivieren";
+                }
+                OnChanged("workflowActivity");
             }
         }
         /// <summary>
@@ -441,7 +436,7 @@ namespace Admin.ViewModel
                                 _actWorkflow.active = true;
                                 _restRequester.UpdateObject(_actWorkflow);
                             }
-                            _workflowActivity = "";
+                            _workflowActivity = "Deaktivieren";
                             OnChanged("workflowActivity");
                         }
                         catch (BasicException e)
