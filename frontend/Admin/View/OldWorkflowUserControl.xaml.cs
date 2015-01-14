@@ -21,10 +21,10 @@ namespace Admin.View
     /// <summary>
     /// Interaktionslogik für WorkflowUserControl.xaml
     /// </summary>
-    public partial class WorkflowUserControl : UserControl
+    public partial class OldWorkflowUserControl : UserControl
     {
         
-        public WorkflowUserControl()
+        public OldWorkflowUserControl()
         {
             InitializeComponent();
             
@@ -37,7 +37,7 @@ namespace Admin.View
             if (lvi != null)
             {
                 Workflow wv = lvi.DataContext as Workflow;
-                WorkflowViewModel wmv = (WorkflowViewModel)this.DataContext;
+                OLD_WorkflowViewModel wmv = (OLD_WorkflowViewModel)this.DataContext;
                 
                 wmv.actWorkflow = wv;
                 wmv.workflowActivity = "";

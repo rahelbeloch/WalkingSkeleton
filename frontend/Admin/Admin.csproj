@@ -64,7 +64,7 @@
     <Compile Include="ViewModel\RoleCheckboxRow.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="ViewModel\WorkflowViewModel.cs" />
+    <Compile Include="ViewModel\OLD_WorkflowViewModel.cs" />
     <Compile Include="View\FormUserControl.xaml.cs">
       <DependentUpon>FormUserControl.xaml</DependentUpon>
     </Compile>
@@ -74,8 +74,8 @@
     <Compile Include="View\RoleUserControl.xaml.cs">
       <DependentUpon>RoleUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\WorkflowUserControl.xaml.cs">
-      <DependentUpon>WorkflowUserControl.xaml</DependentUpon>
+    <Compile Include="View\OldWorkflowUserControl.xaml.cs">
+      <DependentUpon>OldWorkflowUserControl.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -101,7 +101,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\WorkflowUserControl.xaml">
+    <Page Include="View\OldWorkflowUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
