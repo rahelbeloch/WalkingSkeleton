@@ -187,15 +187,8 @@ namespace Admin.ViewModel
                 {
                     _logoutCommand = new ActionCommand(execute =>
                     {
-                        admin = "";
-                        ClearModel();
-                        CurrentPageViewModel = loginViewModel;
-
-                        myComLib.Logout();
-                    }, canExecute =>
-                    {
-                        return true;
-                    });
+                        logout();
+                    }, canExecute => true);
                 }
                 return _logoutCommand;
             }
@@ -256,6 +249,18 @@ namespace Admin.ViewModel
             _userViewModel.ClearModel();
         }
 
+        /// <summary>
+        /// Clear all ViewModels and switch back to LoginView.
+        /// Logout from ComLib.
+        /// </summary>
+        private void logout()
+        {
+            admin = "";
+            ClearModel();
+            CurrentPageViewModel = loginViewModel;
+            myComLib.Logout();
+        }
+
         #endregion
 
         #region IDataReceiver callbacks
@@ -292,7 +297,6 @@ namespace Admin.ViewModel
 
         void IDataReceiver.DataDeletion(Type sourceType, string sourceId)
         {
-            logger.Info("Delete " + sourceType.ToString() + " ID=" + sourceId);
             if(sourceType == typeof(Workflow))
             {
                 // No WorkflowDeletion yet needed
@@ -300,7 +304,6 @@ namespace Admin.ViewModel
             }
             else if (sourceType == typeof(Role))
             {
-                logger.Info("Received Role for Update: Name=" + sourceId);
                 Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.RoleDeletion(sourceId)));
             }
             else if(sourceType == typeof(Item))
@@ -313,11 +316,19 @@ namespace Admin.ViewModel
                 // No UserDeletion yet needed
                 // Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.UserDeletion(sourceId)));
             }
+            logger.Info("Delete " + sourceType.ToString() + " ID=" + sourceId);
         }
 
-        public void HandleError(Exception e)
+        public void HandleError(BasicException e)
         {
-            // Error handling
+            Application.Current.Dispatcher.Invoke(new System.Action(() => 
+            {
+                if (e.GetType() == typeof(LogInException))
+                {
+                    MessageBox.Show(e.Message);
+                    logout();
+                }
+            }));
         }
 
         #endregion
