@@ -263,7 +263,7 @@ namespace Admin.ViewModel
         private void logout()
         {
             admin = "";
-            ClearModel();
+            //ClearModel();
             CurrentPageViewModel = loginViewModel;
             myComLib.Logout();
         }
@@ -332,8 +332,8 @@ namespace Admin.ViewModel
             {
                 if (e.GetType() == typeof(LogInException))
                 {
-                    MessageBox.Show(e.Message);
                     logout();
+                    MessageBox.Show(e.Message);
                 }
             }));
         }

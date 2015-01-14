@@ -163,7 +163,7 @@ namespace CommunicationLib
         private void HandleRequest(string requestMsg)
         {
             string objId;
-            Type genericType;
+            //Type genericType;
             string operation;
             object requestedObj = null;
 
@@ -174,7 +174,7 @@ namespace CommunicationLib
             IList<string> msgParams = new List<string>();
             msgParams = requestMsg.Split('=');
 
-            genericType = _dataStructures[ msgParams[0] ];
+            var genericType = _dataStructures[ msgParams[0] ];
             operation = msgParams[1];
             objId = msgParams[2];
 
@@ -222,14 +222,10 @@ namespace CommunicationLib
                 }
                 catch (BasicException e)
                 {
-                    // get actual exception
-                    if (ErrorMessageMapper.errorMessages.ContainsKey(e.number))
+                    // check actual exception
+                    if (e is NoPermissionException)
                     {
-                        Type exceptionType = ErrorMessageMapper.GetErrorType(e.number);
-                        if (exceptionType == typeof(NoPermissionException))
-                        {
-                            _myClient.DataDeletion(genericType, objId);
-                        }
+                        _myClient.DataDeletion(genericType, objId);
                     }
                     _myClient.HandleError(e);
                 }

@@ -299,8 +299,9 @@ namespace RestAPI
                 // call Internal Requester to finally send the request
                 response = InternalRequester.RetrieveRequest(request);
             }
-            catch (BasicException)
+            catch (BasicException e)
             {
+                Console.WriteLine(e.number);
                 throw;
             }
 
