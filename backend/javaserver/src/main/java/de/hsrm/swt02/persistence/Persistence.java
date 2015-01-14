@@ -192,7 +192,16 @@ public interface Persistence {
      */
     void save();
     
+    /**
+     * Method to load the data model from filesystem. 
+     * File is read, in case of reading errors or missing file some default test data 
+     * is load.
+     */
     void load();
 
+    /**
+     * Setter for the server configurations.
+     * @param propConfig server configuration
+     */
     void setPropConfig(Properties propConfig);
 }
