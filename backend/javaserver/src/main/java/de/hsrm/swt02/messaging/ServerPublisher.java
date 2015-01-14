@@ -1,7 +1,5 @@
 package de.hsrm.swt02.messaging;
 
-import java.util.Properties;
-
 import de.hsrm.swt02.businesslogic.LogicResponse;
 
 /**
