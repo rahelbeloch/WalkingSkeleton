@@ -7,6 +7,7 @@ import java.util.Properties;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
@@ -20,7 +21,7 @@ public class SerializingTest {
     
     @BeforeClass
     public static void setUp() {
-        db = new PersistenceImp(null);
+        db = new PersistenceImp(new UseLogger());
         p = new Properties();
         p.setProperty("StoragePath", "serializingTest");
         db.setPropConfig(p);
