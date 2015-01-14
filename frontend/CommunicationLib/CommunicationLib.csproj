@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="ComLib.cs" />
     <Compile Include="Model\DataModel\Form.cs" />
+    <Compile Include="Model\DataModel\FormEntry.cs" />
     <Compile Include="Model\DataModel\ViewModelBase.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\MessagingExceptions\ServerPublisherBrokerException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\JacksonException.cs" />

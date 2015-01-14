@@ -146,7 +146,6 @@ namespace RestAPI
             {
                 throw;
             }
-
             IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, Constants.JSON_SETTINGS);
             return eleList;
         }
