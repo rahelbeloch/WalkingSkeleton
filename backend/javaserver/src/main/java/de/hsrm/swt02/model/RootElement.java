@@ -1,7 +1,6 @@
 package de.hsrm.swt02.model;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

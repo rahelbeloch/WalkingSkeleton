@@ -30,6 +30,7 @@ public class ConstructionFactory {
     private ConstructionFactory() {
         
         logic = INJECTOR.getInstance(Logic.class);
+        
         serverPublisher = INJECTOR.getInstance(ServerPublisher.class);
         try {
             serverPublisher.startBroker();
