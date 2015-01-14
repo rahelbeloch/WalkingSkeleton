@@ -110,8 +110,9 @@ namespace RestAPI
                 int errorCode = Int32.Parse(response.Content);
 
                 //generate convenient exception
-                BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
-                throw ex;
+                //BasicException ex = (BasicException)Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
+                var ex = Activator.CreateInstance(ErrorMessageMapper.GetErrorType(errorCode));
+                throw (Exception)ex;
             }
         }
     }
