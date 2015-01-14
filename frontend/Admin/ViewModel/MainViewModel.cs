@@ -249,6 +249,10 @@ namespace Admin.ViewModel
             _userViewModel.ClearModel();
         }
 
+        #endregion
+
+        #region IDataReceiver callbacks
+
         void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
             logger.Info("Received Workflow for Update: ID=" + workflow.id);
@@ -263,12 +267,13 @@ namespace Admin.ViewModel
 
         void IDataReceiver.UserUpdate(User user)
         {
-            Console.WriteLine("User UPdtae erreicht");
+            logger.Info("Received User for Update: ID=" + user.username);
             Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.UserUpdate(user)));
         }
 
         void IDataReceiver.RoleUpdate(Role role)
         {
+            logger.Info("Received Role for Update: ID=" + role.rolename);
             Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.RoleUpdate(role)));
         }
 
@@ -308,8 +313,5 @@ namespace Admin.ViewModel
         }
 
         #endregion
-
-
-        
     }
 }
