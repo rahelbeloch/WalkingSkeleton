@@ -170,7 +170,7 @@ namespace Client.ViewModel
         {
             logger.Info("Received Workflow for Update: ID=" + workflow.id);
             // route update-handling to subcomponents
-            _dashboardViewModel.AddWorkflowToModel(workflow, null);
+            _dashboardViewModel.AddWorkflowToModel(workflow);
         }
         /// <summary>
         /// Calls the update methode for items in the dashboardModel
