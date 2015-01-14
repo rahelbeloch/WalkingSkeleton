@@ -97,13 +97,14 @@ namespace Client.ViewModel
         /// <summary>
         /// Updates a single item.
         /// </summary>
+        /// <param name="item"></param>
         /// <param name="item">the item to update</param>
         public void UpdateItem(Item item)
         {
             String workflowId = item.workflowId;
             _relevantItems.Clear();
             _restRequester.GetRelevantItemsByUser(workflowId).ToList().ForEach(_relevantItems.Add);
-            if(isItemInList(item, _relevantItems)) {
+            if(IsItemInList(item.id, _relevantItems)) {
                 DashboardRow fittingRow = GetWorkflowRowForItem(item);
                 fittingRow.actItem = item;
                 OnChanged("selectedRow");
@@ -111,14 +112,32 @@ namespace Client.ViewModel
         }
 
         /// <summary>
+        /// deletes the item with the fitting id from the model
+        /// </summary>
+        /// <param name="id">id of the item</param>
+        public void DeleteItem(String id)
+        {
+            foreach (DashboardWorkflow dashboardWorkflow in _dashboardWorkflows)
+            {
+                foreach (DashboardRow dashboardRow in dashboardWorkflow.dashboardRows)
+                {
+                    if (dashboardRow.actItem.id.Equals(id))
+                    {
+                        dashboardWorkflow.DeleteDashboardRow(dashboardRow);
+                        return;
+                    }
+                }
+            }
+            logger.Debug("Item mit der id "+ id +" konnte nicht gelöscht werden.");     
+        }
+        /// <summary>
         /// Checks whether the new item is relevant for the user.
         /// </summary>
         /// <param name="item">new or updated item</param>
         /// <param name="itemsList">List of the relevant items for the user</param>
         /// <returns>true if item is in itemsList, else false</returns>
-        private Boolean isItemInList(Item item, List<Item> itemsList)
+        private Boolean IsItemInList(String id, List<Item> itemsList)
         {
-            String id = item.id;
             foreach (Item checkItem in itemsList)
             {
                 if (id.Equals(checkItem.id))
