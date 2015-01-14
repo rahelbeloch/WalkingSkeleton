@@ -507,7 +507,6 @@ public class PersistenceImp implements Persistence {
     public void load() {
         final String storagePath = propConfig.getProperty("StoragePath");
         final File f = new File(storagePath);
-        
         if (storagePath != null && storagePath.contains(".ser") && f.exists()) {
             
             if (f.isFile()) {

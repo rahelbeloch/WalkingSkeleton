@@ -30,6 +30,7 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.properties.ConfigProperties;
 
 /**
  * This class implements the logic interface and is used for logic operations.
@@ -55,6 +56,8 @@ public class LogicImp implements Logic {
         this.persistence = p;
         this.processManager = pm;
         this.logger = logger;
+        persistence.setPropConfig(ConfigProperties.getInstance().getProperties());
+        this.loadData();
     }
 
     @Override
@@ -536,6 +539,7 @@ public class LogicImp implements Logic {
         User user;
         try {
             user = persistence.loadUser(username);
+            System.out.println("user vorhanden");
         } catch (UserNotExistentException e) {
             throw new LogInException();
         }
@@ -547,6 +551,7 @@ public class LogicImp implements Logic {
         if (adminRequired) {
             for (Role aktRole : user.getRoles()) {
                 if (aktRole.getRolename().equals("admin")) {
+                    System.out.println("user ist admin");
                     return true;
                 }
             }
@@ -850,8 +855,4 @@ public class LogicImp implements Logic {
         persistence.save();
     }
 
-    @Override
-    public void setPropConfig(Properties propConfig) {
-        persistence.setPropConfig(propConfig);
-    }
 }
