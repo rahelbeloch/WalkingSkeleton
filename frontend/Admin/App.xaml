@@ -5,6 +5,7 @@
              xmlns:viewmodel="clr-namespace:Admin.ViewModel">
 
     <Application.Resources>
+        <ResourceDictionary>
         <DataTemplate DataType="{x:Type viewmodel:OLD_WorkflowViewModel}">
             <view:OldWorkflowUserControl />
         </DataTemplate>
@@ -14,6 +15,28 @@
         <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
             <view:LoginUserControl />
         </DataTemplate>
+
+            <ResourceDictionary.MergedDictionaries>
+
+                <!-- DiagramDesigner Dll resources, you need all of these -->
+                <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/Shared.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/ScrollBar.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/Expander.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/GroupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/ToolTip.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/ScrollViewer.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/ZoomBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/DesignerItems.xaml" />
+
+                <!-- Common DemoApp Styles -->
+                <ResourceDictionary Source="Resources/Styles.xaml" />
+
+                <!-- specific designer items, you should have one of these per ViewModel that you want to represent on diagram -->
+                <ResourceDictionary Source="Resources/DesignerItems/ActionDataTemplate.xaml" />
+                <ResourceDictionary Source="Resources/DesignerItems/FinalStepDataTemplate.xaml" />
+                <ResourceDictionary Source="Resources/DesignerItems/StartStepDataTemplate.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 
 </Application>
