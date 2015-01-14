@@ -34,18 +34,26 @@ namespace Client.ViewModel
             remove { CommandManager.RequerySuggested -= value; }
         }
 
+        /// <summary>
+        /// Is called if action is called. Executes the actions associated to this command.
+        /// </summary>
+        /// <param name="parameter"></param>
         public void Execute(object parameter)
         {
             _executeHandler(parameter);
         }
 
+        /// <summary>
+        /// Determines if the command for the actual command target can be executed.
+        /// </summary>
+        /// <param name="parameter">the command target</param>
+        /// <returns></returns>
         public bool CanExecute(object parameter)
         {
             if (_canExecuteHandler == null)
             {
                 return true;
             }
-
             return _canExecuteHandler(parameter);
         }
     }

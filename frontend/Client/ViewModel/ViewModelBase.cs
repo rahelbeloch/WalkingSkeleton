@@ -15,6 +15,10 @@ namespace Client.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Is called if model changes; causes a change of the associated ViewModel.
+        /// </summary>
+        /// <param name="propertyName">the changed propterty</param>
         protected void OnChanged(string propertyName)
         {
             if (PropertyChanged != null)

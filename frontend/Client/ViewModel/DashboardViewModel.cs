@@ -32,7 +32,7 @@ namespace Client.ViewModel
         }
 
         /// <summary>
-        /// init update-Methode used while the login
+        /// Init update-Methode used while the login.
         /// </summary>
         private void InitModel()
         {
@@ -55,16 +55,17 @@ namespace Client.ViewModel
             
             foreach (Workflow workflow in _workflows)
             {
-                addWorkflowToModel(workflow, startableList);
+                AddWorkflowToModel(workflow, startableList);
                 _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
             }
         }
+
         /// <summary>
-        /// update a single workflow
+        /// Update a single workflow
         /// </summary>
         /// <param name="updatedWorkflow">workflow which has to be updated</param>
         /// <param name="startableList">List of startables Workflows</param>
-        public void addWorkflowToModel(Workflow updatedWorkflow, IList<string> startableList)
+        public void AddWorkflowToModel(Workflow updatedWorkflow, IList<string> startableList)
         {
             logger.Debug("addWorkflowtoModel");
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
@@ -84,9 +85,9 @@ namespace Client.ViewModel
             DashboardRow row;
             foreach (Item item in _relevantItems)
             {
-                activeStep = getStepById(item.getActiveStepId(), updatedWorkflow);
+                activeStep = GetStepById(item.getActiveStepId(), updatedWorkflow);
                 row = new DashboardRow(item, activeStep, _userName);
-                toUpdate.addDashboardRow(row);
+                toUpdate.AddDashboardRow(row);
             }
 
             Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
@@ -94,26 +95,27 @@ namespace Client.ViewModel
         }
 
         /// <summary>
-        /// updates a single item
+        /// Updates a single item.
         /// </summary>
-        /// <param name="item"></param>
-        public void updateItem(Item item)
+        /// <param name="item">the item to update</param>
+        public void UpdateItem(Item item)
         {
             String workflowId = item.workflowId;
             _relevantItems.Clear();
             _restRequester.GetRelevantItemsByUser(workflowId).ToList().ForEach(_relevantItems.Add);
             if(isItemInList(item, _relevantItems)) {
-                DashboardRow fittingRow = getWorkflowRowForItem(item);
+                DashboardRow fittingRow = GetWorkflowRowForItem(item);
                 fittingRow.actItem = item;
                 OnChanged("selectedRow");
             }
         }
+
         /// <summary>
-        /// checks whether the new item is relevant for the user
+        /// Checks whether the new item is relevant for the user.
         /// </summary>
         /// <param name="item">new or updated item</param>
         /// <param name="itemsList">List of the relevant items for the user</param>
-        /// <returns></returns>
+        /// <returns>true if item is in itemsList, else false</returns>
         private Boolean isItemInList(Item item, List<Item> itemsList)
         {
             String id = item.id;
@@ -126,12 +128,13 @@ namespace Client.ViewModel
             }
             return false;
         }
+
         /// <summary>
-        /// the method searches the dashboardRow for the given item
+        /// The method searches the dashboardRow for the given item.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">the given item</param>
         /// <returns>the fitting dashboardrow or null</returns>
-        private DashboardRow getWorkflowRowForItem(Item item)
+        private DashboardRow GetWorkflowRowForItem(Item item)
         {
             String workflowId = item.workflowId;
             bool changed = true;
@@ -146,26 +149,26 @@ namespace Client.ViewModel
                     if(fittingRow == null)
                     {
                         // create DashboardRow for item
-                        Step actStep = getStepById(item.getActiveStepId(), workflow.actWorkflow);
+                        Step actStep = GetStepById(item.getActiveStepId(), workflow.actWorkflow);
                         fittingRow = new DashboardRow(item, actStep, userName);
-                        workflow.addDashboardRow(fittingRow);
+                        workflow.AddDashboardRow(fittingRow);
                         changed = false;
                     }
+
                     logger.Info("Item ID=" + item.id + (changed ? " changed" : " added"));
                     return fittingRow;
-
                 }
             }
             return null;
         }
 
         /// <summary>
-        /// finds the step for the given id in a single workflow
+        /// Finds the step for the given id in a single workflow.
         /// </summary>
         /// <param name="id">id of the step</param>
-        /// <param name="workflow"></param>
+        /// <param name="workflow">the associated workflow</param>
         /// <returns>the fitting step or null</returns>
-        private Step getStepById(int id, Workflow workflow)
+        private Step GetStepById(int id, Workflow workflow)
         {
             foreach (Step step in workflow.steps)
             {
@@ -178,11 +181,10 @@ namespace Client.ViewModel
         }
 
         /// <summary>
-        /// clears all data in the model
+        /// ´Clears all data in the model.
         /// </summary>
-        private void deleteModel()
+        private void DeleteModel()
         {
-
             logger.Info("Clear Model");
             _workflows.Clear();
             _startableWorkflows.Clear();
@@ -191,10 +193,10 @@ namespace Client.ViewModel
         }
 
         /// <summary>
-        /// starts a workflow with the given id
+        /// Starts a workflow with the given id.
         /// </summary>
         /// <param name="id"></param>
-        public void createWorkflow(string id)
+        public void CreateWorkflow(string id)
         {
             try
             {
@@ -207,16 +209,17 @@ namespace Client.ViewModel
         }
 
         /// <summary>
-        /// set an item a step forward
+        /// Set an item a step forward.
         /// </summary>
-        /// <param name="stepId"></param>
-        /// <param name="itemId"></param>
-        public void stepForward(string stepId, string itemId)
+        /// <param name="stepId">the stepId of the actual step</param>
+        /// <param name="itemId">the itemId of the item to forward</param>
+        public void StepForward(string stepId, string itemId)
         {
             _restRequester.StepForward(stepId, itemId);
         }
+
         /// <summary>
-        /// command to step forward, called from the gui
+        /// Command to step forward, called from the gui.
         /// </summary>
         private ICommand _stepForwardCommand;
         public ICommand stepForwardCommand
@@ -228,18 +231,16 @@ namespace Client.ViewModel
                     _stepForwardCommand = new ActionCommand(execute => 
                     {
                         DashboardRow param = (DashboardRow) execute;
-                        stepForward(param.actStep.id, param.actItem.id);
+                        StepForward(param.actStep.id, param.actItem.id);
                     }, canExecute => true);
-
-                    
                 }
-
                 return _stepForwardCommand;
             }
         }
+
         /// <summary>
-        /// logout command for the user
-        /// the data is deleted an view changes to to login view
+        /// Logout command for the user;
+        /// the data is deleted an view changes to to login view.
         /// </summary>
         private ICommand _logoutCommand;
         public ICommand logoutCommand
@@ -251,7 +252,7 @@ namespace Client.ViewModel
                     _logoutCommand = new ActionCommand(excute =>
                         {
                             userName = "";
-                            deleteModel();
+                            DeleteModel();
                             _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
 
                             // unregister mainViewModel from CommunicationLib (if logout worked)
@@ -275,7 +276,7 @@ namespace Client.ViewModel
                     _startWorkflowCommand = new ActionCommand(execute =>
                     {
                         DashboardWorkflow param = (DashboardWorkflow)execute;
-                        createWorkflow(param.actWorkflow.id);
+                        CreateWorkflow(param.actWorkflow.id);
                     }, canExecute =>
                     {
                         return true;
@@ -285,7 +286,9 @@ namespace Client.ViewModel
             }
         }
 
+
         #region properties
+
         private DashboardRow _selectedRow;
         public DashboardRow selectedRow
         {
@@ -313,7 +316,7 @@ namespace Client.ViewModel
 
                 if (_userName.Equals(""))
                 {
-                    deleteModel();
+                    DeleteModel();
                 }
                 else
                 {
@@ -324,7 +327,6 @@ namespace Client.ViewModel
                     catch (Exception)
                     {
                         throw;
-
                     }
                 }
             }
@@ -340,6 +342,7 @@ namespace Client.ViewModel
         public ObservableCollection<DashboardWorkflow> dashboardWorkflows { get { return _dashboardWorkflows; } }
 
         private List<Item> _relevantItems = new List<Item>();
+
         #endregion
     }
 }
