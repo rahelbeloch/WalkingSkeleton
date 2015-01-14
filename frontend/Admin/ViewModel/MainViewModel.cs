@@ -29,6 +29,9 @@ namespace Admin.ViewModel
         private OLD_WorkflowViewModel _oldWorkflowViewModel;
         public OLD_WorkflowViewModel oldWorkflowViewModel { get { return _oldWorkflowViewModel; } }
 
+        private WorkflowViewModel _workflowViewModel;
+        public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
+
         private UserViewModel _userViewModel;
         public UserViewModel userViewModel { get { return _userViewModel; }  }
 
@@ -95,10 +98,12 @@ namespace Admin.ViewModel
         {
             _loginViewModel = new LoginViewModel(this);
             _oldWorkflowViewModel = new OLD_WorkflowViewModel(this);
+            _workflowViewModel = new WorkflowViewModel(this);
             _userViewModel = new UserViewModel(this);
 
             PageViewModels.Add(loginViewModel);
             PageViewModels.Add(oldWorkflowViewModel);
+            PageViewModels.Add(workflowViewModel);
             PageViewModels.Add(userViewModel);
 
             // set starting ViewModel
@@ -237,6 +242,7 @@ namespace Admin.ViewModel
         public void InitModel()
         {
             _oldWorkflowViewModel.InitModel();
+            _workflowViewModel.InitModel();
             _userViewModel.InitModel();
         }
 
@@ -246,6 +252,7 @@ namespace Admin.ViewModel
         private void ClearModel()
         {
             _oldWorkflowViewModel.ClearModel();
+            _workflowViewModel.ClearModel();
             _userViewModel.ClearModel();
         }
 

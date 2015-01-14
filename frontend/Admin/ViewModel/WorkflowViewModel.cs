@@ -16,6 +16,7 @@ using DiagramDesigner;
 using DiagramDesigner.Helpers;
 
 using System.Diagnostics;
+using NLog;
 
 
 namespace Admin.ViewModel
@@ -28,6 +29,8 @@ namespace Admin.ViewModel
     {
         private Workflow _workflowModel = new Workflow();
 
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester; 
 
@@ -39,27 +42,9 @@ namespace Admin.ViewModel
 
         public WorkflowViewModel(MainViewModel mainViewModel)
         {
-            messageBoxService = ApplicationServicesProvider.Instance.Provider.MessageBoxService;
-            
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
             _workflow.CollectionChanged += OnWorkflowChanged;
-            _toolBoxViewModel = new ToolBoxViewModel();
-            // fill choosable steps with default values
-            _choosableSteps.Add(new StartStep());
-            
-            try
-            {
-                updateModel();
-            }
-            catch (BasicException e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            //OrthogonalPathFinder is a pretty bad attempt at finding path points, it just shows you, you can swap this out with relative
-            //ease if you wish just create a new IPathFinder class and pass it in right here
-            ConnectorViewModel.PathFinder = new OrthogonalPathFinder();
-
         }
         public DiagramViewModel DiagramViewModel
         {
@@ -269,27 +254,57 @@ namespace Admin.ViewModel
 
         #endregion
 
-        public void updateModel()
+        public void InitModel()
         {
-            Debug.WriteLine("updatedModel()");
-            Debug.WriteLine("check");
+            _toolBoxViewModel = new ToolBoxViewModel();
+            //OrthogonalPathFinder is a pretty bad attempt at finding path points, it just shows you, you can swap this out with relative
+            //ease if you wish just create a new IPathFinder class and pass it in right here
+            ConnectorViewModel.PathFinder = new OrthogonalPathFinder();
+            messageBoxService = ApplicationServicesProvider.Instance.Provider.MessageBoxService;
 
-            _workflows.Clear();
-            // IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>(); <-- changed method in REST; is generic now; this is the old line
-            IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
-            if (workflowList == null)
+
+            // fill choosable steps with default values
+            _choosableSteps.Add(new StartStep());
+
+            try
             {
-                workflowList = new List<Workflow>();
+                logger.Info("Initialize");
+                _choosableSteps.Add(new StartStep());
+
+                _workflows.Clear();
+                // IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>(); <-- changed method in REST; is generic now; this is the old line
+                IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
+                if (workflowList == null)
+                {
+                    workflowList = new List<Workflow>();
+                }
+
+                // register workflows as ItemSoure
+                foreach (Workflow workflow in workflowList)
+                {
+                    _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
+                }
+
+                workflowList.ToList().ForEach(_workflows.Add);
             }
-            
-            // register workflows as ItemSoure
-            foreach (Workflow workflow in workflowList) 
+            catch (BasicException e)
             {
-                _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
+                MessageBox.Show(e.Message);
             }
-            
-            workflowList.ToList().ForEach(_workflows.Add);
+
+           
             OnChanged("workflows");
+        }
+
+        public void ClearModel()
+        {
+            userCollection.Clear();
+            roleCollection.Clear();
+            workflow.Clear();
+            choosableSteps.Clear();
+            selectedStep = null;
+            selectedRole = null;
+            actWorkflow = null;
         }
 
         /// <summary>
