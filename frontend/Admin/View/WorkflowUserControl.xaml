@@ -1,0 +1,155 @@
+﻿<UserControl x:Class="Admin.View.WorkflowUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:s="clr-namespace:DiagramDesigner;assembly=DiagramDesigner"
+             xmlns:local="clr-namespace:Admin.View"
+             xmlns:tools="clr-namespace:Admin"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="900">
+    
+    <UserControl.Resources>
+       <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
+            <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick"/> 
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <Label Content="Workflow-Verwaltung" FontSize="16" FontWeight="Medium" HorizontalAlignment="Center"/>
+            </DockPanel>
+
+            <TabControl SelectedIndex="{Binding selectedTabId, UpdateSourceTrigger=PropertyChanged}">
+                <TabItem Header="Neuen Workflow anlegen" x:Name="createTab" x:Uid="1">
+                    <DockPanel>
+                        
+                        <DockPanel>
+                        <!-- ToolBox Control -->
+                        <tools:ToolBoxControl DockPanel.Dock="Top" Grid.Column="0"
+                                  DataContext="{Binding toolBoxViewModel}" />
+                            <Button x:Name="saveWorkflow" DockPanel.Dock="Bottom" Content="Workflow speichern/veröffentlichen" Margin="10,10,10,-35" Command="{Binding submitWorkflowCommand}" Height="26" Width="216"/>
+
+
+                        </DockPanel>
+                          
+                                <!--
+                        <DockPanel DockPanel.Dock="Top">
+                            <Label Content="Schritt hinzufügen" FontWeight="Medium"/>
+                        </DockPanel>
+                        <DockPanel DockPanel.Dock="Top">
+                            <DockPanel.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding addStepCommand}" />
+                            </DockPanel.InputBindings>
+
+                            <Label Content="Typ:" VerticalContentAlignment="Center"/>
+                            <ComboBox Height="25" Width="120" HorizontalAlignment="Left"  
+                                      ItemsSource="{Binding Path=choosableSteps, UpdateSourceTrigger=PropertyChanged}" 
+                                      DisplayMemberPath="label"
+                                      SelectedItem="{Binding selectedStep}" />
+
+                            <Label Content="Rolle:" VerticalContentAlignment="Center"/>
+                            
+                            <ComboBox Height="25" Width="120" HorizontalAlignment="Left"  
+                                      ItemsSource="{Binding Path=roleCollection, UpdateSourceTrigger=PropertyChanged}" 
+                                      DisplayMemberPath="rolename"
+                                      SelectedItem="{Binding selectedRole}" />
+
+                            <Label Content="Beschreibung: " Margin="0,0,0,10" VerticalContentAlignment="Center"/>
+                            <TextBox Width="180" Height="25" IsEnabled="{Binding enableDescriptionTextBox, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.Text>
+                                    <Binding Path="stepDescription" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <Button Content="+" Width="35" Height="25" Margin="10" Command="{Binding addStepCommand}"/>
+                            <Button x:Name="removeLastElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-" Width="35" Height="25" Margin="0, 10, 0, 0" Command="{Binding removeLastStepCommand}"/>
+                        </DockPanel>
+
+                        <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflow}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridView.Columns >
+                                        <GridViewColumn Width="120" Header="Typ" DisplayMemberBinding="{Binding label}"/>
+                                        <GridViewColumn Width="290" Header="Beschreibung" DisplayMemberBinding="{Binding description}" />
+                                        <GridViewColumn Width="130" Header="Rollen" DisplayMemberBinding="{Binding roleIds[0]}"/>
+                                    </GridView.Columns>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <DockPanel DockPanel.Dock="Top">
+                            
+                        </DockPanel>
+-->
+                            
+                        
+                        
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Alle Workflows anzeigen">
+                    <DockPanel>
+
+                        <DockPanel Width="320">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflows}" ItemContainerStyle="{StaticResource itemstyle}">
+                                <ListView.View>
+                                    <GridView >
+                                        <GridView.Columns>
+                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
+                                            <GridViewColumn Width="100" Header="Anzahl der Steps" DisplayMemberBinding="{Binding steps.Count}" />
+                                            <GridViewColumn Width="100" Header="Anzahl der Items" DisplayMemberBinding="{Binding items.Count}"/>
+                                            <GridViewColumn Width="50" Header="aktiv"  DisplayMemberBinding="{Binding active}"/>
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+                    
+                    <!--
+                        <DockPanel DockPanel.Dock="Top" Height="378" VerticalAlignment="Top" Margin="10" >
+                            <Label DockPanel.Dock="Top" Content="Items" FontWeight="Medium"/>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}"/>
+                                <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Edit Workflow"/>
+                            </DockPanel>
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actWorkflow.items}" ItemContainerStyle="{StaticResource itemstyle}">
+                                <ListView.View>
+                                    <GridView >
+                                        <GridView.Columns>
+                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
+                                            <GridViewColumn Width="120" Header="beendet" DisplayMemberBinding="{Binding finished}" />
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <Label Content="Step" FontWeight="Medium" DockPanel.Dock="Top" />
+
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actWorkflow.steps}" ItemContainerStyle="{StaticResource itemstyle}">
+                                <ListView.View>
+                                    <GridView >
+                                        <GridView.Columns>
+                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
+                                            <GridViewColumn Width="120" Header="Beschreibung" DisplayMemberBinding="{Binding label}" />
+                                            <GridViewColumn Width="120" Header="BearbeiterIn" DisplayMemberBinding="{Binding roleIds[0]}" />
+                                            
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+                        -->
+                    </DockPanel>
+                </TabItem>
+            </TabControl>
+        <DockPanel>
+                <!-- Diagram Control -->
+                <s:DiagramControl DockPanel.Dock="Top" Grid.Column="1"
+                                  DataContext="{Binding DiagramViewModel}"
+                                  Margin="3,1,0.334,0" Grid.ColumnSpan="2" />
+                
+
+            </DockPanel>
+            
+        </DockPanel>
+    </Grid>
+</UserControl>
