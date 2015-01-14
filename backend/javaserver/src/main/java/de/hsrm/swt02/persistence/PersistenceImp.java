@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 
 import com.google.inject.Inject;
@@ -601,20 +602,26 @@ public class PersistenceImp implements Persistence {
         storeUser(user3);
         storeUser(user4);
 
-        final ArrayList<String> user1Roles = new ArrayList<String>();
-        user1Roles.add(role1.getRolename());
-        final ArrayList<String> user2Roles = new ArrayList<String>();
-        user2Roles.add(role2.getRolename());
-
+//        final Set<Role> user1Roles;        
+//        user1Roles = user1.getRoles();
+//        
+//        startStep1 = new StartStep();
+//        for (Role r: user1Roles) {
+//            startStep1.addRole(r.getRolename());           
+//        }
+        
         startStep1 = new StartStep();
-        startStep1.getRoleIds().addAll(user1Roles);
+        startStep1.getRoleIds().add(role1.getRolename());
 
         action1 = new Action(new ArrayList<String>(), "Action von "
                 + user1.getUsername());
+        action1.addRole(role2.getRolename());
         action2 = new Action(new ArrayList<String>(), "Action von "
                 + user2.getUsername());
+        action2.addRole(role1.getRolename());
 
         finalStep = new FinalStep();
+        finalStep.getRoleIds().add(role2.getRolename());
 
         workflow1 = new Workflow();
         workflow1.addStep(startStep1);

@@ -330,7 +330,7 @@ public class LogicImp implements Logic {
         persistence.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
         for (Workflow wf : persistence.loadAllWorkflows()) {
-            if (wf.isActive() || wf.getItems().size() > 0) {
+            if (wf.isActive() || wf.getItems().size() > 0) {                
                 for (Step step : wf.getSteps()) {
                     if (checkAuthorization(step, username)) {
                         Workflow copyOfWf;
@@ -367,15 +367,17 @@ public class LogicImp implements Logic {
     {
         persistence.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
+        
         for (Workflow wf : persistence.loadAllWorkflows()) {
             if (wf.isActive()) {
-                for (Step step : wf.getSteps()) {
-                    if (checkAuthorization(step, username)) {
+                for (Item i : wf.getItems()) {
+                    final Item loadedItem = persistence.loadItem(i.getId());
+                    if (checkAuthorization(loadedItem, username)) {
                         final Workflow copyOfWf = (Workflow) wf.clone();
                         workflows.add(copyOfWf);
                         break;
                     }
-                }
+                }                
             }
         }
         return workflows;
@@ -397,8 +399,7 @@ public class LogicImp implements Logic {
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
 
-                if (checkAuthorization(
-                        wf.getStepById(item.getActStep().getKey()), username))
+                if (checkAuthorization(wf.getStepById(item.getActStep().getKey()), username))
                 {
                     items.add(item);
                 }
@@ -432,7 +433,7 @@ public class LogicImp implements Logic {
     }
 
     /**
-     * This method returns all Workflows, which can be startes by this user.
+     * This method returns all Workflows, which can be started by this user.
      * 
      * @param user
      * @return startable workflows by an user
@@ -486,9 +487,10 @@ public class LogicImp implements Logic {
      * Return item by itemId.
      * 
      * @param itemId indicates which item should be returned
+     * @param username is the userId who wants to access the item
      * @return looked for item
      * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
+     * @throws NoPermissionException if the user is not allowed to get item
      */
     public Item getItem(String itemId) throws PersistenceException {
         return persistence.loadItem(itemId);
@@ -576,6 +578,24 @@ public class LogicImp implements Logic {
             }
         }
         return authorized;
+    }
+    
+    /**
+     * Method for checking if a logged in user is authorized to get an Item.
+     * @param item
+     * @param username
+     * @return
+     * @throws PersistenceException
+     */
+    public boolean checkAuthorization(Item item, String username) throws PersistenceException {
+        final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
+        
+        for (Step stepToCheck : workflowToCheck.getSteps()) {
+            if(checkAuthorization(stepToCheck, username)){
+                return true;
+            }
+        }
+        return false;
     }
 
     // BusinessLogic Sprint 2
