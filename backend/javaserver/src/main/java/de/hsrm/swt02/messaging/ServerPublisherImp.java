@@ -35,8 +35,8 @@ public class ServerPublisherImp implements ServerPublisher {
     private Session session;
     private MessageProducer publisher;
     private BrokerService broker;
-    private String brokerURL;
-    private String connectionURL;
+    private final String brokerURL;
+    private final String connectionURL;
 
     /**
      * Constructor.
