@@ -196,12 +196,12 @@ namespace Client.ViewModel
 
         void IDataReceiver.DataDeletion(Type sourceType, string sourceId)
         {
-            //Deletion handling here
+            // Deletion handling here
         }
 
         public void HandleError(Exception e)
         {
-            throw new NotImplementedException();
+            // Error handling here
         }
 
         #endregion
