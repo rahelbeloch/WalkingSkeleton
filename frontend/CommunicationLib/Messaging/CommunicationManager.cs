@@ -222,13 +222,15 @@ namespace CommunicationLib
                 }
                 catch (BasicException e)
                 {
-                    /*
+                    // get actual exception
                     if (ErrorMessageMapper.errorMessages.ContainsKey(e.number))
                     {
                         Type exceptionType = ErrorMessageMapper.GetErrorType(e.number);
-                        logger.Info(exceptionType);
+                        if (exceptionType == typeof(NoPermissionException))
+                        {
+                            _myClient.DataDeletion(genericType, objId);
+                        }
                     }
-                     */
                     _myClient.HandleError(e);
                 }
             }
