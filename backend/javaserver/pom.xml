@@ -130,6 +130,7 @@
 					<formats>
 						<format>xml</format>
 					</formats>
+					<ignoreTrivial>true</ignoreTrivial>
 				</configuration>
 			</plugin>
 			<plugin>
