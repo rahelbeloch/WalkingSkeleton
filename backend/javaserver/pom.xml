@@ -131,9 +131,6 @@
 						<format>xml</format>
 					</formats>
 				</configuration>
-				<instrumentation>
-		            <ignoreTrivial>true</ignoreTrivial>
-		        </instrumentation>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
