@@ -41,13 +41,6 @@ namespace CommunicationLib
             {"role", typeof(Role)},
             {"form", typeof(Form)}
         };
-        // funktion mapping 
-        private static Dictionary<string, string> _funcMapping = new Dictionary<string, string>
-        {
-            {DEFINE_OPERATION, "GetObject"},
-            {UPDATE_OPERATION, "GetObject"},
-            {DELETE_OPERATION, "DeleteObject"}
-        };
 
         // RestRequester for server connection
         private IRestRequester _sender;
@@ -134,7 +127,7 @@ namespace CommunicationLib
         /// Call-back method.
         /// Is invoked when the messageConsumer receives a Message.
         /// Provides ITextMessage and IMapMessages.
-        /// Calls HandleRequest() the method.
+        /// Calls the HandleRequest() method.
         /// </summary>
         /// <param name="msg">received message</param>
         public void OnMessageReceived(IMessage msg)
@@ -169,25 +162,22 @@ namespace CommunicationLib
 
         /// <summary>
         /// Invoked by the OnMessageReceived method.
-        /// Uses reflection for dynamic rest requests.
+        /// Calls the rest requester.
         /// The request information is retrieved from the given message string.
-        /// Define and update operations result a GET-restrequest for the given source information.
-        /// The restrequest returns the updated source. 
+        /// The restrequest returns the updated source.
         /// This source will be sent to the client(IDataReceiver) by invoking a callback method.
-        /// 
+        ///
+        /// Define and update operations result a GET-restrequest for the given source information.
         /// Deletion operations obviously skip the restrequest, because there is no source for 'GET'.
         /// The client(IDataReceiver) receives the necessary delete information via callback method(DataDeletion()).
         /// </summary>
         /// <param name="requestMsg">information string for rest-request</param>
         private void HandleRequest(string requestMsg)
         {
-            // object identifier
             string objId;
-
             Type genericType;
-            string methodName;
+            string operation;
             object requestedObj = null;
-            object [] args;
 
             /* msgParams[0] --> requested Type (workflow/item/user)
              * msgParams[1] --> server operation (def/upd/del)
@@ -196,96 +186,61 @@ namespace CommunicationLib
             IList<string> msgParams = new List<string>();
             msgParams = requestMsg.Split('=');
 
-            // get method signature for reflective invocation
             genericType = _dataStructures[ msgParams[0] ];
-            methodName = _funcMapping[ msgParams[1] ];
-
-            // build args for reflective invocation
+            operation = msgParams[1];
             objId = msgParams[2];
-            args = new object [1] { objId };
 
             // deletion, update or definition
-            if (msgParams[1].Equals(DELETE_OPERATION))
+            if (operation.Equals(DELETE_OPERATION))
             {
                 _myClient.DataDeletion(genericType, objId);
             }
-            else
+            else if (operation.Equals(DEFINE_OPERATION) || operation.Equals(UPDATE_OPERATION))
             {
-                // do refletive invocation
                 try
                 {
-                    requestedObj = reflectiveRestRequest(methodName, genericType, args);
-                    // Client update
+                    // determine type and do rest request
                     if (genericType == typeof(Workflow))
                     {
+                        requestedObj = _sender.GetObject<Workflow>(objId);
                         _myClient.WorkflowUpdate((Workflow)requestedObj);
 
                         // register client for item updates from this new workflow
-                        if (msgParams[1].Equals(DEFINE_OPERATION))
+                        if (operation.Equals(DEFINE_OPERATION))
                         {
                             RegisterItemSource((Workflow)requestedObj);
                         }
                     }
                     else if (genericType == typeof(Item))
                     {
+                        requestedObj = _sender.GetObject<Item>(objId);
                         _myClient.ItemUpdate((Item)requestedObj);
                     }
                     else if (genericType == typeof(User))
                     {
+                        requestedObj = _sender.GetObject<User>(objId);
                         _myClient.UserUpdate((User)requestedObj);
                     }
                     else if (genericType == typeof(Role))
                     {
+                        requestedObj = _sender.GetObject<Role>(objId);
                         _myClient.RoleUpdate((Role)requestedObj);
                     }
                     else if (genericType == typeof(Form))
                     {
+                        requestedObj = _sender.GetObject<Form>(objId);
                         _myClient.FormUpdate((Form)requestedObj);
-                    }  
+                    }
                 }
                 catch (System.Exception e)
                 {
                     _myClient.HandleError(e);
                 }
             }
-        }
-
-        /// <summary>
-        /// Invoked by the HandleRequest()-method.
-        /// Generates a reflective generic method for restrequests and invokes it.
-        /// </summary>
-        /// <param name="methodName">MethodName for the reflective invocation</param>
-        /// <param name="genericType">generic for the generic method invocation</param>
-        /// <param name="args">parameters for the reflective invocation</param>
-        /// <returns>the requested source from the server</returns>
-        private object reflectiveRestRequest(string methodName, Type genericType, object[] args)
-        {
-            object requestedObj = null;
-            // create a generic method object
-            MethodInfo method = typeof(RestRequester).GetMethod(methodName);
-            MethodInfo genericMethod = method.MakeGenericMethod(genericType);
-
-            /* Invoke the dynamically generated method
-             * 1. param is the method location
-             * 2. param is a object list of params for this invocation 
-             * If client has no access to requested resource,
-             * server throws an exception --> abortion of method
-             */
-
-            requestedObj = genericMethod.Invoke(_sender, args);
-
-            /*try
+            else
             {
-                System.Action action = (System.Action)Delegate.CreateDelegate
-                                       (typeof(System.Action), genericMethod);
-                action();
+                logger.Warn("Message protocol violation! Unknown operation: " + operation);
             }
-            catch (System.Exception)
-            {
-                throw;
-            }*/
-
-            return requestedObj;
         }
 
         /// <summary>

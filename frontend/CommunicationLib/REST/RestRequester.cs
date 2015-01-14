@@ -16,6 +16,7 @@ using System.Security;
 using CommunicationLib;
 using System.Diagnostics;
 using NLog;
+using Method = RestSharp.Method;
 
 namespace RestAPI
 {
@@ -32,6 +33,7 @@ namespace RestAPI
         private String _myClientID;
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
+
 
         /// <summary>
         /// Default constructor, initializes the serialization settings and pre-strings for urls.
