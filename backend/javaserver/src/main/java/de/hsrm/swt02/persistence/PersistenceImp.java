@@ -34,6 +34,7 @@ import de.hsrm.swt02.persistence.exceptions.StepNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
+import de.hsrm.swt02.properties.ConfigProperties;
 
 /**
  * @author Dominik
@@ -67,6 +68,7 @@ public class PersistenceImp implements Persistence {
     @Inject
     public PersistenceImp(UseLogger logger) {
         this.logger = logger;
+        this.propConfig = ConfigProperties.getInstance().getProperties();
     }
     
     // Workflow Operations
@@ -607,10 +609,5 @@ public class PersistenceImp implements Persistence {
         workflow1.addStep(finalStep);
 
         storeWorkflow(workflow1);
-    }
-
-    @Override
-    public void setPropConfig(Properties propConfig) {
-        this.propConfig = propConfig;
     }
 }

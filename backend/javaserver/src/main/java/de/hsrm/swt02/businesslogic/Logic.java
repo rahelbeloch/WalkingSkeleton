@@ -339,4 +339,8 @@ public interface Logic {
      */
     void loadData();
 
+    /**
+     * Method to call persistence's method load.
+     */
+    void load();
 }

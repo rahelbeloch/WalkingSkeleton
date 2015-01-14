@@ -33,7 +33,6 @@ public class SerializingTest {
         db = new PersistenceImp(ul);
         p = new Properties();
         p.setProperty("StoragePath", "serializingTest.ser");
-        db.setPropConfig(p);
     }
     
     @Test(expected = UserNotExistentException.class)
