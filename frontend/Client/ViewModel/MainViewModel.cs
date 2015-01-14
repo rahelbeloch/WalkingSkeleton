@@ -11,6 +11,7 @@ using CommunicationLib.Model;
 using System.Windows;
 using CommunicationLib.Exception;
 using System.Diagnostics;
+
 namespace Client.ViewModel
 {
     /// <summary>
@@ -29,6 +30,7 @@ namespace Client.ViewModel
         private LoginViewModel _loginViewModel;
         public LoginViewModel loginViewModel { get { return _loginViewModel; } }
 
+        // the communication library
         private ComLib _myComLib;
         public ComLib myComLib
         {
@@ -73,6 +75,7 @@ namespace Client.ViewModel
                 _dashboardViewModel.userName = value;
             }
         }
+
         public MainViewModel()
         {
             _loginViewModel = new LoginViewModel(this);
@@ -160,41 +163,41 @@ namespace Client.ViewModel
         }
 
         /// <summary>
-        /// calls the update methode for a workflow in the dashboardViewModel
+        /// Calls the update methode for a workflow in the dashboardViewModel.
         /// </summary>
         /// <param name="workflow">instance of the new workflow</param>
-        void IDataReceiver.WorkflowUpdate(Workflow workflow) 
+        public void WorkflowUpdate(Workflow workflow) 
         {
             logger.Info("Received Workflow for Update: ID=" + workflow.id);
             // route update-handling to subcomponents
-            _dashboardViewModel.addWorkflowToModel(workflow, null);
+            _dashboardViewModel.AddWorkflowToModel(workflow, null);
         }
         /// <summary>
-        /// calls the update methode for items in the dashboardModel
+        /// Calls the update methode for items in the dashboardModel
         /// </summary>
         /// <param name="item">instance of the new item</param>
-        void IDataReceiver.ItemUpdate(Item item)
+        public void ItemUpdate(Item item)
         {
             logger.Info("Received Item for Update: ID=" + item.id);
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.updateItem(item)));
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.UpdateItem(item)));
         }
 
-        void IDataReceiver.UserUpdate(User user)
+        public void UserUpdate(User user)
         {
             // update handling
         }
 
-        void IDataReceiver.RoleUpdate(Role role)
+        public void RoleUpdate(Role role)
         {
             // update handling
         }
 
-        void IDataReceiver.FormUpdate(Form updatedForm)
+        public void FormUpdate(Form updatedForm)
         {
             // update handling
         }
 
-        void IDataReceiver.DataDeletion(Type sourceType, string sourceId)
+        public void DataDeletion(Type sourceType, string sourceId)
         {
             // Deletion handling here
         }

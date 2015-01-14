@@ -14,24 +14,22 @@ using System.Diagnostics;
 namespace Client.ViewModel
 {
     /// <summary>
-    /// ViewModel class for the Login
+    /// ViewModel class for the Login.
     /// </summary>
     public class LoginViewModel : ViewModelBase
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private MainViewModel _mainViewModel;
+
         public LoginViewModel(MainViewModel mainViewModelInstanz)
             : base()
         {
             _mainViewModel = mainViewModelInstanz;
         }
-        public string Name
-        {
-            get
-            {
-                return "Login Model";
-            }
-        }
+
+        private string _name = "Login Model";
+        public string name { get { return _name; } }
+
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
@@ -48,6 +46,7 @@ namespace Client.ViewModel
                 OnChanged("securePwd");
             }
         }
+
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
@@ -64,8 +63,9 @@ namespace Client.ViewModel
                 OnChanged("username");
             }
         }
+
         /// <summary>
-        /// ICommand which is called by the login button
+        /// ICommand which is called by the login button.
         /// </summary>
         private ICommand _authenticate;
         public ICommand authenticate
@@ -74,7 +74,6 @@ namespace Client.ViewModel
             {
                 if (_authenticate == null)
                 {
-
                     _authenticate = new ActionCommand(execute =>
                     {
                         try
@@ -89,10 +88,6 @@ namespace Client.ViewModel
                         {
                             logger.Info("Login failed for username=" + username + " password=" + securePwd);
                             MessageBox.Show(exc.Message);
-                        }
-                        finally
-                        {
-
                         }
                     }, canExecute =>
                     {

@@ -10,29 +10,33 @@ using System.Windows;
 namespace Client.ViewModel
 {
     /// <summary>
-    /// ViewModel class which holds the data for one Row of an item with the fitting step in the view
+    /// ViewModel class which holds the data for one Row of an item with the fitting step in the view.
     /// </summary>
     public class DashboardRow
     {
         private Item _actItem;
-        public Item actItem {
+        public Item actItem 
+        {
             get { return _actItem; }
-            set {
+            set 
+            {
                 _actItem = value;
                 _actState = _actItem.state;
-                if(_actState.Equals("OPEN")) {
-                    _visibilityStepForwardButton = Visibility.Visible;
-                } else {
-                    _visibilityStepForwardButton = Visibility.Hidden;
-                }
-            } }
+                _visibilityStepForwardButton = _actState.Equals("OPEN") ? Visibility.Visible : Visibility.Hidden;
+            }
+        }
+
         private Step _actStep;
         public Step actStep { get { return _actStep; } set { _actStep = value; } }
+
         private String _username;
         public String username { get { return _username; } }
+
         private String _actState;
+
         private Visibility _visibilityStepForwardButton;
         public Visibility visibilityStepForwardButton { get { return _visibilityStepForwardButton; } }
+        
         public DashboardRow(Item actItem, Step actStep, String username)
         {
             _username = username;
