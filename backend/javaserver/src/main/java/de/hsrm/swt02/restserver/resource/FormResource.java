@@ -23,7 +23,7 @@ import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
  * 
- * Class enabling Clients to perform operations on Forms.
+ * Class enabling clients to perform operations on forms.
  * @author akoen001
  *
  */
@@ -38,9 +38,9 @@ public class FormResource {
     
     /**
      * 
-     * This Method grants the Clients access to all Forms stored in persistence.
+     * This method grants the clients access to all forms stored in persistence.
      * 
-     * @return All Forms in the persistence as string if successful, 500 Server Error if not
+     * @return All forms in the persistence as string if successful, 500 server error if not
      * @throws PersistenceException 
      */
     @GET
@@ -73,10 +73,10 @@ public class FormResource {
     
     /**
      * 
-     * This Method enables Clients to save Forms into the persistence.
+     * This method enables clients to save forms into the persistence.
      * 
      * @param formParams the form to be saved is available via key "data"
-     * @return 200 OK if successful, 500 Server Error if not
+     * @return 200 OK if successful, 500 server error if not
      */
     @POST
     @Path("forms")
@@ -105,13 +105,8 @@ public class FormResource {
             return Response.serverError().entity(String.valueOf(e.getErrorCode()))
                     .build();
         }
-
-        
         
         LOGGER.log(Level.INFO, loggingBody + " Form successfully stored.");
         return Response.ok("Form stored").build();
     }
-    
-    
-    
 }
