@@ -53,6 +53,7 @@ public class ConfigProperties {
                 pWriter.println("LogFile = serverlog.html");
                 pWriter.println("LogLevel = info");
                 pWriter.println("ConsoleLogging = true");
+                pWriter.println("StoragePath = dataModel.ser");
                 pWriter.flush();
                 pWriter.close();
                 // and read it
