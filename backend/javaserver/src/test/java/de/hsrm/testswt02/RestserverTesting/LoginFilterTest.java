@@ -12,7 +12,9 @@ import javax.ws.rs.client.ClientBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.LogConfigurator;
+import de.hsrm.swt02.messaging.ServerPublisherBrokerException;
 import de.hsrm.swt02.restserver.RestServer;
 
 /**
@@ -58,6 +60,12 @@ public class LoginFilterTest {
      */
     @AfterClass
     public static void cleanUp() {
+    	try {
+			ConstructionFactory.getInstance().getPublisher().stopBroker();
+		} catch (ServerPublisherBrokerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         restServer.stopHTTPServer(true);
     }
     
