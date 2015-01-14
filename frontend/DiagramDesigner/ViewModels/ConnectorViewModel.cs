@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using DiagramDesigner.Helpers;
+using CommunicationLib.Model;
 
 namespace DiagramDesigner
 {
