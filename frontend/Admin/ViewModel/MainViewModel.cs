@@ -252,13 +252,13 @@ namespace Admin.ViewModel
         void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
             logger.Info("Received Workflow for Update: ID=" + workflow.id);
-            _workflowViewModel.updateWorkflows(workflow);
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflowViewModel.updateWorkflows(workflow)));
         }
 
         void IDataReceiver.ItemUpdate(Item item)
         {
             logger.Info("Received Item for Update: ID=" + item.id);
-            _workflowViewModel.updateItemFromWorkflow(item);
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflowViewModel.updateItemFromWorkflow(item)));
         }
 
         void IDataReceiver.UserUpdate(User user)
