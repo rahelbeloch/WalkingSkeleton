@@ -2,14 +2,16 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Admin.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
     
     <UserControl.Resources>
        <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
-            <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick"/> 
+            <EventSetter Event="MouseLeftButtonUp" Handler="HandleDoubleClick"/> 
         </Style>
+        <local:BooleanToGermanStringConverter x:Key="converter" />
     </UserControl.Resources>
 
     <Grid>
@@ -69,7 +71,8 @@
                         </DockPanel>
 
                         <DockPanel DockPanel.Dock="Bottom" Height="45" VerticalAlignment="Bottom">
-                            <Button x:Name="saveWorkflow" HorizontalAlignment="Right" Content="Workflow speichern/veröffentlichen" Height="25" Margin="10" Command="{Binding submitWorkflowCommand}"/>
+                            <Button x:Name="saveWorkflow" DockPanel.Dock="Right" Content="Workflow speichern/veröffentlichen" Height="25" Margin="10" Command="{Binding submitWorkflowCommand}"/>
+                            <Button x:Name="resetWorkflow" HorizontalAlignment="Right" Content="Abbrechen" Height="25" Margin="10 10 0 10 " Command="{Binding resetWorkflowCommand}"/>
                         </DockPanel>
                     </DockPanel>
                 </TabItem>
@@ -83,7 +86,7 @@
                                                 <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
                                                 <GridViewColumn Width="100" Header="Anzahl der Steps" DisplayMemberBinding="{Binding steps.Count}" />
                                                 <GridViewColumn Width="100" Header="Anzahl der Items" DisplayMemberBinding="{Binding items.Count}"/>
-                                                <GridViewColumn Width="50" Header="aktiv"  DisplayMemberBinding="{Binding active}"/>
+                                            <GridViewColumn Width="50" Header="aktiv"  DisplayMemberBinding="{Binding active,Converter={StaticResource converter}}"/>
                                         </GridView.Columns>
                                         </GridView>
                                     </ListView.View>
@@ -94,7 +97,7 @@
                             <Label DockPanel.Dock="Top" Content="Items" FontWeight="Medium"/>
                             <DockPanel DockPanel.Dock="Top">
                                 <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}"/>
-                                <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Edit Workflow"/>
+                                <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Workflow editieren"/>
                             </DockPanel>
                             <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding items, UpdateSourceTrigger=PropertyChanged}" ItemContainerStyle="{StaticResource itemstyle}">
                                 <ListView.View>
