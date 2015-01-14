@@ -227,6 +227,11 @@ namespace CommunicationLib
                     {
                         _myClient.DataDeletion(genericType, objId);
                     }
+
+                    if (e is LogInException)
+                    {
+                        UnregisterClient();
+                    }
                     _myClient.HandleError(e);
                 }
             }
