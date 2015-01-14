@@ -3,11 +3,7 @@ package de.hsrm.testswt02.RestserverTesting;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -30,6 +26,7 @@ import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.properties.ConfigProperties;
 import de.hsrm.swt02.restserver.RestServer;
 
 /**
@@ -58,22 +55,7 @@ public class RestserverWorkflowTest {
         restServer = new RestServer();
         restServer.startHTTPServer();
         client = ClientBuilder.newClient();
-        final Properties properties = new Properties();
-        BufferedInputStream stream;
-        // read configuration file for rest properties
-        try {
-            stream = new BufferedInputStream(new FileInputStream(
-                    "server.config"));
-            properties.load(stream);
-            stream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        }
-        targetUrl = properties.getProperty("RestServerURI");
+        targetUrl = ConfigProperties.getInstance().getProperties().getProperty("RestServerURI");
     }
 
     /**
