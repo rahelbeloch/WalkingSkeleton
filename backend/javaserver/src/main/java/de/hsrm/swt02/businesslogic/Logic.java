@@ -369,9 +369,8 @@ public interface Logic {
 
     /**
      * Method for saving all relevant data from server. Calls the method persistence.save().
-     * @param storagePath the path to the DataModel storage path
      */
-    void save(String storagePath);
+    void save();
     
     /**
      * Method to load the data model from filesystem. 

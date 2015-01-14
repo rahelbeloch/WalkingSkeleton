@@ -96,7 +96,7 @@ public class App {
         // ShutDownHook
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
-                shutdown(server, properties.getProperty("StoragePath"));             
+                shutdown(server);             
             }
         });
         
@@ -113,7 +113,7 @@ public class App {
             }
         }
         
-        shutdown(server, properties.getProperty("StoragePath"));
+        shutdown(server);
     }
     
     /**
@@ -141,9 +141,8 @@ public class App {
      *  Closes all logging file handlers. 
      * 
      * @param server the server to shutdown
-     * @param storagePath the path to the DataModel storage path
      */
-    public static void shutdown(RestServer server, String storagePath) {
+    public static void shutdown(RestServer server) {
         /* Prevents that a thread sets the shutdown-variable
          * while another thread refers to it.
          * Otherwise it could cause a double shutdown 
@@ -177,7 +176,7 @@ public class App {
         }
         
         // save DataModel
-        factory.getLogic().save(storagePath);
+        factory.getLogic().save();
         
         // close logging handler
         for (Handler handler : handlers) {
