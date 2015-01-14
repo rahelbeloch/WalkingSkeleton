@@ -36,7 +36,7 @@ namespace Client.ViewModel
         /// </summary>
         private void InitModel()
         {
-            logger.Info("Init Model");
+            logger.Debug("Init Model");
             _workflows.Clear();
             IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
             if (workflowList == null)
@@ -58,9 +58,6 @@ namespace Client.ViewModel
                 addWorkflowToModel(workflow, startableList);
                 _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
             }
-            
-            _relevantItems.Clear();
-            //_restRequester.GetRelevantItemsByUser(_userName).ToList().ForEach(_relevantItems.Add);
         }
         /// <summary>
         /// update a single workflow
@@ -69,6 +66,7 @@ namespace Client.ViewModel
         /// <param name="startableList">List of startables Workflows</param>
         public void addWorkflowToModel(Workflow updatedWorkflow, IList<string> startableList)
         {
+            logger.Debug("addWorkflowtoModel");
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
             if (startableList == null)
@@ -92,7 +90,7 @@ namespace Client.ViewModel
             }
 
             Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
-            logger.Info("Workflow Update ID="+toUpdate.actWorkflow.id + " ItemCount="+toUpdate.dashboardRows.Count); 
+            logger.Debug("Workflow Update ID="+toUpdate.actWorkflow.id + " ItemCount="+toUpdate.dashboardRows.Count); 
         }
 
         /// <summary>
@@ -101,11 +99,33 @@ namespace Client.ViewModel
         /// <param name="item"></param>
         public void updateItem(Item item)
         {
-            DashboardRow fittingRow = getWorkflowRowForItem(item);
-            fittingRow.actItem = item;
-            OnChanged("selectedRow");
+            String workflowId = item.workflowId;
+            _relevantItems.Clear();
+            _restRequester.GetRelevantItemsByUser(workflowId).ToList().ForEach(_relevantItems.Add);
+            if(isItemInList(item, _relevantItems)) {
+                DashboardRow fittingRow = getWorkflowRowForItem(item);
+                fittingRow.actItem = item;
+                OnChanged("selectedRow");
+            }
         }
-
+        /// <summary>
+        /// checks whether the new item is relevant for the user
+        /// </summary>
+        /// <param name="item">new or updated item</param>
+        /// <param name="itemsList">List of the relevant items for the user</param>
+        /// <returns></returns>
+        private Boolean isItemInList(Item item, List<Item> itemsList)
+        {
+            String id = item.id;
+            foreach (Item checkItem in itemsList)
+            {
+                if (id.Equals(checkItem.id))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         /// <summary>
         /// the method searches the dashboardRow for the given item
         /// </summary>
