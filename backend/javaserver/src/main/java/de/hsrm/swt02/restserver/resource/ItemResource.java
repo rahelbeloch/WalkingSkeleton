@@ -3,6 +3,7 @@ package de.hsrm.swt02.restserver.resource;
 import java.util.logging.Level;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
@@ -41,24 +43,20 @@ public class ItemResource {
     /**
      * This Method grants the Clients access to an Item stored in persistence via the itemid.
      * @param itemid the id of the item
+     * @param username the user requesting the service
      * @return the item as string if successful, else an exception
      */
     @GET
     @Path("items/{itemid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getItemById(@PathParam("itemid") String itemid) {
+    public Response getItemById(@PathParam("itemid") String itemid, @HeaderParam("username") String username) {
         final String loggingBody = PREFIX + "GET /items/" + itemid;
+        
         LOGGER.log(Level.INFO, loggingBody);
         final ObjectMapper mapper = new ObjectMapper();
         Item item = null;
         try {
             item = LOGIC.getItem(itemid);
-        } catch (ItemNotExistentException e1) {
-            LOGGER.log(Level.INFO, e1);
-            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
-        } catch (StorageFailedException e) {
-            LOGGER.log(Level.WARNING, e);
-            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
         } catch (PersistenceException e) {
             LOGGER.log(Level.INFO, loggingBody);
             LOGGER.log(Level.WARNING, e);

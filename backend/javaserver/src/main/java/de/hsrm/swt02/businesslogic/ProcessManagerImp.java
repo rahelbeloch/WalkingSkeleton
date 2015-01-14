@@ -104,7 +104,7 @@ public class ProcessManagerImp implements ProcessManager {
             return itemId;
         } else {
             logger.log(Level.WARNING, "Access denied, Authorization failed.");
-            throw new UserHasNoPermissionException("user " + user.getUsername() + "has no permission on this item");
+            throw new UserHasNoPermissionException("user " + user.getUsername() + " has no permission on this item");
         }
     }
 

@@ -3,6 +3,7 @@ package de.hsrm.swt02.businesslogic;
 import java.util.List;
 
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
@@ -205,8 +206,10 @@ public interface Logic {
      * method to load a specific item from persistence.
      * 
      * @param itemID - a items unique string id 
+     * @param username - userId
      * @return Item - requested item from persistence
      * @throws PersistenceException if an error in persistence occurs
+     * @throws NoPermissionException if the user is not allowed to access the item
      */
     Item getItem(String itemID) throws PersistenceException;
     
