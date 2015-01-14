@@ -56,6 +56,9 @@ public class Role extends RootElement {
     
     @Override
     public String toString() {
-        return id;
+        String ret = "";
+        ret += "Role:" + this.id;
+        
+        return ret;
     }
 }

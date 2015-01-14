@@ -1,5 +1,6 @@
 package de.hsrm.swt02.model;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -171,5 +172,15 @@ public class User extends RootElement {
         clone.setPassword(this.password);
 
         return clone;
+    }
+    
+    @Override
+    public String toString() {
+        String ret = "";
+        ret += "User: " + this.id + "\n";
+        ret += "\tActive: " + this.isActive() + "\n";
+        ret += "\tRollen: " + Arrays.toString(this.getRoles().toArray()) + "\n";
+        
+        return ret;
     }
 }
