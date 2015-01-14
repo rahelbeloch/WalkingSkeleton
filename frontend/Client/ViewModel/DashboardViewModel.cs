@@ -101,7 +101,7 @@ namespace Client.ViewModel
             foreach (Item item in _relevantItems)
             {
                 activeStep = GetStepById(item.getActiveStepId(), updatedWorkflow);
-                row = new DashboardRow(item, activeStep, _userName, null);
+                row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.formular);
                 toUpdate.AddDashboardRow(row);
             }
 
@@ -144,6 +144,7 @@ namespace Client.ViewModel
                     if (dashboardRow.actItem.id.Equals(id))
                     {
                         dashboardWorkflow.DeleteDashboardRow(dashboardRow);
+                        logger.Debug("Item mit der id " + id + " wurde gelöscht.");     
                         return;
                     }
                 }
@@ -189,7 +190,7 @@ namespace Client.ViewModel
                     {
                         // create DashboardRow for item
                         Step actStep = GetStepById(item.getActiveStepId(), workflow.actWorkflow);
-                        fittingRow = new DashboardRow(item, actStep, userName, null);
+                        fittingRow = new DashboardRow(item, actStep, userName, workflow.actWorkflow.formular);
                         workflow.AddDashboardRow(fittingRow);
                         changed = false;
                     }

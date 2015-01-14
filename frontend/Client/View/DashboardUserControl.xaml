@@ -73,7 +73,7 @@
                                                             CommandParameter="{Binding selectedRow}" HorizontalAlignment="Left"/>
                 <GroupBox Grid.Row="4" Grid.ColumnSpan="2">
                     <GroupBox.Header>
-                        <Label Content="{Binding selectedRow}"></Label>
+                        <Label Content="{Binding selectedRow.form.description}"></Label>
                     </GroupBox.Header>
                     <TextBlock Text="World!" />
                 </GroupBox>
