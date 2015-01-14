@@ -23,6 +23,7 @@ namespace Client.ViewModel
                 _actItem = value;
                 _actState = _actItem.state;
                 _visibilityStepForwardButton = _actState.Equals("OPEN") ? Visibility.Visible : Visibility.Hidden;
+                _visibilityFinishButton = _actState.Equals("BUSY") ? Visibility.Visible : Visibility.Hidden;
             }
         }
 
@@ -36,6 +37,9 @@ namespace Client.ViewModel
 
         private Visibility _visibilityStepForwardButton;
         public Visibility visibilityStepForwardButton { get { return _visibilityStepForwardButton; } }
+
+        private Visibility _visibilityFinishButton;
+        public Visibility visibilityFinishButton { get { return _visibilityFinishButton; } }
         
         public DashboardRow(Item actItem, Step actStep, String username)
         {

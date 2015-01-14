@@ -40,43 +40,6 @@
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
-                                    <!--
-                                    <Grid Grid.Row="1"  HorizontalAlignment="Center">
-                                    
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="2*" />
-                                            <ColumnDefinition Width="1*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="1*" />
-                                            <RowDefinition Height="1*" />
-                                        </Grid.RowDefinitions>
-
-                                        <Label Grid.Row="0" Grid.Column="0" Content="Name" FontWeight="Medium"/>
-                                        <Label Grid.Row="0" Grid.Column="1" Content="Nr" FontWeight="Medium"/>
-
-                                        <ItemsControl ItemsSource="{Binding dashboardRows}" Grid.Row="1" Grid.ColumnSpan="2">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid  HorizontalAlignment="Center">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="1*" />
-                                                            <ColumnDefinition Width="2*" />
-                                                            <ColumnDefinition Width="1*" />
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding actStep.description}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
-                                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding actItem.id}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
-                                                        <Button Grid.Row="1" Grid.Column="2" Content="{Binding actItem.state}" Width="40" Height="25" Margin="25 0 10 0" 
-                                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
-                                                            CommandParameter="{Binding}" HorizontalAlignment="Right"/>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </Grid>
-                                    -->
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -92,6 +55,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Label Grid.Row="0" Content="Description: "/>
                 <Label Grid.Row="0" HorizontalAlignment="Center"  Content="{Binding selectedRow.actStep.description, UpdateSourceTrigger=PropertyChanged}"/>
@@ -100,6 +64,9 @@
                 <Label Grid.Row="2" Content="State: "/>
                 <Label Grid.Row="2" HorizontalAlignment="Center" Content="{Binding selectedRow.actItem.state, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button Grid.Row="3" Content="Annehmen" Height="25" Visibility="{Binding selectedRow.visibilityStepForwardButton}"
+                                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
+                                                            CommandParameter="{Binding selectedRow}" HorizontalAlignment="Left"/>
+                <Button Grid.Row="4" Content="Abschließen" Height="25" Visibility="{Binding selectedRow.visibilityFinishButton}"
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
                                                             CommandParameter="{Binding selectedRow}" HorizontalAlignment="Left"/>
             </Grid>
