@@ -47,6 +47,9 @@ namespace Admin.ViewModel
         private ObservableCollection<Role> _roleCollection = new ObservableCollection<Role>();
         public ObservableCollection<Role> roleCollection { get { return _roleCollection; } }
 
+        private ObservableCollection<Form> _formCollection = new ObservableCollection<Form>();
+        public ObservableCollection<Form> formCollection { get { return _formCollection; } }
+
         /// <summary>
         /// RestRequester is used for rest request.
         /// </summary>
