@@ -24,5 +24,6 @@ namespace Admin.View
         {
             InitializeComponent();
         }
+
     }
 }

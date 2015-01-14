@@ -12,7 +12,7 @@
             <DataTemplate DataType="{x:Type viewmodel:WorkflowDiagramViewModel}">
                 <view:WorkflowUserControl />
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodel:UserViewModel}">
+        <DataTemplate DataType="{x:Type viewmodel:UserViewModel}">
             <view:RoleUserControl />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
