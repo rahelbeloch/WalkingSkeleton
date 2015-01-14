@@ -57,11 +57,6 @@ public class LogicImp implements Logic {
         this.processManager = pm;
         this.logger = logger;
     }
-    
-    @Override
-    public void loadData() {
-        persistence.load();
-    }
 
     @Override
     public LogicResponse startWorkflow(String workflowID, String username)
@@ -846,9 +841,14 @@ public class LogicImp implements Logic {
         }
         return forms;
     }
+    
+    @Override
+    public void loadData() {
+        persistence.load();
+    }
 
     @Override
-    public void save() {
+    public void saveData() {
         persistence.save();
     }
 

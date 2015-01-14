@@ -370,7 +370,7 @@ public interface Logic {
     /**
      * Method for saving all relevant data from server. Calls the method persistence.save().
      */
-    void save();
+    void saveData();
     
     /**
      * Method to load the data model from filesystem. 
