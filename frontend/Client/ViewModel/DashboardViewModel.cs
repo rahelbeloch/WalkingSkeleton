@@ -38,7 +38,7 @@ namespace Client.ViewModel
         {
             logger.Info("Init Model");
             _workflows.Clear();
-            IList<Workflow> workflowList = _restRequester.GetAllWorkflowsByUser();
+            IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
             if (workflowList == null)
             {
                 workflowList = new List<Workflow>();
