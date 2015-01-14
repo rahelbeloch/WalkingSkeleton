@@ -263,6 +263,7 @@ namespace Admin.ViewModel
 
         void IDataReceiver.UserUpdate(User user)
         {
+            Console.WriteLine("User UPdtae erreicht");
             Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.UserUpdate(user)));
         }
 
@@ -303,7 +304,7 @@ namespace Admin.ViewModel
 
         public void HandleError(Exception e)
         {
-            throw new NotImplementedException();
+            // Error handling
         }
 
         #endregion
