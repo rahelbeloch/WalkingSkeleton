@@ -14,6 +14,7 @@ using RestAPI;
 using NLog;
 using System.Windows.Threading;
 using System.Diagnostics;
+using CommunicationLib.Exception;
 
 namespace Client.ViewModel
 {
@@ -38,7 +39,12 @@ namespace Client.ViewModel
         {
             logger.Debug("Init Model");
             _workflows.Clear();
-            IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
+            IList<Workflow> workflowList = null;
+            try
+            {
+                workflowList = _restRequester.GetAllElements<Workflow>();
+            } catch (BasicException exc){ MessageBox.Show(exc.Message);}
+            
             if (workflowList == null)
             {
                 workflowList = new List<Workflow>();
@@ -46,7 +52,14 @@ namespace Client.ViewModel
             workflowList.ToList().ForEach(_workflows.Add);
 
             _startableWorkflows.Clear();
-            IList<string> startableList = _restRequester.GetStartablesByUser();
+            IList<string> startableList = null;
+            try
+            {
+                startableList = _restRequester.GetStartablesByUser();
+            }
+            catch (BasicException exc) { MessageBox.Show(exc.Message); }
+            
+
             if (startableList == null)
             {
                 startableList = new List<string>();
@@ -55,7 +68,7 @@ namespace Client.ViewModel
             
             foreach (Workflow workflow in _workflows)
             {
-                AddWorkflowToModel(workflow, startableList);
+                AddWorkflowToModel(workflow);
                 _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
             }
         }
@@ -65,17 +78,19 @@ namespace Client.ViewModel
         /// </summary>
         /// <param name="updatedWorkflow">workflow which has to be updated</param>
         /// <param name="startableList">List of startables Workflows</param>
-        public void AddWorkflowToModel(Workflow updatedWorkflow, IList<string> startableList)
+        public void AddWorkflowToModel(Workflow updatedWorkflow)
         {
             logger.Debug("addWorkflowtoModel");
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
-            if (startableList == null)
+            IList<string> startableList = null;
+            _startableWorkflows.Clear();
+            try
             {
-                _startableWorkflows.Clear();
                 startableList = _restRequester.GetStartablesByUser();
-                startableList.ToList().ForEach(_startableWorkflows.Add);
             }
+            catch (BasicException exc) { MessageBox.Show(exc.Message); }
+            startableList.ToList().ForEach(_startableWorkflows.Add);
 
             toUpdate.startPermission = _startableWorkflows.Contains(updatedWorkflow.id);
 
@@ -86,7 +101,7 @@ namespace Client.ViewModel
             foreach (Item item in _relevantItems)
             {
                 activeStep = GetStepById(item.getActiveStepId(), updatedWorkflow);
-                row = new DashboardRow(item, activeStep, _userName);
+                row = new DashboardRow(item, activeStep, _userName, null);
                 toUpdate.AddDashboardRow(row);
             }
 
@@ -103,7 +118,12 @@ namespace Client.ViewModel
         {
             String workflowId = item.workflowId;
             _relevantItems.Clear();
-            _restRequester.GetRelevantItemsByUser(workflowId).ToList().ForEach(_relevantItems.Add);
+            try
+            {
+                _restRequester.GetRelevantItemsByUser(workflowId).ToList().ForEach(_relevantItems.Add);
+            }
+            catch (BasicException exc) { MessageBox.Show(exc.Message); }
+            
             if(IsItemInList(item.id, _relevantItems)) {
                 DashboardRow fittingRow = GetWorkflowRowForItem(item);
                 fittingRow.actItem = item;
@@ -169,7 +189,7 @@ namespace Client.ViewModel
                     {
                         // create DashboardRow for item
                         Step actStep = GetStepById(item.getActiveStepId(), workflow.actWorkflow);
-                        fittingRow = new DashboardRow(item, actStep, userName);
+                        fittingRow = new DashboardRow(item, actStep, userName, null);
                         workflow.AddDashboardRow(fittingRow);
                         changed = false;
                     }
@@ -234,7 +254,15 @@ namespace Client.ViewModel
         /// <param name="itemId">the itemId of the item to forward</param>
         public void StepForward(string stepId, string itemId)
         {
-            _restRequester.StepForward(stepId, itemId);
+            try
+            {
+                _restRequester.StepForward(stepId, itemId);
+            }
+            catch (BasicException exc)
+            {
+                MessageBox.Show(exc.Message);
+            }
+            
         }
 
         /// <summary>
@@ -251,7 +279,7 @@ namespace Client.ViewModel
                     {
                         DashboardRow param = (DashboardRow) execute;
                         StepForward(param.actStep.id, param.actItem.id);
-                    }, canExecute => true);
+                }, canExecute => true);
                 }
                 return _stepForwardCommand;
             }
