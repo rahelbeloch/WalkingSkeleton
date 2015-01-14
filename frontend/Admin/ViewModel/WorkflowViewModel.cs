@@ -406,6 +406,7 @@ namespace Admin.ViewModel
                         {
                             selectedTabId = 0;
                             _workflowModel = actWorkflow;
+                            _workflow.Clear();
                             foreach(Step step in actWorkflow.steps) {
                                 _workflow.Add(step);
                             }
