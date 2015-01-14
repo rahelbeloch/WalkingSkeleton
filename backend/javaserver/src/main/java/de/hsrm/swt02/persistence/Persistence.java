@@ -3,7 +3,6 @@ package de.hsrm.swt02.persistence;
 import java.util.List;
 import java.util.Properties;
 
-import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
@@ -13,7 +12,6 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * Interface for the dependency injection of the persistence implementation.
@@ -191,7 +189,6 @@ public interface Persistence {
     /**
      * Method for saving all relevant data on server during shutdown. All DataModels are
      * serialized in a file which path is configured in server configuration file.
-     * @param storagePath the path to the DataModel storage path
      */
     void save();
     

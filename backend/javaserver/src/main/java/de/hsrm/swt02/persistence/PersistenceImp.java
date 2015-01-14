@@ -492,7 +492,7 @@ public class PersistenceImp implements Persistence {
             final FileOutputStream fileOut = new FileOutputStream(propConfig.getProperty("StoragePath"));
             final ObjectOutputStream out = new ObjectOutputStream(fileOut);
             
-            DataStorage ds = new DataStorage(workflows, users, roles, forms);
+            final DataStorage ds = new DataStorage(workflows, users, roles, forms);
             out.writeObject(ds);
             out.close();
             fileOut.close();
@@ -505,7 +505,7 @@ public class PersistenceImp implements Persistence {
     
     @Override
     public void load() {
-        String storagePath = propConfig.getProperty("StoragePath");
+        final String storagePath = propConfig.getProperty("StoragePath");
         final File f = new File(storagePath);
         
         if (storagePath != null && storagePath.contains(".ser") && f.exists()) {
@@ -547,7 +547,7 @@ public class PersistenceImp implements Persistence {
     /**
      * Initialize test datas.
      * 
-     * @throws PersistenceException
+     * @throws PersistenceException - if an error in persistence occurs
      */
     private void initTestdata() throws PersistenceException {
         Workflow workflow1;
