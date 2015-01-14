@@ -110,7 +110,6 @@ public class LogicTest {
     public void stepOverTest() throws LogicException {
         init();
         initExtension();
-        li.addWorkflow(w);
         li.startWorkflow(w.getId(), user.getUsername());
         final Workflow workflow = li.getWorkflow(w.getId());
         Item item = workflow.getItemByPos(0);
@@ -120,8 +119,9 @@ public class LogicTest {
         
         li.stepForward(item.getId(), workflow.getStepById(action.getId())
                 .getId(), user.getUsername());
-
-        item = li.getItem(item.getId());
+        
+        // TODO: update test due to change in getItem(item, username)
+        item = li.getItem(item.getId(), user.getUsername());
         assertTrue(item.getStepState(action.getId()) == "DONE");
     }
 
