@@ -11,6 +11,9 @@ import de.hsrm.swt02.logging.UseLogger;
 
 /**
  * 
+ * Class responsible for loading the properties initially. can be globally accessed to get Properties. Implements
+ * singleton pattern.
+ * 
  * @author akoen001
  *
  */
@@ -21,6 +24,8 @@ public class ConfigProperties {
     private static UseLogger logger;
     
     /**
+     * 
+     * constructor.
      * 
      */
     private ConfigProperties() {
@@ -44,6 +49,8 @@ public class ConfigProperties {
     
     /**
      * 
+     * takes care of the fact that only one instance of this class exists.
+     * 
      * @return theInstance instance of Properties
      */
     public synchronized static ConfigProperties getInstance() {
@@ -54,6 +61,8 @@ public class ConfigProperties {
     }
    
     /**
+     * 
+     * getter for the properties.
      * 
      * @return properties of the configFile
      */
