@@ -202,7 +202,7 @@ public class PersistenceTest {
     
     @Test
     public void testUserOverwriting() throws PersistenceException {
-        User user = new User();
+        final User user = new User();
         user.setUsername("testuser");
         
         db.storeUser(user);

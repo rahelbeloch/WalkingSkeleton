@@ -84,7 +84,7 @@ public class LogicTest {
                                                          // expects String not
                                                          // user
 
-        Workflow workflow = li.getWorkflow(w.getId());
+        final Workflow workflow = li.getWorkflow(w.getId());
         assertFalse(workflow.getItems().isEmpty());
     }
 
@@ -107,13 +107,12 @@ public class LogicTest {
      * @throws LogicException 
      */
     @Test
-    public void stepOverTest() throws LogicException 
-    {
+    public void stepOverTest() throws LogicException {
         init();
         initExtension();
         li.addWorkflow(w);
         li.startWorkflow(w.getId(), user.getUsername());
-        Workflow workflow = li.getWorkflow(w.getId());
+        final Workflow workflow = li.getWorkflow(w.getId());
         Item item = workflow.getItemByPos(0);
         
         li.stepForward(item.getId(), workflow.getStepById(action.getId())
@@ -136,7 +135,7 @@ public class LogicTest {
         li.addWorkflow(w);
         final int i = w.getSteps().size();
         li.addStep(w.getId(), new Action());
-        Workflow workflow = li.getWorkflow(w.getId());
+        final Workflow workflow = li.getWorkflow(w.getId());
         assertTrue(workflow.getSteps().size() == i + 1);
 
     }
@@ -196,8 +195,7 @@ public class LogicTest {
      * @throws LogicException 
      */
     @Test
-    public void getOpenItemsByUserTest() throws LogicException 
-    {
+    public void getOpenItemsByUserTest() throws LogicException {
         init();
         initExtension();
         
@@ -296,7 +294,7 @@ public class LogicTest {
         user.setUsername("0");
         user.getRoles().add(role);
         
-        ArrayList<String> roles = new ArrayList<String>();
+        final ArrayList<String> roles = new ArrayList<String>();
         roles.add(role.getRolename());
         
         startStep = new StartStep(roles);
@@ -309,19 +307,15 @@ public class LogicTest {
         w.addStep(finalStep);
         
         try {
-			li.addRole(role);
-			li.addUser(user);
-			li.addWorkflow(w);
-		} catch (PersistenceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (LogicException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            li.addRole(role);
+            li.addUser(user);
+            li.addWorkflow(w);
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+        } catch (LogicException e) {
+            e.printStackTrace();
+        }
     }
-    
-    
     
     /**
      * This method init more data for testing.
@@ -329,24 +323,24 @@ public class LogicTest {
 
      */
     private void initExtension() throws LogicException {
-    	
-    	role1 = new Role();
-    	role1.setRolename("role1");
-    	
-    	role2 = new Role();
-    	role2.setRolename("role2");
-    	
-    	user1 = new User();
+        
+        role1 = new Role();
+        role1.setRolename("role1");
+        
+        role2 = new Role();
+        role2.setRolename("role2");
+        
+        user1 = new User();
         user1.setUsername("1");
         user1.getRoles().add(role1);
         
-    	user2 = new User();
+        user2 = new User();
         user2.setUsername("2");
         user2.getRoles().add(role2);
         
-        ArrayList<String> roles1 = new ArrayList<String>();
+        final ArrayList<String> roles1 = new ArrayList<String>();
         roles1.add(role1.getRolename());
-        ArrayList<String> roles2 = new ArrayList<String>();
+        final ArrayList<String> roles2 = new ArrayList<String>();
         roles2.add(role2.getRolename());
         
         startStep1 = new StartStep(roles1);
@@ -356,33 +350,33 @@ public class LogicTest {
         action2 = new Action(roles2, "description");
         action3 = new Action(roles2, "description");
         finalStep = new FinalStep();
-
+        
         w1 = new Workflow();
         w1.addStep(startStep1);
         w1.addStep(action1);
         w1.addStep(finalStep);
-
+        
         w2 = new Workflow();
         w2.addStep(startStep2);
         w2.addStep(action2);
         w2.addStep(new FinalStep());
-
+        
         w3 = new Workflow();
         w3.addStep(startStep3);
         w3.addStep(action3);
         w3.addStep(new FinalStep());
-
+        
         try {
             li.addWorkflow(w1);
             li.addWorkflow(w2);
             li.addWorkflow(w3);
-
+        
         } catch (IncompleteEleException e1) {
             e1.printStackTrace();
         }
         
         try {
-        	li.addRole(role1);
+            li.addRole(role1);
             li.addRole(role2);
             li.addUser(user2);
             li.addUser(user1);

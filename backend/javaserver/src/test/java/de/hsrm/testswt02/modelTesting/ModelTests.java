@@ -31,9 +31,9 @@ public class ModelTests {
     */
     @Test
     public void actionTest() {
-        Role role = new Role();
+        final Role role = new Role();
         role.setRolename("testrole");
-        ArrayList<String> roleList = new ArrayList<>();
+        final ArrayList<String> roleList = new ArrayList<>();
         roleList.add(role.getRolename());
         final Action a = new Action(roleList, "description");
         assertThat(a, instanceOf(Action.class));
@@ -89,9 +89,9 @@ public class ModelTests {
      */
     @Test
     public void startStepTest() {
-        Role role = new Role();
+        final Role role = new Role();
         role.setRolename("testrole");
-        ArrayList<String> roleList = new ArrayList<>();
+        final ArrayList<String> roleList = new ArrayList<>();
         roleList.add(role.getRolename());
         final StartStep ss = new StartStep(roleList);
         assertThat(ss, instanceOf(StartStep.class));

@@ -37,7 +37,7 @@ public class CloneTests {
     public void actionCloneTest() throws CloneNotSupportedException {
         final Action a = new Action();
         Action clone = new Action();
-        Role role = new Role();
+        final Role role = new Role();
         role.setRolename("testrolle");
 
         a.setId("1");
@@ -70,7 +70,7 @@ public class CloneTests {
     public void startStepCloneTest() throws CloneNotSupportedException {
         final StartStep ss = new StartStep();
         StartStep clone = new StartStep();
-        Role role = new Role();
+        final Role role = new Role();
         role.setRolename("testrolle");
 
         ss.setId("1");
@@ -100,7 +100,7 @@ public class CloneTests {
     public void finalStepCloneTest() throws CloneNotSupportedException {
         final FinalStep fs = new FinalStep();
         FinalStep clone = new FinalStep();
-        Role role = new Role();
+        final Role role = new Role();
         role.setRolename("testrolle");
 
         fs.setId("1");
@@ -131,7 +131,7 @@ public class CloneTests {
     public void stepCloneTest() throws CloneNotSupportedException {
         final Step s = new Step();
         Step clone = new Step();
-        Role role = new Role();
+        final Role role = new Role();
         role.setRolename("testrolle");
 
         s.setId("1");
@@ -287,8 +287,8 @@ public class CloneTests {
         final MetaEntry m1 = new MetaEntry();
         final MetaEntry m2 = new MetaEntry();
 
-        Role role1 = new Role();
-        Role role2 = new Role();
+        final Role role1 = new Role();
+        final Role role2 = new Role();
         role1.setRolename("testrolle_1");
         role2.setRolename("testrolle_2");
 
@@ -369,7 +369,7 @@ public class CloneTests {
         final Role r2 = new Role();
         r1.setRolename("role1");
         r2.setRolename("role2");
-        Set<Role> roles = new HashSet<>();
+        final Set<Role> roles = new HashSet<>();
         roles.add(r1);
         roles.add(r2);
 
