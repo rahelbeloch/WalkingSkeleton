@@ -25,8 +25,7 @@ public interface Logic {
      * @param workflowID is the workflow, which should be started
      * @param username is the User, who starts the workflow
      * @return logicResponse of starting a workflow
-     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
-     * @throws LogicException 
+     * @exception LogicException if an error in businesslogic occurs
      */
     LogicResponse startWorkflow(String workflowID, String username) throws LogicException;
 
@@ -35,7 +34,7 @@ public interface Logic {
      * 
      * @param workflow is the workflow which should be added
      * @return logicResponse of adding a workflow
-     * @throws LogicException 
+     * @exception LogicException if an error in businesslogic occurs
      */
     LogicResponse addWorkflow(Workflow workflow) throws LogicException; // later a workflows name will be given a name
                                                   
@@ -44,7 +43,7 @@ public interface Logic {
      * This method return all workflows in persistence.
      * 
      * @return list of all workflows.
-     * @throws PersistenceException 
+     * @throws PersistenceException if an error in persistence occurs
      */
     List<Workflow> getAllWorkflows() throws PersistenceException;
 
@@ -53,7 +52,7 @@ public interface Logic {
      * This method return all workflows in persistence that are not marked inactive.
      * 
      * @return all active workflows in persistence
-     * @throws PersistenceException 
+     * @throws PersistenceException if an error in persistence occurs
      */
     List<Workflow> getAllActiveWorkflows() throws PersistenceException;
     
@@ -62,8 +61,7 @@ public interface Logic {
      * 
      * @param workflowID is the id of the given worklow
      * @return a Workflow, if there is one, who has this workflowID
-     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
-     * @throws PersistenceException 
+     * @throws PersistenceException if an error in persistence occurs
      */
     Workflow getWorkflow(String workflowID) throws PersistenceException;
 
@@ -73,7 +71,7 @@ public interface Logic {
      * @param workflowID
      *            describe the Workflow
      * @return logicResponse of deleting a workflow
-     * @throws PersistenceException 
+     * @throws PersistenceException if an error in persistence occurs
      */
     LogicResponse deleteWorkflow(String workflowID)
             throws PersistenceException;
@@ -87,17 +85,7 @@ public interface Logic {
      * @param itemId is the itemId of the given item
      * @param stepId the stepId of the responsible item step
      * @param username is the name of the user who executes the step in the Item
-     * @throws ItemNotExistentException
-     * @exception ItemNotExistentException if requested item doesn't exist
-     * @exception ItemNotForwardableException if the responsive steplist of the item can't go any further
-     * @exception UserHasNoPermissionException if the given user has no right to advance the steplist
-     * @throws UserNotExistentException
-     * @throws ItemNotForwardableException
-     * @throws UserHasNoPermissionException
-     * @exception UserNotExistentException if requested user doesn't exist
-     * @throws StepNotExistentException 
-     * @throws WorkflowNotExistentException
-     * @throws LogicException 
+     * @exception LogicException if an error in businesslogic occurs 
      * @return the logicResponse of stepForward
      */
     LogicResponse stepForward(String itemId, String stepId, String username) 
@@ -107,19 +95,18 @@ public interface Logic {
      * This method deactivates a workflow.
      * 
      * @param workflowID the id of the workflow which should be deactivate
-     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
-     * @throws WorkflowNotExistentException
-     * @throws PersistenceException 
-     * @return the LogicResponse of deactivating a workflow
+     * @throws PersistenceException if an error in persistence occurs
+     * @return the LogicResponse of the deactivated workflow
      */
     LogicResponse deactivateWorkflow(String workflowID) throws PersistenceException;
 
     /**
      * This method activate a workflow.
+     * 
+     * @return the LogicResponse of an activated workflow
      * @param workflowID the id of the workflow which should be deactivate
-     * @throws WorkflowNotExistentException 
+     * @throws PersistenceException if an error in persistence occurs
      * @throws PersistenceException 
-     * @return the LogicResponse of activating a workflow
      **/
     LogicResponse activateWorkflow(String workflowID) throws PersistenceException;
    
@@ -130,9 +117,7 @@ public interface Logic {
      * @param workflowID the workflow, which shall edited
      * @param stepId is the Id the step, which shall added
      * @return logicResponse of adding a step
-     * @exception WorkflowNotExistentException if the given worklow doesnt exist in the persistence
-     * @throws WorkflowNotExistentException
-     * @throws PersistenceException  
+     * @throws PersistenceException if an error in persistence occurs
      */
     LogicResponse addStep(String workflowID, Step stepId) throws PersistenceException;
 
@@ -142,8 +127,7 @@ public interface Logic {
      * @param workflowID is the id of the workflow, which shall edited
      * @param stepID is the id of the step, which shall delete
      * @return logicResponse of deleting a step
-     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
-     * @throws WorkflowNotExistentException 
+     * @throws PersistenceException if an error in persistence occurs
      * @throws PersistenceException   
      */
     LogicResponse deleteStep(String workflowID, String stepID) throws PersistenceException;
@@ -153,9 +137,7 @@ public interface Logic {
      * 
      * @param user is the given user which should be added
      * @return logicResponse of adding a user
-     * @exception UserAlreadyExistsException if the given user already exists in the persistence
-     * @throws UserAlreadyExistsException
-     * @throws PersistenceException 
+     * @throws PersistenceException if an error in persistence occurs
      */
     LogicResponse addUser(User user) throws PersistenceException;
 
@@ -164,8 +146,7 @@ public interface Logic {
      * 
      * @param username describe the user
      * @return a User, if there is one, who has this username
-     * @exception UserNotExistentException if the given user doesnt exist in the persistence
-     * @throws UserNotExistentException 
+     * @throws PersistenceException if an error in persistence occurs 
      * @throws PersistenceException  
      */
     User getUser(String username) throws PersistenceException; // not there yet
@@ -177,9 +158,7 @@ public interface Logic {
      * @param password of the user, to be checked
      * @param adminRequired flag whether or not admin check is necessary
      * @return if user correct true, else false
-     * @exception LogInException if something is invalid
-     * @throws LogInException 
-     * @throws LogicException 
+     * @exception LogicException if an error in businesslogic occurs
      */
     boolean checkLogIn(String username, String password, boolean adminRequired) throws LogicException;
 
@@ -199,12 +178,7 @@ public interface Logic {
      * won't return the items only a list of workflows.
      * 
      * @param username is the username of the user whose workflows' is looked for
-     * @exception WorkflowNotExistentException if the requested workflow doesnt exist in the persistence
-     * @exception UserNotExistentException if the given user doesnt exist in the persistence
-     * @exception LogicException if there is an exception in the businesslogic
-     * @throws WorkflowNotExistentException
-     * @throws UserNotExistentException
-     * @throws LogicException
+     * @exception LogicException if an error in businesslogic occurs
      * @return a LinkedList of workflows
      */
     List<Workflow> getAllWorkflowsForUser(String username) throws LogicException;
@@ -213,37 +187,27 @@ public interface Logic {
      * Method for getting a list of the ids of workflows startable by a given user (if the user is responsible for the Startstep of the steplist).
      * 
      * @param username is the name and describes the given user
-     * @exception UserNotExistentException if the requested user doesnt exist in the persistence
-     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
-     * @exception LogicException if there is an exception in the logic
-     * @throws UserNotExistentException
-     * @throws WorkflowNotExistentException
-     * @throws LogicException
-     * @throws UserNotExistentException
+     * @exception LogicException if an error in businesslogic occurs
      * @return List<Integer> list of Ids
      */
     List<String> getStartableWorkflowsForUser(String username) throws LogicException;
-//    TODO: check by Role
     
     /**
      * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
      * @param workflowId is the id of the given workflow
      * @param username desribes the given user
-     * @exception WorkflowNotExistentException if the given workflow doesnt exist i9n the persistence
-     * @exception UserNotExistentException if the given user doesnt exist in the persistence
-     * @throws WorkflowNotExistentException
-     * @throws UserNotExistentException
+     * @throws PersistenceException if an error in persistence occurs
      * @throws PersistenceException  
      * @return List<Integer> list of stepIds
      */
     List<Item> getRelevantItemsForUser(String workflowId, String username) throws PersistenceException;
-// TODO: check by Role
 
     /**
-     * Method gives an Item.
-     * @param itemID 
-     * @throws PersistenceException  
-     * @return an Item
+     * method to load a specific item from persistence.
+     * 
+     * @param itemID - a items unique string id 
+     * @return Item - requested item from persistence
+     * @throws PersistenceException if an error in persistence occurs
      */
     Item getItem(String itemID) throws PersistenceException;
     
@@ -254,9 +218,7 @@ public interface Logic {
      * Method for getting a list of all the existing roles in the persistance.
      * 
      * @return list of all roles
-     * @exception RoleNotExistentException if the requested Role is not there
-     * @throws RoleNotExistentException 
-     * @throws PersistenceException  
+     * @throws PersistenceException if an error in persistence occurs
      */
     List<Role> getAllRoles() throws PersistenceException;
 
@@ -264,8 +226,7 @@ public interface Logic {
      * Method for returning a list of all the existing users in the persistance.
      * 
      * @return list of all users
-     * @exception UserNotExistentException if the requested user is not there
-     * @throws UserNotExistentException
+     * @throws PersistenceException if an error in persistence occurs
      * @throws PersistenceException  
      */
     List<User> getAllUsers() throws PersistenceException;
@@ -294,9 +255,7 @@ public interface Logic {
      * 
      * @param rolename of the role
      * @return LogicResponce object
-     * @throws NoPermissionException 
      * @throws LogicException 
-     * @exception RoleNotExistentException if the requested role is not there
      */
     LogicResponse deleteRole(String rolename) throws LogicException;
     
@@ -304,10 +263,7 @@ public interface Logic {
      * Method for giving a List of items of a user which are all open.
      * 
      * @param username describes the given user
-     * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
-     * @exception UserNotExistentException if the given user doesnt exist in the persistence
-     * @throws WorkflowNotExistentException
-     * @throws UserNotExistentException
+     * @exception LogicException if an error in businesslogic occurs
      * @throws PersistenceException  
      * @return List<Item> is the list of items we want to get
      */
@@ -316,23 +272,26 @@ public interface Logic {
     /**
     * Method for getting a list of startable workflows by a given user.
     * 
-    * @param username describes the user
-    * @exception WorkflowNotExistentException if the given workflow doesnt exist in the persistence
-    * @exception UserNotExistentException if the given user doesnt exist in the persistence
-    * @throws WorkflowNotExistentException
-    * @throws UserNotExistentException
+    * @param username describes the user 
     * @return List<Workflow> is the requested list of workflows
-     * @throws LogicException 
+    * @exception LogicException if an error in businesslogic occurs
     */
     List<Workflow> getStartableWorkflows(String username) throws LogicException;
 
+    /**
+     * method to load a specific role from persistence.
+     * 
+     * @param rolename a roles unique string id
+     * @return Role - requested Role from persistence
+     * @throws PersistenceException if an error in persistence occurs
+     */
     Role getRole(String rolename) throws PersistenceException;
     
     /**
      * Method for adding a form to persistence.
      * @param form which should be added
      * @return logicResponse which contains definition notification
-     * @throws PersistenceException if problems occurs in persistence
+     * @throws PersistenceException if an error in persistence occurs
      */
     LogicResponse addForm(Form form) throws PersistenceException;
     
@@ -340,15 +299,16 @@ public interface Logic {
      * Method for deleting a form in persistence. Only possible if form isn't currently used.
      * @param formId indicates which form should be deleted
      * @return logicResponse which contains deletion notification
-     * @throws PersistenceException 
+     * @throws PersistenceException if an error in persistence occurs
      */
     LogicResponse deleteForm(String formId) throws PersistenceException;
     
     /**
+     * method to load a specific form from persistence.
      * 
-     * @param formId the id of the requested form
-     * @throws PersistenceException 
-     * @return the requested form
+     * @param formId a forms unique string id
+     * @return Form - requested Form from persistence
+     * @throws PersistenceException if an error in persistence occurs
      */
     Form getForm(String formId) throws PersistenceException;
     
@@ -356,7 +316,7 @@ public interface Logic {
      * Method for updating an item. Suitable item from a workflow in persistence will be overwritten.
      * @param item contains changes, will be used to overwrite item in workflow
      * @return logicResposne which contains update notification
-     * @throws PersistenceException 
+     * @throws PersistenceException if an error in persistence occurs
      */
     LogicResponse updateItem(Item item) throws PersistenceException;
     
