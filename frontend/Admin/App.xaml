@@ -18,6 +18,9 @@
         <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
             <view:LoginUserControl />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:FormViewModel}">
+            <view:FormUserControl />
+        </DataTemplate>
 
             <ResourceDictionary.MergedDictionaries>
 
