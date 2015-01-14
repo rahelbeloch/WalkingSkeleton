@@ -29,7 +29,7 @@ namespace UnitTestProject1
         /// Test the private method 'GetObjectRequest' in RestRequester. Tests the ExceptionHandling if server is not running.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(WorkflowNotExistException))]
+        [ExpectedException(typeof(WorkflowNotExistentException))]
         public void testServerConnectionGetObject()
         {
             myRequester.GetObject<Workflow>("15");
@@ -39,7 +39,7 @@ namespace UnitTestProject1
         /// Test the private method 'SendSimpleRequest' in RestRequester. Tests the ExceptionHandling if server is not running.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(WorkflowNotExistException))]
+        [ExpectedException(typeof(WorkflowNotExistentException))]
         public void testServerConnectionSendSimpleReq()
         {
             Role testRole = new Role();
@@ -79,7 +79,7 @@ namespace UnitTestProject1
         /// Tests if the right Exception is thrown if a not existing Object is requested.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(WorkflowNotExistException))]
+        [ExpectedException(typeof(WorkflowNotExistentException))]
         public void testWorkflowDoesntExistsException()
         {
             int getWFId = -17;
