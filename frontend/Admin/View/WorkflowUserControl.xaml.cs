@@ -38,7 +38,7 @@ namespace Admin.View
             {
                 Workflow wv = lvi.DataContext as Workflow;
                 Console.WriteLine("id" + wv.id);
-                WorkflowViewModel wmv = (WorkflowViewModel)this.DataContext;
+                WorkflowDiagramViewModel wmv = (WorkflowDiagramViewModel)this.DataContext;
                 Console.WriteLine(wmv);
                 wmv.actWorkflow = wv;
                 wmv.workflowActivity = "";
