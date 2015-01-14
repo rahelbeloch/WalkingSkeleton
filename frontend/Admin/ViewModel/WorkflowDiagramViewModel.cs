@@ -12,12 +12,10 @@ using CommunicationLib;
 using System.Windows;
 using Action = CommunicationLib.Model.Action;
 using CommunicationLib.Exception;
-using DiagramDesigner;
-using DiagramDesigner.Helpers;
-
 using System.Diagnostics;
 using NLog;
-
+using DiagramDesigner;
+using DiagramDesigner.Helpers;
 
 namespace Admin.ViewModel
 {
@@ -25,22 +23,21 @@ namespace Admin.ViewModel
     /// The WorkflowViewModel contains properties and commands to create a new workflow and to send it to the server.
     /// Furthermore, the properties and commands are used as DataBindings in the graphical user interface.
     /// </summary>
-    public class WorkflowViewModel : ViewModelBase
+    public class WorkflowDiagramViewModel : ViewModelBase
     {
         private Workflow _workflowModel = new Workflow();
-
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private MainViewModel _mainViewModel;
-        private IRestRequester _restRequester; 
+        private IRestRequester _restRequester;
 
-        
         private DiagramViewModel diagramViewModel = new DiagramViewModel();
         private ToolBoxViewModel _toolBoxViewModel;
         public ToolBoxViewModel toolBoxViewModel { get { return _toolBoxViewModel; } }
         private IMessageBoxService messageBoxService;
 
-        public WorkflowViewModel(MainViewModel mainViewModel)
+
+        public WorkflowDiagramViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
@@ -61,13 +58,13 @@ namespace Admin.ViewModel
                 }
             }
         }
-
-
         public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
         
         public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
 
         #region properties
+
+       
 
         /// <summary>
         /// Property _dummyWorkflow fills list view with steps.
@@ -86,6 +83,12 @@ namespace Admin.ViewModel
             //    OnChanged("workflows");
             //}
         }
+        /// <summary>
+        /// Property for itemlist of an selected (_actWorkflow) workflow in workflow view.
+        /// NOTICE: temporare solution for item view. (There has to be another way...)
+        /// </summary>
+        private ObservableCollection<Item> _items = new ObservableCollection<Item>();
+        public ObservableCollection<Item> items { get { return _items; } } 
         /// <summary>
         /// Property to fill combox box with choosable steps.
         /// TODO: change Step to Step (not possible at the moment)
@@ -114,7 +117,7 @@ namespace Admin.ViewModel
         /// Property, which indicates if a selected workflow is de-/active.
         /// This property is used for the de-/active button label.
         /// </summary>
-        private String _workflowActivity = "";
+        private String _workflowActivity = "Deaktivieren";
         public String workflowActivity
         {
             get
@@ -123,22 +126,18 @@ namespace Admin.ViewModel
             }
             set
             {
-                if (actWorkflow != null)
+                if (actWorkflow != null && !actWorkflow.active)
                 {
-                    if (actWorkflow.active)
-                    {
-                        _workflowActivity = "Deaktivieren";
-                    }
-                    else
-                    {
-                        _workflowActivity = "Aktivieren";
-                    }
-
-                    OnChanged("workflowActivity");
+                    _workflowActivity = "Aktivieren";
                 }
-
+                else
+                {
+                    _workflowActivity = "Deaktivieren";
+                }
+                OnChanged("workflowActivity");
             }
         }
+
         /// <summary>
         /// Property to enable textbox for description input.
         /// </summary>
@@ -215,7 +214,10 @@ namespace Admin.ViewModel
             set
             {
                 _actWorkflow = value;
+                _items.Clear();
+                _actWorkflow.items.ForEach(_items.Add);
                 OnChanged("actWorkflow");
+                OnChanged("items");
             }
         }
 
@@ -261,11 +263,7 @@ namespace Admin.ViewModel
             //ease if you wish just create a new IPathFinder class and pass it in right here
             ConnectorViewModel.PathFinder = new OrthogonalPathFinder();
             messageBoxService = ApplicationServicesProvider.Instance.Provider.MessageBoxService;
-
-
-            // fill choosable steps with default values
-            _choosableSteps.Add(new StartStep());
-
+            
             try
             {
                 logger.Info("Initialize");
@@ -291,8 +289,6 @@ namespace Admin.ViewModel
             {
                 MessageBox.Show(e.Message);
             }
-
-           
             OnChanged("workflows");
         }
 
@@ -312,27 +308,61 @@ namespace Admin.ViewModel
         /// </summary>
         /// <param name="newWorkflow"></param>
         public void updateWorkflows(Workflow newWorkflow){
-            Debug.WriteLine("updateWorkflows: " + newWorkflow.active);
-            Debug.WriteLine("Method1 CHECK");
-           
+            bool changed = false;
+
             foreach (Workflow w in _workflows)
             {
                 if (w.id.Equals(newWorkflow.id))
                 {
-                    Debug.WriteLine("Workflow wurde geupdated");
-                    Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Remove(w)));
+                    _workflows.Remove(w);
+                    changed = true;
                     break;
                 }
             }
-            Debug.WriteLine("workflow wurde neu hinzugefügt");
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(newWorkflow)));
+
+            _workflows.Add(newWorkflow);
+            logger.Info("Workflow ID=" + newWorkflow.id + (changed ? " changed" : " added"));
 
             _actWorkflow = null;
+            _items.Clear();
             OnChanged("actWorkflow");
             OnChanged("workflows");
+            OnChanged("items");
         }
 
+        /// <summary>
+        /// When an item has to be updated (e. g. forward, finish), update the workflow overview and update the item view
+        /// </summary>
+        /// <param name="item"></param>
+        public void updateItemFromWorkflow(Item item)
+        {
+            Workflow workflowToUpdate = null;
+            
 
+            foreach (Workflow w in _workflows)
+            {
+                if (w.id.Equals(item.workflowId))
+                {
+                    workflowToUpdate = w;
+                    _workflows.Remove(w);
+                    workflowToUpdate.items.Remove(item);
+                    break;
+                }
+            }
+            workflowToUpdate.items.Add(item);
+            _workflows.Add(workflowToUpdate);
+
+            if (_actWorkflow != null)
+            {
+                _items.Clear();
+                _actWorkflow.items.ForEach(_items.Add);
+                OnChanged("items");
+            }
+            
+            OnChanged("workflows");
+            
+        }
+            
 
         /// <summary>
         /// When the workflow is changed, reconfigure choosable steps for combobox (depending on currently allowed steps).
@@ -400,8 +430,10 @@ namespace Admin.ViewModel
                     _editWorkflowCommand = new ActionCommand(execute =>
                         {
                             selectedTabId = 0;
-                            _workflowModel = actWorkflow;
-                            foreach(Step step in actWorkflow.steps) {
+                            _workflowModel = actWorkflow.Clone<Workflow>();
+                            _workflow.Clear();
+                            foreach (Step step in _workflowModel.steps)
+                            {
                                 _workflow.Add(step);
                             }
                         }, canExecute => _actWorkflow != null);
@@ -424,9 +456,18 @@ namespace Admin.ViewModel
                     {
                         try
                         {
-                            _actWorkflow.active = !_actWorkflow.active;
-                            _restRequester.UpdateObject(_actWorkflow);
-                            _workflowActivity = "";
+
+                            if (_actWorkflow.active)
+                            {
+                                _actWorkflow.active = false;
+                                _restRequester.UpdateObject(_actWorkflow);
+                            }
+                            else
+                            {
+                                _actWorkflow.active = true;
+                                _restRequester.UpdateObject(_actWorkflow);
+                            }
+                            _workflowActivity = "Deaktivieren";
                             OnChanged("workflowActivity");
                         }
                         catch (BasicException e)
@@ -438,7 +479,22 @@ namespace Admin.ViewModel
                 return _toggleActivity;
             }
         }
-
+        private ICommand _resetWorkflowCommand;
+        public ICommand resetWorkflowCommand
+        {
+            get
+            {
+                if (_resetWorkflowCommand == null)
+                {
+                    _resetWorkflowCommand = new ActionCommand(execute =>
+                        {
+                            _workflowModel.clearWorkflow();
+                            workflow.Clear();
+                        }, canExecute => true);
+                }
+                return _resetWorkflowCommand;
+            }
+        }
         /// <summary>
         /// Command to submit workflow if last step is a final step.
         /// </summary>
@@ -453,6 +509,51 @@ namespace Admin.ViewModel
                     {
                         try
                         {
+                            // set all ids in workflow to empty string, to avoid sending 'null'; otherwise problems with parsing!
+                            if (_workflowModel != actWorkflow)
+                            {
+                                _workflowModel.id = "";     
+                            }
+
+                            foreach (Step step in _workflowModel.steps)
+                            {
+                                if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
+                                {
+                                    step.nextStepIds = new List<string>();
+                                }
+                                step.id = "";
+                            }
+
+                            _restRequester.PostObject(_workflowModel);
+
+                            // remove steps from workflow
+                            // update model AND viewmodel, because the model is not observable
+                            _workflowModel.clearWorkflow();
+                            _workflowModel = new Workflow();
+                            _workflow.Clear();
+                        }
+                        catch (BasicException be)
+                        {
+                            MessageBox.Show(be.Message);
+                        }
+                    }, canExecute => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
+                }
+                return _submitWorkflowCommand;
+            }
+        }
+
+        ////neues Command anfang
+        private ICommand _saveWorkflowCommand;
+        public ICommand saveWorkflowCommand
+        {
+            get
+            {
+                if (_saveWorkflowCommand == null)
+                {
+                    _saveWorkflowCommand = new ActionCommand(execute =>
+                    {
+                        try
+                        {
                             // from demo start
                             if (!DiagramViewModel.Items.Any())
                             {
@@ -463,33 +564,44 @@ namespace Admin.ViewModel
 
                             //Save all PersistDesignerItemViewModel
                             foreach (var startStep in DiagramViewModel.Items.OfType<StartStepViewModel>())
-                                {
-                                    StartStep persistStartStep = new StartStep();
-                                    //(startStep.Id, startStep.Left, startStep.Top, startStep.HostUrl);
-                                    //_workflowModel.addStep(persistStartStep);
-                                    Console.WriteLine("addStartStep");
-                                }
-                                //Save all PersistDesignerItemViewModel
-                                foreach (var actionStep in DiagramViewModel.Items.OfType<ActionViewModel>())
-                                {
-                                    Action persistAction = new Action();
-                                    //actionStep.Id, actionStep.Left, actionStep.Top, actionStep.HostUrl);
-                                    //_workflowModel.addStep(persistAction);
-                                    Console.WriteLine("addActionStep");
-                                    
-                                }
-                                foreach (var finalStep in DiagramViewModel.Items.OfType<FinalStepViewModel>())
-                                {
-                                    FinalStep persistFinalStep = new FinalStep();
-                                    //actionStep.Id, actionStep.Left, actionStep.Top, actionStep.HostUrl);
-                                    //_workflowModel.addStep(persistFinalStep);
-                                    Console.WriteLine("addFinalStep");
-                                }
-                                
+                            {
+
+                                StartStep persistStartStep = new StartStep();
+                                //(startStep.Id, startStep.Left, startStep.Top, startStep.HostUrl);
+                                //_workflowModel.addStep(persistStartStep);
+                                logger.Info("StartStepPoint: " + startStep.Left);
+                            }
+                            //Save all PersistDesignerItemViewModel
+                            foreach (var actionStep in DiagramViewModel.Items.OfType<ActionViewModel>())
+                            {
+                                Action persistAction = new Action();
+
+
+                                //actionStep.Id, actionStep.Left, actionStep.Top, actionStep.HostUrl);
+                                //_workflowModel.addStep(persistAction);
+
+
+                            }
+                            foreach (var connection in DiagramViewModel.Items.OfType<ConnectorViewModel>())
+                            {
+                                logger.Info("EndPoint: " + connection.EndPoint);
+                                logger.Info("SouceA: " + connection.SourceA);
+                                logger.Info("SouceB: " + connection.SourceB);
+
+                            }
+                            foreach (var finalStep in DiagramViewModel.Items.OfType<FinalStepViewModel>())
+                            {
+                                FinalStep persistFinalStep = new FinalStep();
+                                //actionStep.Id, actionStep.Left, actionStep.Top, actionStep.HostUrl);
+                                //_workflowModel.addStep(persistFinalStep);
+
+                            }
+
+
 
                             messageBoxService.ShowInformation(string.Format("Finished saving Diagram "));
 
-                            _restRequester.PostObject(_workflowModel);
+                            // _restRequester.PostObject(_workflowModel);
 
                             // remove steps from workflow
                             // update model AND viewmodel, because the model is not observable
@@ -502,9 +614,12 @@ namespace Admin.ViewModel
                         }
                     }, canExecute => _workflowModel != null);
                 }
-                return _submitWorkflowCommand;
+                return _saveWorkflowCommand;
             }
         }
+
+        ////neues Command ende
+
 
         /// <summary>
         /// Command to add a selected step to current workflow.
@@ -523,8 +638,6 @@ namespace Admin.ViewModel
                         if (_selectedStep is StartStep)
                         {
                             StartStep startStep = new StartStep();
-                            
-                            Debug.WriteLine("selectedRole: " + selectedRole.rolename);
                             startStep.roleIds.Add(selectedRole.rolename);
 
                             _workflow.Add(startStep);

@@ -29,7 +29,7 @@
                         <!-- ToolBox Control -->
                         <tools:ToolBoxControl DockPanel.Dock="Top" Grid.Column="0"
                                   DataContext="{Binding toolBoxViewModel}" />
-                            <Button x:Name="saveWorkflow" DockPanel.Dock="Bottom" Content="Workflow speichern/veröffentlichen" Margin="10,10,10,-35" Command="{Binding submitWorkflowCommand}" Height="26" Width="216"/>
+                            <Button x:Name="saveWorkflow" DockPanel.Dock="Bottom" Content="Workflow speichern/veröffentlichen" Margin="10,10,10,-35" Command="{Binding saveWorkflowCommand}" Height="26" Width="216"/>
 
 
                         </DockPanel>

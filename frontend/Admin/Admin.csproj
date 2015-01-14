@@ -76,6 +76,7 @@
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="ViewModel\BooleanToGermanStringConverter.cs" />
     <Compile Include="ViewModel\FormViewModel.cs" />
+    <Compile Include="ViewModel\WorkflowDiagramViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RoleCheckboxRow.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\OLD_WorkflowViewModel.cs" />
-    <Compile Include="ViewModel\WorkflowViewModel.cs" />
     <Compile Include="View\FormUserControl.xaml.cs">
       <DependentUpon>FormUserControl.xaml</DependentUpon>
     </Compile>
