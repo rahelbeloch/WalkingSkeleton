@@ -1,7 +1,6 @@
 package de.hsrm.swt02.persistence;
 
 import java.util.List;
-import java.util.Properties;
 
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
@@ -198,5 +197,4 @@ public interface Persistence {
      * is load.
      */
     void load();
-
 }

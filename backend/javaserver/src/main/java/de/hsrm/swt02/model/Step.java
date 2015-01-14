@@ -82,6 +82,10 @@ public class Step extends RootElement {
         return this.roleIds;
     }
     
+    /**
+     * RoleIds setter.
+     * @param roleIds list of roleIds to set
+     */
     public void setRoleIds(ArrayList<String> roleIds) {
         this.roleIds = roleIds;
     }

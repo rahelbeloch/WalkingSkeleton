@@ -1,15 +1,11 @@
 package de.hsrm.swt02.businesslogic;
 
-import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
-import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.businesslogic.processors.StepProcessor;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
-import de.hsrm.swt02.persistence.exceptions.ItemNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 
 /**
  * Interface for ProcessManager. (Due to Dependency Injection)
@@ -18,12 +14,13 @@ import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 public interface ProcessManager {
 
     /**
-     * This method starts a workflow.
+     * This method checks if the inquired user can actually start the workflow.
+     * If she/he can a workflow is started.
      * 
      * @param workflow which will be started
      * @param username indicates who wants to start a workflow
-     * @throws PersistenceException
-     * @return 
+     * @throws LogicException 
+     * @return String itemId of the item created within starting the wf
      */
     String startWorkflow(Workflow workflow, String username) throws LogicException;
 
@@ -31,6 +28,7 @@ public interface ProcessManager {
      * This method selects the appropriate stepprocessor for a step.
      * 
      * @param step which will be executed
+     * @return StepProcessor fitting processor for this step
      */
     StepProcessor selectProcessor(Step step);
 
@@ -40,14 +38,8 @@ public interface ProcessManager {
      * @param step which is to be edited
      * @param item which is currently active
      * @param user who started interaction
-     * @exception ItemNotForwardableException if the steplist corresponding to an item can't go any further
-     * @exception UserHasNoPermissionException if the given user is not responsible for the step
-     * @throws ItemNotForawrdableException
-     * @throws UserHasNoPermissionException
-     * @throws LogicException
-     * @throws ItemNotExistentException
-     * @throws StorageFailedException
+     * @throws LogicException 
+     * @return itemId of the item which step was executed
      */
-    String executeStep(Step step, Item item, User user) throws ItemNotForwardableException, UserHasNoPermissionException, ItemNotExistentException, StorageFailedException, LogicException;
-
+    String executeStep(Step step, Item item, User user) throws LogicException;
 }

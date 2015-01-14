@@ -1,7 +1,6 @@
 package de.hsrm.swt02.businesslogic;
 
 import java.util.List;
-import java.util.Properties;
 
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.model.Form;
