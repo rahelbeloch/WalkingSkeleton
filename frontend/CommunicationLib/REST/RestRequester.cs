@@ -301,7 +301,6 @@ namespace RestAPI
             }
             catch (BasicException e)
             {
-                Console.WriteLine(e.number);
                 throw;
             }
 
