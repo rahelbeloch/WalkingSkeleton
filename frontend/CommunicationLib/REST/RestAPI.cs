@@ -44,7 +44,7 @@ namespace RestAPI
         {
             // execute the request
             IRestResponse response = client.Execute(request);
-            logger.Info("ErrorException=" + response.ErrorException + "\t" + "ErrorMessage='" + response.ErrorMessage + "'\t" + "StatusCode=" + response.StatusCode);
+            logger.Info("StatusCode=" + response.StatusCode);
 
             try
             {
