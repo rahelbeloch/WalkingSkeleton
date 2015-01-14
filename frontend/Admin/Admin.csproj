@@ -202,6 +202,10 @@
       <Project>{4c425a0b-326a-40f3-b0f3-e5fcb73f47ef}</Project>
       <Name>CommunicationLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DiagramDesigner\DiagramDesigner.csproj">
+      <Project>{74872a86-6809-476b-95ab-6f3512317059}</Project>
+      <Name>DiagramDesigner</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\End.png" />
