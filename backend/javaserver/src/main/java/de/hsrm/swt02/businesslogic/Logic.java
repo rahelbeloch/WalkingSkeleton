@@ -208,10 +208,9 @@ public interface Logic {
      * @param itemID - a items unique string id 
      * @param username - userId
      * @return Item - requested item from persistence
-     * @throws PersistenceException if an error in persistence occurs
-     * @throws NoPermissionException if the user is not allowed to access the item
+     * @throws LogicException if an error in persistence or a permission error occurs
      */
-    Item getItem(String itemID) throws PersistenceException;
+    Item getItem(String itemID, String username) throws LogicException;
     
     
     // Business Logic Sprint 2

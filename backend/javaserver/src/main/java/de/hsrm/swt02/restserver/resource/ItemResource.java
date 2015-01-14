@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
@@ -56,8 +57,8 @@ public class ItemResource {
         final ObjectMapper mapper = new ObjectMapper();
         Item item = null;
         try {
-            item = LOGIC.getItem(itemid);
-        } catch (PersistenceException e) {
+            item = LOGIC.getItem(itemid, username);
+        } catch (LogicException e) {
             LOGGER.log(Level.INFO, loggingBody);
             LOGGER.log(Level.WARNING, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();

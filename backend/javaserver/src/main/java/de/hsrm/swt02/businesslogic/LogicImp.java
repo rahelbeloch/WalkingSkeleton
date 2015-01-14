@@ -29,6 +29,7 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * This class implements the logic interface and is used for logic operations.
@@ -399,7 +400,7 @@ public class LogicImp implements Logic {
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
 
-                if (checkAuthorization(wf.getStepById(item.getActStep().getKey()), username))
+                if (checkAuthorization(item, username))
                 {
                     items.add(item);
                 }
@@ -492,7 +493,11 @@ public class LogicImp implements Logic {
      * @throws PersistenceException is thrown if errors occur while persisting
      * @throws NoPermissionException if the user is not allowed to get item
      */
-    public Item getItem(String itemId) throws PersistenceException {
+    public Item getItem(String itemId, String username) throws LogicException {
+        Item item = persistence.loadItem(itemId);
+        if (!checkAuthorization(item, username)) {
+            throw new NoPermissionException("[logic] user " + username + "has no permission on item " + itemId);
+        }
         return persistence.loadItem(itemId);
     }
 
@@ -589,13 +594,8 @@ public class LogicImp implements Logic {
      */
     public boolean checkAuthorization(Item item, String username) throws PersistenceException {
         final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
-        
-        for (Step stepToCheck : workflowToCheck.getSteps()) {
-            if(checkAuthorization(stepToCheck, username)){
-                return true;
-            }
-        }
-        return false;
+        final Step actStep = workflowToCheck.getStepById((item.getActStep().getKey()));
+        return checkAuthorization(actStep, username);
     }
 
     // BusinessLogic Sprint 2
