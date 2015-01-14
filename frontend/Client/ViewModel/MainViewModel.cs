@@ -202,7 +202,7 @@ namespace Client.ViewModel
             // Deletion handling here
         }
 
-        public void HandleError(Exception e)
+        public void HandleError(BasicException e)
         {
             // Error handling here
         }
