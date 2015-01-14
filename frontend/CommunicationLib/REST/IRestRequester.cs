@@ -26,13 +26,6 @@ namespace CommunicationLib
         IList<O> GetAllElements<O>();
 
         /// <summary>
-        ///  Method to retrieve all existent workflows of one given user on server.
-        /// </summary>
-        /// <param name="username">Requested username</param>
-        /// <returns>List of all workflow of this user</returns>
-        IList<Workflow> GetAllWorkflowsByUser();
-
-        /// <summary>
         ///  Method to retrieve all startable workflows of one given user. 
         /// </summary>
         /// <param name="username">Requested username</param>

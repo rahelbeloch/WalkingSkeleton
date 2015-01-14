@@ -78,29 +78,6 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///  Method to 
-        ///  
-        /// all existent workflows of one given user on server.
-        /// </summary>
-        /// <param name="username">Requested username</param>
-        /// <returns>List of all workflow of this user</returns>
-        public IList<Workflow> GetAllWorkflowsByUser()
-        {
-            String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(Workflow));
-            
-            IList<Workflow> eleList;
-            try
-            {
-                eleList = GetElementList<Workflow>(url);
-            }
-            catch (BasicException)
-            {
-                throw;
-            } 
-            return eleList;
-        }
-
-        /// <summary>
         ///  Method to retrieve all startable workflows of one given user. 
         /// </summary>
         /// <param name="username">Requested username</param>
@@ -395,7 +372,7 @@ namespace RestAPI
             var request = new RestRequest(url, method);
             request.AddHeader("Accept", "text/plain");
 
-            request.AddParameter("clientID", _myClientID, ParameterType.HttpHeader);
+            request.AddParameter("client_id", _myClientID, ParameterType.HttpHeader);
             request.AddParameter("username", _myUsername, ParameterType.HttpHeader);
             if(_myPassword != null)
                 request.AddParameter("password", _myPassword, ParameterType.HttpHeader);
