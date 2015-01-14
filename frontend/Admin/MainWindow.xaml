@@ -10,6 +10,10 @@
                 <MenuItem 
                     Header="Workflow-Verwaltung" 
                     Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                    CommandParameter="{Binding workflowViewModel}" />
+                <MenuItem 
+                    Header="Alte Workflow-Verwaltung" 
+                    Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
                     CommandParameter="{Binding oldWorkflowViewModel}" />
                 <MenuItem 
                     Header="Nutzer-Verwaltung" 

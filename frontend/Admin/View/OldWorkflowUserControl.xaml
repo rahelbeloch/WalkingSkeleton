@@ -111,7 +111,7 @@
                             </ListView>
                             <Label Content="Step" FontWeight="Medium" DockPanel.Dock="Top" />
 
-                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actWorkflow.steps}" ItemContainerStyle="{StaticResource itemstyle}">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actWorkflow.steps}">
                                 <ListView.View>
                                     <GridView >
                                         <GridView.Columns>
