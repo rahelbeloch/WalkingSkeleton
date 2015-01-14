@@ -66,6 +66,4 @@ public class DataStorage implements Serializable {
     public void setForms(List<Form> forms) {
         this.forms = forms;
     }
-
-    
 }
