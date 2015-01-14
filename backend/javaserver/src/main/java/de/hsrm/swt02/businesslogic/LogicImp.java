@@ -57,7 +57,6 @@ public class LogicImp implements Logic {
         this.persistence = p;
         this.processManager = pm;
         this.logger = logger;
-        persistence.setPropConfig(ConfigProperties.getInstance().getProperties());
         persistence.load();
     }
 
@@ -852,6 +851,11 @@ public class LogicImp implements Logic {
     @Override
     public void saveData() {
         persistence.save();
+    }
+    
+    @Override
+    public void load() {
+        persistence.load();
     }
 
 }

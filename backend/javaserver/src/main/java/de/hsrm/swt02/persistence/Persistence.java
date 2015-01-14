@@ -199,9 +199,4 @@ public interface Persistence {
      */
     void load();
 
-    /**
-     * Setter for the server configurations.
-     * @param propConfig server configuration
-     */
-    void setPropConfig(Properties propConfig);
 }

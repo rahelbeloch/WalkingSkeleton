@@ -11,6 +11,7 @@ import com.google.inject.Injector;
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.Action;
@@ -37,6 +38,7 @@ public class RoleHandlingTest {
     @BeforeClass
     public static void setup() {
         LogConfigurator.setup();
+        ConstructionFactory.getInstance();
     }
     
     @Test
