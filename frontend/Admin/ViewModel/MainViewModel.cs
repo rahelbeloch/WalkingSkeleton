@@ -29,8 +29,8 @@ namespace Admin.ViewModel
         private OLD_WorkflowViewModel _oldWorkflowViewModel;
         public OLD_WorkflowViewModel oldWorkflowViewModel { get { return _oldWorkflowViewModel; } }
 
-        private WorkflowViewModel _workflowViewModel;
-        public WorkflowViewModel workflowViewModel { get { return _workflowViewModel; } }
+        private WorkflowDiagramViewModel _workflowViewModel;
+        public WorkflowDiagramViewModel workflowViewModel { get { return _workflowViewModel; } }
 
         private UserViewModel _userViewModel;
         public UserViewModel userViewModel { get { return _userViewModel; }  }
@@ -98,7 +98,7 @@ namespace Admin.ViewModel
         {
             _loginViewModel = new LoginViewModel(this);
             _oldWorkflowViewModel = new OLD_WorkflowViewModel(this);
-            _workflowViewModel = new WorkflowViewModel(this);
+            _workflowViewModel = new WorkflowDiagramViewModel(this);
             _userViewModel = new UserViewModel(this);
 
             PageViewModels.Add(loginViewModel);
