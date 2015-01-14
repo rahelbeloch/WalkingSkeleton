@@ -36,6 +36,7 @@ public class CheckLoginFilter implements ContainerRequestFilter {
         final String clientID = requestContext.getHeaderString("clientID");
         
         try {
+            System.out.println(username + " " + password + " " + clientID);
             logic.checkLogIn(username, password, "admin".equals(clientID));
         } catch (LogicException e2) {
             logger.log(Level.WARNING, e2);

@@ -14,6 +14,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import com.sun.net.httpserver.HttpServer;
 
 import de.hsrm.swt02.logging.UseLogger;
+import de.hsrm.swt02.properties.ConfigProperties;
 import de.hsrm.swt02.restserver.resource.CheckLoginFilter;
 
 /**
@@ -30,36 +31,10 @@ public class RestServer {
 
     /** 
      * Constructor.
-     * @param properties that have been read out of the config file
-     */
-    public RestServer(Properties properties) {
-
-        baseURI = properties.getProperty("RestServerURI");
-        
-    }
-    
-    /** 
-     * Constructor for testing.
      */
     public RestServer() {
 
-        final Properties properties = new Properties();
-        BufferedInputStream stream;
-        // read configuration file for rest properties
-        try {
-            stream = new BufferedInputStream(new FileInputStream(
-                    "server.config"));
-            properties.load(stream);
-            stream.close();
-        } catch (FileNotFoundException e) {
-            logger.log(Level.SEVERE, "Configuration file not found!");
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Can't read file!");
-        } catch (SecurityException e) {
-            logger.log(Level.SEVERE, "Read Access not granted!");
-        }
-        
-        baseURI = properties.getProperty("RestServerURI");
+        baseURI = ConfigProperties.getInstance().getProperties().getProperty("RestServerURI");
         
     }
 

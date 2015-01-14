@@ -339,9 +339,4 @@ public interface Logic {
      */
     void loadData();
 
-    /**
-     * Setter for the server configurations. Method calls setPropConfig in persistence.
-     * @param propConfig server configuration
-     */
-    void setPropConfig(Properties propConfig);
 }

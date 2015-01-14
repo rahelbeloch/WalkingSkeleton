@@ -20,6 +20,7 @@ import com.google.inject.Singleton;
 import de.hsrm.swt02.businesslogic.LogicResponse;
 import de.hsrm.swt02.businesslogic.protocol.Message;
 import de.hsrm.swt02.logging.UseLogger;
+import de.hsrm.swt02.properties.ConfigProperties;
 
 /**
  * Class for message publishing on server-side. Uses Apache's ActiveMQ as message broker.
@@ -48,6 +49,7 @@ public class ServerPublisherImp implements ServerPublisher {
         this.logger = logger;
         // disable apache's log4j-system (we don't use it)
         org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
+        this.applyProperties(ConfigProperties.getInstance().getProperties());
     }
 
     /**
