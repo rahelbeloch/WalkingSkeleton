@@ -31,10 +31,13 @@ namespace Client.ViewModel
             name = "Workflow " + actWorkflow.id;
             this._dashboardRows = new ObservableCollection<DashboardRow>();
         }
-
         public void AddDashboardRow(DashboardRow newRow)
         {
             _dashboardRows.Add(newRow);
+        }
+        public void DeleteDashboardRow(DashboardRow oldRow)
+        {
+            _dashboardRows.Remove(oldRow);
         }
     }
 }

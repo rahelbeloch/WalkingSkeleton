@@ -199,7 +199,11 @@ namespace Client.ViewModel
 
         public void DataDeletion(Type sourceType, string sourceId)
         {
-            // Deletion handling here
+            logger.Info("Delete " + sourceType.ToString() + " ID=" + sourceId);
+            if (sourceType == typeof(Item))
+            {
+                Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.DeleteItem(sourceId)));
+            }
         }
 
         public void HandleError(BasicException e)
