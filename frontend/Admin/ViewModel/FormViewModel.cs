@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Admin.ViewModel
 {
@@ -50,18 +51,47 @@ namespace Admin.ViewModel
         #region properties
         public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
 
-        private Form _selectedForm;
-        public Form SelectedForm
+        private Form _formModel;
+        public Form formModel
         {
             get
             {
-                return _selectedForm;
+                return _formModel;
             }
             set
             {
-                _selectedForm = value;
-                OnChanged("selectedForm");
+                _formModel = value;
+                OnChanged("formModel");
             }
+        }
+
+        //private Dictionary<String, String> _formDefModel = null;
+        public Dictionary<String, String> formDefModel { get; set; }
+        #endregion
+        #region commands
+
+        private ICommand _addFormCommand;
+        public ICommand addFormCommand
+        {
+            get
+            {
+                if (_addFormCommand == null)
+                {
+                    _addFormCommand = new ActionCommand(execute =>
+                    {
+                        //TODO: what happens if command is executed
+                        formDefModel = new Dictionary<String, String>();
+                        formDefModel.Add("key", "value");
+                        formDefModel.Add("key1", "value1");
+                        formDefModel.Add("key2", "value2");
+                        OnChanged("formDefModel");
+
+                    }, canExecute => formDefModel == null);
+                }
+
+                return _addFormCommand;
+            }
+
         }
         #endregion
 

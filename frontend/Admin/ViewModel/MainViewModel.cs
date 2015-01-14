@@ -38,6 +38,9 @@ namespace Admin.ViewModel
         private LoginViewModel _loginViewModel;
         public LoginViewModel loginViewModel { get { return _loginViewModel; } }
 
+        private FormViewModel _formViewModel;
+        public FormViewModel formViewModel { get { return _formViewModel; } }
+
         /// <summary>
         /// Property _userCollection to fill list view with users.
         /// </summary>
@@ -100,11 +103,13 @@ namespace Admin.ViewModel
             _oldWorkflowViewModel = new OLD_WorkflowViewModel(this);
             _workflowViewModel = new WorkflowDiagramViewModel(this);
             _userViewModel = new UserViewModel(this);
+            _formViewModel = new FormViewModel(this);
 
             PageViewModels.Add(loginViewModel);
             PageViewModels.Add(oldWorkflowViewModel);
             PageViewModels.Add(workflowViewModel);
             PageViewModels.Add(userViewModel);
+            PageViewModels.Add(formViewModel);
 
             // set starting ViewModel
             CurrentPageViewModel = loginViewModel;
@@ -237,6 +242,7 @@ namespace Admin.ViewModel
             _oldWorkflowViewModel.InitModel();
             _workflowViewModel.InitModel();
             _userViewModel.InitModel();
+            _formViewModel.InitModel();
         }
 
         /// <summary>
@@ -247,6 +253,7 @@ namespace Admin.ViewModel
             _oldWorkflowViewModel.ClearModel();
             _workflowViewModel.ClearModel();
             _userViewModel.ClearModel();
+            //_formViewModel.ClearModel();
         }
 
         /// <summary>

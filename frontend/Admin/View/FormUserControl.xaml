@@ -12,6 +12,7 @@
                 <Label Content="Formular-Verwaltung" FontSize="16" FontWeight="Medium" HorizontalAlignment="Center"/>
             </DockPanel>
         </DockPanel>
+        
         <DockPanel DockPanel.Dock="Top" Margin="0,41,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -20,11 +21,11 @@
                 </Grid.ColumnDefinitions>
 
                 <DockPanel Grid.Column="0">
-                    <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding FormCollection}" SelectedValue="{Binding SelectedForm, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
+                    <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding formCollection}" IsSynchronizedWithCurrentItem="True">
                         <ListView.View>
                             <GridView>
                                 <GridView.Columns >
-                                    <GridViewColumn Header="Formular" DisplayMemberBinding="{Binding formname}"/>
+                                    <GridViewColumn Header="Formular" DisplayMemberBinding="{Binding id}"/>
                                 </GridView.Columns>
                             </GridView>
                         </ListView.View>
@@ -33,17 +34,32 @@
 
                 <DockPanel Grid.Column="1" VerticalAlignment="Top">
                     <DockPanel DockPanel.Dock="Top">
-                        
+                        <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neues Formular" Height="26" Margin="10" Command="{Binding addFormCommand}"/>
                     </DockPanel>
                     <DockPanel DockPanel.Dock="Top">
-                        
+                        <ListView DockPanel.Dock="Top" ItemsSource="{Binding formDefModel}">
+                            <ListView.View>
+                                <GridView>
+                                    
+                                    <GridViewColumn Header="Feldname" Width="200" >
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding Path=Key}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Inhalt" Width="200">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding Path=Value}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
                     </DockPanel>
-
-                    <DockPanel DockPanel.Dock="Top">
-                        
-                    </DockPanel>
-
-                    
                 </DockPanel>
             </Grid>
 
