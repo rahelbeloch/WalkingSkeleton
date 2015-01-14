@@ -114,6 +114,7 @@ namespace Admin.ViewModel
                 OnChanged("workflowActivity");
             }
         }
+
         /// <summary>
         /// Property to enable textbox for description input.
         /// </summary>
@@ -284,13 +285,13 @@ namespace Admin.ViewModel
             {
                 if (w.id.Equals(newWorkflow.id))
                 {
-                    Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Remove(w)));
+                    _workflows.Remove(w);
                     changed = true;
                     break;
                 }
             }
 
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(newWorkflow)));
+            _workflows.Add(newWorkflow);
             logger.Info("Workflow ID=" + newWorkflow.id + (changed ? " changed" : " added"));
 
             _actWorkflow = null;
@@ -314,18 +315,18 @@ namespace Admin.ViewModel
                 if (w.id.Equals(item.workflowId))
                 {
                     workflowToUpdate = w;
-                    Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Remove(w)));
-                    Application.Current.Dispatcher.Invoke(new System.Action(() => workflowToUpdate.items.Remove(item)));
+                    _workflows.Remove(w);
+                    workflowToUpdate.items.Remove(item);
                     break;
                 }
             }
-            Application.Current.Dispatcher.Invoke(new System.Action(() => workflowToUpdate.items.Add(item)));
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflows.Add(workflowToUpdate)));
+            workflowToUpdate.items.Add(item);
+            _workflows.Add(workflowToUpdate);
 
             if (_actWorkflow != null)
             {
-                Application.Current.Dispatcher.Invoke(new System.Action(() => _items.Clear()));
-                Application.Current.Dispatcher.Invoke(new System.Action(() => _actWorkflow.items.ForEach(_items.Add)));
+                _items.Clear();
+                _actWorkflow.items.ForEach(_items.Add);
                 OnChanged("items");
             }
             
