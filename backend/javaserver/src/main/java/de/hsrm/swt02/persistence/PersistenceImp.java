@@ -521,7 +521,6 @@ public class PersistenceImp implements Persistence {
                     users = newDs.getUsers();
                     roles = newDs.getRoles();
                     forms = newDs.getForms();
-                    
                     in.close();
                     fileIn.close();
                 } catch (IOException i) {

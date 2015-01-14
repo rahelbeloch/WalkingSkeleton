@@ -1,11 +1,6 @@
 package de.hsrm.swt02.restserver;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URI;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
