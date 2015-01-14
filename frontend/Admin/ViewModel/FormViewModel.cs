@@ -52,22 +52,7 @@ namespace Admin.ViewModel
         #region properties
         public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
 
-        private Form _formModel;
-        public Form formModel
-        {
-            get
-            {
-                return _formModel;
-            }
-            set
-            {
-                _formModel = value;
-                OnChanged("formModel");
-            }
-        }
-
-        //private Dictionary<String, String> _formDefModel = null;
-        public List<FormEntry> formDefModel { get; set; }
+        public ObservableCollection<FormEntry> formDefModel { get; set; }
         #endregion
         #region commands
 
@@ -80,11 +65,10 @@ namespace Admin.ViewModel
                 {
                     _addFormCommand = new ActionCommand(execute =>
                     {
-                        //TODO: what happens if command is executed
-                        formDefModel = new List<FormEntry>();
+                        formDefModel = new ObservableCollection<FormEntry>();
                         FormEntry formEntry = new FormEntry();
-                        formEntry.key = "key";
-                        formEntry.value = "value";
+                        formEntry.key = "";
+                        formEntry.value = "";
 
                         formDefModel.Add(formEntry);
                         OnChanged("formDefModel");
@@ -95,6 +79,29 @@ namespace Admin.ViewModel
                 return _addFormCommand;
             }
 
+        }
+
+        private ICommand _addDefinitionCommand;
+        public ICommand addDefinitionCommand
+        {
+            get
+            {
+                if (_addDefinitionCommand == null)
+                {
+                    _addDefinitionCommand = new ActionCommand(execute =>
+                    {
+                        FormEntry formEntry = new FormEntry();
+                        formEntry.key = "";
+                        formEntry.value = "";
+
+                        formDefModel.Add(formEntry);
+                        OnChanged("formDefModel");
+
+                    }, canExecute => formDefModel != null);
+                }
+
+                return _addDefinitionCommand;
+            }
         }
         #endregion
 
