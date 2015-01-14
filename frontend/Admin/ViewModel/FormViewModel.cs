@@ -1,6 +1,7 @@
 ﻿using CommunicationLib;
 using CommunicationLib.Exception;
 using CommunicationLib.Model;
+using CommunicationLib.Model.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -66,7 +67,7 @@ namespace Admin.ViewModel
         }
 
         //private Dictionary<String, String> _formDefModel = null;
-        public Dictionary<String, String> formDefModel { get; set; }
+        public List<FormEntry> formDefModel { get; set; }
         #endregion
         #region commands
 
@@ -80,10 +81,12 @@ namespace Admin.ViewModel
                     _addFormCommand = new ActionCommand(execute =>
                     {
                         //TODO: what happens if command is executed
-                        formDefModel = new Dictionary<String, String>();
-                        formDefModel.Add("key", "value");
-                        formDefModel.Add("key1", "value1");
-                        formDefModel.Add("key2", "value2");
+                        formDefModel = new List<FormEntry>();
+                        FormEntry formEntry = new FormEntry();
+                        formEntry.key = "key";
+                        formEntry.value = "value";
+
+                        formDefModel.Add(formEntry);
                         OnChanged("formDefModel");
 
                     }, canExecute => formDefModel == null);

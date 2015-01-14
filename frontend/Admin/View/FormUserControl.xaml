@@ -34,24 +34,30 @@
 
                 <DockPanel Grid.Column="1" VerticalAlignment="Top">
                     <DockPanel DockPanel.Dock="Top">
+                        
                         <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neues Formular" Height="26" Margin="10" Command="{Binding addFormCommand}"/>
                     </DockPanel>
                     <DockPanel DockPanel.Dock="Top">
                         <ListView DockPanel.Dock="Top" ItemsSource="{Binding formDefModel}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
                             <ListView.View>
                                 <GridView>
                                     
-                                    <GridViewColumn Header="Feldname" Width="200" >
+                                    <GridViewColumn Header="Feldname" Width="150" >
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding Path=Key}" />
+                                                <TextBox Text="{Binding key}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Inhalt" Width="200">
+                                    <GridViewColumn Header="Inhalt" Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding Path=Value}" />
+                                                <TextBox Text="{Binding value}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
