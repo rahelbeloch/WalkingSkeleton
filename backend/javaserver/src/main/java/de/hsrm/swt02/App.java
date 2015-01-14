@@ -78,7 +78,6 @@ public class App {
         } catch (SecurityException e) {
             logger.log(Level.SEVERE, "Read Access not granted!");
         }
-
         
         // setup log configuration
         LogConfigurator.setup(properties);
@@ -176,7 +175,7 @@ public class App {
         }
         
         // save DataModel
-        factory.getLogic().save();
+        factory.getLogic().saveData();
         
         // close logging handler
         for (Handler handler : handlers) {
