@@ -1,10 +1,13 @@
 package de.hsrm.testswt02.persistence;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -31,8 +34,11 @@ public class SerializingTest {
     static Persistence db;
     static Properties p;
     static UseLogger ul;
+    
+    static String path = "serializingTest.set";
 
     /**
+     * setting Up useLogger, persistence and Props before testing.
      * 
      */
     @BeforeClass
@@ -40,10 +46,22 @@ public class SerializingTest {
         ul = new UseLogger();
         db = new PersistenceImp(ul);
         p = new Properties();
-        p.setProperty("StoragePath", "serializingTest.ser");
+        p.setProperty("StoragePath", path);
+    }
+    
+    /**
+     * Cleaning up all created files after testing.
+     * 
+     */
+    @AfterClass
+    public static void cleanUp() {
+        final File file = new File(path);
+        file.delete();
     }
 
     /**
+     * Persistence testing for serialized users.
+     * 
      * @throws PersistenceException if an error in Persistence occurs
      */
     @Test(expected = UserNotExistentException.class)
@@ -73,6 +91,8 @@ public class SerializingTest {
     }
 
     /**
+     * Persistence testing for serialized workflows.
+     * 
      * @throws PersistenceException if an error in Persistence occurs
      */
     @Test(expected = WorkflowNotExistentException.class)
@@ -106,6 +126,7 @@ public class SerializingTest {
     }
 
     /**
+     * Persistence testing for serialized workflows and their content.
      * 
      * @throws PersistenceException if an error in Persistence occurs
      */
@@ -135,6 +156,7 @@ public class SerializingTest {
     }
 
     /**
+     * Persistence testing for serialized roles.
      * 
      * @throws PersistenceException if an error in Persistence occurs
      */
@@ -164,6 +186,7 @@ public class SerializingTest {
     }
 
     /**
+     * Persistence testing for serialized forms.
      * 
      * @throws PersistenceException if an error in Persistence occurs
      */
