@@ -299,7 +299,9 @@ namespace Admin.ViewModel
 
         void IDataReceiver.FormUpdate(Form form)
         {
-            // updated forms arrive here
+            logger.Info("Received Form for Update: ID=" + form.id);
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _formViewModel.updateForm(form)));
+
         }
 
         void IDataReceiver.DataDeletion(Type sourceType, string sourceId)

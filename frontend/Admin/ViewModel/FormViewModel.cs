@@ -25,6 +25,7 @@ namespace Admin.ViewModel
         {
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
+            formDefModel = new ObservableCollection<FormEntry>();
         }
 
         
@@ -53,7 +54,59 @@ namespace Admin.ViewModel
         public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
 
         public ObservableCollection<FormEntry> formDefModel { get; set; }
+
+        private String _visible = "Hidden";
+        public String visible
+        {
+            get
+            {
+                return _visible;
+            }
+            set
+            {
+                _visible = value;
+                OnChanged("visible");
+            }
+        }
+
+        private String _formDefModelId = "";
+        public String formDefModelId
+        {
+            get
+            {
+                return _formDefModelId;
+            }
+            set
+            {
+                _formDefModelId = value;
+                OnChanged("formDefModelId");
+            }
+        }
+
+        private String _formDefModelDescription = "";
+        public String formDefModelDescription
+        {
+            get
+            {
+                return _formDefModelDescription;
+            }
+            set
+            {
+                _formDefModelDescription = value;
+                OnChanged("formDefModelDescription");
+            }
+
+        }
         #endregion
+
+        #region methods
+
+        public void updateForm(Form form)
+        {
+            _mainViewModel.formCollection.Add(form);
+        }
+        #endregion
+
         #region commands
 
         private ICommand _addFormCommand;
@@ -65,15 +118,17 @@ namespace Admin.ViewModel
                 {
                     _addFormCommand = new ActionCommand(execute =>
                     {
-                        formDefModel = new ObservableCollection<FormEntry>();
+                        
                         FormEntry formEntry = new FormEntry();
                         formEntry.key = "";
                         formEntry.value = "";
-
                         formDefModel.Add(formEntry);
                         OnChanged("formDefModel");
 
-                    }, canExecute => formDefModel == null);
+                        _visible = "Visible";
+                        OnChanged("visible");
+
+                    }, canExecute => formDefModel.Count == 0);
                 }
 
                 return _addFormCommand;
@@ -90,20 +145,93 @@ namespace Admin.ViewModel
                 {
                     _addDefinitionCommand = new ActionCommand(execute =>
                     {
-                        FormEntry formEntry = new FormEntry();
-                        formEntry.key = "";
-                        formEntry.value = "";
+                        if (formDefModel.ElementAt(formDefModel.Count - 1).key != "" && formDefModel.ElementAt(formDefModel.Count - 1).value != "")
+                        {
+                            FormEntry formEntry = new FormEntry();
+                            formEntry.key = "";
+                            formEntry.value = "";
+                            formDefModel.Add(formEntry);
+                            OnChanged("formDefModel");
+                        }
 
-                        formDefModel.Add(formEntry);
-                        OnChanged("formDefModel");
 
-                    }, canExecute => formDefModel != null);
+                    }, canExecute => formDefModel.Count != 0);
                 }
 
                 return _addDefinitionCommand;
             }
         }
-        #endregion
 
+        private ICommand _submitFormCommand;
+        public ICommand submitFormCommand
+        {
+            get
+            {
+                if (_submitFormCommand == null)
+                {
+                    _submitFormCommand = new ActionCommand(execute =>
+                    {
+                        //TODO: was passiert beim runterschicken von formularen
+                        Form form = new Form();
+
+                        foreach (FormEntry fe in formDefModel)
+                        {
+                            FormEntry formEntry = new FormEntry();
+                            formEntry.id = fe.key;
+                            formEntry.value = fe.value;
+                            form.formDef.Add(formEntry);
+                        }
+
+                        form.id = _formDefModelId;
+                        form.description = _formDefModelDescription;
+
+                        _restRequester.PostObject(form);
+                        formDefModel.Clear();
+                        _visible = "Hidden";
+                        OnChanged("formDefModel");
+                        OnChanged("visible");
+                    }, canExecute => 
+                    {
+                        if (formDefModel.Count != 0)
+                        {
+                            foreach (FormEntry fe in formDefModel)
+                            {
+                                if (fe.key == "" || fe.value == "")
+                                {
+                                    return false;
+                                }
+                            }
+                            if (_formDefModelId == ""){
+                                return false;
+                            }
+                        
+                            return true;
+                        }
+                        return false;
+                    });
+                }
+                return _submitFormCommand;
+            }
+        }
+
+        private ICommand _resetFormCommand;
+        public ICommand resetFormCommand
+        {
+            get
+            {
+                if (_resetFormCommand == null)
+                {
+                    _resetFormCommand = new ActionCommand(execute =>
+                        {
+                            formDefModel = null;
+                            _visible = "Hidden";
+                            OnChanged("formDefModel");
+                            OnChanged("visible");
+                        }, canExecute => formDefModel.Count != 0);
+                }
+                return _resetFormCommand;
+            }
+        }
+        #endregion
     }
 }

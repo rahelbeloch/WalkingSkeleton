@@ -34,7 +34,6 @@
 
                 <DockPanel Grid.Column="1" VerticalAlignment="Top">
                     <DockPanel DockPanel.Dock="Top">
-                        
                         <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neues Formular" Height="26" Margin="10" Command="{Binding addFormCommand}"/>
                     </DockPanel>
                     <DockPanel DockPanel.Dock="Top">
@@ -49,25 +48,48 @@
                             </ListView.ItemContainerStyle>
                             <ListView.View>
                                 <GridView>
-                                    
                                     <GridViewColumn Header="Feldname" Width="150" >
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding key}"/>
+                                                <TextBox Text="{Binding key, UpdateSourceTrigger=PropertyChanged}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
                                     <GridViewColumn Header="Inhalt" Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding value}"/>
+                                                <TextBox Text="{Binding value, UpdateSourceTrigger=PropertyChanged}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    
                                 </GridView>
                             </ListView.View>
                         </ListView>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Visibility="{Binding visible}">
+                        <DockPanel DockPanel.Dock="Top" Margin="10,10,10,10">
+                            <Label Content="Formularname: "  VerticalContentAlignment="Center"/>
+                            <TextBox Width="318" Height="20">
+                                <TextBox.Text>
+                                    <Binding Path="formDefModelId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                </TextBox.Text>
+                            </TextBox>
+                        </DockPanel>
+                        <DockPanel DockPanel.Dock="Top" Margin="10,10,10,10">
+                            <Label Content="Beschreibung: " Margin="0,0,0,10" VerticalContentAlignment="Center"/>
+                            <TextBox Width="324" Height="50">
+                                <TextBox.Text>
+                                    <Binding Path="formDefModelDescription" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                </TextBox.Text>
+                            </TextBox>
+                        </DockPanel>
+                        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Right">
+                            <Button Content="Abbrechen" Height="26" Command="{Binding resetFormCommand}"/>
+                            <Button Content="Formular speichern" Height="26" Command="{Binding submitFormCommand}"/>
+                        </DockPanel>
+                        
+                        
+                        
                     </DockPanel>
                 </DockPanel>
             </Grid>
