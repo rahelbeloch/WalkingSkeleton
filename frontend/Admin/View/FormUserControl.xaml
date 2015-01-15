@@ -58,10 +58,12 @@
                                     <GridViewColumn Header="Inhalt" Width="150">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding value, UpdateSourceTrigger=PropertyChanged}"/>
+                                                <ComboBox ItemsSource="{Binding datatypes}" SelectedValue="{Binding value, UpdateSourceTrigger=PropertyChanged}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
+                                        
                                     </GridViewColumn>
+                                        
                                 </GridView>
                             </ListView.View>
                         </ListView>

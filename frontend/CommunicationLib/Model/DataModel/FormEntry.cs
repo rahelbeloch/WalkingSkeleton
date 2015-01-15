@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,18 @@ namespace CommunicationLib.Model.DataModel
         private string _value;
         public string value { get { return _value; } set { _value = value; } }
 
+        
+        private List<String> _datatypes;
+        [JsonIgnore]
+        public List<String> datatypes { get { return _datatypes; } set { _datatypes = value; } }
+
+        public FormEntry(): base() 
+        {
+            _datatypes = new List<String>();
+            _datatypes.Add("String");
+            _datatypes.Add("Int");
+            _datatypes.Add("Float");
+        }
 
     }
 }

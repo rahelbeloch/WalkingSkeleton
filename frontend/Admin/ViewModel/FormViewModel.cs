@@ -26,6 +26,7 @@ namespace Admin.ViewModel
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
             formDefModel = new ObservableCollection<FormEntry>();
+            
         }
 
         
@@ -54,6 +55,9 @@ namespace Admin.ViewModel
         public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
 
         public ObservableCollection<FormEntry> formDefModel { get; set; }
+
+        
+   
 
         private String _visible = "Hidden";
         public String visible
@@ -121,10 +125,8 @@ namespace Admin.ViewModel
                         
                         FormEntry formEntry = new FormEntry();
                         formEntry.key = "";
-                        formEntry.value = "";
                         formDefModel.Add(formEntry);
                         OnChanged("formDefModel");
-
                         _visible = "Visible";
                         OnChanged("visible");
 
@@ -145,13 +147,19 @@ namespace Admin.ViewModel
                 {
                     _addDefinitionCommand = new ActionCommand(execute =>
                     {
-                        if (formDefModel.ElementAt(formDefModel.Count - 1).key != "" && formDefModel.ElementAt(formDefModel.Count - 1).value != "")
+                        var lastEle = formDefModel.Last();
+
+                        if (lastEle.key != "" && lastEle.value != "" && lastEle.value != null)
                         {
                             FormEntry formEntry = new FormEntry();
                             formEntry.key = "";
-                            formEntry.value = "";
                             formDefModel.Add(formEntry);
                             OnChanged("formDefModel");
+
+                            foreach (FormEntry fe in formDefModel)
+                            {
+                                Console.WriteLine(fe.key + " " + fe.value);
+                            }
                         }
 
 
