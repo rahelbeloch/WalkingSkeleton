@@ -7,6 +7,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -63,6 +64,42 @@ public class FormResource {
         
         try {
             formsAsString = JsonParser.marshall(forms);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.INFO, e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
+        }
+        
+        LOGGER.log(Level.INFO, loggingBody + " Request successful.");
+        return Response.ok(formsAsString).build();
+    }
+    
+    /**
+     * 
+     * This method grants the clients access to get one specific form from the persistence.
+     * @param formid indicates which form is requested
+     * @return All forms in the persistence as string if successful, 500 server error if not
+     * @throws PersistenceException 
+     */
+    @GET
+    @Path("forms/{formid}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getForm(@PathParam("formid") String formid) {
+        final String loggingBody = PREFIX + "GET /resource/forms/" + formid;
+        LOGGER.log(Level.INFO, loggingBody);
+        Form form;
+
+        try {
+            form = LOGIC.getForm(formid);
+        } catch (PersistenceException e1) {
+            LOGGER.log(Level.INFO, loggingBody + e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode()))
+                    .build();
+        }
+
+        String formsAsString;
+        
+        try {
+            formsAsString = JsonParser.marshall(form);
         } catch (JacksonException e) {
             LOGGER.log(Level.INFO, e);
             return Response.serverError().entity(String.valueOf(e.getErrorCode())).build();
