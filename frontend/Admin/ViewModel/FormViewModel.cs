@@ -187,11 +187,6 @@ namespace Admin.ViewModel
                             formEntry.key = "";
                             formDefModel.Add(formEntry);
                             OnChanged("formDefModel");
-
-                            foreach (FormEntry fe in formDefModel)
-                            {
-                                Console.WriteLine(fe.key + " " + fe.value);
-                            }
                         }
 
                     }, canExecute => formDefModel.Count != 0);
@@ -212,8 +207,6 @@ namespace Admin.ViewModel
                 {
                     _removeDefinitionCommand = new ActionCommand(execute =>
                         {
-                            Console.WriteLine("hier");
-
                             foreach (FormEntry fe in formDefModel)
                             {
                                 if (fe.selected)
