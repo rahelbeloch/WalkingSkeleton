@@ -29,7 +29,86 @@ namespace Admin.ViewModel
             
         }
 
-        
+        #region properties
+        /// <summary>
+        /// This property is used for the form overview.
+        /// </summary>
+        public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
+        /// <summary>
+        /// This property is used if the client defines a new form.
+        /// </summary>
+        public ObservableCollection<FormEntry> formDefModel { get; set; }
+
+        /// <summary>
+        /// This property indicates which definition was selected in the view.
+        /// </summary>
+        private FormEntry _selectedDefinition = null;
+        public FormEntry selectedDefinition
+        {
+            get
+            {
+                return _selectedDefinition;
+            }
+            set
+            {
+                _selectedDefinition = value;
+                OnChanged("selectedDefinition");
+            }
+        }
+   
+        /// <summary>
+        /// This property is used as a value setter to hide user controls.
+        /// </summary>
+        private String _visible = "Hidden";
+        public String visible
+        {
+            get
+            {
+                return _visible;
+            }
+            set
+            {
+                _visible = value;
+                OnChanged("visible");
+            }
+        }
+
+        /// <summary>
+        /// This property will be used for setting a form's id.
+        /// </summary>
+        private String _formDefModelId = "";
+        public String formDefModelId
+        {
+            get
+            {
+                return _formDefModelId;
+            }
+            set
+            {
+                _formDefModelId = value;
+                OnChanged("formDefModelId");
+            }
+        }
+
+        /// <summary>
+        /// This property will be used for setting a form's description.
+        /// </summary>
+        private String _formDefModelDescription = "";
+        public String formDefModelDescription
+        {
+            get
+            {
+                return _formDefModelDescription;
+            }
+            set
+            {
+                _formDefModelDescription = value;
+                OnChanged("formDefModelDescription");
+            }
+        }
+        #endregion
+
+        #region methods
 
         /// <summary>
         /// Init the model via rest requests at first startup.
@@ -51,60 +130,10 @@ namespace Admin.ViewModel
             }
         }
 
-        #region properties
-        public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
-
-        public ObservableCollection<FormEntry> formDefModel { get; set; }
-
-        
-   
-
-        private String _visible = "Hidden";
-        public String visible
-        {
-            get
-            {
-                return _visible;
-            }
-            set
-            {
-                _visible = value;
-                OnChanged("visible");
-            }
-        }
-
-        private String _formDefModelId = "";
-        public String formDefModelId
-        {
-            get
-            {
-                return _formDefModelId;
-            }
-            set
-            {
-                _formDefModelId = value;
-                OnChanged("formDefModelId");
-            }
-        }
-
-        private String _formDefModelDescription = "";
-        public String formDefModelDescription
-        {
-            get
-            {
-                return _formDefModelDescription;
-            }
-            set
-            {
-                _formDefModelDescription = value;
-                OnChanged("formDefModelDescription");
-            }
-
-        }
-        #endregion
-
-        #region methods
-
+        /// <summary>
+        /// This method is called when the client receives a form from the server.
+        /// </summary>
+        /// <param name="form">form which will be added to the form collection</param>
         public void updateForm(Form form)
         {
             _mainViewModel.formCollection.Add(form);
@@ -113,6 +142,9 @@ namespace Admin.ViewModel
 
         #region commands
 
+        /// <summary>
+        /// This command is executed if the client wants to create a new form.
+        /// </summary>
         private ICommand _addFormCommand;
         public ICommand addFormCommand
         {
@@ -122,7 +154,6 @@ namespace Admin.ViewModel
                 {
                     _addFormCommand = new ActionCommand(execute =>
                     {
-                        
                         FormEntry formEntry = new FormEntry();
                         formEntry.key = "";
                         formDefModel.Add(formEntry);
@@ -132,12 +163,13 @@ namespace Admin.ViewModel
 
                     }, canExecute => formDefModel.Count == 0);
                 }
-
                 return _addFormCommand;
             }
-
         }
 
+        /// <summary>
+        /// This command is executed if the client adds a new definition to a form.
+        /// </summary>
         private ICommand _addDefinitionCommand;
         public ICommand addDefinitionCommand
         {
@@ -162,14 +194,61 @@ namespace Admin.ViewModel
                             }
                         }
 
-
                     }, canExecute => formDefModel.Count != 0);
                 }
-
                 return _addDefinitionCommand;
             }
         }
 
+        /// <summary>
+        /// This method is used if the client removes a selected definition.
+        /// </summary>
+        private ICommand _removeDefinitionCommand;
+        public ICommand removeDefinitionCommand
+        {
+            get
+            {
+                if (_removeDefinitionCommand == null)
+                {
+                    _removeDefinitionCommand = new ActionCommand(execute =>
+                        {
+                            Console.WriteLine("hier");
+
+                            foreach (FormEntry fe in formDefModel)
+                            {
+                                if (fe.selected)
+                                {
+                                    _selectedDefinition = fe;
+                                    break;
+                                }
+                            }
+                            formDefModel.Remove(_selectedDefinition);
+                            if (formDefModel.Count == 0)
+                            {
+                                formDefModel.Clear();
+                                _visible = "Hidden";
+                                OnChanged("visible");
+                            }
+                            OnChanged("formDefModel");
+                        }, canExecute =>
+                            {
+                                foreach (FormEntry fe in formDefModel)
+                                {
+                                    if (fe.selected)
+                                    {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            });
+                }
+                return _removeDefinitionCommand;
+            }
+        }
+
+        /// <summary>
+        /// This command is used if the client wants to submit a form to the server.
+        /// </summary>
         private ICommand _submitFormCommand;
         public ICommand submitFormCommand
         {
@@ -179,9 +258,7 @@ namespace Admin.ViewModel
                 {
                     _submitFormCommand = new ActionCommand(execute =>
                     {
-                        //TODO: was passiert beim runterschicken von formularen
                         Form form = new Form();
-
                         foreach (FormEntry fe in formDefModel)
                         {
                             FormEntry formEntry = new FormEntry();
@@ -189,10 +266,8 @@ namespace Admin.ViewModel
                             formEntry.value = fe.value;
                             form.formDef.Add(formEntry);
                         }
-
                         form.id = _formDefModelId;
                         form.description = _formDefModelDescription;
-
                         _restRequester.PostObject(form);
                         formDefModel.Clear();
                         _visible = "Hidden";
@@ -222,6 +297,9 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// This command is used if the client cancels the form definition.
+        /// </summary>
         private ICommand _resetFormCommand;
         public ICommand resetFormCommand
         {
@@ -231,7 +309,7 @@ namespace Admin.ViewModel
                 {
                     _resetFormCommand = new ActionCommand(execute =>
                         {
-                            formDefModel = null;
+                            formDefModel.Clear();
                             _visible = "Hidden";
                             OnChanged("formDefModel");
                             OnChanged("visible");

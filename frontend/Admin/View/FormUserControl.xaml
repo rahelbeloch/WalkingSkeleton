@@ -39,11 +39,13 @@
                     <DockPanel DockPanel.Dock="Top">
                         <DockPanel.InputBindings>
                             <KeyBinding Key="Enter" Command="{Binding addDefinitionCommand}" />
+                            <KeyBinding Key="Delete" Command="{Binding removeDefinitionCommand}" />
                         </DockPanel.InputBindings>
                         <ListView DockPanel.Dock="Top" ItemsSource="{Binding formDefModel}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="IsSelected" Value="{Binding selected}"/>
                                 </Style>
                             </ListView.ItemContainerStyle>
                             <ListView.View>
@@ -61,9 +63,7 @@
                                                 <ComboBox ItemsSource="{Binding datatypes}" SelectedValue="{Binding value, UpdateSourceTrigger=PropertyChanged}"/>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
-                                        
-                                    </GridViewColumn>
-                                        
+                                    </GridViewColumn>       
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -88,18 +88,10 @@
                         <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Right">
                             <Button Content="Abbrechen" Height="26" Command="{Binding resetFormCommand}"/>
                             <Button Content="Formular speichern" Height="26" Command="{Binding submitFormCommand}"/>
-                        </DockPanel>
-                        
-                        
-                        
+                        </DockPanel>     
                     </DockPanel>
                 </DockPanel>
             </Grid>
-
         </DockPanel>
-        
-
-
-
     </Grid>
 </UserControl>
