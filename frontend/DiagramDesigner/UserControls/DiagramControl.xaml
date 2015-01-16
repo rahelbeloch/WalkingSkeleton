@@ -31,9 +31,9 @@
                             <Setter Property="s:ItemConnectProps.EnabledForConnection"
                                     Value="True" />
                             <Setter Property="Width"
-                                    Value="{x:Static  s:DesignerItemViewModelBase.ItemWidth}" />
+                                    Value="{Binding ItemWidth}" />
                             <Setter Property="Height"
-                                    Value="{x:Static  s:DesignerItemViewModelBase.ItemHeight}" />
+                                    Value="{Binding ItemHeight}" />
                             <Setter Property="SnapsToDevicePixels"
                                     Value="True" />
                             <Setter Property="ContentTemplate">
@@ -93,7 +93,7 @@
                                                         <DropShadowEffect BlurRadius="30"
                                                                             ShadowDepth="0"
                                                                             Color="Black"
-                                                                            Opacity="1.0" />
+                                                                            Opacity="0.6" />
                                                     </Setter.Value>
                                                 </Setter>
                                             </DataTrigger>

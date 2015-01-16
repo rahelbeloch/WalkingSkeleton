@@ -41,6 +41,8 @@ namespace Admin
         private void Init()
         {
             enableInputConnector = true;
+            itemWidth = 66;
+            itemHeight = 66;
             visualiserService = ApplicationServicesProvider.Instance.Provider.VisualizerService;
             ShowDataChangeWindowCommand = new SimpleCommand(ExecuteShowDataChangeWindowCommand);
             this.ShowConnectors = false;
