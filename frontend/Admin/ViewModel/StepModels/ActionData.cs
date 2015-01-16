@@ -15,26 +15,25 @@ namespace Admin
     /// </summary>
     public class ActionData: INPCBase
     {
-        private string hostUrl = "";
         
-        public ActionData(string currentHostUrl)
+        private Role _selectedRole = new Role();
+
+        public ActionData(Role currentRole)
         {
-            hostUrl = currentHostUrl;
+            _selectedRole = currentRole;
         }
 
-        public string HostUrl
+        
+        public Role selectedRole
         {
             get
             {
-                return hostUrl;
+                return _selectedRole;
             }
             set
             {
-                if (hostUrl != value)
-                {
-                    hostUrl = value;
-                    NotifyChanged("HostUrl");
-                }
+                _selectedRole = value;
+                NotifyChanged("selectedRole");
             }
         }
     }
