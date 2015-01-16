@@ -28,9 +28,7 @@ public class ConstructionFactory {
      * Constructor.
      */
     private ConstructionFactory() {
-        
         logic = INJECTOR.getInstance(Logic.class);
-        
         serverPublisher = INJECTOR.getInstance(ServerPublisher.class);
         try {
             serverPublisher.startBroker();
@@ -69,5 +67,4 @@ public class ConstructionFactory {
     public ServerPublisher getPublisher() {
         return serverPublisher;
     }
-
 }

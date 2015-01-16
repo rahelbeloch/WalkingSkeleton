@@ -197,4 +197,10 @@ public interface Persistence {
      * is load.
      */
     void load();
+
+    /**
+     * Sets the storage path from logic to persistence.
+     * @param storagePath the path for persist the data model.
+     */
+    void setStoragePath(String storagePath);
 }

@@ -340,4 +340,10 @@ public interface Logic {
      * is load. Method calls load() in persistence.
      */
     void loadData();
+
+    /**
+     * Sets the storagePath from config file to logic.
+     * @param storagePath the path for persist the data model
+     */
+    void setStoragePath(String storagePath);
 }

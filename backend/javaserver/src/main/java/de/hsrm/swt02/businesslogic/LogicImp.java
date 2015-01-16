@@ -871,4 +871,9 @@ public class LogicImp implements Logic {
     public void saveData() {
         persistence.save();
     }
+
+    @Override
+    public void setStoragePath(String storagePath) {
+        persistence.setStoragePath(storagePath);
+    }
 }
