@@ -26,7 +26,6 @@ namespace Admin.ViewModel
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
             formDefModel = new ObservableCollection<FormEntry>();
-            
         }
 
         #region properties
@@ -55,21 +54,59 @@ namespace Admin.ViewModel
                 OnChanged("selectedDefinition");
             }
         }
-   
+
         /// <summary>
-        /// This property is used as a value setter to hide user controls.
+        /// This property is setted if a form is selected in the overview.
         /// </summary>
-        private String _visible = "Hidden";
-        public String visible
+        private Form _selectedForm = null;
+        public Form selectedForm
         {
             get
             {
-                return _visible;
+                return _selectedForm;
             }
             set
             {
-                _visible = value;
-                OnChanged("visible");
+                _selectedForm = value;
+                visibleView = "Visible";
+                visibleDefinition = "Collapsed";
+                formDefModel.Clear();
+                OnChanged("selectedForm");
+                OnChanged("formDefModel");
+            }
+        }
+
+        /// <summary>
+        /// This property is used as a value setter to hide user controls.
+        /// </summary>
+        private String _visibleDefinition = "Collapsed";
+        public String visibleDefinition
+        {
+            get
+            {
+                return _visibleDefinition;
+            }
+            set
+            {
+                _visibleDefinition = value;
+                OnChanged("visibleDefinition");
+            }
+        }
+
+        /// <summary>
+        /// This property is used as a value setter to hide the form overview.
+        /// </summary>
+        private String _visibleView = "Collapsed";
+        public String visibleView
+        {
+            get
+            {
+                return _visibleView;
+            }
+            set
+            {
+                _visibleView = value;
+                OnChanged("visibleView");
             }
         }
 
@@ -154,12 +191,17 @@ namespace Admin.ViewModel
                 {
                     _addFormCommand = new ActionCommand(execute =>
                     {
+                        
+                        if (_selectedForm != null)
+                        {
+                            selectedForm = null;
+                        }
                         FormEntry formEntry = new FormEntry();
                         formEntry.key = "";
                         formDefModel.Add(formEntry);
+                        visibleView = "Collapsed";
+                        visibleDefinition = "Visible";
                         OnChanged("formDefModel");
-                        _visible = "Visible";
-                        OnChanged("visible");
 
                     }, canExecute => formDefModel.Count == 0);
                 }
@@ -207,33 +249,14 @@ namespace Admin.ViewModel
                 {
                     _removeDefinitionCommand = new ActionCommand(execute =>
                         {
-                            foreach (FormEntry fe in formDefModel)
-                            {
-                                if (fe.selected)
-                                {
-                                    _selectedDefinition = fe;
-                                    break;
-                                }
-                            }
                             formDefModel.Remove(_selectedDefinition);
                             if (formDefModel.Count == 0)
                             {
                                 formDefModel.Clear();
-                                _visible = "Hidden";
-                                OnChanged("visible");
+                                visibleDefinition = "Collapsed";
                             }
                             OnChanged("formDefModel");
-                        }, canExecute =>
-                            {
-                                foreach (FormEntry fe in formDefModel)
-                                {
-                                    if (fe.selected)
-                                    {
-                                        return true;
-                                    }
-                                }
-                                return false;
-                            });
+                        }, canExecute =>_selectedDefinition != null);
                 }
                 return _removeDefinitionCommand;
             }
@@ -263,9 +286,8 @@ namespace Admin.ViewModel
                         form.description = _formDefModelDescription;
                         _restRequester.PostObject(form);
                         formDefModel.Clear();
-                        _visible = "Hidden";
+                        visibleDefinition = "Collapsed";
                         OnChanged("formDefModel");
-                        OnChanged("visible");
                     }, canExecute => 
                     {
                         if (formDefModel.Count != 0)
@@ -303,9 +325,9 @@ namespace Admin.ViewModel
                     _resetFormCommand = new ActionCommand(execute =>
                         {
                             formDefModel.Clear();
-                            _visible = "Hidden";
+                            visibleDefinition = "Collapsed";
+                            visibleView = "Collapsed";
                             OnChanged("formDefModel");
-                            OnChanged("visible");
                         }, canExecute => formDefModel.Count != 0);
                 }
                 return _resetFormCommand;
