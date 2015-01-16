@@ -569,7 +569,6 @@ namespace Admin.ViewModel
                                 {
                                     DesignerItemViewModelBase startItem = ((FullyCreatedConnectorInfo)((ConnectorViewModel)designerItem).SourceConnectorInfo).DataItem;
                                     DesignerItemViewModelBase endItem = ((FullyCreatedConnectorInfo)((ConnectorViewModel)designerItem).SinkConnectorInfo).DataItem;
-                                    designerItem.
 
                                     Console.WriteLine("start: "+ startItem +", ende: "+ endItem);
                                 }
