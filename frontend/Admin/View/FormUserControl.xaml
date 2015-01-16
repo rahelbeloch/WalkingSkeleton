@@ -21,54 +21,63 @@
                 </Grid.ColumnDefinitions>
 
                 <DockPanel Grid.Column="0">
-                    <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding formCollection}" IsSynchronizedWithCurrentItem="True">
+                    <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding formCollection}" SelectedValue="{Binding selectedForm, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
                         <ListView.View>
                             <GridView>
                                 <GridView.Columns >
                                     <GridViewColumn Header="Formular" DisplayMemberBinding="{Binding id}"/>
+                                    <GridViewColumn Header="Beschreibung" DisplayMemberBinding="{Binding description}"/>
                                 </GridView.Columns>
                             </GridView>
                         </ListView.View>
                     </ListView>
                 </DockPanel>
-
                 <DockPanel Grid.Column="1" VerticalAlignment="Top">
                     <DockPanel DockPanel.Dock="Top">
                         <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neues Formular" Height="26" Margin="10" Command="{Binding addFormCommand}"/>
                     </DockPanel>
-                    <DockPanel DockPanel.Dock="Top">
-                        <DockPanel.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding addDefinitionCommand}" />
-                            <KeyBinding Key="Delete" Command="{Binding removeDefinitionCommand}" />
-                        </DockPanel.InputBindings>
-                        <ListView DockPanel.Dock="Top" ItemsSource="{Binding formDefModel}">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    <Setter Property="IsSelected" Value="{Binding selected}"/>
-                                </Style>
-                            </ListView.ItemContainerStyle>
+                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding visibleView}">
+                        <ListView DockPanel.Dock="Top" ItemsSource="{Binding selectedForm.formDef}" Visibility="{Binding visibleView, UpdateSourceTrigger=PropertyChanged}">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Feldname" Width="150" >
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBox Text="{Binding key, UpdateSourceTrigger=PropertyChanged}"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                    <GridViewColumn Header="Inhalt" Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ComboBox ItemsSource="{Binding datatypes}" SelectedValue="{Binding value, UpdateSourceTrigger=PropertyChanged}"/>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>       
+                                    <GridViewColumn Header="Feldname" Width="150" DisplayMemberBinding="{Binding id}"/>
+                                    <GridViewColumn Header="Inhalt" Width="150" DisplayMemberBinding="{Binding value}"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
                     </DockPanel>
-                    <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Visibility="{Binding visible}">
+                    <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Visibility="{Binding visibleDefinition, UpdateSourceTrigger=PropertyChanged}">
+                        <DockPanel DockPanel.Dock="Top">
+                            <DockPanel.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding addDefinitionCommand}" />
+                                <KeyBinding Key="Delete" Command="{Binding removeDefinitionCommand}" />
+                            </DockPanel.InputBindings>
+                            <ListView DockPanel.Dock="Top" ItemsSource="{Binding formDefModel}" SelectedValue="{Binding selectedDefinition, Mode=TwoWay}">
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Feldname" Width="150" >
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBox Text="{Binding key, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                        <GridViewColumn Header="Inhalt" Width="150">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox ItemsSource="{Binding datatypes}" SelectedValue="{Binding value, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
                         <DockPanel DockPanel.Dock="Top" Margin="10,10,10,10">
                             <Label Content="Formularname: "  VerticalContentAlignment="Center"/>
                             <TextBox Width="318" Height="20">
