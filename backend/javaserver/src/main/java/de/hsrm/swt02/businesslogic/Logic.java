@@ -339,8 +339,4 @@ public interface Logic {
      * is load. Method calls load() in persistence.
      */
     void loadData();
-    
-    boolean checkAuthorization(Step step, String username) throws PersistenceException;
-    
-    boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException;
 }
