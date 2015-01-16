@@ -104,7 +104,7 @@
                                     <GridView >
                                         <GridView.Columns>
                                             <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
-                                            <GridViewColumn Width="120" Header="beendet" DisplayMemberBinding="{Binding finished}" />
+                                            <GridViewColumn Width="120" Header="beendet" DisplayMemberBinding="{Binding finished,Converter={StaticResource converter}}" />
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
