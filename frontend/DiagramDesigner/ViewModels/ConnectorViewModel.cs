@@ -240,6 +240,14 @@ namespace DiagramDesigner
             this.SourceConnectorInfo = sourceConnectorInfo;
             this.SinkConnectorInfo = sinkConnectorInfo;
             PathFinder = new OrthogonalPathFinder();
+
+            // "remove" possibility to add more connections
+            if (sinkConnectorInfo.GetType() == typeof(FullyCreatedConnectorInfo))
+            {
+                FullyCreatedConnectorInfo inputAnchor = (FullyCreatedConnectorInfo) sinkConnectorInfo;
+                inputAnchor.DataItem.enableLeftConnector = false;
+                sourceConnectorInfo.DataItem.enableRightConnector = false;
+            }
         }
 
     }
