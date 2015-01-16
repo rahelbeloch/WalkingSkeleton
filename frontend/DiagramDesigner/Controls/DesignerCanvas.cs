@@ -34,7 +34,7 @@ namespace DiagramDesigner
             {
                 if (sourceConnector != value)
                 {
-                    if (value.Orientation == ConnectorOrientation.Left)
+                    if (value.Orientation == ConnectorOrientation.Input)
                     {
                         MessageBox.Show("Der Start einer Verbindung aus einem Eingang heraus ist nicht erlaubt.");
                     }
@@ -106,7 +106,7 @@ namespace DiagramDesigner
                         sinkDataItem.DataItem.Parent.AddItemCommand.Execute(new ConnectorViewModel(sourceDataItem, sinkDataItem));
 
                         sourceDataItem.DataItem.enableRightConnector = false;
-                        sinkDataItem.DataItem.enableLeftConnector = false;
+                        sinkDataItem.DataItem.enableInputConnector = false;
                     }
                 }
                 else

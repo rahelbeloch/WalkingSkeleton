@@ -20,7 +20,7 @@
                     <Grid>
                         <!-- transparent extra space makes connector easier to hit -->
                         <Rectangle Fill="Transparent"
-                                   Margin="-2" />
+                                   Margin="-5" />
                         <Rectangle Fill="Lavender"
                                    StrokeThickness="1"
                                    Stroke="#AA000080" />
@@ -35,7 +35,7 @@
                      TargetType="{x:Type Control}">
         <Grid Margin="-5">
             <s:Connector x:Name="Left"
-                         Orientation="Left"
+                         Orientation="Input"
                          VerticalAlignment="Center"
                          HorizontalAlignment="Left" />
             <s:Connector x:Name="Top"
