@@ -15,11 +15,14 @@ import java.util.logging.Level;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.DataStorage;
+import de.hsrm.swt02.model.DataType;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Form;
+import de.hsrm.swt02.model.FormEntry;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
@@ -435,6 +438,22 @@ public class PersistenceImp implements Persistence {
     @Override
     public void storeForm(Form form) throws PersistenceException {
         assert (form.getId() != null);
+        
+        final List<String> formEntryIds = new LinkedList<>();
+        for (FormEntry fe: form.getFormDef()) {
+        	
+        	// check if there are no duplicates in formEntry keys.
+        	if (formEntryIds.contains(fe.getKey())) {
+        		throw new StorageFailedException("[persistence] form storage not possible - duplicating keys");
+        	}
+        	formEntryIds.add(fe.getKey());
+        	
+        	// check if all value types are accepted.
+        	if (DataType.hasType(fe.getValue())) {
+        		throw new StorageFailedException("[persistence] form storage not possible - unexpected value type");
+        	}
+        }
+        
         Form formToRemove = null;
         for (Form f: forms) {
             if (f.getId().equals(form.getId())) {
