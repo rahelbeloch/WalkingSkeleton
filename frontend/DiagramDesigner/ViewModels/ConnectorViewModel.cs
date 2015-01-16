@@ -169,8 +169,15 @@ namespace DiagramDesigner
                     sinkConnectorInfo = value;
                     if (SinkConnectorInfo is FullyCreatedConnectorInfo)
                     {
-                        SourceB = PointHelper.GetPointForConnector((FullyCreatedConnectorInfo)SinkConnectorInfo);
-                        (((FullyCreatedConnectorInfo)sinkConnectorInfo).DataItem as INotifyPropertyChanged).PropertyChanged += new WeakINPCEventHandler(ConnectorViewModel_PropertyChanged).Handler;
+                        if (((FullyCreatedConnectorInfo)sinkConnectorInfo).Orientation == ConnectorOrientation.Right)
+                        {
+                            Console.WriteLine("NOPE");
+                        }
+                        else
+                        {
+                            SourceB = PointHelper.GetPointForConnector((FullyCreatedConnectorInfo)SinkConnectorInfo);
+                            (((FullyCreatedConnectorInfo)sinkConnectorInfo).DataItem as INotifyPropertyChanged).PropertyChanged += new WeakINPCEventHandler(ConnectorViewModel_PropertyChanged).Handler;
+                        }
                     }
                     else
                     {
@@ -240,14 +247,6 @@ namespace DiagramDesigner
             this.SourceConnectorInfo = sourceConnectorInfo;
             this.SinkConnectorInfo = sinkConnectorInfo;
             PathFinder = new OrthogonalPathFinder();
-
-            // "remove" possibility to add more connections
-            if (sinkConnectorInfo.GetType() == typeof(FullyCreatedConnectorInfo))
-            {
-                FullyCreatedConnectorInfo inputAnchor = (FullyCreatedConnectorInfo) sinkConnectorInfo;
-                inputAnchor.DataItem.enableLeftConnector = false;
-                sourceConnectorInfo.DataItem.enableRightConnector = false;
-            }
         }
 
     }
