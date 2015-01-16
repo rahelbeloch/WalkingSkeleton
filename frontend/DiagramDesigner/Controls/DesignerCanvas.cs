@@ -34,16 +34,22 @@ namespace DiagramDesigner
             {
                 if (sourceConnector != value)
                 {
-                    sourceConnector = value;
-                    connectorsHit.Add(sourceConnector);
-                    FullyCreatedConnectorInfo sourceDataItem = sourceConnector.DataContext as FullyCreatedConnectorInfo;
-                    
+                    if (value.Orientation == ConnectorOrientation.Left)
+                    {
+                        MessageBox.Show("Der Start einer Verbindung aus einem Eingang heraus ist nicht erlaubt.");
+                    }
+                    else
+                    {
+                        sourceConnector = value;
+                        connectorsHit.Add(sourceConnector);
+                        FullyCreatedConnectorInfo sourceDataItem = sourceConnector.DataContext as FullyCreatedConnectorInfo;
 
-                    Rect rectangleBounds = sourceConnector.TransformToVisual(this).TransformBounds(new Rect(sourceConnector.RenderSize));
-                    Point point = new Point(rectangleBounds.Left + (rectangleBounds.Width / 2),
-                                            rectangleBounds.Bottom + (rectangleBounds.Height / 2));
-                    partialConnection = new ConnectorViewModel(sourceDataItem, new PartCreatedConnectionInfo(point));
-                    sourceDataItem.DataItem.Parent.AddItemCommand.Execute(partialConnection);
+                        Rect rectangleBounds = sourceConnector.TransformToVisual(this).TransformBounds(new Rect(sourceConnector.RenderSize));
+                        Point point = new Point(rectangleBounds.Left + (rectangleBounds.Width / 2),
+                                                rectangleBounds.Bottom + (rectangleBounds.Height / 2));
+                        partialConnection = new ConnectorViewModel(sourceDataItem, new PartCreatedConnectionInfo(point));
+                        sourceDataItem.DataItem.Parent.AddItemCommand.Execute(partialConnection);
+                    }
                 }
             }
         }
@@ -86,18 +92,28 @@ namespace DiagramDesigner
                 {
                     Connector sinkConnector = connectorsHit.Last();
                     FullyCreatedConnectorInfo sinkDataItem = sinkConnector.DataContext as FullyCreatedConnectorInfo;
+                    if (sinkDataItem.Orientation == ConnectorOrientation.Right)
+                    {
+                        //Need to remove last item as we did not finish drawing the path
+                        int indexOfLastTempConnection = sourceDataItem.DataItem.Parent.Items.Count - 1;
+                        sourceDataItem.DataItem.Parent.RemoveItemCommand.Execute(sourceDataItem.DataItem.Parent.Items[indexOfLastTempConnection]);
+                        MessageBox.Show("Die Verknüpfung an einen Ausgang ist nicht erlaubt.");
+                    }
+                    else
+                    {
+                        int indexOfLastTempConnection = sinkDataItem.DataItem.Parent.Items.Count - 1;
+                        sinkDataItem.DataItem.Parent.RemoveItemCommand.Execute(sinkDataItem.DataItem.Parent.Items[indexOfLastTempConnection]);
+                        sinkDataItem.DataItem.Parent.AddItemCommand.Execute(new ConnectorViewModel(sourceDataItem, sinkDataItem));
 
-                    int indexOfLastTempConnection = sinkDataItem.DataItem.Parent.Items.Count - 1;
-                    sinkDataItem.DataItem.Parent.RemoveItemCommand.Execute(
-                        sinkDataItem.DataItem.Parent.Items[indexOfLastTempConnection]);
-                    sinkDataItem.DataItem.Parent.AddItemCommand.Execute(new ConnectorViewModel(sourceDataItem, sinkDataItem));
+                        sourceDataItem.DataItem.enableRightConnector = false;
+                        sinkDataItem.DataItem.enableLeftConnector = false;
+                    }
                 }
                 else
                 {
                     //Need to remove last item as we did not finish drawing the path
                     int indexOfLastTempConnection = sourceDataItem.DataItem.Parent.Items.Count - 1;
-                    sourceDataItem.DataItem.Parent.RemoveItemCommand.Execute(
-                        sourceDataItem.DataItem.Parent.Items[indexOfLastTempConnection]);
+                    sourceDataItem.DataItem.Parent.RemoveItemCommand.Execute(sourceDataItem.DataItem.Parent.Items[indexOfLastTempConnection]);
                 }
             }
             connectorsHit = new List<Connector>();
