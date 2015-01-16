@@ -1,8 +1,5 @@
 package de.hsrm.swt02.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Emum for DataTypes in Forms.
  *
@@ -46,12 +43,17 @@ public enum DataType {
         return valueOf(v);
     }
     
+    /**
+     * Tests if the given string is a DataType.
+     * @param type the type to test
+     * @return true or false
+     */
     public static boolean hasType(String type) {
-    	for(DataType dt: DataType.values()) {
-    		if(type.equals(dt.toString())) {
-    			return true;
-    		}
-    	}
-    	return false;
+        for (DataType dt: DataType.values()) {
+            if (type.equals(dt.toString())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
