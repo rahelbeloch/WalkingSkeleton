@@ -119,7 +119,7 @@ public class Form extends RootElement {
         ret += " - " + this.description + "\n";
         if (formDef != null || formDef.size() != 0) {
             for (FormEntry fe : formDef) {
-                ret += "Feldname: " + fe.getKey() + " ------ Datentyp: " + fe.getValue() + "\n"; 
+                ret += "Feldname: " + fe.getKey() + " ------ Datentyp: " + fe.getValue(); 
             }
         }
         
