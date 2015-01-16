@@ -17,10 +17,16 @@ namespace DiagramDesigner
         private bool showConnectors = false;
         private List<FullyCreatedConnectorInfo> connectors = new List<FullyCreatedConnectorInfo>();
 
+        public bool enableTopConnector { get; set; }
+        public bool enableRightConnector { get; set; }
+        public bool enableBottomConnector { get; set; }
+        public bool enableLeftConnector { get; set; }
+
         private static double itemWidth = 65;
         private static double itemHeight = 65;
 
-        public DesignerItemViewModelBase(int id, IDiagramViewModel parent, double left, double top) : base(id, parent)
+        public DesignerItemViewModelBase(int id, IDiagramViewModel parent, double left, double top)
+            : base(id, parent)
         {
             this.left = left;
             this.top = top;
@@ -79,10 +85,27 @@ namespace DiagramDesigner
                 if (showConnectors != value)
                 {
                     showConnectors = value;
-                    TopConnector.ShowConnectors = value;
-                    BottomConnector.ShowConnectors = value;
-                    RightConnector.ShowConnectors = value;
-                    LeftConnector.ShowConnectors = value;
+
+                    if (enableTopConnector)
+                    {
+                        TopConnector.ShowConnectors = value;
+                    }
+
+                    if (enableBottomConnector)
+                    {
+                        BottomConnector.ShowConnectors = value;
+                    }
+
+                    if (enableRightConnector)
+                    {
+                        RightConnector.ShowConnectors = value;
+                    }
+
+                    if (enableLeftConnector)
+                    {
+                        LeftConnector.ShowConnectors = value;
+                    }
+
                     NotifyChanged("ShowConnectors");
                 }
             }

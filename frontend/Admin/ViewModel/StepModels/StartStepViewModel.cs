@@ -40,6 +40,7 @@ namespace Admin
 
         private void Init()
         {
+            enableRightConnector = true;
             visualiserService = ApplicationServicesProvider.Instance.Provider.VisualizerService;
             ShowDataChangeWindowCommand = new SimpleCommand(ExecuteShowDataChangeWindowCommand);
             this.ShowConnectors = false;
