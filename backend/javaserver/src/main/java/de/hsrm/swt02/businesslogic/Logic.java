@@ -44,6 +44,7 @@ public interface Logic {
      * 
      * @return list of all workflows.
      * @throws PersistenceException if an error in persistence occurs
+     * @throws NoPermissionException 
      */
     List<Workflow> getAllWorkflows() throws PersistenceException, NoPermissionException;
 

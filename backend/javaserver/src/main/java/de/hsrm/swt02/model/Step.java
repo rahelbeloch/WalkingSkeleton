@@ -99,7 +99,7 @@ public class Step extends RootElement {
     
     /**
      * Username setter.
-     * @param role the role to add
+     * @param rolename the role to add
      */
     public void addRole(String rolename) {
         this.roleIds.add(rolename);
@@ -130,19 +130,19 @@ public class Step extends RootElement {
         return ret;
     }
 
-//	public double getTop() {
-//		return top;
-//	}
+//  public double getTop() {
+//      return top;
+//  }
 //
-//	public void setTop(double top) {
-//		this.top = top;
-//	}
+//  public void setTop(double top) {
+//      this.top = top;
+//  }
 //
-//	public double getLeft() {
-//		return left;
-//	}
+//  public double getLeft() {
+//      return left;
+//  }
 //
-//	public void setLeft(double left) {
-//		this.left = left;
-//	}
+//  public void setLeft(double left) {
+//      this.left = left;
+//  }
 }

@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.DataStorage;
@@ -441,17 +440,17 @@ public class PersistenceImp implements Persistence {
         
         final List<String> formEntryIds = new LinkedList<>();
         for (FormEntry fe: form.getFormDef()) {
-        	
-        	// check if there are no duplicates in formEntry keys.
-        	if (formEntryIds.contains(fe.getKey())) {
-        		throw new StorageFailedException("[persistence] form storage not possible - duplicating keys");
-        	}
-        	formEntryIds.add(fe.getKey());
-        	
-        	// check if all value types are accepted.
-        	if (DataType.hasType(fe.getValue())) {
-        		throw new StorageFailedException("[persistence] form storage not possible - unexpected value type");
-        	}
+            
+            // check if there are no duplicates in formEntry keys.
+            if (formEntryIds.contains(fe.getKey())) {
+                throw new StorageFailedException("[persistence] form storage not possible - duplicating keys");
+            }
+            formEntryIds.add(fe.getKey());
+            
+            // check if all value types are accepted.
+            if (DataType.hasType(fe.getValue())) {
+                throw new StorageFailedException("[persistence] form storage not possible - unexpected value type");
+            }
         }
         
         Form formToRemove = null;
@@ -653,33 +652,33 @@ public class PersistenceImp implements Persistence {
         form1 = new Form("das ist ein Formular");
         form2 = new Form("FORM");
         
-        FormEntry fe1 = new FormEntry();
+        final FormEntry fe1 = new FormEntry();
         fe1.setId("nameEntry");
         fe1.setKey("name");
         fe1.setValue("String");
-        FormEntry fe2 = new FormEntry();
+        final FormEntry fe2 = new FormEntry();
         fe2.setId("ageEntry");
         fe2.setKey("age");
         fe2.setValue("int");
-        FormEntry fe3 = new FormEntry();
+        final FormEntry fe3 = new FormEntry();
         fe3.setId("deliveredBookCount");
         fe3.setKey("bookCount");
         fe3.setValue("int");
-        FormEntry fe4 = new FormEntry();
+        final FormEntry fe4 = new FormEntry();
         fe4.setId("deliveryOnTime");
         fe4.setKey("onTime");
         fe4.setValue("boolean");
-        FormEntry fe5 = new FormEntry();
+        final FormEntry fe5 = new FormEntry();
         fe5.setId("chargedCosts");
         fe5.setKey("cost");
         fe5.setValue("int");
         
-        List<FormEntry>fd1 = form1.getFormDef();
+        final List<FormEntry> fd1 = form1.getFormDef();
         fd1.add(fe1);
         fd1.add(fe2);
         form1.setId("form1");
         
-        List<FormEntry>fd2 = form2.getFormDef();
+        final List<FormEntry> fd2 = form2.getFormDef();
         fd2.add(fe3);
         fd2.add(fe4);
         fd2.add(fe5);
@@ -687,6 +686,5 @@ public class PersistenceImp implements Persistence {
         
         storeForm(form1);
         storeForm(form2);
-        
     }
 }

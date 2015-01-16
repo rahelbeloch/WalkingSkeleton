@@ -29,7 +29,6 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
-import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * This class implements the logic interface and is used for logic operations.
@@ -401,8 +400,7 @@ public class LogicImp implements Logic {
         for (Workflow wf : workflows) {
             for (Item item : wf.getItems()) {
 
-                if (checkAuthorization(item, username))
-                {
+                if (checkAuthorization(item, username)) {
                     items.add(item);
                 }
             }
@@ -491,11 +489,10 @@ public class LogicImp implements Logic {
      * @param itemId indicates which item should be returned
      * @param username is the userId who wants to access the item
      * @return looked for item
-     * @throws PersistenceException is thrown if errors occur while persisting
-     * @throws NoPermissionException if the user is not allowed to get item
+     * @throws LogicException 
      */
     public Item getItem(String itemId, String username) throws LogicException {
-        Item item = persistence.loadItem(itemId);
+        final Item item = persistence.loadItem(itemId);
         System.out.println(item.getActStep());
         if (!checkAuthorization(item, username)) {
             throw new NoPermissionException("[logic] user " + username + " has no permission on item " + itemId);
@@ -589,10 +586,11 @@ public class LogicImp implements Logic {
     
     /**
      * Method for checking if a logged in user is authorized to get an Item.
-     * @param item
-     * @param username
-     * @return
-     * @throws PersistenceException
+     * @param item the requested item
+     * @param username the user who requests the item
+     * @return true if authorized else false
+     * @throws PersistenceException 
+     * @throws NoPermissionException 
      */
     public boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException {
         final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
