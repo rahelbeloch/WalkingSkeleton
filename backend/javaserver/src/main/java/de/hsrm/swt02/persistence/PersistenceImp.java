@@ -652,7 +652,37 @@ public class PersistenceImp implements Persistence {
         
         form1 = new Form("das ist ein Formular");
         form2 = new Form("FORM");
+        
+        FormEntry fe1 = new FormEntry();
+        fe1.setId("nameEntry");
+        fe1.setKey("name");
+        fe1.setValue("String");
+        FormEntry fe2 = new FormEntry();
+        fe2.setId("ageEntry");
+        fe2.setKey("age");
+        fe2.setValue("int");
+        FormEntry fe3 = new FormEntry();
+        fe3.setId("deliveredBookCount");
+        fe3.setKey("bookCount");
+        fe3.setValue("int");
+        FormEntry fe4 = new FormEntry();
+        fe4.setId("deliveryOnTime");
+        fe4.setKey("onTime");
+        fe4.setValue("boolean");
+        FormEntry fe5 = new FormEntry();
+        fe5.setId("chargedCosts");
+        fe5.setKey("cost");
+        fe5.setValue("int");
+        
+        List<FormEntry>fd1 = form1.getFormDef();
+        fd1.add(fe1);
+        fd1.add(fe2);
         form1.setId("form1");
+        
+        List<FormEntry>fd2 = form2.getFormDef();
+        fd2.add(fe3);
+        fd2.add(fe4);
+        fd2.add(fe5);
         form2.setId("form2");
         
         storeForm(form1);
