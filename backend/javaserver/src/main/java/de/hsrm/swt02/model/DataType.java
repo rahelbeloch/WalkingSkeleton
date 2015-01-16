@@ -1,5 +1,8 @@
 package de.hsrm.swt02.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Emum for DataTypes in Forms.
  *
@@ -41,5 +44,14 @@ public enum DataType {
      */
     public static DataType fromValue(String v) {
         return valueOf(v);
+    }
+    
+    public static boolean hasType(String type) {
+    	for(DataType dt: DataType.values()) {
+    		if(type.equals(dt.toString())) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 }
