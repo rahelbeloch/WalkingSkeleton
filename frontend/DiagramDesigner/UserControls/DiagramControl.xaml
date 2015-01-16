@@ -48,8 +48,8 @@
                                                                 Content="{TemplateBinding Content}" />
                                             <Grid Margin="-5"
                                                     x:Name="PART_ConnectorDecorator">
-                                                <s:Connector DataContext="{Binding LeftConnector}"
-                                                                Orientation="Left"
+                                                <s:Connector DataContext="{Binding InputConnector}"
+                                                                Orientation="Input"
                                                                 VerticalAlignment="Center"
                                                                 HorizontalAlignment="Left"
                                                                 Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
@@ -160,7 +160,7 @@
                                                         Value="Black" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Path=SinkConnectorInfo.Orientation}"
-                                                            Value="Left">
+                                                            Value="Input">
                                                 <Setter TargetName="arrow"
                                                         Property="Margin"
                                                         Value="-15,-5,0,0" />

@@ -20,7 +20,7 @@ namespace DiagramDesigner
         public bool enableTopConnector { get; set; }
         public bool enableRightConnector { get; set; }
         public bool enableBottomConnector { get; set; }
-        public bool enableLeftConnector { get; set; }
+        public bool enableInputConnector { get; set; }
 
         private static double itemWidth = 65;
         private static double itemHeight = 65;
@@ -51,7 +51,7 @@ namespace DiagramDesigner
         }
 
 
-        public FullyCreatedConnectorInfo LeftConnector
+        public FullyCreatedConnectorInfo InputConnector
         {
             get { return connectors[2]; }
         }
@@ -101,9 +101,9 @@ namespace DiagramDesigner
                         RightConnector.ShowConnectors = value;
                     }
 
-                    if (enableLeftConnector)
+                    if (enableInputConnector)
                     {
-                        LeftConnector.ShowConnectors = value;
+                        InputConnector.ShowConnectors = value;
                     }
 
                     NotifyChanged("ShowConnectors");
@@ -149,7 +149,7 @@ namespace DiagramDesigner
         {
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Top));
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Bottom));
-            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Left));
+            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Input));
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Right));
         }
         

@@ -220,7 +220,7 @@ namespace DiagramDesigner
             }
             else
             {
-                ConnectionPoints = PathFinder.GetConnectionLine(sourceInfo, ConnectionPoints[1], ConnectorOrientation.Left);
+                ConnectionPoints = PathFinder.GetConnectionLine(sourceInfo, ConnectionPoints[1], ConnectorOrientation.Input);
                 EndPoint = new Point();
             }
         }
