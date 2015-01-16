@@ -22,8 +22,8 @@ namespace DiagramDesigner
         public bool enableBottomConnector { get; set; }
         public bool enableInputConnector { get; set; }
 
-        private static double itemWidth = 65;
-        private static double itemHeight = 65;
+        public double itemWidth = 100;
+        public double itemHeight = 100;
 
         public DesignerItemViewModelBase(int id, IDiagramViewModel parent, double left, double top)
             : base(id, parent)
@@ -64,12 +64,12 @@ namespace DiagramDesigner
 
 
 
-        public static double ItemWidth
+        public double ItemWidth
         {
             get { return itemWidth; }
         }
 
-        public static double ItemHeight
+        public double ItemHeight
         {
             get { return itemHeight; }
         }
