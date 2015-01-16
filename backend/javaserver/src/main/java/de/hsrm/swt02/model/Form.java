@@ -114,9 +114,15 @@ public class Form extends RootElement {
     @Override
     public String toString() {
         String ret = "";
+        
         ret += "Form: ";
         ret += this.id;
-        ret += " - " + this.description;
+        ret += " - " + this.description + "\n";
+        if (formDef != null || formDef.size() != 0) {
+            for (FormEntry fe : formDef) {
+                ret += "Feldname: " + fe.getKey() + " ------ Datentyp: " + fe.getValue() + "\n"; 
+            }
+        }
         
         return ret;
     }
