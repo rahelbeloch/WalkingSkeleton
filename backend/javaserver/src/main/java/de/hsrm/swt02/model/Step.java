@@ -31,11 +31,11 @@ public class Step extends RootElement {
     // Used for (de)serialization. Do not change.
     protected ArrayList<String> roleIds;
 
-//    // Used for graphical display in admin client
-//    protected double top;
-//
-//    // Used for graphical display in admin client
-//    protected double left;
+    // Used for graphical display in admin client
+    protected double top;
+
+    // Used for graphical display in admin client
+    protected double left;
     
     /**
      * Constructor for Step.
@@ -130,19 +130,35 @@ public class Step extends RootElement {
         return ret;
     }
 
-//  public double getTop() {
-//      return top;
-//  }
-//
-//  public void setTop(double top) {
-//      this.top = top;
-//  }
-//
-//  public double getLeft() {
-//      return left;
-//  }
-//
-//  public void setLeft(double left) {
-//      this.left = left;
-//  }
+    /**
+     * Top Getter.
+     * @return top is the value to display on y axis
+     */
+    public double getTop() {
+        return top;
+    }
+
+    /**
+     * Top Setter.
+     * @param top is the value to display on y axis
+     */
+    public void setTop(double top) {
+        this.top = top;
+    }
+    
+    /**
+     * Left Getter.
+     * @return left is the value to display on x axis
+     */
+    public double getLeft() {
+        return left;
+    }
+
+    /**
+     * Left Setter.
+     * @param left is the value to display on x axis
+     */
+    public void setLeft(double left) {
+        this.left = left;
+    }
 }

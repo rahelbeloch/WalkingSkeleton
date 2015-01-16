@@ -35,7 +35,7 @@ public class SerializingTest {
     static Properties p;
     static UseLogger ul;
     
-    static String path = "serializingTest.set";
+    static String path = "serializingTest.ser";
 
     /**
      * setting Up useLogger, persistence and Props before testing.
@@ -45,8 +45,10 @@ public class SerializingTest {
     public static void setUp() {
         ul = new UseLogger();
         db = new PersistenceImp(ul);
-        p = new Properties();
-        p.setProperty("StoragePath", path);
+//        to be deleted?
+//        p = new Properties();
+//        p.setProperty("StoragePath", path);
+        db.setStoragePath(path);
     }
     
     /**
@@ -68,10 +70,10 @@ public class SerializingTest {
     public void testUserSerialization() throws PersistenceException {
         db.load();
 
-        final List<User> list = db.loadAllUsers();
-        for (User ele : list) {
-            System.out.println(ele);
-        }
+//        final List<User> list = db.loadAllUsers();
+//        for (User ele : list) {
+//            System.out.println(ele);
+//        }
 
         final User newUser = new User();
         newUser.setUsername("Alpha");
@@ -140,10 +142,10 @@ public class SerializingTest {
     public void testWorkflowSerialization() throws PersistenceException {
         db.load();
 
-        final List<Workflow> list = db.loadAllWorkflows();
-        for (Workflow ele : list) {
-            System.out.println(ele);
-        }
+//        final List<Workflow> list = db.loadAllWorkflows();
+//        for (Workflow ele : list) {
+//            System.out.println(ele);
+//        }
 
         final Workflow wf = new Workflow();
         db.storeWorkflow(wf);
@@ -170,10 +172,10 @@ public class SerializingTest {
     public void testRoleSerialization() throws PersistenceException {
         db.load();
 
-        final List<Role> list = db.loadAllRoles();
-        for (Role ele : list) {
-            System.out.println(ele);
-        }
+//        final List<Role> list = db.loadAllRoles();
+//        for (Role ele : list) {
+//            System.out.println(ele);
+//        }
 
         final Role r = new Role();
         db.storeRole(r);
@@ -200,10 +202,10 @@ public class SerializingTest {
     public void testFormSerialization() throws PersistenceException {
         db.load();
 
-        final List<Form> list = db.loadAllForms();
-        for (Form ele : list) {
-            System.out.println(ele);
-        }
+//        final List<Form> list = db.loadAllForms();
+//        for (Form ele : list) {
+//            System.out.println(ele);
+//        }
 
         final Form f = new Form();
         db.storeForm(f);

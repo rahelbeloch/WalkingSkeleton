@@ -578,6 +578,9 @@ public class PersistenceImp implements Persistence {
      * @throws PersistenceException - if an error in persistence occurs
      */
     private void initTestdata() throws PersistenceException {
+        final double standardDistance = 100;
+        int elementCounter = 1;
+        
         Workflow workflow1;
         User user1, user2, user3, user4;
         StartStep startStep1;
@@ -625,16 +628,40 @@ public class PersistenceImp implements Persistence {
 //        }
         
         startStep1 = new StartStep();
+        
+        // display formatting
+        startStep1.setLeft(elementCounter * standardDistance);
+        startStep1.setTop(elementCounter * standardDistance);
+        elementCounter++;
+        
         startStep1.getRoleIds().add(role1.getRolename());
 
         action1 = new Action(new ArrayList<String>(), "Action von "
                 + user1.getUsername());
+        
+        // display formatting
+        action1.setLeft(elementCounter * standardDistance);
+        action1.setTop(elementCounter * standardDistance);
+        elementCounter++;
+        
         action1.addRole(role2.getRolename());
         action2 = new Action(new ArrayList<String>(), "Action von "
                 + user2.getUsername());
+
+        // display formatting
+        action2.setLeft(elementCounter * standardDistance);
+        action2.setTop(elementCounter * standardDistance);
+        elementCounter++;
+        
         action2.addRole(role1.getRolename());
 
         finalStep = new FinalStep();
+        
+        // display formatting
+        finalStep.setLeft(elementCounter * standardDistance);
+        finalStep.setTop(elementCounter * standardDistance);
+        elementCounter++;
+        
         finalStep.getRoleIds().add(role2.getRolename());
 
         workflow1 = new Workflow();
