@@ -9,7 +9,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import com.google.inject.Inject;
@@ -61,7 +60,7 @@ public class PersistenceImp implements Persistence {
     
     private List<Form> forms = new LinkedList<>();
     
-    private Properties propConfig;
+    private String storagePath;
     
     /**
      * Constructor for PersistenceImp.
@@ -70,7 +69,7 @@ public class PersistenceImp implements Persistence {
     @Inject
     public PersistenceImp(UseLogger logger) {
         this.logger = logger;
-        this.propConfig = ConfigProperties.getInstance().getProperties();
+        this.storagePath = ConfigProperties.getInstance().getProperties().getProperty("StoragePath");
     }
     
     // Workflow Operations
@@ -518,8 +517,6 @@ public class PersistenceImp implements Persistence {
 
     @Override
     public void save() {
-        final String storagePath = propConfig.getProperty("StoragePath");
-        
         // browse through all DataModels and serialize them into a file (path in server configuration file)
         try {
             final FileOutputStream fileOut = new FileOutputStream(storagePath);
@@ -538,7 +535,6 @@ public class PersistenceImp implements Persistence {
     
     @Override
     public void load() {
-        final String storagePath = propConfig.getProperty("StoragePath");
         final File f = new File(storagePath);
         if (storagePath != null && storagePath.contains(".ser") && f.exists()) {
             
@@ -557,11 +553,11 @@ public class PersistenceImp implements Persistence {
                     in.close();
                     fileIn.close();
                 } catch (IOException i) {
-                    this.logger.log(Level.WARNING,"[persistence] could not read/load data model file " + propConfig.getProperty("StoragePath") + ".");
+                    this.logger.log(Level.WARNING,"[persistence] could not read/load data model file " + storagePath + ".");
                     this.logger.log(Level.WARNING, i);
                 } catch (ClassNotFoundException e) {
                     this.logger.log(Level.WARNING,"[persistence] could not find fitting class"
-                            + " for serialization of file " + propConfig.getProperty("StoragePath") + ".");
+                            + " for serialization of file " + storagePath + ".");
                     this.logger.log(Level.WARNING, e);
                 }
             }
@@ -686,5 +682,10 @@ public class PersistenceImp implements Persistence {
         
         storeForm(form1);
         storeForm(form2);
+    }
+
+    @Override
+    public void setStoragePath(String storagePath) {
+        this.storagePath = storagePath;
     }
 }
