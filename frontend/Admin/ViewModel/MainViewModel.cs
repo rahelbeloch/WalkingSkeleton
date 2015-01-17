@@ -263,7 +263,7 @@ namespace Admin.ViewModel
         private void logout()
         {
             admin = "";
-            //ClearModel();
+            ClearModel();
             CurrentPageViewModel = loginViewModel;
             myComLib.Logout();
         }

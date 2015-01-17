@@ -216,7 +216,11 @@ namespace Admin.ViewModel
             {
                 _actWorkflow = value;
                 _items.Clear();
-                _actWorkflow.items.ForEach(_items.Add);
+                if (_actWorkflow != null)
+                {
+                    _actWorkflow.items.ForEach(_items.Add);
+                }
+                
                 OnChanged("actWorkflow");
                 OnChanged("items");
             }
