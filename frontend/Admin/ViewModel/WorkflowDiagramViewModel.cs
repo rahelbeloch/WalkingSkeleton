@@ -35,13 +35,14 @@ namespace Admin.ViewModel
         private ToolBoxViewModel _toolBoxViewModel;
         public ToolBoxViewModel toolBoxViewModel { get { return _toolBoxViewModel; } }
         private IMessageBoxService messageBoxService;
-
+        private List<SelectableDesignerItemViewModelBase> itemsToRemove;
 
         public WorkflowDiagramViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
             _workflow.CollectionChanged += OnWorkflowChanged;
+            DeleteSelectedItemsCommand = new SimpleCommand(ExecuteDeleteSelectedItemsCommand);
         }
         public DiagramViewModel DiagramViewModel
         {
@@ -397,6 +398,33 @@ namespace Admin.ViewModel
 
         #region commands
 
+
+        public SimpleCommand DeleteSelectedItemsCommand { get; private set; }
+        private void ExecuteDeleteSelectedItemsCommand(object parameter)
+        {
+            itemsToRemove = DiagramViewModel.SelectedItems;
+            List<SelectableDesignerItemViewModelBase> connectionsToAlsoRemove = new List<SelectableDesignerItemViewModelBase>();
+
+            foreach (var connector in DiagramViewModel.Items.OfType<ConnectorViewModel>())
+            {
+                if (ItemsToDeleteHasConnector(itemsToRemove, connector.SourceConnectorInfo))
+                {
+                    connectionsToAlsoRemove.Add(connector);
+                }
+
+                if (ItemsToDeleteHasConnector(itemsToRemove, (FullyCreatedConnectorInfo)connector.SinkConnectorInfo))
+                {
+                    connectionsToAlsoRemove.Add(connector);
+                }
+
+            }
+            itemsToRemove.AddRange(connectionsToAlsoRemove);
+            foreach (var selectedItem in itemsToRemove)
+            {
+                DiagramViewModel.RemoveItemCommand.Execute(selectedItem);
+            }
+        }
+
         /// <summary>
         /// Command to delete last step from workflow.
         /// </summary>
@@ -710,5 +738,9 @@ namespace Admin.ViewModel
         }
 
         #endregion
+        private bool ItemsToDeleteHasConnector(List<SelectableDesignerItemViewModelBase> itemsToRemove, FullyCreatedConnectorInfo connector)
+        {
+            return itemsToRemove.Contains(connector.DataItem);
+        }
     }   
 }
