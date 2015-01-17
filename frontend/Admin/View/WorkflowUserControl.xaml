@@ -14,7 +14,10 @@
             <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick"/> 
         </Style>
     </UserControl.Resources>
-
+    <UserControl.InputBindings>
+        <KeyBinding Key="Del"
+                    Command="{Binding DeleteSelectedItemsCommand}" />
+    </UserControl.InputBindings>
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
