@@ -16,6 +16,7 @@ using System.Diagnostics;
 using NLog;
 using DiagramDesigner;
 using DiagramDesigner.Helpers;
+using Admin.Helpers;
 
 namespace Admin.ViewModel
 {
@@ -558,7 +559,7 @@ namespace Admin.ViewModel
                             {
                                 if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
                                 {
-                                    step.nextStepIds = new List<string>();
+                                    step.nextStepIds = new HashSet<string>();
                                 }
                                 step.id = "";
                             }
@@ -599,74 +600,18 @@ namespace Admin.ViewModel
                                 messageBoxService.ShowError("There must be at least one item in order save a diagram");
                                 return;
                             }
-                            _workflowModel = new Workflow();
-
-
-                            foreach (var designerItem in DiagramViewModel.Items)
+                            Workflow workflow = WorkflowDiagramConverter.DiagramItemsToWorkflow(DiagramViewModel.Items.ToList());
+                            if (workflow != null)
                             {
-                                if(designerItem.GetType() == typeof(ConnectorViewModel)) 
-                                {
-                                    DesignerItemViewModelBase startItem = ((FullyCreatedConnectorInfo)((ConnectorViewModel)designerItem).SourceConnectorInfo).DataItem;
-                                    DesignerItemViewModelBase endItem = ((FullyCreatedConnectorInfo)((ConnectorViewModel)designerItem).SinkConnectorInfo).DataItem;
-
-                                    Console.WriteLine("start: "+ startItem +", ende: "+ endItem);
-                                }
-                                
-                                
+                                _restRequester.PostObject(workflow);
                             }
-
-                            /*
-                            //Save all PersistDesignerItemViewModel
-                            foreach (var startStep in DiagramViewModel.Items.OfType<StartStepViewModel>())
-                            {
-
-                                StartStep persistStartStep = new StartStep();
-                                //(startStep.Id, startStep.Left, startStep.Top, startStep.HostUrl);
-                                //_workflowModel.addStep(persistStartStep);
-                                logger.Info("StartStepPoint: " + startStep.Left);
-                            }
-                            //Save all PersistDesignerItemViewModel
-                            foreach (var actionStep in DiagramViewModel.Items.OfType<ActionViewModel>())
-                            {
-                                Action persistAction = new Action();
-
-
-                                //actionStep.Id, actionStep.Left, actionStep.Top, actionStep.HostUrl);
-                                //_workflowModel.addStep(persistAction);
-
-
-                            }
-                            foreach (var connection in DiagramViewModel.Items.OfType<ConnectorViewModel>())
-                            {
-                                logger.Info("EndPoint: " + connection.EndPoint);
-                                logger.Info("SouceA: " + connection.SourceA);
-                                logger.Info("SouceB: " + connection.SourceB);
-
-                            }
-                            foreach (var finalStep in DiagramViewModel.Items.OfType<FinalStepViewModel>())
-                            {
-                                FinalStep persistFinalStep = new FinalStep();
-                                //actionStep.Id, actionStep.Left, actionStep.Top, actionStep.HostUrl);
-                                //_workflowModel.addStep(persistFinalStep);
-
-                            } */
-
-
-
                             messageBoxService.ShowInformation(string.Format("Finished saving Diagram "));
-
-                            // _restRequester.PostObject(_workflowModel);
-
-                            // remove steps from workflow
-                            // update model AND viewmodel, because the model is not observable
-                            _workflowModel.clearWorkflow();
-                            _workflow.Clear();
                         }
                         catch (BasicException be)
                         {
                             MessageBox.Show(be.Message);
                         }
-                    }, canExecute => _workflowModel != null);
+                    }, canExecute => DiagramViewModel.Items.Any());
                 }
                 return _saveWorkflowCommand;
             }
