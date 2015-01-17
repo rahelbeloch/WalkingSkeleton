@@ -305,8 +305,8 @@ namespace DiagramDesigner
                         orientationTo = GetOrientation(points[j + 1], points[j + 2]);
 
 
-                    if ((orientationFrom == ConnectorOrientation.Input || orientationFrom == ConnectorOrientation.Right) &&
-                        (orientationTo == ConnectorOrientation.Input || orientationTo == ConnectorOrientation.Right))
+                    if ((orientationFrom == ConnectorOrientation.Input || orientationFrom == ConnectorOrientation.Output) &&
+                        (orientationTo == ConnectorOrientation.Input || orientationTo == ConnectorOrientation.Output))
                     {
                         double centerX = Math.Min(points[j].X, points[j + 1].X) + Math.Abs(points[j].X - points[j + 1].X) / 2;
                         points.Insert(j + 1, new Point(centerX, points[j].Y));
@@ -327,7 +327,7 @@ namespace DiagramDesigner
                         return points;
                     }
 
-                    if ((orientationFrom == ConnectorOrientation.Input || orientationFrom == ConnectorOrientation.Right) &&
+                    if ((orientationFrom == ConnectorOrientation.Input || orientationFrom == ConnectorOrientation.Output) &&
                         (orientationTo == ConnectorOrientation.Top || orientationTo == ConnectorOrientation.Bottom))
                     {
                         points.Insert(j + 1, new Point(points[j + 1].X, points[j].Y));
@@ -335,7 +335,7 @@ namespace DiagramDesigner
                     }
 
                     if ((orientationFrom == ConnectorOrientation.Top || orientationFrom == ConnectorOrientation.Bottom) &&
-                        (orientationTo == ConnectorOrientation.Input || orientationTo == ConnectorOrientation.Right))
+                        (orientationTo == ConnectorOrientation.Input || orientationTo == ConnectorOrientation.Output))
                     {
                         points.Insert(j + 1, new Point(points[j].X, points[j + 1].Y));
                         return points;
@@ -359,7 +359,7 @@ namespace DiagramDesigner
             else if (p1.Y == p2.Y)
             {
                 if (p1.X >= p2.X)
-                    return ConnectorOrientation.Right;
+                    return ConnectorOrientation.Output;
                 else
                     return ConnectorOrientation.Input;
             }
@@ -374,7 +374,7 @@ namespace DiagramDesigner
                     return Orientation.Horizontal;
                 case ConnectorOrientation.Top:
                     return Orientation.Vertical;
-                case ConnectorOrientation.Right:
+                case ConnectorOrientation.Output:
                     return Orientation.Horizontal;
                 case ConnectorOrientation.Bottom:
                     return Orientation.Vertical;
@@ -514,7 +514,7 @@ namespace DiagramDesigner
                 case ConnectorOrientation.Top:
                     n1 = rect.BottomLeft; n2 = rect.BottomRight;
                     break;
-                case ConnectorOrientation.Right:
+                case ConnectorOrientation.Output:
                     n1 = rect.TopLeft; n2 = rect.BottomLeft;
                     break;
                 case ConnectorOrientation.Bottom:
@@ -535,7 +535,7 @@ namespace DiagramDesigner
                 case ConnectorOrientation.Top:
                     n1 = rect.TopLeft; n2 = rect.TopRight;
                     break;
-                case ConnectorOrientation.Right:
+                case ConnectorOrientation.Output:
                     n1 = rect.TopRight; n2 = rect.BottomRight;
                     break;
                 case ConnectorOrientation.Bottom:
@@ -575,7 +575,7 @@ namespace DiagramDesigner
                 case ConnectorOrientation.Top:
                     offsetPoint = new Point(connector.Position.X, rect.Top);
                     break;
-                case ConnectorOrientation.Right:
+                case ConnectorOrientation.Output:
                     offsetPoint = new Point(rect.Right, connector.Position.Y);
                     break;
                 case ConnectorOrientation.Bottom:
@@ -603,7 +603,7 @@ namespace DiagramDesigner
                     case ConnectorOrientation.Top:
                         startPoint = new Point(source.Position.X, source.Position.Y - marginPath);
                         break;
-                    case ConnectorOrientation.Right:
+                    case ConnectorOrientation.Output:
                         startPoint = new Point(source.Position.X + marginPath, source.Position.Y);
                         break;
                     case ConnectorOrientation.Bottom:
@@ -621,7 +621,7 @@ namespace DiagramDesigner
                     case ConnectorOrientation.Top:
                         endPoint = new Point(sink.Position.X, sink.Position.Y - marginPath);
                         break;
-                    case ConnectorOrientation.Right:
+                    case ConnectorOrientation.Output:
                         endPoint = new Point(sink.Position.X + marginPath, sink.Position.Y);
                         break;
                     case ConnectorOrientation.Bottom:
@@ -645,10 +645,10 @@ namespace DiagramDesigner
             switch (connectorOrientation)
             {
                 case ConnectorOrientation.Input:
-                    return ConnectorOrientation.Right;
+                    return ConnectorOrientation.Output;
                 case ConnectorOrientation.Top:
                     return ConnectorOrientation.Bottom;
-                case ConnectorOrientation.Right:
+                case ConnectorOrientation.Output:
                     return ConnectorOrientation.Input;
                 case ConnectorOrientation.Bottom:
                     return ConnectorOrientation.Top;

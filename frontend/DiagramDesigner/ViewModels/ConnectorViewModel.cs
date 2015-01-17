@@ -169,7 +169,7 @@ namespace DiagramDesigner
                     sinkConnectorInfo = value;
                     if (SinkConnectorInfo is FullyCreatedConnectorInfo)
                     {
-                        if (((FullyCreatedConnectorInfo)sinkConnectorInfo).Orientation == ConnectorOrientation.Right)
+                        if (((FullyCreatedConnectorInfo)sinkConnectorInfo).Orientation == ConnectorOrientation.Output)
                         {
                             Console.WriteLine("NOPE");
                         }
