@@ -52,6 +52,8 @@ public class Step extends RootElement {
         super.init(s);
         this.roleIds = s.roleIds;
         this.getNextStepIds().addAll(s.getNextStepIds());
+        this.left = s.getLeft();
+        this.top = s.getTop();
     }
 
     /**
