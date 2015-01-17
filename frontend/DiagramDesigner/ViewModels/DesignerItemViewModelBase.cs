@@ -39,13 +39,13 @@ namespace DiagramDesigner
         }
 
 
-        public FullyCreatedConnectorInfo TopConnector
+        public FullyCreatedConnectorInfo TrueOutputConnector
         {
             get { return connectors[0]; }
         }
 
 
-        public FullyCreatedConnectorInfo BottomConnector
+        public FullyCreatedConnectorInfo FalseOutputConnector
         {
             get { return connectors[1]; }
         }
@@ -88,12 +88,12 @@ namespace DiagramDesigner
 
                     if (enableTopConnector)
                     {
-                        TopConnector.ShowConnectors = value;
+                        TrueOutputConnector.ShowConnectors = value;
                     }
 
                     if (enableBottomConnector)
                     {
-                        BottomConnector.ShowConnectors = value;
+                        FalseOutputConnector.ShowConnectors = value;
                     }
 
                     if (enableRightConnector)
@@ -147,8 +147,8 @@ namespace DiagramDesigner
 
         private void Init()
         {
-            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Top));
-            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Bottom));
+            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.TrueOutput));
+            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.FalseOutput));
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Input));
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Output));
         }

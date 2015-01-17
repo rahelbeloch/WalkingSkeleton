@@ -40,8 +40,8 @@ namespace DiagramDesigner
     {
         None    =   0,
         Input    =   1,
-        Top     =   2,
+        TrueOutput     =   2,
         Output   =   3,
-        Bottom  =   4
+        FalseOutput  =   4
     }
 }
