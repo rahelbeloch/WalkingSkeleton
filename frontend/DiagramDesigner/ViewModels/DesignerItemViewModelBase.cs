@@ -152,6 +152,5 @@ namespace DiagramDesigner
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Input));
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Right));
         }
-        
     }
 }
