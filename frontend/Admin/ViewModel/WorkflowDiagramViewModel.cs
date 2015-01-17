@@ -421,7 +421,14 @@ namespace Admin.ViewModel
             itemsToRemove.AddRange(connectionsToAlsoRemove);
             foreach (var selectedItem in itemsToRemove)
             {
+                if (selectedItem.GetType() == typeof(ConnectorViewModel)) 
+                {
+                    ConnectorViewModel c = (ConnectorViewModel)selectedItem;
+                    c.SourceConnectorInfo.DataItem.enableRightConnector = true;
+                    ((FullyCreatedConnectorInfo)c.SinkConnectorInfo).DataItem.enableInputConnector = true;
+                }
                 DiagramViewModel.RemoveItemCommand.Execute(selectedItem);
+
             }
         }
 

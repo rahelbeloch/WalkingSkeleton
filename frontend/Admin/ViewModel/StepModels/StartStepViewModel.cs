@@ -37,7 +37,6 @@ namespace Admin
             }
         }
 
-
         private void Init()
         {
             enableRightConnector = true;
@@ -46,7 +45,6 @@ namespace Admin
             visualiserService = ApplicationServicesProvider.Instance.Provider.VisualizerService;
             ShowDataChangeWindowCommand = new SimpleCommand(ExecuteShowDataChangeWindowCommand);
             this.ShowConnectors = false;
-
         }
     }
 }
