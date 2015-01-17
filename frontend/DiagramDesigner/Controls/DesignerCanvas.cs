@@ -92,7 +92,7 @@ namespace DiagramDesigner
                 {
                     Connector sinkConnector = connectorsHit.Last();
                     FullyCreatedConnectorInfo sinkDataItem = sinkConnector.DataContext as FullyCreatedConnectorInfo;
-                    if (sinkDataItem.Orientation == ConnectorOrientation.Right)
+                    if (sinkDataItem.Orientation == ConnectorOrientation.Output)
                     {
                         //Need to remove last item as we did not finish drawing the path
                         int indexOfLastTempConnection = sourceDataItem.DataItem.Parent.Items.Count - 1;

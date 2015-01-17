@@ -41,7 +41,7 @@ namespace DiagramDesigner
         None    =   0,
         Input    =   1,
         Top     =   2,
-        Right   =   3,
+        Output   =   3,
         Bottom  =   4
     }
 }

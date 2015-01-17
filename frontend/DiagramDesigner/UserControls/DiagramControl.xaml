@@ -58,8 +58,8 @@
                                                                 VerticalAlignment="Top"
                                                                 HorizontalAlignment="Center"
                                                                 Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />
-                                                <s:Connector DataContext="{Binding RightConnector}"
-                                                                Orientation="Right"
+                                                <s:Connector DataContext="{Binding OutputConnector}"
+                                                                Orientation="Output"
                                                                 VerticalAlignment="Center"
                                                                 HorizontalAlignment="Right"
                                                                 Visibility="{Binding Path=ShowConnectors, Converter={x:Static s:BoolToVisibilityConverter.Instance}}" />

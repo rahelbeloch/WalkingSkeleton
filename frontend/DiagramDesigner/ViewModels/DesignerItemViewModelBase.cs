@@ -57,7 +57,7 @@ namespace DiagramDesigner
         }
 
 
-        public FullyCreatedConnectorInfo RightConnector
+        public FullyCreatedConnectorInfo OutputConnector
         {
             get { return connectors[3]; }
         }
@@ -98,7 +98,7 @@ namespace DiagramDesigner
 
                     if (enableRightConnector)
                     {
-                        RightConnector.ShowConnectors = value;
+                        OutputConnector.ShowConnectors = value;
                     }
 
                     if (enableInputConnector)
@@ -150,7 +150,7 @@ namespace DiagramDesigner
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Top));
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Bottom));
             connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Input));
-            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Right));
+            connectors.Add(new FullyCreatedConnectorInfo(this, ConnectorOrientation.Output));
         }
     }
 }

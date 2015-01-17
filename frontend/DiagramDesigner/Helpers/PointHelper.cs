@@ -24,7 +24,7 @@ namespace DiagramDesigner
                 case ConnectorOrientation.Bottom:
                     point = new Point(connector.DataItem.Left + (connector.DataItem.ItemWidth / 2), (connector.DataItem.Top + connector.DataItem.ItemHeight) + (ConnectorInfoBase.ConnectorHeight / 2));
                     break;
-                case ConnectorOrientation.Right:
+                case ConnectorOrientation.Output:
                     point = new Point(connector.DataItem.Left + connector.DataItem.ItemWidth + (ConnectorInfoBase.ConnectorWidth), connector.DataItem.Top + (connector.DataItem.ItemHeight / 2));
                     break;
                 case ConnectorOrientation.Input:
