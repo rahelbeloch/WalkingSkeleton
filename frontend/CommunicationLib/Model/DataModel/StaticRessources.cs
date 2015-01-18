@@ -70,6 +70,14 @@ namespace CommunicationLib.Model
                 {11330, typeof(AdminRoleDeletionException)},
                 {11340, typeof(LastAdminDeletedException)},
             {11400, typeof(IncompleteEleException)},
+            {11500, typeof(InvalidWorkflowException)},
+                {11510, typeof(WorkflowCyclesException)},
+                {11520, typeof(WorkflowMustTerminateException)},
+                {11530, typeof(InvalidFinalStepException​)},
+                {11540, typeof(UnreachableStepException)},
+                {11550, typeof(ExpectedOneStartStepException​)},
+                {11560, typeof(ExpectedAtLeastOneFinalStepException)},
+                {11570, typeof(ExpectedAtLeastOneActionException)},
                 
             //Error codes for connection errors
             {12000,typeof(ConnectionException)},
