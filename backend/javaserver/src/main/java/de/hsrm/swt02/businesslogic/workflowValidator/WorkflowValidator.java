@@ -64,7 +64,7 @@ public class WorkflowValidator {
     }
     
     private boolean isReachable (Step actStep,Step stepToReach) {
-        if (actStep.getNextSteps().contains(stepToReach)) {
+        if (actStep.getNextSteps().contains(stepToReach) || actStep.equals(stepToReach)) {
             return true;
         } else {
             for(Step s: actStep.getNextSteps()) {
