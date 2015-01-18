@@ -9,10 +9,12 @@ namespace DiagramDesigner
 {
     public interface IDiagramViewModel
     {
+        Object workflowViewModel { get; }
         SimpleCommand AddItemCommand { get; }
         SimpleCommand RemoveItemCommand { get;  }
         SimpleCommand ClearSelectedItemsCommand { get;  }
         List<SelectableDesignerItemViewModelBase> SelectedItems { get; }
         ObservableCollection<SelectableDesignerItemViewModelBase> Items { get; }
+        
     }
 }
