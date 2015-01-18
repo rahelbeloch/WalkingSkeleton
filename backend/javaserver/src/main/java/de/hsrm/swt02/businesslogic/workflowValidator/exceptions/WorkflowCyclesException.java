@@ -17,7 +17,7 @@ public class WorkflowCyclesException extends InvalidWorkflowException {
      * Constructor for the Exception.
      */
     public WorkflowCyclesException() {
-        super("Workflow is not valid.");
+        super("Cycles are not allowed.");
     }
 
     /**
