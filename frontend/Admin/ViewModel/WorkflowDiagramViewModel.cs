@@ -42,7 +42,6 @@ namespace Admin.ViewModel
         {
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
-            _workflow.CollectionChanged += OnWorkflowChanged;
             DeleteSelectedItemsCommand = new SimpleCommand(ExecuteDeleteSelectedItemsCommand);
         }
         public DiagramViewModel DiagramViewModel
@@ -70,7 +69,6 @@ namespace Admin.ViewModel
 
         /// <summary>
         /// Property _dummyWorkflow fills list view with steps.
-        /// TODO: change Step to Step (not possible at the moment)
         /// </summary>
         private ObservableCollection<Step> _workflow = new ObservableCollection<Step>();
         public ObservableCollection<Step> workflow { get { return _workflow; } }
@@ -91,12 +89,6 @@ namespace Admin.ViewModel
         /// </summary>
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
         public ObservableCollection<Item> items { get { return _items; } } 
-        /// <summary>
-        /// Property to fill combox box with choosable steps.
-        /// TODO: change Step to Step (not possible at the moment)
-        /// </summary>
-        private ObservableCollection<Step> _choosableSteps = new ObservableCollection<Step>();
-        public ObservableCollection<Step> choosableSteps { get { return _choosableSteps; } }
 
         /// <summary>
         /// Property to enable textbox for username input.
@@ -154,39 +146,6 @@ namespace Admin.ViewModel
             {
                 _enableDescriptionTextBox = value;
                 OnChanged("enableDescriptionTextBox");
-            }
-        }
-
-        /// <summary>
-        /// Property for currently selected step from combo box.
-        /// TODO: change Step to Step (not possible at the moment)
-        /// </summary>
-        private Step _selectedStep = new Step();
-        public Step selectedStep
-        {
-            get
-            {
-                return _selectedStep;
-            }
-            set
-            {
-                _selectedStep = value;
-
-                if (_selectedStep is StartStep)
-                {
-                    enableUserTextBox = true;
-                    enableDescriptionTextBox = false;
-                }
-                else if (_selectedStep is FinalStep)
-                {
-                    enableUserTextBox = false;
-                    enableDescriptionTextBox = false;
-                }
-                else if (_selectedStep is Action)
-                {
-                    enableUserTextBox = true;
-                    enableDescriptionTextBox = true;
-                }
             }
         }
 
@@ -273,8 +232,6 @@ namespace Admin.ViewModel
             try
             {
                 logger.Info("Initialize");
-                _choosableSteps.Add(new StartStep());
-
                 _workflows.Clear();
                 // IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>(); <-- changed method in REST; is generic now; this is the old line
                 IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
@@ -303,8 +260,6 @@ namespace Admin.ViewModel
             userCollection.Clear();
             roleCollection.Clear();
             workflow.Clear();
-            choosableSteps.Clear();
-            selectedStep = null;
             selectedRole = null;
             actWorkflow = null;
         }
@@ -368,38 +323,6 @@ namespace Admin.ViewModel
             OnChanged("workflows");
             
         }
-            
-
-        /// <summary>
-        /// When the workflow is changed, reconfigure choosable steps for combobox (depending on currently allowed steps).
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void OnWorkflowChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            _choosableSteps.Clear();
-
-            if (_workflow.Count == 0)
-            {
-                StartStep startStep = new StartStep();
-                _choosableSteps.Add(startStep);
-            }
-            else if (_workflow[_workflow.Count - 1] is StartStep)
-            {
-                Action action = new Action();
-                _choosableSteps.Add(action);
-            }
-            else if (_workflow.Count >= 2 && !(_workflow[_workflow.Count - 1] is FinalStep))
-            {
-                Action action = new Action();
-
-                FinalStep finalStep = new FinalStep();
-                _choosableSteps.Add(action);
-                _choosableSteps.Add(finalStep);
-            }
-
-            
-        }
 
         #region commands
 
@@ -437,26 +360,6 @@ namespace Admin.ViewModel
             }
         }
 
-        /// <summary>
-        /// Command to delete last step from workflow.
-        /// </summary>
-        private ICommand _removeLastStepCommand;
-        public ICommand removeLastStepCommand
-        {
-            get
-            {
-                if (_removeLastStepCommand == null)
-                {
-                    _removeLastStepCommand = new ActionCommand(execute =>
-                    {
-                        // update model AND viewmodel, because the model is not observable
-                        _workflowModel.removeLastStep();
-                        _workflow.RemoveAt(_workflow.Count - 1);
-                    }, canExecute => _workflow.Count > 0);
-                }
-                return _removeLastStepCommand;
-            }
-        }
         /// <summary>
         /// Command to edit the current workflow.
         /// </summary>
@@ -519,68 +422,6 @@ namespace Admin.ViewModel
                 return _toggleActivity;
             }
         }
-        private ICommand _resetWorkflowCommand;
-        public ICommand resetWorkflowCommand
-        {
-            get
-            {
-                if (_resetWorkflowCommand == null)
-                {
-                    _resetWorkflowCommand = new ActionCommand(execute =>
-                        {
-                            _workflowModel.clearWorkflow();
-                            workflow.Clear();
-                        }, canExecute => true);
-                }
-                return _resetWorkflowCommand;
-            }
-        }
-        /// <summary>
-        /// Command to submit workflow if last step is a final step.
-        /// </summary>
-        private ICommand _submitWorkflowCommand;
-        public ICommand submitWorkflowCommand
-        {
-            get
-            {
-                if (_submitWorkflowCommand == null)
-                {
-                    _submitWorkflowCommand = new ActionCommand(execute =>
-                    {
-                        try
-                        {
-                            // set all ids in workflow to empty string, to avoid sending 'null'; otherwise problems with parsing!
-                            if (_workflowModel != actWorkflow)
-                            {
-                                _workflowModel.id = "";     
-                            }
-
-                            foreach (Step step in _workflowModel.steps)
-                            {
-                                if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
-                                {
-                                    step.nextStepIds = new HashSet<string>();
-                                }
-                                step.id = "";
-                            }
-
-                            _restRequester.PostObject(_workflowModel);
-
-                            // remove steps from workflow
-                            // update model AND viewmodel, because the model is not observable
-                            _workflowModel.clearWorkflow();
-                            _workflowModel = new Workflow();
-                            _workflow.Clear();
-                        }
-                        catch (BasicException be)
-                        {
-                            MessageBox.Show(be.Message);
-                        }
-                    }, canExecute => _workflow.Count > 0 && _workflow[_workflow.Count - 1] is FinalStep);
-                }
-                return _submitWorkflowCommand;
-            }
-        }
 
         ////neues Command anfang
         private ICommand _saveWorkflowCommand;
@@ -615,82 +456,6 @@ namespace Admin.ViewModel
                 }
                 return _saveWorkflowCommand;
             }
-        }
-
-        ////neues Command ende
-
-
-        /// <summary>
-        /// Command to add a selected step to current workflow.
-        /// </summary>
-        private ICommand _addStepCommand;
-        public ICommand addStepCommand
-        {
-            get
-            {
-                if (_addStepCommand == null)
-                {
-                    _addStepCommand = new ActionCommand(execute =>
-                    {
-                        // add step to workflow
-                        // update model AND viewmodel, because the model is not observable
-                        if (_selectedStep is StartStep)
-                        {
-                            StartStep startStep = new StartStep();
-                            startStep.roleIds.Add(selectedRole.rolename);
-
-                            _workflow.Add(startStep);
-                            _workflowModel.addStep(startStep);
-                        }
-                        else if (_selectedStep is Action)
-                        {
-                            Action action = new Action();
-                            
-                            action.description = stepDescription;
-                            action.roleIds.Add(selectedRole.rolename);
-
-                            _workflow.Add(action);
-                            _workflowModel.addStep(action);
-                        }
-                        else if (_selectedStep is FinalStep)
-                        {
-                            FinalStep finalStep = new FinalStep();
-                            finalStep.roleIds.Add(selectedRole.rolename);
-
-                            _workflow.Add(finalStep);
-                            _workflowModel.addStep(finalStep);
-                        }
-
-                        // reset inputs
-                        stepDescription = "";
-                        
-                        
-                    }, canExecute =>
-                    {
-                        if (selectedStep == null)
-                        {
-                            return false;
-                        }
-                        else if (selectedStep is Action &&  stepDescription.Length > 0)
-                        {
-                            return true;
-                        }
-                        else if (selectedStep is StartStep && selectedRole != null)
-                        {
-                            return true;
-                        }
-                        else if (selectedStep is FinalStep)
-                        {
-                            return true;
-                        }
-
-                        return false;
-                    });
-                }
-
-                return _addStepCommand;
-            }
-
         }
 
         #endregion
