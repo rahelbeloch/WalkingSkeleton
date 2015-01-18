@@ -58,6 +58,9 @@ namespace Admin.ViewModel
             }
         }
 
+        /// <summary>
+        /// Clear model after logout.
+        /// </summary>
         public void ClearModel()
         {
             UserCollection.Clear();

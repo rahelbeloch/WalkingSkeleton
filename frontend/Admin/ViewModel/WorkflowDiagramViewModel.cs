@@ -221,6 +221,9 @@ namespace Admin.ViewModel
 
         #endregion
 
+        /// <summary>
+        /// Inititialize model after login.
+        /// </summary>
         public void InitModel()
         {
             _toolBoxViewModel = new ToolBoxViewModel();
@@ -255,6 +258,9 @@ namespace Admin.ViewModel
             OnChanged("workflows");
         }
 
+        /// <summary>
+        /// Clear model after logout.
+        /// </summary>
         public void ClearModel()
         {
             userCollection.Clear();
