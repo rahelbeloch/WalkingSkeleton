@@ -72,14 +72,14 @@ namespace Admin.Helpers
             {
                 StartStep startStep = step.Clone<StartStep>();
                 startStep.id = getUniqueId();
-                startStep.roleIds.Add("Manager");
+                startStep.roleIds.Add(((StartStepViewModel)designerItem).selectedRole.id);
                 return startStep;
             }
             else if (designerItem.GetType() == typeof(ActionViewModel))
             {
                 Action action = step.Clone<Action>();
                 action.id = getUniqueId();
-                action.roleIds.Add("Manager");
+                action.roleIds.Add(((ActionViewModel)designerItem).selectedRole.id);
                 return action;
             }
             else if (designerItem.GetType() == typeof(FinalStepViewModel))
