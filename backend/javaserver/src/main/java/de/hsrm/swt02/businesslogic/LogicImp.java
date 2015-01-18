@@ -94,10 +94,12 @@ public class LogicImp implements Logic {
         String id, oldWorkflowId;
         boolean finished = true;
         final LogicResponse logicResponse = new LogicResponse();
+        final WorkflowValidator validator = new WorkflowValidator(workflow);
 
-        if ((workflow.getStepByPos(0) instanceof StartStep)
-                && (workflow.getStepByPos(workflow.getSteps().size() - 1) instanceof FinalStep)) 
-        {
+//        if ((workflow.getStepByPos(0) instanceof StartStep)
+//                && (workflow.getStepByPos(workflow.getSteps().size() - 1) instanceof FinalStep)) 
+//        {
+        if (validator.isValid()) {
             if (workflow.getId() == null || workflow.getId().equals("")) {
                 id = persistence.storeWorkflow(workflow);
                 logicResponse.add(Message.build(MessageTopic.WORKFLOW_INFO,
@@ -145,7 +147,7 @@ public class LogicImp implements Logic {
             }
             return logicResponse;
         } else {
-            throw new IncompleteEleException();
+            throw new IncompleteEleException("Given Workflow is not valid or incomplete.");
         }
     }
 
