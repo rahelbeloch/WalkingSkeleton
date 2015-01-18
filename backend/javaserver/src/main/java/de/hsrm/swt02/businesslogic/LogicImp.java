@@ -16,6 +16,7 @@ import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
 import de.hsrm.swt02.businesslogic.protocol.Message;
 import de.hsrm.swt02.businesslogic.protocol.MessageOperation;
 import de.hsrm.swt02.businesslogic.protocol.MessageTopic;
+import de.hsrm.swt02.businesslogic.workflowValidator.WorkflowValidator;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Form;
