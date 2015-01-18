@@ -13,7 +13,7 @@ public class IncompleteEleException extends LogicException {
      * Constructor for the Exception.
      */
     public IncompleteEleException() {
-        super("item is incomplete");
+        super("Element is incomplete");
     }
 
     /**
