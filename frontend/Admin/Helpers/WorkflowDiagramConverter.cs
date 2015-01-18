@@ -58,26 +58,29 @@ namespace Admin.Helpers
 
         private static Step DesignerItemToStep(SelectableDesignerItemViewModelBase designerItem)
         {
+            Step step = new Step();
+            step.left = ((DesignerItemViewModelBase)designerItem).Left;
+            step.top = ((DesignerItemViewModelBase)designerItem).Top;
+
             if (designerItem.GetType() == typeof(StartStepViewModel))
             {
-                StartStep startStep = new StartStep();
+                StartStep startStep = step.Clone<StartStep>();
                 startStep.id = getUniqueId();
                 startStep.roleIds.Add("Manager");
                 return startStep;
             }
             else if (designerItem.GetType() == typeof(ActionViewModel))
             {
-                Action action = new Action();
+                Action action = step.Clone<Action>();
                 action.id = getUniqueId();
                 action.roleIds.Add("Manager");
                 return action;
             }
             else if (designerItem.GetType() == typeof(FinalStepViewModel))
             {
-                return new FinalStep()
-                {
-                    id = getUniqueId()
-                };
+                FinalStep finalStep = step.Clone<FinalStep>();
+                finalStep.id = getUniqueId();
+                return finalStep;
             }
 
             return null;
