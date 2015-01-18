@@ -15,6 +15,7 @@ using NLog;
 using System.Windows.Threading;
 using System.Diagnostics;
 using CommunicationLib.Exception;
+using CommunicationLib.Model.DataModel;
 
 namespace Client.ViewModel
 {
@@ -81,6 +82,21 @@ namespace Client.ViewModel
         public void AddWorkflowToModel(Workflow updatedWorkflow)
         {
             logger.Debug("addWorkflowtoModel");
+            logger.Debug("show Formular");
+            Form formular = updatedWorkflow.formular;
+            if (formular.description.Equals("")) {
+                formular.description = "test";
+            }
+            logger.Debug(formular.description);
+            FormEntry testEntry = new FormEntry();
+            testEntry.key = "test";
+            testEntry.value = "testValue";
+            formular.formDef.Add(testEntry);
+            foreach (FormEntry entry in formular.formDef)
+            {
+                logger.Debug(entry.key);
+                logger.Debug(entry.value);
+            }
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
             IList<string> startableList = null;
@@ -337,7 +353,7 @@ namespace Client.ViewModel
 
         #region properties
 
-        private DashboardRow _selectedRow;
+        private DashboardRow _selectedRow = null;
         public DashboardRow selectedRow
         {
             get

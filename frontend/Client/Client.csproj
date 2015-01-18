@@ -73,6 +73,7 @@
     <Compile Include="ViewModel\DashboardWorkflow.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SelectedRowToVisbiltyConverter.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="View\LoginUserControl.xaml.cs">
