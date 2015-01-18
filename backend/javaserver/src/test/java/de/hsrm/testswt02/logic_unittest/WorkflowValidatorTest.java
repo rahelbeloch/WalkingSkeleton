@@ -5,8 +5,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.hsrm.swt02.businesslogic.WorkflowValidator;
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.businesslogic.workflowValidator.WorkflowValidator;
+import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.InvalidWorkflowException;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Role;
@@ -32,7 +34,7 @@ public class WorkflowValidatorTest {
     }
     
     @Test
-    public void testWorkflowValidation() throws PersistenceException, IncompleteEleException {
+    public void testWorkflowValidation() throws LogicException {
         Workflow workflow = new Workflow();
         
         StartStep ss = new StartStep();
