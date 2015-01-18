@@ -45,13 +45,19 @@ namespace Admin.Helpers
 
                 // connect next step ids
                 referenceMapping[startItem].nextStepIds.Add(referenceMapping[endItem].id);
+            }
 
+            // add remaining designer items which are not connected
+            foreach (DesignerItemViewModelBase designerItem in stepDesignerItems)
+            {
+                if (referenceMapping[designerItem] == null)
+                {
+                    referenceMapping[designerItem] = DesignerItemToStep(designerItem);
+                }
             }
 
             // add steps to workflow
             workflow.steps.AddRange(referenceMapping.Values.Select(x => x).ToList());
-
-            // TODO: validate workflow
 
             return workflow;
         }
