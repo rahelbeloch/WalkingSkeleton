@@ -60,7 +60,7 @@ public class WorkflowValidator {
         for (Step next: actStep.getNextSteps()) {
             return hasCycle(next, passed);
         }
-    return true;
+    return false;
     }
     
     private boolean isReachable (Step actStep,Step stepToReach) {
