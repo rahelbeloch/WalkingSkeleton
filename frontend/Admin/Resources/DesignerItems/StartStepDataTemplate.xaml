@@ -27,13 +27,12 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0"
-                   Content="HostUrl"
+                   Content="Rolle: "
                    Margin="5" />
-            <TextBox Grid.Row="1"
-                    HorizontalAlignment="Left"
-                    Text="{Binding HostUrl}"
-                    Width="150"
-                    Margin="5" />
+            <ComboBox Grid.Row="1" Grid.Column="1" Height="25" Width="120" HorizontalAlignment="Left"  
+                                      ItemsSource="{Binding roleCollection}" 
+                                      DisplayMemberPath="rolename"
+                                      SelectedItem="{Binding selectedRole}" />
         </Grid>
     </DataTemplate>
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using DiagramDesigner;
 using CommunicationLib.Model;
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 
 namespace Admin
 {
@@ -15,25 +17,25 @@ namespace Admin
     /// </summary>
     public class StartStepData: INPCBase
     {
-        private string hostUrl = "";
-        public StartStepData(string currentHostUrl)
+        private Role _selectedRole = new Role();
+        public ObservableCollection<Role> roleCollection { get; private set; }
+
+        public StartStepData(Role currentRole, ObservableCollection<Role> roleCollection)
         {
-            hostUrl = currentHostUrl;
+            _selectedRole = currentRole;
+            this.roleCollection = roleCollection;
         }
 
-        public string HostUrl
+        public Role selectedRole
         {
             get
             {
-                return hostUrl;
+                return _selectedRole;
             }
             set
             {
-                if (hostUrl != value)
-                {
-                    hostUrl = value;
-                    NotifyChanged("HostUrl");
-                }
+                _selectedRole = value;
+                NotifyChanged("selectedRole");
             }
         }
     }

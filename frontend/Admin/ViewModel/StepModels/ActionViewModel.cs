@@ -11,16 +11,18 @@ using Admin.ViewModel;
 
 namespace Admin
 {
+    
     public class ActionViewModel : DesignerItemViewModelBase, ISupportDataChanges
     {
         private IUIVisualizerService visualiserService;
-        
-        
+
+        WorkflowDiagramViewModel workflowViewModel = null;
+        public ObservableCollection<Role> roleCollection { get { return workflowViewModel.roleCollection; } }
+
         public ActionViewModel(int id, DiagramViewModel parent, double left, double top, Role selectedRole)
             : base(id, parent, left, top)
         {
             this.selectedRole = selectedRole;
-            
             Init();
         }
 
@@ -44,15 +46,35 @@ namespace Admin
                 NotifyChanged("selectedRole");
             }
         }
+        private String _description = "";
+        public String description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                _description = value;
+                NotifyChanged("description");
+            }
+        }
         
         public ICommand ShowDataChangeWindowCommand { get; private set; }
 
         public void ExecuteShowDataChangeWindowCommand(object parameter)
         {
-            ActionData data = new ActionData(selectedRole);
+            
+            if (this.workflowViewModel == null)
+            {
+                this.workflowViewModel = (WorkflowDiagramViewModel)this.Parent.workflowViewModel;
+            }
+            ActionData data = new ActionData(description, selectedRole, roleCollection);
             if (visualiserService.ShowDialog(data) == true)
             {
                 this.selectedRole = data.selectedRole;
+                this.description = data.description;
+                
             }
         }
 
@@ -65,6 +87,8 @@ namespace Admin
             itemHeight = 52;
             visualiserService = ApplicationServicesProvider.Instance.Provider.VisualizerService;
             ShowDataChangeWindowCommand = new SimpleCommand(ExecuteShowDataChangeWindowCommand);
+            
+            
             this.ShowConnectors = false;
 
         }

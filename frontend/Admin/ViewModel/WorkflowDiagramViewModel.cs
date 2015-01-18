@@ -32,14 +32,15 @@ namespace Admin.ViewModel
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;
 
-        private DiagramViewModel diagramViewModel = new DiagramViewModel();
+        private DiagramViewModel diagramViewModel;
         private ToolBoxViewModel _toolBoxViewModel;
         public ToolBoxViewModel toolBoxViewModel { get { return _toolBoxViewModel; } }
         private IMessageBoxService messageBoxService;
         private List<SelectableDesignerItemViewModelBase> itemsToRemove;
-
+        
         public WorkflowDiagramViewModel(MainViewModel mainViewModel)
         {
+            diagramViewModel = new DiagramViewModel(this);
             _mainViewModel = mainViewModel;
             _restRequester = _mainViewModel.restRequester;
             DeleteSelectedItemsCommand = new SimpleCommand(ExecuteDeleteSelectedItemsCommand);
@@ -89,6 +90,20 @@ namespace Admin.ViewModel
         /// </summary>
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
         public ObservableCollection<Item> items { get { return _items; } } 
+
+        private ISupportDataChanges _actStep;
+        public ISupportDataChanges actStep
+        {
+            get
+            {
+                return _actStep;
+            }
+            set
+            {
+                _actStep = value;
+                OnChanged("actStep");
+            }
+        }
 
         /// <summary>
         /// Property to enable textbox for username input.

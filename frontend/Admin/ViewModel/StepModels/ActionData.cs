@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using DiagramDesigner;
 using CommunicationLib.Model;
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 
 namespace Admin
 {
@@ -17,10 +19,14 @@ namespace Admin
     {
         
         private Role _selectedRole = new Role();
+        private String _description = "";
+        public ObservableCollection<Role> roleCollection { get; private set; }
 
-        public ActionData(Role currentRole)
+        public ActionData(String description, Role currentRole, ObservableCollection<Role> roleCollection )
         {
             _selectedRole = currentRole;
+            _description = description;
+            this.roleCollection = roleCollection;
         }
 
         
@@ -34,6 +40,18 @@ namespace Admin
             {
                 _selectedRole = value;
                 NotifyChanged("selectedRole");
+            }
+        }
+        public String description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                _description = value;
+                NotifyChanged("description");
             }
         }
     }
