@@ -68,6 +68,14 @@
     <Compile Include="Model\DataModel\ViewModelBase.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\MessagingExceptions\ServerPublisherBrokerException.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\JacksonException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\InvalidWorkflowException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\InvalidFinalStepException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\ExpectedOneStartStepException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\ExpectedAtLeastOneFinalStepException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\ExpectedAtLeastOneActionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\UnreachableStepException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\WorkflowMustTerminateException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\WorkflowCyclesException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\ItemNotForwardableException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\AdminRoleDeletionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\LastAdminDeletedException.cs" />
