@@ -11,13 +11,14 @@ namespace DiagramDesigner
     {
         private ObservableCollection<SelectableDesignerItemViewModelBase> items = new ObservableCollection<SelectableDesignerItemViewModelBase>();
         
-        public DiagramViewModel()
+
+        public DiagramViewModel(Object _workflowViewModel)
         {
             AddItemCommand = new SimpleCommand(ExecuteAddItemCommand);
             RemoveItemCommand = new SimpleCommand(ExecuteRemoveItemCommand);
             ClearSelectedItemsCommand = new SimpleCommand(ExecuteClearSelectedItemsCommand);
             CreateNewDiagramCommand = new SimpleCommand(ExecuteCreateNewDiagramCommand);
-
+            workflowViewModel = _workflowViewModel; 
 
             Mediator.Instance.Register(this);
         }
@@ -33,7 +34,7 @@ namespace DiagramDesigner
             }
         }
 
-
+        public Object workflowViewModel { get; private set; }
         public SimpleCommand AddItemCommand { get; private set; }
         public SimpleCommand RemoveItemCommand { get; private set; }
         public SimpleCommand ClearSelectedItemsCommand { get; private set; }
