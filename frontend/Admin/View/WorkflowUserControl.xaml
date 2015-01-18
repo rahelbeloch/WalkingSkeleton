@@ -27,17 +27,34 @@
             <TabControl SelectedIndex="{Binding selectedTabId, UpdateSourceTrigger=PropertyChanged}">
                 <TabItem Header="Neuen Workflow anlegen" x:Name="createTab" x:Uid="1">
                     <DockPanel>
-                        
-                        <DockPanel>
-                        <!-- ToolBox Control -->
-                        <tools:ToolBoxControl DockPanel.Dock="Top" Grid.Column="0"
-                                  DataContext="{Binding toolBoxViewModel}" />
-                            <Button x:Name="saveWorkflow" DockPanel.Dock="Bottom" Content="Workflow speichern/veröffentlichen" Margin="10,10,10,-35" Command="{Binding saveWorkflowCommand}" Height="26" Width="216"/>
 
+                        <DockPanel DockPanel.Dock="Top">
+                            <!-- ToolBox Control -->
+                            <tools:ToolBoxControl DockPanel.Dock="Top" Grid.Column="0"
+                                  DataContext="{Binding toolBoxViewModel}" />
+                            
 
                         </DockPanel>
-                          
-                                <!--
+                        <DockPanel DockPanel.Dock="Top" >
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actStep}">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridView.Columns >
+                                            <GridViewColumn Width="120" Header="Beschreibung" DisplayMemberBinding="{Binding description}"/>
+                                            <GridViewColumn Width="290" Header="Role" DisplayMemberBinding="{Binding Role}" />
+                                            
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+                    
+                    <DockPanel DockPanel.Dock="Top">
+                        <Button x:Name="saveWorkflow" DockPanel.Dock="Bottom" Content="Workflow speichern/veröffentlichen" Margin="10,10,10,-35" Command="{Binding saveWorkflowCommand}" Height="26" Width="216"/>
+
+                    </DockPanel>
+
+                    <!--
                         <DockPanel DockPanel.Dock="Top">
                             <Label Content="Schritt hinzufügen" FontWeight="Medium"/>
                         </DockPanel>
