@@ -13,6 +13,11 @@ namespace Admin.Helpers
     {
         private static int uniqueId = 0;
 
+        /// <summary>
+        /// Converts a list of SelectableDesignerItemViewModels to a workflow object.
+        /// </summary>
+        /// <param name="items">The designer items</param>
+        /// <returns>Workflow object</returns>
         public static Workflow DiagramItemsToWorkflow(List<SelectableDesignerItemViewModelBase> items) 
         {
             Workflow workflow = new Workflow();
@@ -62,6 +67,11 @@ namespace Admin.Helpers
             return workflow;
         }
 
+        /// <summary>
+        /// Converts a single DesignerItem into a StartStep, Action or FinalStep.
+        /// </summary>
+        /// <param name="designerItem"></param>
+        /// <returns></returns>
         private static Step DesignerItemToStep(SelectableDesignerItemViewModelBase designerItem)
         {
             Step step = new Step();
@@ -92,6 +102,11 @@ namespace Admin.Helpers
             return null;
         }
 
+        /// <summary>
+        /// This method returns a unique id (during runtime).
+        /// It is used to connect steps by ids.
+        /// </summary>
+        /// <returns>Unique id</returns>
         private static string getUniqueId()
         {
             uniqueId += 1;
