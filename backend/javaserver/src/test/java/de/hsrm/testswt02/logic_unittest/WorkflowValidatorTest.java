@@ -6,6 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.hsrm.swt02.businesslogic.WorkflowValidator;
+import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Role;
@@ -31,7 +32,7 @@ public class WorkflowValidatorTest {
     }
     
     @Test
-    public void testWorkflowValidation() throws PersistenceException {
+    public void testWorkflowValidation() throws PersistenceException, IncompleteEleException {
         Workflow workflow = new Workflow();
         
         StartStep ss = new StartStep();
