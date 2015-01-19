@@ -233,14 +233,17 @@ namespace Admin.ViewModel
                 _items.Clear();
                 if (_actWorkflow != null)
                 {
+                    Console.WriteLine("ACT WORKFLOW NICHT NULL");
                     _actWorkflow.items.ForEach(_items.Add);
                     showDetails = Visibility.Visible;
                     WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
+                    DiagramViewModel.locked = true;
                 }
                 else
                 {
                     showDetails = Visibility.Collapsed;
                     DiagramViewModel.Items.Clear();
+                    DiagramViewModel.locked = false;
                 }
                 
                 OnChanged("actWorkflow");
@@ -463,7 +466,8 @@ namespace Admin.ViewModel
                 {
                     _newWorkflowCommand = new ActionCommand(execute =>
                     {
-                        _actWorkflow = null;
+                        actWorkflow = null;
+                        DiagramViewModel.Items.Clear();
                         displayView = Visibility.Collapsed;
                         editView = Visibility.Visible;
                         showDetails = Visibility.Collapsed;
@@ -506,12 +510,12 @@ namespace Admin.ViewModel
 
                             if (_actWorkflow.active)
                             {
-                                _actWorkflow.active = false;
+                                actWorkflow.active = false;
                                 _restRequester.UpdateObject(_actWorkflow);
                             }
                             else
                             {
-                                _actWorkflow.active = true;
+                                actWorkflow.active = true;
                                 _restRequester.UpdateObject(_actWorkflow);
                             }
                             _workflowActivity = "Deaktivieren";

@@ -10,7 +10,23 @@ namespace DiagramDesigner
     public class DiagramViewModel : INPCBase, IDiagramViewModel
     {
         private ObservableCollection<SelectableDesignerItemViewModelBase> items = new ObservableCollection<SelectableDesignerItemViewModelBase>();
-        
+
+        /// <summary>
+        /// Property to lock the canvas. Moving and deleting items will be disabled if true.
+        /// </summary>
+        private bool _locked;
+        public bool locked
+        {
+            get 
+            { 
+                return _locked; 
+            } 
+            set 
+            { 
+                _locked = value; 
+                NotifyChanged("locked"); 
+            } 
+        }
 
         public DiagramViewModel(Object _workflowViewModel)
         {
@@ -64,10 +80,13 @@ namespace DiagramDesigner
 
         private void ExecuteRemoveItemCommand(object parameter)
         {
-            if (parameter is SelectableDesignerItemViewModelBase)
+            if (!locked)
             {
-                SelectableDesignerItemViewModelBase item = (SelectableDesignerItemViewModelBase)parameter;
-                items.Remove(item);
+                if (parameter is SelectableDesignerItemViewModelBase)
+                {
+                    SelectableDesignerItemViewModelBase item = (SelectableDesignerItemViewModelBase)parameter;
+                    items.Remove(item);
+                }
             }
         }
 
