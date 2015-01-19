@@ -253,6 +253,7 @@ namespace Admin.ViewModel
                 else
                 {
                     showDetails = Visibility.Collapsed;
+                    DiagramViewModel.Items.Clear();
                 }
                 
                 OnChanged("actWorkflow");
@@ -344,6 +345,8 @@ namespace Admin.ViewModel
             userCollection.Clear();
             roleCollection.Clear();
             workflow.Clear();
+            workflows.Clear();
+            DiagramViewModel.Items.Clear();
             selectedRole = null;
             actWorkflow = null;
         }
