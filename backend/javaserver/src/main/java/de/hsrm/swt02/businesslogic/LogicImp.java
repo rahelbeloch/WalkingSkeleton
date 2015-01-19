@@ -496,7 +496,7 @@ public class LogicImp implements Logic {
      */
     public Item getItem(String itemId, String username) throws LogicException {
         final Item item = persistence.loadItem(itemId);
-        System.out.println(item.getActStep());
+        
         if (!checkAuthorization(item, username)) {
             throw new NoPermissionException("[logic] user " + username + " has no permission on item " + itemId);
         }
@@ -597,8 +597,8 @@ public class LogicImp implements Logic {
      */
     public boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException {
         final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
-        System.out.println(item.getActStep());
         final Step actStep = workflowToCheck.getStepById((item.getActStep().getKey()));
+
         return checkAuthorization(actStep, username);
     }
 
