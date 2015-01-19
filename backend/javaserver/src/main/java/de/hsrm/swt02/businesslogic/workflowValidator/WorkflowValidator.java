@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedAtLeastOneActionException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedAtLeastOneFinalStepException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedOneStartStepException;
@@ -19,6 +20,7 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
+import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
 
 /**
  * This class offers all needed methods to validate an incoming workflow.
@@ -35,16 +37,16 @@ public class WorkflowValidator {
      */
     public WorkflowValidator(Workflow workflow, Persistence persistence) {
         this.workflow = workflow;
+        this.persistence = persistence;
     }
 
     /**
      * central validation where each component is checked.
      * 
      * @return boolean - returns true if valid and false if not
-     * @throws InvalidWorkflowException - if the workflow is not valid
-     * @throws IncompleteEleException - if a step is without role
+     * @throws LogicException to catch InvalidWorkflowException and IncompleteEleException
      */
-    public boolean isValid() throws InvalidWorkflowException, IncompleteEleException {
+    public boolean isValid() throws LogicException {
         if (numberOfStartSteps() != 1) {
             throw new ExpectedOneStartStepException();
         } else if (numberOfFinalSteps() < 1) {
@@ -73,15 +75,15 @@ public class WorkflowValidator {
      * 
      * @param step - step to check
      * @return boolean
-     * @throws IncompleteEleException 
+     * @throws RoleNotExistentException 
      */
-    public boolean hasRole(Step step) throws IncompleteEleException {
+    public boolean hasRole(Step step) throws RoleNotExistentException {
         if (step.getRoleIds().size() > 0) {
             for (String roleId: step.getRoleIds()) {
                 try {
                     persistence.loadRole(roleId);
                 } catch (PersistenceException e) {
-                    throw new IncompleteEleException("At least one assigned role is not stored in persistence.");
+                    throw new RoleNotExistentException("[validator] At least one assigned role is not stored in persistence.");
                 }
             }
             return true;

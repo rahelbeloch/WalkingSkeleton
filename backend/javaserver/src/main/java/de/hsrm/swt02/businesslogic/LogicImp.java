@@ -94,7 +94,7 @@ public class LogicImp implements Logic {
         String id, oldWorkflowId;
         boolean finished = true;
         final LogicResponse logicResponse = new LogicResponse();
-        final WorkflowValidator validator = new WorkflowValidator(workflow);
+        final WorkflowValidator validator = new WorkflowValidator(workflow, persistence);
 
         if (validator.isValid()) {
             if (workflow.getId() == null || workflow.getId().equals("")) {
