@@ -243,7 +243,7 @@ namespace UnitTestProject1
             newWf.id = "";
 
             Form newF = new Form();
-            newWf.formular = newF;
+            newWf.form = newF;
 
             // a startStep
             StartStep startStep = new StartStep();
