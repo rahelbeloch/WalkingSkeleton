@@ -80,6 +80,9 @@ namespace Admin.ViewModel
         /// Property _roleCheckboxRoles to fill list view with selectable roles.
         /// </summary>
         private ObservableCollection<RoleCheckboxRow> _roleCheckboxRows = new ObservableCollection<RoleCheckboxRow>();
+        /// <summary>
+        /// Public Property for the private one.
+        /// </summary>
         public ObservableCollection<RoleCheckboxRow> RoleCheckboxRows { get { return _roleCheckboxRows; } }
 
         /// <summary>
@@ -87,6 +90,9 @@ namespace Admin.ViewModel
         /// If a user is selected, update user information in the view.
         /// </summary>
         private User _selectedUser;
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public User SelectedUser
         {
             get
@@ -117,6 +123,9 @@ namespace Admin.ViewModel
         /// This user can either have the data of the SelectedUser, or new inputted data.
         /// </summary>
         private User _detailedUser = new User();
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public User DetailedUser
         {
             get
@@ -134,6 +143,9 @@ namespace Admin.ViewModel
         /// Property for input from username text box.
         /// </summary>
         private string _enteredUsername = "";
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public string EnteredUsername
         {
             get
@@ -169,6 +181,9 @@ namespace Admin.ViewModel
         /// The text depends on whether the user is new or updated.
         /// </summary>
         private string _postUserButtonText = "Nutzer hinzufügen";
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public string PostUserButtonText
         {
             get
@@ -186,6 +201,9 @@ namespace Admin.ViewModel
         /// Property to the change the users activity.
         /// </summary>
         private bool _selectedUserActivity = false;
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public bool SelectedUserActivity
         {
             get
@@ -207,6 +225,9 @@ namespace Admin.ViewModel
         /// Command to add a new user.
         /// </summary>
         private ICommand _addUserCommand;
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public ICommand AddUserCommand
         {
             get
@@ -244,6 +265,9 @@ namespace Admin.ViewModel
         /// Command to deselect a currently selected user.
         /// </summary>
         private ICommand _deselectCommand;
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public ICommand DeselectCommand
         {
             get
@@ -255,7 +279,6 @@ namespace Admin.ViewModel
                         DeselectUser();
                     }, canExecute => _selectedUser != null);
                 }
-
                 return _deselectCommand;
             }
         }
@@ -273,6 +296,9 @@ namespace Admin.ViewModel
         /// Property for input from rolename text box.
         /// </summary>
         private string _enteredRolename = "";
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public string EnteredRolename
         {
             get
@@ -290,6 +316,9 @@ namespace Admin.ViewModel
         /// Property for currently selected Role.
         /// </summary>
         private Role _selectedRole;
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public Role SelectedRole
         {
             get
@@ -308,6 +337,9 @@ namespace Admin.ViewModel
         /// Property to show users who have the currently selected Role.
         /// </summary>
         private ObservableCollection<User> _userInSelectedRole = new ObservableCollection<User>();
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public ObservableCollection<User> UserInSelectedRole
         {
             get
@@ -329,6 +361,9 @@ namespace Admin.ViewModel
         /// Command to add a new role.
         /// </summary>
         private ICommand _addRoleCommand;
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public ICommand AddRoleCommand
         {
             get
@@ -367,6 +402,9 @@ namespace Admin.ViewModel
         /// Command to delete a role from a user.
         /// </summary>
         private ICommand _deleteRoleFromUserCommand;
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public ICommand DeleteRoleFromUserCommand
         {
             get
@@ -401,6 +439,9 @@ namespace Admin.ViewModel
         /// Command to delete a role.
         /// </summary>
         private ICommand _deleteRoleCommand;
+        /// <summary>
+        /// Public property for the private one.
+        /// </summary>
         public ICommand DeleteRoleCommand
         {
             get
@@ -427,7 +468,6 @@ namespace Admin.ViewModel
             }
         }
 
-
         # endregion
 
         # region METHODS
@@ -435,7 +475,7 @@ namespace Admin.ViewModel
         /// <summary>
         /// Post a given user to the server.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">The user to be posted</param>
         private void PostUser(User user)
         {
             try
@@ -470,7 +510,6 @@ namespace Admin.ViewModel
         /// <param name="newUser">The user to be added or updated.</param>
         public void UserUpdate(User newUser)
         {
-   
             User toUpdate = _mainViewModel.userCollection.FirstOrDefault(u => newUser.id == u.id);
             if (toUpdate != null)
             {
@@ -498,7 +537,7 @@ namespace Admin.ViewModel
         /// <summary>
         /// Remove the deleted role from the ViewModel and CheckboxList
         /// </summary>
-        /// <param name="deletedRole">The role to remove</param>
+        /// <param name="sourceId">The role to remove</param>
         public void RoleDeletion(String sourceId)
         {
             //Deletion handling here
