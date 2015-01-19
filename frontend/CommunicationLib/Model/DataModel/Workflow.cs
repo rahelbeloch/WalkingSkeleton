@@ -27,8 +27,8 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private Form _formular;
-        public Form formular { get { return _formular; } set { _formular = value; } }
+        private Form _form;
+        public Form form { get { return _form; } set { _form = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
@@ -45,7 +45,7 @@ namespace CommunicationLib.Model
             active = true;
             _steps = new List<Step>();
             _items = new List<Item>();
-            _formular = new Form();
+            _form = new Form();
         }
 
         /// <summary>
