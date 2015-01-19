@@ -61,7 +61,6 @@ public class ActionProcessor implements StepProcessor {
         } else if (currentItem.getEntryValue(stepId + "", "step").equals(MetaState.BUSY.toString())) {
             if (currentItem.getEntryOpener(stepId, "step").equals(user.getUsername())) {
                 currentItem.setStepState(stepId, MetaState.DONE.toString());
-                System.out.println("size: " + currentStep.getNextSteps().size());
                 for (Step s : currentStep.getNextSteps()) {
                     if (!(s instanceof FinalStep)) {
                         currentItem.setStepState(s.getId(), MetaState.OPEN.toString());

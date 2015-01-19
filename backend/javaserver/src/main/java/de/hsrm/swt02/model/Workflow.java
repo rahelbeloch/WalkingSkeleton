@@ -237,6 +237,7 @@ public class Workflow extends RootElement {
         }
 
         clone.convertIdListToReferences();
+        clone.setForm(form);
         return clone;
     }
 

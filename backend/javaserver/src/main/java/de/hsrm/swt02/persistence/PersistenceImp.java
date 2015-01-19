@@ -452,6 +452,7 @@ public class PersistenceImp implements Persistence {
             }
         }
         
+
         Form formToRemove = null;
         for (Form f: forms) {
             if (f.getId().equals(form.getId())) {
@@ -610,7 +611,7 @@ public class PersistenceImp implements Persistence {
         role3.setRolename("admin");
         storeRole(role3);
 
-        user1.addRole(role1);
+        user1.addRole(role2);
         user2.addRole(role2);
         user4.addRole(role3);
 
@@ -634,7 +635,7 @@ public class PersistenceImp implements Persistence {
         startStep1.setTop(elementCounter * standardDistance);
         elementCounter++;
         
-        startStep1.getRoleIds().add(role1.getRolename());
+        startStep1.getRoleIds().add(role2.getRolename());
 
         action1 = new Action(new ArrayList<String>(), "Action von "
                 + user1.getUsername());
@@ -669,8 +670,6 @@ public class PersistenceImp implements Persistence {
         workflow1.addStep(action1);
         workflow1.addStep(action2);
         workflow1.addStep(finalStep);
-
-        storeWorkflow(workflow1);
         
         form1 = new Form("das ist ein Formular");
         form2 = new Form("FORM");
@@ -709,6 +708,8 @@ public class PersistenceImp implements Persistence {
         
         storeForm(form1);
         storeForm(form2);
+        workflow1.setForm(form1);
+        storeWorkflow(workflow1);
     }
 
     @Override
