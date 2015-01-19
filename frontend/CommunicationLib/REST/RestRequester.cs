@@ -80,7 +80,6 @@ namespace RestAPI
         /// <summary>
         ///  Method to retrieve all startable workflows of one given user. 
         /// </summary>
-        /// <param name="username">Requested username</param>
         /// <returns>List of all startable workflows of this user</returns>
         public IList<string> GetStartablesByUser()
         {
@@ -110,7 +109,6 @@ namespace RestAPI
         ///  Method to retrieve all relevant items of one given user. Relevant means all items where the user can accept or close actions.
         /// </summary>
         /// <param name="workflowID">The actual handled workflow</param>
-        /// <param name="username">The requested user</param>
         /// <returns>List of relevant items</returns>
         public IList<Item> GetRelevantItemsByUser(string workflowID)
         {
@@ -152,7 +150,7 @@ namespace RestAPI
 
         /// <summary>
         ///     Get an object from the server, with HTTP-Method GET.
-        ///     Path for this HTTP-Method is always: ressource/<typename>/<id>/
+        ///     Path for this HTTP-Method is always: ressource/{typename}/{id}/
         /// </summary>
         /// <typeparam name="O">Type of the requested object</typeparam>
         /// <param name="id">Id of the requested object</param>
@@ -184,7 +182,7 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///     Update an object on the server, with HTTP-Method PUT. Path if sendObj is Workflow or Item: 'resource/<typename>/<id>', if user:  'resource/<typename>/<username>'
+        ///     Update an object on the server, with HTTP-Method PUT. Path if sendObj is Workflow or Item: 'resource/{typename}/{id}', if user:  'resource/{typename}/{username}'
         /// </summary>
         /// <param name="sendObj">The object to update</param>
         /// <returns>If it worked or not</returns>
@@ -211,9 +209,8 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///     Create an object on the server, with HTTP-Method POST. Path is: 'resource/<typename>'
+        ///     Create an object on the server, with HTTP-Method POST. Path is: 'resource/{typename}'
         /// </summary>
-        /// <typeparam name="O">The type of the object to be created</typeparam>
         /// <param name="sendObj">The specified object to create</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
         public Boolean PostObject(RootElement sendObj)
@@ -240,7 +237,7 @@ namespace RestAPI
         }
 
         /// <summary>
-        ///  Delete an object (Item or Workflow) on the server, with HTTP-Method DEL. Path is: 'resource/<typename>/<resId>'
+        ///  Delete an object (Item or Workflow) on the server, with HTTP-Method DEL. Path is: 'resource/{typename}/{resId}'
         /// </summary>
         /// <typeparam name="O">Type of the delete object</typeparam>
         /// <param name="id">ID of the object to delete</param>
@@ -258,7 +255,7 @@ namespace RestAPI
         ///  General method to delete an object (RootElement: Workflow, Item, User).
         /// </summary>
         /// <typeparam name="O">Type of the object to delete</typeparam>
-        /// <param name="url">Requested URL</param>
+        /// <param name="request">the request object</param>
         /// <returns>Deleted object</returns>
         private O Delete<O>(RestRequest request) where O : new()
         {
@@ -282,8 +279,6 @@ namespace RestAPI
         /// <summary>
         ///     Does a login access to the server. Path ist always: '/command/users/login'
         /// </summary>
-        /// <param name="username">Name of the user</param>
-        /// <param name="password">Password of the user</param>
         /// <returns>True if it worked, false otherwhise, or an exception</returns>
         public Boolean checkUser()
         {
@@ -336,7 +331,6 @@ namespace RestAPI
         /// </summary>
         /// <param name="stepId">Id of the current step</param>
         /// <param name="itemId">Id of the current item</param>
-        /// <param name="uId">Name of the current user</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
         public Boolean StepForward(string stepId, string itemId)
         {

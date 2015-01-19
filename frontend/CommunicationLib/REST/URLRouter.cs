@@ -14,19 +14,19 @@ namespace CommunicationLib
     /// In first place of the url the UrlMethod always resides. The object type is placed in second place, if given. Afterwards all given url params
     /// needed for the request are added. All single parts of the url are seperated by '/'.
     /// 
-    /// Example of generated url: 'resource/<typename>s/<workflowId>'
+    /// Example of generated url: 'resource/{typename}s/{workflowId}'
     /// 
     /// All URLS in Rest-Kommunikation:
-    /// resource/<typename>s
-    /// resource/<typename>s 
-    /// resource/<typename>s/startables
-    /// resource/<typename>s/<workflowId>
-    /// resource/<typename>s/<id>
-    /// resource/<typename>s
-    /// resource/<typename>s
+    /// resource/{typename}s
+    /// resource/{typename}s 
+    /// resource/{typename}s/startables
+    /// resource/{typename}s/{workflowId}
+    /// resource/{typename}s/{id}
+    /// resource/{typename}s
+    /// resource/{typename}s
     /// command/users/login
-    /// command/workflows/start/<id>
-    /// command/workflows/forward/<stepId>/<itemId>
+    /// command/workflows/start/{id}
+    /// command/workflows/forward/{stepId}/{itemId}
     /// 
     /// </summary>
     public static class URLRouter
