@@ -83,7 +83,7 @@ namespace Client.ViewModel
         {
             logger.Debug("addWorkflowtoModel");
             logger.Debug("show Formular");
-            Form formular = updatedWorkflow.formular;
+            Form formular = updatedWorkflow.form;
             if (formular.description.Equals("")) {
                 formular.description = "test";
             }
@@ -117,7 +117,7 @@ namespace Client.ViewModel
             foreach (Item item in _relevantItems)
             {
                 activeStep = GetStepById(item.getActiveStepId(), updatedWorkflow);
-                row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.formular);
+                row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.form);
                 toUpdate.AddDashboardRow(row);
             }
 
@@ -206,7 +206,7 @@ namespace Client.ViewModel
                     {
                         // create DashboardRow for item
                         Step actStep = GetStepById(item.getActiveStepId(), workflow.actWorkflow);
-                        fittingRow = new DashboardRow(item, actStep, userName, workflow.actWorkflow.formular);
+                        fittingRow = new DashboardRow(item, actStep, userName, workflow.actWorkflow.form);
                         workflow.AddDashboardRow(fittingRow);
                         changed = false;
                     }
