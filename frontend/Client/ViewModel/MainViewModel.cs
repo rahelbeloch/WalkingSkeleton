@@ -46,7 +46,6 @@ namespace Client.ViewModel
                     catch (BasicException e)
                     {
                         MessageBox.Show(e.Message);
-                        Environment.Exit(0);
                     }
                 }
                 return _myComLib;

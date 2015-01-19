@@ -90,7 +90,6 @@ namespace Admin.ViewModel
                     catch (BasicException e)
                     {
                         MessageBox.Show(e.Message);
-                        Environment.Exit(0);
                     }
                 }
 
@@ -266,7 +265,9 @@ namespace Admin.ViewModel
             admin = "";
             ClearModel();
             CurrentPageViewModel = loginViewModel;
+            _restRequester = null;
             myComLib.Logout();
+            _myComLib = null;
         }
 
         #endregion
