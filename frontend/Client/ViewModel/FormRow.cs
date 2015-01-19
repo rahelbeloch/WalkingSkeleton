@@ -1,4 +1,5 @@
 ﻿using CommunicationLib.Model;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace Client.ViewModel
 {
     public class FormRow
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private Form form;
         private Item actItem;
         private String _key;
@@ -42,6 +44,11 @@ namespace Client.ViewModel
                     metaEntryItem = metaEntry;
                     break;
                 }
+            }
+            if (_value == null)
+            {
+                _value = "";
+                logger.Debug("kein Wert gefunden für den Schlüssel " + _key);
             }
         }
     }

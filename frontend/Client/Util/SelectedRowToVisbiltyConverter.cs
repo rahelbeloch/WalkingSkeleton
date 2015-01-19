@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Client.ViewModel
+namespace Client.Util
 {
     public class SelectedRowToVisbiltyConverter : IValueConverter
     {

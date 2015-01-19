@@ -6,9 +6,10 @@
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="900"
       xmlns:view="clr-namespace:Client.View"
-      xmlns:viewModel="clr-namespace:Client.ViewModel">
+      xmlns:viewModel="clr-namespace:Client.ViewModel"
+      xmlns:util="clr-namespace:Client.Util">
     <UserControl.Resources>
-        <viewModel:SelectedRowToVisbiltyConverter x:Key="converter" />
+        <util:SelectedRowToVisbiltyConverter x:Key="converter" />
     </UserControl.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -80,17 +81,21 @@
                         <Label Content="{Binding selectedRow.form.description}"></Label>
                     </GroupBox.Header>
                     <DataGrid ItemsSource="{Binding selectedRow.formRows}" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid.RowValidationRules>
+                            <util:FormValidator/>
+                        </DataGrid.RowValidationRules>
+                        <DataGrid.RowValidationErrorTemplate>
+                            <ControlTemplate>
+                                <Grid ToolTip="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}">
+                                    <Ellipse Width="16" Height="16" Fill="Red" />
+                                    <TextBlock Text="!" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </DataGrid.RowValidationErrorTemplate>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Key" Binding="{Binding key}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Value">
-                                <DataGridTextColumn.Binding>
-                                    <Binding Path="value">
-                                        <Binding.ValidationRules>
-                                            <!--<viewModel:FormValidator/>-->
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Schlüssel" Binding="{Binding key}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Wert" Binding="{Binding value}"/>
+                            <DataGridTextColumn Header="Datentyp" Binding="{Binding datatype}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
