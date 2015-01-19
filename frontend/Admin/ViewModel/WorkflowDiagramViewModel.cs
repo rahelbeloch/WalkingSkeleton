@@ -26,7 +26,6 @@ namespace Admin.ViewModel
     /// </summary>
     public class WorkflowDiagramViewModel : ViewModelBase
     {
-        private Workflow _workflowModel = new Workflow();
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private MainViewModel _mainViewModel;
@@ -67,24 +66,12 @@ namespace Admin.ViewModel
 
         #region properties
 
-       
-
-        /// <summary>
-        /// Property _dummyWorkflow fills list view with steps.
-        /// </summary>
-        private ObservableCollection<Step> _workflow = new ObservableCollection<Step>();
-        public ObservableCollection<Step> workflow { get { return _workflow; } }
-
         private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
         public ObservableCollection<Workflow> workflows 
         { 
             get { return _workflows; }
-            //set
-            //{
-            //    _workflows = value;
-            //    OnChanged("workflows");
-            //}
         }
+
         /// <summary>
         /// Property for itemlist of an selected (_actWorkflow) workflow in workflow view.
         /// NOTICE: temporare solution for item view. (There has to be another way...)
@@ -344,7 +331,6 @@ namespace Admin.ViewModel
         {
             userCollection.Clear();
             roleCollection.Clear();
-            workflow.Clear();
             workflows.Clear();
             DiagramViewModel.Items.Clear();
             selectedRole = null;
@@ -462,12 +448,6 @@ namespace Admin.ViewModel
                             showDetails = Visibility.Collapsed;
 
                             selectedTabId = 0;
-                            _workflowModel = actWorkflow.Clone<Workflow>();
-                            _workflow.Clear();
-                            foreach (Step step in _workflowModel.steps)
-                            {
-                                _workflow.Add(step);
-                            }
                         }, canExecute => _actWorkflow != null);
                 }
                 return _editWorkflowCommand;
@@ -483,10 +463,7 @@ namespace Admin.ViewModel
                 {
                     _newWorkflowCommand = new ActionCommand(execute =>
                     {
-                        
-                        _workflowModel = new Workflow();
-                        _workflow.Clear();
-
+                        _actWorkflow = null;
                         displayView = Visibility.Collapsed;
                         editView = Visibility.Visible;
                         showDetails = Visibility.Collapsed;
@@ -505,14 +482,8 @@ namespace Admin.ViewModel
                 {
                     _displayViewCommand = new ActionCommand(execute =>
                     {
-
-                        _workflowModel = null;
-                        _workflow.Clear();
-                        
                         editView = Visibility.Collapsed;
                         displayView = Visibility.Visible;
-                        
-
                     });
                 }
                 return _displayViewCommand;
