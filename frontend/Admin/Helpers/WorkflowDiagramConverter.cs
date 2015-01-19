@@ -103,6 +103,11 @@ namespace Admin.Helpers
             return null;
         }
 
+        /// <summary>
+        /// This method converts a given workflow to designer items. The created items will be shown instantly.
+        /// </summary>
+        /// <param name="workflow">Workflow to convert</param>
+        /// <param name="diagramViewModel">Corresponding diagram view model</param>
         public static void WorkflowToDesignerItems(Workflow workflow, DiagramViewModel diagramViewModel)
         {
             // clear designer items
@@ -122,30 +127,31 @@ namespace Admin.Helpers
                 }
             }
             
-            // iterate through steps and add connections
+            // iterate through steps and add connections and disable connectors
             foreach(Step s in workflow.steps)
             {
                 List<String> nextStepIds = s.nextStepIds;
 
                 DesignerItemViewModelBase self = (DesignerItemViewModelBase) designerItems.First(x => x.Id == s.id);
-
+                self.enableRightConnector = false;
+                
                 FullyCreatedConnectorInfo sourceConnectorInfo = new FullyCreatedConnectorInfo(self, ConnectorOrientation.Output);
                 List<FullyCreatedConnectorInfo> sinkConnectorInfos = GetSinkConnectors(s, designerItems);
                 foreach (FullyCreatedConnectorInfo sinkConnectorInfo in sinkConnectorInfos)
                 {
                     ConnectorViewModel connector = new ConnectorViewModel("", diagramViewModel, sourceConnectorInfo, sinkConnectorInfo);
                     diagramViewModel.AddItemCommand.Execute(connector);
-                }
-
-                
-            }
-
-            foreach (SelectableDesignerItemViewModelBase item in designerItems)
-            {
-                Console.WriteLine("designerId: " + item.Id);
+                    sinkConnectorInfo.DataItem.enableInputConnector = false;
+                } 
             }
         }
 
+        /// <summary>
+        /// Converts a single step to a designer item.
+        /// </summary>
+        /// <param name="step">The step to convert.</param>
+        /// <param name="diagramViewModel">Corresponding diagram view model</param>
+        /// <returns>The new designer item</returns>
         private static SelectableDesignerItemViewModelBase StepToDesignerItem(Step step, DiagramViewModel diagramViewModel)
         {
             if(step.GetType() == typeof(StartStep))
@@ -176,10 +182,17 @@ namespace Admin.Helpers
                 return finalStepViewModel;
             }
 
-            Console.WriteLine("SDFOJSAÜODIFJÜOIJ");
             return null;
         }
 
+        /// <summary>
+        /// Returns a list of all outgoing sink connectors..
+        /// SinkConnectors are the "input connectors" of all next steps.
+        /// Mostly there will be only one sink connector, but possible future conditions-steps may have multiple next steps.
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="designerItems"></param>
+        /// <returns></returns>
         private static List<FullyCreatedConnectorInfo> GetSinkConnectors(Step step, List<SelectableDesignerItemViewModelBase> designerItems)
         {
             List<FullyCreatedConnectorInfo> connectors = new List<FullyCreatedConnectorInfo>();
