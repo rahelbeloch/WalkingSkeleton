@@ -494,7 +494,7 @@ namespace Admin.ViewModel
                             {
                                 if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
                                 {
-                                    step.nextStepIds = new HashSet<string>();
+                                    step.nextStepIds = new List<string>();
                                 }
                                 step.id = "";
                             }

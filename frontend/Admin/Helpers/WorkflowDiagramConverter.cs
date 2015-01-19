@@ -103,21 +103,44 @@ namespace Admin.Helpers
             return null;
         }
 
-        public static List<SelectableDesignerItemViewModelBase> WorkflowToDesignerItems(Workflow workflow, DiagramViewModel diagramViewModel)
+        public static void WorkflowToDesignerItems(Workflow workflow, DiagramViewModel diagramViewModel)
         {
             List<SelectableDesignerItemViewModelBase> designerItems = new List<SelectableDesignerItemViewModelBase>();
 
+            // convert steps to designer items
             foreach(Step s in workflow.steps) 
             {
                 SelectableDesignerItemViewModelBase designerItem = StepToDesignerItem(s, diagramViewModel);
                 if (designerItem != null)
                 {
                     designerItem.IsSelected = false;
-                    diagramViewModel.AddItemCommand.Execute((DesignerItemViewModelBase)designerItem);
+                    diagramViewModel.AddItemCommand.Execute(designerItem);
+                    designerItems.Add(designerItem);
                 }
             }
+            
+            // iterate through steps and add connections
+            foreach(Step s in workflow.steps)
+            {
+                List<String> nextStepIds = s.nextStepIds;
 
-            return designerItems;
+                DesignerItemViewModelBase self = (DesignerItemViewModelBase) designerItems.First(x => x.Id == s.id);
+
+                FullyCreatedConnectorInfo sourceConnectorInfo = new FullyCreatedConnectorInfo(self, ConnectorOrientation.Output);
+                List<FullyCreatedConnectorInfo> sinkConnectorInfos = GetSinkConnectors(s, designerItems);
+                foreach (FullyCreatedConnectorInfo sinkConnectorInfo in sinkConnectorInfos)
+                {
+                    ConnectorViewModel connector = new ConnectorViewModel("", diagramViewModel, sourceConnectorInfo, sinkConnectorInfo);
+                    diagramViewModel.AddItemCommand.Execute(connector);
+                }
+
+                
+            }
+
+            foreach (SelectableDesignerItemViewModelBase item in designerItems)
+            {
+                Console.WriteLine("designerId: " + item.Id);
+            }
         }
 
         private static SelectableDesignerItemViewModelBase StepToDesignerItem(Step step, DiagramViewModel diagramViewModel)
@@ -140,17 +163,34 @@ namespace Admin.Helpers
                 {
                     id = action.roleIds.First()
                 };
-                ActionViewModel actionViewModel = new ActionViewModel("", diagramViewModel, step.left, step.top, selectedRole);
+                ActionViewModel actionViewModel = new ActionViewModel(step.id, diagramViewModel, step.left, step.top, selectedRole);
                 return actionViewModel;
             }
             else if (step.GetType() == typeof(FinalStep))
             {
                 FinalStep finalStep = step.Clone<FinalStep>();
-                FinalStepViewModel finalStepViewModel = new FinalStepViewModel("", diagramViewModel, step.left, step.top, "");
+                FinalStepViewModel finalStepViewModel = new FinalStepViewModel(step.id, diagramViewModel, step.left, step.top, "");
                 return finalStepViewModel;
             }
 
+            Console.WriteLine("SDFOJSAÜODIFJÜOIJ");
             return null;
+        }
+
+        private static List<FullyCreatedConnectorInfo> GetSinkConnectors(Step step, List<SelectableDesignerItemViewModelBase> designerItems)
+        {
+            List<FullyCreatedConnectorInfo> connectors = new List<FullyCreatedConnectorInfo>();
+
+            foreach (String nextId in step.nextStepIds)
+            {
+                if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
+                {
+                    connectors.Add(new FullyCreatedConnectorInfo((DesignerItemViewModelBase)designerItems.First(x => x.Id == nextId), ConnectorOrientation.Input));
+                } 
+                // TODO: check if type is a branch
+            }
+
+            return connectors;
         }
 
         /// <summary>

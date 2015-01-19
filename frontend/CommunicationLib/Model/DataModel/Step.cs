@@ -32,8 +32,8 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private HashSet<String> _nextStepIds;
-        public HashSet<String> nextStepIds { get { return _nextStepIds; } set { _nextStepIds = value; } }
+        private List<String> _nextStepIds;
+        public List<String> nextStepIds { get { return _nextStepIds; } set { _nextStepIds = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
@@ -55,7 +55,7 @@ namespace CommunicationLib.Model
             : base()
         {
             _nextSteps = new List<Step>();
-            _nextStepIds = new HashSet<String>();
+            _nextStepIds = new List<String>();
             _roleIds = new List<String>();
         }
     }
