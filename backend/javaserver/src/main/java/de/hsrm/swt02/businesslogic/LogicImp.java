@@ -18,7 +18,6 @@ import de.hsrm.swt02.businesslogic.protocol.MessageOperation;
 import de.hsrm.swt02.businesslogic.protocol.MessageTopic;
 import de.hsrm.swt02.businesslogic.workflowValidator.WorkflowValidator;
 import de.hsrm.swt02.logging.UseLogger;
-import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
@@ -30,6 +29,7 @@ import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * This class implements the logic interface and is used for logic operations.
@@ -97,9 +97,6 @@ public class LogicImp implements Logic {
         final LogicResponse logicResponse = new LogicResponse();
         final WorkflowValidator validator = new WorkflowValidator(workflow);
 
-//        if ((workflow.getStepByPos(0) instanceof StartStep)
-//                && (workflow.getStepByPos(workflow.getSteps().size() - 1) instanceof FinalStep)) 
-//        {
         if (validator.isValid()) {
             if (workflow.getId() == null || workflow.getId().equals("")) {
                 id = persistence.storeWorkflow(workflow);
