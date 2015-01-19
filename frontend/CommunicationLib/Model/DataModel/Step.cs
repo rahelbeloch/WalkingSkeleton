@@ -12,19 +12,21 @@ namespace CommunicationLib.Model
     /// </summary>
     public class Step : RootElement
     {
-
+        /// <summary>
+        /// List of following next steps.
+        /// </summary>
         private List<Step> _nextSteps;
         [JsonIgnore]
         public List<Step> nextSteps { get { return _nextSteps; } set { _nextSteps = value; } }
 
         /// <summary>
-        /// value y axis - Used for visualization in workflow designer
+        /// Value y axis - Used for visualization in workflow designer
         /// </summary>
         private double _top;
         public double top { get { return _top; } set { _top = value; } }
 
         /// <summary>
-        /// value x axis - Used for visualization in workflow designer
+        /// Value x axis - Used for visualization in workflow designer
         /// </summary>
         private double _left;
         public double left { get { return _left; } set { _left = value;  } }
