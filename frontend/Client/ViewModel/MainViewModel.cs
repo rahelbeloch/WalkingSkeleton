@@ -11,6 +11,7 @@ using CommunicationLib.Model;
 using System.Windows;
 using CommunicationLib.Exception;
 using System.Diagnostics;
+using System.Configuration;
 
 namespace Client.ViewModel
 {
@@ -40,7 +41,7 @@ namespace Client.ViewModel
                 {
                     try
                     {
-                    _myComLib = new ComLib(this, clientID);
+                        _myComLib = new ComLib(this, clientID, ConfigurationManager.AppSettings["ServerAdress"]);
                 }
                     catch (BasicException e)
                     {

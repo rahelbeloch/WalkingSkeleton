@@ -78,7 +78,6 @@ namespace Client.ViewModel
         /// Update a single workflow
         /// </summary>
         /// <param name="updatedWorkflow">workflow which has to be updated</param>
-        /// <param name="startableList">List of startables Workflows</param>
         public void AddWorkflowToModel(Workflow updatedWorkflow)
         {
             logger.Debug("addWorkflowtoModel");
@@ -130,7 +129,6 @@ namespace Client.ViewModel
         /// <summary>
         /// Updates a single item.
         /// </summary>
-        /// <param name="item"></param>
         /// <param name="item">the item to update</param>
         public void UpdateItem(Item item)
         {
@@ -172,7 +170,7 @@ namespace Client.ViewModel
         /// <summary>
         /// Checks whether the new item is relevant for the user.
         /// </summary>
-        /// <param name="item">new or updated item</param>
+        /// <param name="id">id of new or updated item</param>
         /// <param name="itemsList">List of the relevant items for the user</param>
         /// <returns>true if item is in itemsList, else false</returns>
         private Boolean IsItemInList(String id, List<Item> itemsList)
