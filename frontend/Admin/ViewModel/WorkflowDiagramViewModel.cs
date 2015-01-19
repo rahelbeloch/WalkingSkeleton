@@ -453,6 +453,10 @@ namespace Admin.ViewModel
                 {
                     _editWorkflowCommand = new ActionCommand(execute =>
                         {
+                            displayView = Visibility.Collapsed;
+                            editView = Visibility.Visible;
+                            showDetails = Visibility.Collapsed;
+
                             selectedTabId = 0;
                             _workflowModel = actWorkflow.Clone<Workflow>();
                             _workflow.Clear();
@@ -481,7 +485,7 @@ namespace Admin.ViewModel
 
                         displayView = Visibility.Collapsed;
                         editView = Visibility.Visible;
-
+                        showDetails = Visibility.Collapsed;
                     });
                 }
                 return _newWorkflowCommand;
