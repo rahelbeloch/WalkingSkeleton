@@ -215,7 +215,7 @@ namespace DiagramDesigner
                 DesignerItemViewModelBase itemBase = (DesignerItemViewModelBase)Activator.CreateInstance(dragObject.ContentType);
                 itemBase.Left = Math.Max(0, position.X - itemBase.ItemWidth / 2);
                 itemBase.Top = Math.Max(0, position.Y - itemBase.ItemHeight / 2);
-                itemBase.IsSelected = true;
+                itemBase.IsSelected = false;
                 (DataContext as IDiagramViewModel).AddItemCommand.Execute(itemBase);
             }
             e.Handled = true;

@@ -19,7 +19,7 @@ namespace Admin
         WorkflowDiagramViewModel workflowViewModel = null;
         public ObservableCollection<Role> roleCollection { get { return workflowViewModel.roleCollection; } }
 
-        public ActionViewModel(int id, DiagramViewModel parent, double left, double top, Role selectedRole)
+        public ActionViewModel(string id, DiagramViewModel parent, double left, double top, Role selectedRole)
             : base(id, parent, left, top)
         {
             this.selectedRole = selectedRole;

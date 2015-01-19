@@ -55,6 +55,7 @@ namespace Admin.Helpers
             // add remaining designer items which are not connected
             foreach (DesignerItemViewModelBase designerItem in stepDesignerItems)
             {
+                Console.WriteLine("designer id: " + designerItem.Id);
                 if (referenceMapping[designerItem] == null)
                 {
                     referenceMapping[designerItem] = DesignerItemToStep(designerItem);
@@ -97,6 +98,56 @@ namespace Admin.Helpers
                 FinalStep finalStep = step.Clone<FinalStep>();
                 finalStep.id = getUniqueId();
                 return finalStep;
+            }
+
+            return null;
+        }
+
+        public static List<SelectableDesignerItemViewModelBase> WorkflowToDesignerItems(Workflow workflow, DiagramViewModel diagramViewModel)
+        {
+            List<SelectableDesignerItemViewModelBase> designerItems = new List<SelectableDesignerItemViewModelBase>();
+
+            foreach(Step s in workflow.steps) 
+            {
+                SelectableDesignerItemViewModelBase designerItem = StepToDesignerItem(s, diagramViewModel);
+                if (designerItem != null)
+                {
+                    designerItem.IsSelected = false;
+                    diagramViewModel.AddItemCommand.Execute((DesignerItemViewModelBase)designerItem);
+                }
+            }
+
+            return designerItems;
+        }
+
+        private static SelectableDesignerItemViewModelBase StepToDesignerItem(Step step, DiagramViewModel diagramViewModel)
+        {
+            if(step.GetType() == typeof(StartStep))
+            {
+                StartStep startStep = step.Clone<StartStep>();
+                Role selectedRole = new Role() 
+                {
+                    id = startStep.roleIds.First()
+                };
+                StartStepViewModel startStepViewModel = new StartStepViewModel(step.id, diagramViewModel, step.left, step.top, selectedRole);
+                Console.WriteLine("return start step view model");
+                return startStepViewModel;
+            }
+            else if (step.GetType() == typeof(Action))
+            {
+                Action action = step.Clone<Action>();
+                Role selectedRole = new Role()
+                {
+                    id = action.roleIds.First()
+                };
+                ActionViewModel actionViewModel = new ActionViewModel("", diagramViewModel, step.left, step.top, selectedRole);
+                return actionViewModel;
+            }
+            else if (step.GetType() == typeof(FinalStep))
+            {
+                FinalStep finalStep = step.Clone<FinalStep>();
+                FinalStepViewModel finalStepViewModel = new FinalStepViewModel("", diagramViewModel, step.left, step.top, "");
+                return finalStepViewModel;
             }
 
             return null;

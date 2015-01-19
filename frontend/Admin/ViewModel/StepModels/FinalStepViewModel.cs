@@ -12,7 +12,7 @@ namespace Admin
     {
         private IUIVisualizerService visualiserService;
 
-        public FinalStepViewModel(int id, DiagramViewModel parent, double left, double top, string hostUrl) : base(id,parent, left,top)
+        public FinalStepViewModel(string id, DiagramViewModel parent, double left, double top, string hostUrl) : base(id,parent, left,top)
         {
             this.HostUrl = hostUrl;
             Init();
