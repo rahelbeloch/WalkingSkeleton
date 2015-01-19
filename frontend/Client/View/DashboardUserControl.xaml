@@ -79,14 +79,14 @@
                     <GroupBox.Header>
                         <Label Content="{Binding selectedRow.form.description}"></Label>
                     </GroupBox.Header>
-                    <DataGrid ItemsSource="{Binding selectedRow.form.formDef}" AutoGenerateColumns="False" >
+                    <DataGrid ItemsSource="{Binding selectedRow.form.formDef}" AutoGenerateColumns="False" CanUserAddRows="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Key" Binding="{Binding key}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Value" Binding="{Binding value}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
-                <Button Grid.Row="5" Content="Abschließen" Height="25" Margin="10" Visibility="{Binding selectedRow.visibilityFinishButton}"
+                <Button Grid.Row="5" Content="Zwischenspeichern" Height="25" Margin="10" Visibility="{Binding selectedRow.visibilityFinishButton}"
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
                                                             CommandParameter="{Binding selectedRow}" />
                 <Button Grid.Row="5" Content="Abschließen" Grid.Column="1" Margin="10" Height="25" Visibility="{Binding selectedRow.visibilityFinishButton}"
