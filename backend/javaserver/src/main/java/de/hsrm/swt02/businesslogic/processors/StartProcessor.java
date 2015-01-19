@@ -72,6 +72,9 @@ public class StartProcessor {
         if (!item.getForGroup("step").isEmpty()) {
             item.setFirstStepState(MetaState.OPEN.toString());
         }
+        
+        //TODO: transfer form definitions from workflow to metadata of item
+        item.applyForm(workflow.getForm());
 
         try {
             workflow.addItem(item);
