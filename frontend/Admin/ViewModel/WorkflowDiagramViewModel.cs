@@ -297,7 +297,7 @@ namespace Admin.ViewModel
         /// When a workflow is updated (for example its activity), update workflow overview and deselect a selected workflow.
         /// </summary>
         /// <param name="newWorkflow"></param>
-        public void updateWorkflows(Workflow newWorkflow){
+        public void UpdateWorkflows(Workflow newWorkflow){
             bool changed = false;
 
             foreach (Workflow w in _workflows)
@@ -324,10 +324,9 @@ namespace Admin.ViewModel
         /// When an item has to be updated (e. g. forward, finish), update the workflow overview and update the item view
         /// </summary>
         /// <param name="item"></param>
-        public void updateItemFromWorkflow(Item item)
+        public void UpdateItemFromWorkflow(Item item)
         {
             Workflow workflowToUpdate = null;
-            
 
             foreach (Workflow w in _workflows)
             {
@@ -385,7 +384,6 @@ namespace Admin.ViewModel
                     ((FullyCreatedConnectorInfo)c.SinkConnectorInfo).DataItem.enableInputConnector = true;
                 }
                 DiagramViewModel.RemoveItemCommand.Execute(selectedItem);
-
             }
         }
 

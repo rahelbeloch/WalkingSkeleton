@@ -36,7 +36,6 @@ namespace Admin.ViewModel
         {
             try
             {
-
                 // update userlist
                 IList<User> allUsers = _restRequester.GetAllElements<User>();
                 foreach (User user in allUsers)
@@ -412,16 +411,13 @@ namespace Admin.ViewModel
                     {
                         if (SelectedRole != null)
                         {
-                            if (SelectedRole != null)
+                            try
                             {
-                                try
-                                {
-                                    _restRequester.DeleteObject<Role>(SelectedRole.rolename);
-                                }
-                                catch (BasicException be)
-                                {
-                                    MessageBox.Show(be.Message);
-                                }
+                                _restRequester.DeleteObject<Role>(SelectedRole.rolename);
+                            }
+                            catch (BasicException be)
+                            {
+                                MessageBox.Show(be.Message);
                             }
                         }
                     }, canExecute => true);
