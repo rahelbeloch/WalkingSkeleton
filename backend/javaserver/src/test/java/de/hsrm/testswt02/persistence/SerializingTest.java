@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.List;
 import java.util.Properties;
 
 import org.junit.AfterClass;
@@ -45,9 +44,6 @@ public class SerializingTest {
     public static void setUp() {
         ul = new UseLogger();
         db = new PersistenceImp(ul);
-//        to be deleted?
-//        p = new Properties();
-//        p.setProperty("StoragePath", path);
         db.setStoragePath(path);
     }
     
