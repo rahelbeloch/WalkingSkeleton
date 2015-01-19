@@ -224,7 +224,6 @@ public class WorkflowResource {
         final String loggingBody = PREFIX + "POST /resource/workflows";
         LOGGER.log(Level.INFO, loggingBody);
         final String workflowAsString = formParams.get("data").get(0);
-        System.out.println(workflowAsString);
         Workflow workflow = new Workflow();
 
         try {
