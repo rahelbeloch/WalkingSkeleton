@@ -168,7 +168,7 @@
                             BorderThickness="1"
                             Background="#EEE"
                             BorderBrush="DimGray">
-                        <Expander IsExpanded="True"
+                        <Expander IsExpanded="False"
                                   Background="Transparent">
                             <Border BorderBrush="DimGray"
                                     BorderThickness="0,1,0,0"
