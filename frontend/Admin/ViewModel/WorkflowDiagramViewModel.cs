@@ -104,7 +104,46 @@ namespace Admin.ViewModel
                 OnChanged("actStep");
             }
         }
-
+        private Visibility _showDetails;
+        public Visibility showDetails
+        {
+            get
+            {
+                return _showDetails;
+            }
+            set
+            {
+                _showDetails = value;
+                OnChanged("showDetails");
+            }
+        }
+        private Visibility _displayView;
+        public Visibility displayView
+        {
+            get
+            {
+                return _displayView;
+            }
+            set
+            {
+                _displayView = value;
+                OnChanged("displayView");
+            }
+        }
+        private Visibility _editView;
+        public Visibility editView
+        {
+            get
+            {
+                return _editView;
+            }
+            set
+            {
+                _editView = value;
+                OnChanged("editView");
+            }
+        }
+        
         /// <summary>
         /// Property to enable textbox for username input.
         /// </summary>
@@ -246,7 +285,10 @@ namespace Admin.ViewModel
             //ease if you wish just create a new IPathFinder class and pass it in right here
             ConnectorViewModel.PathFinder = new OrthogonalPathFinder();
             messageBoxService = ApplicationServicesProvider.Instance.Provider.MessageBoxService;
-            
+            _showDetails = Visibility.Collapsed;
+            _editView = Visibility.Collapsed;
+            _displayView = Visibility.Visible;
+
             try
             {
                 logger.Info("Initialize");
@@ -409,6 +451,27 @@ namespace Admin.ViewModel
             }
         }
 
+        private ICommand _newWorkflowCommand;
+        public ICommand newWorkflowCommand
+        {
+            get
+            {
+                if (_newWorkflowCommand == null)
+                {
+                    _newWorkflowCommand = new ActionCommand(execute =>
+                    {
+                        
+                        _workflowModel = new Workflow();
+                        _workflow.Clear();
+
+                        displayView = Visibility.Collapsed;
+                        editView = Visibility.Visible;
+
+                    });
+                }
+                return _newWorkflowCommand;
+            }
+        }
         /// <summary>
         /// Command to toggle workflow activity.
         /// </summary>

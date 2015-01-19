@@ -14,6 +14,7 @@
             <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick"/> 
         </Style>
     </UserControl.Resources>
+    
     <UserControl.InputBindings>
         <KeyBinding Key="Del"
                     Command="{Binding DeleteSelectedItemsCommand}" />
@@ -23,94 +24,24 @@
             <DockPanel DockPanel.Dock="Top">
                 <Label Content="Workflow-Verwaltung" FontSize="16" FontWeight="Medium" HorizontalAlignment="Center"/>
             </DockPanel>
+            <Grid>
 
-            <TabControl SelectedIndex="{Binding selectedTabId, UpdateSourceTrigger=PropertyChanged}">
-                <TabItem Header="Neuen Workflow anlegen" x:Name="createTab" x:Uid="1">
-                    <DockPanel>
-
-                        <DockPanel DockPanel.Dock="Top">
-                            <!-- ToolBox Control -->
-                            <tools:ToolBoxControl DockPanel.Dock="Top" Grid.Column="0"
-                                  DataContext="{Binding toolBoxViewModel}" />
-                            
-
-                        </DockPanel>
-                        <DockPanel DockPanel.Dock="Top" >
-                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actStep}">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridView.Columns >
-                                            <GridViewColumn Width="120" Header="Beschreibung" DisplayMemberBinding="{Binding description}"/>
-                                            <GridViewColumn Width="290" Header="Role" DisplayMemberBinding="{Binding Role}" />
-                                            
-                                        </GridView.Columns>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </DockPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
+                </Grid.ColumnDefinitions>
+                
+                <!--left Panel -->
+                <DockPanel Background="DeepPink" Grid.Column="0">
                     
-                    <DockPanel DockPanel.Dock="Top">
-                        <Button x:Name="saveWorkflow" DockPanel.Dock="Bottom" Content="Workflow speichern/veröffentlichen" Margin="10,10,10,-35" Command="{Binding saveWorkflowCommand}" Height="26" Width="216"/>
-
+                    <!--Workflow Übersicht-->
+                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding displayView}">
+                        <Label Content="Workflow-Übersicht"  FontSize="14" FontWeight="Medium" HorizontalAlignment="Center"/>
                     </DockPanel>
-
-                    <!--
-                        <DockPanel DockPanel.Dock="Top">
-                            <Label Content="Schritt hinzufügen" FontWeight="Medium"/>
-                        </DockPanel>
-                        <DockPanel DockPanel.Dock="Top">
-                            <DockPanel.InputBindings>
-                                <KeyBinding Key="Enter" Command="{Binding addStepCommand}" />
-                            </DockPanel.InputBindings>
-
-                            <Label Content="Typ:" VerticalContentAlignment="Center"/>
-                            <ComboBox Height="25" Width="120" HorizontalAlignment="Left"  
-                                      ItemsSource="{Binding Path=choosableSteps, UpdateSourceTrigger=PropertyChanged}" 
-                                      DisplayMemberPath="label"
-                                      SelectedItem="{Binding selectedStep}" />
-
-                            <Label Content="Rolle:" VerticalContentAlignment="Center"/>
-                            
-                            <ComboBox Height="25" Width="120" HorizontalAlignment="Left"  
-                                      ItemsSource="{Binding Path=roleCollection, UpdateSourceTrigger=PropertyChanged}" 
-                                      DisplayMemberPath="rolename"
-                                      SelectedItem="{Binding selectedRole}" />
-
-                            <Label Content="Beschreibung: " Margin="0,0,0,10" VerticalContentAlignment="Center"/>
-                            <TextBox Width="180" Height="25" IsEnabled="{Binding enableDescriptionTextBox, UpdateSourceTrigger=PropertyChanged}">
-                                <TextBox.Text>
-                                    <Binding Path="stepDescription" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
-                                </TextBox.Text>
-                            </TextBox>
-
-                            <Button Content="+" Width="35" Height="25" Margin="10" Command="{Binding addStepCommand}"/>
-                            <Button x:Name="removeLastElement" HorizontalAlignment="Left" VerticalAlignment="Top" Content="-" Width="35" Height="25" Margin="0, 10, 0, 0" Command="{Binding removeLastStepCommand}"/>
-                        </DockPanel>
-
-                        <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflow}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridView.Columns >
-                                        <GridViewColumn Width="120" Header="Typ" DisplayMemberBinding="{Binding label}"/>
-                                        <GridViewColumn Width="290" Header="Beschreibung" DisplayMemberBinding="{Binding description}" />
-                                        <GridViewColumn Width="130" Header="Rollen" DisplayMemberBinding="{Binding roleIds[0]}"/>
-                                    </GridView.Columns>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                        <DockPanel DockPanel.Dock="Top">
-                            
-                        </DockPanel>
--->
-                            
-                        
-                        
-                    </DockPanel>
-                </TabItem>
-                <TabItem Header="Alle Workflows anzeigen">
-                    <DockPanel>
-
-                        <DockPanel Width="320">
+                    <StackPanel DockPanel.Dock="Top" Margin="5,30,5, 0" Visibility="{Binding displayView}">
+                        <Expander Header="Workflows"
+                      IsExpanded="True">
                             <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflows}" ItemContainerStyle="{StaticResource itemstyle}">
                                 <ListView.View>
                                     <GridView >
@@ -118,58 +49,92 @@
                                             <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
                                             <GridViewColumn Width="100" Header="Anzahl der Steps" DisplayMemberBinding="{Binding steps.Count}" />
                                             <GridViewColumn Width="100" Header="Anzahl der Items" DisplayMemberBinding="{Binding items.Count}"/>
-                                            <GridViewColumn Width="50" Header="aktiv"  DisplayMemberBinding="{Binding active}"/>
+                                            <GridViewColumn Width="40" Header="aktiv"  DisplayMemberBinding="{Binding active}"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
                             </ListView>
-                        </DockPanel>
-                    
-                    <!--
-                        <DockPanel DockPanel.Dock="Top" Height="378" VerticalAlignment="Top" Margin="10" >
-                            <Label DockPanel.Dock="Top" Content="Items" FontWeight="Medium"/>
-                            <DockPanel DockPanel.Dock="Top">
-                                <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}"/>
-                                <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Edit Workflow"/>
-                            </DockPanel>
-                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actWorkflow.items}" ItemContainerStyle="{StaticResource itemstyle}">
-                                <ListView.View>
-                                    <GridView >
-                                        <GridView.Columns>
-                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
-                                            <GridViewColumn Width="120" Header="beendet" DisplayMemberBinding="{Binding finished}" />
-                                        </GridView.Columns>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                            <Label Content="Step" FontWeight="Medium" DockPanel.Dock="Top" />
-
-                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding actWorkflow.steps}" ItemContainerStyle="{StaticResource itemstyle}">
-                                <ListView.View>
-                                    <GridView >
-                                        <GridView.Columns>
-                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
-                                            <GridViewColumn Width="120" Header="Beschreibung" DisplayMemberBinding="{Binding label}" />
-                                            <GridViewColumn Width="120" Header="BearbeiterIn" DisplayMemberBinding="{Binding roleIds[0]}" />
-                                            
-                                        </GridView.Columns>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </DockPanel>
-                        -->
+                        </Expander>
+                    </StackPanel>
+                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding displayView}">
+                        <Button x:Name="newWorkflow" DockPanel.Dock="Bottom" Content="Neuer Workflow" Margin="0,0,0,0" Command="{Binding newWorkflowCommand}" Height="26" Width="216"/>
                     </DockPanel>
-                </TabItem>
-            </TabControl>
-        <DockPanel>
-                <!-- Diagram Control -->
-                <s:DiagramControl DockPanel.Dock="Top" Grid.Column="1"
-                                  DataContext="{Binding DiagramViewModel}"
-                                  Margin="3,1,0.334,0" Grid.ColumnSpan="2" />
-                
 
-            </DockPanel>
-            
+                    <!--Workflow Bearbeiten-->
+                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}">
+                        <Label Content="Workflow-Bearbeiten"  FontSize="14" FontWeight="Medium" HorizontalAlignment="Center"/>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}">
+
+                        <tools:ToolBoxControl DockPanel.Dock="Top" Grid.Column="0"
+                              DataContext="{Binding toolBoxViewModel}" />
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}">
+                        <Button x:Name="saveWorkflow" DockPanel.Dock="Bottom" Content="Workflow speichern" Margin="0,0,0,0" Command="{Binding saveWorkflowCommand}" Height="26" Width="216"/>
+                    </DockPanel>
+                    <!--
+                
+                       
+                 -->
+                </DockPanel>
+
+                <!-- center Panel Diagram Control -->
+                <DockPanel Grid.Column="1" >
+                    <s:DiagramControl DockPanel.Dock="Top" Grid.Column="1"
+                                  DataContext="{Binding DiagramViewModel}"
+                                  Margin="3,1,0.334,0" Grid.ColumnSpan="2" Loaded="DiagramControl_Loaded" />
+                </DockPanel>
+
+
+                <!--right Panel -->
+                <DockPanel Grid.Column="2" Background="DeepPink">
+                    
+                    <!--Headline-->
+                    <DockPanel DockPanel.Dock="Top">
+                        <Label Content="Detail-Ansicht"  FontSize="14" FontWeight="Light" HorizontalAlignment="Center" />
+                    </DockPanel>
+                    
+                    <!--Items-->
+                    <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
+                            <Expander Header="Items"
+                                    IsExpanded="True">
+                                <ListView DockPanel.Dock="Top"  ItemsSource="{Binding actWorkflow.items}">
+                                    <ListView.View>
+                                        <GridView >
+                                            <GridView.Columns>
+                                                <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
+                                                <GridViewColumn Width="120" Header="beendet" DisplayMemberBinding="{Binding finished}" />
+                                            </GridView.Columns>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </Expander>
+                    </StackPanel>
+                    
+                    <!--Formular-->
+                    <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
+                        <Expander Header="Formular"
+                                    IsExpanded="False">
+                            <ListView DockPanel.Dock="Top"  ItemsSource="{Binding actWorkflow.form.formDef}" >
+                                <ListView.View>
+                                    <GridView >
+                                        <GridView.Columns>
+                                            <GridViewColumn Width="100" Header="Inhalt" DisplayMemberBinding="{Binding key}"/>
+                                            <GridViewColumn Width="100" Header="Typ" DisplayMemberBinding="{Binding datatype}" />
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Expander>
+                    </StackPanel>
+                    <!--Buttons deaktivieren&bearbeiten-->
+                    <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Visibility="{Binding showDetails}">
+                        <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}"/>
+                        <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Edit Workflow"/>
+                    </DockPanel>
+
+                </DockPanel>
+            </Grid>
         </DockPanel>
     </Grid>
 </UserControl>

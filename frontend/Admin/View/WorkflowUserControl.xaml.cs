@@ -32,18 +32,30 @@ namespace Admin.View
         }
         protected void HandleDoubleClick(object sender, MouseButtonEventArgs e)
         {
-           
+
+
             var lvi = sender as ListViewItem;
             if (lvi != null)
             {
                 Workflow wv = lvi.DataContext as Workflow;
-                Console.WriteLine("id" + wv.id);
                 WorkflowDiagramViewModel wmv = (WorkflowDiagramViewModel)this.DataContext;
-                Console.WriteLine(wmv);
                 wmv.actWorkflow = wv;
                 wmv.workflowActivity = "";
+                if (wmv.showDetails == Visibility.Collapsed)
+                {
+                    wmv.showDetails = Visibility.Visible;
+                }
+                else
+                {
+                    wmv.showDetails = Visibility.Collapsed;
+                }
              }
             
+        }
+
+        private void DiagramControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
             
         
