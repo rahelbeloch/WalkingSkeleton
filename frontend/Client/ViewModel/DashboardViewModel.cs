@@ -30,7 +30,6 @@ namespace Client.ViewModel
         public DashboardViewModel(MainViewModel mainViewModelInstanz)
         {
             _mainViewModel = mainViewModelInstanz;
-            _restRequester = _mainViewModel.restRequester;
         }
 
         /// <summary>
@@ -38,6 +37,7 @@ namespace Client.ViewModel
         /// </summary>
         private void InitModel()
         {
+            _restRequester = _mainViewModel.restRequester;
             logger.Debug("Init Model");
             _workflows.Clear();
             IList<Workflow> workflowList = null;
