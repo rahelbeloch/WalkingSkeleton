@@ -247,6 +247,12 @@ namespace Admin.ViewModel
                 if (_actWorkflow != null)
                 {
                     _actWorkflow.items.ForEach(_items.Add);
+                    showDetails = Visibility.Visible;
+                    WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
+                }
+                else
+                {
+                    showDetails = Visibility.Collapsed;
                 }
                 
                 OnChanged("actWorkflow");
@@ -328,11 +334,6 @@ namespace Admin.ViewModel
                 MessageBox.Show(e.Message);
             }
             OnChanged("workflows");
-
-            // TEMPORARY
-            Workflow tmpWorkflow = workflows[0];
-            Console.WriteLine(tmpWorkflow);
-            WorkflowDiagramConverter.WorkflowToDesignerItems(tmpWorkflow, DiagramViewModel);
         }
 
         /// <summary>

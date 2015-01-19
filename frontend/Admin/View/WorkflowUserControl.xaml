@@ -9,12 +9,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
     
-    <UserControl.Resources>
-       <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
-            <EventSetter Event="MouseDoubleClick" Handler="HandleDoubleClick"/> 
-        </Style>
-    </UserControl.Resources>
-    
     <UserControl.InputBindings>
         <KeyBinding Key="Del"
                     Command="{Binding DeleteSelectedItemsCommand}" />
@@ -42,7 +36,8 @@
                     <StackPanel DockPanel.Dock="Top" Margin="5,30,5, 0" Visibility="{Binding displayView}">
                         <Expander Header="Workflows"
                       IsExpanded="True">
-                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflows}" ItemContainerStyle="{StaticResource itemstyle}">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflows}"
+                                      SelectedValue="{Binding actWorkflow, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
                                 <ListView.View>
                                     <GridView >
                                         <GridView.Columns>

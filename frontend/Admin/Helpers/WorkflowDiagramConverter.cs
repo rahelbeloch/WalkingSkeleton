@@ -105,6 +105,9 @@ namespace Admin.Helpers
 
         public static void WorkflowToDesignerItems(Workflow workflow, DiagramViewModel diagramViewModel)
         {
+            // clear designer items
+            diagramViewModel.Items.Clear();
+
             List<SelectableDesignerItemViewModelBase> designerItems = new List<SelectableDesignerItemViewModelBase>();
 
             // convert steps to designer items
