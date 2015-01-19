@@ -81,7 +81,7 @@ public class WorkflowValidator {
                 try {
                     persistence.loadRole(roleId);
                 } catch (PersistenceException e) {
-                    throw new IncompleteEleException("At least one assigned role is not saved in persistence.");
+                    throw new IncompleteEleException("At least one assigned role is not stored in persistence.");
                 }
             }
             return true;
