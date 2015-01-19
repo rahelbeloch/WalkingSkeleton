@@ -26,7 +26,7 @@ public class Workflow extends RootElement {
     // Used for (de)serializsation. Do not change.
     private boolean active;
 
-    private Form formular;
+    private Form form;
     /**
      * Constructor for Workflow without parameters.
      */
@@ -34,7 +34,7 @@ public class Workflow extends RootElement {
         super();
         steps = new ArrayList<Step>();
         items = new ArrayList<Item>();
-        formular = new Form();
+        form = new Form();
         active = true;
     }
 
@@ -57,18 +57,18 @@ public class Workflow extends RootElement {
     
     /**
      * 
-     * @param formular the formular to set
+     * @param form the form to set
      */
-    public void setFormular(Form formular) {
-        this.formular = formular;
+    public void setForm(Form form) {
+        this.form = form;
     }
     
     /**
-     * Formular getter.
-     * @return formular
+     * form getter.
+     * @return form
      */
-    public Form getFormular() {
-        return formular;
+    public Form getForm() {
+        return form;
     }
     
     /**

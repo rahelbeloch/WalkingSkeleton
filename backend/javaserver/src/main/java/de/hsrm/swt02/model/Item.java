@@ -233,6 +233,16 @@ public class Item extends RootElement {
         
         ame.setOpener(opener);
     }
+    
+    /**
+     * This methods applies a form from a workflow to an item.
+     * @param form which is used by a workflow
+     */
+    public void applyForm(Form form) {
+        for (FormEntry fe : form.getFormDef()) {
+            set(fe.getKey(), fe.getValue(), "form");
+        }
+    }
 
     /**
      * Init method for cloning process.
