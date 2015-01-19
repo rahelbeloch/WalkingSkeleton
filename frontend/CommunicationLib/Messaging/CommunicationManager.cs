@@ -83,7 +83,6 @@ namespace CommunicationLib
         ///     FORM_INFO     -> for all form changes and definitions
         ///  (client calls this method if login works)
         /// </summary>
-        /// <param name="myClient">the client to register for</param>
         /// <param name="isAdmin">if true, client will be set as admin</param>
         public void RegisterClient(bool isAdmin)
         {

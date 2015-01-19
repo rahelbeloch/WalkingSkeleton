@@ -61,9 +61,8 @@ namespace RestAPI
         /// <summary>
         ///     Method to send a C# Object to server.
         /// </summary>
-        /// <param name="url">Request url</param>
-        /// <param name="method">Method of the request</param>
-        /// <param name="serializedObjPath">JSON string serialized object</param>
+        /// <param name="request">the request object</param>
+        /// <param name="serializedObj">JSON string serialized object</param>
         /// <returns>The response from server</returns>
         internal static IRestResponse SendRequest(RestRequest request, String serializedObj)
         {

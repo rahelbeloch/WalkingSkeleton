@@ -21,28 +21,28 @@ namespace CommunicationLib
         /// Callback method for source updates.
         /// This method is called by the Communication manager for item updates.
         /// </summary>
-        /// <param name="updatedWorkflow">the updated item source</param>
+        /// <param name="updatedItem">the updated item source</param>
         void ItemUpdate(Item updatedItem);
 
         /// <summary>
         /// Callback method for source updates.
         /// This method is called by the Communication manager for user updates.
         /// </summary>
-        /// <param name="updatedWorkflow">the updated user source</param>
+        /// <param name="updatedUser">the updated user source</param>
         void UserUpdate(User updatedUser);
 
         /// <summary>
         /// Callback method for source updates.
         /// This method is called by the Communication manager for role updates.
         /// </summary>
-        /// <param name="updatedWorkflow">the updated role source</param>
+        /// <param name="updatedRole">the updated role source</param>
         void RoleUpdate(Role updatedRole);
 
         /// <summary>
         /// Callback method for source updates.
         /// This method is called by the CommunicationManager for form updates.
         /// </summary>
-        /// <param name="updatedWorkflow">the updated form source</param>
+        /// <param name="updatedForm">the updated form source</param>
         void FormUpdate(Form updatedForm);
 
         /// <summary>

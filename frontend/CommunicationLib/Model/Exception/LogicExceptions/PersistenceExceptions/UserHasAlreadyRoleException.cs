@@ -34,6 +34,7 @@ namespace CommunicationLib.Exception
         /// This constructor allows to add a spezial message.
         /// </summary>
         /// <param name="message">the message</param>
+        /// <param name="inner">the inner exception</param>
         public UserHasAlreadyRoleException(string message, System.Exception inner)
             : base(message, inner)
         {
