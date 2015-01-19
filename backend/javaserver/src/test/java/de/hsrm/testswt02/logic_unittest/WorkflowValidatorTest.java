@@ -9,11 +9,15 @@ import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.workflowValidator.WorkflowValidator;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedAtLeastOneActionException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedAtLeastOneFinalStepException;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.PersistenceImp;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 
 /**
  * This TestClass tests the logic interface.
@@ -22,7 +26,9 @@ import de.hsrm.swt02.model.Workflow;
 public class WorkflowValidatorTest {
 
     private WorkflowValidator validator;
-    private static Role r = new Role();
+    static Persistence db;
+    static UseLogger ul;
+    private static Role r;
     
     static Workflow workflow;
     static StartStep ss;
@@ -32,17 +38,29 @@ public class WorkflowValidatorTest {
     static FinalStep fs;
     
     /**
+     * @throws PersistenceException 
      * 
      */
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws PersistenceException {
+        ul = new UseLogger();
+        db = new PersistenceImp(ul);
+        
+        r = new Role();
         r.setRolename("TestRolle");
+        db.storeRole(r);
+        
         workflow = new Workflow();
         ss = new StartStep();
+        ss.addRole(r.getRolename());
         a1 = new Action();
+        a1.addRole(r.getRolename());
         a2 = new Action();
+        a2.addRole(r.getRolename());
         a3 = new Action();
+        a3.addRole(r.getRolename());
         fs = new FinalStep();
+        fs.addRole(r.getRolename());
         
         ss.addRole(r.getRolename());
         a1.addRole(r.getRolename());
@@ -56,7 +74,7 @@ public class WorkflowValidatorTest {
      * @throws LogicException to catch InvalidWorkflowException and IncompleteEleException
      */
     private void isValid() throws LogicException {
-        validator = new WorkflowValidator(workflow);
+        validator = new WorkflowValidator(workflow, db);
         assertTrue(validator.isValid());
     }
     
