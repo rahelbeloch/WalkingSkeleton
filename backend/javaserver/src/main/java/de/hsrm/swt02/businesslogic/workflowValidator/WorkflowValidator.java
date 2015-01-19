@@ -41,9 +41,7 @@ public class WorkflowValidator {
      * @throws InvalidWorkflowException - if the workflow is not valid
      * @throws IncompleteEleException - if a step is without role
      */
-    public boolean isValid() throws InvalidWorkflowException,
-            IncompleteEleException 
-    {
+    public boolean isValid() throws InvalidWorkflowException, IncompleteEleException {
         if (numberOfStartSteps() != 1) {
             throw new ExpectedOneStartStepException();
         } else if (numberOfFinalSteps() < 1) {
