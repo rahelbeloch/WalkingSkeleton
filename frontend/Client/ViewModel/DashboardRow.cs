@@ -1,5 +1,6 @@
 ﻿using Client.View;
 using CommunicationLib.Model;
+using CommunicationLib.Model.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Client.ViewModel
             {
                 _actItem = value;
                 _actState = _actItem.state;
-                _visibilityStepForwardButton = _actState.Equals("OPEN") ? Visibility.Visible : Visibility.Hidden;
+                _visibilityStepForwardButton = _actState.Equals("OPEN") ? Visibility.Visible : Visibility.Collapsed;
                 _visibilityFinishButton = _actState.Equals("BUSY") ? Visibility.Visible : Visibility.Hidden;
             }
         }
@@ -43,13 +44,20 @@ namespace Client.ViewModel
 
         private Form _form;
         public Form form { get { return _form; } }
-        
+
+        private List<FormRow> _formRows;
+        public List<FormRow> formRows { get { return _formRows; } }
         public DashboardRow(Item actItem, Step actStep, String username, Form form)
         {
             _username = username;
             this.actItem = actItem;
             _actStep = actStep;
             _form = form;
+            _formRows = new List<FormRow>();
+            foreach (FormEntry formEntry in _form.formDef)
+            {
+                _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
+            }
         }
     }
 }

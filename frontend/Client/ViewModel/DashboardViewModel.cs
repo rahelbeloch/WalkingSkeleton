@@ -82,6 +82,7 @@ namespace Client.ViewModel
         public void AddWorkflowToModel(Workflow updatedWorkflow)
         {
             logger.Debug("addWorkflowtoModel");
+            /*
             logger.Debug("show Formular");
             Form formular = updatedWorkflow.form;
             if (formular.description.Equals("")) {
@@ -97,6 +98,7 @@ namespace Client.ViewModel
                 logger.Debug(entry.key);
                 logger.Debug(entry.datatype);
             }
+             * */
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
             IList<string> startableList = null;
@@ -301,6 +303,29 @@ namespace Client.ViewModel
                 return _stepForwardCommand;
             }
         }
+        private ICommand _saveItemCommand;
+        public ICommand saveItemCommand
+        {
+            get
+            {
+                if (_saveItemCommand == null)
+                {
+                    _saveItemCommand = new ActionCommand(execute =>
+                    {
+                        DashboardRow param = (DashboardRow)execute;
+                        try
+                        {
+                            _restRequester.PostObject(param.actItem);
+                        }
+                        catch (BasicException exc)
+                        {
+                            MessageBox.Show(exc.Message);
+                        }
+                    }, canExecute => true);
+                }
+                return _saveItemCommand;
+            }
+        }
 
         /// <summary>
         /// Logout command for the user;
@@ -384,14 +409,9 @@ namespace Client.ViewModel
                 }
                 else
                 {
-                    try
-                    {
+
                         InitModel();
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
+                    
                 }
             }
         }

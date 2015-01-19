@@ -71,6 +71,8 @@
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="ViewModel\DashboardRow.cs" />
     <Compile Include="ViewModel\DashboardWorkflow.cs" />
+    <Compile Include="ViewModel\FormRow.cs" />
+    <Compile Include="ViewModel\FormValidator.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SelectedRowToVisbiltyConverter.cs" />
