@@ -28,16 +28,26 @@ namespace RestAPI
         private string _myUsername;
         private String _myPassword;
         private String _myClientID;
+        private String serverAdress;
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// ComLib is used for messaging.
+        /// </summary>
+        private InternalRequester _internRequester;
+        public InternalRequester InternRequester;
 
         /// <summary>
         /// Default constructor, initializes the serialization settings and pre-strings for urls.
         /// </summary>
-        public RestRequester(String clientID)
+        public RestRequester(String clientID, String serverAdress)
         {
             _myClientID = clientID;
+            if (_internRequester == null)
+            {
+                _internRequester = new InternalRequester(serverAdress);
+            }
         }
 
         /// <summary>
@@ -60,7 +70,13 @@ namespace RestAPI
             _myPassword = null;
         }
 
+        # region REQUEST LIST METHODS
 
+        /// <summary>
+        /// Request all elements from typeparam O from server.
+        /// </summary>
+        /// <typeparam name="O">type of the requested objects</typeparam>
+        /// <returns>list of requestet elements</returns>
         public IList<O> GetAllElements<O>()
         {
             String url = URLRouter.generateUrl(UrlMethod.Resource, typeof(O));
@@ -92,7 +108,7 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.RetrieveRequest(request);
+                response = _internRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
@@ -138,7 +154,7 @@ namespace RestAPI
             var request = createRequest(url, Method.GET);
             try
             {
-                response = InternalRequester.RetrieveRequest(request);
+                response = _internRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
@@ -147,6 +163,10 @@ namespace RestAPI
             IList<O> eleList = JsonConvert.DeserializeObject<List<O>>(response.Content, Constants.JSON_SETTINGS);
             return eleList;
         }
+
+        # endregion
+
+        # region STANDARD HTTP METHODS
 
         /// <summary>
         ///     Get an object from the server, with HTTP-Method GET.
@@ -164,7 +184,7 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.RetrieveRequest(request);
+                response = _internRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
@@ -198,7 +218,7 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.SendRequest(request, serializedObj);
+                response = _internRequester.SendRequest(request, serializedObj);
             }
             catch (BasicException)
             {
@@ -227,7 +247,7 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.SendRequest(request, serializedObj);
+                response = _internRequester.SendRequest(request, serializedObj);
             }
             catch (BasicException)
             {
@@ -263,7 +283,7 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.RetrieveRequest(request);
+                response = _internRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
@@ -276,11 +296,15 @@ namespace RestAPI
             return desObj;
         }
 
+        # endregion
+
+        # region COMMAND METHODS
+
         /// <summary>
         ///     Does a login access to the server. Path ist always: '/command/users/login'
         /// </summary>
         /// <returns>True if it worked, false otherwhise, or an exception</returns>
-        public Boolean checkUser()
+        public Boolean CheckUser()
         {
             IRestResponse response;
             String url = URLRouter.generateUrl(UrlMethod.Operation, typeof(User), new string[] { "login" });
@@ -291,7 +315,7 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.RetrieveRequest(request);
+                response = _internRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
@@ -316,7 +340,7 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.RetrieveRequest(request);
+                response = _internRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
@@ -343,7 +367,7 @@ namespace RestAPI
             try
             {
                 // call Internal Requester to finally send the request
-                response = InternalRequester.RetrieveRequest(request);
+                response = _internRequester.RetrieveRequest(request);
             }
             catch (BasicException)
             {
@@ -352,8 +376,12 @@ namespace RestAPI
             return response.StatusCode == HttpStatusCode.OK;
         }
 
+        # endregion
+
+        # region HELP METHODS 
+
         /// <summary>
-        ///  Create the request with needed header fields.
+        ///     Create the request with needed header fields.
         /// </summary>
         /// <param name="url">the requested url</param>
         /// <param name="method">the http method</param>
@@ -398,5 +426,7 @@ namespace RestAPI
                 }
             }
         }
+
+        # endregion
     }
 }

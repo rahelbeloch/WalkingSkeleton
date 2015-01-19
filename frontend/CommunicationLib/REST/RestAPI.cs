@@ -28,11 +28,12 @@ namespace RestAPI
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         ///<summary>
-        ///     Static Constructor - is called automatically at first use of the class.
+        /// Constructor.
         /// </summary>
-        static InternalRequester()
+        /// <param name="serverAdress">the adress of the used server</param>
+        public InternalRequester(string serverAdress)
         {
-            client = new RestClient(Constants.SERVER_URL);
+            client = new RestClient(serverAdress);
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace RestAPI
         /// </summary>
         /// <param name="request">The request to send to server</param>
         /// <returns>The response object</returns>
-        internal static IRestResponse RetrieveRequest(RestRequest request)
+        internal IRestResponse RetrieveRequest(RestRequest request)
         {
             // execute the request
             IRestResponse response = client.Execute(request);
@@ -64,7 +65,7 @@ namespace RestAPI
         /// <param name="request">the request object</param>
         /// <param name="serializedObj">JSON string serialized object</param>
         /// <returns>The response from server</returns>
-        internal static IRestResponse SendRequest(RestRequest request, String serializedObj)
+        internal IRestResponse SendRequest(RestRequest request, String serializedObj)
         {
             IRestResponse response;
             // if there is an object that shall be send to server
@@ -93,7 +94,7 @@ namespace RestAPI
         /// Method inspects the response for server or connection errors. If an error happens, it throws the adapted exception to its caller.
         /// </summary>
         /// <param name="response">The response of interest</param>
-        private static void ProofResponseErrors(IRestResponse response)
+        private void ProofResponseErrors(IRestResponse response)
         {
             // if there is a network transport error (network is down, failed DNS lookup, etc)
             if (response.ResponseStatus == ResponseStatus.Error)

@@ -45,10 +45,10 @@ namespace CommunicationLib
         /// </summary>
         /// <param name="myClient"></param>
         /// <param name="clientId"></param>
-        public ComLib(IDataReceiver myClient, String clientId)
+        public ComLib(IDataReceiver myClient, String clientId, String serverAdress)
         {
             _myClient = myClient;
-            _sender = new RestRequester(clientId);
+            _sender = new RestRequester(clientId, serverAdress);
             _listener = new CommunicationManager(_sender, myClient);
         }
 
@@ -60,7 +60,7 @@ namespace CommunicationLib
         public void Login(string username, String password)
         {
             _sender.InitializeClientProperties(username, password);
-            _sender.checkUser();
+            _sender.CheckUser();
             _listener.RegisterClient(true);
         }
 
