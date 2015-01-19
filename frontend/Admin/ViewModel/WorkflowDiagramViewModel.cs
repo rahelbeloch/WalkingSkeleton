@@ -64,6 +64,8 @@ namespace Admin.ViewModel
         
         public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
 
+        public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
+
         #region properties
 
        
@@ -213,6 +215,19 @@ namespace Admin.ViewModel
             set
             {
                 _selectedRole = value;
+            }
+        }
+
+        private Form _selectedForm = new Form();
+        public Form selectedForm
+        {
+            get
+            {
+                return _selectedForm;
+            }
+            set
+            {
+                _selectedForm = value;
             }
         }
 
@@ -470,6 +485,29 @@ namespace Admin.ViewModel
                     });
                 }
                 return _newWorkflowCommand;
+            }
+        }
+
+        private ICommand _displayViewCommand;
+        public ICommand displayViewCommand
+        {
+            get
+            {
+                if (_displayViewCommand == null)
+                {
+                    _displayViewCommand = new ActionCommand(execute =>
+                    {
+
+                        _workflowModel = null;
+                        _workflow.Clear();
+                        
+                        editView = Visibility.Collapsed;
+                        displayView = Visibility.Visible;
+                        
+
+                    });
+                }
+                return _displayViewCommand;
             }
         }
         /// <summary>

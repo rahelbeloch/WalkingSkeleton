@@ -70,6 +70,14 @@
                               DataContext="{Binding toolBoxViewModel}" />
                     </DockPanel>
                     <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}">
+                        <Label DockPanel.Dock="Left" Content="Formular: "  FontSize="14" FontWeight="Normal" HorizontalAlignment="Left"/>
+                        <ComboBox DockPanel.Dock="Left" Height="25" Width="120" HorizontalAlignment="Left"  
+                                      ItemsSource="{Binding formCollection}" 
+                                      DisplayMemberPath="id"
+                                      SelectedItem="{Binding selectedForm}" />
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}">
+                        <Button x:Name="displayView" DockPanel.Dock="Bottom" Content="Zurück zur Übersicht" Margin="0,0,0,0" Command="{Binding displayViewCommand}" Height="26" Width="216"/>
                         <Button x:Name="saveWorkflow" DockPanel.Dock="Bottom" Content="Workflow speichern" Margin="0,0,0,0" Command="{Binding saveWorkflowCommand}" Height="26" Width="216"/>
                     </DockPanel>
                     <!--
