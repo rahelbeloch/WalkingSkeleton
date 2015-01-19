@@ -57,7 +57,7 @@ public class WorkflowValidator {
             throw new WorkflowCyclesException();
         } else {
             for (Step step : workflow.getSteps()) {
-                if (!hasRole(step)) {
+                if (!(step instanceof FinalStep) && !hasRole(step)) {
                     throw new IncompleteEleException(
                             "Every step must have an assigned role.");
                 } else if (!isReachable(getStartStep(), step)) {
