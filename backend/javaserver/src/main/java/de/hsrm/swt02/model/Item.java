@@ -240,7 +240,7 @@ public class Item extends RootElement {
      */
     public void applyForm(Form form) {
         for (FormEntry fe : form.getFormDef()) {
-            set(fe.getKey(), "form", fe.getValue());
+            set(fe.getKey(), "form", "");
         }
     }
 

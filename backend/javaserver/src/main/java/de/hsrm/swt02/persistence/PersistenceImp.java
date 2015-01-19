@@ -447,7 +447,7 @@ public class PersistenceImp implements Persistence {
             formEntryIds.add(fe.getKey());
             
             // check if all value types are accepted.
-            if (DataType.hasType(fe.getValue())) {
+            if (DataType.hasType(fe.getDatatype())) {
                 throw new StorageFailedException("[persistence] form storage not possible - unexpected value type");
             }
         }
