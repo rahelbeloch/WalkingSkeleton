@@ -42,7 +42,6 @@ namespace Admin.ViewModel
         {
             diagramViewModel = new DiagramViewModel(this);
             _mainViewModel = mainViewModel;
-            _restRequester = _mainViewModel.restRequester;
             DeleteSelectedItemsCommand = new SimpleCommand(ExecuteDeleteSelectedItemsCommand);
         }
         public DiagramViewModel DiagramViewModel
@@ -295,6 +294,7 @@ namespace Admin.ViewModel
         /// </summary>
         public void InitModel()
         {
+            _restRequester = _mainViewModel.restRequester;
             _toolBoxViewModel = new ToolBoxViewModel();
             //OrthogonalPathFinder is a pretty bad attempt at finding path points, it just shows you, you can swap this out with relative
             //ease if you wish just create a new IPathFinder class and pass it in right here

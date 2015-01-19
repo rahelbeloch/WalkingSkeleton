@@ -33,7 +33,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <!--left Panel -->
-                <DockPanel Background="DeepPink" Grid.Column="0">
+                <DockPanel Grid.Column="0" Background="#f9f9f9">
                     
                     <!--Workflow Übersicht-->
                     <DockPanel DockPanel.Dock="Top" Visibility="{Binding displayView}">
@@ -98,11 +98,11 @@
 
 
                 <!--right Panel -->
-                <DockPanel Grid.Column="2" Background="DeepPink">
+                <DockPanel Grid.Column="2" Background="#f9f9f9">
                     
                     <!--Headline-->
                     <DockPanel DockPanel.Dock="Top">
-                        <Label Content="Detail-Ansicht"  FontSize="14" FontWeight="Light" HorizontalAlignment="Center" />
+                        <Label Content="Detail-Ansicht"  FontSize="14" FontWeight="Medium" HorizontalAlignment="Center" />
                     </DockPanel>
                     
                     <!--Items-->

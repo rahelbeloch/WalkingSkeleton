@@ -24,7 +24,6 @@ namespace Admin.ViewModel
         public FormViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
-            _restRequester = _mainViewModel.restRequester;
             formDefModel = new ObservableCollection<FormEntry>();
         }
 
@@ -154,6 +153,7 @@ namespace Admin.ViewModel
         {
             try
             {
+                _restRequester = _mainViewModel.restRequester;
                 // update formlist by getting a whole new batch
                 IList<Form> allForms = _restRequester.GetAllElements<Form>();
                 foreach (Form form in allForms)

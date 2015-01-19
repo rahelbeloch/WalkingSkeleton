@@ -33,7 +33,7 @@ namespace Admin.ViewModel
         public OLD_WorkflowViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
-            _restRequester = _mainViewModel.restRequester;
+            
             _workflow.CollectionChanged += OnWorkflowChanged;
         }
 
@@ -242,6 +242,7 @@ namespace Admin.ViewModel
             try
             {
                 logger.Info("Initialize");
+                _restRequester = _mainViewModel.restRequester;
                 _choosableSteps.Add(new StartStep());
 
                 _workflows.Clear();
