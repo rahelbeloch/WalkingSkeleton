@@ -275,10 +275,7 @@ namespace Admin.ViewModel
             // TEMPORARY
             Workflow tmpWorkflow = workflows[0];
             Console.WriteLine(tmpWorkflow);
-            foreach (SelectableDesignerItemViewModelBase designerItem in WorkflowDiagramConverter.WorkflowToDesignerItems(tmpWorkflow, DiagramViewModel))
-            {
-                DiagramViewModel.Items.Add(designerItem);
-            }
+            WorkflowDiagramConverter.WorkflowToDesignerItems(tmpWorkflow, DiagramViewModel);
         }
 
         /// <summary>
