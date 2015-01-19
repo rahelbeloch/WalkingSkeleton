@@ -265,24 +265,6 @@ namespace Client.ViewModel
         }
 
         /// <summary>
-        /// Set an item a step forward.
-        /// </summary>
-        /// <param name="stepId">the stepId of the actual step</param>
-        /// <param name="itemId">the itemId of the item to forward</param>
-        public void StepForward(string stepId, string itemId)
-        {
-            try
-            {
-                _restRequester.StepForward(stepId, itemId);
-            }
-            catch (BasicException exc)
-            {
-                MessageBox.Show(exc.Message);
-            }
-            
-        }
-
-        /// <summary>
         /// Command to step forward, called from the gui.
         /// </summary>
         private ICommand _stepForwardCommand;
@@ -294,8 +276,16 @@ namespace Client.ViewModel
                 {
                     _stepForwardCommand = new ActionCommand(execute => 
                     {
-                        DashboardRow param = (DashboardRow) execute;
-                        StepForward(param.actStep.id, param.actItem.id);
+                        try
+                        {
+                            DashboardRow param = (DashboardRow)execute;
+                            _restRequester.PostObject(param.actItem);
+                            _restRequester.StepForward(param.actStep.id, param.actItem.id);
+                        }
+                        catch (BasicException exc)
+                        {
+                            MessageBox.Show(exc.Message);
+                        }
                 }, canExecute => true);
                 }
                 return _stepForwardCommand;
