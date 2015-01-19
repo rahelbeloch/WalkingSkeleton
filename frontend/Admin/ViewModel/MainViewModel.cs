@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Diagnostics;
 using NLog;
+using System.Configuration;
 
 namespace Admin.ViewModel
 {
@@ -84,7 +85,7 @@ namespace Admin.ViewModel
                 {
                     try
                     {
-                        _myComLib = new ComLib(this, clientID);
+                        _myComLib = new ComLib(this, clientID, ConfigurationManager.AppSettings["ServerAdress"]);
                     }
                     catch (BasicException e)
                     {
