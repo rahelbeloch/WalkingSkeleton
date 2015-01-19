@@ -25,7 +25,7 @@ namespace DiagramDesigner
         public double itemWidth = 100;
         public double itemHeight = 100;
 
-        public DesignerItemViewModelBase(int id, IDiagramViewModel parent, double left, double top)
+        public DesignerItemViewModelBase(string id, IDiagramViewModel parent, double left, double top)
             : base(id, parent)
         {
             this.left = left;

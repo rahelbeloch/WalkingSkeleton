@@ -17,7 +17,7 @@ namespace DiagramDesigner
     {
         private bool isSelected;
 
-        public SelectableDesignerItemViewModelBase(int id, IDiagramViewModel parent)
+        public SelectableDesignerItemViewModelBase(string id, IDiagramViewModel parent)
         {
             this.Id = id;
             this.Parent = parent;
@@ -36,7 +36,7 @@ namespace DiagramDesigner
 
         public IDiagramViewModel Parent { get; set; }
         public SimpleCommand SelectItemCommand { get; private set; }
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public bool IsSelected
         {

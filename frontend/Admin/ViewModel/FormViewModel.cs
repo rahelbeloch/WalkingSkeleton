@@ -223,7 +223,7 @@ namespace Admin.ViewModel
                     {
                         var lastEle = formDefModel.Last();
 
-                        if (lastEle.key != "" && lastEle.value != "" && lastEle.value != null)
+                        if (lastEle.key != "" && lastEle.datatype != "" && lastEle.datatype != null)
                         {
                             FormEntry formEntry = new FormEntry();
                             formEntry.key = "";
@@ -279,7 +279,7 @@ namespace Admin.ViewModel
                         {
                             FormEntry formEntry = new FormEntry();
                             formEntry.id = fe.key;
-                            formEntry.value = fe.value;
+                            formEntry.datatype = fe.datatype;
                             form.formDef.Add(formEntry);
                         }
                         form.id = _formDefModelId;
@@ -294,7 +294,7 @@ namespace Admin.ViewModel
                         {
                             foreach (FormEntry fe in formDefModel)
                             {
-                                if (fe.key == "" || fe.value == "")
+                                if (fe.key == "" || fe.datatype == "")
                                 {
                                     return false;
                                 }

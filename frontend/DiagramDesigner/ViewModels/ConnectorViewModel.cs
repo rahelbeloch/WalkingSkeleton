@@ -20,7 +20,7 @@ namespace DiagramDesigner
         private Rect area;
 
 
-        public ConnectorViewModel(int id, IDiagramViewModel parent, 
+        public ConnectorViewModel(string id, IDiagramViewModel parent, 
             FullyCreatedConnectorInfo sourceConnectorInfo, FullyCreatedConnectorInfo sinkConnectorInfo) : base(id,parent)
         {
             Init(sourceConnectorInfo, sinkConnectorInfo);
