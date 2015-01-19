@@ -90,12 +90,12 @@ namespace Client.ViewModel
             logger.Debug(formular.description);
             FormEntry testEntry = new FormEntry();
             testEntry.key = "test";
-            testEntry.value = "testValue";
+            testEntry.datatype = "testValue";
             formular.formDef.Add(testEntry);
             foreach (FormEntry entry in formular.formDef)
             {
                 logger.Debug(entry.key);
-                logger.Debug(entry.value);
+                logger.Debug(entry.datatype);
             }
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
