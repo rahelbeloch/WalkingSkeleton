@@ -28,8 +28,8 @@ public class WorkflowValidator {
     public WorkflowValidator (Workflow workflow) {
         this.workflow = workflow;
     }
-
-    public boolean isValid() throws InvalidWorkflowException {
+    
+    public boolean isValid() throws InvalidWorkflowException, IncompleteEleException {
         if (numberOfStartSteps() != 1) {
             throw new ExpectedOneStartStepException();
         } else if (numberOfFinalSteps() <1) {
@@ -40,7 +40,9 @@ public class WorkflowValidator {
             throw new WorkflowCyclesException();
         } else {
             for (Step step: workflow.getSteps()) {
-                if (!isReachable(getStartStep(), step)) {
+                if (!hasRole(step)) {
+                    throw new IncompleteEleException("Every step must have an assigned role.");
+                } else if (!isReachable(getStartStep(), step)) {
                     throw new UnreachableStepException("step " + step.getId() + "is not reachable.");
                 }
             }
@@ -49,6 +51,13 @@ public class WorkflowValidator {
         return true;
     }
     
+    public boolean hasRole(Step step) {
+        if (step.getRoleIds().size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
     private boolean hasCycle(Step actStep, List<Step> passed) {
         for (Step next: actStep.getNextSteps()) {
             if (passed.contains(next)) {
@@ -60,7 +69,7 @@ public class WorkflowValidator {
         for (Step next: actStep.getNextSteps()) {
             return hasCycle(next, passed);
         }
-    return false;
+        return false;
     }
     
     private boolean isReachable (Step actStep,Step stepToReach) {
