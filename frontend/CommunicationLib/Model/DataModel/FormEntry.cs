@@ -17,8 +17,8 @@ namespace CommunicationLib.Model.DataModel
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private string _value;
-        public string value { get { return _value; } set { _value = value; } }
+        private string _datatype;
+        public string datatype { get { return _datatype; } set { _datatype = value; } }
 
         /// <summary>
         /// Used for client view. Will not be (de)serialized.
