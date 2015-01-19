@@ -8,7 +8,7 @@ public class FormEntry extends RootElement {
     
     
     private static final long serialVersionUID = -5022106078170690185L;
-    private String value;
+    private String datatype;
     
     /**
      * Default-Constructor.
@@ -37,8 +37,8 @@ public class FormEntry extends RootElement {
      * Getter for value.
      * @return value
      */
-    public String getValue() {
-        return value;
+    public String getDatatype() {
+        return datatype;
     }
 
     /**
@@ -46,7 +46,7 @@ public class FormEntry extends RootElement {
      * @param value indicates value to be setted
      */
     public void setValue(String value) {
-        this.value = value;
+        this.datatype = value;
     }
     
     /**
@@ -57,7 +57,7 @@ public class FormEntry extends RootElement {
         final FormEntry clone = new FormEntry();
         
         clone.setKey(id);
-        clone.setValue(value);
+        clone.setValue(datatype);
         return clone;
     }
     
@@ -68,7 +68,7 @@ public class FormEntry extends RootElement {
     public String toString() {
         String str = "";
         str += "\t\tKey: " + this.id + "\n";
-        str += "\t\tValue: " + this.value + "\n";
+        str += "\t\tValue: " + this.datatype + "\n";
         return str;
     }
 
