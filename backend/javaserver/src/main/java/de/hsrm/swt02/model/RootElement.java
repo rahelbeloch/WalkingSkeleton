@@ -71,9 +71,7 @@ public class RootElement implements Cloneable, Serializable {
     
     @Override
     public boolean equals(Object object) {
-        System.out.println("obj:" + object);
         if (object instanceof RootElement) {
-            System.out.println("this: " + this);
             if (((RootElement) object).getId() == null || this.getId() == null) {
                 return super.equals(object);
             } else if (this.getId().equals(((RootElement)object).getId())) {
