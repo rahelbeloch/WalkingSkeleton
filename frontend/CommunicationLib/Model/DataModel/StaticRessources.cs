@@ -12,7 +12,6 @@ namespace CommunicationLib.Model
 
     public class Constants
     {
-        public static String SERVER_URL = "http://localhost:18887";
         public static String MODEL_NAMESPACE = "CommunicationLib.Model";
         public static String BROKER_URL = "tcp://localhost:61616";
 

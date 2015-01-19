@@ -75,7 +75,7 @@ namespace CommunicationLib
         ///     Does a login access to the server. Path ist always: '/command/user/login'
         /// </summary>
         /// <returns>True if it worked, false otherwhise, or an exception</returns>
-        Boolean checkUser();
+        Boolean CheckUser();
 
         /// <summary>
         ///     Sends a request to the server to start a workflow (create an item). Path is always: '/command/workflow/start/{workflowId}/{userName}'
