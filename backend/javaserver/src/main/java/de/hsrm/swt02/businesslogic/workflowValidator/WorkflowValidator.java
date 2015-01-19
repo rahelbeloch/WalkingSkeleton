@@ -17,6 +17,8 @@ import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 
 /**
  * This class offers all needed methods to validate an incoming workflow.
@@ -24,13 +26,14 @@ import de.hsrm.swt02.model.Workflow;
 public class WorkflowValidator {
 
     private Workflow workflow;
-
+    private Persistence persistence;
     /**
      * Constructor for WorkflowValidator.
      * 
      * @param workflow to validate
+     * @param persistence 
      */
-    public WorkflowValidator(Workflow workflow) {
+    public WorkflowValidator(Workflow workflow, Persistence persistence) {
         this.workflow = workflow;
     }
 
@@ -70,9 +73,17 @@ public class WorkflowValidator {
      * 
      * @param step - step to check
      * @return boolean
+     * @throws IncompleteEleException 
      */
-    public boolean hasRole(Step step) {
+    public boolean hasRole(Step step) throws IncompleteEleException {
         if (step.getRoleIds().size() > 0) {
+            for (String roleId: step.getRoleIds()) {
+                try {
+                    persistence.loadRole(roleId);
+                } catch (PersistenceException e) {
+                    throw new IncompleteEleException("At least one assigned role is not saved in persistence.");
+                }
+            }
             return true;
         }
         return false;
