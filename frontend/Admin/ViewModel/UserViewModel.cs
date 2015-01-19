@@ -26,7 +26,6 @@ namespace Admin.ViewModel
         public UserViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
-            _restRequester = _mainViewModel.restRequester;
         }
 
         /// <summary>
@@ -36,6 +35,7 @@ namespace Admin.ViewModel
         {
             try
             {
+                _restRequester = _mainViewModel.restRequester;
                 // update userlist
                 IList<User> allUsers = _restRequester.GetAllElements<User>();
                 foreach (User user in allUsers)
