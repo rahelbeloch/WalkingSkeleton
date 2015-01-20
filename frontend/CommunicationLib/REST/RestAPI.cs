@@ -33,7 +33,15 @@ namespace RestAPI
         /// <param name="serverAdress">the adress of the used server</param>
         public InternalRequester(string serverAdress)
         {
-            client = new RestClient(serverAdress);
+            if (serverAdress != null)
+            {
+                client = new RestClient(serverAdress);
+            }
+        }
+
+        public void Refresh(string serverAddress)
+        {
+            client = new RestClient(serverAddress);
         }
 
         /// <summary>

@@ -50,6 +50,11 @@ namespace RestAPI
             }
         }
 
+        public void Refresh(string serverAddress)
+        {
+            _internRequester.Refresh(serverAddress);
+        }
+
         /// <summary>
         /// Set client properties in rest-interface.
         /// </summary>

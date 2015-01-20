@@ -54,14 +54,32 @@ namespace CommunicationLib
         // client subscriptions <topicName, consumer>
         private Dictionary<string ,IMessageConsumer> _messageSubs;
 
-        public CommunicationManager(IRestRequester sender, IDataReceiver myClient)
+        public CommunicationManager(IRestRequester sender, IDataReceiver myClient, string brokerAddress)
         {
             _sender = sender;
             _myClient = myClient;
             _messageSubs = new Dictionary<string, IMessageConsumer>();
 
+            if (brokerAddress != null)
+            {
+                // build connection to message broker (not started yet)
+                _connectionFactory = new ConnectionFactory(brokerAddress);
+                try
+                {
+                    _connection = _connectionFactory.CreateConnection();
+                    _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
+                }
+                catch (NMSConnectionException)
+                {
+                    throw new ServerNotRunningException();
+                }
+            }
+        }
+
+        internal void Refresh(string brokerAddress)
+        {
             // build connection to message broker (not started yet)
-            _connectionFactory = new ConnectionFactory(Constants.BROKER_URL);
+            _connectionFactory = new ConnectionFactory(brokerAddress);
             try
             {
                 _connection = _connectionFactory.CreateConnection();
