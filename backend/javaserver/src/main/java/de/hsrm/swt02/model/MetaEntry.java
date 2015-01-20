@@ -18,8 +18,8 @@ public class MetaEntry extends RootElement {
     // Used for (de)serialization. Do not change.
     private String group;
     
- // Used for (de)serialization. Do not change.
-    private String opener;
+// // Used for (de)serialization. Do not change.
+//    private String opener;
 
     /**
      * Constructor for MetaEntry.
@@ -84,23 +84,6 @@ public class MetaEntry extends RootElement {
     public void setGroup(String group) {
         this.group = group;
     }
-    
-    /**
-     * Opener getter.
-     * @return opener
-     */
-    public String getOpener() {
-        return opener;
-    }
-
-    
-    /**
-     * Opener setter.
-     * @param opener string which indicates opener
-     */
-    public void setOpener(String opener) {
-        this.opener = opener;
-    }
 
     /**
      * Deep Copy - Cloning method for MetaEntries.
@@ -113,7 +96,6 @@ public class MetaEntry extends RootElement {
         clone.setGroup(group);
         clone.setKey(id);
         clone.setValue(value);
-        clone.setOpener(opener);
         return clone;
     }
 
@@ -124,7 +106,6 @@ public class MetaEntry extends RootElement {
         ret += "\t\tKey: " + this.id + "\n";
         ret += "\t\tValue: " + this.value + "\n";
         ret += "\t\tGroup: " + this.group + "\n";
-        ret += "\t\tOpener: " + this.opener + "\n";
 
         return ret;
     }

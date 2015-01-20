@@ -13,11 +13,13 @@ import de.hsrm.swt02.businesslogic.exceptions.LastAdminDeletedException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
+import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.businesslogic.protocol.Message;
 import de.hsrm.swt02.businesslogic.protocol.MessageOperation;
 import de.hsrm.swt02.businesslogic.protocol.MessageTopic;
 import de.hsrm.swt02.businesslogic.workflowValidator.WorkflowValidator;
 import de.hsrm.swt02.logging.UseLogger;
+import de.hsrm.swt02.model.DataType;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
@@ -28,6 +30,7 @@ import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
+import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
 /**
@@ -472,13 +475,12 @@ public class LogicImp implements Logic {
         for (Item item : workflow.getItems()) {
             final MetaEntry me = item.getActStep();
             if (me != null) {
-                final Step step = workflow.getStepById(me.getKey());
+                final Step step = workflow.getStepById(me.getGroup());
                 if (checkAuthorization(step, username)) {
                     relevantItems.add(item);
                 }
             }
         }
-
         return relevantItems;
     }
 
@@ -574,6 +576,7 @@ public class LogicImp implements Logic {
     {
         final User userToCheck = persistence.loadUser(username);
         boolean authorized = false;
+
         for (String rolename : step.getRoleIds()) {
             if (userToCheck.hasRole(persistence.loadRole(rolename))) {
                 authorized = true;
@@ -593,9 +596,12 @@ public class LogicImp implements Logic {
      */
     public boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException {
         final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
-        final Step actStep = workflowToCheck.getStepById((item.getActStep().getKey()));
-
-        return checkAuthorization(actStep, username);
+        if (item.getActStep() == null) {
+            return false;
+        } else {
+            final Step actStep = workflowToCheck.getStepById((item.getActStep().getGroup()));
+            return checkAuthorization(actStep, username);
+        }
     }
 
     // BusinessLogic Sprint 2
@@ -835,20 +841,54 @@ public class LogicImp implements Logic {
     }
 
     @Override
-    public LogicResponse updateItem(Item item) throws PersistenceException {
+    public LogicResponse updateItem(Item item, String username) throws LogicException {
         final LogicResponse logicResponse = new LogicResponse();
         Workflow workflow;
-        String workflowId, itemId;
-
+        String workflowId, itemId, currentOpener;
+        Item itemToUpdate;
+        
         itemId = item.getId();
         workflowId = item.getWorkflowId();
         workflow = persistence.loadWorkflow(workflowId);
+        itemToUpdate = workflow.getItemById(itemId);
+        currentOpener = itemToUpdate.getEntryOpener(itemToUpdate.getActStep().getGroup());
+
+        if (currentOpener == null) {
+            itemToUpdate.setEntryOpener(itemToUpdate.getActStep().getGroup(), username);
+        } else {
+            currentOpener = itemToUpdate.getEntryOpener(itemToUpdate.getActStep().getGroup());
+            if (!currentOpener.equals(username)) {
+                throw new UserHasNoPermissionException("Access denied. Current Operator is " + currentOpener);
+            }
+        }
+        
+        for (MetaEntry me : item.getMetadata()) {  
+            if (me.getGroup().equals(workflow.getForm().getId()) && !(me.getValue().equals(""))) {
+                final String datatype = workflow.getForm().getDataType(me.getKey());
+                if (datatype != null) {
+                    if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.STRING)) {
+                        if (!me.getValue().matches("[a-zA-Z]+")) {
+                            throw new StorageFailedException("[logic] invalid form entry --- used unconform String representation");
+                        }
+                    } else if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.INT)) {
+                        if (!me.getValue().matches("[0-9]+")) {
+                            throw new StorageFailedException("[logic] invalid form entry --- used unconform Integer representation");
+                        } 
+                    } else if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.DOUBLE)) {
+                        if (!me.getValue().matches("-?\\d+(\\.\\d+)?")) {
+                            throw new StorageFailedException("[logic] invalid form entry --- used unconform Double representation");
+                        }
+                    }
+                }
+            }
+        }
+        
         workflow.removeItem(itemId);
         workflow.addItem(item);
         persistence.storeWorkflow(workflow);
         logicResponse.add(Message.buildWithTopicId(MessageTopic.ITEMS_FROM_,
                 workflowId, MessageOperation.UPDATE, itemId));
-        return logicResponse;
+        return logicResponse; 
     }
 
     @Override
