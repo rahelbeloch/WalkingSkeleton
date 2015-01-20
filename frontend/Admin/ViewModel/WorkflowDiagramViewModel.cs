@@ -462,11 +462,10 @@ namespace Admin.ViewModel
                                 MessageBox.Show("Der Workflow besitzt noch unfertige Items! Es wird ein neuer Workflow mit dem ausgewählten Workflow als Vorlage erstellt.");
                             }
 
+                            DiagramViewModel.locked = false;
                             displayView = Visibility.Collapsed;
                             editView = Visibility.Visible;
                             showDetails = Visibility.Collapsed;
-
-                            selectedTabId = 0;
                         }, canExecute => _actWorkflow != null);
                 }
                 return _editWorkflowCommand;
@@ -523,7 +522,6 @@ namespace Admin.ViewModel
                     {
                         try
                         {
-
                             if (_actWorkflow.active)
                             {
                                 actWorkflow.active = false;
