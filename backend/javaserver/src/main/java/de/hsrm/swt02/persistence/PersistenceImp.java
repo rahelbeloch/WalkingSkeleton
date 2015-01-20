@@ -611,8 +611,8 @@ public class PersistenceImp implements Persistence {
         role3.setRolename("admin");
         storeRole(role3);
 
-        user1.addRole(role2);
-        user2.addRole(role2);
+        user1.addRole(role1);
+        user2.addRole(role1);
         user4.addRole(role3);
 
         storeUser(user1);
@@ -635,7 +635,7 @@ public class PersistenceImp implements Persistence {
         startStep1.setTop(elementCounter * standardDistance);
         elementCounter++;
         
-        startStep1.getRoleIds().add(role2.getRolename());
+        startStep1.getRoleIds().add(role1.getRolename());
 
         action1 = new Action(new ArrayList<String>(), "Action von "
                 + user1.getUsername());
@@ -645,7 +645,7 @@ public class PersistenceImp implements Persistence {
         action1.setTop(elementCounter * standardDistance);
         elementCounter++;
         
-        action1.addRole(role2.getRolename());
+        action1.addRole(role1.getRolename());
         action2 = new Action(new ArrayList<String>(), "Action von "
                 + user2.getUsername());
 
@@ -663,7 +663,7 @@ public class PersistenceImp implements Persistence {
         finalStep.setTop(elementCounter * standardDistance);
         elementCounter++;
         
-        finalStep.getRoleIds().add(role2.getRolename());
+        finalStep.getRoleIds().add(role1.getRolename());
 
         workflow1 = new Workflow();
         workflow1.addStep(startStep1);
