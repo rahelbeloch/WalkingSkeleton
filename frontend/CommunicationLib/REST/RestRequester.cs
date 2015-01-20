@@ -142,8 +142,7 @@ namespace RestAPI
             } catch(BasicException)
             {
                 throw;
-            } 
-
+            }
             return eleList;
         }
 
