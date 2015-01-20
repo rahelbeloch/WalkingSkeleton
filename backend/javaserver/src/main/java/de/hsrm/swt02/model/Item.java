@@ -14,6 +14,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * value can be empty, an opener's name or a state (BUSY, OPEN, INACTIVE, DONE).
  * group can be form, step, or a stepid.
  * 
+ * entries with key == status represent state information (BUSY, OPEN, INACTIVE, DONE) in value property of a step (indicated by its id, saved as group)
+ * e. g. key:status, group:1001, value:DONE
+ * entries with key == stepid have no value (not explicit), but can be referred to a the step group
+ * e. g. key:1001, group:step, value:-
+ * entries with key == opener are can be referred via their group (stepid) and indicates a step's current operator
+ * e. g. key:opener, group:1001, value:alex
+ * entries with key == fieldname belong to the form group and represent user input (as value) 
+ * e. g. key:name, group:form, value:dominik
+ * 
  * It's structure should resemble a Map with key value pairs:
  * e.g.
  * step {
@@ -144,7 +153,8 @@ public class Item extends RootElement {
     }
 
     /**
-     * This method returns the Metastate of an entry.
+     * This method returns the Metastate of an entry. Therefore the suitable entry will be 
+     * viewed (via group parameter). Considered entries are those which possess the key status.
      * 
      * @param group
      *            indicates which step is looked for
