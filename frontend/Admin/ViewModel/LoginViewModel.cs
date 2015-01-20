@@ -129,6 +129,14 @@ namespace Admin.ViewModel
                         }
                         catch (BasicException exc)
                         {
+                            if (exc.GetType() == typeof(InvalidAddressException))
+                            {
+                                logger.Info("Connection to server failed because of invalid address.");
+                            }
+                            else
+                            {
+                                logger.Info("Login failed for username=" + username + " password=" + securePwd);
+                            }
                             MessageBox.Show(exc.Message);
                         }
                     }, canExecute =>
@@ -150,30 +158,24 @@ namespace Admin.ViewModel
             // save server and broker address to config file
             Configuration config = ConfigurationManager.OpenExeConfiguration(uriPath);
 
-            if (config.AppSettings.Settings["ServerAddress"] == null && config.AppSettings.Settings["BrokerAddress"] == null)
+            // test if given addresses are valid
+            if (ValidateAddress(server, _serverAddress) && ValidateAddress(broker, _brokerAddress))
             {
-                config.AppSettings.Settings.Add("ServerAddress", _serverAddress);
-                config.AppSettings.Settings.Add("BrokerAddress", _brokerAddress);
+                if (config.AppSettings.Settings["ServerAddress"] == null && config.AppSettings.Settings["BrokerAddress"] == null)
+                {
+                    config.AppSettings.Settings.Add("ServerAddress", _serverAddress);
+                    config.AppSettings.Settings.Add("BrokerAddress", _brokerAddress);
+                }
+                else
+                {
+                    config.AppSettings.Settings["ServerAddress"].Value = _serverAddress;
+                    config.AppSettings.Settings["BrokerAddress"].Value = _brokerAddress;
+                }
             }
             else
             {
-                config.AppSettings.Settings["ServerAddress"].Value = _serverAddress;
-                config.AppSettings.Settings["BrokerAddress"].Value = _brokerAddress;
+                throw new InvalidAddressException();
             }
-
-            //// test if given addresses are valid
-            //if (ValidateAddress(server, _serverAddress) && ValidateAddress(broker, _brokerAddress))
-            //{
-            //    config.AppSettings.Settings["ServerAddress"].Value = _serverAddress;
-            //    config.AppSettings.Settings["BrokerAddress"].Value = _brokerAddress;
-            //}
-            //else
-            //{
-            //    // TODO: Exception werfen, wenn regex nicht passt!
-            //    //MessageBox.Show("Server oder Broker Adresse syntaktisch nicht korrekt.");
-            //    config.AppSettings.Settings["ServerAddress"].Value = _serverAddress;
-            //    config.AppSettings.Settings["BrokerAddress"].Value = _brokerAddress;
-            //}
 
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
@@ -181,12 +183,12 @@ namespace Admin.ViewModel
 
         private bool ValidateAddress(string pre, string matchString)
         {
-            string ipPattern = pre + ":\\\\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b:[0-9]{4,}";
-            string localPattern =  pre + ":\\\\localhost:[0-9]{4,}";
-            
+            string ipPattern = pre + "://\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b:[0-9]{4,}";
+            string localPattern = pre + "://localhost:[0-9]{4,}";
+
             // calling regex for ip/local server address
-            Match matchIp = Regex.Match(matchString, ipPattern, RegexOptions.IgnoreCase);
-            Match matchLocal = Regex.Match(matchString, localPattern, RegexOptions.IgnoreCase);
+            Match matchIp = Regex.Match(matchString, @ipPattern, RegexOptions.IgnoreCase);
+            Match matchLocal = Regex.Match(matchString, @localPattern, RegexOptions.IgnoreCase);
 
             // check the match success
             return matchIp.Success || matchLocal.Success;
