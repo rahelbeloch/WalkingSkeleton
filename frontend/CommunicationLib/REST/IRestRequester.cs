@@ -90,5 +90,7 @@ namespace CommunicationLib
         /// <param name="itemId">Id of the current item</param>
         /// <returns>True if it worked, false/exception otherwise</returns>
         Boolean StepForward(string stepId, string itemId);
+
+        void Refresh(string serverAddress);
     }
 }

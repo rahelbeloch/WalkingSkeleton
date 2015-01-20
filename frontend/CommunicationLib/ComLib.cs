@@ -45,11 +45,11 @@ namespace CommunicationLib
         /// </summary>
         /// <param name="myClient"></param>
         /// <param name="clientId"></param>
-        public ComLib(IDataReceiver myClient, String clientId, String serverAdress)
+        public ComLib(IDataReceiver myClient, String clientId, String serverAdress, String brokerAdress)
         {
             _myClient = myClient;
             _sender = new RestRequester(clientId, serverAdress);
-            _listener = new CommunicationManager(_sender, myClient);
+            _listener = new CommunicationManager(_sender, myClient, brokerAdress);
         }
 
         /// <summary>
@@ -71,6 +71,12 @@ namespace CommunicationLib
         {
             _sender.DeleteClientProperties();
             _listener.UnregisterClient();
+        }
+
+        public void RefreshUrls(string serverAdress, string brokerAddress)
+        {
+            _sender.Refresh(serverAdress);
+            _listener.Refresh(brokerAddress);
         }
     }
 }
