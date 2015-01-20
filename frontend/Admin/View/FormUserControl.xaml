@@ -41,7 +41,7 @@
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Feldname" Width="150" DisplayMemberBinding="{Binding id}"/>
-                                    <GridViewColumn Header="Inhalt" Width="150" DisplayMemberBinding="{Binding value}"/>
+                                    <GridViewColumn Header="Inhalt" Width="150" DisplayMemberBinding="{Binding datatype}"/>
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -70,7 +70,7 @@
                                         <GridViewColumn Header="Inhalt" Width="150">
                                             <GridViewColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <ComboBox ItemsSource="{Binding datatypes}" SelectedValue="{Binding value, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <ComboBox ItemsSource="{Binding datatypes}" SelectedValue="{Binding datatype, UpdateSourceTrigger=PropertyChanged}"/>
                                                 </DataTemplate>
                                             </GridViewColumn.CellTemplate>
                                         </GridViewColumn>
