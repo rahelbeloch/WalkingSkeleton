@@ -317,10 +317,11 @@ public interface Logic {
     /**
      * Method for updating an item. Suitable item from a workflow in persistence will be overwritten.
      * @param item contains changes, will be used to overwrite item in workflow
+     * @param username indicates user who wants to update item
      * @return logicResposne which contains update notification
      * @throws PersistenceException if an error in persistence occurs
      */
-    LogicResponse updateItem(Item item) throws PersistenceException;
+    LogicResponse updateItem(Item item, String username) throws LogicException;
     
     /**
      * Method for getting all available forms in persistence.

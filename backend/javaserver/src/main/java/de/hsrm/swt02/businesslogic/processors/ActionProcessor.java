@@ -55,11 +55,13 @@ public class ActionProcessor implements StepProcessor {
         final Step currentStep = workflow.getStepById(stepId);
         final String itemId = currentItem.getId();
         
-        if (currentItem.getEntryValue(stepId + "", "step").equals(MetaState.OPEN.toString())) {
-            currentItem.setEntryOpener(stepId, "step", user.getUsername());
+        if (currentItem.getEntryValue("status", stepId + "").equals(MetaState.OPEN.toString())) {
+            
+            currentItem.setEntryOpener(stepId, user.getUsername());
             currentItem.setStepState(stepId, MetaState.BUSY.toString());
-        } else if (currentItem.getEntryValue(stepId + "", "step").equals(MetaState.BUSY.toString())) {
-            if (currentItem.getEntryOpener(stepId, "step").equals(user.getUsername())) {
+        } else if (currentItem.getEntryValue("status", stepId + "").equals(MetaState.BUSY.toString())) {
+            
+            if (currentItem.getEntryOpener(stepId).equals(user.getUsername())) {
                 currentItem.setStepState(stepId, MetaState.DONE.toString());
                 for (Step s : currentStep.getNextSteps()) {
                     if (!(s instanceof FinalStep)) {
@@ -71,7 +73,7 @@ public class ActionProcessor implements StepProcessor {
                     }
                 }
             } else {
-                throw new UserHasNoPermissionException("Access denied. Current Operator is " + currentItem.getEntryOpener(stepId, "step"));
+                throw new UserHasNoPermissionException("Access denied. Current Operator is " + currentItem.getEntryOpener(stepId));
             }
             
         } else {

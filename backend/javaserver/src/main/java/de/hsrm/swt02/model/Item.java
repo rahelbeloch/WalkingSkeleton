@@ -8,6 +8,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * This class represents an Item. It extends the class RootElement, so it can
  * have an Id.
+ * 
+ * The metadata list is represented by meta entries, which consist of a key, value and group.
+ * key can be a stepid, opener or status. 
+ * value can be empty, an opener's name or a state (BUSY, OPEN, INACTIVE, DONE).
+ * group can be form, step, or a stepid.
+ * 
+ * It's structure should resemble a Map with key value pairs:
+ * e.g.
+ * step {
+ *          "1001": {
+ *                      "opener":"alex";
+ *                      "status":"OPEN";
+ *                    }
+ *          ...
+ *          "1002": {
+ *                      "opener":"dominik";
+ *                      "status":"INACTIVE";
+ *                    }
+ *          ...
+ *      }
+ * form {
+ *          "name": "alex";
+ *          "alter": 22;
+ *          ...
+ * }
  */
 public class Item extends RootElement {
     
@@ -121,17 +146,17 @@ public class Item extends RootElement {
     /**
      * This method returns the Metastate of an entry.
      * 
-     * @param key
-     *            is the id of an entry
+     * @param group
+     *            indicates which step is looked for
      * @return the Metastate of the searched entry
      */
-    public String getStepState(String key) {
+    public String getStepState(String group) {
 
-        return MetaState.fromValue(getEntryValue(key + "", "step")).toString();
+        return MetaState.fromValue(getEntryValue("status", group)).toString();
     }
 
     /**
-     * This method gets a list which contains looked for entries.
+     * This method gets a list which contains looked for entries. (via group)
      * 
      * @param group
      *            is the type of the entries which are looked for
@@ -148,6 +173,22 @@ public class Item extends RootElement {
         }
         return list;
     }
+    
+    /**
+     * This method gets a list which contains looked for entries. (via key)
+     * @param key is the id of entries which are looked for
+     * @return list of suitable meta entries
+     */
+    public List<MetaEntry> getForKey(String key) {
+        final List<MetaEntry> list = new ArrayList<MetaEntry>();
+
+        for (MetaEntry a : metadata) {
+            if (a.getKey().equals(key)) {
+                list.add(a);
+            }
+        }
+        return list;
+    }
 
     /**
      * returns the MetaEntry of the current step.
@@ -155,7 +196,7 @@ public class Item extends RootElement {
      * @return me or null
      */
     public MetaEntry getActStep() {
-        for (MetaEntry me : getForGroup("step")) {
+        for (MetaEntry me : getForKey("status")) {
             if ((me.getValue().equals(MetaState.OPEN.toString())) || me.getValue().equals(MetaState.BUSY.toString())) {
                 return me;
             }
@@ -166,11 +207,15 @@ public class Item extends RootElement {
     /**
      * This method returns the opener of an entry.
      * @param key indicates which entry is looked for
-     * @param group indicates the type of an entry
      * @return opener name
      */
-    public String getEntryOpener(String key, String group) {
-        return getEntry(key, group).getOpener();
+    public String getEntryOpener(String key) {
+        String opener = null;
+        
+        if (getEntry("opener", key ) != null) {
+            opener = getEntry("opener", key ).getValue();
+        }
+        return opener;
     }
 
     /**
@@ -208,30 +253,27 @@ public class Item extends RootElement {
      */
     public void setStepState(String key, String value) {
 
-        set(key, "step", value);
+        set("status", key, value);
     }
 
     /**
      * This methods is just for the initial state setting of an step.
-     * 
+     * @param group indicates to which step the looked for entry is referred to
      * @param value
      *            has to be OPEN, for enabling very first Step
      */
-    public void setFirstStepState(String value) {
+    public void setFirstStepState(String group, String value) {
 
-        getForGroup("step").get(0).setValue(value);
+        getEntry("status", group).setValue(value);
     }
     
     /**
      * This methods sets an opener to a process step.
      * @param key indicates which entry is looked for
-     * @param group indicates the type of a entry
      * @param opener indicates which opener will be setted
      */
-    public void setEntryOpener(String key, String group, String opener) {
-        final MetaEntry ame = getEntry(key, group);
-        
-        ame.setOpener(opener);
+    public void setEntryOpener(String key, String opener) {
+        set("opener", key, opener);
     }
     
     /**
@@ -239,8 +281,9 @@ public class Item extends RootElement {
      * @param form which is used by a workflow
      */
     public void applyForm(Form form) {
+        set(form.getId(), "form", "");
         for (FormEntry fe : form.getFormDef()) {
-            set(fe.getKey(), "form", "");
+            set(fe.getKey(), form.getId(), "");
         }
     }
 

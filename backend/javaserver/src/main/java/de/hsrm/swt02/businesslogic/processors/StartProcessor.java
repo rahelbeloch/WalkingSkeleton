@@ -6,6 +6,7 @@ import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaState;
+import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
@@ -62,16 +63,25 @@ public class StartProcessor {
      * @throws PersistenceException 
      */
     public void initiateItem(Workflow workflow, Item item) throws PersistenceException {
-
+        StartStep startStep = null;
+        
+        for (Step s: workflow.getSteps()) {
+            if (s instanceof StartStep) {
+                startStep = (StartStep) s;
+                break;
+            }
+        }
         for (Step s : workflow.getSteps()) {
             if (s instanceof Action || s instanceof FinalStep) {
-                item.set(s.getId() + "", "step", MetaState.INACTIVE.toString());
+//                item.set(s.getId() + "", "step", MetaState.INACTIVE.toString());
+                item.set(s.getId() + "", "step", "");
+                item.set("status", s.getId() + "", MetaState.INACTIVE.toString());
             }
         }
         
         if (!item.getForGroup("step").isEmpty()) {
-            item.setFirstStepState(MetaState.OPEN.toString());
-        }
+            item.setFirstStepState(Integer.parseInt(startStep.getId())+1+"", MetaState.OPEN.toString());
+        } 
         
         item.applyForm(workflow.getForm());
 

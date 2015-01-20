@@ -89,6 +89,20 @@ public class Form extends RootElement {
     }
     
     /**
+     * This method returns the datatype of an entry, given by its key.
+     * @param key indicates which entry is looked for
+     * @return datatype of entry
+     */
+    public String getDataType(String key) {
+        for (FormEntry fe : formDef) {
+            if (fe.getKey().equals(key)) {
+                return fe.getDatatype();
+            }
+        }
+        return null;
+    }
+    
+    /**
      * Init method.
      * @param f is the form we want to init
      */
