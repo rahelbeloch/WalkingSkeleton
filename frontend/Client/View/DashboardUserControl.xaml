@@ -69,8 +69,8 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Content="Description: "/>
                 <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"  Content="{Binding selectedRow.actStep.description, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Grid.Row="1" Content="Item-Id: "/>
-                <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Content="{Binding selectedRow.actItem.id, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="1" Content="Step-Id: "/>
+                <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Content="{Binding selectedRow.actStep.id, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label Grid.Row="2" Content="State: "/>
                 <Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Content="{Binding selectedRow.actItem.state, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button Grid.Row="3" Content="Annehmen" Height="25" Margin="10 0" Visibility="{Binding selectedRow.visibilityStepForwardButton}"

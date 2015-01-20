@@ -194,14 +194,17 @@ namespace Client.ViewModel
         {
             String workflowId = item.workflowId;
             bool changed = true;
+            
 
             // find workflowModel form item
             foreach (DashboardWorkflow workflow in _dashboardWorkflows)
             {
+                //!!!!!!!!!!!!!!!!!!!!von Jane eingefuegt weil das durchschalten nicht korrekt funktionierte, live aktualisierung ist dafuer hinueber!!!!!!!!!!!!!!!!!!
+                workflow.dashboardRows.Clear();
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 if (workflowId.Equals(workflow.actWorkflow.id))
                 {
                     DashboardRow fittingRow = workflow.dashboardRows.FirstOrDefault(dr => dr.actItem.id.Equals(item.id));
-
                     if(fittingRow == null)
                     {
                         // create DashboardRow for item
@@ -211,7 +214,7 @@ namespace Client.ViewModel
                         changed = false;
                     }
 
-                    logger.Info("Item ID=" + item.id + (changed ? " changed" : " added"));
+                    logger.Debug("Item ID=" + item.id + (changed ? " changed" : " added"));
                     return fittingRow;
                 }
             }
