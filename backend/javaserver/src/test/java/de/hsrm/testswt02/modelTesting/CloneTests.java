@@ -169,11 +169,9 @@ public class CloneTests {
         m1.setGroup("group1");
         m1.setKey("key1");
         m1.setValue("value1");
-        m1.setOpener("opener1");
         m2.setGroup("group1");
         m2.setKey("key2");
         m2.setValue("value2");
-        m2.setOpener("opener2");
         i.getMetadata().add(m1);
         i.getMetadata().add(m2);
 
@@ -188,16 +186,12 @@ public class CloneTests {
                 .equals(i.getMetadata().get(0).getKey()));
         assertTrue(clone.getMetadata().get(0).getValue()
                 .equals(i.getMetadata().get(0).getValue()));
-        assertTrue(clone.getMetadata().get(0).getOpener()
-                .equals(i.getMetadata().get(0).getOpener()));
         assertTrue(clone.getMetadata().get(1).getGroup()
                 .equals(i.getMetadata().get(1).getGroup()));
         assertTrue(clone.getMetadata().get(1).getKey()
                 .equals(i.getMetadata().get(1).getKey()));
         assertTrue(clone.getMetadata().get(1).getValue()
                 .equals(i.getMetadata().get(1).getValue()));
-        assertTrue(clone.getMetadata().get(1).getOpener()
-                .equals(i.getMetadata().get(1).getOpener()));
 
     }
 
@@ -216,14 +210,12 @@ public class CloneTests {
         me.setGroup("group1");
         me.setKey("key1");
         me.setValue("value1");
-        me.setOpener("opener1");
 
         clone = (MetaEntry) me.clone();
 
         assertTrue(clone.getGroup().equals(me.getGroup()));
         assertTrue(clone.getKey().equals(me.getKey()));
         assertTrue(clone.getValue().equals(me.getValue()));
-        assertTrue(clone.getOpener().equals(me.getOpener()));
     }
 
     /**
@@ -305,11 +297,9 @@ public class CloneTests {
         m1.setGroup("group1");
         m1.setKey("key1");
         m1.setValue("value1");
-        m1.setOpener("opener1");
         m2.setGroup("group2");
         m2.setKey("key2");
         m2.setValue("value2");
-        m2.setOpener("opener2");
         i1.getMetadata().add(m1);
         i2.getMetadata().add(m2);
         w.getItems().add(i1);
@@ -341,17 +331,12 @@ public class CloneTests {
                 .equals(w.getItems().get(0).getMetadata().get(0).getKey()));
         assertTrue(clone.getItems().get(0).getMetadata().get(0).getValue()
                 .equals(w.getItems().get(0).getMetadata().get(0).getValue()));
-        assertTrue(clone.getItems().get(0).getMetadata().get(0).getOpener()
-                .equals(w.getItems().get(0).getMetadata().get(0).getOpener()));
         assertTrue(clone.getItems().get(1).getMetadata().get(0).getGroup()
                 .equals(w.getItems().get(1).getMetadata().get(0).getGroup()));
         assertTrue(clone.getItems().get(1).getMetadata().get(0).getKey()
                 .equals(w.getItems().get(1).getMetadata().get(0).getKey()));
         assertTrue(clone.getItems().get(1).getMetadata().get(0).getValue()
                 .equals(w.getItems().get(1).getMetadata().get(0).getValue()));
-        assertTrue(clone.getItems().get(1).getMetadata().get(0).getOpener()
-                .equals(w.getItems().get(1).getMetadata().get(0).getOpener()));
-
     }
 
     /**
