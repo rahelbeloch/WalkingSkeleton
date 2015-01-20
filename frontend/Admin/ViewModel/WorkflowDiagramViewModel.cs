@@ -463,6 +463,7 @@ namespace Admin.ViewModel
                             }
 
                             DiagramViewModel.locked = false;
+
                             displayView = Visibility.Collapsed;
                             editView = Visibility.Visible;
                             showDetails = Visibility.Collapsed;
