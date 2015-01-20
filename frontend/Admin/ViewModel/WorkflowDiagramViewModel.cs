@@ -446,6 +446,22 @@ namespace Admin.ViewModel
                 {
                     _editWorkflowCommand = new ActionCommand(execute =>
                         {
+                            Boolean activeItems = false;
+
+                            foreach (Item i in actWorkflow.items)
+                            {
+                                if (!i.finished)
+                                {
+                                    activeItems = true;
+                                    break;
+                                }
+                            }
+
+                            if (activeItems)
+                            {
+                                MessageBox.Show("Der Workflow besitzt noch unfertige Items! Es wird ein neuer Workflow mit dem ausgewählten Workflow als Vorlage erstellt.");
+                            }
+
                             displayView = Visibility.Collapsed;
                             editView = Visibility.Visible;
                             showDetails = Visibility.Collapsed;
