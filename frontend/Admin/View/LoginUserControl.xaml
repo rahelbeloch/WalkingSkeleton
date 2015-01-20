@@ -4,11 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="600">
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding authenticate}" Key="Enter"/>
     </UserControl.InputBindings>
     <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        
     <Grid x:Name="LoginLayer" Background="White" Margin="0,0,2,5" Grid.RowSpan="2" Visibility="Visible" >
         <Label Content="Login" HorizontalAlignment="Left" Margin="46,24.666,0,0" VerticalAlignment="Top" Width="97" FontWeight="Bold" FontSize="26.667"/>
         <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="46,135.666,0,0" VerticalAlignment="Top" Width="210" IsEnabled="False"/>
@@ -20,5 +21,23 @@
         <Button Content="Login" HorizontalAlignment="Left" Margin="46,173,0,0" VerticalAlignment="Top" Width="97" Command="{Binding authenticate}" />
         <TextBlock x:Name="ErrorMessage"  Visibility="Hidden" HorizontalAlignment="Left" Margin="46,214,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="210" Foreground="#FFD63535"><Run Language="de-de" Text="Fehler beim Login."/><LineBreak/><Run Language="de-de" Text="Stimmen Nutzername und Passwort?"/></TextBlock>
     </Grid>
-</DockPanel>
+
+    <Grid x:Name="ServerAdressLayer" Background="White" Margin="0,0,2,5" Grid.RowSpan="3" Visibility="Visible" >
+        <Label Content="ServerKonfiguration" HorizontalAlignment="Left" Margin="30,24.666,0,0" VerticalAlignment="Top" Width="200" FontWeight="Bold" FontSize="20"/>
+        <Label Content="Server" HorizontalAlignment="Left" Margin="25,77,0,0" VerticalAlignment="Top" Width="200" FontWeight="Bold" FontSize="10"/>
+        <TextBox x:Name="ServerAdresse"  HorizontalAlignment="Left" Height="23" Margin="28,96.47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210">
+        <TextBox.Text>
+            <Binding Path="ServerAddress" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+        </TextBox.Text>
+        </TextBox>
+        <Label Content="Broker" HorizontalAlignment="Left" Margin="25,117,0,0" VerticalAlignment="Top" Width="200" FontWeight="Bold" FontSize="10"/>
+        <TextBox x:Name="BrokerAdresse"  HorizontalAlignment="Left" Height="23" Margin="28,135.666,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210">
+            <TextBox.Text>
+                <Binding Path="BrokerAddress" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+            </TextBox.Text>
+        </TextBox>
+        <TextBlock x:Name="ErrorMessage1"  Visibility="Hidden" HorizontalAlignment="Left" Margin="46,214,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="38" Width="210" Foreground="#FFD63535"><Run Language="de-de" Text="Fehler beim Login."/><LineBreak/><Run Language="de-de" Text="Stimmen Nutzername und Passwort?"/></TextBlock>
+    </Grid>
+
+    </DockPanel>
 </UserControl>
