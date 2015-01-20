@@ -32,7 +32,7 @@ namespace CommunicationLib.Model.DataModel
             _datatypes = new List<String>();
             _datatypes.Add("String");
             _datatypes.Add("Int");
-            _datatypes.Add("Float");
+            _datatypes.Add("Double");
         }
 
     }

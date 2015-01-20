@@ -28,10 +28,5 @@ namespace CommunicationLib.Model
         private string _group;
         public string group { get { return _group; } set { _group = value; } }
 
-        /// <summary>
-        /// Used for (de)serialization. Do not change the property name.
-        /// </summary>
-        private string _opener;
-        public string opener { get { return _opener; } set { _opener = value; } }
     }
 }

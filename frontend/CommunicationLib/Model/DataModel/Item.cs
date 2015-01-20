@@ -43,11 +43,11 @@ namespace CommunicationLib.Model
         {
             foreach (MetaEntry me in metadata) 
             {
-                if (me.group.Equals("step"))
+                if (me.key.Equals("status"))
                 {
                     if (me.value.Equals("OPEN") || me.value.Equals("BUSY"))
                     {
-                        return Convert.ToInt32(me.key);
+                        return Convert.ToInt32(me.group);
                     }
                 }
             }
@@ -61,7 +61,7 @@ namespace CommunicationLib.Model
             {
                 foreach (MetaEntry me in metadata)
                 {
-                    if (me.group.Equals("step"))
+                    if (me.key.Equals("status"))
                     {
                         if (me.value.Equals("OPEN"))
                         {
