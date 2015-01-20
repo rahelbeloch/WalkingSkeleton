@@ -135,7 +135,7 @@ namespace Admin.ViewModel
                             }
                             else
                             {
-                                logger.Info("Login failed for username=" + username + " password=" + securePwd);
+                                logger.Info("Login failed for username=" + _admin + " password=" + securePwd);
                             }
                             MessageBox.Show(exc.Message);
                         }
