@@ -168,7 +168,7 @@ namespace Client.ViewModel
         /// <param name="workflow">instance of the new workflow</param>
         public void WorkflowUpdate(Workflow workflow) 
         {
-            logger.Info("Received Workflow for Update: ID=" + workflow.id);
+            logger.Info("Received Workflow for Update: ID=" + workflow.Id);
             // route update-handling to subcomponents
             _dashboardViewModel.AddWorkflowToModel(workflow);
         }
@@ -178,7 +178,7 @@ namespace Client.ViewModel
         /// <param name="item">instance of the new item</param>
         public void ItemUpdate(Item item)
         {
-            logger.Info("Received Item for Update: ID=" + item.id);
+            logger.Info("Received Item for Update: ID=" + item.Id);
             Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.UpdateItem(item)));
         }
 

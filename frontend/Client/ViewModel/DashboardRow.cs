@@ -26,14 +26,14 @@ namespace Client.ViewModel
             set 
             {
                 _actItem = value;
-                _actState = _actItem.state;
+                _actState = _actItem.State;
                 _visibilityStepForwardButton = _actState.Equals("OPEN") ? Visibility.Visible : Visibility.Collapsed;
                 _visibilityFinishButton = _actState.Equals("BUSY") ? Visibility.Visible : Visibility.Hidden;
 
                 _formRows = new List<FormRow>();
-                foreach (FormEntry formEntry in _form.formDef)
+                foreach (FormEntry formEntry in _form.FormDef)
                 {
-                    _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
+                    _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.Datatype));
                 }
             }
         }
@@ -84,12 +84,12 @@ namespace Client.ViewModel
             _actStep = actStep;
             _form = form;
 
-            _actState = _actItem.state;
+            _actState = _actItem.State;
 
             _formRows = new List<FormRow>();
-            foreach (FormEntry formEntry in _form.formDef)
+            foreach (FormEntry formEntry in _form.FormDef)
             {
-                _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
+                _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.Datatype));
             }
         }
     }
