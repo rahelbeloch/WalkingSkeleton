@@ -12,9 +12,9 @@ using Admin.ViewModel;
 namespace Admin
 {
     
-    public class ActionViewModel : DesignerItemViewModelBase, ISupportDataChanges
+    public class ActionViewModel : DesignerItemViewModelBase
     {
-        private IUIVisualizerService visualiserService;
+       
 
         //WorkflowDiagramViewModel workflowViewModel = null;
         //public ObservableCollection<Role> roleCollection { get { return workflowViewModel.roleCollection; } }
@@ -60,19 +60,7 @@ namespace Admin
             }
         }
         
-        public ICommand ShowDataChangeWindowCommand { get; private set; }
-
-        public void ExecuteShowDataChangeWindowCommand(object parameter)
-        {
-            
-            ActionData data = new ActionData(description, selectedRole);
-            if (visualiserService.ShowDialog(data) == true)
-            {
-                this.selectedRole = data.selectedRole;
-                this.description = data.description;
-                
-            }
-        }
+        
 
 
         private void Init()
@@ -81,9 +69,6 @@ namespace Admin
             enableRightConnector = true;
             itemWidth = 100;
             itemHeight = 52;
-            visualiserService = ApplicationServicesProvider.Instance.Provider.VisualizerService;
-            ShowDataChangeWindowCommand = new SimpleCommand(ExecuteShowDataChangeWindowCommand);
-            
             
             this.ShowConnectors = false;
 

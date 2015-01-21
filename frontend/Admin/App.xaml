@@ -34,8 +34,7 @@
                 <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/ZoomBox.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/DiagramDesigner;component/Resources/Styles/DesignerItems.xaml" />
 
-                <!-- Common DemoApp Styles -->
-                <ResourceDictionary Source="Resources/Styles.xaml" />
+                
 
                 <!-- specific designer items, you should have one of these per ViewModel that you want to represent on diagram -->
                 <ResourceDictionary Source="Resources/DesignerItems/ActionDataTemplate.xaml" />

@@ -35,7 +35,7 @@ namespace Admin.ViewModel
         private DiagramViewModel diagramViewModel;
         private ToolBoxViewModel _toolBoxViewModel;
         public ToolBoxViewModel toolBoxViewModel { get { return _toolBoxViewModel; } }
-        private IMessageBoxService messageBoxService;
+        
         private List<SelectableDesignerItemViewModelBase> itemsToRemove;
         
         public WorkflowDiagramViewModel(MainViewModel mainViewModel)
@@ -284,13 +284,13 @@ namespace Admin.ViewModel
                     selectedForm = _actWorkflow.form.Clone<Form>();
 
                     showDetails = Visibility.Visible;
+                    actStepVisibility = Visibility.Collapsed;
                     WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
                     DiagramViewModel.locked = true;
                 }
                 else
                 {
                     showDetails = Visibility.Collapsed;
-                    selectedForm = null;
                     DiagramViewModel.Items.Clear();
                     DiagramViewModel.locked = false;
                 }
@@ -345,7 +345,7 @@ namespace Admin.ViewModel
             //OrthogonalPathFinder is a pretty bad attempt at finding path points, it just shows you, you can swap this out with relative
             //ease if you wish just create a new IPathFinder class and pass it in right here
             ConnectorViewModel.PathFinder = new OrthogonalPathFinder();
-            messageBoxService = ApplicationServicesProvider.Instance.Provider.MessageBoxService;
+            
             _showDetails = Visibility.Collapsed;
             _editView = Visibility.Collapsed;
             _displayView = Visibility.Visible;
@@ -449,6 +449,8 @@ namespace Admin.ViewModel
         }
         private void OnSelectedItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            //if (editView == Visibility.Visible)
+            //{
             if (diagramViewModel.SelectedItemsCollection.Count == 1)
             {
                 actStepVisibility = Visibility.Visible;
@@ -467,6 +469,7 @@ namespace Admin.ViewModel
                 {
                     descriptionVisibility = Visibility.Visible;
                     roleVisibility = Visibility.Visible;
+
                 }
             }
             if (diagramViewModel.SelectedItemsCollection.Count == 0 || diagramViewModel.SelectedItemsCollection.Count > 1)
@@ -475,6 +478,7 @@ namespace Admin.ViewModel
                 descriptionVisibility = Visibility.Collapsed;
                 roleVisibility = Visibility.Collapsed;
             }
+            //}
         }
 
         #region commands
@@ -549,7 +553,7 @@ namespace Admin.ViewModel
                             displayView = Visibility.Collapsed;
                             editView = Visibility.Visible;
                             showDetails = Visibility.Collapsed;
-
+                            actStepVisibility = Visibility.Collapsed;
                         }, canExecute => _actWorkflow != null);
                 }
                 return _editWorkflowCommand;
@@ -586,7 +590,7 @@ namespace Admin.ViewModel
                     _displayViewCommand = new ActionCommand(execute =>
                     {
                         editView = Visibility.Collapsed;
-                        _actStepVisibility = Visibility.Collapsed;
+                        actStepVisibility = Visibility.Collapsed;
                         displayView = Visibility.Visible;
                     });
                 }
@@ -625,6 +629,7 @@ namespace Admin.ViewModel
                     _saveWorkflowCommand = new ActionCommand(execute =>
                     {
                         PostWorkflow();
+                        
                     }, canExecute => DiagramViewModel.Items.Any());
                 }
                 return _saveWorkflowCommand;
@@ -637,7 +642,7 @@ namespace Admin.ViewModel
             {
                 if (!DiagramViewModel.Items.Any())
                 {
-                    messageBoxService.ShowError("Sie können keinen leeren Workflow erstellen.");
+                    MessageBox.Show("Sie können keinen leeren Workflow erstellen.");
                     return;
                 }
 
@@ -659,6 +664,7 @@ namespace Admin.ViewModel
                 _restRequester.PostObject(newWorkflow);
                 displayView = Visibility.Visible;
                 editView = Visibility.Collapsed;
+                actStepVisibility = Visibility.Collapsed;
                 showDetails = Visibility.Visible;
                 MessageBox.Show("Der Workflow wurde erfolgreich gespeichert.");
             }

@@ -11,10 +11,8 @@ using Admin.ViewModel;
 
 namespace Admin
 {
-    public class StartStepViewModel : DesignerItemViewModelBase, ISupportDataChanges
+    public class StartStepViewModel : DesignerItemViewModelBase
     {
-        private IUIVisualizerService visualiserService;
-        
         public StartStepViewModel(string id, DiagramViewModel parent, double left, double top, Role selectedRole)
             : base(id, parent, left, top)
         {
@@ -42,25 +40,14 @@ namespace Admin
                 NotifyChanged("selectedRole");
             }
         }
-        public ICommand ShowDataChangeWindowCommand { get; private set; }
-
-        public void ExecuteShowDataChangeWindowCommand(object parameter)
-        {
-            
-            StartStepData data = new StartStepData(selectedRole);
-            if (visualiserService.ShowDialog(data) == true)
-            {
-                this.selectedRole = data.selectedRole;
-            }
-        }
+        
 
         private void Init()
         {
             enableRightConnector = true;
             itemWidth = 50;
             itemHeight = 50;
-            visualiserService = ApplicationServicesProvider.Instance.Provider.VisualizerService;
-            ShowDataChangeWindowCommand = new SimpleCommand(ExecuteShowDataChangeWindowCommand);
+           
             this.ShowConnectors = false;
         }
     }
