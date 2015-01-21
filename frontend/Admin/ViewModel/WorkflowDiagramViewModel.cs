@@ -111,9 +111,8 @@ namespace Admin.ViewModel
                 OnChanged("showDetails");
             }
         }
-
         private Visibility _actStepVisibility;
-        public Visibility actStepVisibility  
+        public Visibility actStepVisibility
         {
             get
             {
@@ -123,6 +122,32 @@ namespace Admin.ViewModel
             {
                 _actStepVisibility = value;
                 OnChanged("actStepVisibility");
+            }
+        }
+        private Visibility _descriptionVisibility;
+        public Visibility descriptionVisibility 
+        {
+            get
+            {
+                return _descriptionVisibility;
+            }
+            set
+            {
+                _descriptionVisibility = value;
+                OnChanged("descriptionVisibility");
+            }
+        }
+        private Visibility _roleVisibility;
+        public Visibility roleVisibility
+        {
+            get
+            {
+                return _roleVisibility;
+            }
+            set
+            {
+                _roleVisibility = value;
+                OnChanged("roleVisibility");
             }
         }
         private Visibility _displayView;
@@ -424,7 +449,21 @@ namespace Admin.ViewModel
             {
                 actStepVisibility = Visibility.Visible;
                 actStep = diagramViewModel.SelectedItemsCollection.First();
-                
+                if (actStep is FinalStepViewModel)
+                {
+                    descriptionVisibility = Visibility.Collapsed;
+                    roleVisibility = Visibility.Collapsed;
+                }
+                if (actStep is StartStepViewModel)
+                {
+                    descriptionVisibility = Visibility.Collapsed;
+                    roleVisibility = Visibility.Visible;
+                }
+                if (actStep is ActionViewModel)
+                {
+                    descriptionVisibility = Visibility.Visible;
+                    roleVisibility = Visibility.Visible;
+                }
             }
             if (diagramViewModel.SelectedItemsCollection.Count == 0 || diagramViewModel.SelectedItemsCollection.Count > 1)
             {

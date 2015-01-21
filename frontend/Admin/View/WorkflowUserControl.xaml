@@ -141,18 +141,29 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
-
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
+                           
                             <Label Grid.Row="0"
+                                Grid.Column="0"
+                                 Content="Typ: "
+                                 Margin="5" />
+                            <Label Grid.Row="0"
+                                Grid.Column="1"
+                                 Content="{Binding actStep}"
+                                 Margin="5" />
+                            <Label Grid.Row="1"
+                                   Visibility="{Binding descriptionVisibility}" 
                                 Grid.Column="0"
                                  Content="Beschreibung"
                                  Margin="5" />
-                            <TextBox Grid.Row="0"
-                                     
+                            <TextBox Grid.Row="1"
+                                Visibility="{Binding descriptionVisibility}" 
                                 Grid.Column="1"
                                 HorizontalAlignment="Left"
                                 Text="{Binding actStep.description, Mode=TwoWay}"
@@ -160,11 +171,12 @@
                                 Width="150"
                                 Margin="5" />
 
-                            <Label Grid.Row="1"
+                            <Label Grid.Row="2"
                                 Grid.Column="0"
+                                   Visibility="{Binding roleVisibility}"
                                 Content="Rolle: "
                                 Margin="5" />
-                            <ComboBox Grid.Row="1" Grid.Column="1" Height="25" Width="120" HorizontalAlignment="Left"  
+                            <ComboBox Visibility="{Binding roleVisibility}" Grid.Row="2" Grid.Column="1" Height="25" Width="120" HorizontalAlignment="Left"  
                                       ItemsSource="{Binding roleCollection}" 
                                       DisplayMemberPath="rolename"
                                       SelectedItem="{Binding actStep.selectedRole}" />
