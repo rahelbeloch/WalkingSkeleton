@@ -23,6 +23,10 @@ namespace Admin.ViewModel
         private MainViewModel _mainViewModel;
         private static Logger logger = LogManager.GetCurrentClassLogger();
         
+        /// <summary>
+        /// Constructor for the LoginViewModel
+        /// </summary>
+        /// <param name="mainViewModel"></param>
         public LoginViewModel(MainViewModel mainViewModel)
             : base()
         {
@@ -34,7 +38,6 @@ namespace Admin.ViewModel
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
-        private String _securePwd = "";
         public String securePwd
         {
             get
@@ -47,11 +50,11 @@ namespace Admin.ViewModel
                 OnChanged("securePwd");
             }
         }
+        private String _securePwd = "";
 
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
-        private string _admin = "";
         public string admin
         {
             get
@@ -64,11 +67,11 @@ namespace Admin.ViewModel
                 OnChanged("admin");
             }
         }
+        private string _admin = "";
 
         /// <summary>
         /// Property for server adress.
         /// </summary>
-        private string _serverAddress;
         public string ServerAddress
         {
             get
@@ -81,11 +84,11 @@ namespace Admin.ViewModel
                 OnChanged("serverAddress");          
             }
         }
+        private string _serverAddress;
 
         /// <summary>
         /// Property for broker adress.
         /// </summary>
-        private string _brokerAddress;
         public string BrokerAddress
         {
             get
@@ -98,11 +101,11 @@ namespace Admin.ViewModel
                 OnChanged("brokerAddress"); 
             }
         }
+        private string _brokerAddress;
 
         /// <summary>
         /// ICommand which is called by the login button
         /// </summary>
-        private ICommand _authenticate;
         public ICommand authenticate
         {
             get
@@ -158,6 +161,7 @@ namespace Admin.ViewModel
                 return _authenticate;
             }
         }
+        private ICommand _authenticate;
 
         private void SaveAddresses()
         {

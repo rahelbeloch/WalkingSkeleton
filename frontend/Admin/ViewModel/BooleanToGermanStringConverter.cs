@@ -8,8 +8,19 @@ using System.Windows.Data;
 
 namespace Admin.ViewModel
 {
+    /// <summary>
+    /// BooleanToGermanStringConverter class
+    /// </summary>
     public class BooleanToGermanStringConverter :IValueConverter
     {
+        /// <summary>
+        /// Convert Method for turning a Boolean into a String
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object Convert(object value, Type targetType,
         object parameter, CultureInfo culture)
         {
@@ -22,6 +33,15 @@ namespace Admin.ViewModel
                 return "nein";
             }
         }
+
+        /// <summary>
+        /// ConvertBack Method for turning a string into a Boolean
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object ConvertBack(object value, Type targetType,
         object parameter, CultureInfo culture)
         {

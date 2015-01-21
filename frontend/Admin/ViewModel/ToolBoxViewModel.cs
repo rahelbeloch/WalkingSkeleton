@@ -9,10 +9,16 @@ using Admin.ViewModel;
 
 namespace Admin
 {
+    /// <summary>
+    /// ToolBoxViewModel class
+    /// </summary>
     public class ToolBoxViewModel
     {
         private List<ToolBoxData> toolBoxItems = new List<ToolBoxData>();
 
+        /// <summary>
+        /// Constructor for ToolBoxViewModel
+        /// </summary>
         public ToolBoxViewModel()
         {
             toolBoxItems.Add(new ToolBoxData("../Images/Start.png", typeof(StartStepViewModel)));
@@ -20,6 +26,9 @@ namespace Admin
             toolBoxItems.Add(new ToolBoxData("../Images/End.png", typeof(FinalStepViewModel)));
         }
 
+        /// <summary>
+        /// Getter for ToolBoxItems
+        /// </summary>
         public List<ToolBoxData> ToolBoxItems
         {
             get { return toolBoxItems; }

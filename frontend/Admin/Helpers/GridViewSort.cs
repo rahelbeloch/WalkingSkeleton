@@ -6,21 +6,36 @@ using System.Windows.Media;
 
 namespace Admin.Helpers
 {
+    /// <summary>
+    /// GridViewSort Class
+    /// </summary>
     public class GridViewSort
     {
         #region Attached properties
 
+        /// <summary>
+        /// Getter for Command
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static ICommand GetCommand(DependencyObject obj)
         {
             return (ICommand)obj.GetValue(CommandProperty);
         }
 
+        /// <summary>
+        /// Setter for Command
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="value"></param>
         public static void SetCommand(DependencyObject obj, ICommand value)
         {
             obj.SetValue(CommandProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.RegisterAttached(
                 "Command",
@@ -49,17 +64,29 @@ namespace Admin.Helpers
                 )
             );
 
+        /// <summary>
+        /// Getter for the AutoSort
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static bool GetAutoSort(DependencyObject obj)
         {
             return (bool)obj.GetValue(AutoSortProperty);
         }
 
+        /// <summary>
+        /// Setter for the AutoSort
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="value"></param>
         public static void SetAutoSort(DependencyObject obj, bool value)
         {
             obj.SetValue(AutoSortProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for AutoSort.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for AutoSort.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty AutoSortProperty =
             DependencyProperty.RegisterAttached(
                 "AutoSort",
@@ -90,17 +117,29 @@ namespace Admin.Helpers
                 )
             );
 
+        /// <summary>
+        /// Getter for the PropertyName
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static string GetPropertyName(DependencyObject obj)
         {
             return (string)obj.GetValue(PropertyNameProperty);
         }
 
+        /// <summary>
+        /// Setter for the PropertyName
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="value"></param>
         public static void SetPropertyName(DependencyObject obj, string value)
         {
             obj.SetValue(PropertyNameProperty, value);
         }
-
-        // Using a DependencyProperty as the backing store for PropertyName.  This enables animation, styling, binding, etc...
+        
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for PropertyName.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty PropertyNameProperty =
             DependencyProperty.RegisterAttached(
                 "PropertyName",
@@ -145,6 +184,12 @@ namespace Admin.Helpers
 
         #region Helper methods
 
+        /// <summary>
+        /// Getter for Ancester DependencyObject
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="reference"></param>
+        /// <returns></returns>
         public static T GetAncestor<T>(DependencyObject reference) where T : DependencyObject
         {
             DependencyObject parent = VisualTreeHelper.GetParent(reference);
@@ -158,6 +203,11 @@ namespace Admin.Helpers
                 return null;
         }
 
+        /// <summary>
+        /// Apply sort method
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="propertyName"></param>
         public static void ApplySort(ICollectionView view, string propertyName)
         {
             ListSortDirection direction = ListSortDirection.Ascending;

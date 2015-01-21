@@ -13,9 +13,15 @@ namespace Admin.ViewModel
     /// </summary>
     public class ViewModelBase : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Event to notify observer of observable events
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-        
-       
+
+        /// <summary>
+        /// OnChanged property
+        /// </summary>
+        /// <param name="propertyName"></param>
         protected void OnChanged(string propertyName)
         {
             if (PropertyChanged != null)
