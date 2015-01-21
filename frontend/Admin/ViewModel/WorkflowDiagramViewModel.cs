@@ -280,12 +280,9 @@ namespace Admin.ViewModel
                 _items.Clear();
                 if (_actWorkflow != null)
                 {
-<<<<<<< .mine
-                    _actWorkflow.items.ForEach(_items.Add);
-=======
                     _actWorkflow.items.ForEach(_items.Add);
                     selectedForm = _actWorkflow.form.Clone<Form>();
->>>>>>> .r1492
+
                     showDetails = Visibility.Visible;
                     WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
                     DiagramViewModel.locked = true;
