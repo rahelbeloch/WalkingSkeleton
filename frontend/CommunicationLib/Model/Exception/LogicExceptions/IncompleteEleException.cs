@@ -6,19 +6,23 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of PersistenceException. 
+    /// </summary>
     public class IncompleteEleException : LogicException
     {
         /// <summary>
-        /// This Exception es a child of PersistenceException. 
         /// Each Exception has an number, here it is 11210. 
         /// </summary>
-        private int _number = 11400;
         new public int number { get { return _number; } }
+        private int _number = 11400;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public IncompleteEleException()
             : base("Das Element ist nicht vollständig.")
         {
-
         }
 
         /// <summary>

@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of LogicException. 
+    /// </summary>
     public class LogInException : LogicException
     {
         /// <summary>
-        /// This Exception es a child of LogicException. 
         /// Each Exception has an number, here it is 11100. 
         /// </summary>
-        private int _number = 11100;
         new public int number { get { return _number; } }
+        private int _number = 11100;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public LogInException()
             :base("Der LogIn war nicht erfolgreich.")
         {

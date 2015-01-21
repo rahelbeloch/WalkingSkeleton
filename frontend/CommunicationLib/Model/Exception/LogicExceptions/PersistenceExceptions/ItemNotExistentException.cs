@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of DoesntExistsException. 
+    /// </summary>
     public class ItemNotExistentException : NotExistentException
     {
         /// <summary>
-        /// This Exception es a child of DoesntExistsException. 
         /// Each Exception has an number, here it is 11253. 
         /// </summary>
-        private int _number = 11253;
         new public int number { get { return _number; } }
+        private int _number = 11253;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public ItemNotExistentException()
             :base("Das Item existiert nicht.")
         {

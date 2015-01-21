@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of BasicException. 
+    /// </summary>
     public class ConnectionException : BasicException
     {
         /// <summary>
-        /// This Exception es a child of BasicException. 
         /// Each Exception has an number, here it is 12000. 
         /// </summary>
-        private int _number = 12000;
         new public int number { get { return _number; } }
+        private int _number = 12000;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public ConnectionException()
             : base("Es ist ein Fehler bei der Übertragung passiert.")
         {
