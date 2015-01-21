@@ -277,7 +277,7 @@ namespace Admin.ViewModel
             _oldWorkflowViewModel.ClearModel();
             _workflowViewModel.ClearModel();
             _userViewModel.ClearModel();
-            //_formViewModel.ClearModel();
+            _formViewModel.ClearModel();
         }
 
         /// <summary>

@@ -173,6 +173,22 @@ namespace Admin.ViewModel
         }
 
         /// <summary>
+        /// This methods resets viewmodel.
+        /// </summary>
+        public void ClearModel()
+        {
+            selectedDefinition = null;
+            selectedForm = null;
+            visibleDefinition = "Collapsed";
+            visibleView = "Collapsed";
+            formDefModelId = "";
+            formDefModelDescription = "";
+            formCollection.Clear();
+            formDefModel.Clear();
+
+        }
+
+        /// <summary>
         /// This method is called when the client receives a form from the server.
         /// </summary>
         /// <param name="form">form which will be added to the form collection</param>
