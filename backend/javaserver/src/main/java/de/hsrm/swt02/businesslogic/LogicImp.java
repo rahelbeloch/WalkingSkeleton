@@ -271,7 +271,18 @@ public class LogicImp implements Logic {
         return workflows;
     }
 
-    @Override
+    /**
+     * Additional method to get all workflows for a specific user WITH items. This
+     * method should not be used from outside the logicImplementation.
+     * 
+     * @param username the username
+     * @return a list of workflows
+     * @throws PersistenceException is thrown if errors occur while persisting
+     *             objects
+     * @throws CloneNotSupportedException is thrown if the clone method is not
+     *             implemented
+     * @throws NoPermissionException 
+     */
     public List<Workflow> getAllWorkflowsByUserWithItems(String username)
             throws PersistenceException, CloneNotSupportedException, NoPermissionException
     {
@@ -419,7 +430,14 @@ public class LogicImp implements Logic {
         return true;
     }
 
-    @Override
+    /**
+     * 
+     * @param step to be operated on
+     * @param username that has to be authorized
+     * @return boolean
+     * @throws PersistenceException to catch UserNotExistent or RoleNotExistent
+     *             exceptions
+     */
     public boolean checkAuthorization(Step step, String username)
             throws PersistenceException
     {
@@ -435,7 +453,14 @@ public class LogicImp implements Logic {
         return authorized;
     }
     
-    @Override
+    /**
+     * Method for checking if a logged in user is authorized to get an Item.
+     * @param item the requested item
+     * @param username the user who requests the item
+     * @return true if authorized else false
+     * @throws PersistenceException 
+     * @throws NoPermissionException 
+     */
     public boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException {
         final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
         if (item.getActStep() == null) {
@@ -487,7 +512,13 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    @Override
+    /**
+     * deletes a role from a user.
+     * 
+     * @param user - user from database
+     * @param role - role to be deleted
+     * @throws LogicException if there is a needed Exception
+     */
     public void deleteRoleFromUser(User user, Role role) throws LogicException {
         boolean atLeastOneAdmin = true;
         final Role adminRole = persistence.loadRole(adminRolename);

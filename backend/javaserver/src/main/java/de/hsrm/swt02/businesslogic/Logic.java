@@ -172,20 +172,6 @@ public interface Logic {
     boolean checkLogIn(String username, String password, boolean adminRequired) throws LogicException;
 
     /**
-     * Aditional method to get all workflows for a specfic user WITH items. This
-     * method should not be used from outside the logicImplementation.
-     * 
-     * @param username the username
-     * @return a list of workflows
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     * @throws CloneNotSupportedException is thrown if the clone method is not
-     *             implemented
-     * @throws NoPermissionException 
-     */
-    List<Workflow> getAllWorkflowsByUserWithItems(String username) throws PersistenceException, CloneNotSupportedException, NoPermissionException;
-    
-    /**
      * This method deletes a User.
      * 
      * @param username describes the user
@@ -214,27 +200,7 @@ public interface Logic {
      * @return List<Integer> list of Ids
      */
     List<String> getStartableWorkflowsForUser(String username) throws LogicException;
-    
-    /**
-     * 
-     * @param step to be operated on
-     * @param username that has to be authorized
-     * @return boolean
-     * @throws PersistenceException to catch UserNotExistent or RoleNotExistent
-     *             exceptions
-     */
-    boolean checkAuthorization(Step step, String username) throws PersistenceException;
-    
-    /**
-     * Method for checking if a logged in user is authorized to get an Item.
-     * @param item the requested item
-     * @param username the user who requests the item
-     * @return true if authorized else false
-     * @throws PersistenceException 
-     * @throws NoPermissionException 
-     */
-    boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException;
-    
+   
     /**
      * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
      * @param workflowId is the id of the given workflow
@@ -293,15 +259,6 @@ public interface Logic {
      * @throws PersistenceException if persistence errors occur
      */
     LogicResponse addRoleToUser(User user, Role role) throws PersistenceException;
-    
-    /**
-     * deletes a role from a user.
-     * 
-     * @param user - user from database
-     * @param role - role to be deleted
-     * @throws LogicException if there is a needed Exception
-     */
-    void deleteRoleFromUser(User user, Role role) throws LogicException;
     
     /**
      * Method for deleting an existing role from the persistence. The users who
