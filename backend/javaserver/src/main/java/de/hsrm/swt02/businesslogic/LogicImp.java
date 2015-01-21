@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
-
 import com.google.inject.Inject;
 
 import de.hsrm.swt02.businesslogic.exceptions.AdminRoleDeletionException;
@@ -252,7 +251,7 @@ public class LogicImp implements Logic {
     {
         persistence.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
-        for (Workflow wf : persistence.loadAllWorkflows()) {
+        for (Workflow wf : getAllActiveWorkflows()) {
             if (wf.isActive() || wf.getItems().size() > 0) {                
                 for (Step step : wf.getSteps()) {
                     if (checkAuthorization(step, username)) {
@@ -291,7 +290,7 @@ public class LogicImp implements Logic {
         persistence.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
         
-        for (Workflow wf : persistence.loadAllWorkflows()) {
+        for (Workflow wf : getAllActiveWorkflows()) {
             if (wf.isActive()) {
                 for (Item i : wf.getItems()) {
                     final Item loadedItem = persistence.loadItem(i.getId());
@@ -335,21 +334,6 @@ public class LogicImp implements Logic {
                 if (checkAuthorization(startStep, username)) {
                     startableWorkflows.add(workflow.getId());
                 }
-            }
-        }
-        return startableWorkflows;
-    }
-
-    @Override
-    public List<Workflow> getStartableWorkflows(String username)
-            throws LogicException
-    {
-        final LinkedList<Workflow> startableWorkflows = new LinkedList<Workflow>();
-        final LinkedList<Workflow> workflows = (LinkedList<Workflow>) getAllWorkflowsForUser(username);
-
-        for (Workflow wf : workflows) {
-            if (checkAuthorization(wf.getStepByPos(0), username)) {
-                startableWorkflows.add(wf);
             }
         }
         return startableWorkflows;
@@ -402,9 +386,20 @@ public class LogicImp implements Logic {
                 workflows.add(wf);
             }
         }
-
         return workflows;
     }
+    
+    @Override
+    public List<User> getAllActiveUsers() throws PersistenceException {
+        final List<User> users = new LinkedList<>();
+        for (User u : persistence.loadAllUsers()) {
+            if (u.isActive()) {
+                users.add(u);
+            }
+        }
+        return users;
+    }
+
 
     @Override
     public boolean checkLogIn(String username, String password,
@@ -548,18 +543,21 @@ public class LogicImp implements Logic {
      * @throws LogicException if there is a needed Exception
      */
     public void deleteRoleFromUser(User user, Role role) throws LogicException {
-        boolean atLeastOneAdmin = true;
         final Role adminRole = persistence.loadRole(ADMINROLENAME);
 
+        // admin counter is 2 if the role to delete is not admin, to make sure it can be deleted.
+        int adminCounter = 2;
+        
         if (role.getRolename().equals(ADMINROLENAME)) {
+            adminCounter = 0;
             for (User userToCheck : persistence.loadAllUsers()) {
                 if (userToCheck.hasRole(adminRole)) {
-                    atLeastOneAdmin = false;
-                    // TODO: und der letzte??
+                    adminCounter++;
                 }
             }
         }
-        if (!atLeastOneAdmin) {
+        
+        if (adminCounter < 2) {
             throw new LastAdminDeletedException(
                     "[Logic] No Deletion allowed - Role " + ADMINROLENAME
                             + " needs to have one assigned User.");
