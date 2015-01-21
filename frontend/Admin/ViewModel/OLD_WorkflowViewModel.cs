@@ -544,7 +544,7 @@ namespace Admin.ViewModel
                         {
                             Action action = new Action();
                             
-                            action.Description = stepDescription;
+                            action.description = stepDescription;
                             action.roleIds.Add(selectedRole.rolename);
 
                             _workflow.Add(action);

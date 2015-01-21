@@ -444,8 +444,8 @@ namespace Admin.ViewModel
             if (_actWorkflow != null)
             {
                 Console.WriteLine("BLA_3");
-                _items.Clear();
-                _actWorkflow.items.ForEach(_items.Add);
+                items.Clear();
+                actWorkflow.items.ForEach(_items.Add);
 
                 OnChanged("items");
             }
