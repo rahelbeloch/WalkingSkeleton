@@ -78,6 +78,7 @@
     <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\WorkflowCyclesException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\ItemNotForwardableException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\AdminRoleDeletionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\RoleStillInUseException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\LastAdminDeletedException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\UserHasNoPermissionException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\FormNotExistentException.cs" />

@@ -95,6 +95,7 @@ namespace CommunicationLib.Model
                 {11320, typeof(ItemNotForwardableException)},
                 {11330, typeof(AdminRoleDeletionException)},
                 {11340, typeof(LastAdminDeletedException)},
+                {11350, typeof(RoleStillInUseException)},
             {11400, typeof(IncompleteEleException)},
             {11500, typeof(InvalidWorkflowException)},
                 {11510, typeof(WorkflowCyclesException)},
