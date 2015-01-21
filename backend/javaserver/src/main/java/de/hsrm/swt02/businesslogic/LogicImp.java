@@ -483,10 +483,14 @@ public class LogicImp implements Logic {
             return true;
         }
         
+        
         if (item.getActStep() == null) {
             return false;
         } else {
             final Step actStep = workflowToCheck.getStepById((item.getActStep().getGroup()));
+            if (item.getEntryOpener(actStep.getId()) != null) {
+                return item.getEntryOpener(actStep.getId()).equals(username);
+            }
             return checkAuthorization(actStep, username);
         }
     }
