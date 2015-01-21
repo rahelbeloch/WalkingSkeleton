@@ -23,13 +23,21 @@ namespace Admin.View
     /// </summary>
     public partial class OldWorkflowUserControl : UserControl
     {
-        
+        /// <summary>
+        /// Constructor for OldWorkflowUserControl
+        /// </summary>
         public OldWorkflowUserControl()
         {
             InitializeComponent();
             
 
         }
+
+        /// <summary>
+        /// HandleDoubleClick method for handling the double click on the old workflow user list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void HandleDoubleClick(object sender, MouseButtonEventArgs e)
         {
            
