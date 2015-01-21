@@ -11,8 +11,14 @@ using Admin.ViewModel;
 
 namespace Admin
 {
+    /// <summary>
+    /// StartStepViewModel class
+    /// </summary>
     public class StartStepViewModel : DesignerItemViewModelBase
     {
+        /// <summary>
+        /// Constructor for StartStepViewModel
+        /// </summary>
         public StartStepViewModel(string id, DiagramViewModel parent, double left, double top, Role selectedRole)
             : base(id, parent, left, top)
         {
@@ -20,14 +26,18 @@ namespace Admin
             Init();
         }
 
+        /// <summary>
+        /// Constructor for StartStepViewModel
+        /// </summary>
         public StartStepViewModel()
             : base()
         {
             Init();
         }
 
-
-        private Role _selectedRole = null;
+        /// <summary>
+        /// Property for the selected Role
+        /// </summary>
         public Role selectedRole
         {
             get
@@ -40,7 +50,7 @@ namespace Admin
                 NotifyChanged("selectedRole");
             }
         }
-        
+        private Role _selectedRole = null;        
 
         private void Init()
         {
