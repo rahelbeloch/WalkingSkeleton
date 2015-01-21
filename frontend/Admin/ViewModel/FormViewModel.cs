@@ -175,6 +175,26 @@ namespace Admin.ViewModel
         {
             _mainViewModel.formCollection.Add(form);
         }
+
+        /// <summary>
+        /// This method is called when the client removes a form.
+        /// </summary>
+        /// <param name="formId"></param>
+        public void FormDeletion(String formId)
+        {
+            Form formToDelete = null;
+
+            foreach (Form form in formCollection)
+            {
+                if (form.id.Equals(formId))
+                {
+                    formToDelete = form;
+                }
+                
+            }
+            _mainViewModel.formCollection.Remove(formToDelete);
+            
+        }
         #endregion
 
         #region commands
@@ -209,6 +229,36 @@ namespace Admin.ViewModel
                 }
                 return _addFormCommand;
             }
+        }
+
+        /// <summary>
+        /// This command is executed if a client wants to delete a form.
+        /// </summary>
+        private ICommand _deleteFormCommand;
+        public ICommand deleteFormCommand
+        {
+            get
+            {
+                if (_deleteFormCommand == null)
+                {
+                    _deleteFormCommand = new ActionCommand(execute =>
+                        {
+                            try
+                            {
+                                _restRequester.DeleteObject<Form>(selectedForm.id);
+                            }
+                            catch (BasicException be)
+                            {
+                                MessageBox.Show(be.Message);
+                            }
+                            selectedForm = null;
+                            visibleView = "Collapsed";
+
+                        }, canExecute => _selectedForm != null);
+                }
+                return _deleteFormCommand;
+            }
+            
         }
 
         /// <summary>

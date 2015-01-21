@@ -45,6 +45,7 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
+                        <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="Formular löschen" Height="26" Margin="10" Command="{Binding deleteFormCommand}"/>
                     </DockPanel>
                     <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Visibility="{Binding visibleDefinition, UpdateSourceTrigger=PropertyChanged}">
                         <DockPanel DockPanel.Dock="Top">

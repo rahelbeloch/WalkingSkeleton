@@ -327,6 +327,10 @@ namespace Admin.ViewModel
                 // No UserDeletion yet needed
                 // Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.UserDeletion(sourceId)));
             }
+            else if (sourceType == typeof(Form))
+            {
+                Application.Current.Dispatcher.Invoke(new System.Action(() => formViewModel.FormDeletion(sourceId)));
+            }
             logger.Info("Delete " + sourceType.ToString() + " ID=" + sourceId);
         }
 
