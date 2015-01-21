@@ -13,7 +13,10 @@ namespace CommunicationLib.Model
     public class Constants
     {
         public static String MODEL_NAMESPACE = "CommunicationLib.Model";
-        public static String BROKER_URL = "tcp://localhost:61616";
+
+        public static String URLPATTERN = @"^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?";
+        public static String SERVER_ADDRESS_NAME = "ServerAddress";
+        public static String BROKER_ADDRESS_NAME = "BrokerAddress";
 
         public static JsonSerializerSettings JSON_SETTINGS = new JsonSerializerSettings
         {

@@ -54,12 +54,27 @@ namespace CommunicationLib
         // client subscriptions <topicName, consumer>
         private Dictionary<string ,IMessageConsumer> _messageSubs;
 
+        /// <summary>
+        /// Constructor for CommunicationManager. 
+        /// </summary>
+        /// <param name="sender">the rest connector</param>
+        /// <param name="myClient">the registeres client for callback</param>
+        /// <param name="brokerAddress">the broker url</param>
         public CommunicationManager(IRestRequester sender, IDataReceiver myClient, string brokerAddress)
         {
             _sender = sender;
             _myClient = myClient;
             _messageSubs = new Dictionary<string, IMessageConsumer>();
 
+            InitializeConnection(brokerAddress);
+        }
+
+        /// <summary>
+        /// Initializes connection with handed address.
+        /// </summary>
+        /// <param name="brokerAddress">the broker url</param>
+        internal void InitializeConnection(string brokerAddress)
+        {
             if (brokerAddress != null)
             {
                 // build connection to message broker (not started yet)
@@ -76,19 +91,15 @@ namespace CommunicationLib
             }
         }
 
+        /// <summary>
+        /// Refreshes the connection with new address.
+        /// </summary>
+        /// <param name="brokerAddress">the broker url</param>
         internal void Refresh(string brokerAddress)
         {
             // build connection to message broker (not started yet)
-            _connectionFactory = new ConnectionFactory(brokerAddress);
-            try
-            {
-                _connection = _connectionFactory.CreateConnection();
-                _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
-            }
-            catch (NMSConnectionException)
-            {
-                throw new ServerNotRunningException();
-            }
+            _connection.Stop();
+            InitializeConnection(brokerAddress);
         }
 
         /// <summary>
