@@ -10,6 +10,7 @@ import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
+import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
 
@@ -19,6 +20,14 @@ import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
  */
 public interface Logic {
 
+    /**
+     * Getter for Persistence.
+     * Do not use, only for testing case
+     * 
+     * @return Persistence
+     */
+    Persistence getPersistence();
+    
     /**
      * This method starts a Workflow.
      * 
@@ -113,17 +122,6 @@ public interface Logic {
      */
     LogicResponse stepForward(String itemId, String stepId, String username) 
             throws LogicException;
-
-    /**
-     * This method deactivates a workflow.
-     * 
-     * For deactivating a workflow, admin rights are required.
-     * 
-     * @param workflowID the id of the workflow which should be deactivate
-     * @throws PersistenceException if an error in persistence occurs
-     * @return the LogicResponse of the deactivated workflow
-     */
-    LogicResponse deactivateWorkflow(String workflowID) throws PersistenceException;
 
     /**
      * This method activates a workflow.

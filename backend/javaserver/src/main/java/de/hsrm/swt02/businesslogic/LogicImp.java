@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
+
 import com.google.inject.Inject;
 
 import de.hsrm.swt02.businesslogic.exceptions.AdminRoleDeletionException;
@@ -62,6 +63,11 @@ public class LogicImp implements Logic {
         loadData();
     }
 
+    @Override
+    public Persistence getPersistence() {
+        return this.persistence;
+    }
+    
     @Override
     public LogicResponse startWorkflow(String workflowID, String username)
             throws LogicException, PersistenceException 
@@ -221,6 +227,14 @@ public class LogicImp implements Logic {
             user.getMessagingSubs().addAll(definiteSubs);
 
         }
+        
+        
+//        Logik (zusätzlich auch bei deleteUser)
+//        saveUser(u):
+//          if us.isNew && !u.active:
+//            aa = getAllActiveAdmins()
+//            if aa.length == 1 && aa[0] == u
+//        
         // finally user is added
         persistence.storeUser(user);
         logicResponse.add(Message.build(MessageTopic.USER_INFO,
@@ -622,20 +636,6 @@ public class LogicImp implements Logic {
     }
 
     @Override
-    public LogicResponse deactivateWorkflow(String workflowId)
-            throws PersistenceException
-    {
-        final Workflow workflow = persistence.loadWorkflow(workflowId);
-        final LogicResponse logicResponse = new LogicResponse();
-
-        workflow.setActive(false);
-        persistence.storeWorkflow(workflow);
-        logicResponse.add(Message.build(MessageTopic.WORKFLOW_INFO,
-                MessageOperation.UPDATE, workflowId));
-        return logicResponse;
-    }
-
-    @Override
     public LogicResponse activateWorkflow(String workflowId)
             throws PersistenceException
     {
@@ -665,6 +665,12 @@ public class LogicImp implements Logic {
     public LogicResponse deleteForm(String formId) throws PersistenceException {
         final LogicResponse logicResponse = new LogicResponse();
 
+        for (Workflow workflow : getAllActiveWorkflows()) {
+            if (workflow.getForm() != null && workflow.getForm().getId().equals(formId)) {
+                throw new StorageFailedException("[logic] deleting of form " + formId + " failed. Form still active.");
+            }
+        }
+        
         persistence.deleteForm(formId);
         logicResponse.add(Message.build(MessageTopic.FORM_INFO,
                 MessageOperation.DELETION, formId));

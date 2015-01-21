@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.Item;
@@ -25,9 +26,7 @@ import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
  */
 public class PersistenceTest {
 
-    // Dependency Injection
-    Injector inj = Guice.createInjector(new SingleModule());
-    Persistence db = inj.getInstance(Persistence.class);
+    static Persistence db;
     
     /**
      * configurate Logger in order to get Logging output.
@@ -35,6 +34,7 @@ public class PersistenceTest {
     @BeforeClass
     public static void setup() {
         LogConfigurator.setup();
+        db = ConstructionFactory.getTestInstance().getLogic().getPersistence();
     }
     
     /**
@@ -117,6 +117,7 @@ public class PersistenceTest {
      */
     @Test
     public void testDuplicateUserStorage() throws PersistenceException {
+        final int before = db.loadAllUsers().size();
         final User user001 = new User();
         final User user002 = new User();
         user001.setUsername("17");
@@ -132,7 +133,7 @@ public class PersistenceTest {
             e.printStackTrace();
         }
         assertEquals(user001, db.loadUser("17"));
-        assertEquals(db.loadAllUsers().size(), 1); //only one user should be existent
+        assertEquals(db.loadAllUsers().size(), before+1); //only one user should be existent
     }
         
     /**

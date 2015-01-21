@@ -499,15 +499,6 @@ public class PersistenceImp implements Persistence {
 
     @Override
     public void deleteForm(String formId) throws PersistenceException {
-        
-        for (Workflow workflow : workflows) {
-            if (workflow.getForm().getId().equals(formId)) {
-                if (workflow.isActive()) {
-                    throw new PersistenceException("deleting of form " + formId + " failed. Form still active.");
-                }
-            }
-        }
-        
         Form formToRemove = null;
         for (Form f: forms) {
             if (f.getId().equals(formId)) {
@@ -523,16 +514,20 @@ public class PersistenceImp implements Persistence {
         }
         
         for (Workflow workflow : workflows) {
-            if (workflow.getForm().getId().equals(formId)) {
+            if (workflow.getForm() != null && workflow.getForm().getId().equals(formId)) {
                 workflow.setForm(null);
                 this.logger.log(Level.INFO, "[persistence] successfully removed form from workflow.");
             }
         }
-        
     }
 
     @Override
     public void save() {
+        if (storagePath == null) {
+            this.logger.log(Level.INFO, "[persistece] no storage path provided.");
+            return;
+        }
+
         // browse through all DataModels and serialize them into a file (path in server configuration file)
         try {
             final FileOutputStream fileOut = new FileOutputStream(storagePath);
@@ -544,18 +539,19 @@ public class PersistenceImp implements Persistence {
             fileOut.close();
             
             this.logger.log(Level.INFO,"[persistence] successfully saved data models in " + storagePath + ".");
-        } catch (IOException i) {
-            i.printStackTrace();
+        } catch (IOException e) {
+            this.logger.log(Level.WARNING, e);
         }
     }
     
     @Override
     public void load() {
-        final File f = new File(storagePath);
-        if (storagePath != null && storagePath.contains(".ser") && f.exists()) {
-            
-            if (f.isFile()) {
-
+        boolean dataLoaded = false;
+        
+        if (storagePath != null) {
+            final File f = new File(storagePath);
+            if (storagePath.contains(".ser") && f.exists() && f.isFile()) {
+                        
                 try {
                     final FileInputStream fileIn = new FileInputStream(storagePath);
                     final ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -566,6 +562,7 @@ public class PersistenceImp implements Persistence {
                     users = newDs.getUsers();
                     roles = newDs.getRoles();
                     forms = newDs.getForms();
+                    dataLoaded = true;
                     in.close();
                     fileIn.close();
                 } catch (IOException i) {
@@ -576,16 +573,20 @@ public class PersistenceImp implements Persistence {
                             + " for serialization of file " + storagePath + ".");
                     this.logger.log(Level.WARNING, e);
                 }
+            } else {
+                this.logger.log(Level.INFO,"[persistence] storage file with suffix .ser does not exists.");
             }
         } else {
-            // if storage file == null
+            this.logger.log(Level.INFO,"[persistence] no storage path provided.");
+        }
+        if (!dataLoaded) {
             try {
                 this.logger.log(Level.INFO,"[persistence] load test data.");
                 initTestdata();
             } catch (PersistenceException e) {
-                e.printStackTrace();
-            }
-        }
+                this.logger.log(Level.WARNING, e);
+            } 
+        } 
     }
     
     /**

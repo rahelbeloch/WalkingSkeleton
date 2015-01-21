@@ -29,18 +29,15 @@ import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
  *
  */
 public class RoleHandlingTest {
-
-    // Dependency Injection
-    Injector inj = Guice.createInjector(new SingleModule());
-    Logic li = inj.getInstance(Logic.class);
     
+    static Logic li;
     /**
      * configurate Logger in order to get Logging output.
      */
     @BeforeClass
     public static void setup() {
         LogConfigurator.setup();
-        ConstructionFactory.getInstance();
+        li = ConstructionFactory.getTestInstance().getLogic();
     }
     
     /**

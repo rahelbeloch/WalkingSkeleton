@@ -20,7 +20,7 @@ public class ConstructionFactory {
     private static final Injector INJECTOR = Guice
             .createInjector(new SingleModule());
     
-    private static Logic logic; 
+    private static Logic logic;
     private static ServerPublisher serverPublisher;
     private static ConstructionFactory theInstance;
 
@@ -39,17 +39,33 @@ public class ConstructionFactory {
     }
     
     /**
-     * Return the instance for this class(for testing).
+     * Return the instance for this class.
      * @return the instance
      */
     public synchronized static ConstructionFactory getInstance() {
         
         if (theInstance == null) {
             theInstance = new ConstructionFactory();
+            theInstance.getLogic().loadData();
         }
         return theInstance;
     }
 
+    /**
+     * Return the instance for this class(for testing).
+     * @return the instance
+     */
+    public synchronized static ConstructionFactory getTestInstance() {
+        
+        if (theInstance == null) {
+            theInstance = new ConstructionFactory();
+            theInstance.getLogic().getPersistence().setStoragePath(null);
+            theInstance.getLogic().loadData();
+        }
+        return theInstance;
+    }
+
+    
     /**
      * This method returns the Logic instance.
      * 

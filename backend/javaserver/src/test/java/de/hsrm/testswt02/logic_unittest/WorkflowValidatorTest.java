@@ -9,11 +9,13 @@ import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.workflowValidator.WorkflowValidator;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedAtLeastOneActionException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedAtLeastOneFinalStepException;
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Role;
 import de.hsrm.swt02.model.StartStep;
+import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.PersistenceImp;
@@ -31,11 +33,11 @@ public class WorkflowValidatorTest {
     private static Role r;
     
     static Workflow workflow;
-    static StartStep ss;
-    static Action a1;
-    static Action a2;
-    static Action a3;
-    static FinalStep fs;
+    static Step ss;
+    static Step a1;
+    static Step a2;
+    static Step a3;
+    static Step fs;
     
     /**
      * @throws PersistenceException 
@@ -44,7 +46,7 @@ public class WorkflowValidatorTest {
     @BeforeClass
     public static void setUp() throws PersistenceException {
         ul = new UseLogger();
-        db = new PersistenceImp(ul);
+        db = ConstructionFactory.getTestInstance().getLogic().getPersistence();
         
         r = new Role();
         r.setRolename("TestRolle");
