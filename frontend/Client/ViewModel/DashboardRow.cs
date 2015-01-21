@@ -86,6 +86,9 @@ namespace Client.ViewModel
 
             _actState = _actItem.State;
 
+            _visibilityStepForwardButton = _actState.Equals("OPEN") ? Visibility.Visible : Visibility.Collapsed;
+            _visibilityFinishButton = _actState.Equals("BUSY") ? Visibility.Visible : Visibility.Hidden;
+
             _formRows = new List<FormRow>();
             foreach (FormEntry formEntry in _form.formDef)
             {
