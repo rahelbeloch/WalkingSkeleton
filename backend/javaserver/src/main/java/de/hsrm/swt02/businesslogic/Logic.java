@@ -64,7 +64,7 @@ public interface Logic {
      * @throws PersistenceException if an error in persistence occurs
      */
     List<Workflow> getAllActiveWorkflows() throws PersistenceException;
-    
+   
     /**
      * This method loads a Workflow.
      * 
@@ -240,7 +240,15 @@ public interface Logic {
      * @throws PersistenceException  
      */
     List<User> getAllUsers() throws PersistenceException;
-
+    
+    /**
+    * This method return all users in persistence that are not marked inactive.
+    * 
+    * @return all active users in persistence
+    * @throws PersistenceException if an error in persistence occurs
+    */
+    List<User> getAllActiveUsers() throws PersistenceException;
+    
     /**
      * Method for adding a new role in the persistence.
      * 
@@ -279,15 +287,6 @@ public interface Logic {
      * @return List<Item> is the list of items we want to get
      */
     List<Item> getOpenItemsByUser(String username) throws LogicException;
-
-    /**
-    * Method for getting a list of startable workflows by a given user.
-    * 
-    * @param username describes the user 
-    * @return List<Workflow> is the requested list of workflows
-    * @exception LogicException if an error in businesslogic occurs
-    */
-    List<Workflow> getStartableWorkflows(String username) throws LogicException;
 
     /**
      * method to load a specific role from persistence.

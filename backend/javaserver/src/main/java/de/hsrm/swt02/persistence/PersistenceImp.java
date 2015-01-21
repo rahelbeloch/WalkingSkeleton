@@ -400,7 +400,7 @@ public class PersistenceImp implements Persistence {
         }
         return retList;
     }
-    
+        
     @Override
     public List<Role> loadAllRoles() throws PersistenceException {
         final List<Role> retList = new LinkedList<>();
