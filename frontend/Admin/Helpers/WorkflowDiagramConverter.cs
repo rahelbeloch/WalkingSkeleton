@@ -49,7 +49,7 @@ namespace Admin.Helpers
                 }
 
                 // connect next step ids
-                referenceMapping[startItem].nextStepIds.Add(referenceMapping[endItem].id);
+                referenceMapping[startItem].NextStepIds.Add(referenceMapping[endItem].Id);
             }
 
             // add remaining designer items which are not connected
@@ -63,7 +63,7 @@ namespace Admin.Helpers
             }
 
             // add steps to workflow
-            workflow.steps.AddRange(referenceMapping.Values.Select(x => x).ToList());
+            workflow.Steps.AddRange(referenceMapping.Values.Select(x => x).ToList());
 
             return workflow;
         }
@@ -76,28 +76,31 @@ namespace Admin.Helpers
         private static Step DesignerItemToStep(SelectableDesignerItemViewModelBase designerItem)
         {
             Step step = new Step();
-            step.left = ((DesignerItemViewModelBase)designerItem).Left;
-            step.top = ((DesignerItemViewModelBase)designerItem).Top;
+            step.Left = ((DesignerItemViewModelBase)designerItem).Left;
+            step.Top = ((DesignerItemViewModelBase)designerItem).Top;
 
             if (designerItem.GetType() == typeof(StartStepViewModel))
             {
                 StartStep startStep = step.Clone<StartStep>();
-                startStep.id = getUniqueId();
-                startStep.roleIds.Add(((StartStepViewModel)designerItem).selectedRole.rolename);
+                startStep.Id = getUniqueId();
+                startStep.RoleIds.Add(((StartStepViewModel)designerItem).selectedRole.Id);
+
                 return startStep;
             }
             else if (designerItem.GetType() == typeof(ActionViewModel))
             {
                 Action action = step.Clone<Action>();
-                action.id = getUniqueId();
-                action.roleIds.Add(((ActionViewModel)designerItem).selectedRole.rolename);
-                action.description = ((ActionViewModel)designerItem).description;
+
+                action.Id = getUniqueId();
+                action.RoleIds.Add(((ActionViewModel)designerItem).selectedRole.Id);
+                action.Description = ((ActionViewModel)designerItem).description;
+
                 return action;
             }
             else if (designerItem.GetType() == typeof(FinalStepViewModel))
             {
                 FinalStep finalStep = step.Clone<FinalStep>();
-                finalStep.id = getUniqueId();
+                finalStep.Id = getUniqueId();
                 return finalStep;
             }
 
@@ -117,7 +120,7 @@ namespace Admin.Helpers
             List<SelectableDesignerItemViewModelBase> designerItems = new List<SelectableDesignerItemViewModelBase>();
 
             // convert steps to designer items
-            foreach(Step s in workflow.steps) 
+            foreach(Step s in workflow.Steps) 
             {
                 SelectableDesignerItemViewModelBase designerItem = StepToDesignerItem(s, diagramViewModel);
                 if (designerItem != null)
@@ -129,11 +132,11 @@ namespace Admin.Helpers
             }
             
             // iterate through steps and add connections and disable connectors
-            foreach(Step s in workflow.steps)
+            foreach(Step s in workflow.Steps)
             {
-                List<String> nextStepIds = s.nextStepIds;
+                List<String> nextStepIds = s.NextStepIds;
 
-                DesignerItemViewModelBase self = (DesignerItemViewModelBase) designerItems.First(x => x.Id == s.id);
+                DesignerItemViewModelBase self = (DesignerItemViewModelBase) designerItems.First(x => x.Id == s.Id);
                 self.enableRightConnector = false;
                 
                 FullyCreatedConnectorInfo sourceConnectorInfo = new FullyCreatedConnectorInfo(self, ConnectorOrientation.Output);
@@ -160,9 +163,9 @@ namespace Admin.Helpers
                 StartStep startStep = step.Clone<StartStep>();
                 Role selectedRole = new Role() 
                 {
-                    id = startStep.roleIds.First()
+                    Id = startStep.RoleIds.First()
                 };
-                StartStepViewModel startStepViewModel = new StartStepViewModel(step.id, diagramViewModel, step.left, step.top, selectedRole);
+                StartStepViewModel startStepViewModel = new StartStepViewModel(step.Id, diagramViewModel, step.Left, step.Top, selectedRole);
                 Console.WriteLine("return start step view model");
                 return startStepViewModel;
             }
@@ -171,15 +174,15 @@ namespace Admin.Helpers
                 Action action = step.Clone<Action>();
                 Role selectedRole = new Role()
                 {
-                    id = action.roleIds.First()
+                    Id = action.RoleIds.First()
                 };
-                ActionViewModel actionViewModel = new ActionViewModel(step.id, diagramViewModel, step.left, step.top, selectedRole);
+                ActionViewModel actionViewModel = new ActionViewModel(step.Id, diagramViewModel, step.Left, step.Top, selectedRole);
                 return actionViewModel;
             }
             else if (step.GetType() == typeof(FinalStep))
             {
                 FinalStep finalStep = step.Clone<FinalStep>();
-                FinalStepViewModel finalStepViewModel = new FinalStepViewModel(step.id, diagramViewModel, step.left, step.top);
+                FinalStepViewModel finalStepViewModel = new FinalStepViewModel(step.Id, diagramViewModel, step.Left, step.Top);
                 return finalStepViewModel;
             }
 
@@ -198,7 +201,7 @@ namespace Admin.Helpers
         {
             List<FullyCreatedConnectorInfo> connectors = new List<FullyCreatedConnectorInfo>();
 
-            foreach (String nextId in step.nextStepIds)
+            foreach (String nextId in step.NextStepIds)
             {
                 if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
                 {
