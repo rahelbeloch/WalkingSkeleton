@@ -214,7 +214,8 @@ public class LogicImp implements Logic {
         final List<String> subs = user.getMessagingSubs();
         final ArrayList<String> definiteSubs = new ArrayList<String>();
         final LogicResponse logicResponse = new LogicResponse();
-
+        final Role admin = persistence.loadRole(ADMINROLENAME);
+        
         if (subs != null && subs.size() > 0) {
             definiteSubs.add(subs.get(0));
             for (String sub : subs) {
@@ -227,19 +228,19 @@ public class LogicImp implements Logic {
             user.getMessagingSubs().addAll(definiteSubs);
 
         }
-        
-        if (!user.isActive()) {
-            try {
-                persistence.loadUser(user.getUsername());
+                
+        try {
+            final User oldUser = persistence.loadUser(user.getUsername());
+            if ((!user.hasRole(admin) && oldUser.hasRole(admin) && user.isActive()) || (user.hasRole(admin) && oldUser.hasRole(admin) && !user.isActive() && oldUser.isActive())) {
                 final List<User> admins = getAllActiveAdmins();
-                if (admins.size() <= 1) {
+                if (admins.size() < 2) {
                     throw new LastAdminDeletedException();
                 }
-            } catch (UserNotExistentException e) {
-                // Checkstyle expects at least one statement here
-                e.getClass();
             }
-        }        
+        } catch (UserNotExistentException e) {
+            // Checkstyle expects at least one statement here
+            e.getClass();
+        } 
         
         // finally user is added
         persistence.storeUser(user);
@@ -583,7 +584,7 @@ public class LogicImp implements Logic {
      * @param role - role to be deleted
      * @throws LogicException if there is a needed Exception
      */
-    public void deleteRoleFromUser(User user, Role role) throws LogicException {
+    private void deleteRoleFromUser(User user, Role role) throws LogicException {
         final Role adminRole = persistence.loadRole(ADMINROLENAME);
 
         // admin counter is 2 if the role to delete is not admin, to make sure it can be deleted.
