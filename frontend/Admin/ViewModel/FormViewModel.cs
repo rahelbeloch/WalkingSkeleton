@@ -195,6 +195,8 @@ namespace Admin.ViewModel
                         if (_selectedForm != null)
                         {
                             selectedForm = null;
+                            formDefModelId = "";
+                            formDefModelDescription = "";
                         }
                         FormEntry formEntry = new FormEntry();
                         formEntry.key = "";
