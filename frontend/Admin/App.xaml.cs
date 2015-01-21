@@ -14,6 +14,10 @@ namespace Admin
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// On StartUp Method to initiate a few ViewModels
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
