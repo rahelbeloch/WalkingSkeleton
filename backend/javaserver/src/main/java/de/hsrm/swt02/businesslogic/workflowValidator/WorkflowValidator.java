@@ -62,7 +62,7 @@ public class WorkflowValidator {
                             "Every step must have an assigned role.");
                 } else if (!isReachable(getStartStep(), step)) {
                     throw new UnreachableStepException("step " + step.getId()
-                            + "is not reachable.");
+                            + " is not reachable.");
                 }
             }
         }
