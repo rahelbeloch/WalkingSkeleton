@@ -3,11 +3,7 @@ package de.hsrm.testswt02.persistence;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
-import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.Workflow;
