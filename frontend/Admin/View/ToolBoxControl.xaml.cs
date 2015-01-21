@@ -21,6 +21,9 @@ namespace Admin
     /// </summary>
     public partial class ToolBoxControl : UserControl
     {
+        /// <summary>
+        /// Constructor for ToolBoxControl
+        /// </summary>
         public ToolBoxControl()
         {
             InitializeComponent();

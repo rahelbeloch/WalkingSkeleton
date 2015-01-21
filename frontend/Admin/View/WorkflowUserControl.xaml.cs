@@ -25,6 +25,9 @@ namespace Admin.View
     public partial class WorkflowUserControl : UserControl
     {
         
+        /// <summary>
+        /// Constructor for WorkflowUserControl
+        /// </summary>
         public WorkflowUserControl()
         {
             InitializeComponent();

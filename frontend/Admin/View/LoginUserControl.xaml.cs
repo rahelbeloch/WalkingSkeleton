@@ -20,6 +20,9 @@ namespace Admin.View
     /// </summary>
     public partial class LoginUserControl : UserControl
     {
+        /// <summary>
+        /// Constructor for LoginUserControl
+        /// </summary>
         public LoginUserControl()
         {
             InitializeComponent();

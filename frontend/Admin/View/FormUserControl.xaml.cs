@@ -19,6 +19,9 @@ namespace Admin.View
     /// </summary>
     public partial class FormUserControl : UserControl
     {
+        /// <summary>
+        /// Constructor for FormUserControl
+        /// </summary>
         public FormUserControl()
         {
             InitializeComponent();
