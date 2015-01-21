@@ -299,7 +299,7 @@ public class WorkflowResource {
                     .entity(String.valueOf(e
                             .getErrorCode())).build();
         }
-
+        workflow.convertIdListToReferences();
         try {
             logicResponse = LOGIC.addWorkflow(workflow);
             PUBLISHER.publishEvent(logicResponse);
