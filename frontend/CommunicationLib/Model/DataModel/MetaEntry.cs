@@ -19,14 +19,13 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private string _value;
         public string value { get { return _value; } set { _value = value; } }
+        private string _value;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private string _group;
         public string group { get { return _group; } set { _group = value; } }
-
+        private string _group;
     }
 }

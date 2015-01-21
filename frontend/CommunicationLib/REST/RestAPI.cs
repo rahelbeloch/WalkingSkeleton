@@ -24,7 +24,7 @@ namespace RestAPI
     /// </summary>
     public class InternalRequester
     {
-        public static RestClient client;
+        private static RestClient client;
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         ///<summary>
@@ -39,6 +39,10 @@ namespace RestAPI
             }
         }
 
+        /// <summary>
+        /// Refresh the rest client with new server url.
+        /// </summary>
+        /// <param name="serverAddress">the new server address</param>
         public void Refresh(string serverAddress)
         {
             client = new RestClient(serverAddress);

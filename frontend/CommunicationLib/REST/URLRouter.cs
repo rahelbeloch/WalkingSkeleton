@@ -75,7 +75,14 @@ namespace CommunicationLib
     /// </summary>
     public enum UrlMethod
     {
+        /// <summary>
+        /// Defines the resource request method.
+        /// </summary>
         Resource,
+
+        /// <summary>
+        /// Defines the operation request method.
+        /// </summary>
         Operation
     };
 }

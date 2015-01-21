@@ -13,8 +13,16 @@ namespace CommunicationLib
     /// </summary>
     public interface IRestRequester
     {
-        // Initialize Method
+        /// <summary>
+        /// Initialize Method for client properties.
+        /// </summary>
+        /// <param name="username">username of registered user</param>
+        /// <param name="password">password of registered user</param>
         void InitializeClientProperties(string username, String password);
+
+        /// <summary>
+        /// Reset client properties.
+        /// </summary>
         void DeleteClientProperties();
 
         // RESSOURCE-METHODS - get, post, update, delete - do something on the ressources
@@ -91,6 +99,10 @@ namespace CommunicationLib
         /// <returns>True if it worked, false/exception otherwise</returns>
         Boolean StepForward(string stepId, string itemId);
 
+        /// <summary>
+        /// Refreshs the rest client.
+        /// </summary>
+        /// <param name="serverAddress">new server address</param>
         void Refresh(string serverAddress);
     }
 }

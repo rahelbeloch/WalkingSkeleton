@@ -28,15 +28,14 @@ namespace RestAPI
         private string _myUsername;
         private String _myPassword;
         private String _myClientID;
-        private String serverAdress;
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// ComLib is used for messaging.
         /// </summary>
-        private InternalRequester _internRequester;
         public InternalRequester InternRequester;
+        private InternalRequester _internRequester;
 
         /// <summary>
         /// Default constructor, initializes the serialization settings and pre-strings for urls.
@@ -50,6 +49,10 @@ namespace RestAPI
             }
         }
 
+        /// <summary>
+        /// Refreshs the server connection or the rest client.
+        /// </summary>
+        /// <param name="serverAddress">new server address</param>
         public void Refresh(string serverAddress)
         {
             _internRequester.Refresh(serverAddress);
