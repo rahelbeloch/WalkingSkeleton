@@ -176,7 +176,7 @@ namespace Admin.ViewModel
         /// This method is called when the client receives a form from the server.
         /// </summary>
         /// <param name="form">form which will be added to the form collection</param>
-        public void updateForm(Form form)
+        public void UpdateForm(Form form)
         {
             _mainViewModel.formCollection.Add(form);
         }
