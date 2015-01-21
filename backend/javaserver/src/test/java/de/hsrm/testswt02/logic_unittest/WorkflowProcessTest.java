@@ -79,7 +79,7 @@ public class WorkflowProcessTest {
         rules.add(hiwi.getRolename());
         firstStep = new Action(rules, 1 + " Schritt");
         firstStep.getRoleIds().add(hiwi.getRolename());
-        FinalStep finalStep = new FinalStep(bennisRoles);
+        final FinalStep finalStep = new FinalStep(bennisRoles);
         finalStep.getRoleIds().add(hiwi.getRolename());
         // adding steps in workflow
         myWorkflow.addStep(startStep);
