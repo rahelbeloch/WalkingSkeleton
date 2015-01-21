@@ -77,7 +77,7 @@ namespace CommunicationLib.Model
 
             //Error code for persistence errors
             {11200, typeof(PersistenceException)},
-                
+            {11210, typeof(StorageFailedException)},
             {11220, typeof(AlreadyExistsException)},
                 {11221, typeof(UserAlreadyExistsException)},
                 {11222, typeof(RoleAlreadyExistsException)},
