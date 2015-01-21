@@ -106,7 +106,7 @@ public class UserResource {
         }
         try {
             logicResponse = LOGIC.addUser(user);
-        } catch (PersistenceException e1) {
+        } catch (LogicException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
@@ -154,7 +154,7 @@ public class UserResource {
         }
         try {
             logicResponse = LOGIC.addUser(user);
-        } catch (PersistenceException e1) {
+        } catch (LogicException e1) {
             LOGGER.log(Level.WARNING, e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }

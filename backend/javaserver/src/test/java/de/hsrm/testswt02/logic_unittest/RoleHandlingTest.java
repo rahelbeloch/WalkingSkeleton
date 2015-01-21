@@ -5,14 +5,10 @@ import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
-import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
@@ -71,10 +67,10 @@ public class RoleHandlingTest {
     
     /**
      * Test if roles can only be assigned once, will fail if not.
-     * @throws PersistenceException 
+     * @throws LogicException if an error in business logic occurs  
      */
     @Test
-    public void giveRoleOnlyOnce() throws PersistenceException {
+    public void giveRoleOnlyOnce() throws LogicException {
         final Role employee = new Role();
         employee.setRolename("employee");
         li.addRole(employee);

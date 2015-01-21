@@ -172,10 +172,10 @@ public class LogicTest {
 
     /**
      * Test if users can be added and retrieved.
-     * @throws PersistenceException 
+     * @throws LogicException if an error in businesslogic occurs 
      */
     @Test
-    public void addGetUserTest() throws PersistenceException {
+    public void addGetUserTest() throws LogicException {
         init();
         try {
             li.addUser(user);
@@ -188,10 +188,10 @@ public class LogicTest {
 
     /**
      * Test if deletion of a non existent user throws an exception.
-     * @throws PersistenceException 
+     * @throws LogicException if an error in businesslogic occurs  
      */
     @Test(expected = UserNotExistentException.class)
-    public void deleteUserTest() throws PersistenceException {
+    public void deleteUserTest() throws LogicException {
         init();
         try {
             li.addUser(user);

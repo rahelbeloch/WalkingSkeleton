@@ -13,6 +13,7 @@ import de.hsrm.swt02.businesslogic.exceptions.LastAdminDeletedException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
+import de.hsrm.swt02.businesslogic.exceptions.RoleStillInUseExeption;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.businesslogic.protocol.Message;
 import de.hsrm.swt02.businesslogic.protocol.MessageOperation;
@@ -208,7 +209,7 @@ public class LogicImp implements Logic {
     }
 
     @Override
-    public LogicResponse addUser(User user) throws PersistenceException {
+    public LogicResponse addUser(User user) throws LogicException {
         // check if there are duplicate messagingsubs
         final List<String> subs = user.getMessagingSubs();
         final ArrayList<String> definiteSubs = new ArrayList<String>();
@@ -220,7 +221,6 @@ public class LogicImp implements Logic {
                 if (!definiteSubs.contains(sub)) {
                     definiteSubs.add(sub);
                 }
-
             }
             // messagingsublist is cleared and filled with the new list
             user.getMessagingSubs().clear();
@@ -228,13 +228,19 @@ public class LogicImp implements Logic {
 
         }
         
+        if (!user.isActive()) {
+            try {
+                persistence.loadUser(user.getUsername());
+                final List<User> admins = getAllActiveAdmins();
+                if (admins.size() <= 1) {
+                    throw new LastAdminDeletedException();
+                }
+            } catch (UserNotExistentException e) {
+                // Checkstyle expects at least one statement here
+                e.getClass();
+            }
+        }        
         
-//        Logik (zusätzlich auch bei deleteUser)
-//        saveUser(u):
-//          if us.isNew && !u.active:
-//            aa = getAllActiveAdmins()
-//            if aa.length == 1 && aa[0] == u
-//        
         // finally user is added
         persistence.storeUser(user);
         logicResponse.add(Message.build(MessageTopic.USER_INFO,
@@ -292,14 +298,10 @@ public class LogicImp implements Logic {
      * 
      * @param username the username
      * @return a list of workflows
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     * @throws CloneNotSupportedException is thrown if the clone method is not
-     *             implemented
-     * @throws NoPermissionException 
+     * @throws LogicException if an error in businesslogic occurs 
      */
     public List<Workflow> getAllWorkflowsByUserWithItems(String username)
-            throws PersistenceException, CloneNotSupportedException, NoPermissionException
+            throws LogicException
     {
         persistence.loadUser(username);
         final LinkedList<Workflow> workflows = new LinkedList<>();
@@ -309,7 +311,12 @@ public class LogicImp implements Logic {
                 for (Item i : wf.getItems()) {
                     final Item loadedItem = persistence.loadItem(i.getId());
                     if (checkAuthorization(loadedItem, username)) {
-                        final Workflow copyOfWf = (Workflow) wf.clone();
+                        Workflow copyOfWf;
+                        try {
+                            copyOfWf = (Workflow) wf.clone();
+                        } catch (CloneNotSupportedException e) {
+                            throw new StorageFailedException();
+                        }
                         workflows.add(copyOfWf);
                         break;
                     }
@@ -413,6 +420,23 @@ public class LogicImp implements Logic {
         }
         return users;
     }
+    
+    /**
+     * method to get all admin users that are not marked inactive.
+     * @return admins - list of active admins
+          * @throws PersistenceException if there is a problem in persistence
+     */
+    public List<User> getAllActiveAdmins() throws PersistenceException {
+        
+        final Role adminRole = persistence.loadRole(ADMINROLENAME);
+        final List<User> admins = new LinkedList<>();
+        for (User u: getAllActiveUsers()) {
+            if (u.hasRole(adminRole)) {
+                admins.add(u);
+            }
+        }
+        return admins;
+    }
 
 
     @Override
@@ -436,7 +460,7 @@ public class LogicImp implements Logic {
 
         if (adminRequired) {
             for (Role aktRole : user.getRoles()) {
-                if (aktRole.getRolename().equals("admin")) {
+                if (aktRole.getRolename().equals(ADMINROLENAME)) {
                     return true;
                 }
             }
@@ -473,10 +497,9 @@ public class LogicImp implements Logic {
      * @param item the requested item
      * @param username the user who requests the item
      * @return true if authorized else false
-     * @throws PersistenceException 
-     * @throws NoPermissionException 
+     * @throws LogicException if a persistence or LogIn Exception occurs
      */
-    public boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException {
+    public boolean checkAuthorization(Item item, String username) throws LogicException {
         final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
         
         if (checkUserIsAdmin(username)) {
@@ -617,9 +640,8 @@ public class LogicImp implements Logic {
         }
 
         if (roleInUse) {
-            // role is still active - can not be deleted, it is in use --> write
-            // a new exception
-            throw new NoPermissionException(
+            // role is still active - cannot be deleted beacuse it is in use
+            throw new RoleStillInUseExeption(
                     "[Logic] No Deletion allowed - Role " + rolename
                             + " is still in use.");
         }
