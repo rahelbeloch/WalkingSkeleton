@@ -414,6 +414,10 @@ public class LogicImp implements Logic {
         } catch (UserNotExistentException e) {
             throw new LogInException();
         }
+        
+        if (!user.isActive()) {
+            throw new LogInException();
+        }
 
         // if (!user.getPassword().equals(password)) {
         // throw new LogInException();
@@ -527,10 +531,11 @@ public class LogicImp implements Logic {
             for (User userToCheck : persistence.loadAllUsers()) {
                 if (userToCheck.hasRole(adminRole)) {
                     atLeastOneAdmin = false;
+                    // TODO: und der letzte??
                 }
             }
         }
-        if (atLeastOneAdmin == false) {
+        if (!atLeastOneAdmin) {
             throw new LastAdminDeletedException(
                     "[Logic] No Deletion allowed - Role " + adminRolename
                             + " needs to have one assigned User.");
