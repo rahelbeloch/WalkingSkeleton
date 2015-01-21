@@ -33,7 +33,7 @@ namespace Admin
             
         }
 
-        private Role _selectedRole = new Role();
+        private Role _selectedRole = null;
         public Role selectedRole
         {
             get

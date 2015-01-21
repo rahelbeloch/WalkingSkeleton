@@ -83,14 +83,14 @@ namespace Admin.Helpers
             {
                 StartStep startStep = step.Clone<StartStep>();
                 startStep.id = getUniqueId();
-                startStep.roleIds.Add(((StartStepViewModel)designerItem).selectedRole.id);
+                startStep.roleIds.Add(((StartStepViewModel)designerItem).selectedRole.rolename);
                 return startStep;
             }
             else if (designerItem.GetType() == typeof(ActionViewModel))
             {
                 Action action = step.Clone<Action>();
                 action.id = getUniqueId();
-                action.roleIds.Add(((ActionViewModel)designerItem).selectedRole.id);
+                action.roleIds.Add(((ActionViewModel)designerItem).selectedRole.rolename);
                 action.description = ((ActionViewModel)designerItem).description;
                 return action;
             }

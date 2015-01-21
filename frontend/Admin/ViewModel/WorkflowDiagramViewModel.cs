@@ -468,6 +468,8 @@ namespace Admin.ViewModel
             if (diagramViewModel.SelectedItemsCollection.Count == 0 || diagramViewModel.SelectedItemsCollection.Count > 1)
             {
                 actStepVisibility = Visibility.Collapsed;
+                descriptionVisibility = Visibility.Collapsed;
+                roleVisibility = Visibility.Collapsed;
             }
         }
 
