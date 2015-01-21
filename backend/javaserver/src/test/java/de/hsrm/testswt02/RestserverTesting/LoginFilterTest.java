@@ -1,5 +1,7 @@
 package de.hsrm.testswt02.RestserverTesting;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,9 +10,11 @@ import java.util.Properties;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Response;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.restserver.RestServer;
@@ -19,12 +23,20 @@ import de.hsrm.swt02.restserver.RestServer;
  * 
  * @author akoen001
  *
+ * This Class tests the loginFilter
+ *
  */
 public class LoginFilterTest {
 
     public static RestServer restServer;
     public static Client client;
     public static String targetUrl;
+    public static String clientUser = "Alex";
+    public static String headerUsername = "TestAdmin";
+    public static String headerPW = "";
+    public static String headerClientID = "admin";
+    final int okCode = 200;
+    final int errorCode = 500;
     
     /**
      * This method sets and starts the REST-Server. Additionally it provides a test client.
@@ -51,6 +63,51 @@ public class LoginFilterTest {
             e.printStackTrace();
         }
         targetUrl = properties.getProperty("RestServerURI");
+    }
+    
+    /**
+     * Tests if unauthorized requests (with existent users) get blocked.
+     */
+    @Test
+    public void testUnauthorizedRequest() {
+        final Response resp = client.target(targetUrl)
+                .path("resource/workflows").request()
+                .header("username", clientUser)
+                .header("password", headerPW)
+                .header("client_id",headerClientID)
+                .get();
+        
+        assertTrue(resp.getStatus() == errorCode);
+    }
+    
+    /**
+     * Tests if authorized requests may pass.
+     */
+    @Test
+    public void testAuthorizedRequest() {
+        final Response resp = client.target(targetUrl)
+                .path("resource/workflows").request()
+                .header("username", headerUsername)
+                .header("password", headerPW)
+                .header("client_id",headerClientID)
+                .get();
+        
+        assertTrue(resp.getStatus() == okCode);
+    }
+    
+    /**
+     * Tests if made up usernames(e.g. third party invaders) can access data.
+     */
+    @Test
+    public void testNonExistentUserRequest() {
+        final Response resp = client.target(targetUrl)
+                .path("resource/workflows").request()
+                .header("username", "LeakData")
+                .header("password", "abc")
+                .header("client_id",headerClientID)
+                .get();
+        
+        assertTrue(resp.getStatus() == errorCode);
     }
     
     /**
