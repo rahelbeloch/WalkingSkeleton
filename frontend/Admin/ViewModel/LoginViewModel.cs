@@ -29,8 +29,6 @@ namespace Admin.ViewModel
             _mainViewModel = mainViewModel;
             _serverAddress = ConfigurationManager.AppSettings[Constants.SERVER_ADDRESS_NAME];
             _brokerAddress = ConfigurationManager.AppSettings[Constants.BROKER_ADDRESS_NAME];
-            Console.WriteLine(_serverAddress);
-            Console.WriteLine(_brokerAddress);
         }
 
         /// <summary>
