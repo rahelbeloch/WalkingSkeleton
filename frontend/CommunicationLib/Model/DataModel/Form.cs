@@ -15,13 +15,13 @@ namespace CommunicationLib.Model
         /// <summary>
         /// List of form definitions/form entries.
         /// </summary>
-        public List<FormEntry> FormDef { get { return _formDef; } set { _formDef = value; } }
+        public List<FormEntry> formDef { get { return _formDef; } set { _formDef = value; } }
         private List<FormEntry> _formDef;
         
         /// <summary>
         /// Description of this form.
         /// </summary>
-        public string Description { get { return _description; } set { _description = value; } }
+        public string description { get { return _description; } set { _description = value; } }
         private string _description;
         
         /// <summary>

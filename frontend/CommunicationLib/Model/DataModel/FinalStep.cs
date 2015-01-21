@@ -17,7 +17,7 @@ namespace CommunicationLib.Model
         public FinalStep()
             : base()
         {
-            Label = "Endzustand";
+            label = "Endzustand";
         }
     }
 }

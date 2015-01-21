@@ -216,7 +216,7 @@ namespace RestAPI
         public Boolean UpdateObject(RootElement sendObj)
         {
             IRestResponse response;
-            String url = URLRouter.generateUrl(UrlMethod.Resource, sendObj.GetType(), new string[] { sendObj.Id });
+            String url = URLRouter.generateUrl(UrlMethod.Resource, sendObj.GetType(), new string[] { sendObj.id });
             
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, Constants.JSON_SETTINGS);
@@ -425,11 +425,11 @@ namespace RestAPI
         /// <param name="workflow">The worklow which steps are handled</param>
         public static void convertIdListToReferences(Workflow workflow)
         {
-            foreach (Step s in workflow.Steps)
+            foreach (Step s in workflow.steps)
             {
-                foreach (String id in s.NextStepIds)
+                foreach (String id in s.nextStepIds)
                 {
-                    s.NextSteps.Add(workflow.GetStepById(id));
+                    s.nextSteps.Add(workflow.GetStepById(id));
                 }
             }
         }

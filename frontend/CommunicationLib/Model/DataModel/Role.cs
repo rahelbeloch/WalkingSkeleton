@@ -16,7 +16,7 @@ namespace CommunicationLib.Model
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         [JsonIgnore]
-        public string Rolename { get { return Id; } set { Id = value; } }
+        public string rolename { get { return id; } set { id = value; } }
 
         /// <summary>
         /// Constructor for Workflow

@@ -14,16 +14,16 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public string Description { get { return _description; } set { _description = value; } }
+        public string description { get { return _description; } set { _description = value; } }
         private string _description;
         
         /// <summary>
-        /// Constructor for Action.
+        /// Constructor for Action
         /// </summary>
         public Action()
             : base()
         {
-            Label = "Aktion";
+            label = "Aktion";
         }
     }
 }

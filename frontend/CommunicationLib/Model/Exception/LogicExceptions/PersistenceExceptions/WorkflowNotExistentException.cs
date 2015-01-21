@@ -14,7 +14,7 @@ namespace CommunicationLib.Exception
         /// <summary>
         /// Each Exception has an number, here it is 11252. 
         /// </summary>
-        new public int number { get { return _number; } }
+        new public int Number { get { return _number; } }
         private int _number = 11252;
         
         /// <summary>

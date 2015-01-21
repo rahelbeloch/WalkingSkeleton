@@ -14,18 +14,18 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public string key { get { return Id; } set { Id = value; } }
+        public string key { get { return id; } set { id = value; } }
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public string Value { get { return _value; } set { _value = value; } }
+        public string value { get { return _value; } set { _value = value; } }
         private string _value;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public string Group { get { return _group; } set { _group = value; } }
+        public string group { get { return _group; } set { _group = value; } }
         private string _group;
     }
 }
