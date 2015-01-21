@@ -16,10 +16,13 @@ using System.Windows.Shapes;
 namespace Client
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Interactive for MainWindow.xaml.
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Constructor for MainWindow.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();

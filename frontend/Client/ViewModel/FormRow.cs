@@ -9,18 +9,20 @@ using System.Threading.Tasks;
 namespace Client.ViewModel
 {
     /// <summary>
-    /// ViewModel class which holds all data of a row of a formular
+    /// ViewModel class which holds all data of a row of a formular.
     /// </summary>
     public class FormRow
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private Form form;
+
         private Item actItem;
-        private String _key;
+        
         /// <summary>
         /// the key of the key-value-pair
         /// </summary>
         public String key { get { return _key; } }
+        private String _key;
+
         private String _value;
         /// <summary>
         /// the value of the key-value-pair
@@ -32,13 +34,22 @@ namespace Client.ViewModel
                 metaEntryItem.value = value;
             }
         }
-        private String _datatype;
+        
         /// <summary>
         /// the datatype of the value
         /// </summary>
         public String datatype { get { return _datatype; } }
+        private String _datatype;
+        
         private List<MetaEntry> _metadata;
         private MetaEntry metaEntryItem;
+        
+        /// <summary>
+        /// Constructor for a FormRow.
+        /// </summary>
+        /// <param name="actItem">the item for this row</param>
+        /// <param name="key">the key (meaning of this field)</param>
+        /// <param name="datatype">datatype of this field</param>
         public FormRow(Item actItem, String key, String datatype)
         {
             this.actItem = actItem;

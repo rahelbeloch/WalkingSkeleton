@@ -27,6 +27,10 @@ namespace Client.ViewModel
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         
+        /// <summary>
+        /// Constructor for DashboardViewModel with its parent MainViewModel.
+        /// </summary>
+        /// <param name="mainViewModelInstanz"></param>
         public DashboardViewModel(MainViewModel mainViewModelInstanz)
         {
             _mainViewModel = mainViewModelInstanz;
@@ -209,7 +213,7 @@ namespace Client.ViewModel
         /// Finds the step for the given id in a single workflow.
         /// </summary>
         /// <param name="id">id of the step</param>
-        /// <param name="workflowId">the associated workflowId</param>
+        /// <param name="workflow">the associated workflow</param>
         /// <returns>the fitting step or null</returns>
         private Step GetStepById(int id, Workflow workflow)
         {
@@ -271,7 +275,6 @@ namespace Client.ViewModel
         /// <summary>
         /// Command to step forward, called from the gui.
         /// </summary>
-        private ICommand _stepForwardCommand;
         public ICommand stepForwardCommand
         {
             get
@@ -295,7 +298,11 @@ namespace Client.ViewModel
                 return _stepForwardCommand;
             }
         }
-        private ICommand _saveItemCommand;
+        private ICommand _stepForwardCommand;
+        
+        /// <summary>
+        /// Command to save an item. Called from the gui.
+        /// </summary>
         public ICommand saveItemCommand
         {
             get
@@ -318,12 +325,12 @@ namespace Client.ViewModel
                 return _saveItemCommand;
             }
         }
-
+        private ICommand _saveItemCommand;
+        
         /// <summary>
         /// Logout command for the user;
         /// the data is deleted an view changes to to login view.
         /// </summary>
-        private ICommand _logoutCommand;
         public ICommand logoutCommand
         {
             get
@@ -346,8 +353,11 @@ namespace Client.ViewModel
                 return _logoutCommand;
             }
         }
+        private ICommand _logoutCommand;
 
-        private ICommand _startWorkflowCommand;
+        /// <summary>
+        /// Command to start a workflow.
+        /// </summary>
         public ICommand startWorkflowCommand
         {
             get
@@ -366,11 +376,14 @@ namespace Client.ViewModel
                 return _startWorkflowCommand;
             }
         }
-
+        private ICommand _startWorkflowCommand;
+        
 
         #region properties
 
-        private DashboardRow _selectedRow = null;
+        /// <summary>
+        /// The actual selected row in table of workflowViewModels.
+        /// </summary>
         public DashboardRow selectedRow
         {
             get
@@ -383,11 +396,14 @@ namespace Client.ViewModel
                 OnChanged("selectedRow");
             }
         }
-
+        private DashboardRow _selectedRow = null;
+        
         private IRestRequester _restRequester;
         private MainViewModel _mainViewModel;
 
-        private String _userName = "";
+        /// <summary>
+        /// The username of the logged in user.
+        /// </summary>
         public String userName
         {
             get { return _userName; }
@@ -401,22 +417,30 @@ namespace Client.ViewModel
                 }
                 else
                 {
-
-                        InitModel();
-                    
+                        InitModel();            
                 }
             }
         }
+        private String _userName = "";
 
-        private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
+        /// <summary>
+        /// List of all workflows from server, displayed in this ViewModel.
+        /// </summary>
         public ObservableCollection<Workflow> workflows { get { return _workflows; } }
-
-        private ObservableCollection<string> _startableWorkflows = new ObservableCollection<string>();
+        private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
+        
+        /// <summary>
+        /// List of all ids from workflows displayed in this ViewModel.
+        /// </summary>
         public ObservableCollection<string> startableWorkflows { get { return _startableWorkflows; } }
-
-        private ObservableCollection<DashboardWorkflow> _dashboardWorkflows = new ObservableCollection<DashboardWorkflow>();
+        private ObservableCollection<string> _startableWorkflows = new ObservableCollection<string>();
+        
+        /// <summary>
+        /// List of all ViewModels of the workflows in the workflow list.
+        /// </summary>
         public ObservableCollection<DashboardWorkflow> dashboardWorkflows { get { return _dashboardWorkflows; } }
-
+        private ObservableCollection<DashboardWorkflow> _dashboardWorkflows = new ObservableCollection<DashboardWorkflow>();
+        
         private List<Item> _relevantItems = new List<Item>();
 
         #endregion

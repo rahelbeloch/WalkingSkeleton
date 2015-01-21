@@ -13,6 +13,9 @@ namespace Client.ViewModel
     /// </summary>
     public class ViewModelBase : INotifyPropertyChanged
     {
+        /// <summary>
+        /// The event for a changed property.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
