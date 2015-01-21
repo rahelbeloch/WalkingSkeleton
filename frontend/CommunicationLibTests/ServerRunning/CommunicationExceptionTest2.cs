@@ -55,23 +55,25 @@ namespace UnitTestProject1
 
             // a startStep
             StartStep startStep = new StartStep();
+            startStep.id = "1";
             startStep.roleIds.Add("Testrole");
             newWf.AddStep(startStep);
-
+            
             // an action
             Action act = new Action();
+            act.id = "2";
             act.roleIds.Add("Testrole");
             newWf.AddStep(act);
-
+            
             // a final step
             FinalStep fStep = new FinalStep();
+            fStep.id = "3";
             fStep.roleIds.Add("Testrole");
             newWf.AddStep(fStep);
 
             myRequester.PostObject(testRole);
             myRequester.PostObject(testUser);
             myRequester.PostObject(newWf);
-
             myRequester.StepForward("1", "2");
         }
 

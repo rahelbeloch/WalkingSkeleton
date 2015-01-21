@@ -37,11 +37,11 @@ namespace UnitTestProject1
         public static void ClassInit(TestContext context)
         {
             // initialize admin client requester
-            myRequester = new RestRequester("admin", "htp://localhost:18887");
+            myRequester = new RestRequester("admin", "http://localhost:18887");
             myRequester.InitializeClientProperties("TestAdmin", "abc123");
 
             // initialize user client requester
-            myClientRequester = new RestRequester("client", "htp://localhost:18887");
+            myClientRequester = new RestRequester("client", "http://localhost:18887");
             
             // Some Loggings
             myListener = new TextWriterTraceListener("../../CommunicationTestLog.log", "myListener");
@@ -173,6 +173,18 @@ namespace UnitTestProject1
         [TestMethod]
         public void testDeleteObject()
         {
+            // generate some TestData
+            generateTestUserAndWorkflow("DeleteTest");
+            // set the right authentication settings to user client
+            myClientRequester.InitializeClientProperties("DeleteTest", "password");
+
+            IList<Workflow> eleList = myClientRequester.GetAllElements<Workflow>();
+
+            string wfIf = eleList[0].id;
+
+            Workflow deleteWf = myRequester.DeleteObject<Workflow>(wfIf);
+
+            Assert.IsTrue(wfIf.Equals(deleteWf.id));
         }
 
         /// <summary>
@@ -248,19 +260,19 @@ namespace UnitTestProject1
             // a startStep
             StartStep startStep = new StartStep();
             startStep.roleIds.Add("Testrole");
-            startStep.id = "";
+            startStep.id = "1";
             newWf.AddStep(startStep);
 
             // an action
             Action act = new Action();
             act.roleIds.Add("Testrole");
-            act.id = "";
+            act.id = "2";
             newWf.AddStep(act);
 
             // a final step
             FinalStep fStep = new FinalStep();
             fStep.roleIds.Add("Testrole");
-            fStep.id = "";
+            fStep.id = "3";
             newWf.AddStep(fStep);
 
             myRequester.PostObject(testUser);
