@@ -98,7 +98,7 @@
                         </DataGrid.RowValidationErrorTemplate>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Schlüssel" Binding="{Binding key}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Wert" Binding="{Binding value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                            <DataGridTextColumn Header="Wert" Binding="{Binding value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DataGridTextColumn Header="Datentyp" Binding="{Binding datatype}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>

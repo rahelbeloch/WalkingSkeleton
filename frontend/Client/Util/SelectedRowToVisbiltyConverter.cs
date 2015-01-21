@@ -11,6 +11,14 @@ namespace Client.Util
 {
     public class SelectedRowToVisbiltyConverter : IValueConverter
     {
+        /// <summary>
+        /// converts the selected Row to Visbility
+        /// </summary>
+        /// <param name="value">The selected Row</param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns>fitting Visibility</returns>
         public object Convert(object value, Type targetType,
         object parameter, CultureInfo culture)
         {

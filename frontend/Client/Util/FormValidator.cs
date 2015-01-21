@@ -16,6 +16,12 @@ namespace Client.Util
     public class FormValidator : ValidationRule
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        /// <summary>
+        /// Validates the edited value in the formular
+        /// </summary>
+        /// <param name="value">the BindingGroup for the edited value</param>
+        /// <param name="cultureInfo"></param>
+        /// <returns></returns>
         public override ValidationResult Validate
           (object value, System.Globalization.CultureInfo cultureInfo)
         {
