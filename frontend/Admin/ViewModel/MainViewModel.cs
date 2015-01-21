@@ -276,32 +276,32 @@ namespace Admin.ViewModel
 
         void IDataReceiver.WorkflowUpdate(Workflow workflow)
         {
-            logger.Info("Received Workflow for Update: ID=" + workflow.Id);
+            logger.Info("Received Workflow for Update: ID=" + workflow.id);
             Application.Current.Dispatcher.Invoke(new System.Action(() => _oldWorkflowViewModel.updateWorkflows(workflow)));
             Application.Current.Dispatcher.Invoke(new System.Action(() => _workflowViewModel.UpdateWorkflows(workflow)));
         }
 
         void IDataReceiver.ItemUpdate(Item item)
         {
-            logger.Info("Received Item for Update: ID=" + item.Id);
+            logger.Info("Received Item for Update: ID=" + item.id);
             Application.Current.Dispatcher.Invoke(new System.Action(() => _oldWorkflowViewModel.updateItemFromWorkflow(item)));
         }
 
         void IDataReceiver.UserUpdate(User user)
         {
-            logger.Info("Received User for Update: ID=" + user.Username);
+            logger.Info("Received User for Update: ID=" + user.username);
             Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.UserUpdate(user)));
         }
 
         void IDataReceiver.RoleUpdate(Role role)
         {
-            logger.Info("Received Role for Update: ID=" + role.Rolename);
+            logger.Info("Received Role for Update: ID=" + role.rolename);
             Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.RoleUpdate(role)));
         }
 
         void IDataReceiver.FormUpdate(Form form)
         {
-            logger.Info("Received Form for Update: ID=" + form.Id);
+            logger.Info("Received Form for Update: ID=" + form.id);
             Application.Current.Dispatcher.Invoke(new System.Action(() => _formViewModel.updateForm(form)));
 
         }

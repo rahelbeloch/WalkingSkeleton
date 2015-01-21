@@ -103,7 +103,7 @@ namespace Admin.ViewModel
             }
             set
             {
-                if (actWorkflow != null && !actWorkflow.Active)
+                if (actWorkflow != null && !actWorkflow.active)
                 {
                     _workflowActivity = "Aktivieren";
                 }
@@ -194,7 +194,7 @@ namespace Admin.ViewModel
                 _items.Clear();
                 if (_actWorkflow != null)
                 {
-                    _actWorkflow.Items.ForEach(_items.Add);
+                    _actWorkflow.items.ForEach(_items.Add);
                 }
 
                 OnChanged("actWorkflow");
@@ -288,7 +288,7 @@ namespace Admin.ViewModel
 
             foreach (Workflow w in _workflows)
             {
-                if (w.Id.Equals(newWorkflow.Id))
+                if (w.id.Equals(newWorkflow.id))
                 {
                     _workflows.Remove(w);
                     changed = true;
@@ -297,7 +297,7 @@ namespace Admin.ViewModel
             }
 
             _workflows.Add(newWorkflow);
-            logger.Info("Workflow ID=" + newWorkflow.Id + (changed ? " changed" : " added"));
+            logger.Info("Workflow ID=" + newWorkflow.id + (changed ? " changed" : " added"));
 
             _actWorkflow = null;
             _items.Clear();
@@ -317,21 +317,21 @@ namespace Admin.ViewModel
 
             foreach (Workflow w in _workflows)
             {
-                if (w.Id.Equals(item.WorkflowId))
+                if (w.id.Equals(item.workflowId))
                 {
                     workflowToUpdate = w;
                     _workflows.Remove(w);
-                    workflowToUpdate.Items.Remove(item);
+                    workflowToUpdate.items.Remove(item);
                     break;
                 }
             }
-            workflowToUpdate.Items.Add(item);
+            workflowToUpdate.items.Add(item);
             _workflows.Add(workflowToUpdate);
 
             if (_actWorkflow != null)
             {
                 _items.Clear();
-                _actWorkflow.Items.ForEach(_items.Add);
+                _actWorkflow.items.ForEach(_items.Add);
                 OnChanged("items");
             }
             
@@ -408,7 +408,7 @@ namespace Admin.ViewModel
                             selectedTabId = 0;
                             _workflowModel = actWorkflow.Clone<Workflow>();
                             _workflow.Clear();
-                            foreach (Step step in _workflowModel.Steps)
+                            foreach (Step step in _workflowModel.steps)
                             {
                                 _workflow.Add(step);
                             }
@@ -433,14 +433,14 @@ namespace Admin.ViewModel
                         try
                         {
 
-                            if (_actWorkflow.Active)
+                            if (_actWorkflow.active)
                             {
-                                _actWorkflow.Active = false;
+                                _actWorkflow.active = false;
                                 _restRequester.UpdateObject(_actWorkflow);
                             }
                             else
                             {
-                                _actWorkflow.Active = true;
+                                _actWorkflow.active = true;
                                 _restRequester.UpdateObject(_actWorkflow);
                             }
                             _workflowActivity = "Deaktivieren";
@@ -488,16 +488,16 @@ namespace Admin.ViewModel
                             // set all ids in workflow to empty string, to avoid sending 'null'; otherwise problems with parsing!
                             if (_workflowModel != actWorkflow)
                             {
-                                _workflowModel.Id = "";     
+                                _workflowModel.id = "";     
                             }
 
-                            foreach (Step step in _workflowModel.Steps)
+                            foreach (Step step in _workflowModel.steps)
                             {
                                 if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
                                 {
-                                    step.NextStepIds = new List<string>();
+                                    step.nextStepIds = new List<string>();
                                 }
-                                step.Id = "";
+                                step.id = "";
                             }
 
                             _restRequester.PostObject(_workflowModel);
@@ -535,7 +535,7 @@ namespace Admin.ViewModel
                         if (_selectedStep is StartStep)
                         {
                             StartStep startStep = new StartStep();
-                            startStep.RoleIds.Add(selectedRole.Rolename);
+                            startStep.roleIds.Add(selectedRole.rolename);
 
                             _workflow.Add(startStep);
                             _workflowModel.AddStep(startStep);
@@ -545,7 +545,7 @@ namespace Admin.ViewModel
                             Action action = new Action();
                             
                             action.Description = stepDescription;
-                            action.RoleIds.Add(selectedRole.Rolename);
+                            action.roleIds.Add(selectedRole.rolename);
 
                             _workflow.Add(action);
                             _workflowModel.AddStep(action);
@@ -553,7 +553,7 @@ namespace Admin.ViewModel
                         else if (_selectedStep is FinalStep)
                         {
                             FinalStep finalStep = new FinalStep();
-                            finalStep.RoleIds.Add(selectedRole.Rolename);
+                            finalStep.roleIds.Add(selectedRole.rolename);
 
                             _workflow.Add(finalStep);
                             _workflowModel.AddStep(finalStep);

@@ -207,7 +207,7 @@ namespace Admin.ViewModel
             }
             set
             {
-                if (actWorkflow != null && !actWorkflow.Active)
+                if (actWorkflow != null && !actWorkflow.active)
                 {
                     _workflowActivity = "Aktivieren";
                 }
@@ -280,8 +280,12 @@ namespace Admin.ViewModel
                 _items.Clear();
                 if (_actWorkflow != null)
                 {
+<<<<<<< .mine
+                    _actWorkflow.items.ForEach(_items.Add);
+=======
                     _actWorkflow.items.ForEach(_items.Add);
                     selectedForm = _actWorkflow.form.Clone<Form>();
+>>>>>>> .r1492
                     showDetails = Visibility.Visible;
                     WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
                     DiagramViewModel.locked = true;
@@ -398,7 +402,7 @@ namespace Admin.ViewModel
 
             foreach (Workflow w in _workflows)
             {
-                if (w.Id.Equals(newWorkflow.Id))
+                if (w.id.Equals(newWorkflow.id))
                 {
                     _workflows.Remove(w);
                     changed = true;
@@ -407,7 +411,7 @@ namespace Admin.ViewModel
             }
 
             _workflows.Add(newWorkflow);
-            logger.Info("Workflow ID=" + newWorkflow.Id + (changed ? " changed" : " added"));
+            logger.Info("Workflow ID=" + newWorkflow.id + (changed ? " changed" : " added"));
 
             _actWorkflow = null;
             _items.Clear();
@@ -428,23 +432,27 @@ namespace Admin.ViewModel
 
             foreach (Workflow w in _workflows)
             {
-                if (w.Id.Equals(item.WorkflowId))
+                if (w.id.Equals(item.workflowId))
                 {
                     Console.WriteLine("BLA_2");
                     workflowToUpdate = w;
                     _workflows.Remove(w);
-                    workflowToUpdate.Items.Remove(item);
+                    workflowToUpdate.items.Remove(item);
                     break;
                 }
             }
-            workflowToUpdate.Items.Add(item);
+            workflowToUpdate.items.Add(item);
             _workflows.Add(workflowToUpdate);
 
             if (_actWorkflow != null)
             {
                 Console.WriteLine("BLA_3");
                 _items.Clear();
+<<<<<<< .mine
+                _actWorkflow.items.ForEach(_items.Add);
+=======
                 actWorkflow.Items.ForEach(_items.Add);
+>>>>>>> .r1492
                 OnChanged("items");
             }
             
@@ -534,9 +542,9 @@ namespace Admin.ViewModel
                         {
                             Boolean activeItems = false;
 
-                            foreach (Item i in actWorkflow.Items)
+                            foreach (Item i in actWorkflow.items)
                             {
-                                if (!i.Finished)
+                                if (!i.finished)
                                 {
                                     activeItems = true;
                                     break;
@@ -649,11 +657,11 @@ namespace Admin.ViewModel
                 newWorkflow.form = selectedForm.Clone<Form>();
                 if (actWorkflow != null)
                 {
-                    newWorkflow.Id = actWorkflow.Id;
-                    newWorkflow.Active = actWorkflow.Active;
+                    newWorkflow.id = actWorkflow.id;
+                    newWorkflow.active = actWorkflow.active;
                     if (toggleActivity)
                     {
-                        newWorkflow.Active = !newWorkflow.Active;
+                        newWorkflow.active = !newWorkflow.active;
                     }
                 }
 
