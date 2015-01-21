@@ -136,9 +136,9 @@ public interface Persistence {
     Role loadRole(String id) throws PersistenceException;
 
     /**
-     * Method for removing a role from datbase.
+     * Method for removing a role from database.
      * @param rolename is the name of the role
-     * @exception RoleNotExistentException if the role doesnt exist in the persistence
+     * @exception RoleNotExistentException if the role doesn't exist in the persistence
      * @throws RoleNotExistentException
      */
     void deleteRole(String rolename) throws RoleNotExistentException;
@@ -161,7 +161,7 @@ public interface Persistence {
     void storeForm(Form form) throws PersistenceException;
 
     /**
-     * deletes a form, given by formname, from database.
+     * deletes a form, given by the form name, from database.
      * 
      * @param formname of form to be deleted
      * @throws PersistenceException if an error in persistence occurs
@@ -192,7 +192,7 @@ public interface Persistence {
     void save();
     
     /**
-     * Method to load the data model from filesystem. 
+     * Method to load the data model from file system. 
      * File is read, in case of reading errors or missing file some default test data 
      * is load.
      */
