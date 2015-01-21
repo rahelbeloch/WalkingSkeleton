@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -42,13 +43,22 @@ public class RoleResource {
     /**
      * This method returns a requested role.
      * @param rolename indicates which role is looked for
+     * @param username the user requesting the service
      * @return the requested role
      * @throws RoleNotExistentException 
      */
     @GET
     @Path("roles/{rolename}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getRole(@PathParam("rolename") String rolename) {
+    public Response getRole(@PathParam("rolename") String rolename, @PathParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         final String loggingBody = PREFIX + "GET /resource/roles/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
         Role role;
@@ -73,13 +83,21 @@ public class RoleResource {
     /**
      * 
      * This Method grants the Clients access to all Roles stored in persistence.
-     * 
+     * @param username the user requesting the service
      * @return All Roles in the persistence as string if successful, 500 Server Error if not
      */
     @GET
     @Path("roles")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getAllRoles() {
+    public Response getAllRoles(@HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         final String loggingBody = PREFIX + "GET /resource/roles";
         LOGGER.log(Level.INFO, loggingBody);
         List<Role> roles;
@@ -104,7 +122,7 @@ public class RoleResource {
     /**
      * 
      * This Method enables Clients to save Roles into the persistence.
-     * 
+     * @param username the user requesting the service
      * @param formParams the role to be saved is available via key "data"
      * @return 200 OK if successful, 500 Server Error if not
      */
@@ -112,7 +130,15 @@ public class RoleResource {
     @Path("roles")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
-    public Response saveRole(MultivaluedMap<String, String> formParams) {
+    public Response saveRole(MultivaluedMap<String, String> formParams, @HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /resource/roles";
         LOGGER.log(Level.INFO, loggingBody);
@@ -142,6 +168,7 @@ public class RoleResource {
     /**
      * This Method enables Clients to update existing Roles.
      * @param rolename the name of the Role to be updated
+     * @param username the user requesting the service
      * @param formParams the key "data" holds the instance of Role to be saved
      * @return 200 OK if successful, 500 Server Error if not
      */
@@ -150,8 +177,16 @@ public class RoleResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateRole(@PathParam("rolename") String rolename,
-            MultivaluedMap<String, String> formParams) 
+            MultivaluedMap<String, String> formParams, @HeaderParam("username") String username) 
     {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "PUT /resource/roles/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);
@@ -180,12 +215,21 @@ public class RoleResource {
     /**
      * This method enables Clients to delete Roles from the persistence.
      * @param rolename the name of the role to be deleted
+     * @param username is the logged in user
      * @return 200 OK if successful, 500 ServerError if not
      */
     @DELETE
     @Path("roles/{rolename}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteRole(@PathParam("rolename") String rolename) {
+    public Response deleteRole(@PathParam("rolename") String rolename, @HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "DELETE /resource/roles/" + rolename;
         LOGGER.log(Level.INFO, loggingBody);

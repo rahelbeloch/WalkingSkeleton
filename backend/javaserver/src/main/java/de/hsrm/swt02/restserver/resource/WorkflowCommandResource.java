@@ -76,6 +76,7 @@ public class WorkflowCommandResource {
             @PathParam("itemid") String itemid,
             @HeaderParam("username") String username) 
     {
+        LOGGER.log(Level.WARNING, "check forward");
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /forward/" + stepid + "/" + itemid + "/" + username;
         LOGGER.log(Level.INFO, loggingBody);

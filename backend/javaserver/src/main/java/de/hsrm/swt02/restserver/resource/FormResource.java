@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
@@ -40,14 +42,22 @@ public class FormResource {
     /**
      * 
      * This method grants the clients access to all forms stored in persistence.
-     * 
+     * @param username the user requesting the service
      * @return All forms in the persistence as string if successful, 500 server error if not
      * @throws PersistenceException 
      */
     @GET
     @Path("forms")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getAllForms() {
+    public Response getAllForms(@HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         final String loggingBody = PREFIX + "GET /resource/forms";
         LOGGER.log(Level.INFO, loggingBody);
         List<Form> forms;
@@ -76,6 +86,7 @@ public class FormResource {
     /**
      * 
      * This method grants the clients access to get one specific form from the persistence.
+     * @param username the user requesting the service
      * @param formid indicates which form is requested
      * @return All forms in the persistence as string if successful, 500 server error if not
      * @throws PersistenceException 
@@ -83,7 +94,15 @@ public class FormResource {
     @GET
     @Path("forms/{formid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getForm(@PathParam("formid") String formid) {
+    public Response getForm(@PathParam("formid") String formid, @HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }        
+        
         final String loggingBody = PREFIX + "GET /resource/forms/" + formid;
         LOGGER.log(Level.INFO, loggingBody);
         Form form;
@@ -111,7 +130,7 @@ public class FormResource {
     /**
      * 
      * This method enables clients to save forms into the persistence.
-     * 
+     * @param username the user requesting the service
      * @param formParams the form to be saved is available via key "data"
      * @return 200 OK if successful, 500 server error if not
      */
@@ -119,7 +138,15 @@ public class FormResource {
     @Path("forms")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
-    public Response saveForm(MultivaluedMap<String, String> formParams) {
+    public Response saveForm(MultivaluedMap<String, String> formParams, @HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /resource/forms";
         LOGGER.log(Level.INFO, loggingBody);

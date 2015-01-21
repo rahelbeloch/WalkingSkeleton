@@ -594,7 +594,7 @@ public class PersistenceImp implements Persistence {
         user3 = new User();
         user3.setUsername("Tilman");
         user4 = new User();
-        user4.setUsername("TestAdmin");
+        user4.setUsername(ConfigProperties.getInstance().getProperties().getProperty("AdminNameDefinition"));
         user4.setPassword("");
 
         role1 = new Role();
@@ -605,7 +605,7 @@ public class PersistenceImp implements Persistence {
         role2.setRolename("Sachbearbeiter");
         storeRole(role2);
         role3 = new Role();
-        role3.setRolename("admin");
+        role3.setRolename(ConfigProperties.getInstance().getProperties().getProperty("AdminRoleDefinition"));
         storeRole(role3);
 
         user1.addRole(role1);
