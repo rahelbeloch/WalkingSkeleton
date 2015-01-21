@@ -81,23 +81,6 @@ namespace Client.ViewModel
         public void AddWorkflowToModel(Workflow updatedWorkflow)
         {
             logger.Debug("addWorkflowtoModel");
-            /*
-            logger.Debug("show Formular");
-            Form formular = updatedWorkflow.form;
-            if (formular.description.Equals("")) {
-                formular.description = "test";
-            }
-            logger.Debug(formular.description);
-            FormEntry testEntry = new FormEntry();
-            testEntry.key = "test";
-            testEntry.datatype = "testValue";
-            formular.formDef.Add(testEntry);
-            foreach (FormEntry entry in formular.formDef)
-            {
-                logger.Debug(entry.key);
-                logger.Debug(entry.datatype);
-            }
-             * */
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
             IList<string> startableList = null;
@@ -145,6 +128,7 @@ namespace Client.ViewModel
                 DashboardRow fittingRow = GetWorkflowRowForItem(item);
                 fittingRow.actItem = item;
                 fittingRow.actStep = GetStepById(item.getActiveStepId(), workflowId);
+                selectedRow = fittingRow;
                 OnChanged("selectedRow");
             }
         }

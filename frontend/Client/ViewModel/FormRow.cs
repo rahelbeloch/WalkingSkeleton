@@ -8,14 +8,23 @@ using System.Threading.Tasks;
 
 namespace Client.ViewModel
 {
+    /// <summary>
+    /// ViewModel class which holds all data of a row of a formular
+    /// </summary>
     public class FormRow
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private Form form;
         private Item actItem;
         private String _key;
+        /// <summary>
+        /// the key of the key-value-pair
+        /// </summary>
         public String key { get { return _key; } }
         private String _value;
+        /// <summary>
+        /// the value of the key-value-pair
+        /// </summary>
         public String value {
             get { return _value; }
             set {
@@ -24,10 +33,11 @@ namespace Client.ViewModel
             }
         }
         private String _datatype;
+        /// <summary>
+        /// the datatype of the value
+        /// </summary>
         public String datatype { get { return _datatype; } }
         private List<MetaEntry> _metadata;
-        private Type _type;
-        public Type type { get { return _type; } }
         private MetaEntry metaEntryItem;
         public FormRow(Item actItem, String key, String datatype)
         {
@@ -35,7 +45,6 @@ namespace Client.ViewModel
             _metadata = actItem.metadata;
             _key = key;
             _datatype = datatype;
-            _type = Type.GetType(datatype);
             foreach (MetaEntry metaEntry in actItem.metadata)
             {
                 if (metaEntry.key.Equals(key))
