@@ -1,6 +1,6 @@
 package de.hsrm.testswt02.RestserverTesting;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -77,7 +77,7 @@ public class LoginFilterTest {
                 .header("client_id",headerClientID)
                 .get();
         
-        assertTrue(resp.getStatus() == errorCode);
+        assertEquals(resp.getStatus(), errorCode);
     }
     
     /**
@@ -92,7 +92,7 @@ public class LoginFilterTest {
                 .header("client_id",headerClientID)
                 .get();
         
-        assertTrue(resp.getStatus() == okCode);
+        assertEquals(resp.getStatus(), okCode);
     }
     
     /**
@@ -107,7 +107,7 @@ public class LoginFilterTest {
                 .header("client_id",headerClientID)
                 .get();
         
-        assertTrue(resp.getStatus() == errorCode);
+        assertEquals(resp.getStatus(), errorCode);
     }
     
     /**
