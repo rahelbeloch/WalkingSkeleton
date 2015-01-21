@@ -15,27 +15,12 @@ namespace Admin
     /// </summary>
     public class FinalStepData: INPCBase
     {
-        private string hostUrl = "";
         
-        public FinalStepData(string currentHostUrl)
+        
+        public FinalStepData()
         {
-            hostUrl = currentHostUrl;
+            
         }
 
-        public string HostUrl
-        {
-            get
-            {
-                return hostUrl;
-            }
-            set
-            {
-                if (hostUrl != value)
-                {
-                    hostUrl = value;
-                    NotifyChanged("HostUrl");
-                }
-            }
-        }
     }
 }

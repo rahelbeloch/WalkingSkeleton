@@ -16,8 +16,8 @@ namespace Admin
     {
         private IUIVisualizerService visualiserService;
 
-        WorkflowDiagramViewModel workflowViewModel = null;
-        public ObservableCollection<Role> roleCollection { get { return workflowViewModel.roleCollection; } }
+        //WorkflowDiagramViewModel workflowViewModel = null;
+        //public ObservableCollection<Role> roleCollection { get { return workflowViewModel.roleCollection; } }
 
         public ActionViewModel(string id, DiagramViewModel parent, double left, double top, Role selectedRole)
             : base(id, parent, left, top)
@@ -65,11 +65,11 @@ namespace Admin
         public void ExecuteShowDataChangeWindowCommand(object parameter)
         {
             
-            if (this.workflowViewModel == null)
-            {
-                this.workflowViewModel = (WorkflowDiagramViewModel)this.Parent.workflowViewModel;
-            }
-            ActionData data = new ActionData(description, selectedRole, roleCollection);
+            //if (this.workflowViewModel == null)
+            //{
+             //   this.workflowViewModel = (WorkflowDiagramViewModel)this.Parent.workflowViewModel;
+           // }
+            ActionData data = new ActionData(description, selectedRole);
             if (visualiserService.ShowDialog(data) == true)
             {
                 this.selectedRole = data.selectedRole;

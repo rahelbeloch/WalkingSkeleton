@@ -12,10 +12,9 @@ namespace Admin
     {
         private IUIVisualizerService visualiserService;
 
-        public FinalStepViewModel(string id, DiagramViewModel parent, double left, double top, string hostUrl) : base(id,parent, left,top)
+        public FinalStepViewModel(string id, DiagramViewModel parent, double left, double top) : base(id,parent, left,top)
         {
-            this.HostUrl = hostUrl;
-            Init();
+           Init();
         }
 
         public FinalStepViewModel()
@@ -25,16 +24,13 @@ namespace Admin
         }
 
 
-        public String HostUrl { get; set; }
+        
         public ICommand ShowDataChangeWindowCommand { get; private set; }
 
         public void ExecuteShowDataChangeWindowCommand(object parameter)
         {
-            FinalStepData data = new FinalStepData(HostUrl);
-            if (visualiserService.ShowDialog(data) == true)
-            {
-                this.HostUrl = data.HostUrl;
-            }
+            FinalStepData data = new FinalStepData();
+            
         }
 
 
