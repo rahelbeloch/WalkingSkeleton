@@ -203,7 +203,7 @@ public class FormResource {
         try {
             logicResponse = LOGIC.deleteForm(formId);
         } catch (LogicException e1) {
-            LOGGER.log(Level.INFO,e1);
+            LOGGER.log(Level.WARNING,e1);
             return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
         }
         try {
