@@ -13,31 +13,36 @@
     </UserControl.Resources>
 
         <DockPanel>
-            <Menu DockPanel.Dock="Top">
+            <!--<Menu DockPanel.Dock="Top">
                 <MenuItem Header="Menü" >
                     <MenuItem 
         			Header="Logout" 
         			Command="{Binding logoutCommand}"/>
                 </MenuItem>
-            </Menu>
+            </Menu>-->
 
-            <DockPanel Width="500" DockPanel.Dock="Left" HorizontalAlignment="Center">
+        <DockPanel DockPanel.Dock="Top" Margin="10" Background="#E6E6E6">
+            <Label Content="Eingeloggt als:" VerticalAlignment="Center"/>
+            <Label Content="{Binding userName}" Foreground="Crimson" FontSize="20"/>
+            <Button Content="Ausloggen" Command="{Binding logoutCommand}" Width="100" Height="25" HorizontalAlignment="Right"/>
+        </DockPanel>
+        <DockPanel Width="500" DockPanel.Dock="Left" HorizontalAlignment="Center">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding dashboardWorkflows}">
+                    <ItemsControl ItemsSource="{Binding dashboardWorkflows}" Margin="10">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border  HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="#CCC" BorderThickness="1">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
+                                    <DockPanel Background="#E6E6E6">
                                         <Label Grid.Row="0" Content="{Binding name}" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
                                         <Button Grid.Row="0" Content="+" Width="35" Height="25" Margin="150 5 10 10" 
                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.startWorkflowCommand}" 
                                             CommandParameter="{Binding}" IsEnabled="{Binding startPermission}"/>
-
-
+                                    </DockPanel>
                                     <ListView Grid.Row="1" Margin="10" ItemsSource="{Binding dashboardRows}" SelectedValue="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.selectedRow, Mode=TwoWay}"  IsSynchronizedWithCurrentItem="True">
                                         <ListView.View>
                                             <GridView >
