@@ -117,7 +117,8 @@ namespace Client.ViewModel
             DashboardRow row;
             foreach (Item item in _relevantItems)
             {
-                activeStep = GetStepById(item.getActiveStepId(), updatedWorkflow.id);
+                activeStep = GetStepById(item.getActiveStepId(), updatedWorkflow);
+                logger.Debug("active Step" + activeStep.ToString());
                 row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.form);
                 toUpdate.AddDashboardRow(row);
             }
@@ -206,7 +207,7 @@ namespace Client.ViewModel
                     if(fittingRow == null)
                     {
                         // create DashboardRow for item
-                        Step actStep = GetStepById(item.getActiveStepId(), workflowId);
+                        Step actStep = GetStepById(item.getActiveStepId(), workflow.actWorkflow);
                         fittingRow = new DashboardRow(item, actStep, userName, workflow.actWorkflow.form);
                         workflow.AddDashboardRow(fittingRow);
                         changed = false;
@@ -226,19 +227,30 @@ namespace Client.ViewModel
         /// <param name="id">id of the step</param>
         /// <param name="workflowId">the associated workflowId</param>
         /// <returns>the fitting step or null</returns>
+        private Step GetStepById(int id, Workflow workflow)
+        {
+            foreach (Step step in workflow.steps)
+            {
+                if (id.ToString().Equals(step.id))
+                {
+                    return step;
+                }
+            }
+            return null;
+        }
         private Step GetStepById(int id, String workflowId)
         {
             foreach (DashboardWorkflow workflow in _dashboardWorkflows)
             {
                 if (workflowId.Equals(workflow.actWorkflow.id))
                 {
-                    foreach (Step step in workflow.actWorkflow.steps)
+                foreach (Step step in workflow.actWorkflow.steps)
+                {
+                    if (id.ToString().Equals(step.id))
                     {
-                        if (id.ToString().Equals(step.id))
-                        {
-                            return step;
-                        }
+                        return step;
                     }
+                }
                 }
             }
             return null;
