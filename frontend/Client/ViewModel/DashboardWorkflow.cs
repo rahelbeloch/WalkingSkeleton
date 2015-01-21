@@ -40,7 +40,7 @@ namespace Client.ViewModel
         public DashboardWorkflow(Workflow actWorkflow)
         {
             this._actWorkflow = actWorkflow;
-            name = "Workflow " + actWorkflow.id;
+            name = "Workflow " + actWorkflow.Id;
             this._dashboardRows = new ObservableCollection<DashboardRow>();
         }
         /// <summary>

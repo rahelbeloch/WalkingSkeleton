@@ -92,22 +92,22 @@ namespace Client.ViewModel
             catch (BasicException exc) { MessageBox.Show(exc.Message); }
             startableList.ToList().ForEach(_startableWorkflows.Add);
 
-            toUpdate.startPermission = _startableWorkflows.Contains(updatedWorkflow.id);
+            toUpdate.startPermission = _startableWorkflows.Contains(updatedWorkflow.Id);
 
             _relevantItems.Clear();
-            _restRequester.GetRelevantItemsByUser(updatedWorkflow.id).ToList().ForEach(_relevantItems.Add);
+            _restRequester.GetRelevantItemsByUser(updatedWorkflow.Id).ToList().ForEach(_relevantItems.Add);
             Step activeStep;
             DashboardRow row;
             foreach (Item item in _relevantItems)
             {
-                activeStep = GetStepById(item.getActiveStepId(), updatedWorkflow);
+                activeStep = GetStepById(item.GetActiveStepId(), updatedWorkflow);
                 logger.Debug("active Step" + activeStep.ToString());
-                row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.form);
+                row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.Form);
                 toUpdate.AddDashboardRow(row);
             }
 
             Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
-            logger.Debug("Workflow Update ID="+toUpdate.actWorkflow.id + " ItemCount="+toUpdate.dashboardRows.Count); 
+            logger.Debug("Workflow Update ID="+toUpdate.actWorkflow.Id + " ItemCount="+toUpdate.dashboardRows.Count); 
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Client.ViewModel
         /// <param name="item">the item to update</param>
         public void UpdateItem(Item item)
         {
-            String workflowId = item.workflowId;
+            String workflowId = item.WorkflowId;
             _relevantItems.Clear();
             try
             {
@@ -124,10 +124,10 @@ namespace Client.ViewModel
             }
             catch (BasicException exc) { MessageBox.Show(exc.Message); }
             
-            if(IsItemInList(item.id, _relevantItems)) {
+            if(IsItemInList(item.Id, _relevantItems)) {
                 DashboardRow fittingRow = GetWorkflowRowForItem(item);
                 fittingRow.actItem = item;
-                fittingRow.actStep = GetStepById(item.getActiveStepId(), workflowId);
+                fittingRow.actStep = GetStepById(item.GetActiveStepId(), workflowId);
                 selectedRow = fittingRow;
                 OnChanged("selectedRow");
             }
@@ -143,7 +143,7 @@ namespace Client.ViewModel
             {
                 foreach (DashboardRow dashboardRow in dashboardWorkflow.dashboardRows)
                 {
-                    if (dashboardRow.actItem.id.Equals(id))
+                    if (dashboardRow.actItem.Id.Equals(id))
                     {
                         dashboardWorkflow.DeleteDashboardRow(dashboardRow);
                         logger.Debug("Item mit der id " + id + " wurde gelöscht.");     
@@ -163,7 +163,7 @@ namespace Client.ViewModel
         {
             foreach (Item checkItem in itemsList)
             {
-                if (id.Equals(checkItem.id))
+                if (id.Equals(checkItem.Id))
                 {
                     return true;
                 }
@@ -178,26 +178,26 @@ namespace Client.ViewModel
         /// <returns>the fitting dashboardrow or null</returns>
         private DashboardRow GetWorkflowRowForItem(Item item)
         {
-            String workflowId = item.workflowId;
+            String workflowId = item.WorkflowId;
             bool changed = true;
             
 
             // find workflowModel form item
             foreach (DashboardWorkflow workflow in _dashboardWorkflows)
             {
-                if (workflowId.Equals(workflow.actWorkflow.id))
+                if (workflowId.Equals(workflow.actWorkflow.Id))
                 {
-                    DashboardRow fittingRow = workflow.dashboardRows.FirstOrDefault(dr => dr.actItem.id.Equals(item.id));
+                    DashboardRow fittingRow = workflow.dashboardRows.FirstOrDefault(dr => dr.actItem.Id.Equals(item.Id));
                     if(fittingRow == null)
                     {
                         // create DashboardRow for item
-                        Step actStep = GetStepById(item.getActiveStepId(), workflow.actWorkflow);
-                        fittingRow = new DashboardRow(item, actStep, userName, workflow.actWorkflow.form);
+                        Step actStep = GetStepById(item.GetActiveStepId(), workflow.actWorkflow);
+                        fittingRow = new DashboardRow(item, actStep, userName, workflow.actWorkflow.Form);
                         workflow.AddDashboardRow(fittingRow);
                         changed = false;
                     }
 
-                    logger.Debug("Item ID=" + item.id + (changed ? " changed" : " added"));
+                    logger.Debug("Item ID=" + item.Id + (changed ? " changed" : " added"));
                     
                     return fittingRow;
                 }
@@ -213,9 +213,9 @@ namespace Client.ViewModel
         /// <returns>the fitting step or null</returns>
         private Step GetStepById(int id, Workflow workflow)
         {
-            foreach (Step step in workflow.steps)
+            foreach (Step step in workflow.Steps)
             {
-                if (id.ToString().Equals(step.id))
+                if (id.ToString().Equals(step.Id))
                 {
                     return step;
                 }
@@ -226,11 +226,11 @@ namespace Client.ViewModel
         {
             foreach (DashboardWorkflow workflow in _dashboardWorkflows)
             {
-                if (workflowId.Equals(workflow.actWorkflow.id))
+                if (workflowId.Equals(workflow.actWorkflow.Id))
                 {
-                foreach (Step step in workflow.actWorkflow.steps)
+                foreach (Step step in workflow.actWorkflow.Steps)
                 {
-                    if (id.ToString().Equals(step.id))
+                    if (id.ToString().Equals(step.Id))
                     {
                         return step;
                     }
@@ -284,7 +284,7 @@ namespace Client.ViewModel
                         {
                             DashboardRow param = (DashboardRow)execute;
                             _restRequester.PostObject(param.actItem);
-                            _restRequester.StepForward(param.actStep.id, param.actItem.id);
+                            _restRequester.StepForward(param.actStep.Id, param.actItem.Id);
                         }
                         catch (BasicException exc)
                         {
@@ -357,7 +357,7 @@ namespace Client.ViewModel
                     _startWorkflowCommand = new ActionCommand(execute =>
                     {
                         DashboardWorkflow param = (DashboardWorkflow)execute;
-                        CreateWorkflow(param.actWorkflow.id);
+                        CreateWorkflow(param.actWorkflow.Id);
                     }, canExecute =>
                     {
                         return true;

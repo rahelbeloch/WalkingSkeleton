@@ -29,7 +29,7 @@ namespace Client.ViewModel
             get { return _value; }
             set {
                 _value = value;
-                metaEntryItem.value = value;
+                metaEntryItem.Value = value;
             }
         }
         private String _datatype;
@@ -42,14 +42,14 @@ namespace Client.ViewModel
         public FormRow(Item actItem, String key, String datatype)
         {
             this.actItem = actItem;
-            _metadata = actItem.metadata;
+            _metadata = actItem.Metadata;
             _key = key;
             _datatype = datatype;
-            foreach (MetaEntry metaEntry in actItem.metadata)
+            foreach (MetaEntry metaEntry in actItem.Metadata)
             {
                 if (metaEntry.key.Equals(key))
                 {
-                    _value = metaEntry.value;
+                    _value = metaEntry.Value;
                     metaEntryItem = metaEntry;
                     break;
                 }
