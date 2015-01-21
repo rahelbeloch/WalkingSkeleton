@@ -12,11 +12,11 @@ namespace CommunicationLib.Exception
     /// </summary>
     public class StorageFailedException : PersistenceException
     {
-         /// <summary>
+        /// <summary>
         /// Each Exception has an number, here it is 11210. 
         /// </summary>
-        private int _number = 11210;
         new public int number { get { return _number; } }
+        private int _number = 11210;
 
         /// <summary>
         /// Default constructor.
