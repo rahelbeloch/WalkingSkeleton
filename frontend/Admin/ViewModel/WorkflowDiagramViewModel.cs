@@ -333,7 +333,10 @@ namespace Admin.ViewModel
                 if (_actWorkflow != null)
                 {
                     _actWorkflow.items.ForEach(_items.Add);
-                    selectedForm = _actWorkflow.form.Clone<Form>();
+                    if (selectedForm != null)
+                    {
+                        selectedForm = _actWorkflow.form.Clone<Form>();
+                    }
 
                     showDetails = Visibility.Visible;
                     actStepVisibility = Visibility.Collapsed;
