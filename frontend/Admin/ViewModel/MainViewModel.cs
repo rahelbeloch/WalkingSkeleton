@@ -376,6 +376,9 @@ namespace Admin.ViewModel
                     admin = "";
                     ClearModel();
                     CurrentPageViewModel = loginViewModel;
+                    _restRequester = null;
+                    myComLib.Logout();
+                    _myComLib = null;
                     MessageBox.Show(e.Message);
                 }
             }));
