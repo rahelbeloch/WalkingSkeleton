@@ -37,7 +37,7 @@ namespace UnitTestProject1
         public static void ClassInit(TestContext context)
         {
             // initialize admin client requester
-            myRequester = new RestRequester("admin", "htp://localhost:18887");
+            myRequester = new RestRequester("admin", "http://localhost:18887");
 
             // Some Loggings
             myListener = new TextWriterTraceListener("../../CommunicationTestLog.log", "myListener");
