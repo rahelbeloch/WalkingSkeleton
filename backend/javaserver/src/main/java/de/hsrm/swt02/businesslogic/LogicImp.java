@@ -76,21 +76,6 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method stores a workflow and distribute a id. This method is used
-     * for saving a new workflow and for editting a workflow. It is also used
-     * for updating a workflow. If a completely new workflow should be saved it
-     * doesn't have an id (means it's null or ""). If a workflow is to be edited
-     * it already has an id. If a workflow doesn't have any unfinished items (or
-     * none at all) it will be overwritten. Otherwise the "original" workflow
-     * will be deactivated and a new workflow (with only steps, other attributes
-     * are reseted) will be saved. Should a workflow be de-/activated then its
-     * state will be setted on the original one which will be saved.
-     * 
-     * @param workflow is new workflow which should be stored
-     * @throws LogicException is thrown if errors occur while storing the
-     *             workflow
-     */
     @Override
     public LogicResponse addWorkflow(Workflow workflow) throws LogicException {
         Workflow oldWorkflow = null;
@@ -151,25 +136,11 @@ public class LogicImp implements Logic {
         }
     }
 
-    /**
-     * This method loads a Workflow.
-     * 
-     * @param workflowID describe the workflow
-     * @return a Workflow, if there is one, who has this workflowID
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     */
     @Override
     public Workflow getWorkflow(String workflowID) throws PersistenceException {
         return persistence.loadWorkflow(workflowID);
     }
 
-    /**
-     * This method delete a Workflow in Persistence.
-     * 
-     * @param workflowID describe the Workflow
-     * @throws PersistenceException
-     */
     @Override
     public LogicResponse deleteWorkflow(String workflowID)
             throws PersistenceException 
@@ -182,14 +153,6 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method execute a step in an item.
-     * 
-     * @param item the Item, which edited
-     * @param step the step, which execute
-     * @param user, who execute the step in the Item
-     * @throws LogicException
-     */
     @Override
     public LogicResponse stepForward(String itemId, String stepId,
             String username) throws LogicException 
@@ -207,14 +170,6 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method add a step into an existing Workflow.
-     * 
-     * @param workflowID the workflow, which shall edited
-     * @param step the step, which should be added
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     */
     @Override
     public LogicResponse addStep(String workflowID, Step step)
             throws PersistenceException 
@@ -230,14 +185,6 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method delete a step from an existing Workflow.
-     * 
-     * @param workflowID the workflow, which shall edited
-     * @param stepID the step, which shall delete
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     */
     @Override
     public LogicResponse deleteStep(String workflowID, String stepID)
             throws PersistenceException 
@@ -253,13 +200,6 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method store a workflow and distribute a id.
-     * 
-     * @param user
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     */
     @Override
     public LogicResponse addUser(User user) throws PersistenceException {
         // check if there are duplicate messagingsubs
@@ -287,24 +227,11 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method loads a User.
-     * 
-     * @param username describe the user
-     * @return a User, if there is one, who has this username
-     * @throws PersistenceException
-     */
     @Override
     public User getUser(String username) throws PersistenceException {
         return (User) persistence.loadUser(username);
     }
 
-    /**
-     * This method delete a User.
-     * 
-     * @param username describe the user
-     * @throws UserNotExistentException
-     */
     @Override
     public LogicResponse deleteUser(String username)
             throws UserNotExistentException 
@@ -317,14 +244,6 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method returns all workflows, in which the user is involved. Mind
-     * that this method won't return the items only a list of workflows.
-     * 
-     * @param username describes the user
-     * @return a LinkedList of workflows
-     * @throws LogicException
-     */
     @Override
     public List<Workflow> getAllWorkflowsForUser(String username)
             throws LogicException
@@ -352,19 +271,7 @@ public class LogicImp implements Logic {
         return workflows;
     }
 
-    /**
-     * Aditional method to get all workflows for a specfic user WITH items. This
-     * method should not be used from outside the logicImplementation.
-     * 
-     * @param username the username
-     * @return a list of workflows
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     * @throws CloneNotSupportedException is thrown if the clone method is not
-     *             implemented
-     * @throws NoPermissionException 
-     */
-
+    @Override
     public List<Workflow> getAllWorkflowsByUserWithItems(String username)
             throws PersistenceException, CloneNotSupportedException, NoPermissionException
     {
@@ -386,13 +293,6 @@ public class LogicImp implements Logic {
         return workflows;
     }
 
-    /**
-     * Method for giving a List of items of a user which are all open.
-     * 
-     * @param username describes the given user
-     * @throws LogicException
-     * @return List<Item> is the list of items we want to get
-     */
     @Override
     public List<Item> getOpenItemsByUser(String username) throws LogicException {
 
@@ -410,14 +310,7 @@ public class LogicImp implements Logic {
         return items;
     }
 
-    /**
-     * Method for getting a workflow by the username.
-     * 
-     * @param username describes the given user
-     * @throws LogicException 
-     * @return List<Workflow> is the requested list of workflows
-     */
-
+    @Override
     public List<String> getStartableWorkflowsForUser(String username)
             throws LogicException
     {
@@ -434,13 +327,6 @@ public class LogicImp implements Logic {
         return startableWorkflows;
     }
 
-    /**
-     * This method returns all Workflows, which can be started by this user.
-     * 
-     * @param user
-     * @return startable workflows by an user
-     * @throws LogicException
-     */
     @Override
     public List<Workflow> getStartableWorkflows(String username)
             throws LogicException
@@ -456,16 +342,7 @@ public class LogicImp implements Logic {
         return startableWorkflows;
     }
 
-    /**
-     * Method for getting a list of ids of the items relevant to an user (if
-     * he's responsible for a step in the steplist).
-     * 
-     * @param workflowId is the id of the given workflow
-     * @param username desribes the given user
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     * @return all relevant items for an user
-     */
+    @Override
     public List<Item> getRelevantItemsForUser(String workflowId, String username)
             throws PersistenceException
     {
@@ -484,14 +361,7 @@ public class LogicImp implements Logic {
         return relevantItems;
     }
 
-    /**
-     * Return item by itemId.
-     * 
-     * @param itemId indicates which item should be returned
-     * @param username is the userId who wants to access the item
-     * @return looked for item
-     * @throws LogicException 
-     */
+    @Override
     public Item getItem(String itemId, String username) throws LogicException {
         final Item item = persistence.loadItem(itemId);
         
@@ -501,12 +371,6 @@ public class LogicImp implements Logic {
         return persistence.loadItem(itemId);
     }
 
-    /**
-     * This method return all workflows in persistence.
-     * 
-     * @return all workflows in persistence
-     * @throws PersistenceException
-     */
     @Override
     public List<Workflow> getAllWorkflows() throws PersistenceException {
         final List<Workflow> workflows = new LinkedList<Workflow>();
@@ -529,14 +393,6 @@ public class LogicImp implements Logic {
         return workflows;
     }
 
-    /**
-     * This method check a User, later it will be extended for password.
-     * 
-     * @param username the user, to be checked
-     * @return if user existing true, else false
-     * @throws LogInException
-     * @throws n
-     */
     @Override
     public boolean checkLogIn(String username, String password,
             boolean adminRequired) throws LogicException, LogInException
@@ -563,14 +419,7 @@ public class LogicImp implements Logic {
         return true;
     }
 
-    /**
-     * 
-     * @param step to be operated on
-     * @param username that has to be authorized
-     * @return boolean
-     * @throws PersistenceException to catch UserNotExistent or RoleNotExistent
-     *             exceptions
-     */
+    @Override
     public boolean checkAuthorization(Step step, String username)
             throws PersistenceException
     {
@@ -586,14 +435,7 @@ public class LogicImp implements Logic {
         return authorized;
     }
     
-    /**
-     * Method for checking if a logged in user is authorized to get an Item.
-     * @param item the requested item
-     * @param username the user who requests the item
-     * @return true if authorized else false
-     * @throws PersistenceException 
-     * @throws NoPermissionException 
-     */
+    @Override
     public boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException {
         final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
         if (item.getActStep() == null) {
@@ -604,49 +446,21 @@ public class LogicImp implements Logic {
         }
     }
 
-    // BusinessLogic Sprint 2
-
-    /**
-     * This method loads a Role.
-     * 
-     * @param rolename describe the role
-     * @return a role, if there is one, who has this rolename
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     */
+    @Override
     public Role getRole(String rolename) throws PersistenceException {
         return (Role) persistence.loadRole(rolename);
     }
 
-    /**
-     * This method returns all roles in persistence.
-     * 
-     * @return p.loadAllRoles is the list of all Roles
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     */
+    @Override
     public List<Role> getAllRoles() throws PersistenceException {
         return persistence.loadAllRoles();
     }
 
-    /**
-     * This method returns all users in persistance.
-     * 
-     * @return p.loadAll Users is the list of all users
-     * @throws UserNotExistentException
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     */
+    @Override
     public List<User> getAllUsers() throws PersistenceException {
         return persistence.loadAllUsers();
     }
 
-    /**
-     * This method store a workflow and distribute a id.
-     * 
-     * @param user
-     * @throws PersistenceException
-     */
     @Override
     public LogicResponse addRole(Role role) throws PersistenceException {
         final LogicResponse logicResponse = new LogicResponse();
@@ -657,15 +471,6 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method adds a role to a user.
-     * 
-     * @param username indicates who will get a role assigned
-     * @param role which user should be assigned
-     * @return logicResponse about update
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     */
     @Override
     public LogicResponse addRoleToUser(User user, Role role)
             throws PersistenceException
@@ -682,12 +487,7 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * 
-     * @param user - user from database
-     * @param role - role to be deleted
-     * @throws LogicException if there is a needed Exception
-     */
+    @Override
     public void deleteRoleFromUser(User user, Role role) throws LogicException {
         boolean atLeastOneAdmin = true;
         final Role adminRole = persistence.loadRole(adminRolename);
@@ -715,15 +515,6 @@ public class LogicImp implements Logic {
         }
     }
 
-    /**
-     * This method deletes a role.
-     * 
-     * @param rolename indicates which should be deleted
-     * @return logicResponse about delete
-     * @throws NoPermissionException
-     * @throws WorkflowNotExistentException
-     * @throws PersistenceException.
-     */
     @Override
     public LogicResponse deleteRole(String rolename) throws LogicException {
         boolean roleInUse = false;
@@ -772,14 +563,7 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method deactivates a workflow.
-     * 
-     * @param workflowId the id of the workflow which should be deactivated
-     * @return logicResponse about update
-     * @throws PersistenceException is thrown if errors occur while persisting
-     *             objects
-     */
+    @Override
     public LogicResponse deactivateWorkflow(String workflowId)
             throws PersistenceException
     {
@@ -793,13 +577,7 @@ public class LogicImp implements Logic {
         return logicResponse;
     }
 
-    /**
-     * This method activate a workflow.
-     * 
-     * @param workflowId the id of the workflow which should be deactivate
-     * @return logicResponse about update
-     * @throws PersistenceException exception caused by persistence
-     */
+    @Override
     public LogicResponse activateWorkflow(String workflowId)
             throws PersistenceException
     {
