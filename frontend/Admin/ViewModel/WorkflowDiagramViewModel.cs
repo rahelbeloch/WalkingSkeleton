@@ -404,34 +404,37 @@ namespace Admin.ViewModel
         public SimpleCommand DeleteSelectedItemsCommand { get; private set; }
         private void ExecuteDeleteSelectedItemsCommand(object parameter)
         {
-            Console.WriteLine("delete item command");
-            itemsToRemove = DiagramViewModel.SelectedItems;
-            List<SelectableDesignerItemViewModelBase> connectionsToAlsoRemove = new List<SelectableDesignerItemViewModelBase>();
-
-            foreach (var connector in DiagramViewModel.Items.OfType<ConnectorViewModel>())
+            if (_mainViewModel.CurrentPageViewModel == this)
             {
-                if (ItemsToDeleteHasConnector(itemsToRemove, connector.SourceConnectorInfo))
-                {
-                    connectionsToAlsoRemove.Add(connector);
-                }
+                Console.WriteLine("delete item command");
+                itemsToRemove = DiagramViewModel.SelectedItems;
+                List<SelectableDesignerItemViewModelBase> connectionsToAlsoRemove = new List<SelectableDesignerItemViewModelBase>();
 
-                if (ItemsToDeleteHasConnector(itemsToRemove, (FullyCreatedConnectorInfo)connector.SinkConnectorInfo))
+                foreach (var connector in DiagramViewModel.Items.OfType<ConnectorViewModel>())
                 {
-                    connectionsToAlsoRemove.Add(connector);
+                    if (ItemsToDeleteHasConnector(itemsToRemove, connector.SourceConnectorInfo))
+                    {
+                        connectionsToAlsoRemove.Add(connector);
+                    }
+
+                    if (ItemsToDeleteHasConnector(itemsToRemove, (FullyCreatedConnectorInfo)connector.SinkConnectorInfo))
+                    {
+                        connectionsToAlsoRemove.Add(connector);
+                    }
+
                 }
+                itemsToRemove.AddRange(connectionsToAlsoRemove);
 
-            }
-            itemsToRemove.AddRange(connectionsToAlsoRemove);
-
-            foreach (var selectedItem in itemsToRemove)
-            {
-                if (selectedItem.GetType() == typeof(ConnectorViewModel)) 
+                foreach (var selectedItem in itemsToRemove)
                 {
-                    ConnectorViewModel c = (ConnectorViewModel)selectedItem;
-                    c.SourceConnectorInfo.DataItem.enableRightConnector = true;
-                    ((FullyCreatedConnectorInfo)c.SinkConnectorInfo).DataItem.enableInputConnector = true;
+                    if (selectedItem.GetType() == typeof(ConnectorViewModel))
+                    {
+                        ConnectorViewModel c = (ConnectorViewModel)selectedItem;
+                        c.SourceConnectorInfo.DataItem.enableRightConnector = true;
+                        ((FullyCreatedConnectorInfo)c.SinkConnectorInfo).DataItem.enableInputConnector = true;
+                    }
+                    DiagramViewModel.RemoveItemCommand.Execute(selectedItem);
                 }
-                DiagramViewModel.RemoveItemCommand.Execute(selectedItem);
             }
         }
 

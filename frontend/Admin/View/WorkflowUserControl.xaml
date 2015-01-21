@@ -8,7 +8,7 @@
              xmlns:tools="clr-namespace:Admin"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
-
+    
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
