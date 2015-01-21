@@ -35,7 +35,14 @@ namespace RestAPI
         {
             if (serverAdress != null)
             {
-                client = new RestClient(serverAdress);
+                try
+                {
+                    client = new RestClient(serverAdress);
+                }
+                catch (UriFormatException)
+                {
+                    throw new ServerNotRunningException();
+                }
             }
         }
 
