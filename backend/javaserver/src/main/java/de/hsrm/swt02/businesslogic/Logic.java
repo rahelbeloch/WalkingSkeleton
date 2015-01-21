@@ -30,7 +30,15 @@ public interface Logic {
     LogicResponse startWorkflow(String workflowID, String username) throws LogicException;
 
     /**
-     * This method store a workflow and distribute a id.
+     * This method stores a workflow and distributes a id. This method is used
+     * for saving a new workflow and for editting a workflow. It is also used
+     * for updating a workflow. If a completely new workflow should be saved it
+     * doesn't have an id (means it's null or ""). If a workflow is to be edited
+     * it already has an id. If a workflow doesn't have any unfinished items (or
+     * none at all) it will be overwritten. Otherwise the "original" workflow
+     * will be deactivated and a new workflow (with only steps, other attributes
+     * are reseted) will be saved. Should a workflow be de-/activated then its
+     * state will be setted on the original one which will be saved.
      * 
      * @param workflow is the workflow which should be added
      * @return logicResponse of adding a workflow
@@ -40,7 +48,7 @@ public interface Logic {
                                                   
 
     /**
-     * This method return all workflows in persistence.
+     * This method returns all workflows in persistence.
      * 
      * @return list of all workflows.
      * @throws PersistenceException if an error in persistence occurs
@@ -102,7 +110,7 @@ public interface Logic {
     LogicResponse deactivateWorkflow(String workflowID) throws PersistenceException;
 
     /**
-     * This method activate a workflow.
+     * This method activates a workflow.
      * 
      * @return the LogicResponse of an activated workflow
      * @param workflowID the id of the workflow which should be deactivate
@@ -123,7 +131,7 @@ public interface Logic {
     LogicResponse addStep(String workflowID, Step stepId) throws PersistenceException;
 
     /**
-     * This method delete a step from an existing Workflow.
+     * This method deletes a step from an existing Workflow.
      * 
      * @param workflowID is the id of the workflow, which shall edited
      * @param stepID is the id of the step, which shall delete
@@ -134,7 +142,7 @@ public interface Logic {
     LogicResponse deleteStep(String workflowID, String stepID) throws PersistenceException;
 
     /**
-     * This method store a workflow and distribute a id.
+     * This method stores a workflow and distribute a id.
      * 
      * @param user is the given user which should be added
      * @return logicResponse of adding a user
@@ -164,6 +172,20 @@ public interface Logic {
     boolean checkLogIn(String username, String password, boolean adminRequired) throws LogicException;
 
     /**
+     * Aditional method to get all workflows for a specfic user WITH items. This
+     * method should not be used from outside the logicImplementation.
+     * 
+     * @param username the username
+     * @return a list of workflows
+     * @throws PersistenceException is thrown if errors occur while persisting
+     *             objects
+     * @throws CloneNotSupportedException is thrown if the clone method is not
+     *             implemented
+     * @throws NoPermissionException 
+     */
+    List<Workflow> getAllWorkflowsByUserWithItems(String username) throws PersistenceException, CloneNotSupportedException, NoPermissionException;
+    
+    /**
      * This method deletes a User.
      * 
      * @param username describes the user
@@ -192,6 +214,26 @@ public interface Logic {
      * @return List<Integer> list of Ids
      */
     List<String> getStartableWorkflowsForUser(String username) throws LogicException;
+    
+    /**
+     * 
+     * @param step to be operated on
+     * @param username that has to be authorized
+     * @return boolean
+     * @throws PersistenceException to catch UserNotExistent or RoleNotExistent
+     *             exceptions
+     */
+    boolean checkAuthorization(Step step, String username) throws PersistenceException;
+    
+    /**
+     * Method for checking if a logged in user is authorized to get an Item.
+     * @param item the requested item
+     * @param username the user who requests the item
+     * @return true if authorized else false
+     * @throws PersistenceException 
+     * @throws NoPermissionException 
+     */
+    boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException;
     
     /**
      * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
@@ -225,7 +267,7 @@ public interface Logic {
     List<Role> getAllRoles() throws PersistenceException;
 
     /**
-     * Method for returning a list of all the existing users in the persistance.
+     * Method for returning a list of all the existing users in the persistence.
      * 
      * @return list of all users
      * @throws PersistenceException if an error in persistence occurs
@@ -234,7 +276,7 @@ public interface Logic {
     List<User> getAllUsers() throws PersistenceException;
 
     /**
-     * Method for adding a new role in the persistance.
+     * Method for adding a new role in the persistence.
      * 
      * @param role is the role we want to add
      * @return LogicResponse object
@@ -243,6 +285,7 @@ public interface Logic {
     LogicResponse addRole(Role role) throws PersistenceException;
 
     /**
+     * This method adds a role to a user.
      * 
      * @param user - the user to which the role shall be added
      * @param role - role to be added
@@ -252,7 +295,16 @@ public interface Logic {
     LogicResponse addRoleToUser(User user, Role role) throws PersistenceException;
     
     /**
-     * Method for deleting an existing role from the persistance. The users who
+     * deletes a role from a user.
+     * 
+     * @param user - user from database
+     * @param role - role to be deleted
+     * @throws LogicException if there is a needed Exception
+     */
+    void deleteRoleFromUser(User user, Role role) throws LogicException;
+    
+    /**
+     * Method for deleting an existing role from the persistence. The users who
      * have this role will lose it too.
      * 
      * @param rolename of the role
@@ -318,8 +370,8 @@ public interface Logic {
      * Method for updating an item. Suitable item from a workflow in persistence will be overwritten.
      * @param item contains changes, will be used to overwrite item in workflow
      * @param username indicates user who wants to update item
-     * @return logicResposne which contains update notification
-     * @throws PersistenceException if an error in persistence occurs
+     * @return logicResponse which contains update notification
+     * @throws LogicException if an error in persistence occurs
      */
     LogicResponse updateItem(Item item, String username) throws LogicException;
     
