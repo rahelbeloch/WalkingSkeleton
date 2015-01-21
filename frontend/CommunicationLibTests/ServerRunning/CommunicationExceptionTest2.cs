@@ -21,7 +21,7 @@ namespace UnitTestProject1
         public static void ClassInit(TestContext context)
         {
             // initialize admin client requester
-            myRequester = new RestRequester("admin");
+            myRequester = new RestRequester("admin", "http://localhost:18887");
             myRequester.InitializeClientProperties("TestAdmin", "abc123");
         }
 
@@ -56,17 +56,17 @@ namespace UnitTestProject1
             // a startStep
             StartStep startStep = new StartStep();
             startStep.roleIds.Add("Testrole");
-            newWf.addStep(startStep);
+            newWf.AddStep(startStep);
 
             // an action
             Action act = new Action();
             act.roleIds.Add("Testrole");
-            newWf.addStep(act);
+            newWf.AddStep(act);
 
             // a final step
             FinalStep fStep = new FinalStep();
             fStep.roleIds.Add("Testrole");
-            newWf.addStep(fStep);
+            newWf.AddStep(fStep);
 
             myRequester.PostObject(testRole);
             myRequester.PostObject(testUser);

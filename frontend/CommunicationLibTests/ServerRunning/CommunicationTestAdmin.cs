@@ -37,7 +37,7 @@ namespace UnitTestProject1
         public static void ClassInit(TestContext context)
         {
             // initialize admin client requester
-            myRequester = new RestRequester("admin");
+            myRequester = new RestRequester("admin", "htp://localhost:18887");
 
             // Some Loggings
             myListener = new TextWriterTraceListener("../../CommunicationTestLog.log", "myListener");
@@ -51,7 +51,7 @@ namespace UnitTestProject1
         public void testCheckExistentUserLogIn()
         {
             myRequester.InitializeClientProperties("TestAdmin", "abc123");
-            Boolean done = myRequester.checkUser();
+            Boolean done = myRequester.CheckUser();
 
             Assert.IsTrue(done);
         }
@@ -64,7 +64,7 @@ namespace UnitTestProject1
         public void testCheckNotExistentUserLogIn()
         {
             myRequester.InitializeClientProperties("NotExistentUser", "password");
-            Boolean done = myRequester.checkUser();
+            Boolean done = myRequester.CheckUser();
         }
     }
 }
