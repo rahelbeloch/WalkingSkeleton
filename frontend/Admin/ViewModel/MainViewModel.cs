@@ -336,6 +336,10 @@ namespace Admin.ViewModel
             {
                 if (e is LogInException)
                 {
+                    /* Note: If this Exception is caught the ComLib has allready unregistered its client
+                     * CommunicationManager-> UnregisterClient()
+                     * The Connection has been stopped.
+                     */
                     admin = "";
                     ClearModel();
                     CurrentPageViewModel = loginViewModel;
