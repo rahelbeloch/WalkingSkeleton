@@ -34,21 +34,37 @@ public class ExceptionTest {
         LogConfigurator.setup();
     }
     
+    /**
+     * Tests if loading a non existent workflow will throw an Exception.
+     * @throws PersistenceException 
+     */
     @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowNotExistenException() throws PersistenceException {
         db.loadWorkflow("17");
     }
     
+    /**
+     * Tests if loading a non existent item will throw an exception.
+     * @throws PersistenceException 
+     */
     @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowNotExistenExceptionOnItemsParentWorkflow() throws PersistenceException {
         db.loadItem("4711");
     }
     
+    /**
+     * Tests if loading a non existent user will throw an exception.
+     * @throws PersistenceException 
+     */
     @Test(expected = UserNotExistentException.class)
     public void testUserNotExistentException() throws PersistenceException {
         db.loadUser("JohnDoe");
     }
     
+    /**
+     * Tests if loading a nonexistent step will throw an exception.
+     * @throws PersistenceException 
+     */
     @Test(expected = StepNotExistentException.class)
     public void testStepNotExistentException() throws PersistenceException {
         final Workflow wf = new Workflow();

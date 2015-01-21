@@ -187,6 +187,10 @@ public class PersistenceTest {
         assertEquals(db.loadWorkflow(workflowId).getItems(), workflow1.getItems());
     }
     
+    /**
+     * Tests if workflow ids are properly assigned.
+     * @throws PersistenceException 
+     */
     @Test
     public void testContinuityOfWorkflowIds() throws PersistenceException {
         final Workflow wf1 = new Workflow();
@@ -200,6 +204,10 @@ public class PersistenceTest {
         assertEquals(db.loadWorkflow(id2).getId(), id1);
     }
     
+    /**
+     * Tests if a user in persistence can be overwritten by storing again.
+     * @throws PersistenceException 
+     */
     @Test
     public void testUserOverwriting() throws PersistenceException {
         final User user = new User();
