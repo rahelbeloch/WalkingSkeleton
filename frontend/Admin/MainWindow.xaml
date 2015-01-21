@@ -5,6 +5,11 @@
         Title="MainWindow" Width="800" Height="500" ResizeMode="CanResize"
         WindowState="Maximized">
 
+    <Window.InputBindings>
+        <KeyBinding Key="Del"
+                    Command="{Binding workflowViewModel.DeleteSelectedItemsCommand}" />
+    </Window.InputBindings>
+    
     <DockPanel>
         <Menu DockPanel.Dock="Top" Visibility="{Binding DataContext.MenuVisibility, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
             <MenuItem Header="Ansicht" >

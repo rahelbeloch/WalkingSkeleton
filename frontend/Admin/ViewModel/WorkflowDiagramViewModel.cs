@@ -233,7 +233,6 @@ namespace Admin.ViewModel
                 _items.Clear();
                 if (_actWorkflow != null)
                 {
-                    Console.WriteLine("ACT WORKFLOW NICHT NULL");
                     _actWorkflow.items.ForEach(_items.Add);
                     showDetails = Visibility.Visible;
                     WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
@@ -405,6 +404,7 @@ namespace Admin.ViewModel
         public SimpleCommand DeleteSelectedItemsCommand { get; private set; }
         private void ExecuteDeleteSelectedItemsCommand(object parameter)
         {
+            Console.WriteLine("delete item command");
             itemsToRemove = DiagramViewModel.SelectedItems;
             List<SelectableDesignerItemViewModelBase> connectionsToAlsoRemove = new List<SelectableDesignerItemViewModelBase>();
 
@@ -422,6 +422,7 @@ namespace Admin.ViewModel
 
             }
             itemsToRemove.AddRange(connectionsToAlsoRemove);
+
             foreach (var selectedItem in itemsToRemove)
             {
                 if (selectedItem.GetType() == typeof(ConnectorViewModel)) 
