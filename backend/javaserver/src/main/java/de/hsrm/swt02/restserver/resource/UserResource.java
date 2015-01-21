@@ -122,6 +122,7 @@ public class UserResource {
      * This operation will be published on the message broker.
      * @param username indicates which user should be updated
      * @param formParams is a wrapper of a sent user 
+     * @param loggedInUsername the name of the logged in user
      * @return 200 ok if successful
      */
     @PUT
