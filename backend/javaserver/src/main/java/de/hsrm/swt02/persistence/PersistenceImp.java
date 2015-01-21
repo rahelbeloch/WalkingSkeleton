@@ -690,11 +690,12 @@ public class PersistenceImp implements Persistence {
         final FormEntry fe5 = new FormEntry();
         fe5.setId("chargedCosts");
         fe5.setKey("cost");
-        fe5.setValue("int");
+        fe5.setValue("double");
         
         final List<FormEntry> fd1 = form1.getFormDef();
         fd1.add(fe1);
         fd1.add(fe2);
+        fd1.add(fe5);
         form1.setId("form1");
         
         final List<FormEntry> fd2 = form2.getFormDef();

@@ -699,7 +699,6 @@ public class LogicImp implements Logic {
                 throw new UserHasNoPermissionException("Access denied. Current Operator is " + currentOpener);
             }
         }
-        
         for (MetaEntry me : item.getMetadata()) {  
             if (me.getGroup().equals(workflow.getForm().getId()) && !(me.getValue().equals(""))) {
                 final String datatype = workflow.getForm().getDataType(me.getKey());
@@ -713,14 +712,13 @@ public class LogicImp implements Logic {
                             throw new StorageFailedException("[logic] invalid form entry --- used unconform Integer representation");
                         } 
                     } else if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.DOUBLE)) {
-                        if (!me.getValue().matches("-?\\d+(\\.\\d+)?")) {
+                        if (!me.getValue().matches("([0-9]|[1-9]+)\\.[0-9]+$")) {
                             throw new StorageFailedException("[logic] invalid form entry --- used unconform Double representation");
                         }
                     }
                 }
             }
         }
-        
         workflow.removeItem(itemId);
         workflow.addItem(item);
         persistence.storeWorkflow(workflow);
