@@ -27,32 +27,33 @@ namespace Client.Util
                 String datatype = entry.datatype;
                 if (!entry.value.Equals(""))
                 {
-                        logger.Debug("validation for" + entry.value);
-                        logger.Debug("datatye: " + datatype);
-                        Regex regex = null;
-                        switch (datatype)
-                        {
-                            case "String":
-                                regex = new Regex("[a-zA-Z]+");
-                                break;
-                            case "int":
-                                regex = new Regex("[0-9]+");
-                                break;
-                            case "double":
-                                regex = new Regex("-?\\d+(\\.\\d+)?");
-                                break;
-                        }
-                        Match match = regex.Match(entry.value);
-                        if (match.Success)
-                        {
-                            logger.Debug("match successfull");
-                            logger.Debug(match.Value);
-                        }
-                        else
-                        {
-                            String message = entry.value + " entspricht nicht dem richtigen Datentyp!";
-                            return new ValidationResult(false,message);
-                        }
+                    logger.Debug("validation for" + entry.value);
+                    logger.Debug("datatye: " + datatype);
+                    Regex regex = null;
+                    switch (datatype)
+                    {
+                        case "String":
+                            regex = new Regex("[a-zA-Z]+");
+                            break;
+                        case "int":
+                            regex = new Regex("[0-9]+");
+                            break;
+                        case "double":
+                            regex = new Regex("-?\\d+(\\.\\d+)?");
+                            break;
+                    }
+
+                    Match match = regex.Match(entry.value);
+                    if (match.Success)
+                    {
+                        logger.Debug("match successfull");
+                        logger.Debug(match.Value);
+                    }
+                    else
+                    {
+                        String message = entry.value + " entspricht nicht dem richtigen Datentyp!";
+                        return new ValidationResult(false,message);
+                    }
                 }
             }
             return ValidationResult.ValidResult;
