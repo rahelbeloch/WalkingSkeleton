@@ -540,16 +540,17 @@ namespace Admin.ViewModel
         /// <param name="sourceId">The role to remove</param>
         public void RoleDeletion(String sourceId)
         {
-            //Deletion handling here
-            Role roleToDelete;
-            foreach(Role role in _mainViewModel.roleCollection)
+            Role roleToDelete = new Role()
             {
-                if (role.rolename.Equals(sourceId))
-                {
-                    roleToDelete = role;
-                    _mainViewModel.roleCollection.Remove(roleToDelete);
-                    break;
-                }
+                id = sourceId
+            };
+
+            _mainViewModel.roleCollection.Remove(roleToDelete);
+
+            var rowsToDelete = RoleCheckboxRows.Where(x => x.Role.Equals(roleToDelete)).ToList();
+            foreach (var rowToDelete in rowsToDelete)
+            {
+                RoleCheckboxRows.Remove(rowToDelete);
             }
         }
 

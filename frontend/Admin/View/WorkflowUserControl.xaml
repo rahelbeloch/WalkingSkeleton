@@ -8,11 +8,7 @@
              xmlns:tools="clr-namespace:Admin"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
-    
-    <UserControl.InputBindings>
-        <KeyBinding Key="Del"
-                    Command="{Binding DeleteSelectedItemsCommand}" />
-    </UserControl.InputBindings>
+
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
@@ -104,7 +100,7 @@
                     <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
                             <Expander Header="Items"
                                     IsExpanded="True">
-                                <ListView DockPanel.Dock="Top"  ItemsSource="{Binding actWorkflow.items}">
+                                <ListView DockPanel.Dock="Top"  ItemsSource="{Binding items}">
                                     <ListView.View>
                                         <GridView >
                                             <GridView.Columns>
