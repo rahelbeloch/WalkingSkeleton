@@ -524,25 +524,9 @@ namespace Admin.ViewModel
                 {
                     _toggleActivity = new ActionCommand(execute =>
                     {
-                        try
-                        {
-                            if (_actWorkflow.active)
-                            {
-                                actWorkflow.active = false;
-                                _restRequester.UpdateObject(_actWorkflow);
-                            }
-                            else
-                            {
-                                actWorkflow.active = true;
-                                _restRequester.UpdateObject(_actWorkflow);
-                            }
-                            _workflowActivity = "Deaktivieren";
-                            OnChanged("workflowActivity");
-                        }
-                        catch (BasicException e)
-                        {
-                            MessageBox.Show(e.Message);
-                        }
+                        PostWorkflow(true);
+                        _workflowActivity = "Deaktivieren";
+                        OnChanged("workflowActivity");
                     }, canExecute => _actWorkflow != null);
                 }
                 return _toggleActivity;
@@ -559,28 +543,43 @@ namespace Admin.ViewModel
                 {
                     _saveWorkflowCommand = new ActionCommand(execute =>
                     {
-                        try
-                        {
-                            // from demo start
-                            if (!DiagramViewModel.Items.Any())
-                            {
-                                messageBoxService.ShowError("There must be at least one item in order save a diagram");
-                                return;
-                            }
-                            Workflow workflow = WorkflowDiagramConverter.DiagramItemsToWorkflow(DiagramViewModel.Items.ToList());
-                            if (workflow != null)
-                            {
-                                _restRequester.PostObject(workflow);
-                            }
-                            messageBoxService.ShowInformation(string.Format("Finished saving Diagram "));
-                        }
-                        catch (BasicException be)
-                        {
-                            MessageBox.Show(be.Message);
-                        }
+                        PostWorkflow();
                     }, canExecute => DiagramViewModel.Items.Any());
                 }
                 return _saveWorkflowCommand;
+            }
+        }
+
+        private void PostWorkflow(bool toggleActivity=false)
+        {
+            try
+            {
+                if (!DiagramViewModel.Items.Any())
+                {
+                    messageBoxService.ShowError("Sie können keinen leeren Workflow erstellen.");
+                    return;
+                }
+
+                Workflow newWorkflow = WorkflowDiagramConverter.DiagramItemsToWorkflow(DiagramViewModel.Items.ToList());
+                if (actWorkflow != null)
+                {
+                    newWorkflow.id = actWorkflow.id;
+                    newWorkflow.active = actWorkflow.active;
+                    if (toggleActivity)
+                    {
+                        newWorkflow.active = !newWorkflow.active;
+                    }
+                }
+
+                _restRequester.PostObject(newWorkflow);
+                displayView = Visibility.Visible;
+                editView = Visibility.Collapsed;
+                showDetails = Visibility.Visible;
+                MessageBox.Show("Der Workflow wurde erfolgreich gespeichert.");
+            }
+            catch (BasicException be)
+            {
+                MessageBox.Show(be.Message);
             }
         }
 
