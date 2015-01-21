@@ -122,13 +122,13 @@ namespace Admin.ViewModel
 
                             if (_mainViewModel.myComLib != null)
                             {
-
-                                if (oldServerAddr != null && !oldServerAddr.Equals(_serverAddress))
+                                // old addresses are null, if there is no addr in the config file saved
+                                if (oldServerAddr == null || !oldServerAddr.Equals(_serverAddress))
                                 {
                                     _mainViewModel.myComLib.RefreshServer(_serverAddress);
                                 }
 
-                                if (oldBrokAddr != null && !oldBrokAddr.Equals(_brokerAddress))
+                                if (oldBrokAddr == null || !oldBrokAddr.Equals(_brokerAddress))
                                 {
                                     _mainViewModel.myComLib.RefreshBroker(_brokerAddress);
                                 }
