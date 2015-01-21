@@ -32,6 +32,7 @@ import de.hsrm.swt02.persistence.Persistence;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.StorageFailedException;
 import de.hsrm.swt02.persistence.exceptions.UserNotExistentException;
+import de.hsrm.swt02.properties.ConfigProperties;
 
 /**
  * This class implements the logic interface and is used for logic operations.
@@ -41,7 +42,7 @@ public class LogicImp implements Logic {
     private Persistence persistence;
     private ProcessManager processManager;
     private UseLogger logger;
-    private String adminRolename = "admin";
+    private static final String ADMINROLENAME = ConfigProperties.getInstance().getProperties().getProperty("AdminRoleDefinition");
 
     /**
      * Constructor for LogicImp.
@@ -58,6 +59,7 @@ public class LogicImp implements Logic {
         this.persistence = p;
         this.processManager = pm;
         this.logger = logger;
+        
         loadData();
     }
 
@@ -467,12 +469,34 @@ public class LogicImp implements Logic {
      */
     public boolean checkAuthorization(Item item, String username) throws PersistenceException, NoPermissionException {
         final Workflow workflowToCheck = persistence.loadWorkflow(item.getWorkflowId());
+        
+        if (checkUserIsAdmin(username)) {
+            return true;
+        }
+        
         if (item.getActStep() == null) {
             return false;
         } else {
             final Step actStep = workflowToCheck.getStepById((item.getActStep().getGroup()));
             return checkAuthorization(actStep, username);
         }
+    }
+    
+    /**
+     * Method for checking if the logged in user is an admin or not.
+     * @param username of the logged in user
+     * @return true or false
+     * @throws PersistenceException if there is a problem with the persistence
+     */
+    public boolean checkUserIsAdmin(String username) throws PersistenceException {
+        final User userToCheck = persistence.loadUser(username);
+        
+        for (Role role: userToCheck.getRoles()) {
+            if (role.getRolename().equals(ADMINROLENAME)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -525,9 +549,9 @@ public class LogicImp implements Logic {
      */
     public void deleteRoleFromUser(User user, Role role) throws LogicException {
         boolean atLeastOneAdmin = true;
-        final Role adminRole = persistence.loadRole(adminRolename);
+        final Role adminRole = persistence.loadRole(ADMINROLENAME);
 
-        if (role.getRolename().equals(adminRolename)) {
+        if (role.getRolename().equals(ADMINROLENAME)) {
             for (User userToCheck : persistence.loadAllUsers()) {
                 if (userToCheck.hasRole(adminRole)) {
                     atLeastOneAdmin = false;
@@ -537,7 +561,7 @@ public class LogicImp implements Logic {
         }
         if (!atLeastOneAdmin) {
             throw new LastAdminDeletedException(
-                    "[Logic] No Deletion allowed - Role " + adminRolename
+                    "[Logic] No Deletion allowed - Role " + ADMINROLENAME
                             + " needs to have one assigned User.");
         }
 
@@ -555,7 +579,7 @@ public class LogicImp implements Logic {
     public LogicResponse deleteRole(String rolename) throws LogicException {
         boolean roleInUse = false;
 
-        if (rolename.equals(adminRolename)) {
+        if (rolename.equals(ADMINROLENAME)) {
             throw new AdminRoleDeletionException(
                     "[Logic] No Deletion allowed - Role " + rolename
                             + " is the role assigned to admins.");
