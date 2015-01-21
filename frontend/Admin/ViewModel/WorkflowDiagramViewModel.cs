@@ -259,13 +259,15 @@ namespace Admin.ViewModel
             set
             {
                 _selectedForm = value;
+                OnChanged("selectedForm");
             }
         }
 
+        
+        private Workflow _actWorkflow = null;
         /// <summary>
         /// Property for selected workflow in workflow overview.
         /// </summary>
-        private Workflow _actWorkflow = null;
         public Workflow actWorkflow
         {
             get
@@ -278,7 +280,8 @@ namespace Admin.ViewModel
                 _items.Clear();
                 if (_actWorkflow != null)
                 {
-                    _actWorkflow.Items.ForEach(_items.Add);
+                    _actWorkflow.items.ForEach(_items.Add);
+                    selectedForm = _actWorkflow.form.Clone<Form>();
                     showDetails = Visibility.Visible;
                     WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
                     DiagramViewModel.locked = true;
@@ -286,6 +289,7 @@ namespace Admin.ViewModel
                 else
                 {
                     showDetails = Visibility.Collapsed;
+                    selectedForm = null;
                     DiagramViewModel.Items.Clear();
                     DiagramViewModel.locked = false;
                 }
@@ -436,7 +440,7 @@ namespace Admin.ViewModel
             if (_actWorkflow != null)
             {
                 _items.Clear();
-                _actWorkflow.Items.ForEach(_items.Add);
+                actWorkflow.items.ForEach(_items.Add);
                 OnChanged("items");
             }
             
@@ -638,6 +642,7 @@ namespace Admin.ViewModel
                 }
 
                 Workflow newWorkflow = WorkflowDiagramConverter.DiagramItemsToWorkflow(DiagramViewModel.Items.ToList());
+                newWorkflow.form = selectedForm.Clone<Form>();
                 if (actWorkflow != null)
                 {
                     newWorkflow.Id = actWorkflow.Id;
