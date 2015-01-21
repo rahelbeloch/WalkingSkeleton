@@ -50,7 +50,7 @@ public class RoleResource {
     @GET
     @Path("roles/{rolename}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getRole(@PathParam("rolename") String rolename, @PathParam("username") String username) {
+    public Response getRole(@PathParam("rolename") String rolename, @HeaderParam("username") String username) {
         
         try {
             LOGIC.checkUserIsAdmin(username);
