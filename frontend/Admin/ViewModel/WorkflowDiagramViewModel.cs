@@ -448,11 +448,8 @@ namespace Admin.ViewModel
             {
                 Console.WriteLine("BLA_3");
                 _items.Clear();
-<<<<<<< .mine
                 _actWorkflow.items.ForEach(_items.Add);
-=======
-                actWorkflow.Items.ForEach(_items.Add);
->>>>>>> .r1492
+
                 OnChanged("items");
             }
             
