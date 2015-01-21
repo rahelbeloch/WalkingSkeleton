@@ -12,6 +12,9 @@ namespace CommunicationLib.Exception
     /// </summary>
     public class WorkflowCyclesException : InvalidWorkflowException
     {
+        /// <summary>
+        /// Each Exception has an number.
+        /// </summary>
         new public int number { get { return _number; } }
         private int _number = 11510;
         

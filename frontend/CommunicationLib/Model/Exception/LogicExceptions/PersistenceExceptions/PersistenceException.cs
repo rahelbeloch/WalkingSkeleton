@@ -6,19 +6,23 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of LogicException. For all problems with persistence on the server.
+    /// </summary>
     public class PersistenceException : LogicException
     {
         /// <summary>
-        /// This Exception es a child of LogicException. 
         /// Each Exception has an number, here it is 11200. 
         /// </summary>
-        private int _number = 11200;
         new public int number { get { return _number; } }
-
+        private int _number = 11200;
+        
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public PersistenceException()
             : base("Fehler in der Datenbank.")
         {
-
         }
 
         /// <summary>
@@ -33,8 +37,8 @@ namespace CommunicationLib.Exception
         /// <summary>
         /// This constructor allows to add a spezial message and an other exception.
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="inner"></param>
+        /// <param name="message">the message</param>
+        /// <param name="inner">the inner exception</param>
         public PersistenceException(string message, System.Exception inner)
             : base(message, inner)
         {
