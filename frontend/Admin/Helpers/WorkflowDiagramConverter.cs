@@ -83,7 +83,10 @@ namespace Admin.Helpers
             {
                 StartStep startStep = step.Clone<StartStep>();
                 startStep.id = getUniqueId();
-                startStep.roleIds.Add(((StartStepViewModel)designerItem).selectedRole.id);
+                if (((StartStepViewModel)designerItem).selectedRole != null)
+                {
+                    startStep.roleIds.Add(((StartStepViewModel)designerItem).selectedRole.id);
+                }
 
                 return startStep;
             }
@@ -92,8 +95,15 @@ namespace Admin.Helpers
                 Action action = step.Clone<Action>();
 
                 action.id = getUniqueId();
-                action.roleIds.Add(((ActionViewModel)designerItem).selectedRole.id);
-                action.description = ((ActionViewModel)designerItem).description;
+                if (((ActionViewModel)designerItem).selectedRole != null)
+                {
+                    action.roleIds.Add(((ActionViewModel)designerItem).selectedRole.id);
+                }
+
+                if (((ActionViewModel)designerItem).description != null)
+                {
+                    action.description = ((ActionViewModel)designerItem).description;
+                }
 
                 return action;
             }

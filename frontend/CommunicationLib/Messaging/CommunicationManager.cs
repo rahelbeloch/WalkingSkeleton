@@ -85,14 +85,19 @@ namespace CommunicationLib
         {
             if (brokerAddress != null)
             {
-                // build connection to message broker (not started yet)
-                _connectionFactory = new ConnectionFactory(brokerAddress);
+
                 try
                 {
+                    // build connection to message broker (not started yet)
+                    _connectionFactory = new ConnectionFactory(brokerAddress);
                     _connection = _connectionFactory.CreateConnection();
                     _session = _connection.CreateSession(AcknowledgementMode.AutoAcknowledge);
                 }
                 catch (NMSConnectionException)
+                {
+                    throw new ServerNotRunningException();
+                }
+                catch (UriFormatException) 
                 {
                     throw new ServerNotRunningException();
                 }
