@@ -117,7 +117,7 @@ namespace Client.ViewModel
             DashboardRow row;
             foreach (Item item in _relevantItems)
             {
-                activeStep = GetStepById(item.getActiveStepId(), updatedWorkflow);
+                activeStep = GetStepById(item.getActiveStepId(), updatedWorkflow.id);
                 row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.form);
                 toUpdate.AddDashboardRow(row);
             }
@@ -143,6 +143,7 @@ namespace Client.ViewModel
             if(IsItemInList(item.id, _relevantItems)) {
                 DashboardRow fittingRow = GetWorkflowRowForItem(item);
                 fittingRow.actItem = item;
+                fittingRow.actStep = GetStepById(item.getActiveStepId(), workflowId);
                 OnChanged("selectedRow");
             }
         }
@@ -199,22 +200,20 @@ namespace Client.ViewModel
             // find workflowModel form item
             foreach (DashboardWorkflow workflow in _dashboardWorkflows)
             {
-                //!!!!!!!!!!!!!!!!!!!!von Jane eingefuegt weil das durchschalten nicht korrekt funktionierte, live aktualisierung ist dafuer hinueber!!!!!!!!!!!!!!!!!!
-                workflow.dashboardRows.Clear();
-                //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 if (workflowId.Equals(workflow.actWorkflow.id))
                 {
                     DashboardRow fittingRow = workflow.dashboardRows.FirstOrDefault(dr => dr.actItem.id.Equals(item.id));
                     if(fittingRow == null)
                     {
                         // create DashboardRow for item
-                        Step actStep = GetStepById(item.getActiveStepId(), workflow.actWorkflow);
+                        Step actStep = GetStepById(item.getActiveStepId(), workflowId);
                         fittingRow = new DashboardRow(item, actStep, userName, workflow.actWorkflow.form);
                         workflow.AddDashboardRow(fittingRow);
                         changed = false;
                     }
 
                     logger.Debug("Item ID=" + item.id + (changed ? " changed" : " added"));
+                    
                     return fittingRow;
                 }
             }
@@ -227,13 +226,19 @@ namespace Client.ViewModel
         /// <param name="id">id of the step</param>
         /// <param name="workflow">the associated workflow</param>
         /// <returns>the fitting step or null</returns>
-        private Step GetStepById(int id, Workflow workflow)
+        private Step GetStepById(int id, String workflowId)
         {
-            foreach (Step step in workflow.steps)
+            foreach (DashboardWorkflow workflow in _dashboardWorkflows)
             {
-                if (id.ToString().Equals(step.id))
+                if (workflowId.Equals(workflow.actWorkflow.id))
                 {
-                    return step;
+                    foreach (Step step in workflow.actWorkflow.steps)
+                    {
+                        if (id.ToString().Equals(step.id))
+                        {
+                            return step;
+                        }
+                    }
                 }
             }
             return null;
