@@ -425,25 +425,19 @@ namespace Admin.ViewModel
         {
             Workflow workflowToUpdate = null;
 
-            Console.WriteLine("BLA_1");
-
             foreach (Workflow w in _workflows)
             {
                 if (w.id.Equals(item.workflowId))
                 {
-                    Console.WriteLine("BLA_2");
                     workflowToUpdate = w;
-                    _workflows.Remove(w);
-                    workflowToUpdate.items.Remove(item);
                     break;
                 }
             }
+            workflowToUpdate.items.Remove(item);
             workflowToUpdate.items.Add(item);
-            _workflows.Add(workflowToUpdate);
 
             if (_actWorkflow != null)
             {
-                Console.WriteLine("BLA_3");
                 items.Clear();
                 actWorkflow.items.ForEach(_items.Add);
 
