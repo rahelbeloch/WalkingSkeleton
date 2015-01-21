@@ -11,49 +11,10 @@
                    Stretch="Fill"
                    Source="../../Images/Action.png"
                    Tag="setting" />
-            <Button HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Margin="5"
-                    Template="{StaticResource infoButtonTemplate}" 
-                    Command="{Binding ShowDataChangeWindowCommand}" />
+            
         </Grid>
     </DataTemplate>
 
-    <!-- DataTemplate for Popup look and feel -->
-    <DataTemplate DataType="{x:Type local:ActionData}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0"
-                   Grid.Column="0"
-                   Content="Beschreibung"
-                   Margin="5" />
-            <TextBox Grid.Row="0"
-                     Grid.Column="1"
-                    HorizontalAlignment="Left"
-                    Text="{Binding description}"
-                    Width="150"
-                    Margin="5" />
-            
-            <Label Grid.Row="1"
-                   Grid.Column="0"
-                   Content="Rolle: "
-                   Margin="5" />
-            <ComboBox Grid.Row="1" Grid.Column="1" Height="25" Width="120" HorizontalAlignment="Left"  
-                                      ItemsSource="{Binding roleCollection}" 
-                                      DisplayMemberPath="rolename"
-                                      SelectedItem="{Binding selectedRole}" />
-            
-           
-        </Grid>
-    </DataTemplate>
 
 
 

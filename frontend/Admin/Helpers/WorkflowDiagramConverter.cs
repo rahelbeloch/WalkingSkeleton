@@ -178,7 +178,7 @@ namespace Admin.Helpers
             else if (step.GetType() == typeof(FinalStep))
             {
                 FinalStep finalStep = step.Clone<FinalStep>();
-                FinalStepViewModel finalStepViewModel = new FinalStepViewModel(step.id, diagramViewModel, step.left, step.top, "");
+                FinalStepViewModel finalStepViewModel = new FinalStepViewModel(step.id, diagramViewModel, step.left, step.top);
                 return finalStepViewModel;
             }
 

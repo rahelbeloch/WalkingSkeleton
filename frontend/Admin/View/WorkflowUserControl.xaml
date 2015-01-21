@@ -134,25 +134,42 @@
                         <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}"/>
                         <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Edit Workflow"/>
                     </DockPanel>
+                    <DockPanel Visibility="{Binding actStepVisibility}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
 
-                    <StackPanel DockPanel.Dock="Top" Visibility="{Binding editView}" Margin="10">
-                        <Expander Header="Steps"
-                                    IsExpanded="True">
-                            <ListView DockPanel.Dock="Top"  ItemsSource="{Binding DiagramViewModel.Items}">
-                                <ListView.View>
-                                    <GridView >
-                                        <GridView.Columns>
-                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding isSelected}"/>
-                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
-                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding parent}"/>
-                                        </GridView.Columns>
-                                    </GridView>
-                                </ListView.View>
-                            </ListView>
-                        </Expander>
-                    </StackPanel>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0"
+                                Grid.Column="0"
+                                 Content="Beschreibung"
+                                 Margin="5" />
+                            <TextBox Grid.Row="0"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                Text="{Binding actStep.description, Mode=TwoWay}"
+                                     
+                                Width="150"
+                                Margin="5" />
+
+                            <Label Grid.Row="1"
+                                Grid.Column="0"
+                                Content="Rolle: "
+                                Margin="5" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" Height="25" Width="120" HorizontalAlignment="Left"  
+                                      ItemsSource="{Binding roleCollection}" 
+                                      DisplayMemberPath="rolename"
+                                      SelectedItem="{Binding actStep.selectedRole}" />
 
 
+                        </Grid>
+                    </DockPanel>
+                        
                 </DockPanel>
             </Grid>
         </DockPanel>

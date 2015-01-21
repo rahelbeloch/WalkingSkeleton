@@ -17,6 +17,7 @@ using NLog;
 using DiagramDesigner;
 using DiagramDesigner.Helpers;
 using Admin.Helpers;
+using System.Collections.Specialized;
 
 namespace Admin.ViewModel
 {
@@ -40,9 +41,20 @@ namespace Admin.ViewModel
         public WorkflowDiagramViewModel(MainViewModel mainViewModel)
         {
             diagramViewModel = new DiagramViewModel(this);
+            diagramViewModel.SelectedItemsCollection.CollectionChanged += OnSelectedItemChanged;
             _mainViewModel = mainViewModel;
             DeleteSelectedItemsCommand = new SimpleCommand(ExecuteDeleteSelectedItemsCommand);
         }
+      
+        public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
+        
+        public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
+
+        public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
+
+        
+        #region properties
+
         public DiagramViewModel DiagramViewModel
         {
             get
@@ -58,13 +70,6 @@ namespace Admin.ViewModel
                 }
             }
         }
-        public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
-        
-        public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
-
-        public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
-
-        #region properties
 
         private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
         public ObservableCollection<Workflow> workflows 
@@ -79,8 +84,8 @@ namespace Admin.ViewModel
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
         public ObservableCollection<Item> items { get { return _items; } } 
 
-        private ISupportDataChanges _actStep;
-        public ISupportDataChanges actStep
+        private DesignerItemViewModelBase _actStep;
+        public DesignerItemViewModelBase actStep
         {
             get
             {
@@ -92,6 +97,7 @@ namespace Admin.ViewModel
                 OnChanged("actStep");
             }
         }
+        
         private Visibility _showDetails;
         public Visibility showDetails
         {
@@ -103,6 +109,20 @@ namespace Admin.ViewModel
             {
                 _showDetails = value;
                 OnChanged("showDetails");
+            }
+        }
+
+        private Visibility _actStepVisibility;
+        public Visibility actStepVisibility  
+        {
+            get
+            {
+                return _actStepVisibility;
+            }
+            set
+            {
+                _actStepVisibility = value;
+                OnChanged("actStepVisibility");
             }
         }
         private Visibility _displayView;
@@ -299,7 +319,8 @@ namespace Admin.ViewModel
             _showDetails = Visibility.Collapsed;
             _editView = Visibility.Collapsed;
             _displayView = Visibility.Visible;
-
+            _actStepVisibility = Visibility.Collapsed;
+            
             try
             {
                 logger.Info("Initialize");
@@ -397,6 +418,19 @@ namespace Admin.ViewModel
             OnChanged("workflows");
             
         }
+        private void OnSelectedItemChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (diagramViewModel.SelectedItemsCollection.Count == 1)
+            {
+                actStepVisibility = Visibility.Visible;
+                actStep = diagramViewModel.SelectedItemsCollection.First();
+                
+            }
+            if (diagramViewModel.SelectedItemsCollection.Count == 0 || diagramViewModel.SelectedItemsCollection.Count > 1)
+            {
+                actStepVisibility = Visibility.Collapsed;
+            }
+        }
 
         #region commands
 
@@ -470,6 +504,7 @@ namespace Admin.ViewModel
                             displayView = Visibility.Collapsed;
                             editView = Visibility.Visible;
                             showDetails = Visibility.Collapsed;
+
                         }, canExecute => _actWorkflow != null);
                 }
                 return _editWorkflowCommand;
@@ -506,6 +541,7 @@ namespace Admin.ViewModel
                     _displayViewCommand = new ActionCommand(execute =>
                     {
                         editView = Visibility.Collapsed;
+                        _actStepVisibility = Visibility.Collapsed;
                         displayView = Visibility.Visible;
                     });
                 }
@@ -588,5 +624,6 @@ namespace Admin.ViewModel
         {
             return itemsToRemove.Contains(connector.DataItem);
         }
+        
     }   
 }

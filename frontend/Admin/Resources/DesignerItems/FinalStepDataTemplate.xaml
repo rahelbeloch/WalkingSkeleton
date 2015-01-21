@@ -10,32 +10,11 @@
                    Stretch="Fill"
                    Source="../../Images/End.png"
                    Tag="setting" />
-            <Button HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Margin="5"
-                    Template="{StaticResource infoButtonTemplate}" 
-                    Command="{Binding ShowDataChangeWindowCommand}" />
+            
         </Grid>
     </DataTemplate>
 
-    <!-- DataTemplate for Popup look and feel -->
-    <DataTemplate DataType="{x:Type local:FinalStepData}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <Label Grid.Row="0"
-                   Content="HostUrl"
-                   Margin="5" />
-            <TextBox Grid.Row="1"
-                    HorizontalAlignment="Left"
-                    Text="{Binding HostUrl}"
-                    Width="150"
-                    Margin="5" />
-        </Grid>
-    </DataTemplate>
+    
 
 
 

@@ -20,13 +20,13 @@ namespace Admin
         
         private Role _selectedRole = new Role();
         private String _description = "";
-        public ObservableCollection<Role> roleCollection { get; private set; }
+       
 
-        public ActionData(String description, Role currentRole, ObservableCollection<Role> roleCollection )
+        public ActionData(String description, Role currentRole)
         {
             _selectedRole = currentRole;
             _description = description;
-            this.roleCollection = roleCollection;
+            
         }
 
         
