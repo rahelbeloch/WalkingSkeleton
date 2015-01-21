@@ -3,7 +3,7 @@ package de.hsrm.swt02.businesslogic.exceptions;
 /**
  * Exception thrown if a role cannot be deleted beacuse it is still reference in a workflow.
  */
-public class RoleStillInUseExeption extends NoPermissionException {
+public class RoleStillInUseException extends NoPermissionException {
 
     /**
      * 
@@ -14,7 +14,7 @@ public class RoleStillInUseExeption extends NoPermissionException {
     /**
      * Constructor for the Exception.
      */
-    public RoleStillInUseExeption() {
+    public RoleStillInUseException() {
         super("Role cannot be deleted - still in use");
     }
 
@@ -22,7 +22,7 @@ public class RoleStillInUseExeption extends NoPermissionException {
      * Method dealing with the error message.
      * @param msg is the errormessage.
      */
-    public RoleStillInUseExeption(String msg) {
+    public RoleStillInUseException(String msg) {
         super(msg);
     }
     
@@ -31,6 +31,6 @@ public class RoleStillInUseExeption extends NoPermissionException {
      * @return ERRORCODE is the errorcode
      */
     public int getErrorCode() {
-        return RoleStillInUseExeption.ERRORCODE;
+        return RoleStillInUseException.ERRORCODE;
     }
 }
