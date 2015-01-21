@@ -170,6 +170,14 @@ public interface Logic {
      * @exception LogicException if an error in businesslogic occurs
      */
     boolean checkLogIn(String username, String password, boolean adminRequired) throws LogicException;
+    
+    /**
+     * This method checks if the logged in User is an admin or not.
+     * @param username of the user to be checked
+     * @return true or false
+     * @throws PersistenceException if there is a problem with the Persistence
+     */
+    boolean checkUserIsAdmin(String username) throws PersistenceException;
 
     /**
      * This method deletes a User.

@@ -211,6 +211,7 @@ public class WorkflowResource {
     /**
      * Receives a workflow and stores it into the database. This operation will
      * be published on the message broker.
+     * @param username the user requesting the service
      * @param formParams wrapper for an sent workflow
      * @return "true" if everything was successful OR "jackson exception" if
      *         serialization crashed
@@ -219,7 +220,16 @@ public class WorkflowResource {
     @Path("workflows")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
-    public Response saveWorkflow(MultivaluedMap<String, String> formParams) {
+    public Response saveWorkflow(MultivaluedMap<String, String> formParams, @HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
+        LOGGER.log(Level.WARNING, "check saveWorkflow");
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /resource/workflows";
         LOGGER.log(Level.INFO, loggingBody);
@@ -257,13 +267,22 @@ public class WorkflowResource {
      * message broker.
      * @param formParams wrapper for an sent workflow
      * @param workflowid - the workflow to update
+     * @param username the user requesting the service
      * @return String true or false
      */
     @PUT
     @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
-    public Response updateWorkflow(MultivaluedMap<String, String> formParams, @PathParam("workflowid") String workflowid) {
+    public Response updateWorkflow(MultivaluedMap<String, String> formParams, @PathParam("workflowid") String workflowid, @HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }        
+        
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "PUT /resource/workflows/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);
@@ -298,12 +317,21 @@ public class WorkflowResource {
      * This method deletes a workflow. This operation will be published on the
      * message broker.
      * @param workflowid which indicates which workflow should be deleted
+     * @param username the user requesting the service
      * @return deleted workflow, if successful
      */
     @DELETE
     @Path("workflows/{workflowid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteWorkflow(@PathParam("workflowid") String workflowid) {
+    public Response deleteWorkflow(@PathParam("workflowid") String workflowid, @HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        } 
+        
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "DELETE /resource/workflows/" + workflowid;
         LOGGER.log(Level.INFO, loggingBody);

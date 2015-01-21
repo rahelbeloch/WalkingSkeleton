@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.LogicResponse;
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
@@ -47,6 +49,7 @@ public class UserResource {
     @Path("users/{username}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getUser(@PathParam("username") String username) {
+        
         final String loggingBody = PREFIX + "GET /resource/users/" + username;
         LOGGER.log(Level.INFO, loggingBody);
         User user;
@@ -72,13 +75,22 @@ public class UserResource {
      * Receives a user and stores it into the database. 
      * This operation will be published on the message broker.
      * @param formParams is a wrapper for a sent user
+     * @param username the user requesting the service
      * @return 200 ok if successful
      */
     @POST
     @Path("users")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
-    public Response saveUser(MultivaluedMap<String, String> formParams) {
+    public Response saveUser(MultivaluedMap<String, String> formParams, @HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /resource/users ";
         LOGGER.log(Level.INFO, loggingBody);
@@ -117,8 +129,15 @@ public class UserResource {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes("application/x-www-form-urlencoded")
     public Response updateUser(@PathParam("username") String username,
-            MultivaluedMap<String, String> formParams) 
+            MultivaluedMap<String, String> formParams, @HeaderParam("username") String loggedInUsername) 
     {
+        try {
+            LOGIC.checkUserIsAdmin(loggedInUsername);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "PUT /resource/users/" + username;
         LOGGER.log(Level.INFO, loggingBody);
@@ -149,12 +168,21 @@ public class UserResource {
      * This method deletes an user.
      * This operation will be published on the message broker.
      * @param username indicates which user should be deleted
+     * @param loggedInUsername indicates which user should be deleted
      * @return deleted user, if successful
      */
     @DELETE
     @Path("users/{username}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteUser(@PathParam("username") String username) {
+    public Response deleteUser(@PathParam("username") String username, @HeaderParam("username") String loggedInUsername) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(loggedInUsername);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "DELETE /resource/users/" + username;
         LOGGER.log(Level.INFO, loggingBody);
@@ -185,12 +213,21 @@ public class UserResource {
     
     /**
      * This Method grants the Clients access to all users stored in persistence.
+     * @param username the user requesting the service
      * @return All Users in the persistence as string if successful, 500 Server Error if not
      */
     @GET
     @Path("users")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getAllUsers() {
+    public Response getAllUsers(@HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
         final String loggingBody = PREFIX + "GET /resource/users";
         LOGGER.log(Level.INFO, loggingBody);
         List<User> users;
