@@ -67,6 +67,8 @@ namespace Admin.ViewModel
             RoleCheckboxRows.Clear();
             SelectedUser = null;
             SelectedRole = null;
+            EnteredRolename = "";
+            EnteredUsername = "";
         }
 
         # region USER PROPERTIES
