@@ -63,11 +63,16 @@ namespace CommunicationLib
         /// <returns>true if succeded, else false</returns>
         public static bool ValidateAddress(string matchString)
         {
-            // calling regex for server address
-            Match matchIp = Regex.Match(matchString, Constants.URLPATTERN, RegexOptions.IgnoreCase);
-            
-            // check the match success
-            return matchIp.Success;
+            if (matchString != null)
+            {
+                // calling regex for server address
+                Match matchIp = Regex.Match(matchString, Constants.URLPATTERN, RegexOptions.IgnoreCase);
+
+                // check the match success
+                return matchIp.Success;
+            }
+
+            return false;
         }
     }
 }
