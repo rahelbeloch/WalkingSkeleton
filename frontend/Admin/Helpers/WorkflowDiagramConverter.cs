@@ -93,7 +93,7 @@ namespace Admin.Helpers
 
                 action.id = getUniqueId();
                 action.roleIds.Add(((ActionViewModel)designerItem).selectedRole.id);
-                action.Description = ((ActionViewModel)designerItem).description;
+                action.description = ((ActionViewModel)designerItem).description;
 
                 return action;
             }
