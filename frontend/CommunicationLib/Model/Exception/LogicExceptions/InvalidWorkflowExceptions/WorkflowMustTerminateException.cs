@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// Exception for invalid workflows. E.g. if a workflow doesn't end in a final step.
+    /// </summary>
     public class WorkflowMustTerminateException : InvalidWorkflowException
     {
-        private int _number = 11520;
         new public int number { get { return _number; } }
-
+        private int _number = 11520;
+        
         public WorkflowMustTerminateException()
             : base("Es muss immer ein Endzustand erreicht werden können.")
         {
