@@ -48,7 +48,9 @@
                         <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="Formular löschen" Height="26" Margin="10" Command="{Binding deleteFormCommand}"/>
                     </DockPanel>
                     <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Visibility="{Binding visibleDefinition, UpdateSourceTrigger=PropertyChanged}">
+                        
                         <DockPanel DockPanel.Dock="Top">
+                            
                             <DockPanel.InputBindings>
                                 <KeyBinding Key="Enter" Command="{Binding addDefinitionCommand}" />
                                 <KeyBinding Key="Delete" Command="{Binding removeDefinitionCommand}" />
@@ -78,6 +80,7 @@
                                     </GridView>
                                 </ListView.View>
                             </ListView>
+                            <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+" Height="30" Width="50" Margin="10" Command="{Binding addDefinitionCommand}"/>
                         </DockPanel>
                         <DockPanel DockPanel.Dock="Top" Margin="10,10,10,10">
                             <Label Content="Formularname: "  VerticalContentAlignment="Center"/>
