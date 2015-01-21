@@ -31,9 +31,9 @@ namespace Client.ViewModel
                 _visibilityFinishButton = _actState.Equals("BUSY") ? Visibility.Visible : Visibility.Hidden;
 
                 _formRows = new List<FormRow>();
-                foreach (FormEntry formEntry in _form.FormDef)
+                foreach (FormEntry formEntry in _form.formDef)
                 {
-                    _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.Datatype));
+                    _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
                 }
             }
         }
@@ -87,9 +87,9 @@ namespace Client.ViewModel
             _actState = _actItem.State;
 
             _formRows = new List<FormRow>();
-            foreach (FormEntry formEntry in _form.FormDef)
+            foreach (FormEntry formEntry in _form.formDef)
             {
-                _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.Datatype));
+                _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
             }
         }
     }
