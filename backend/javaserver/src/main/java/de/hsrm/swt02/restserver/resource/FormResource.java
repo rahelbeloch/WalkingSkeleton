@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -172,5 +173,50 @@ public class FormResource {
         
         LOGGER.log(Level.INFO, loggingBody + " Form successfully stored.");
         return Response.ok("Form stored").build();
+    }
+    
+    
+    /**
+     * This method enables Clients to delete forms from the persistence.
+     * @param formId the id of the to be deleted
+     * @param username is the logged in user
+     * @return 200 OK if successful, 500 ServerError if not
+     */
+    @DELETE
+    @Path("forms/{formId}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response deleteRole(@PathParam("formId") String formId, @HeaderParam("username") String username) {
+        
+        try {
+            LOGIC.checkUserIsAdmin(username);
+        } catch (LogicException e2) {
+            LOGGER.log(Level.INFO, e2);
+            return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
+        }
+        
+        LogicResponse logicResponse;
+        final String loggingBody = PREFIX + "DELETE /resource/forms/" + formId;
+        LOGGER.log(Level.INFO, loggingBody);
+        final Form form = null;
+        String formAsString;
+        
+        try {
+            logicResponse = LOGIC.deleteForm(formId);
+        } catch (LogicException e1) {
+            LOGGER.log(Level.INFO,e1);
+            return Response.serverError().entity(String.valueOf(e1.getErrorCode())).build();
+        }
+        try {
+            formAsString = JsonParser.marshall(form);
+        } catch (JacksonException e) {
+            LOGGER.log(Level.INFO, loggingBody + e);
+            return Response.serverError().entity(String.valueOf(e.getErrorCode()))
+                    .build();
+        }
+        
+        PUBLISHER.publishEvent(logicResponse);
+        
+        LOGGER.log(Level.INFO, loggingBody + " Form successfully deleted.");
+        return Response.ok(formAsString).build();
     }
 }
