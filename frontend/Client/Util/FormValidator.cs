@@ -13,11 +13,15 @@ using System.Windows.Data;
 
 namespace Client.Util
 {
+    /// <summary>
+    /// This class validates a handed over form returns the result to calller.
+    /// </summary>
     public class FormValidator : ValidationRule
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        
         /// <summary>
-        /// Validates the edited value in the formular
+        /// Validates the edited value in the formular.
         /// </summary>
         /// <param name="value">the BindingGroup for the edited value</param>
         /// <param name="cultureInfo"></param>

@@ -37,6 +37,10 @@ namespace Client.ViewModel
         /// </summary>
         public Boolean startPermission { get { return _startPermission; } set { _startPermission = value; } }
         
+        /// <summary>
+        /// Constructor for a DashboardWorkflow.
+        /// </summary>
+        /// <param name="actWorkflow">the workflow from server to display</param>
         public DashboardWorkflow(Workflow actWorkflow)
         {
             this._actWorkflow = actWorkflow;

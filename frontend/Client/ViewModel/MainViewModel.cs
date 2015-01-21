@@ -21,18 +21,29 @@ namespace Client.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase, IDataReceiver
     {
-        private String _clientID = "user";
+        /// <summary>
+        /// Identifikation string for this client.
+        /// </summary>
         public String clientID { get { return _clientID; } }
-
+        private String _clientID = "user";
+        
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private DashboardViewModel _dashboardViewModel;
+        
+        /// <summary>
+        /// Viewmodel for the users dashboard with workflows.
+        /// </summary>
         public DashboardViewModel dashboardViewModel { get { return _dashboardViewModel; } }
-
-        private LoginViewModel _loginViewModel;
+        private DashboardViewModel _dashboardViewModel;
+        
+        /// <summary>
+        /// Viewmodel for login.
+        /// </summary>
         public LoginViewModel loginViewModel { get { return _loginViewModel; } }
-
-        // the communication library
-        private ComLib _myComLib;
+        private LoginViewModel _loginViewModel;
+        
+        /// <summary>
+        /// The communication library.
+        /// </summary>
         public ComLib myComLib
         {
             get
@@ -51,8 +62,11 @@ namespace Client.ViewModel
                 return _myComLib;
             }
         }
-
-        private IRestRequester _restRequester;
+        private ComLib _myComLib;
+        
+        /// <summary>
+        /// The requester for rest requests.
+        /// </summary>
         public IRestRequester restRequester
         {
             get 
@@ -64,8 +78,11 @@ namespace Client.ViewModel
                 return _restRequester; 
             }
         }
-
-        private String _userName = "";
+        private IRestRequester _restRequester;
+        
+        /// <summary>
+        /// The username of the logged in user.
+        /// </summary>
         public String username
         {
             get { return _userName; }
@@ -75,7 +92,11 @@ namespace Client.ViewModel
                 _dashboardViewModel.userName = value;
             }
         }
-
+        private String _userName = "";
+        
+        /// <summary>
+        /// Default constructor. Initializes the dashboard und login view models and arranges them.
+        /// </summary>
         public MainViewModel()
         {
             _loginViewModel = new LoginViewModel(this);
@@ -92,7 +113,6 @@ namespace Client.ViewModel
         /// <summary>
         /// Command to change the current View/ViewModel.
         /// </summary>
-        private ICommand _changePageCommand;
         public ICommand ChangePageCommand
         {
             get
@@ -106,11 +126,11 @@ namespace Client.ViewModel
                 return _changePageCommand;
             }
         }
+        private ICommand _changePageCommand;
 
         /// <summary>
         /// Property to hold a list of all known ViewModels.
         /// </summary>
-        private List<ViewModelBase> _pageViewModels;
         public List<ViewModelBase> PageViewModels
         {
             get
@@ -123,11 +143,11 @@ namespace Client.ViewModel
                 return _pageViewModels;
             }
         }
+        private List<ViewModelBase> _pageViewModels;
 
         /// <summary>
         /// Property for the currently shown View/ViewModel.
         /// </summary>
-        private ViewModelBase _currentPageViewModel;
         public ViewModelBase CurrentPageViewModel
         {
             get
@@ -143,7 +163,8 @@ namespace Client.ViewModel
                 }
             }
         }
-
+        private ViewModelBase _currentPageViewModel;
+        
         #endregion
 
         #region Methods
@@ -172,8 +193,9 @@ namespace Client.ViewModel
             // route update-handling to subcomponents
             _dashboardViewModel.AddWorkflowToModel(workflow);
         }
+        
         /// <summary>
-        /// Calls the update methode for items in the dashboardModel
+        /// Calls the update methode for items in the dashboardModel.
         /// </summary>
         /// <param name="item">instance of the new item</param>
         public void ItemUpdate(Item item)
@@ -182,21 +204,38 @@ namespace Client.ViewModel
             Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.UpdateItem(item)));
         }
 
+        /// <summary>
+        /// Update method for updates from the server concerning the user.
+        /// </summary>
+        /// <param name="user">new/edited user</param>
         public void UserUpdate(User user)
         {
             // update handling
         }
 
+        /// <summary>
+        /// Update method for updates from the server concerning roles.
+        /// </summary>
+        /// <param name="role">the new/updated role</param>
         public void RoleUpdate(Role role)
         {
             // update handling
         }
 
+        /// <summary>
+        /// Update method for updates from the server concerning forms.
+        /// </summary>
+        /// <param name="updatedForm">the new/updated form</param>
         public void FormUpdate(Form updatedForm)
         {
             // update handling
         }
 
+        /// <summary>
+        /// React to deletions from the server by deleting the concerning view models.
+        /// </summary>
+        /// <param name="sourceType">type of deleted object</param>
+        /// <param name="sourceId">id of deleted object</param>
         public void DataDeletion(Type sourceType, string sourceId)
         {
             logger.Info("Delete " + sourceType.ToString() + " ID=" + sourceId);
@@ -206,6 +245,10 @@ namespace Client.ViewModel
             }
         }
 
+        /// <summary>
+        /// Callback from CommunicationManager in ComLib. 
+        /// </summary>
+        /// <param name="e">the exception, which happened</param>
         public void HandleError(BasicException e)
         {
             // Error handling here

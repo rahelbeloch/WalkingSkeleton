@@ -10,10 +10,14 @@ using Client.ViewModel;
 namespace Client
 {
     /// <summary>
-    /// Interaktionslogik für "App.xaml"
+    /// Interactive logic for "App.xaml".
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Method to start the MainWindow of client.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);

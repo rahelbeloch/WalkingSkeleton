@@ -24,6 +24,10 @@ namespace Client.ViewModel
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private MainViewModel _mainViewModel;
 
+        /// <summary>
+        /// Constructor for LoginViewModel, with the parent MainViewModel.
+        /// </summary>
+        /// <param name="mainViewModelInstanz"></param>
         public LoginViewModel(MainViewModel mainViewModelInstanz)
             : base()
         {
@@ -32,13 +36,15 @@ namespace Client.ViewModel
             _brokerAddress = ConfigurationManager.AppSettings[Constants.BROKER_ADDRESS_NAME];
         }
 
-        private string _name = "Login Model";
+        /// <summary>
+        /// The name of this model.
+        /// </summary>
         public string name { get { return _name; } }
-
+        private string _name = "Login Model";
+        
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
-        private String _securePwd = "";
         public String securePwd
         {
             get
@@ -51,11 +57,11 @@ namespace Client.ViewModel
                 OnChanged("securePwd");
             }
         }
-
+        private String _securePwd = "";
+        
         /// <summary>
         /// Property for input from username text box.
         /// </summary>
-        private string _username = "";
         public string username
         {
             get
@@ -68,11 +74,11 @@ namespace Client.ViewModel
                 OnChanged("username");
             }
         }
-
+        private string _username = "";
+        
         /// <summary>
         /// Property for server adress.
         /// </summary>
-        private string _serverAddress;
         public string ServerAddress
         {
             get
@@ -85,11 +91,11 @@ namespace Client.ViewModel
                 OnChanged("serverAddress"); 
             }
         }
-
+        private string _serverAddress;
+        
         /// <summary>
         /// Property for broker adress.
         /// </summary>
-        private string _brokerAddress;
         public string BrokerAddress
         {
             get
@@ -102,11 +108,11 @@ namespace Client.ViewModel
                 OnChanged("brokerAddress");
             }
         }
-
+        private string _brokerAddress;
+        
         /// <summary>
         /// ICommand which is called by the login button.
         /// </summary>
-        private ICommand _authenticate;
         public ICommand authenticate
         {
             get
@@ -158,7 +164,8 @@ namespace Client.ViewModel
                 return _authenticate;
             }
         }
-
+        private ICommand _authenticate;
+        
         private void SaveAddresses()
         {
             // retrieve local config file path from filesystem

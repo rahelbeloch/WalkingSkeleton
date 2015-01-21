@@ -77,6 +77,14 @@ namespace Client.ViewModel
         /// List of Formularrows
         /// </summary>
         public List<FormRow> formRows { get { return _formRows; } }
+        
+        /// <summary>
+        /// Constructor for one DashboardRow.
+        /// </summary>
+        /// <param name="actItem">the item displayed in this row</param>
+        /// <param name="actStep">the act step of the item</param>
+        /// <param name="username">the username</param>
+        /// <param name="form">the form</param>
         public DashboardRow(Item actItem, Step actStep, String username, Form form)
         {
             _username = username;

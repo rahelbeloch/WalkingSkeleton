@@ -16,10 +16,13 @@ using CommunicationLib.Exception;
 namespace Client.View
 {
     /// <summary>
-    /// Interaktionslogik für Login.xaml
+    /// Interactive logic for Login.xaml.
     /// </summary>
     public partial class LoginUserControl : UserControl
     {
+        /// <summary>
+        /// Constructor for LoginUserControl.
+        /// </summary>
         public LoginUserControl()
         {
             InitializeComponent();

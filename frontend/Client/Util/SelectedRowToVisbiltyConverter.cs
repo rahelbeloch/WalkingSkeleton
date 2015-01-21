@@ -9,10 +9,13 @@ using System.Windows.Data;
 
 namespace Client.Util
 {
+    /// <summary>
+    /// This class converts given objects two way; to Visibility or back to object.
+    /// </summary>
     public class SelectedRowToVisbiltyConverter : IValueConverter
     {
         /// <summary>
-        /// converts the selected Row to Visbility
+        /// Converts the selected Row to Visbility.
         /// </summary>
         /// <param name="value">The selected Row</param>
         /// <param name="targetType"></param>
@@ -31,6 +34,15 @@ namespace Client.Util
                 return Visibility.Visible;
             }
         }
+
+        /// <summary>
+        /// Converts the Visibility back to object.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object ConvertBack(object value, Type targetType,
         object parameter, CultureInfo culture)
         {

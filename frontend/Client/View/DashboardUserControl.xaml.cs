@@ -22,10 +22,13 @@ using Action = CommunicationLib.Model.Action;
 namespace Client.View
 {   
     /// <summary>
-    /// Interaktionslogik für WorkflowUserControl.xaml
+    /// Interactive logic for WorkflowUserControl.xaml.
     /// </summary>
     public partial class DashboardUserControl : UserControl
     {
+        /// <summary>
+        /// Constructor for DashboardUserControl.
+        /// </summary>
         public DashboardUserControl()
         {
             InitializeComponent();
