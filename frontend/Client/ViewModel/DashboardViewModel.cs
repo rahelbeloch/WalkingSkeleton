@@ -224,7 +224,7 @@ namespace Client.ViewModel
         /// Finds the step for the given id in a single workflow.
         /// </summary>
         /// <param name="id">id of the step</param>
-        /// <param name="workflow">the associated workflow</param>
+        /// <param name="workflowId">the associated workflowId</param>
         /// <returns>the fitting step or null</returns>
         private Step GetStepById(int id, String workflowId)
         {
