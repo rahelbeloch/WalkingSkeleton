@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using DiagramDesigner;
 using System.Windows.Input;
-
+using CommunicationLib.Model;
 
 namespace Admin
 {
@@ -23,8 +23,8 @@ namespace Admin
             Init();
         }
 
-
         
+
         public ICommand ShowDataChangeWindowCommand { get; private set; }
 
         public void ExecuteShowDataChangeWindowCommand(object parameter)

@@ -14,9 +14,7 @@ namespace Admin
     public class StartStepViewModel : DesignerItemViewModelBase, ISupportDataChanges
     {
         private IUIVisualizerService visualiserService;
-        WorkflowDiagramViewModel workflowViewModel = null;
-        public ObservableCollection<Role> roleCollection { get { return workflowViewModel.roleCollection; } }
-
+        
         public StartStepViewModel(string id, DiagramViewModel parent, double left, double top, Role selectedRole)
             : base(id, parent, left, top)
         {
@@ -48,11 +46,8 @@ namespace Admin
 
         public void ExecuteShowDataChangeWindowCommand(object parameter)
         {
-            if (this.workflowViewModel == null)
-            {
-                this.workflowViewModel = (WorkflowDiagramViewModel)this.Parent.workflowViewModel;
-            }
-            StartStepData data = new StartStepData(selectedRole, roleCollection);
+            
+            StartStepData data = new StartStepData(selectedRole);
             if (visualiserService.ShowDialog(data) == true)
             {
                 this.selectedRole = data.selectedRole;
