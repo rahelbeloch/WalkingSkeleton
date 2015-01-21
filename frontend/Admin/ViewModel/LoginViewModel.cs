@@ -156,7 +156,7 @@ namespace Admin.ViewModel
                             }
                             MessageBox.Show(exc.Message);
                         }
-                    }, canExecute => admin.Length > 0 && ServerAddress.Length > 0 && BrokerAddress.Length > 0);
+                    }, canExecute => admin.Length > 0);
                 }
                 return _authenticate;
             }
