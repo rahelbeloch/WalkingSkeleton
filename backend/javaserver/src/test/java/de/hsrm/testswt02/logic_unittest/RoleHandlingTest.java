@@ -43,14 +43,22 @@ public class RoleHandlingTest {
         ConstructionFactory.getInstance();
     }
     
+    /**
+     * Test if storing a step without a role will run into a StorageFailedException.
+     * @throws LogicException 
+     */
     @Test(expected = StorageFailedException.class)
     public void testStepWithoutRole() throws LogicException {
-        Workflow wf = new Workflow();
-        Step startStep = new StartStep();
+        final Workflow wf = new Workflow();
+        final Step startStep = new StartStep();
         wf.addStep(startStep);
         li.addWorkflow(wf);
     }
     
+    /**
+     * Test if roles can be stored properly.
+     * @throws PersistenceException 
+     */
     @Test
     public void roleStorageTest() throws PersistenceException {    
         final Role role1 = new Role();
@@ -64,6 +72,10 @@ public class RoleHandlingTest {
         assertEquals(role1, li.getRole(role1.getRolename()));
     }
     
+    /**
+     * Test if roles can only be assigned once, will fail if not.
+     * @throws PersistenceException 
+     */
     @Test
     public void giveRoleOnlyOnce() throws PersistenceException {
         final Role employee = new Role();
@@ -80,6 +92,10 @@ public class RoleHandlingTest {
         assertEquals(li.getUser(testuser.getUsername()).getRoles().size(), 1);
     }
     
+    /**
+     * Tests if roles can be deleted.
+     * @throws LogicException 
+     */
     @Test
     public void deletionOfRolesTest() throws LogicException {
         final Role chief = new Role();
@@ -113,6 +129,10 @@ public class RoleHandlingTest {
         assertEquals(li.getUser(boss.getUsername()).getRoles().size(), 1);
     }
     
+    /**
+     * Tests if the deletion of roles that are still in use runs into a NoPermissionException.
+     * @throws LogicException 
+     */
     @Test(expected = NoPermissionException.class)
     public void deletionOfRoleStillInUse() throws LogicException {
         final Role chief = new Role();
