@@ -18,12 +18,12 @@ namespace Admin
     public class StartStepData: INPCBase
     {
         private Role _selectedRole = new Role();
-        public ObservableCollection<Role> roleCollection { get; private set; }
+        
 
-        public StartStepData(Role currentRole, ObservableCollection<Role> roleCollection)
+        public StartStepData(Role currentRole)
         {
             _selectedRole = currentRole;
-            this.roleCollection = roleCollection;
+            
         }
 
         public Role selectedRole

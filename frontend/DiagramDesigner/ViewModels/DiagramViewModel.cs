@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+
 
 
 namespace DiagramDesigner
@@ -11,6 +14,8 @@ namespace DiagramDesigner
     {
         private ObservableCollection<SelectableDesignerItemViewModelBase> items = new ObservableCollection<SelectableDesignerItemViewModelBase>();
 
+        private ObservableCollection<DesignerItemViewModelBase> _selectesItemsCollection = new ObservableCollection<DesignerItemViewModelBase>();
+        
         /// <summary>
         /// Property to lock the canvas. Moving and deleting items will be disabled if true.
         /// </summary>
@@ -28,18 +33,59 @@ namespace DiagramDesigner
             } 
         }
 
-        public DiagramViewModel(Object _workflowViewModel)
+        public DiagramViewModel()
         {
             AddItemCommand = new SimpleCommand(ExecuteAddItemCommand);
             RemoveItemCommand = new SimpleCommand(ExecuteRemoveItemCommand);
             ClearSelectedItemsCommand = new SimpleCommand(ExecuteClearSelectedItemsCommand);
             CreateNewDiagramCommand = new SimpleCommand(ExecuteCreateNewDiagramCommand);
-            workflowViewModel = _workflowViewModel; 
-
+            
+            
             Mediator.Instance.Register(this);
+
+            items.CollectionChanged += this.OnCollectionItemChanged;
         }
 
+        private void OnCollectionItemChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (SelectableDesignerItemViewModelBase newItem in e.NewItems)
+                {
+                    newItem.PropertyChanged += this.OnItemChanged;
+                }
+            }
+            if (e.OldItems != null)
+            {
+                foreach (SelectableDesignerItemViewModelBase oldItem in e.OldItems)
+                {
+                    oldItem.PropertyChanged -= this.OnItemChanged;
+                }
+            }
+        }
+        private void OnItemChanged(object sender, PropertyChangedEventArgs e)
+        {
+            DesignerItemViewModelBase step = sender as DesignerItemViewModelBase;
+            if (step != null)
+            {
+                if(step.IsSelected == true)
+                {
+                    if (!_selectesItemsCollection.Contains(step))
+                    {
+                        _selectesItemsCollection.Add(step);
+                    }
+                }
+                if (step.IsSelected == false)
+                {
+                    if (_selectesItemsCollection.Contains(step))
+                    {
+                        _selectesItemsCollection.Remove(step);
+                    }
+                }
 
+            }
+            
+        }
 
         [MediatorMessageSink("DoneDrawingMessage")]
         public void OnDoneDrawingMessage(bool dummy)
@@ -50,7 +96,7 @@ namespace DiagramDesigner
             }
         }
 
-        public Object workflowViewModel { get; private set; }
+        
         public SimpleCommand AddItemCommand { get; private set; }
         public SimpleCommand RemoveItemCommand { get; private set; }
         public SimpleCommand ClearSelectedItemsCommand { get; private set; }
@@ -59,6 +105,11 @@ namespace DiagramDesigner
         public ObservableCollection<SelectableDesignerItemViewModelBase> Items
         {
             get { return items; }
+        }
+
+        public ObservableCollection<DesignerItemViewModelBase> SelectedItemsCollection
+        {
+            get { return _selectesItemsCollection; }
         }
 
         public List<SelectableDesignerItemViewModelBase> SelectedItems

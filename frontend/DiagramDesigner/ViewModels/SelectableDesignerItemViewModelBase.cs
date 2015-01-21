@@ -71,6 +71,8 @@ namespace DiagramDesigner
             }
 
             IsSelected = select;
+
+            
         }
     
         private void Init()

@@ -65,10 +65,6 @@ namespace Admin
         public void ExecuteShowDataChangeWindowCommand(object parameter)
         {
             
-            //if (this.workflowViewModel == null)
-            //{
-             //   this.workflowViewModel = (WorkflowDiagramViewModel)this.Parent.workflowViewModel;
-           // }
             ActionData data = new ActionData(description, selectedRole);
             if (visualiserService.ShowDialog(data) == true)
             {

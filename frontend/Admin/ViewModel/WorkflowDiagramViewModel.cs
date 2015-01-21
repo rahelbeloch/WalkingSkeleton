@@ -40,7 +40,7 @@ namespace Admin.ViewModel
         
         public WorkflowDiagramViewModel(MainViewModel mainViewModel)
         {
-            diagramViewModel = new DiagramViewModel(this);
+            diagramViewModel = new DiagramViewModel();
             diagramViewModel.SelectedItemsCollection.CollectionChanged += OnSelectedItemChanged;
             _mainViewModel = mainViewModel;
             DeleteSelectedItemsCommand = new SimpleCommand(ExecuteDeleteSelectedItemsCommand);

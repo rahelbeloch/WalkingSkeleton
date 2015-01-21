@@ -152,6 +152,7 @@
                                  Content="Beschreibung"
                                  Margin="5" />
                             <TextBox Grid.Row="0"
+                                     
                                 Grid.Column="1"
                                 HorizontalAlignment="Left"
                                 Text="{Binding actStep.description, Mode=TwoWay}"
