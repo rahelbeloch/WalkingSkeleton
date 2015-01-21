@@ -81,8 +81,18 @@ namespace Client.ViewModel
             }
             set
             {
-                _serverAddress = value;
-                OnChanged("serverAddress");
+                if (_serverAddress != value)
+                {
+                    _serverAddress = value;
+
+                    if (_mainViewModel.myComLib != null)
+                    {
+                        // refresh ONLY serverAddress in ComLib
+                        _mainViewModel.myComLib.RefreshServer(_serverAddress);
+                    }
+
+                    OnChanged("serverAddress");
+                }     
             }
         }
 
@@ -98,8 +108,18 @@ namespace Client.ViewModel
             }
             set
             {
-                _brokerAddress = value;
-                OnChanged("brokerAddress");
+                if (_brokerAddress != value)
+                {
+                    _brokerAddress = value;
+
+                    if (_mainViewModel.myComLib != null)
+                    {
+                        // refresh ONLY broker in ComLib
+                        _mainViewModel.myComLib.RefreshBroker(_brokerAddress);
+                    }
+
+                    OnChanged("brokerAddress");
+                }
             }
         }
 
@@ -121,8 +141,6 @@ namespace Client.ViewModel
 
                             if (_mainViewModel.myComLib != null)
                             {
-                                _mainViewModel.myComLib.RefreshUrls(_serverAddress, _brokerAddress);
-
                                 // Register mainViewModel to CommunicationLib (if login worked)
                                 _mainViewModel.myComLib.Login(username, securePwd);
                                 logger.Info("Login successful for username=" + username + " password=" + securePwd);
