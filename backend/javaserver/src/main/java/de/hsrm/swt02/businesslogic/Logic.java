@@ -22,6 +22,8 @@ public interface Logic {
     /**
      * This method starts a Workflow.
      * 
+     * For starting a workflow, a user has to be in at least one of the roles owned by the workflow's startstep. 
+     * 
      * @param workflowID is the workflow, which should be started
      * @param username is the User, who starts the workflow
      * @return logicResponse of starting a workflow
@@ -40,6 +42,8 @@ public interface Logic {
      * are reseted) will be saved. Should a workflow be de-/activated then its
      * state will be setted on the original one which will be saved.
      * 
+     * For adding a workflow, admin rights are required.
+     * 
      * @param workflow is the workflow which should be added
      * @return logicResponse of adding a workflow
      * @exception LogicException if an error in businesslogic occurs
@@ -50,6 +54,8 @@ public interface Logic {
     /**
      * This method returns all workflows in persistence.
      * 
+     * For retrieving all workflows, admin rights are required.
+     * 
      * @return list of all workflows.
      * @throws PersistenceException if an error in persistence occurs
      * @throws NoPermissionException 
@@ -58,7 +64,9 @@ public interface Logic {
 
 
      /**
-     * This method return all workflows in persistence that are not marked inactive.
+     * This method returns all workflows in persistence that are not marked inactive.
+     * 
+     * For retrieving all active workflows, admin rights are required.
      * 
      * @return all active workflows in persistence
      * @throws PersistenceException if an error in persistence occurs
@@ -68,6 +76,8 @@ public interface Logic {
     /**
      * This method loads a Workflow.
      * 
+     * For retrieving a workflow, admin rights are required.
+     * 
      * @param workflowID is the id of the given worklow
      * @return a Workflow, if there is one, who has this workflowID
      * @throws PersistenceException if an error in persistence occurs
@@ -76,6 +86,8 @@ public interface Logic {
 
     /**
      * This method delete a Workflow in Persistence.
+     * 
+     * For deleting a workflow, admin rights are required.
      * 
      * @param workflowID
      *            describe the Workflow
@@ -91,6 +103,8 @@ public interface Logic {
     /**
      * This method execute a step in an item.
      * 
+     * For stepping forward, the user needs to have at least one of the roles owned by the responsible item step.
+     * 
      * @param itemId is the itemId of the given item
      * @param stepId the stepId of the responsible item step
      * @param username is the name of the user who executes the step in the Item
@@ -103,6 +117,8 @@ public interface Logic {
     /**
      * This method deactivates a workflow.
      * 
+     * For deactivating a workflow, admin rights are required.
+     * 
      * @param workflowID the id of the workflow which should be deactivate
      * @throws PersistenceException if an error in persistence occurs
      * @return the LogicResponse of the deactivated workflow
@@ -111,6 +127,8 @@ public interface Logic {
 
     /**
      * This method activates a workflow.
+     * 
+     * For activating a workflow, admin rights are required.
      * 
      * @return the LogicResponse of an activated workflow
      * @param workflowID the id of the workflow which should be deactivate
@@ -123,6 +141,8 @@ public interface Logic {
     /**
      * This method add a step into an existing Workflow.
      * 
+     * For adding a step, admin rights are required.
+     * 
      * @param workflowID the workflow, which shall edited
      * @param stepId is the Id the step, which shall added
      * @return logicResponse of adding a step
@@ -133,6 +153,8 @@ public interface Logic {
     /**
      * This method deletes a step from an existing Workflow.
      * 
+     * For deleting a step, admin rights are required.
+     * 
      * @param workflowID is the id of the workflow, which shall edited
      * @param stepID is the id of the step, which shall delete
      * @return logicResponse of deleting a step
@@ -142,7 +164,9 @@ public interface Logic {
     LogicResponse deleteStep(String workflowID, String stepID) throws PersistenceException;
 
     /**
-     * This method stores a workflow and distribute a id.
+     * This method stores a user and distributes a id.
+     * 
+     * For storing a user, admin rights are required.
      * 
      * @param user is the given user which should be added
      * @return logicResponse of adding a user
@@ -153,6 +177,8 @@ public interface Logic {
     /**
      * This method loads a User.
      * 
+     * For loading a user, admin rights are required.
+     * 
      * @param username describe the user
      * @return a User, if there is one, who has this username
      * @throws PersistenceException if an error in persistence occurs 
@@ -161,7 +187,8 @@ public interface Logic {
     User getUser(String username) throws PersistenceException; // not there yet
 
     /**
-     * This method checks a User.
+     * This method checks the login data of a user. Username and password will always be checked. When logging in
+     * via the adminClient(adminRequired flag), admin rights will be checked in addition.
      * 
      * @param username of the user, to be checked
      * @param password of the user, to be checked
@@ -173,6 +200,7 @@ public interface Logic {
     
     /**
      * This method checks if the logged in User is an admin or not.
+     * 
      * @param username of the user to be checked
      * @return true or false
      * @throws PersistenceException if there is a problem with the Persistence
@@ -181,6 +209,8 @@ public interface Logic {
 
     /**
      * This method deletes a User.
+     * 
+     * For deleting a user, admin rights are required.
      * 
      * @param username describes the user
      * @exception UserNotExistentException if the given user doesnt exist in the persistence
@@ -194,6 +224,8 @@ public interface Logic {
      * matter if there is an open or busy item for him Mind that this method
      * won't return the items only a list of workflows.
      * 
+     * For retrieving all workflows for a user, the user has to be logged in.
+     * 
      * @param username is the username of the user whose workflows' is looked for
      * @exception LogicException if an error in businesslogic occurs
      * @return a LinkedList of workflows
@@ -203,6 +235,8 @@ public interface Logic {
     /**
      * Method for getting a list of the ids of workflows startable by a given user (if the user is responsible for the Startstep of the steplist).
      * 
+     * For retrieving all startable workflows for a user, the user has to be logged in.
+     * 
      * @param username is the name and describes the given user
      * @exception LogicException if an error in businesslogic occurs
      * @return List<Integer> list of Ids
@@ -211,6 +245,9 @@ public interface Logic {
    
     /**
      * Method for getting a list of ids of the items relevant to an user (if he's responsible for a step in the steplist).
+     * 
+     * For retrieving all relevant items for a user, the user has to be logged in.
+     * 
      * @param workflowId is the id of the given workflow
      * @param username desribes the given user
      * @throws PersistenceException if an error in persistence occurs
@@ -221,6 +258,8 @@ public interface Logic {
 
     /**
      * method to load a specific item from persistence.
+     * 
+     * For retrieving an item, the user needs to have at least one of the roles owned by the requested item.
      * 
      * @param itemID - a items unique string id 
      * @param username - userId
@@ -235,6 +274,8 @@ public interface Logic {
     /**
      * Method for getting a list of all the existing roles in the persistance.
      * 
+     * For retrieving all roles, admin rights are required.
+     * 
      * @return list of all roles
      * @throws PersistenceException if an error in persistence occurs
      */
@@ -242,6 +283,8 @@ public interface Logic {
 
     /**
      * Method for returning a list of all the existing users in the persistence.
+     * 
+     * for retrieving all users, admin rights are required.
      * 
      * @return list of all users
      * @throws PersistenceException if an error in persistence occurs
@@ -252,6 +295,8 @@ public interface Logic {
     /**
     * This method return all users in persistence that are not marked inactive.
     * 
+    * for retrieving all active users, admin rights are required.
+    * 
     * @return all active users in persistence
     * @throws PersistenceException if an error in persistence occurs
     */
@@ -259,6 +304,8 @@ public interface Logic {
     
     /**
      * Method for adding a new role in the persistence.
+     * 
+     * for storing a role, admin rights are required.
      * 
      * @param role is the role we want to add
      * @return LogicResponse object
@@ -268,6 +315,8 @@ public interface Logic {
 
     /**
      * This method adds a role to a user.
+     * 
+     * For adding a role to a user, admin rights are required.
      * 
      * @param user - the user to which the role shall be added
      * @param role - role to be added
@@ -280,6 +329,8 @@ public interface Logic {
      * Method for deleting an existing role from the persistence. The users who
      * have this role will lose it too.
      * 
+     * for deleting a role, admin rights are required.
+     * 
      * @param rolename of the role
      * @return LogicResponce object
      * @throws LogicException 
@@ -288,6 +339,8 @@ public interface Logic {
     
     /**
      * Method for giving a List of items of a user which are all open.
+     * 
+     * For retrieving all open items for a user, the user must be logged in.
      * 
      * @param username describes the given user
      * @exception LogicException if an error in businesslogic occurs
@@ -299,6 +352,8 @@ public interface Logic {
     /**
      * method to load a specific role from persistence.
      * 
+     * For retrieving a role, admin rights are required.
+     * 
      * @param rolename a roles unique string id
      * @return Role - requested Role from persistence
      * @throws PersistenceException if an error in persistence occurs
@@ -307,6 +362,9 @@ public interface Logic {
     
     /**
      * Method for adding a form to persistence.
+     * 
+     * For storing a form, admin rights are required.
+     * 
      * @param form which should be added
      * @return logicResponse which contains definition notification
      * @throws PersistenceException if an error in persistence occurs
@@ -315,6 +373,9 @@ public interface Logic {
     
     /**
      * Method for deleting a form in persistence. Only possible if form isn't currently used.
+     * 
+     * For deleting a form, admin rights are required.
+     * 
      * @param formId indicates which form should be deleted
      * @return logicResponse which contains deletion notification
      * @throws PersistenceException if an error in persistence occurs
@@ -324,6 +385,8 @@ public interface Logic {
     /**
      * method to load a specific form from persistence.
      * 
+     * For loading a form, admin rights are required.
+     * 
      * @param formId a forms unique string id
      * @return Form - requested Form from persistence
      * @throws PersistenceException if an error in persistence occurs
@@ -332,6 +395,9 @@ public interface Logic {
     
     /**
      * Method for updating an item. Suitable item from a workflow in persistence will be overwritten.
+     * 
+     * For updating an item, the user needs to have a role owned by the item and needs to be correctly logged in.
+     * 
      * @param item contains changes, will be used to overwrite item in workflow
      * @param username indicates user who wants to update item
      * @return logicResponse which contains update notification
@@ -341,6 +407,9 @@ public interface Logic {
     
     /**
      * Method for getting all available forms in persistence.
+     * 
+     * For retrieving all forms, admin rights are required.
+     * 
      * @return list of of all forms in persistence
      * @throws PersistenceException 
      */
