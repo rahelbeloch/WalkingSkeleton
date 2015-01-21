@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,29 +27,32 @@ namespace Client.Util
                 String datatype = entry.datatype;
                 if (!entry.value.Equals(""))
                 {
-                    try
-                    {
-                        /*
                         logger.Debug("validation for" + entry.value);
                         logger.Debug("datatye: " + datatype);
+                        Regex regex = null;
                         switch (datatype)
                         {
                             case "String":
+                                regex = new Regex("[a-zA-Z]+");
                                 break;
                             case "int":
-                                logger.Debug(Int32.Parse(entry.value));
+                                regex = new Regex("[0-9]+");
                                 break;
-                            case "float":
-                                logger.Debug(float.Parse(entry.value, CultureInfo.InvariantCulture.NumberFormat));
+                            case "double":
+                                regex = new Regex("-?\\d+(\\.\\d+)?");
                                 break;
                         }
-                         */
-                    }
-                    catch (Exception e)
-                    {
-                        String message = entry.value + " entspricht nicht dem richtigen Datentyp!";
-                        return new ValidationResult(false,message);
-                    }
+                        Match match = regex.Match(entry.value);
+                        if (match.Success)
+                        {
+                            logger.Debug("match successfull");
+                            logger.Debug(match.Value);
+                        }
+                        else
+                        {
+                            String message = entry.value + " entspricht nicht dem richtigen Datentyp!";
+                            return new ValidationResult(false,message);
+                        }
                 }
             }
             return ValidationResult.ValidResult;

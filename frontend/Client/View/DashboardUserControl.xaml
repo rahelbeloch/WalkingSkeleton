@@ -80,30 +80,30 @@
 
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
                                                             CommandParameter="{Binding selectedRow}" HorizontalAlignment="Left"/>
-                    <GroupBox Grid.Row="4" Grid.ColumnSpan="2" Visibility="{Binding selectedRow.visibilityFinishButton}">
-                        <GroupBox.Header>
-                            <Label Content="{Binding selectedRow.form.description}"></Label>
-                        </GroupBox.Header>
-                        <DataGrid ItemsSource="{Binding selectedRow.formRows}" AutoGenerateColumns="False" CanUserAddRows="False">
-                            <DataGrid.RowValidationRules>
-                                <util:FormValidator/>
-                            </DataGrid.RowValidationRules>
-                            <DataGrid.RowValidationErrorTemplate>
-                                <ControlTemplate>
-                                    <Grid ToolTip="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}">
-                                        <Ellipse Width="16" Height="16" Fill="Red" />
-                                        <TextBlock Text="!" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Grid>
-                                </ControlTemplate>
-                            </DataGrid.RowValidationErrorTemplate>
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Schlüssel" Binding="{Binding key}" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Wert" Binding="{Binding value}"/>
-                                <DataGridTextColumn Header="Datentyp" Binding="{Binding datatype}" IsReadOnly="True"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </GroupBox>
-                    <Button Grid.Row="5" Content="Zwischenspeichern" Height="25" Margin="10" Visibility="{Binding selectedRow.visibilityFinishButton}"
+                <GroupBox Grid.Row="4" Grid.ColumnSpan="2" Visibility="{Binding selectedRow.visibilityFinishButton}">
+                    <GroupBox.Header>
+                        <Label Content="{Binding selectedRow.form.description}"></Label>
+                    </GroupBox.Header>
+                    <DataGrid ItemsSource="{Binding selectedRow.formRows}" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid.RowValidationRules>
+                            <util:FormValidator/>
+                        </DataGrid.RowValidationRules>
+                        <DataGrid.RowValidationErrorTemplate>
+                            <ControlTemplate>
+                                <Grid ToolTip="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}">
+                                    <Ellipse Width="16" Height="16" Fill="Red" />
+                                    <TextBlock Text="!" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </DataGrid.RowValidationErrorTemplate>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Schlüssel" Binding="{Binding key}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Wert" Binding="{Binding value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                            <DataGridTextColumn Header="Datentyp" Binding="{Binding datatype}" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+                <Button Grid.Row="5" Content="Zwischenspeichern" Height="25" Margin="10" Visibility="{Binding selectedRow.visibilityFinishButton}"
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.saveItemCommand}" 
                                                             CommandParameter="{Binding selectedRow}" />
                     <Button Grid.Row="5" Content="Abschließen" Grid.Column="1" Margin="10" Height="25" Visibility="{Binding selectedRow.visibilityFinishButton}"
