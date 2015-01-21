@@ -28,8 +28,8 @@ namespace Client.ViewModel
             : base()
         {
             _mainViewModel = mainViewModelInstanz;
-            _serverAddress = ConfigurationManager.AppSettings["ServerAddress"];
-            _brokerAddress = ConfigurationManager.AppSettings["BrokerAddress"];
+            _serverAddress = ConfigurationManager.AppSettings[Constants.SERVER_ADDRESS_NAME];
+            _brokerAddress = ConfigurationManager.AppSettings[Constants.BROKER_ADDRESS_NAME];
         }
 
         private string _name = "Login Model";

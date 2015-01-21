@@ -41,7 +41,7 @@ namespace Client.ViewModel
                 {
                     try
                     {
-                        _myComLib = new ComLib(this, clientID, ConfigurationManager.AppSettings["ServerAddress"], ConfigurationManager.AppSettings["BrokerAddress"]);
+                        _myComLib = new ComLib(this, clientID, ConfigurationManager.AppSettings[Constants.SERVER_ADDRESS_NAME], ConfigurationManager.AppSettings[Constants.BROKER_ADDRESS_NAME]);
                 }
                     catch (BasicException e)
                     {
