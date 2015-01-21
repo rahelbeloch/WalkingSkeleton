@@ -257,17 +257,7 @@ public class PersistenceImp implements Persistence {
     @Override
     public void storeUser(User user) throws PersistenceException {
         assert (user.getUsername() != null);
-        User userToRemove = null;
-        for (User u: users) {
-            if (u.getUsername().equals(user.getUsername())) {
-                userToRemove = u;
-                break;
-            }
-        }
-        if (userToRemove != null) {
-            this.deleteUser(userToRemove.getUsername());
-            this.logger.log(Level.FINE, "[persistence] overwriting user " + user.getUsername() + "...");
-        }
+        
         User userToStore;
         try {
             userToStore = (User)user.clone();
@@ -276,6 +266,13 @@ public class PersistenceImp implements Persistence {
         }
         for (Role role: userToStore.getRoles()) {
             this.loadRole(role.getRolename());
+        }
+    
+        try {
+            this.deleteUser(user.getUsername());
+        } catch (UserNotExistentException e) {
+            // Checkstyle expects at least one statement here
+            e.getClass();
         }
         users.add(userToStore);
         this.logger.log(Level.INFO, "[persistence] successfully stored/updated user " + user.getUsername() + ".");
