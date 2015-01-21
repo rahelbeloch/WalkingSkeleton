@@ -7,9 +7,9 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 
 
-
 namespace DiagramDesigner
 {
+    
     public class DiagramViewModel : INPCBase, IDiagramViewModel
     {
         private ObservableCollection<SelectableDesignerItemViewModelBase> items = new ObservableCollection<SelectableDesignerItemViewModelBase>();
@@ -42,9 +42,10 @@ namespace DiagramDesigner
             
             
             Mediator.Instance.Register(this);
-
             items.CollectionChanged += this.OnCollectionItemChanged;
+
         }
+
 
         private void OnCollectionItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -65,24 +66,27 @@ namespace DiagramDesigner
         }
         private void OnItemChanged(object sender, PropertyChangedEventArgs e)
         {
-            DesignerItemViewModelBase step = sender as DesignerItemViewModelBase;
-            if (step != null)
+            if (e.PropertyName.Equals("IsSelected"))
             {
-                if(step.IsSelected == true)
+                DesignerItemViewModelBase step = sender as DesignerItemViewModelBase;
+                if (step != null)
                 {
-                    if (!_selectesItemsCollection.Contains(step))
+                    if (step.IsSelected == true)
                     {
-                        _selectesItemsCollection.Add(step);
+                        if (!_selectesItemsCollection.Contains(step))
+                        {
+                            _selectesItemsCollection.Add(step);
+                        }
                     }
-                }
-                if (step.IsSelected == false)
-                {
-                    if (_selectesItemsCollection.Contains(step))
+                    if (step.IsSelected == false)
                     {
-                        _selectesItemsCollection.Remove(step);
+                        if (_selectesItemsCollection.Contains(step))
+                        {
+                            _selectesItemsCollection.Remove(step);
+                        }
                     }
-                }
 
+                }
             }
             
         }
