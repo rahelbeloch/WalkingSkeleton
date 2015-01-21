@@ -98,7 +98,10 @@ namespace CommunicationLib
         internal void Refresh(string brokerAddress)
         {
             // build connection to message broker (not started yet)
-            _connection.Stop();
+            if (_connection != null) 
+            {
+                _connection.Stop();
+            }
             InitializeConnection(brokerAddress);
         }
 
