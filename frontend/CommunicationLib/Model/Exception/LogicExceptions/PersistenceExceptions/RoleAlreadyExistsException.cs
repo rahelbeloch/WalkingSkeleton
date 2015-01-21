@@ -6,19 +6,23 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of AlreadyExistsException. 
+    /// </summary>
     class RoleAlreadyExistsException : AlreadyExistsException
     {
         /// <summary>
-        /// This Exception es a child of AlreadyExistsException. 
         /// Each Exception has an number, here it is 11222. 
         /// </summary>
-        private int _number = 11222;
         new public int number { get { return _number; } }
+        private int _number = 11222;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public RoleAlreadyExistsException()
             : base("Die Rolle existiert bereits.")
         {
-
         }
 
         /// <summary>

@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of AlreadyExistsException. 
+    /// </summary>
     class UserAlreadyExistsException : AlreadyExistsException
     {
         /// <summary>
-        /// This Exception es a child of AlreadyExistsException. 
         /// Each Exception has an number, here it is 11221. 
         /// </summary>
         private int _number = 11221;
         new public int number { get { return _number; } }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public UserAlreadyExistsException()
             : base("Der Nutzer existiert bereits.")
         {

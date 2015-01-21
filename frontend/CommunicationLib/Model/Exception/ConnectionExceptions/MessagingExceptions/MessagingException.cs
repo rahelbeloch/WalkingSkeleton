@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of ConnectionException. 
+    /// </summary>
     public class MessagingException : ConnectionException
     {
         /// <summary>
-        /// This Exception es a child of ConnectionException. 
         /// Each Exception has an number, here it is 12100. 
         /// </summary>
-        private int _number = 12200;
         new public int number { get { return _number; } }
+        private int _number = 12200;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public MessagingException()
             :base("Es ist ein fehler beim Aktualisieren aufgetreten.")
         {

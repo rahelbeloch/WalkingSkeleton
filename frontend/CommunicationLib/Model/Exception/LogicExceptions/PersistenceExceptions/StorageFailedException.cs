@@ -7,15 +7,20 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of DoesntExistsException. 
+    /// </summary>
     class StorageFailedExceptionException : PersistenceException
     {
          /// <summary>
-        /// This Exception es a child of DoesntExistsException. 
         /// Each Exception has an number, here it is 11210. 
         /// </summary>
         private int _number = 11210;
         new public int number { get { return _number; } }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public StorageFailedExceptionException()
             : base("Das Persistieren eines Elements schlug fehl.")
         {

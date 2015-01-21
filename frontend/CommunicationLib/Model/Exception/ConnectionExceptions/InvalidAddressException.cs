@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of BasicException. 
+    /// </summary>
     public class InvalidAddressException : ConnectionException
     {
         /// <summary>
-        /// This Exception es a child of BasicException. 
         /// Each Exception has an number, here it is 12000. 
         /// </summary>
-        private int _number = 12400;
         new public int number { get { return _number; } }
+        private int _number = 12400;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public InvalidAddressException()
             : base("Die Server- oder Broker Adresse ist syntaktisch nicht korrekt.")
         {

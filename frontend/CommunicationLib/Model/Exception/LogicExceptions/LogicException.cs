@@ -6,16 +6,21 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of BasicException. 
+    /// </summary>
     public class LogicException : BasicException
     {
         /// <summary>
-        /// This Exception es a child of BasicException. 
         /// Each Exception has an number, here it is 11000. 
         /// </summary>
-        private int _number = 11000;
         new public int number { get { return _number; } }
+        private int _number = 11000;
 
-         public LogicException()
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        public LogicException()
              :base("Es ist ein Fehler in der Logik aufgetreten.")
         {
 

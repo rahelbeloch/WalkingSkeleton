@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of PersistenceException. 
+    /// </summary>
     public class AlreadyExistsException : PersistenceException
     {
         /// <summary>
-        /// This Exception es a child of PersistenceException. 
         /// Each Exception has an number, here it is 11220. 
         /// </summary>
-        private int _number = 11220;
         new public int number { get { return _number; } }
+        private int _number = 11220;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public AlreadyExistsException()
             : base("Das Element existiert bereits.")
         {

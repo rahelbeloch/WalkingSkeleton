@@ -6,19 +6,23 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of RoleException. 
+    /// </summary>
     class RoleNotExistentException : NotExistentException
     {
         /// <summary>
-        /// This Exception es a child of RoleException. 
         /// Each Exception has an number, here it is 11256. 
         /// </summary>
-        private int _number = 11256;
         new public int number { get { return _number; } }
+        private int _number = 11256;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public RoleNotExistentException()
             : base("Die Rolle existiert nicht.")
         {
-
         }
 
         /// <summary>

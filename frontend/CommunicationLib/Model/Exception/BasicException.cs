@@ -13,13 +13,18 @@ namespace CommunicationLib.Exception
     /// </summary>
     public class BasicException : System.Exception
     {
-        private int _number = 10000;
+        /// <summary>
+        /// Each Exception has an number, here it is 12100. 
+        /// </summary>
         public int number { get { return _number; }}
-        
+        private int _number = 10000;
+
+        /// <summary>
+        /// Each Exception has an number, here it is 12100. 
+        /// </summary>
         public BasicException()
             : base("Es ist ein Fehler aufgetreten.")
         {
-
         }
 
         /// <summary>

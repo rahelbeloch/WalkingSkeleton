@@ -7,19 +7,23 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Exception
 {
+    /// <summary>
+    /// This Exception es a child of DoesntExistsException. 
+    /// </summary>
     class StepNotExistentException : NotExistentException
     {
          /// <summary>
-        /// This Exception es a child of DoesntExistsException. 
         /// Each Exception has an number, here it is 11254. 
         /// </summary>
         private int _number = 11254;
         new public int number { get { return _number; } }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public StepNotExistentException()
             : base("Der Step existiert nicht.")
         {
-
         }
 
         /// <summary>
