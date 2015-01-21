@@ -253,7 +253,11 @@ namespace Admin.ViewModel
                             }
                             catch (BasicException be)
                             {
-                                MessageBox.Show(be.Message);
+                                if (be is StorageFailedException)
+                                {
+                                    MessageBox.Show(be.Message + "\n Form konnte nicht gelöscht werden!");
+                                }
+                                
                             }
                             selectedForm = null;
                             visibleView = "Collapsed";

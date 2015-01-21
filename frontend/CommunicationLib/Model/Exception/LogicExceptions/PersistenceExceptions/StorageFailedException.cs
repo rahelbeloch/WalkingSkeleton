@@ -10,7 +10,7 @@ namespace CommunicationLib.Exception
     /// <summary>
     /// This Exception es a child of DoesntExistsException. 
     /// </summary>
-    class StorageFailedExceptionException : PersistenceException
+    public class StorageFailedException : PersistenceException
     {
          /// <summary>
         /// Each Exception has an number, here it is 11210. 
@@ -21,7 +21,7 @@ namespace CommunicationLib.Exception
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public StorageFailedExceptionException()
+        public StorageFailedException()
             : base("Das Persistieren eines Elements schlug fehl.")
         {
 
@@ -31,7 +31,7 @@ namespace CommunicationLib.Exception
         /// This constructor allows to add a spezial message.
         /// </summary>
         /// <param name="message">the message</param>
-        public StorageFailedExceptionException(string message)
+        public StorageFailedException(string message)
             : base(message)
         {
         }
@@ -41,7 +41,7 @@ namespace CommunicationLib.Exception
         /// </summary>
         /// <param name="message"></param>
         /// <param name="inner"></param>
-        public StorageFailedExceptionException(string message, System.Exception inner)
+        public StorageFailedException(string message, System.Exception inner)
             : base(message, inner)
         {
         }

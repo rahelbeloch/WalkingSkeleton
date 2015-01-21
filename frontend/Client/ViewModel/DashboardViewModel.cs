@@ -291,7 +291,11 @@ namespace Client.ViewModel
                         }
                         catch (BasicException exc)
                         {
-                            MessageBox.Show(exc.Message);
+                            if (exc is StorageFailedException)
+                            {
+                                MessageBox.Show("Ungültige Benutzereingaben.");
+                            }
+                            
                         }
                 }, canExecute => true);
                 }
@@ -318,7 +322,10 @@ namespace Client.ViewModel
                         }
                         catch (BasicException exc)
                         {
-                            MessageBox.Show(exc.Message);
+                            if (exc is StorageFailedException)
+                            {
+                                MessageBox.Show("Ungültige Benutzereingaben.");
+                            }
                         }
                     }, canExecute => true);
                 }

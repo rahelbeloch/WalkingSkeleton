@@ -238,7 +238,7 @@ namespace Client.ViewModel
         /// <param name="sourceId">id of deleted object</param>
         public void DataDeletion(Type sourceType, string sourceId)
         {
-            logger.Info("Delete " + sourceType.ToString() + " ID=" + sourceId);
+            logger.Debug("Delete " + sourceType.ToString() + " ID=" + sourceId);
             if (sourceType == typeof(Item))
             {
                 Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.DeleteItem(sourceId)));
