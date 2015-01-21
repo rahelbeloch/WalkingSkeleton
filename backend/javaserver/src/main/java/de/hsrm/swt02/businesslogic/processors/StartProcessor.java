@@ -80,7 +80,7 @@ public class StartProcessor {
         }
         
         if (!item.getForGroup("step").isEmpty()) {
-            item.setFirstStepState(Integer.parseInt(startStep.getId())+1+"", MetaState.OPEN.toString());
+            item.setFirstStepState(Integer.parseInt(startStep.getId()) + 1 + "", MetaState.OPEN.toString());
         } 
         
         item.applyForm(workflow.getForm());
