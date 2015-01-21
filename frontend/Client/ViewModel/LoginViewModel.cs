@@ -124,12 +124,12 @@ namespace Client.ViewModel
 
                             if (_mainViewModel.myComLib != null)
                             {
-                                if (!oldServerAddr.Equals(_serverAddress))
+                                if (oldServerAddr == null || !oldServerAddr.Equals(_serverAddress))
                                 {
                                     _mainViewModel.myComLib.RefreshServer(_serverAddress);
                                 }
 
-                                if (!oldBrokAddr.Equals(_brokerAddress))
+                                if (oldBrokAddr == null || !oldBrokAddr.Equals(_brokerAddress))
                                 {
                                     _mainViewModel.myComLib.RefreshBroker(_brokerAddress);
                                 }
