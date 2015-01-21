@@ -87,11 +87,14 @@ namespace Client.ViewModel
             }
             set
             {
-                _serverAddress = value;
-                OnChanged("serverAddress"); 
+                if (value != null)
+                {
+                    _serverAddress = value;
+                    OnChanged("serverAddress");
+                } 
             }
         }
-        private string _serverAddress;
+        private string _serverAddress = "";
         
         /// <summary>
         /// Property for broker adress.
@@ -104,11 +107,14 @@ namespace Client.ViewModel
             }
             set
             {
-                _brokerAddress = value;
-                OnChanged("brokerAddress");
+                if (value != null)
+                {
+                    _brokerAddress = value;
+                    OnChanged("brokerAddress");
+                }
             }
         }
-        private string _brokerAddress;
+        private string _brokerAddress = "";
         
         /// <summary>
         /// ICommand which is called by the login button.
@@ -159,7 +165,7 @@ namespace Client.ViewModel
                             }
                             MessageBox.Show(exc.Message);
                         }
-                    }, canExecute => username.Length > 0 && ServerAddress.Length > 0 && BrokerAddress.Length > 0);
+                    }, canExecute => username.Length > 0 && _serverAddress.Length > 0 && _brokerAddress.Length > 0);
                 }
                 return _authenticate;
             }
