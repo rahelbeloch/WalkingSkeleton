@@ -419,15 +419,18 @@ namespace Admin.ViewModel
         /// <summary>
         /// When an item has to be updated (e. g. forward, finish), update the workflow overview and update the item view
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">item to update</param>
         public void UpdateItemFromWorkflow(Item item)
         {
             Workflow workflowToUpdate = null;
+
+            Console.WriteLine("BLA_1");
 
             foreach (Workflow w in _workflows)
             {
                 if (w.Id.Equals(item.WorkflowId))
                 {
+                    Console.WriteLine("BLA_2");
                     workflowToUpdate = w;
                     _workflows.Remove(w);
                     workflowToUpdate.Items.Remove(item);
@@ -439,8 +442,9 @@ namespace Admin.ViewModel
 
             if (_actWorkflow != null)
             {
+                Console.WriteLine("BLA_3");
                 _items.Clear();
-                actWorkflow.items.ForEach(_items.Add);
+                actWorkflow.Items.ForEach(_items.Add);
                 OnChanged("items");
             }
             
