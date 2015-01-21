@@ -73,9 +73,11 @@ namespace CommunicationLib
             _listener.UnregisterClient();
         }
 
-        public void RefreshUrls(string serverAdress, string brokerAddress)
-        {
-            _sender.Refresh(serverAdress);
+        public void RefreshServer(string serverAddress){
+            _sender.Refresh(serverAddress);
+        }
+
+        public void RefreshBroker(string brokerAddress){
             _listener.Refresh(brokerAddress);
         }
     }
