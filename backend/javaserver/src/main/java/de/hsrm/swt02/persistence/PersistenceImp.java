@@ -467,6 +467,7 @@ public class PersistenceImp implements Persistence {
         } catch (CloneNotSupportedException e) {
             throw new StorageFailedException("storage of form" + form.getId() + "failed.");
         }
+        
         forms.add(formToStore);
         this.logger.log(Level.INFO, "[persistence] successfully stored/updated form " + form.getId() + ".");
     }
@@ -498,6 +499,15 @@ public class PersistenceImp implements Persistence {
 
     @Override
     public void deleteForm(String formId) throws PersistenceException {
+        
+        for (Workflow workflow : workflows) {
+            if (workflow.getForm().getId().equals(formId)) {
+                if (workflow.isActive()) {
+                    throw new PersistenceException("deleting of form " + formId + " failed. Form still active.");
+                }
+            }
+        }
+        
         Form formToRemove = null;
         for (Form f: forms) {
             if (f.getId().equals(formId)) {
@@ -511,6 +521,14 @@ public class PersistenceImp implements Persistence {
         } else {
             throw new FormNotExistentException("database has no form '" + formId + "'.");
         }
+        
+        for (Workflow workflow : workflows) {
+            if (workflow.getForm().getId().equals(formId)) {
+                workflow.setForm(null);
+                this.logger.log(Level.INFO, "[persistence] successfully removed form from workflow.");
+            }
+        }
+        
     }
 
     @Override
