@@ -118,7 +118,7 @@
                     <!--Formular-->
                     <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
                         <Expander Header="Formular"
-                                    IsExpanded="False">
+                                    IsExpanded="True">
                             <ListView DockPanel.Dock="Top"  ItemsSource="{Binding actWorkflow.form.formDef}" >
                                 <ListView.View>
                                     <GridView >
