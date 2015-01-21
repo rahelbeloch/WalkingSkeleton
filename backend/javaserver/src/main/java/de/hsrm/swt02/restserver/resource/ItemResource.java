@@ -23,7 +23,6 @@ import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.messaging.ServerPublisher;
 import de.hsrm.swt02.model.Item;
-import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.restserver.exceptions.JacksonException;
 
 /**
