@@ -642,7 +642,10 @@ namespace Admin.ViewModel
                 }
 
                 Workflow newWorkflow = WorkflowDiagramConverter.DiagramItemsToWorkflow(DiagramViewModel.Items.ToList());
-                newWorkflow.form = selectedForm.Clone<Form>();
+                if (selectedForm != null)
+                {
+                    newWorkflow.form = selectedForm.Clone<Form>();
+                }
                 if (actWorkflow != null)
                 {
                     newWorkflow.id = actWorkflow.id;
