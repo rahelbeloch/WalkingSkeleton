@@ -285,6 +285,7 @@ namespace Admin.ViewModel
         {
             logger.Info("Received Item for Update: ID=" + item.id);
             Application.Current.Dispatcher.Invoke(new System.Action(() => _oldWorkflowViewModel.updateItemFromWorkflow(item)));
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _workflowViewModel.UpdateItemFromWorkflow(item)));
         }
 
         void IDataReceiver.UserUpdate(User user)
