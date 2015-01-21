@@ -13,7 +13,7 @@ import de.hsrm.swt02.businesslogic.exceptions.LastAdminDeletedException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.NoPermissionException;
-import de.hsrm.swt02.businesslogic.exceptions.RoleStillInUseExeption;
+import de.hsrm.swt02.businesslogic.exceptions.RoleStillInUseException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.businesslogic.protocol.Message;
 import de.hsrm.swt02.businesslogic.protocol.MessageOperation;
@@ -641,7 +641,7 @@ public class LogicImp implements Logic {
 
         if (roleInUse) {
             // role is still active - cannot be deleted beacuse it is in use
-            throw new RoleStillInUseExeption(
+            throw new RoleStillInUseException(
                     "[Logic] No Deletion allowed - Role " + rolename
                             + " is still in use.");
         }
