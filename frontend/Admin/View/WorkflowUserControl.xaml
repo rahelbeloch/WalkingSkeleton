@@ -139,6 +139,24 @@
                         <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Edit Workflow"/>
                     </DockPanel>
 
+                    <StackPanel DockPanel.Dock="Top" Visibility="{Binding editView}" Margin="10">
+                        <Expander Header="Steps"
+                                    IsExpanded="True">
+                            <ListView DockPanel.Dock="Top"  ItemsSource="{Binding DiagramViewModel.Items}">
+                                <ListView.View>
+                                    <GridView >
+                                        <GridView.Columns>
+                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding isSelected}"/>
+                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
+                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding parent}"/>
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Expander>
+                    </StackPanel>
+
+
                 </DockPanel>
             </Grid>
         </DockPanel>
