@@ -186,7 +186,7 @@ namespace Admin.ViewModel
 
             foreach (Form form in formCollection)
             {
-                if (form.Id.Equals(formId))
+                if (form.id.Equals(formId))
                 {
                     formToDelete = form;
                 }
@@ -245,7 +245,7 @@ namespace Admin.ViewModel
                         {
                             try
                             {
-                                _restRequester.DeleteObject<Form>(selectedForm.Id);
+                                _restRequester.DeleteObject<Form>(selectedForm.id);
                             }
                             catch (BasicException be)
                             {
@@ -275,7 +275,7 @@ namespace Admin.ViewModel
                     {
                         var lastEle = formDefModel.Last();
 
-                        if (lastEle.key != "" && lastEle.Datatype != "" && lastEle.Datatype != null)
+                        if (lastEle.key != "" && lastEle.datatype != "" && lastEle.datatype != null)
                         {
                             FormEntry formEntry = new FormEntry();
                             formEntry.key = "";
@@ -330,12 +330,12 @@ namespace Admin.ViewModel
                         foreach (FormEntry fe in formDefModel)
                         {
                             FormEntry formEntry = new FormEntry();
-                            formEntry.Id = fe.key;
-                            formEntry.Datatype = fe.Datatype;
-                            form.FormDef.Add(formEntry);
+                            formEntry.id = fe.key;
+                            formEntry.datatype = fe.datatype;
+                            form.formDef.Add(formEntry);
                         }
-                        form.Id = _formDefModelId;
-                        form.Description = _formDefModelDescription;
+                        form.id = _formDefModelId;
+                        form.description = _formDefModelDescription;
                         _restRequester.PostObject(form);
                         formDefModel.Clear();
                         visibleDefinition = "Collapsed";
@@ -346,7 +346,7 @@ namespace Admin.ViewModel
                         {
                             foreach (FormEntry fe in formDefModel)
                             {
-                                if (fe.key == "" || fe.Datatype == "")
+                                if (fe.key == "" || fe.datatype == "")
                                 {
                                     return false;
                                 }
