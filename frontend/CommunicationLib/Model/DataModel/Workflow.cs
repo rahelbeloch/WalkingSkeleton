@@ -15,26 +15,26 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private List<Step> _steps;
         public List<Step> steps { get { return _steps; } set { _steps = value; } }
+        private List<Step> _steps; 
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private List<Item> _items;
         public List<Item> items { get { return _items; } set { _items = value; } }
+        private List<Item> _items;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private Form _form;
         public Form form { get { return _form; } set { _form = value; } }
+        private Form _form;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        private bool _active;
         public bool active { get { return _active; } set { _active = value; } }
+        private bool _active;
 
         /// <summary>
         /// Constructor for Workflow

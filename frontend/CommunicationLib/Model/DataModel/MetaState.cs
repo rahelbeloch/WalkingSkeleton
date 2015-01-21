@@ -11,9 +11,24 @@ namespace CommunicationLib.Model
     /// </summary>
     public enum MetaState
     {
+        /// <summary>
+        /// State inactive.
+        /// </summary>
         INACTIVE,
+
+        /// <summary>
+        /// State open.
+        /// </summary>
         OPEN,
+
+        /// <summary>
+        /// State busy.
+        /// </summary>
         BUSY,
+
+        /// <summary>
+        /// State done.
+        /// </summary>
         DONE,
     }
 }

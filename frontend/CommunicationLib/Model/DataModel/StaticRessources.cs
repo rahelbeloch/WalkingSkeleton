@@ -9,15 +9,34 @@ using Newtonsoft.Json;
 
 namespace CommunicationLib.Model
 {
-
+    /// <summary>
+    /// Class to hold some constant values often needed in the clients, or other parts of this system.
+    /// </summary>
     public class Constants
     {
+        /// <summary>
+        /// The namespace of the data model needed for serialization.
+        /// </summary>
         public static String MODEL_NAMESPACE = "CommunicationLib.Model";
 
+        /// <summary>
+        /// The pattern to validate server/broker address.
+        /// </summary>
         public static String URLPATTERN = @"^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?";
+
+        /// <summary>
+        /// Name of the server address attribute in config files.
+        /// </summary>
         public static String SERVER_ADDRESS_NAME = "ServerAddress";
+
+        /// <summary>
+        /// Name of the broker address attribute in config files.
+        /// </summary>
         public static String BROKER_ADDRESS_NAME = "BrokerAddress";
 
+        /// <summary>
+        /// Some JSON settings for serialization and deseralization.
+        /// </summary>
         public static JsonSerializerSettings JSON_SETTINGS = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Auto,
@@ -26,8 +45,14 @@ namespace CommunicationLib.Model
         };
     }
 
+    /// <summary>
+    /// Class maps types of all exceptions in this program to its errorcodes.
+    /// </summary>
     public class ErrorMessageMapper
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static Dictionary<int, Type> errorMessages
         {
             get
@@ -92,6 +117,11 @@ namespace CommunicationLib.Model
                 {12300,typeof(ServerNotRunningException)}
         };
 
+        /// <summary>
+        /// Delivers the data type of an exception code.
+        /// </summary>
+        /// <param name="code">the requested code</param>
+        /// <returns>the type, fitting to the code</returns>
         public static Type GetErrorType(int code)
         {
             if (!errorMessages.ContainsKey(code))

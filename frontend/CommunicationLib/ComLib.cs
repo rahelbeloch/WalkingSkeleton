@@ -19,32 +19,34 @@ namespace CommunicationLib
         /// <summary>
         /// REST interface.
         /// </summary>
-        private IRestRequester _sender;
-        public IRestRequester sender
+        public IRestRequester Sender
         { 
             get 
             { 
                 return _sender; 
             }
         }
+        private IRestRequester _sender;
 
         /// <summary>
         /// Messanger-object.
         /// </summary>
-        private CommunicationManager _listener;
-        public CommunicationManager listener
+        public CommunicationManager Listener
         { 
             get 
             { 
                 return _listener; 
             }
         }
+        private CommunicationManager _listener;
 
         /// <summary>
-        ///  Constructor to set the associated client.
+        /// Constructor to set the associated client.
         /// </summary>
-        /// <param name="myClient"></param>
-        /// <param name="clientId"></param>
+        /// <param name="myClient">the associated client for callback</param>
+        /// <param name="clientId">admin or user</param>
+        /// <param name="serverAdress">the address of the server</param>
+        /// <param name="brokerAdress">the address of the broker</param>
         public ComLib(IDataReceiver myClient, String clientId, String serverAdress, String brokerAdress)
         {
             _myClient = myClient;
@@ -73,10 +75,18 @@ namespace CommunicationLib
             _listener.UnregisterClient();
         }
 
+        /// <summary>
+        /// Method to call refresh in the sender/restRequester.
+        /// </summary>
+        /// <param name="serverAddress">the new server address</param>
         public void RefreshServer(string serverAddress){
             _sender.Refresh(serverAddress);
         }
 
+        /// <summary>
+        /// Method to call refresh in the listener/CommunicationManager.
+        /// </summary>
+        /// <param name="brokerAddress">the new broker address</param>
         public void RefreshBroker(string brokerAddress){
             _listener.Refresh(brokerAddress);
         }
