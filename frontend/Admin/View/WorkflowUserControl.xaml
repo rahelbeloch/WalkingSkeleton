@@ -6,6 +6,7 @@
              xmlns:s="clr-namespace:DiagramDesigner;assembly=DiagramDesigner"
              xmlns:local="clr-namespace:Admin.View"
              xmlns:tools="clr-namespace:Admin"
+             xmlns:helpers="clr-namespace:Admin.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
     
@@ -33,14 +34,15 @@
                         <Expander Header="Workflows"
                       IsExpanded="True">
                             <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding workflows}"
-                                      SelectedValue="{Binding actWorkflow, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
+                                      SelectedValue="{Binding actWorkflow, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True"
+                                      helpers:GridViewSort.AutoSort="True">
                                 <ListView.View>
                                     <GridView >
                                         <GridView.Columns>
-                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
-                                            <GridViewColumn Width="100" Header="Anzahl der Steps" DisplayMemberBinding="{Binding steps.Count}" />
-                                            <GridViewColumn Width="100" Header="Anzahl der Items" DisplayMemberBinding="{Binding items.Count}"/>
-                                            <GridViewColumn Width="40" Header="aktiv"  DisplayMemberBinding="{Binding active}"/>
+                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}" helpers:GridViewSort.PropertyName="id"/>
+                                            <GridViewColumn Width="100" Header="Anzahl der Steps" DisplayMemberBinding="{Binding steps.Count}" helpers:GridViewSort.PropertyName="steps.Count" />
+                                            <GridViewColumn Width="100" Header="Anzahl der Items" DisplayMemberBinding="{Binding items.Count}" helpers:GridViewSort.PropertyName="items.Count"/>
+                                            <GridViewColumn Width="40" Header="aktiv"  DisplayMemberBinding="{Binding active}" helpers:GridViewSort.PropertyName="active"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
