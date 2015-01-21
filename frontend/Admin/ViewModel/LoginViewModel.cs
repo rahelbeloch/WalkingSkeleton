@@ -79,18 +79,8 @@ namespace Admin.ViewModel
             }
             set
             {
-                if (_serverAddress != value)
-                {
-                    _serverAddress = value;
-
-                    if (_mainViewModel.myComLib != null)
-                    {
-                        // refresh ONLY serverAddress in ComLib
-                        _mainViewModel.myComLib.RefreshServer(_serverAddress);
-                    }
-
-                    OnChanged("serverAddress");
-                }          
+                _serverAddress = value;
+                OnChanged("serverAddress");          
             }
         }
 
@@ -106,18 +96,8 @@ namespace Admin.ViewModel
             }
             set
             {
-                if (_brokerAddress != value)
-                {
-                    _brokerAddress = value;
-
-                    if (_mainViewModel.myComLib != null)
-                    {
-                        // refresh ONLY broker in ComLib
-                        _mainViewModel.myComLib.RefreshBroker(_brokerAddress);
-                    }
-
-                    OnChanged("brokerAddress");
-                }
+                _brokerAddress = value;
+                OnChanged("brokerAddress"); 
             }
         }
 
@@ -136,11 +116,25 @@ namespace Admin.ViewModel
                     {
                         try
                         {
+                            string oldServerAddr = ConfigurationManager.AppSettings[Constants.SERVER_ADDRESS_NAME];
+                            string oldBrokAddr = ConfigurationManager.AppSettings[Constants.BROKER_ADDRESS_NAME];
+
                             // save server and broker address to config file (admin.exe)
                             SaveAddresses();
 
                             if (_mainViewModel.myComLib != null)
                             {
+
+                                if (!oldServerAddr.Equals(_serverAddress))
+                                {
+                                    _mainViewModel.myComLib.RefreshServer(_serverAddress);
+                                }
+
+                                if (!oldBrokAddr.Equals(_brokerAddress))
+                                {
+                                    _mainViewModel.myComLib.RefreshBroker(_brokerAddress);
+                                }
+
                                 // Register mainViewModel to CommunicationLib (if login worked)
                                 _mainViewModel.myComLib.Login(admin, securePwd);
                                 _mainViewModel.InitModel();
