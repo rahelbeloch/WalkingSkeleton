@@ -52,7 +52,14 @@ namespace RestAPI
         /// <param name="serverAddress">the new server address</param>
         public void Refresh(string serverAddress)
         {
-            client = new RestClient(serverAddress);
+            try
+            {
+                client = new RestClient(serverAddress);
+            }
+            catch (UriFormatException)
+            {
+                throw new ServerNotRunningException();
+            }
         }
 
         /// <summary>
