@@ -16,6 +16,9 @@ namespace Client.ViewModel
     public class DashboardRow
     {
         private Item _actItem;
+        /// <summary>
+        /// 
+        /// </summary>
         public Item actItem 
         {
             get { return _actItem; }
@@ -25,6 +28,12 @@ namespace Client.ViewModel
                 _actState = _actItem.state;
                 _visibilityStepForwardButton = _actState.Equals("OPEN") ? Visibility.Visible : Visibility.Collapsed;
                 _visibilityFinishButton = _actState.Equals("BUSY") ? Visibility.Visible : Visibility.Hidden;
+
+                _formRows = new List<FormRow>();
+                foreach (FormEntry formEntry in _form.formDef)
+                {
+                    _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
+                }
             }
         }
 
@@ -50,9 +59,12 @@ namespace Client.ViewModel
         public DashboardRow(Item actItem, Step actStep, String username, Form form)
         {
             _username = username;
-            this.actItem = actItem;
+            this._actItem = actItem;
             _actStep = actStep;
             _form = form;
+
+            _actState = _actItem.state;
+
             _formRows = new List<FormRow>();
             foreach (FormEntry formEntry in _form.formDef)
             {
