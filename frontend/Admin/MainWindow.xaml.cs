@@ -20,6 +20,9 @@ namespace Admin
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Constructor for MainWindow
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
