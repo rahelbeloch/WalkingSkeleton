@@ -209,9 +209,9 @@ namespace CommunicationLib
             string operation;
             object requestedObj = null;
 
-            /* msgParams[0] --> requested Type (workflow/item/user)
+            /* msgParams[0] --> requested Type (workflow/item/user/role/form)
              * msgParams[1] --> server operation (def/upd/del)
-             * msgParams[2] --> object identifier (id/username)
+             * msgParams[2] --> object identifier (id/username/...)
              */
             IList<string> msgParams = new List<string>();
             msgParams = requestMsg.Split('=');
