@@ -57,8 +57,8 @@ public class LogicTest {
     FinalStep finalStep2;
 
     /**
-     * 
-     * @throws LogicException
+     * Test if a workflow can be added and retrieved.
+     * @throws LogicException 
      */
     @Test
     public void addGetWorkflowTest() throws LogicException {
@@ -68,8 +68,8 @@ public class LogicTest {
     }
 
     /**
-     * 
-     * @throws LogicException
+     * Test if a workflow can be properly started.
+     * @throws LogicException 
      */
     @Test
     public void startWorkflowTest() throws LogicException {
@@ -90,11 +90,11 @@ public class LogicTest {
     }
 
     /**
-     * 
-     * @throws LogicException
+     * Test if deletion of a non existent workflow throws an exception.
+     * @throws LogicException 
      */
     @Test(expected = WorkflowNotExistentException.class)
-    public void deleteWortflowTest() throws LogicException {
+    public void deleteWorkflowTest() throws LogicException {
         init();
         li.addWorkflow(w);
         li.deleteWorkflow(w.getId());
@@ -104,21 +104,21 @@ public class LogicTest {
     }
 
     /**
-     * 
-     * @throws LogicException
+     * Test if stepForward is properly implemented.
+     * @throws LogicException 
      */
     @Test
     public void stepOverTest() throws LogicException {
         init();
         initExtension();
 
-        Workflow testwf = new Workflow();
-        Role r = new Role();
-        StartStep ss = new StartStep();
-        Action a = new Action();
-        Action a2 = new Action();
-        FinalStep fs = new FinalStep();
-        User u = new User();
+        final Workflow testwf = new Workflow();
+        final Role r = new Role();
+        final StartStep ss = new StartStep();
+        final Action a = new Action();
+        final Action a2 = new Action();
+        final FinalStep fs = new FinalStep();
+        final User u = new User();
 
         r.setRolename("role");
         ss.addRole(r.getRolename());
@@ -141,7 +141,7 @@ public class LogicTest {
         final Workflow workflow = li.getWorkflow(testwf.getId());
         Item item = workflow.getItemByPos(0);
         System.out.println(item.getId());
-        Item item2 = li.getItem(item.getId(), u.getUsername());
+        final Item item2 = li.getItem(item.getId(), u.getUsername());
         System.out.println(item2.getId());
 
         li.stepForward(item.getId(), workflow.getStepById(a.getId()).getId(),
@@ -155,15 +155,15 @@ public class LogicTest {
     }
 
     /**
-     * 
-     * @throws LogicException
+     * Test if steps can be added.
+     * @throws LogicException 
      */
     @Test
     public void addStepTest() throws LogicException {
         init();
         li.addWorkflow(w);
         final int i = w.getSteps().size();
-        StartStep testStep = new StartStep();
+        final StartStep testStep = new StartStep();
         testStep.getRoleIds().add("role1");
         li.addStep(w.getId(), testStep);
         final Workflow workflow = li.getWorkflow(w.getId());
@@ -172,8 +172,8 @@ public class LogicTest {
     }
 
     /**
-     * 
-     * @throws PersistenceException
+     * Test if users can be added and retrieved.
+     * @throws PersistenceException 
      */
     @Test
     public void addGetUserTest() throws PersistenceException {
@@ -188,8 +188,8 @@ public class LogicTest {
     }
 
     /**
-     * 
-     * @throws PersistenceException
+     * Test if deletion of a non existent user throws an exception.
+     * @throws PersistenceException 
      */
     @Test(expected = UserNotExistentException.class)
     public void deleteUserTest() throws PersistenceException {
@@ -204,16 +204,17 @@ public class LogicTest {
     }
 
     /**
-     * 
+     * Test if workflows for a user can be retrieved.
      * @throws LogicException if something went wrong in logic
-     * @throws UserNotExistentException
-     * @throws WorkflowNotExistentException
-     * @throws StorageFailedException
+     * @throws UserNotExistentException 
+     * @throws WorkflowNotExistentException 
+     * @throws StorageFailedException 
      */
     @Test
     public void getWorkflowsByUser() throws LogicException,
             WorkflowNotExistentException, UserNotExistentException,
-            StorageFailedException {
+            StorageFailedException 
+    {
         init();
         initExtension();
 
@@ -223,8 +224,8 @@ public class LogicTest {
     }
 
     /**
-     * 
-     * @throws LogicException
+     * Test if all open items for a user can be retrieved.
+     * @throws LogicException 
      */
     @Test
     public void getOpenItemsByUserTest() throws LogicException {
@@ -243,7 +244,7 @@ public class LogicTest {
     /**
      * Check if steps in a workflow are connected.
      * 
-     * @throws LogicException
+     * @throws LogicException 
      */
     @Test
     public void connectWorkflowSteps() throws LogicException {
@@ -258,27 +259,29 @@ public class LogicTest {
     }
 
     /**
-     * 
+     * Test if all startable workflows can be retrieved.
      * @throws LogicException if something went wrong in logic.
-     * @throws WorkflowNotExistentException
-     * @throws UserNotExistentException
-     * @throws StorageFailedException
+     * @throws WorkflowNotExistentException 
+     * @throws UserNotExistentException 
+     * @throws StorageFailedException 
      */
     @Test
     public void getStartableWorkflowsTest() throws LogicException,
             UserNotExistentException, WorkflowNotExistentException,
-            StorageFailedException {
+            StorageFailedException 
+    {
         init();
         initExtension();
+        final int wFlowCount = 3;
         final int i = li.getStartableWorkflowsForUser(user2.getUsername())
                 .size();
-        assertTrue(i == 3);
+        assertTrue(i == wFlowCount);
     }
 
     /**
      * This Method test deactivation.
      * 
-     * @throws LogicException
+     * @throws LogicException 
      */
     @Test
     public void deactivateWorkflow() throws LogicException {
@@ -289,16 +292,17 @@ public class LogicTest {
     }
 
     /**
-     * 
+     * Test if all active Workflows for a user can be retrieved.
      * @throws UserNotExistentException if user doesnt exisis.
      * @throws LogicException if something went wrong in logic.
-     * @throws WorkflowNotExistentException
-     * @throws StorageFailedException
+     * @throws WorkflowNotExistentException 
+     * @throws StorageFailedException 
      */
     @Test
     public void getAllActiveWorkflowsByUserTest()
             throws UserNotExistentException, LogicException,
-            WorkflowNotExistentException, StorageFailedException {
+            WorkflowNotExistentException, StorageFailedException 
+    {
         init();
         initExtension();
         final int before = li.getAllWorkflowsForUser(user.getUsername()).size();
@@ -320,7 +324,7 @@ public class LogicTest {
     /**
      * this method init basic data for testing.
      * 
-     * @throws StorageFailedException
+     * @throws StorageFailedException 
      */
     private void init() throws StorageFailedException {
         final Injector i = Guice.createInjector(new SingleModule());
@@ -362,7 +366,7 @@ public class LogicTest {
     /**
      * This method init more data for testing.
      * 
-     * @throws LogicException
+     * @throws LogicException 
      */
     private void initExtension() throws LogicException {
 
