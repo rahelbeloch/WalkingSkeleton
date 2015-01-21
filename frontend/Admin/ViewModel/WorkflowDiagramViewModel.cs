@@ -406,7 +406,6 @@ namespace Admin.ViewModel
         {
             if (_mainViewModel.CurrentPageViewModel == this)
             {
-                Console.WriteLine("delete item command");
                 itemsToRemove = DiagramViewModel.SelectedItems;
                 List<SelectableDesignerItemViewModelBase> connectionsToAlsoRemove = new List<SelectableDesignerItemViewModelBase>();
 
