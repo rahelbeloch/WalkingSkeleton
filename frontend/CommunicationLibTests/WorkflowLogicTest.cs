@@ -22,9 +22,9 @@ namespace UnitTestProject1
             Step st2 = new Step();
             Step st3 = new Step();
 
-            wf.addStep(st1);
-            wf.addStep(st2);
-            wf.addStep(st3);
+            wf.AddStep(st1);
+            wf.AddStep(st2);
+            wf.AddStep(st3);
 
             Assert.IsTrue(wf.steps[2] == st3);
         }
@@ -41,13 +41,13 @@ namespace UnitTestProject1
             Step st2 = new Step();
             Step st3 = new Step();
 
-            wf.addStep(st1);
-            wf.addStep(st2);
-            wf.addStep(st3);
+            wf.AddStep(st1);
+            wf.AddStep(st2);
+            wf.AddStep(st3);
 
-            wf.removeLastStep();
-            wf.removeLastStep();
-            wf.removeLastStep();
+            wf.RemoveLastStep();
+            wf.RemoveLastStep();
+            wf.RemoveLastStep();
 
             Assert.IsTrue(wf.steps.Count == 0);
         }
