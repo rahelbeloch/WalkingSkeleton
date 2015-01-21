@@ -21,6 +21,10 @@ namespace Admin.ViewModel
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;
 
+        /// <summary>
+        /// Constructor for the FormViewModel
+        /// </summary>
+        /// <param name="mainViewModel"></param>
         public FormViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -40,7 +44,6 @@ namespace Admin.ViewModel
         /// <summary>
         /// This property indicates which definition was selected in the view.
         /// </summary>
-        private FormEntry _selectedDefinition = null;
         public FormEntry selectedDefinition
         {
             get
@@ -53,11 +56,11 @@ namespace Admin.ViewModel
                 OnChanged("selectedDefinition");
             }
         }
+        private FormEntry _selectedDefinition = null;
 
         /// <summary>
         /// This property is setted if a form is selected in the overview.
         /// </summary>
-        private Form _selectedForm = null;
         public Form selectedForm
         {
             get
@@ -74,11 +77,11 @@ namespace Admin.ViewModel
                 OnChanged("formDefModel");
             }
         }
+        private Form _selectedForm = null;
 
         /// <summary>
         /// This property is used as a value setter to hide user controls.
         /// </summary>
-        private String _visibleDefinition = "Collapsed";
         public String visibleDefinition
         {
             get
@@ -91,11 +94,11 @@ namespace Admin.ViewModel
                 OnChanged("visibleDefinition");
             }
         }
+        private String _visibleDefinition = "Collapsed";
 
         /// <summary>
         /// This property is used as a value setter to hide the form overview.
         /// </summary>
-        private String _visibleView = "Collapsed";
         public String visibleView
         {
             get
@@ -108,11 +111,11 @@ namespace Admin.ViewModel
                 OnChanged("visibleView");
             }
         }
+        private String _visibleView = "Collapsed";
 
         /// <summary>
         /// This property will be used for setting a form's id.
         /// </summary>
-        private String _formDefModelId = "";
         public String formDefModelId
         {
             get
@@ -125,11 +128,11 @@ namespace Admin.ViewModel
                 OnChanged("formDefModelId");
             }
         }
+        private String _formDefModelId = "";
 
         /// <summary>
         /// This property will be used for setting a form's description.
         /// </summary>
-        private String _formDefModelDescription = "";
         public String formDefModelDescription
         {
             get
@@ -142,6 +145,8 @@ namespace Admin.ViewModel
                 OnChanged("formDefModelDescription");
             }
         }
+        private String _formDefModelDescription = "";
+
         #endregion
 
         #region methods
@@ -202,7 +207,6 @@ namespace Admin.ViewModel
         /// <summary>
         /// This command is executed if the client wants to create a new form.
         /// </summary>
-        private ICommand _addFormCommand;
         public ICommand addFormCommand
         {
             get
@@ -230,11 +234,11 @@ namespace Admin.ViewModel
                 return _addFormCommand;
             }
         }
+        private ICommand _addFormCommand;
 
         /// <summary>
         /// This command is executed if a client wants to delete a form.
         /// </summary>
-        private ICommand _deleteFormCommand;
         public ICommand deleteFormCommand
         {
             get
@@ -257,14 +261,13 @@ namespace Admin.ViewModel
                         }, canExecute => _selectedForm != null);
                 }
                 return _deleteFormCommand;
-            }
-            
+            } 
         }
+        private ICommand _deleteFormCommand;
 
         /// <summary>
         /// This command is executed if the client adds a new definition to a form.
         /// </summary>
-        private ICommand _addDefinitionCommand;
         public ICommand addDefinitionCommand
         {
             get
@@ -288,11 +291,11 @@ namespace Admin.ViewModel
                 return _addDefinitionCommand;
             }
         }
+        private ICommand _addDefinitionCommand;
 
         /// <summary>
         /// This method is used if the client removes a selected definition.
         /// </summary>
-        private ICommand _removeDefinitionCommand;
         public ICommand removeDefinitionCommand
         {
             get
@@ -313,11 +316,11 @@ namespace Admin.ViewModel
                 return _removeDefinitionCommand;
             }
         }
+        private ICommand _removeDefinitionCommand;
 
         /// <summary>
         /// This command is used if the client wants to submit a form to the server.
         /// </summary>
-        private ICommand _submitFormCommand;
         public ICommand submitFormCommand
         {
             get
@@ -363,11 +366,11 @@ namespace Admin.ViewModel
                 return _submitFormCommand;
             }
         }
+        private ICommand _submitFormCommand;
 
         /// <summary>
         /// This command is used if the client cancels the form definition.
         /// </summary>
-        private ICommand _resetFormCommand;
         public ICommand resetFormCommand
         {
             get
@@ -385,6 +388,8 @@ namespace Admin.ViewModel
                 return _resetFormCommand;
             }
         }
+        private ICommand _resetFormCommand;
+
         #endregion
     }
 }

@@ -15,13 +15,12 @@ namespace Admin.ViewModel
         /// <summary>
         /// Property to bind the role to a row.
         /// </summary>
-        private Role _role;
         public Role Role { get { return _role; } set { _role = value; } }
+        private Role _role;
 
         /// <summary>
         /// Property to (de)select the checkbox in a row.
         /// </summary>
-        private Boolean _isSelected;
         public Boolean IsSelected 
         { 
             get 
@@ -34,7 +33,13 @@ namespace Admin.ViewModel
                 OnChanged("IsSelected"); 
             } 
         }
+        private Boolean _isSelected;
 
+        /// <summary>
+        /// Constructor for RoleCheckBox
+        /// </summary>
+        /// <param name="role"></param>
+        /// <param name="isSelected"></param>
         public RoleCheckboxRow(Role role, Boolean isSelected)
         {
             this.Role = role;

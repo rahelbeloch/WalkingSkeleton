@@ -17,7 +17,6 @@ using NLog;
 using DiagramDesigner;
 using DiagramDesigner.Helpers;
 using Admin.Helpers;
-using System.Collections.Specialized;
 
 namespace Admin.ViewModel
 {
@@ -34,10 +33,18 @@ namespace Admin.ViewModel
 
         private DiagramViewModel diagramViewModel;
         private ToolBoxViewModel _toolBoxViewModel;
-        public ToolBoxViewModel toolBoxViewModel { get { return _toolBoxViewModel; } }
         
         private List<SelectableDesignerItemViewModelBase> itemsToRemove;
+
+        /// <summary>
+        /// ToolBoxViewModel
+        /// </summary>
+        public ToolBoxViewModel toolBoxViewModel { get { return _toolBoxViewModel; } }
         
+        /// <summary>
+        /// WorkflowDiagramModel
+        /// </summary>
+        /// <param name="mainViewModel"></param>
         public WorkflowDiagramViewModel(MainViewModel mainViewModel)
         {
             diagramViewModel = new DiagramViewModel();
@@ -46,15 +53,27 @@ namespace Admin.ViewModel
             DeleteSelectedItemsCommand = new SimpleCommand(ExecuteDeleteSelectedItemsCommand);
         }
       
+        /// <summary>
+        /// Observable Collection of Users
+        /// </summary>
         public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
-        
+
+        /// <summary>
+        /// Observable Collection of Roles
+        /// </summary>
         public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
 
+        /// <summary>
+        /// Observable Collection of Forms
+        /// </summary>
         public ObservableCollection<Form> formCollection { get { return _mainViewModel.formCollection; } }
 
         
         #region properties
 
+        /// <summary>
+        /// Diagramm View Model
+        /// </summary>
         public DiagramViewModel DiagramViewModel
         {
             get
@@ -72,6 +91,9 @@ namespace Admin.ViewModel
         }
 
         private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
+        /// <summary>
+        /// Collection of observable workflows
+        /// </summary>
         public ObservableCollection<Workflow> workflows 
         { 
             get { return _workflows; }
@@ -81,10 +103,12 @@ namespace Admin.ViewModel
         /// Property for itemlist of an selected (_actWorkflow) workflow in workflow view.
         /// NOTICE: temporare solution for item view. (There has to be another way...)
         /// </summary>
+        public ObservableCollection<Item> items { get { return _items; } }
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
-        public ObservableCollection<Item> items { get { return _items; } } 
 
-        private DesignerItemViewModelBase _actStep;
+        /// <summary>
+        /// Property for actStep of an selected (_actWorkflow) workflow in workflow view.
+        /// </summary>
         public DesignerItemViewModelBase actStep
         {
             get
@@ -97,8 +121,11 @@ namespace Admin.ViewModel
                 OnChanged("actStep");
             }
         }
+        private DesignerItemViewModelBase _actStep;
         
-        private Visibility _showDetails;
+        /// <summary>
+        /// Property of showDetais of an selected Workflow
+        /// </summary>
         public Visibility showDetails
         {
             get
@@ -111,7 +138,11 @@ namespace Admin.ViewModel
                 OnChanged("showDetails");
             }
         }
-        private Visibility _actStepVisibility;
+        private Visibility _showDetails;
+
+        /// <summary>
+        /// Property of the Step Visibility (if you're allowed to see the details of the actstep of an item) of an item
+        /// </summary>
         public Visibility actStepVisibility
         {
             get
@@ -124,7 +155,11 @@ namespace Admin.ViewModel
                 OnChanged("actStepVisibility");
             }
         }
-        private Visibility _descriptionVisibility;
+        private Visibility _actStepVisibility;
+
+        /// <summary>
+        /// Property of the description Visibility
+        /// </summary>
         public Visibility descriptionVisibility 
         {
             get
@@ -137,7 +172,11 @@ namespace Admin.ViewModel
                 OnChanged("descriptionVisibility");
             }
         }
-        private Visibility _roleVisibility;
+        private Visibility _descriptionVisibility;
+        
+        /// <summary>
+        /// Property of the role Visibility
+        /// </summary>
         public Visibility roleVisibility
         {
             get
@@ -150,7 +189,11 @@ namespace Admin.ViewModel
                 OnChanged("roleVisibility");
             }
         }
-        private Visibility _displayView;
+        private Visibility _roleVisibility;
+
+        /// <summary>
+        /// Propert of the Display View
+        /// </summary>
         public Visibility displayView
         {
             get
@@ -163,7 +206,11 @@ namespace Admin.ViewModel
                 OnChanged("displayView");
             }
         }
-        private Visibility _editView;
+        private Visibility _displayView;
+        
+        /// <summary>
+        /// Property of the edit workflow view
+        /// </summary>
         public Visibility editView
         {
             get
@@ -176,11 +223,11 @@ namespace Admin.ViewModel
                 OnChanged("editView");
             }
         }
+        private Visibility _editView;
         
         /// <summary>
         /// Property to enable textbox for username input.
         /// </summary>
-        private bool _enableUserTextBox = false;
         public bool enableUserTextBox 
         { 
             get 
@@ -193,12 +240,12 @@ namespace Admin.ViewModel
                 OnChanged("enableUserTextBox");
             }
         }
+        private bool _enableUserTextBox = false;
 
         /// <summary>
         /// Property, which indicates if a selected workflow is de-/active.
         /// This property is used for the de-/active button label.
         /// </summary>
-        private String _workflowActivity = "Deaktivieren";
         public String workflowActivity
         {
             get
@@ -218,11 +265,11 @@ namespace Admin.ViewModel
                 OnChanged("workflowActivity");
             }
         }
+        private String _workflowActivity = "Deaktivieren";
 
         /// <summary>
         /// Property to enable textbox for description input.
         /// </summary>
-        private bool _enableDescriptionTextBox = false;
         public bool enableDescriptionTextBox
         {
             get
@@ -235,8 +282,11 @@ namespace Admin.ViewModel
                 OnChanged("enableDescriptionTextBox");
             }
         }
+        private bool _enableDescriptionTextBox = false;
 
-        private Role _selectedRole = new Role();
+        /// <summary>
+        /// Property of the selected Role
+        /// </summary>
         public Role selectedRole
         {
             get
@@ -248,8 +298,11 @@ namespace Admin.ViewModel
                 _selectedRole = value;
             }
         }
+        private Role _selectedRole = new Role();
 
-        private Form _selectedForm = new Form();
+        /// <summary>
+        /// Property of the selected Form
+        /// </summary>
         public Form selectedForm
         {
             get
@@ -262,9 +315,8 @@ namespace Admin.ViewModel
                 OnChanged("selectedForm");
             }
         }
+        private Form _selectedForm = new Form();
 
-        
-        private Workflow _actWorkflow = null;
         /// <summary>
         /// Property for selected workflow in workflow overview.
         /// </summary>
@@ -300,11 +352,11 @@ namespace Admin.ViewModel
                 OnChanged("items");
             }
         }
+        private Workflow _actWorkflow = null;
 
         /// <summary>
         /// Property for input from step description text box.
         /// </summary>
-        private string _stepDescription = "";
         public string stepDescription
         {
             get
@@ -317,10 +369,11 @@ namespace Admin.ViewModel
                 OnChanged("stepDescription");
             }
         }
+        private string _stepDescription = "";
+
         /// <summary>
         /// Property for the displayed Tab
         /// </summary>
-        private int _selectedTabId;
         public int selectedTabId
         {
             get
@@ -333,6 +386,7 @@ namespace Admin.ViewModel
                 OnChanged("selectedTabId");
             }
         }
+        private int _selectedTabId;
 
         #endregion
 
@@ -484,7 +538,9 @@ namespace Admin.ViewModel
 
         #region commands
 
-
+        /// <summary>
+        /// Command to delete a selected Item
+        /// </summary>
         public SimpleCommand DeleteSelectedItemsCommand { get; private set; }
         private void ExecuteDeleteSelectedItemsCommand(object parameter)
         {
@@ -524,7 +580,6 @@ namespace Admin.ViewModel
         /// <summary>
         /// Command to edit the current workflow.
         /// </summary>
-        private ICommand _editWorkflowCommand;
         public ICommand editWorkflowCommand
         {
             get
@@ -560,8 +615,11 @@ namespace Admin.ViewModel
                 return _editWorkflowCommand;
             }
         }
+        private ICommand _editWorkflowCommand;
 
-        private ICommand _newWorkflowCommand;
+        /// <summary>
+        /// Command to create a new workflow
+        /// </summary>
         public ICommand newWorkflowCommand
         {
             get
@@ -580,8 +638,11 @@ namespace Admin.ViewModel
                 return _newWorkflowCommand;
             }
         }
+        private ICommand _newWorkflowCommand;
 
-        private ICommand _displayViewCommand;
+        /// <summary>
+        /// Command to display a view (visible or not)
+        /// </summary>
         public ICommand displayViewCommand
         {
             get
@@ -598,10 +659,11 @@ namespace Admin.ViewModel
                 return _displayViewCommand;
             }
         }
+        private ICommand _displayViewCommand;
+
         /// <summary>
         /// Command to toggle workflow activity.
         /// </summary>
-        private ICommand _toggleActivity;
         public ICommand toggleActivity
         {
             get
@@ -618,9 +680,11 @@ namespace Admin.ViewModel
                 return _toggleActivity;
             }
         }
+        private ICommand _toggleActivity;
 
-        ////neues Command anfang
-        private ICommand _saveWorkflowCommand;
+        /// <summary>
+        /// Command to save a workflow
+        /// </summary>
         public ICommand saveWorkflowCommand
         {
             get
@@ -636,6 +700,7 @@ namespace Admin.ViewModel
                 return _saveWorkflowCommand;
             }
         }
+        private ICommand _saveWorkflowCommand;
 
         private void PostWorkflow(bool toggleActivity=false)
         {

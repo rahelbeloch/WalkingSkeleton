@@ -23,6 +23,10 @@ namespace Admin.ViewModel
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;
 
+        /// <summary>
+        /// UserViewModel constructor
+        /// </summary>
+        /// <param name="mainViewModel"></param>
         public UserViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -164,7 +168,6 @@ namespace Admin.ViewModel
         /// <summary>
         /// Property to enable the textbox to enter a username.
         /// </summary>
-        private bool _enableUserTextBox = true;
         public bool EnableUserTextBox
         {
             get
@@ -177,6 +180,7 @@ namespace Admin.ViewModel
                 OnChanged("EnableUserTextBox");
             }
         }
+        private bool _enableUserTextBox = true;
 
         /// <summary>
         /// Property which sets the text of the post user button.

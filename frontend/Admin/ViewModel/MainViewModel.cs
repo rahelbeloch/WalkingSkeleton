@@ -24,43 +24,63 @@ namespace Admin.ViewModel
     public class MainViewModel : ViewModelBase, IDataReceiver
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        private String _clientID = "admin";
+        /// <summary>
+        /// Property for the clientId
+        /// </summary>
         public String clientID { get { return _clientID; } }
+        private String _clientID = "admin";
 
-        private OLD_WorkflowViewModel _oldWorkflowViewModel;
+        /// <summary>
+        /// Property for the oldWorkflowViewModel
+        /// </summary>
         public OLD_WorkflowViewModel oldWorkflowViewModel { get { return _oldWorkflowViewModel; } }
+        private OLD_WorkflowViewModel _oldWorkflowViewModel;
 
-        private WorkflowDiagramViewModel _workflowViewModel;
+        /// <summary>
+        /// Property for the workflowViewModel
+        /// </summary>
         public WorkflowDiagramViewModel workflowViewModel { get { return _workflowViewModel; } }
+        private WorkflowDiagramViewModel _workflowViewModel;
 
-        private UserViewModel _userViewModel;
+        /// <summary>
+        /// Property for the userViewModel
+        /// </summary>
         public UserViewModel userViewModel { get { return _userViewModel; }  }
+        private UserViewModel _userViewModel;
 
-        private LoginViewModel _loginViewModel;
+        /// <summary>
+        /// Property for the loginViewModel
+        /// </summary>
         public LoginViewModel loginViewModel { get { return _loginViewModel; } }
+        private LoginViewModel _loginViewModel;
 
-        private FormViewModel _formViewModel;
+        /// <summary>
+        /// Property for the formViewModel
+        /// </summary>
         public FormViewModel formViewModel { get { return _formViewModel; } }
+        private FormViewModel _formViewModel;
 
         /// <summary>
         /// Property _userCollection to fill list view with users.
         /// </summary>
-        private ObservableCollection<User> _userCollection = new ObservableCollection<User>();
         public ObservableCollection<User> userCollection { get { return _userCollection; } }
+        private ObservableCollection<User> _userCollection = new ObservableCollection<User>();
 
         /// <summary>
         /// Property _roleCollection to fill list view with users.
         /// </summary>
-        private ObservableCollection<Role> _roleCollection = new ObservableCollection<Role>();
         public ObservableCollection<Role> roleCollection { get { return _roleCollection; } }
+        private ObservableCollection<Role> _roleCollection = new ObservableCollection<Role>();
 
-        private ObservableCollection<Form> _formCollection = new ObservableCollection<Form>();
+        /// <summary>
+        /// Property for the formCollection
+        /// </summary>
         public ObservableCollection<Form> formCollection { get { return _formCollection; } }
+        private ObservableCollection<Form> _formCollection = new ObservableCollection<Form>();
 
         /// <summary>
         /// RestRequester is used for rest request.
         /// </summary>
-        private IRestRequester _restRequester;
         public IRestRequester restRequester
         {
             get
@@ -72,11 +92,11 @@ namespace Admin.ViewModel
                 return _restRequester;
             }
         }
+        private IRestRequester _restRequester;
 
         /// <summary>
         /// ComLib is used for messaging.
         /// </summary>
-        private ComLib _myComLib;
         public ComLib myComLib
         {
             get
@@ -96,7 +116,11 @@ namespace Admin.ViewModel
                 return _myComLib;
             }
         }
+        private ComLib _myComLib;
 
+        /// <summary>
+        /// Constructor for the MainViewModel
+        /// </summary>
         public MainViewModel()
         {
             _loginViewModel = new LoginViewModel(this);
@@ -120,13 +144,12 @@ namespace Admin.ViewModel
         /// <summary>
         /// Property to store the currently logged in admin name.
         /// </summary>
-        private String _admin = "";
         public String admin { get { return _admin; } set { _admin = value; } }
+        private String _admin = "";
 
         /// <summary>
         /// Command to change the current View/ViewModel.
         /// </summary>
-        private ICommand _changePageCommand;
         public ICommand ChangePageCommand
         {
             get
@@ -140,11 +163,11 @@ namespace Admin.ViewModel
                 return _changePageCommand;
             }
         }
+        private ICommand _changePageCommand;
 
         /// <summary>
         /// Property to hold a list of all known ViewModels.
         /// </summary>
-        private List<ViewModelBase> _pageViewModels;
         public List<ViewModelBase> PageViewModels
         {
             get
@@ -157,11 +180,11 @@ namespace Admin.ViewModel
                 return _pageViewModels;
             }
         }
+        private List<ViewModelBase> _pageViewModels;
 
         /// <summary>
         /// Property for the currently shown View/ViewModel.
         /// </summary>
-        private ViewModelBase _currentPageViewModel;
         public ViewModelBase CurrentPageViewModel
         {
             get
@@ -179,11 +202,11 @@ namespace Admin.ViewModel
                 MenuVisibility = _currentPageViewModel == _loginViewModel ? Visibility.Collapsed : Visibility.Visible;
             }
         }
+        private ViewModelBase _currentPageViewModel;
 
         /// <summary>
         /// Command to log out the current admin.
         /// </summary>
-        private ICommand _logoutCommand;
         public ICommand LogoutCommand
         {
             get
@@ -198,11 +221,11 @@ namespace Admin.ViewModel
                 return _logoutCommand;
             }
         }
+        private ICommand _logoutCommand;
 
         /// <summary>
         /// Property to set the visibility of the menu.
         /// </summary>
-        private Visibility _menuVisibility = Visibility.Collapsed;
         public Visibility MenuVisibility
         {
             get
@@ -215,6 +238,7 @@ namespace Admin.ViewModel
                 OnChanged("MenuVisibility");
             }
         }
+        private Visibility _menuVisibility = Visibility.Collapsed;
 
         #endregion
 
@@ -335,6 +359,10 @@ namespace Admin.ViewModel
             logger.Info("Delete " + sourceType.ToString() + " ID=" + sourceId);
         }
 
+        /// <summary>
+        /// HandleError Method for BasicException
+        /// </summary>
+        /// <param name="e"></param>
         public void HandleError(BasicException e)
         {
             Application.Current.Dispatcher.Invoke(new System.Action(() => 

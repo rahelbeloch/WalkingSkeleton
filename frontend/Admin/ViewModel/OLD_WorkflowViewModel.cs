@@ -30,6 +30,10 @@ namespace Admin.ViewModel
         private MainViewModel _mainViewModel;
         private IRestRequester _restRequester;       
         
+        /// <summary>
+        /// Constructor for the OLD_WorkflowViewModel
+        /// </summary>
+        /// <param name="mainViewModel"></param>
         public OLD_WorkflowViewModel(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -37,8 +41,14 @@ namespace Admin.ViewModel
             _workflow.CollectionChanged += OnWorkflowChanged;
         }
 
+        /// <summary>
+        /// Property of userCollection
+        /// </summary>
         public ObservableCollection<User> userCollection { get { return _mainViewModel.userCollection; } }
         
+        /// <summary>
+        /// Property of roleCollection
+        /// </summary>
         public ObservableCollection<Role> roleCollection { get { return _mainViewModel.roleCollection; } }
 
         #region properties
@@ -47,10 +57,12 @@ namespace Admin.ViewModel
         /// Property _dummyWorkflow fills list view with steps.
         /// TODO: change Step to Step (not possible at the moment)
         /// </summary>
-        private ObservableCollection<Step> _workflow = new ObservableCollection<Step>();
         public ObservableCollection<Step> workflow { get { return _workflow; } }
+        private ObservableCollection<Step> _workflow = new ObservableCollection<Step>();
 
-        private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
+        /// <summary>
+        /// Property for list of displaye3d workflows
+        /// </summary>
         public ObservableCollection<Workflow> workflows 
         { 
             get { return _workflows; }
@@ -60,23 +72,25 @@ namespace Admin.ViewModel
             //    OnChanged("workflows");
             //}
         }
+        private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
+
         /// <summary>
         /// Property for itemlist of an selected (_actWorkflow) workflow in workflow view.
         /// NOTICE: temporare solution for item view. (There has to be another way...)
         /// </summary>
+        public ObservableCollection<Item> items { get { return _items; } }
         private ObservableCollection<Item> _items = new ObservableCollection<Item>();
-        public ObservableCollection<Item> items { get { return _items; } } 
+
         /// <summary>
         /// Property to fill combox box with choosable steps.
         /// TODO: change Step to Step (not possible at the moment)
         /// </summary>
-        private ObservableCollection<Step> _choosableSteps = new ObservableCollection<Step>();
         public ObservableCollection<Step> choosableSteps { get { return _choosableSteps; } }
+        private ObservableCollection<Step> _choosableSteps = new ObservableCollection<Step>();
 
         /// <summary>
         /// Property to enable textbox for username input.
         /// </summary>
-        private bool _enableUserTextBox = false;
         public bool enableUserTextBox 
         { 
             get 
@@ -89,12 +103,12 @@ namespace Admin.ViewModel
                 OnChanged("enableUserTextBox");
             }
         }
+        private bool _enableUserTextBox = false;
 
         /// <summary>
         /// Property, which indicates if a selected workflow is de-/active.
         /// This property is used for the de-/active button label.
         /// </summary>
-        private String _workflowActivity = "Deaktivieren";
         public String workflowActivity
         {
             get
@@ -114,11 +128,11 @@ namespace Admin.ViewModel
                 OnChanged("workflowActivity");
             }
         }
+        private String _workflowActivity = "Deaktivieren";
 
         /// <summary>
         /// Property to enable textbox for description input.
         /// </summary>
-        private bool _enableDescriptionTextBox = false;
         public bool enableDescriptionTextBox
         {
             get
@@ -131,12 +145,12 @@ namespace Admin.ViewModel
                 OnChanged("enableDescriptionTextBox");
             }
         }
+        private bool _enableDescriptionTextBox = false;
 
         /// <summary>
         /// Property for currently selected step from combo box.
         /// TODO: change Step to Step (not possible at the moment)
         /// </summary>
-        private Step _selectedStep = new Step();
         public Step selectedStep
         {
             get
@@ -164,8 +178,11 @@ namespace Admin.ViewModel
                 }
             }
         }
+        private Step _selectedStep = new Step();
 
-        private Role _selectedRole = new Role();
+        /// <summary>
+        /// Property for the selected Role of the rolecollection
+        /// </summary>
         public Role selectedRole
         {
             get
@@ -177,11 +194,11 @@ namespace Admin.ViewModel
                 _selectedRole = value;
             }
         }
+        private Role _selectedRole = new Role();
 
         /// <summary>
         /// Property for selected workflow in workflow overview.
         /// </summary>
-        private Workflow _actWorkflow = null;
         public Workflow actWorkflow
         {
             get
@@ -201,11 +218,11 @@ namespace Admin.ViewModel
                 OnChanged("items");
             }
         }
+        private Workflow _actWorkflow = null;
 
         /// <summary>
         /// Property for input from step description text box.
         /// </summary>
-        private string _stepDescription = "";
         public string stepDescription
         {
             get
@@ -218,10 +235,11 @@ namespace Admin.ViewModel
                 OnChanged("stepDescription");
             }
         }
+        private string _stepDescription = "";
+
         /// <summary>
         /// Property for the displayed Tab
         /// </summary>
-        private int _selectedTabId;
         public int selectedTabId
         {
             get
@@ -234,9 +252,13 @@ namespace Admin.ViewModel
                 OnChanged("selectedTabId");
             }
         }
+        private int _selectedTabId;
 
         #endregion
 
+        /// <summary>
+        /// Init Model for the Old_WorkflowViewModel
+        /// </summary>
         public void InitModel()
         {
             try
@@ -268,6 +290,9 @@ namespace Admin.ViewModel
             OnChanged("workflows");
         }
 
+        /// <summary>
+        /// Clea Method for Old_WorkflowViewModel
+        /// </summary>
         public void ClearModel()
         {
             userCollection.Clear();
@@ -376,7 +401,6 @@ namespace Admin.ViewModel
         /// <summary>
         /// Command to delete last step from workflow.
         /// </summary>
-        private ICommand _removeLastStepCommand;
         public ICommand removeLastStepCommand
         {
             get
@@ -393,10 +417,11 @@ namespace Admin.ViewModel
                 return _removeLastStepCommand;
             }
         }
+        private ICommand _removeLastStepCommand;
+
         /// <summary>
         /// Command to edit the current workflow.
         /// </summary>
-        private ICommand _editWorkflowCommand;
         public ICommand editWorkflowCommand
         {
             get
@@ -417,11 +442,11 @@ namespace Admin.ViewModel
                 return _editWorkflowCommand;
             }
         }
+        private ICommand _editWorkflowCommand;
 
         /// <summary>
         /// Command to toggle workflow activity.
         /// </summary>
-        private ICommand _toggleActivity;
         public ICommand toggleActivity
         {
             get
@@ -455,7 +480,11 @@ namespace Admin.ViewModel
                 return _toggleActivity;
             }
         }
-        private ICommand _resetWorkflowCommand;
+        private ICommand _toggleActivity;
+
+        /// <summary>
+        /// Command to toggle the reset of workflows
+        /// </summary>
         public ICommand resetWorkflowCommand
         {
             get
@@ -471,10 +500,11 @@ namespace Admin.ViewModel
                 return _resetWorkflowCommand;
             }
         }
+        private ICommand _resetWorkflowCommand;
+
         /// <summary>
         /// Command to submit workflow if last step is a final step.
         /// </summary>
-        private ICommand _submitWorkflowCommand;
         public ICommand submitWorkflowCommand
         {
             get
@@ -517,11 +547,11 @@ namespace Admin.ViewModel
                 return _submitWorkflowCommand;
             }
         }
+        private ICommand _submitWorkflowCommand;
 
         /// <summary>
         /// Command to add a selected step to current workflow.
         /// </summary>
-        private ICommand _addStepCommand;
         public ICommand addStepCommand
         {
             get
@@ -590,6 +620,7 @@ namespace Admin.ViewModel
             }
 
         }
+        private ICommand _addStepCommand;
 
         #endregion
     }   
