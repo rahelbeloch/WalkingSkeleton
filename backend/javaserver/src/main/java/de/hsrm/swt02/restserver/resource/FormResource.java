@@ -185,7 +185,7 @@ public class FormResource {
     @DELETE
     @Path("forms/{formId}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteRole(@PathParam("formId") String formId, @HeaderParam("username") String username) {
+    public Response deleteForm(@PathParam("formId") String formId, @HeaderParam("username") String username) {
         
         try {
             LOGIC.checkUserIsAdmin(username);
