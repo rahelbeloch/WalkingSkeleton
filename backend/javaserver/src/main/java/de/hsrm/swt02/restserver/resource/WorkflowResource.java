@@ -229,7 +229,6 @@ public class WorkflowResource {
             return Response.serverError().entity(String.valueOf(e2.getErrorCode())).build();
         }
         
-        LOGGER.log(Level.WARNING, "check saveWorkflow");
         LogicResponse logicResponse;
         final String loggingBody = PREFIX + "POST /resource/workflows";
         LOGGER.log(Level.INFO, loggingBody);
