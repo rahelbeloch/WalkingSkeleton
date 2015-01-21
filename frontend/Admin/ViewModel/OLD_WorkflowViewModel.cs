@@ -256,7 +256,7 @@ namespace Admin.ViewModel
                 // register workflows as ItemSoure
                 foreach (Workflow workflow in workflowList)
                 {
-                    _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
+                    _mainViewModel.myComLib.Listener.RegisterItemSource(workflow);
                 }
 
                 workflowList.ToList().ForEach(_workflows.Add);
