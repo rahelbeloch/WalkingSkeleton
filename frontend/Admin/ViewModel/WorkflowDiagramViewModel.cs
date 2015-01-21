@@ -290,6 +290,7 @@ namespace Admin.ViewModel
                 }
                 else
                 {
+                    selectedForm = null;
                     showDetails = Visibility.Collapsed;
                     DiagramViewModel.Items.Clear();
                     DiagramViewModel.locked = false;

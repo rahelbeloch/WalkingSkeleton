@@ -165,7 +165,7 @@ namespace Client.ViewModel
                             }
                             MessageBox.Show(exc.Message);
                         }
-                    }, canExecute => username.Length > 0 && _serverAddress.Length > 0 && _brokerAddress.Length > 0);
+                    }, canExecute => username.Length > 0);
                 }
                 return _authenticate;
             }
