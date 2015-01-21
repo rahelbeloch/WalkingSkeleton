@@ -15,20 +15,20 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public String workflowId { get { return _workflowId; } set { _workflowId = value; } }
+        public String WorkflowId { get { return _workflowId; } set { _workflowId = value; } }
         private String _workflowId;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
+        public List<MetaEntry> Metadata { get { return _metadata; } set { _metadata = value; } }
         private List<MetaEntry> _metadata;
-        public List<MetaEntry> metadata { get { return _metadata; } set { _metadata = value; } }
-
+        
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
+        public bool Finished { get { return _finished; } set { _finished = value; } }
         private bool _finished;
-        public bool finished { get { return _finished; } set { _finished = value; } }
 
         /// <summary>
         /// Constructor for Item
@@ -39,35 +39,42 @@ namespace CommunicationLib.Model
             _metadata = new List<MetaEntry>();
         }
 
-        public int getActiveStepId()
+        /// <summary>
+        /// Getter for the active step.
+        /// </summary>
+        /// <returns>nr of active step</returns>
+        public int GetActiveStepId()
         {
-            foreach (MetaEntry me in metadata) 
+            foreach (MetaEntry me in Metadata) 
             {
                 if (me.key.Equals("status"))
                 {
-                    if (me.value.Equals("OPEN") || me.value.Equals("BUSY"))
+                    if (me.Value.Equals("OPEN") || me.Value.Equals("BUSY"))
                     {
-                        return Convert.ToInt32(me.group);
+                        return Convert.ToInt32(me.Group);
                     }
                 }
             }
             return -1;
         }
 
+        /// <summary>
+        /// State of this item. Is one of enum MetaEntry.
+        /// </summary>
         [JsonIgnore]
-        public string state
+        public string State
         {
             get
             {
-                foreach (MetaEntry me in metadata)
+                foreach (MetaEntry me in Metadata)
                 {
                     if (me.key.Equals("status"))
                     {
-                        if (me.value.Equals("OPEN"))
+                        if (me.Value.Equals("OPEN"))
                         {
                             return "OPEN";
                         }
-                        if (me.value.Equals("BUSY"))
+                        if (me.Value.Equals("BUSY"))
                         {
                             return "BUSY";
                         }

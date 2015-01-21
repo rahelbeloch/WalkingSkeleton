@@ -288,7 +288,7 @@ namespace CommunicationLib
             string topicName;
 
             // Create fitting topic
-            topicName = "ITEMS_FROM_" + itemSource.id;
+            topicName = "ITEMS_FROM_" + itemSource.Id;
             if (!_messageSubs.ContainsKey(topicName))
             {
                 logger.Info("Registration ItemSource='" + topicName + "'");

@@ -15,25 +15,25 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public List<Step> steps { get { return _steps; } set { _steps = value; } }
+        public List<Step> Steps { get { return _steps; } set { _steps = value; } }
         private List<Step> _steps; 
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public List<Item> items { get { return _items; } set { _items = value; } }
+        public List<Item> Items { get { return _items; } set { _items = value; } }
         private List<Item> _items;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public Form form { get { return _form; } set { _form = value; } }
+        public Form Form { get { return _form; } set { _form = value; } }
         private Form _form;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public bool active { get { return _active; } set { _active = value; } }
+        public bool Active { get { return _active; } set { _active = value; } }
         private bool _active;
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace CommunicationLib.Model
         public Workflow()
             : base()
         {
-            active = true;
+            _active = true;
             _steps = new List<Step>();
             _items = new List<Item>();
             _form = new Form();
@@ -51,53 +51,53 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Add new step to workflow. The new step is also added to the "nextSteps" list of the previous step.
         /// </summary>
-        /// <param name="step"></param>
-        public void addStep(Step step)
+        /// <param name="step">the step to add</param>
+        public void AddStep(Step step)
         {
-            steps.Add(step);
-            int stepsCount = steps.Count;
+            _steps.Add(step);
+            int stepsCount = Steps.Count;
 
             if (stepsCount >= 2)
             {
-                steps[stepsCount - 2].nextStepIds.Add(step.id);
+                Steps[stepsCount - 2].NextStepIds.Add(step.Id);
             }
         }
 
         /// <summary>
         /// Remove last step from workflow and remove link from previous step.
         /// </summary>
-        public void removeLastStep()
+        public void RemoveLastStep()
         {
-            Step lastStep = steps[steps.Count - 1];
+            Step lastStep = _steps[_steps.Count - 1];
             
-            if (steps.Count >= 2)
+            if (_steps.Count >= 2)
             {
-                steps[steps.Count - 2].nextStepIds.Remove(lastStep.id);
+                _steps[_steps.Count - 2].NextStepIds.Remove(lastStep.Id);
             }
 
-            steps.RemoveAt(steps.Count - 1);
+            _steps.RemoveAt(_steps.Count - 1);
         }
 
         /// <summary>
         /// Clears the workflow.
         /// </summary>
-        public void clearWorkflow()
+        public void ClearWorkflow()
         {
-            steps.Clear();
+            _steps.Clear();
         }
 
         /// <summary>
         /// This method returns a step object by its id.
         /// </summary>
-        /// <param name="stepId"></param>
-        /// <returns></returns>
-        public Step getStepById(String stepId)
+        /// <param name="stepId">the id of requested step</param>
+        /// <returns>the requested step</returns>
+        public Step GetStepById(String stepId)
         {
-            foreach (Step s in steps)
+            foreach (Step step in _steps)
             {
-                if (s.id.Equals(stepId))
+                if (step.Id.Equals(stepId))
                 {
-                    return s;
+                    return step;
                 }
             }
             return null;
