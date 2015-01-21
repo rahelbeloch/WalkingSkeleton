@@ -15,25 +15,25 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public List<Step> Steps { get { return _steps; } set { _steps = value; } }
+        public List<Step> steps { get { return _steps; } set { _steps = value; } }
         private List<Step> _steps; 
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public List<Item> Items { get { return _items; } set { _items = value; } }
+        public List<Item> items { get { return _items; } set { _items = value; } }
         private List<Item> _items;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public Form Form { get { return _form; } set { _form = value; } }
+        public Form form { get { return _form; } set { _form = value; } }
         private Form _form;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public bool Active { get { return _active; } set { _active = value; } }
+        public bool active { get { return _active; } set { _active = value; } }
         private bool _active;
 
         /// <summary>
@@ -55,11 +55,11 @@ namespace CommunicationLib.Model
         public void AddStep(Step step)
         {
             _steps.Add(step);
-            int stepsCount = Steps.Count;
+            int stepsCount = steps.Count;
 
             if (stepsCount >= 2)
             {
-                Steps[stepsCount - 2].NextStepIds.Add(step.Id);
+                steps[stepsCount - 2].nextStepIds.Add(step.id);
             }
         }
 
@@ -72,7 +72,7 @@ namespace CommunicationLib.Model
             
             if (_steps.Count >= 2)
             {
-                _steps[_steps.Count - 2].NextStepIds.Remove(lastStep.Id);
+                _steps[_steps.Count - 2].nextStepIds.Remove(lastStep.id);
             }
 
             _steps.RemoveAt(_steps.Count - 1);
@@ -95,7 +95,7 @@ namespace CommunicationLib.Model
         {
             foreach (Step step in _steps)
             {
-                if (step.Id.Equals(stepId))
+                if (step.id.Equals(stepId))
                 {
                     return step;
                 }

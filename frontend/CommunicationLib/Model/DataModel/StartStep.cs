@@ -17,7 +17,7 @@ namespace CommunicationLib.Model
         public StartStep()
             : base()
         {
-            Label = "Startzustand";
+            label = "Startzustand";
         }
     }
 }

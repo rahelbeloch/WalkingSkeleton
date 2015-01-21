@@ -15,19 +15,19 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public String WorkflowId { get { return _workflowId; } set { _workflowId = value; } }
+        public String workflowId { get { return _workflowId; } set { _workflowId = value; } }
         private String _workflowId;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public List<MetaEntry> Metadata { get { return _metadata; } set { _metadata = value; } }
+        public List<MetaEntry> metadata { get { return _metadata; } set { _metadata = value; } }
         private List<MetaEntry> _metadata;
         
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public bool Finished { get { return _finished; } set { _finished = value; } }
+        public bool finished { get { return _finished; } set { _finished = value; } }
         private bool _finished;
 
         /// <summary>
@@ -45,13 +45,13 @@ namespace CommunicationLib.Model
         /// <returns>nr of active step</returns>
         public int GetActiveStepId()
         {
-            foreach (MetaEntry me in Metadata) 
+            foreach (MetaEntry me in metadata) 
             {
                 if (me.key.Equals("status"))
                 {
-                    if (me.Value.Equals("OPEN") || me.Value.Equals("BUSY"))
+                    if (me.value.Equals("OPEN") || me.value.Equals("BUSY"))
                     {
-                        return Convert.ToInt32(me.Group);
+                        return Convert.ToInt32(me.group);
                     }
                 }
             }
@@ -66,15 +66,15 @@ namespace CommunicationLib.Model
         {
             get
             {
-                foreach (MetaEntry me in Metadata)
+                foreach (MetaEntry me in metadata)
                 {
                     if (me.key.Equals("status"))
                     {
-                        if (me.Value.Equals("OPEN"))
+                        if (me.value.Equals("OPEN"))
                         {
                             return "OPEN";
                         }
-                        if (me.Value.Equals("BUSY"))
+                        if (me.value.Equals("BUSY"))
                         {
                             return "BUSY";
                         }
