@@ -334,9 +334,11 @@ namespace Admin.ViewModel
         {
             Application.Current.Dispatcher.Invoke(new System.Action(() => 
             {
-                if (e.GetType() == typeof(LogInException))
+                if (e is LogInException)
                 {
-                    logout();
+                    admin = "";
+                    ClearModel();
+                    CurrentPageViewModel = loginViewModel;
                     MessageBox.Show(e.Message);
                 }
             }));
