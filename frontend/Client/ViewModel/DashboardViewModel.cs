@@ -70,7 +70,7 @@ namespace Client.ViewModel
             foreach (Workflow workflow in _workflows)
             {
                 AddWorkflowToModel(workflow);
-                _mainViewModel.myComLib.listener.RegisterItemSource(workflow);
+                _mainViewModel.myComLib.Listener.RegisterItemSource(workflow);
             }
         }
 

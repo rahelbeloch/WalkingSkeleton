@@ -59,7 +59,7 @@ namespace Client.ViewModel
             {
                 if (_restRequester == null)
                 {
-                    _restRequester = myComLib.sender;
+                    _restRequester = myComLib.Sender;
                 }
                 return _restRequester; 
             }
