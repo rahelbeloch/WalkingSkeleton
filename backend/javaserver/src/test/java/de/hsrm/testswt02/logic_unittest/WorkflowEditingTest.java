@@ -12,6 +12,7 @@ import com.google.inject.Injector;
 
 import de.hsrm.swt02.businesslogic.Logic;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
@@ -44,8 +45,7 @@ public class WorkflowEditingTest {
      */
     @Before
     public void startup() throws StorageFailedException {
-        final Injector i = Guice.createInjector(new SingleModule());
-        logic = i.getInstance(Logic.class);
+        logic = ConstructionFactory.getTestInstance().getLogic();
         
         role = new Role();
         role.setRolename("role");

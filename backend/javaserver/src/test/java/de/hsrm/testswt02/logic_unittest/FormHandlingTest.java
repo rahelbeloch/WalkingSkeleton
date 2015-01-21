@@ -5,14 +5,17 @@ import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
 import de.hsrm.swt02.businesslogic.Logic;
+import de.hsrm.swt02.businesslogic.LogicImp;
+import de.hsrm.swt02.businesslogic.ProcessManager;
+import de.hsrm.swt02.businesslogic.ProcessManagerImp;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
-import de.hsrm.swt02.constructionfactory.SingleModule;
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.LogConfigurator;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Form;
+import de.hsrm.swt02.persistence.Persistence;
+import de.hsrm.swt02.persistence.PersistenceImp;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 
 /**
@@ -21,15 +24,14 @@ import de.hsrm.swt02.persistence.exceptions.PersistenceException;
  */
 public class FormHandlingTest {
 
-    // Dependency Injection
-    Injector inj = Guice.createInjector(new SingleModule());
-    Logic li = inj.getInstance(Logic.class);
+    static Logic li = ConstructionFactory.getTestInstance().getLogic();
     
     /**
      * configurate Logger in order to get Logging output.
+     * @throws LogicException 
      */
     @BeforeClass
-    public static void setup() {
+    public static void setup() throws LogicException {
         LogConfigurator.setup();
     }
     
@@ -41,15 +43,15 @@ public class FormHandlingTest {
     public void deletionOfFormsTest() throws LogicException {
         final int sizeBefore = li.getAllForms().size();
         final Form form1 = new Form();
-        form1.setId("1");
+        form1.setId("198765412345654824");
         final Form form2 = new Form();
-        form2.setId("2");
+        form2.setId("248512357154712154");
         
         li.addForm(form1);
         li.addForm(form2);
                         
-        li.deleteForm(form1.getId());
-        
+        li.deleteForm(form2.getId());
+
         assertEquals(li.getAllForms().size(), sizeBefore + 1);
     }
 
@@ -63,6 +65,7 @@ public class FormHandlingTest {
         form1.setId("form1");
         final Form form2 = new Form();
         form2.setId("form2");
+        
         li.addForm(form1);
         li.addForm(form2);
         

@@ -12,9 +12,12 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.hsrm.swt02.businesslogic.ProcessManager;
+import de.hsrm.swt02.businesslogic.ProcessManagerImp;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.constructionfactory.SingleModule;
+import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
@@ -49,10 +52,9 @@ public class WorkflowProcessTest {
     @Before
 
     public void setUp() throws PersistenceException {
-
-        final Injector i = Guice.createInjector(new SingleModule());
-        processManager = i.getInstance(ProcessManager.class);
-        persistence = i.getInstance(Persistence.class);
+        final UseLogger ul = new UseLogger();
+        persistence = ConstructionFactory.getTestInstance().getLogic().getPersistence();
+        processManager = new ProcessManagerImp(persistence, ul);
         
         final Role hiwi = new Role();
         hiwi.setRolename("hiwi");

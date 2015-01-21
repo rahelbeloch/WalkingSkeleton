@@ -6,6 +6,7 @@ import org.junit.Test;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.constructionfactory.SingleModule;
 import de.hsrm.swt02.logging.LogConfigurator;
 import de.hsrm.swt02.model.Item;
@@ -22,9 +23,7 @@ import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
  */
 public class ExceptionTest {
 
-    // Dependency Injection
-    Injector inj = Guice.createInjector(new SingleModule());
-    Persistence db = inj.getInstance(Persistence.class);
+    static Persistence db;
     
     /**
      * configurate Logger in order to get Logging output.
@@ -32,6 +31,7 @@ public class ExceptionTest {
     @BeforeClass
     public static void setup() {
         LogConfigurator.setup();
+        db = ConstructionFactory.getTestInstance().getLogic().getPersistence();
     }
     
     /**

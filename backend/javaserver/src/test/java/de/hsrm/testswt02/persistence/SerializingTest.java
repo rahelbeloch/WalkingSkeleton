@@ -3,13 +3,12 @@ package de.hsrm.testswt02.persistence;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.util.Properties;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.hsrm.swt02.constructionfactory.ConstructionFactory;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
@@ -18,7 +17,6 @@ import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.PersistenceImp;
 import de.hsrm.swt02.persistence.exceptions.FormNotExistentException;
 import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 import de.hsrm.swt02.persistence.exceptions.RoleNotExistentException;
@@ -34,8 +32,6 @@ public class SerializingTest {
     static Properties p;
     static UseLogger ul;
     
-    static String path = "serializingTest.ser";
-
     /**
      * setting Up useLogger, persistence and Props before testing.
      * 
@@ -43,20 +39,9 @@ public class SerializingTest {
     @BeforeClass
     public static void setUp() {
         ul = new UseLogger();
-        db = new PersistenceImp(ul);
-        db.setStoragePath(path);
+        db = ConstructionFactory.getTestInstance().getLogic().getPersistence();
     }
     
-    /**
-     * Cleaning up all created files after testing.
-     * 
-     */
-    @AfterClass
-    public static void cleanUp() {
-        final File file = new File(path);
-        file.delete();
-    }
-
     /**
      * Persistence testing for serialized users.
      * 
