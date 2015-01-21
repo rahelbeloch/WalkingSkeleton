@@ -7,14 +7,26 @@ using System.Threading.Tasks;
 
 namespace CommunicationLib.Model
 {
+    /// <summary>
+    /// This class represents a Form for workflows.
+    /// </summary>
     public class Form : RootElement
     {
+        /// <summary>
+        /// List of form definitions/form entries.
+        /// </summary>
+        public List<FormEntry> FormDef { get { return _formDef; } set { _formDef = value; } }
         private List<FormEntry> _formDef;
-        public List<FormEntry> formDef { get { return _formDef; } set { _formDef = value; } }
-
+        
+        /// <summary>
+        /// Description of this form.
+        /// </summary>
+        public string Description { get { return _description; } set { _description = value; } }
         private string _description;
-        public string description { get { return _description; } set { _description = value; } }
-
+        
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public Form()
             : base()
         {
@@ -22,6 +34,10 @@ namespace CommunicationLib.Model
             _description = "";
         }
 
+        /// <summary>
+        /// Constructor with description handed over.
+        /// </summary>
+        /// <param name="description">description string</param>
         public Form(string description)
             : base()
         {

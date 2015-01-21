@@ -16,31 +16,31 @@ namespace CommunicationLib.Model
         /// List of following next steps.
         /// </summary>
         [JsonIgnore]
-        public List<Step> nextSteps { get { return _nextSteps; } set { _nextSteps = value; } }
+        public List<Step> NextSteps { get { return _nextSteps; } set { _nextSteps = value; } }
         private List<Step> _nextSteps;
 
         /// <summary>
         /// Value y axis - Used for visualization in workflow designer
         /// </summary>
-        public double top { get { return _top; } set { _top = value; } }
+        public double Top { get { return _top; } set { _top = value; } }
         private double _top;
 
         /// <summary>
         /// Value x axis - Used for visualization in workflow designer
         /// </summary>
-        public double left { get { return _left; } set { _left = value;  } }
+        public double Left { get { return _left; } set { _left = value;  } }
         private double _left;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public List<String> nextStepIds { get { return _nextStepIds; } set { _nextStepIds = value; } }
+        public List<String> NextStepIds { get { return _nextStepIds; } set { _nextStepIds = value; } }
         private List<String> _nextStepIds;
 
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public List<String> roleIds { get { return _roleIds; } set { _roleIds = value; } }
+        public List<String> RoleIds { get { return _roleIds; } set { _roleIds = value; } }
         private List<String> _roleIds;
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace CommunicationLib.Model
         /// When (de)serializated, the label will be ignored (because in the Server Step model, there is no label)
         /// </summary>
         [JsonIgnore]
-        public string label { get; set; }
+        public string Label { get; set; }
 
         /// <summary>
         /// Constructor for Step.

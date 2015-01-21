@@ -15,7 +15,7 @@ namespace CommunicationLib.Model
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
-        public String id { get { return _id; } set { _id = value; } }
+        public String Id { get { return _id; } set { _id = value; } }
         private String _id = "";
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace CommunicationLib.Model
         {
             if(obj.GetType() == this.GetType())
             {
-                return (obj as RootElement).id == this.id;
+                return (obj as RootElement).Id == this.Id;
             }
             return false;
         }
@@ -38,7 +38,7 @@ namespace CommunicationLib.Model
         /// <returns>the hashcode as int</returns>
         public override int GetHashCode()
         {
-            return this.id.GetHashCode();
+            return this.Id.GetHashCode();
         }
 
         /// <summary>

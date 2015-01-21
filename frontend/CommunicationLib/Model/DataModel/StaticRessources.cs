@@ -51,7 +51,7 @@ namespace CommunicationLib.Model
     public class ErrorMessageMapper
     {
         /// <summary>
-        /// 
+        /// Dictionary of errorcodes to types of exception.
         /// </summary>
         public static Dictionary<int, Type> errorMessages
         {
@@ -78,7 +78,6 @@ namespace CommunicationLib.Model
             //Error code for persistence errors
             {11200, typeof(PersistenceException)},
                 
-
             {11220, typeof(AlreadyExistsException)},
                 {11221, typeof(UserAlreadyExistsException)},
                 {11222, typeof(RoleAlreadyExistsException)},
