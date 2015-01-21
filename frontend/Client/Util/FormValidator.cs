@@ -28,6 +28,7 @@ namespace Client.Util
                 {
                     try
                     {
+                        /*
                         logger.Debug("validation for" + entry.value);
                         logger.Debug("datatye: " + datatype);
                         switch (datatype)
@@ -41,6 +42,7 @@ namespace Client.Util
                                 logger.Debug(float.Parse(entry.value, CultureInfo.InvariantCulture.NumberFormat));
                                 break;
                         }
+                         */
                     }
                     catch (Exception e)
                     {
