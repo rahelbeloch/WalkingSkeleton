@@ -168,9 +168,9 @@ public interface Logic {
      * 
      * @param user is the given user which should be added
      * @return logicResponse of adding a user
-     * @throws PersistenceException if an error in persistence occurs
+     * @exception LogicException if an error in businesslogic occurs 
      */
-    LogicResponse addUser(User user) throws PersistenceException;
+    LogicResponse addUser(User user) throws LogicException;
 
     /**
      * This method loads a User.
