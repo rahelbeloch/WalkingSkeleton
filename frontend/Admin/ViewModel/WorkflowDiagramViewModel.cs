@@ -207,7 +207,7 @@ namespace Admin.ViewModel
             }
             set
             {
-                if (actWorkflow != null && !actWorkflow.active)
+                if (actWorkflow != null && !actWorkflow.Active)
                 {
                     _workflowActivity = "Aktivieren";
                 }
@@ -278,7 +278,7 @@ namespace Admin.ViewModel
                 _items.Clear();
                 if (_actWorkflow != null)
                 {
-                    _actWorkflow.items.ForEach(_items.Add);
+                    _actWorkflow.Items.ForEach(_items.Add);
                     showDetails = Visibility.Visible;
                     WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
                     DiagramViewModel.locked = true;
@@ -394,7 +394,7 @@ namespace Admin.ViewModel
 
             foreach (Workflow w in _workflows)
             {
-                if (w.id.Equals(newWorkflow.id))
+                if (w.Id.Equals(newWorkflow.Id))
                 {
                     _workflows.Remove(w);
                     changed = true;
@@ -403,7 +403,7 @@ namespace Admin.ViewModel
             }
 
             _workflows.Add(newWorkflow);
-            logger.Info("Workflow ID=" + newWorkflow.id + (changed ? " changed" : " added"));
+            logger.Info("Workflow ID=" + newWorkflow.Id + (changed ? " changed" : " added"));
 
             _actWorkflow = null;
             _items.Clear();
@@ -422,21 +422,21 @@ namespace Admin.ViewModel
 
             foreach (Workflow w in _workflows)
             {
-                if (w.id.Equals(item.workflowId))
+                if (w.Id.Equals(item.WorkflowId))
                 {
                     workflowToUpdate = w;
                     _workflows.Remove(w);
-                    workflowToUpdate.items.Remove(item);
+                    workflowToUpdate.Items.Remove(item);
                     break;
                 }
             }
-            workflowToUpdate.items.Add(item);
+            workflowToUpdate.Items.Add(item);
             _workflows.Add(workflowToUpdate);
 
             if (_actWorkflow != null)
             {
                 _items.Clear();
-                _actWorkflow.items.ForEach(_items.Add);
+                _actWorkflow.Items.ForEach(_items.Add);
                 OnChanged("items");
             }
             
@@ -526,9 +526,9 @@ namespace Admin.ViewModel
                         {
                             Boolean activeItems = false;
 
-                            foreach (Item i in actWorkflow.items)
+                            foreach (Item i in actWorkflow.Items)
                             {
-                                if (!i.finished)
+                                if (!i.Finished)
                                 {
                                     activeItems = true;
                                     break;
@@ -640,11 +640,11 @@ namespace Admin.ViewModel
                 Workflow newWorkflow = WorkflowDiagramConverter.DiagramItemsToWorkflow(DiagramViewModel.Items.ToList());
                 if (actWorkflow != null)
                 {
-                    newWorkflow.id = actWorkflow.id;
-                    newWorkflow.active = actWorkflow.active;
+                    newWorkflow.Id = actWorkflow.Id;
+                    newWorkflow.Active = actWorkflow.Active;
                     if (toggleActivity)
                     {
-                        newWorkflow.active = !newWorkflow.active;
+                        newWorkflow.Active = !newWorkflow.Active;
                     }
                 }
 

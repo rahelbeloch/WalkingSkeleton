@@ -111,7 +111,7 @@ namespace Admin.ViewModel
                     DetailedUser = _selectedUser.Clone<User>();
                     foreach (RoleCheckboxRow roleCheckboxRow in _roleCheckboxRows)
                     {
-                        roleCheckboxRow.IsSelected = DetailedUser.roles.Any(i => i.id == roleCheckboxRow.Role.id);
+                        roleCheckboxRow.IsSelected = DetailedUser.Roles.Any(i => i.Id == roleCheckboxRow.Role.Id);
                     }
                 }
 
@@ -240,12 +240,12 @@ namespace Admin.ViewModel
                     {
                         try
                         {
-                            DetailedUser.roles.Clear();
+                            DetailedUser.Roles.Clear();
                             foreach (RoleCheckboxRow actRow in RoleCheckboxRows)
                             {
                                 if (actRow.IsSelected)
                                 {
-                                    DetailedUser.roles.Add(actRow.Role);
+                                    DetailedUser.Roles.Add(actRow.Role);
                                 }
                             }
                             PostUser(DetailedUser);
@@ -256,7 +256,7 @@ namespace Admin.ViewModel
                         }
                     }, canExecute =>
                     {
-                        return DetailedUser.id.Length > 0;
+                        return DetailedUser.Id.Length > 0;
                     });
                 }
                 return _addUserCommand;
@@ -377,7 +377,7 @@ namespace Admin.ViewModel
                         try
                         {
                             Role newRole = new Role();
-                            newRole.rolename = EnteredRolename;
+                            newRole.Rolename = EnteredRolename;
                             _restRequester.PostObject(newRole);
                             EnteredRolename = "";
                         }
@@ -419,7 +419,7 @@ namespace Admin.ViewModel
                         {
 
                             User user = ((User) execute).Clone<User>();
-                            user.roles.Remove(SelectedRole);
+                            user.Roles.Remove(SelectedRole);
 
                             try
                             {
@@ -456,7 +456,7 @@ namespace Admin.ViewModel
                         {
                             try
                             {
-                                _restRequester.DeleteObject<Role>(SelectedRole.rolename);
+                                _restRequester.DeleteObject<Role>(SelectedRole.Rolename);
                             }
                             catch (BasicException be)
                             {
@@ -512,7 +512,7 @@ namespace Admin.ViewModel
         /// <param name="newUser">The user to be added or updated.</param>
         public void UserUpdate(User newUser)
         {
-            User toUpdate = _mainViewModel.userCollection.FirstOrDefault(u => newUser.id == u.id);
+            User toUpdate = _mainViewModel.userCollection.FirstOrDefault(u => newUser.Id == u.Id);
             if (toUpdate != null)
             {
                 int indexToUpdate = _mainViewModel.userCollection.IndexOf(toUpdate);
@@ -544,7 +544,7 @@ namespace Admin.ViewModel
         {
             Role roleToDelete = new Role()
             {
-                id = sourceId
+                Id = sourceId
             };
 
             _mainViewModel.roleCollection.Remove(roleToDelete);
@@ -563,7 +563,7 @@ namespace Admin.ViewModel
         {
             if (SelectedRole != null)
             {
-                UserInSelectedRole = new ObservableCollection<User>(_mainViewModel.userCollection.Where(u => u.roles.Contains(_selectedRole)));
+                UserInSelectedRole = new ObservableCollection<User>(_mainViewModel.userCollection.Where(u => u.Roles.Contains(_selectedRole)));
             }
             else
             {
