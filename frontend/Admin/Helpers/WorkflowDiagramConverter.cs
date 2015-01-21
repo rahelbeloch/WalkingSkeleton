@@ -91,6 +91,7 @@ namespace Admin.Helpers
                 Action action = step.Clone<Action>();
                 action.id = getUniqueId();
                 action.roleIds.Add(((ActionViewModel)designerItem).selectedRole.id);
+                action.description = ((ActionViewModel)designerItem).description;
                 return action;
             }
             else if (designerItem.GetType() == typeof(FinalStepViewModel))
