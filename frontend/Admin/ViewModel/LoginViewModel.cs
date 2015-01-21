@@ -191,7 +191,7 @@ namespace Admin.ViewModel
             Match matchLocal = Regex.Match(matchString, @localPattern, RegexOptions.IgnoreCase);
 
             // check the match success
-            return true || matchIp.Success || matchLocal.Success;
+            return matchIp.Success || matchLocal.Success;
         }
     }
 }
