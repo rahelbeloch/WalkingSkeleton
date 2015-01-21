@@ -17,6 +17,14 @@ using NLog;
 
 namespace CommunicationLib
 {
+    /// <summary>
+    ///  The CommunicationManager handles messages coming from the server.
+    ///  It can register a client as data receiver <see cref="IDataReceiver"/> to update it via callback.
+    ///  Invocation of the RegisterClient-Method makes the CommunicationManager start a connection to the message broker.
+    ///  Client registration can be done for admins as well.
+    ///  In this case the CommunicationManager will subribe to all admin related message topics.
+    ///  It's up to the CommunicationManager to determine which data is relevant for its client.
+    /// </summary>
     public class CommunicationManager
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
@@ -55,7 +63,7 @@ namespace CommunicationLib
         private Dictionary<string ,IMessageConsumer> _messageSubs;
 
         /// <summary>
-        /// Constructor for CommunicationManager. 
+        ///  Constructor for CommunicationManager. 
         /// </summary>
         /// <param name="sender">the rest connector</param>
         /// <param name="myClient">the registeres client for callback</param>
@@ -70,7 +78,7 @@ namespace CommunicationLib
         }
 
         /// <summary>
-        /// Initializes connection with handed address.
+        ///  Initializes connection with handed address.
         /// </summary>
         /// <param name="brokerAddress">the broker url</param>
         internal void InitializeConnection(string brokerAddress)
@@ -92,7 +100,7 @@ namespace CommunicationLib
         }
 
         /// <summary>
-        /// Refreshes the connection with new address.
+        ///  Refreshes the connection with new broker address.
         /// </summary>
         /// <param name="brokerAddress">the broker url</param>
         internal void Refresh(string brokerAddress)
@@ -113,7 +121,6 @@ namespace CommunicationLib
         ///     USER_INFO     -> for all user changes and definitions
         ///     ROLE_INFO     -> for all role changes and definitions
         ///     FORM_INFO     -> for all form changes and definitions
-        ///  (client calls this method if login works)
         /// </summary>
         /// <param name="isAdmin">if true, client will be set as admin</param>
         public void RegisterClient(bool isAdmin)
@@ -146,7 +153,6 @@ namespace CommunicationLib
         ///  Unregisters the client which uses the ComLib from CommunicationManager.
         ///  All message subscriptions will be deleted.
         ///  The broker connection will be stopped.
-        ///  (Client calls this method with logout)
         /// </summary>
         public void UnregisterClient()
         {
@@ -155,10 +161,10 @@ namespace CommunicationLib
         }
 
         /// <summary>
-        /// Call-back method.
-        /// Is invoked when the messageConsumer receives a Message.
-        /// Provides ITextMessage and IMapMessages.
-        /// Calls the HandleRequest() method.
+        ///  Call-back method.
+        ///  Is invoked when the messageConsumer receives a Message.
+        ///  Provides ITextMessage and IMapMessages.
+        ///  Calls the HandleRequest() method.
         /// </summary>
         /// <param name="msg">received message</param>
         public void OnMessageReceived(IMessage msg)
@@ -180,15 +186,15 @@ namespace CommunicationLib
         }
 
         /// <summary>
-        /// Invoked by the OnMessageReceived method.
-        /// Calls the rest requester.
-        /// The request information is retrieved from the given message string.
-        /// The restrequest returns the updated source.
-        /// This source will be sent to the client(IDataReceiver) by invoking a callback method.
+        ///  Invoked by the OnMessageReceived method.
+        ///  Calls the rest requester.
+        ///  The request information is retrieved from the given message string.
+        ///  The restrequest returns the updated source.
+        ///  This source will be sent to the client(IDataReceiver) by invoking a callback method.
         ///
-        /// Define and update operations result a GET-restrequest for the given source information.
-        /// Deletion operations obviously skip the restrequest, because there is no source for 'GET'.
-        /// The client(IDataReceiver) receives the necessary delete information via callback method(DataDeletion()).
+        ///  Define and update operations result a GET-restrequest for the given source information.
+        ///  Deletion operations obviously skip the restrequest, because there is no source for 'GET'.
+        ///  The client(IDataReceiver) receives the necessary delete information via callback method(DataDeletion()).
         /// </summary>
         /// <param name="requestMsg">information string for rest-request</param>
         private void HandleRequest(string requestMsg)
@@ -273,9 +279,8 @@ namespace CommunicationLib
         }
 
         /// <summary>
-        /// Invoked by the HandleRequest()-method and client login.
-        /// Subscribes to an general item messaging topic for the given workflow.
-        /// Item activities from this workflow will be received by the CommunicationManager.
+        ///  Subscribes to an general item messaging topic for the given workflow.
+        ///  Item activities from this workflow will be received by the CommunicationManager.
         /// </summary>
         /// <param name="itemSource">the workflow form which the item info shall be noticed</param>
         public void RegisterItemSource(Workflow itemSource)
