@@ -242,6 +242,17 @@ namespace Admin.ViewModel
         }
         private bool _enableUserTextBox = false;
 
+        private bool _IsDiagramLocked = false;
+        public bool IsDiagramLocked 
+
+        { 
+            get 
+            { 
+                return !DiagramViewModel.locked; 
+            }
+            
+           
+        }
         /// <summary>
         /// Property, which indicates if a selected workflow is de-/active.
         /// This property is used for the de-/active button label.
@@ -333,7 +344,7 @@ namespace Admin.ViewModel
                 if (_actWorkflow != null)
                 {
                     _actWorkflow.items.ForEach(_items.Add);
-                    if (selectedForm != null)
+                    if (_actWorkflow.form != null)
                     {
                         selectedForm = _actWorkflow.form.Clone<Form>();
                     }
@@ -342,6 +353,7 @@ namespace Admin.ViewModel
                     actStepVisibility = Visibility.Collapsed;
                     WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
                     DiagramViewModel.locked = true;
+                    OnChanged("IsDiagramLocked");
                 }
                 else
                 {
@@ -349,6 +361,7 @@ namespace Admin.ViewModel
                     showDetails = Visibility.Collapsed;
                     DiagramViewModel.Items.Clear();
                     DiagramViewModel.locked = false;
+                    OnChanged("IsDiagramLocked");
                 }
                 
                 OnChanged("actWorkflow");
@@ -608,7 +621,7 @@ namespace Admin.ViewModel
                             }
 
                             DiagramViewModel.locked = false;
-
+                            OnChanged("IsDiagramLocked");
                             displayView = Visibility.Collapsed;
                             editView = Visibility.Visible;
                             showDetails = Visibility.Collapsed;
@@ -655,8 +668,10 @@ namespace Admin.ViewModel
                     _displayViewCommand = new ActionCommand(execute =>
                     {
                         editView = Visibility.Collapsed;
-                        actStepVisibility = Visibility.Collapsed;
                         displayView = Visibility.Visible;
+                        showDetails = Visibility.Visible;
+                        DiagramViewModel.locked = true;
+                        OnChanged("IsDiagramLocked");
                     });
                 }
                 return _displayViewCommand;
@@ -720,6 +735,7 @@ namespace Admin.ViewModel
                 {
                     newWorkflow.form = selectedForm.Clone<Form>();
                 }
+
                 if (actWorkflow != null)
                 {
                     newWorkflow.id = actWorkflow.id;
