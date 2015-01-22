@@ -10,8 +10,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900">
     
+    <UserControl.Resources>
+        <helpers:BooleanToGermanStringConverter x:Key="converter" />
+    </UserControl.Resources>
+    
     <Grid>
-        
         <DockPanel>
             <DockPanel DockPanel.Dock="Top" Margin="10" Background="#E6E6E6">
                 <Label Content="Eingeloggt als:" VerticalAlignment="Center"/>
@@ -115,7 +118,7 @@
                                         <GridView >
                                             <GridView.Columns>
                                                 <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
-                                                <GridViewColumn Width="120" Header="beendet" DisplayMemberBinding="{Binding finished}" />
+                                                <GridViewColumn Width="120" Header="beendet" DisplayMemberBinding="{Binding finished, Converter={StaticResource converter}}" />
                                             </GridView.Columns>
                                         </GridView>
                                     </ListView.View>

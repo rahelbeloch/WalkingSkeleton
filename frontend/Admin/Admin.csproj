@@ -73,7 +73,7 @@
     <Compile Include="Helpers\GridViewSort.cs" />
     <Compile Include="Helpers\WorkflowDiagramConverter.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
-    <Compile Include="ViewModel\BooleanToGermanStringConverter.cs" />
+    <Compile Include="Helpers\BooleanToGermanStringConverter.cs" />
     <Compile Include="ViewModel\FormViewModel.cs" />
     <Compile Include="ViewModel\WorkflowDiagramViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />

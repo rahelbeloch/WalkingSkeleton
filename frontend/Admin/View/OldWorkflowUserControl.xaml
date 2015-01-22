@@ -11,7 +11,6 @@
        <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
             <EventSetter Event="MouseLeftButtonUp" Handler="HandleDoubleClick"/> 
         </Style>
-        <local:BooleanToGermanStringConverter x:Key="converter" />
     </UserControl.Resources>
 
     <Grid>
