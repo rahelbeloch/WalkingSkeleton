@@ -30,11 +30,16 @@ namespace Client.ViewModel
                 _visibilityStepForwardButton = _actState.Equals("OPEN") ? Visibility.Visible : Visibility.Collapsed;
                 _visibilityFinishButton = _actState.Equals("BUSY") ? Visibility.Visible : Visibility.Hidden;
 
-                _formRows = new List<FormRow>();
-                foreach (FormEntry formEntry in _form.formDef)
+
+                if (_form != null)
                 {
-                    _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
+                    _formRows = new List<FormRow>();
+                    foreach (FormEntry formEntry in _form.formDef)
+                    {
+                        _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
+                    }
                 }
+                
             }
         }
 
@@ -90,18 +95,22 @@ namespace Client.ViewModel
             _username = username;
             this._actItem = actItem;
             _actStep = actStep;
-            _form = form;
 
             _actState = _actItem.State;
 
             _visibilityStepForwardButton = _actState.Equals("OPEN") ? Visibility.Visible : Visibility.Collapsed;
             _visibilityFinishButton = _actState.Equals("BUSY") ? Visibility.Visible : Visibility.Hidden;
 
-            _formRows = new List<FormRow>();
-            foreach (FormEntry formEntry in _form.formDef)
+            if (form != null)
             {
-                _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
+                _form = form;
+                _formRows = new List<FormRow>();
+                foreach (FormEntry formEntry in _form.formDef)
+                {
+                    _formRows.Add(new FormRow(_actItem, formEntry.key, formEntry.datatype));
+                }
             }
+            
         }
     }
 }
