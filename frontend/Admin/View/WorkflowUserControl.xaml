@@ -136,7 +136,7 @@
                         <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}"/>
                         <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Edit Workflow"/>
                     </DockPanel>
-                    <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding IsDiagramLocked}" >
+                    <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding enableStepDetais}" >
                         
                         <Grid>
                             <Grid.RowDefinitions>
