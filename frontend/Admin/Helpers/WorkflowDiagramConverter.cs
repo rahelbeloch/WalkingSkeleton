@@ -177,7 +177,6 @@ namespace Admin.Helpers
                     id = startStep.roleIds.First()
                 };
                 StartStepViewModel startStepViewModel = new StartStepViewModel(step.id, diagramViewModel, step.left, step.top, selectedRole);
-                Console.WriteLine("return start step view model");
                 return startStepViewModel;
             }
             else if (step.GetType() == typeof(Action))
@@ -188,6 +187,7 @@ namespace Admin.Helpers
                     id = action.roleIds.First()
                 };
                 ActionViewModel actionViewModel = new ActionViewModel(step.id, diagramViewModel, step.left, step.top, selectedRole);
+                actionViewModel.description = action.description;
                 return actionViewModel;
             }
             else if (step.GetType() == typeof(FinalStep))

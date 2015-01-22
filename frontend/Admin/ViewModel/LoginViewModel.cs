@@ -154,7 +154,7 @@ namespace Admin.ViewModel
                             {
                                 logger.Info("Login failed for username=" + _admin + " password=" + securePwd);
                             }
-                            MessageBox.Show(exc.Message);
+                            MessageBox.Show(exc.Message, "Login fehlgeschlagen", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }, canExecute => admin.Length > 0);
                 }

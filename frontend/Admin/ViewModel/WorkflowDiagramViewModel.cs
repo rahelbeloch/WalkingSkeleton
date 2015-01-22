@@ -618,16 +618,18 @@ namespace Admin.ViewModel
                             if (activeItems)
                             {
                                 if (MessageBox.Show("Der Workflow besitzt noch unfertige Items! Möchten Sie eine Kopie erstellen?", 
-                                    "Workflow kopieren", MessageBoxButton.OKCancel)  == MessageBoxResult.OK)
+                                    "Workflow kopieren", MessageBoxButton.OKCancel, MessageBoxImage.Question)  == MessageBoxResult.Cancel)
                                 {
-                                    DiagramViewModel.locked = false;
-                                    OnChanged("IsDiagramLocked");
-                                    displayView = Visibility.Collapsed;
-                                    editView = Visibility.Visible;
-                                    showDetails = Visibility.Collapsed;
-                                    actStepVisibility = Visibility.Collapsed;
+                                    return;
                                 } 
                             }
+
+                            DiagramViewModel.locked = false;
+                            OnChanged("IsDiagramLocked");
+                            displayView = Visibility.Collapsed;
+                            editView = Visibility.Visible;
+                            showDetails = Visibility.Collapsed;
+                            actStepVisibility = Visibility.Collapsed;
                         }, canExecute => _actWorkflow != null);
                 }
                 return _editWorkflowCommand;
