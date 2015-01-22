@@ -29,11 +29,12 @@
                     Header="Formular-Verwaltung"
                     Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                     CommandParameter="{Binding formViewModel}"/>
-                <MenuItem
+                <!--<MenuItem
                     Header="Logout"
-                    Command="{Binding DataContext.LogoutCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                    Command="{Binding DataContext.LogoutCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />-->
             </MenuItem>
         </Menu>
+        
 
         <ContentControl Content="{Binding CurrentPageViewModel}" />
     </DockPanel>

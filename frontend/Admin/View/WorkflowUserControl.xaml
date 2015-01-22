@@ -11,10 +11,18 @@
              d:DesignHeight="500" d:DesignWidth="900">
     
     <Grid>
+        
         <DockPanel>
+            <DockPanel DockPanel.Dock="Top" Margin="10" Background="#E6E6E6">
+                <Label Content="Eingeloggt als:" VerticalAlignment="Center"/>
+                <Label Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=tools:MainWindow}, Path=DataContext.admin}" Foreground="Crimson" FontSize="20"/>
+                <Label Content="(Administrator)" VerticalAlignment="Center"/>
+                <Button Content="Ausloggen" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=tools:MainWindow}, Path=DataContext.LogoutCommand}" Width="100" Height="25" HorizontalAlignment="Right"/>
+            </DockPanel>
             <DockPanel DockPanel.Dock="Top">
                 <Label Content="Workflow-Verwaltung" FontSize="16" FontWeight="Medium" HorizontalAlignment="Center"/>
             </DockPanel>
+            
             <Grid>
 
                 <Grid.ColumnDefinitions>
