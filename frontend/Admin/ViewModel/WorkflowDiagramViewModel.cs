@@ -242,8 +242,10 @@ namespace Admin.ViewModel
         }
         private bool _enableUserTextBox = false;
 
-        private bool _IsDiagramLocked = false;
-        public bool IsDiagramLocked 
+        /// <summary>
+        /// Property to enable StepDetails.
+        /// </summary>
+        public bool enableStepDetais
 
         { 
             get 
@@ -353,7 +355,7 @@ namespace Admin.ViewModel
                     actStepVisibility = Visibility.Collapsed;
                     WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
                     DiagramViewModel.locked = true;
-                    OnChanged("IsDiagramLocked");
+                    OnChanged("enableStepDetais");
                 }
                 else
                 {
@@ -361,7 +363,7 @@ namespace Admin.ViewModel
                     showDetails = Visibility.Collapsed;
                     DiagramViewModel.Items.Clear();
                     DiagramViewModel.locked = false;
-                    OnChanged("IsDiagramLocked");
+                    OnChanged("enableStepDetais");
                 }
                 
                 OnChanged("actWorkflow");
@@ -625,7 +627,7 @@ namespace Admin.ViewModel
                             }
 
                             DiagramViewModel.locked = false;
-                            OnChanged("IsDiagramLocked");
+                            OnChanged("enableStepDetais");
                             displayView = Visibility.Collapsed;
                             editView = Visibility.Visible;
                             showDetails = Visibility.Collapsed;
@@ -675,7 +677,7 @@ namespace Admin.ViewModel
                         displayView = Visibility.Visible;
                         showDetails = Visibility.Visible;
                         DiagramViewModel.locked = true;
-                        OnChanged("IsDiagramLocked");
+                        OnChanged("enableStepDetais");
                     });
                 }
                 return _displayViewCommand;
