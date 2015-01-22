@@ -13,6 +13,14 @@ namespace Client.ViewModel
     /// </summary>
     public class FormRow
     {
+        // for dataType presentation
+        private static Dictionary<string, string> _typeMap = new Dictionary<string, string>
+        {
+            {"int", "Ganzzahl"},
+            {"double", "Fließkommazahl"},
+            {"String", "Text"}
+        };
+
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private Item actItem;
@@ -34,12 +42,25 @@ namespace Client.ViewModel
                 metaEntryItem.value = value;
             }
         }
-        
+
+        private String _datatype;
         /// <summary>
         /// the datatype of the value
         /// </summary>
-        public String datatype { get { return _datatype; } }
-        private String _datatype;
+        public String datatype 
+        { 
+            get 
+            {
+                if (_typeMap.ContainsKey(_datatype))
+                {
+                    return _typeMap[_datatype];
+                }
+                else
+                {
+                    return _datatype;
+                }
+            } 
+        }
         
         private List<MetaEntry> _metadata;
         private MetaEntry metaEntryItem;
