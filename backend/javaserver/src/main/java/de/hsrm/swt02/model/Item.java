@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
+import de.hsrm.swt02.persistence.exceptions.PersistenceException;
+
 /**
  * This class represents an Item. It extends the class RootElement, so it can
  * have an Id.
@@ -289,12 +292,19 @@ public class Item extends RootElement {
     /**
      * This methods applies a form from a workflow to an item.
      * @param form which is used by a workflow
+     * @throws LogicException is thrown if no form is available
      */
-    public void applyForm(Form form) {
-        set(form.getId(), "form", "");
-        for (FormEntry fe : form.getFormDef()) {
-            set(fe.getKey(), form.getId(), "");
+    public void applyForm(Form form) throws LogicException {
+        
+        if (form != null) {
+            set(form.getId(), "form", "");
+            for (FormEntry fe : form.getFormDef()) {
+                set(fe.getKey(), form.getId(), "");
+            }
+        } else {
+            throw new LogicException("[logic] - No form available.");
         }
+        
     }
 
     /**
