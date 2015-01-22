@@ -426,7 +426,7 @@ namespace Admin.ViewModel
             {
                 logger.Info("Initialize");
                 _workflows.Clear();
-                // IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>(); <-- changed method in REST; is generic now; this is the old line
+                
                 IList<Workflow> workflowList = _restRequester.GetAllElements<Workflow>();
                 if (workflowList == null)
                 {
