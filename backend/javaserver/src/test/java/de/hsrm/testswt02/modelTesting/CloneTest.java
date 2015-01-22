@@ -21,7 +21,7 @@ import de.hsrm.swt02.model.Workflow;
 /**
  * Unittest class for testing the cloning process of all the datamodels.
  */
-public class CloneTests {
+public class CloneTest {
 
     /**
      * method for testing the cloning process of Action. There is no need to
