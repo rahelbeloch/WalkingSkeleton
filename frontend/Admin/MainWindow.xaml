@@ -18,23 +18,15 @@
                     Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
                     CommandParameter="{Binding workflowViewModel}" />
                 <MenuItem 
-                    Header="Alte Workflow-Verwaltung" 
-                    Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
-                    CommandParameter="{Binding oldWorkflowViewModel}" />
-                <MenuItem 
-                    Header="Nutzer-Verwaltung" 
+                    Header="Nutzer- und Rollenverwaltung" 
                     Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
                     CommandParameter="{Binding userViewModel}" />
                 <MenuItem
                     Header="Formular-Verwaltung"
                     Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                     CommandParameter="{Binding formViewModel}"/>
-                <!--<MenuItem
-                    Header="Logout"
-                    Command="{Binding DataContext.LogoutCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />-->
             </MenuItem>
         </Menu>
-        
 
         <ContentControl Content="{Binding CurrentPageViewModel}" />
     </DockPanel>
