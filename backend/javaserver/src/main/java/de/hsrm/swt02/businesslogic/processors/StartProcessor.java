@@ -2,6 +2,7 @@ package de.hsrm.swt02.businesslogic.processors;
 
 import com.google.inject.Inject;
 
+import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
 import de.hsrm.swt02.model.Item;
@@ -41,9 +42,9 @@ public class StartProcessor {
      * 
      * @param workflow it's id will be noted within a new item
      * @return itemId 
-     * @throws PersistenceException 
+     * @throws LogicException 
      */
-    public String createItem(Workflow workflow) throws PersistenceException {
+    public String createItem(Workflow workflow) throws LogicException {
 
         currentItem = new Item();
         currentItem.setWorkflowId(workflow.getId());
@@ -60,9 +61,9 @@ public class StartProcessor {
      * 
      * @param workflow provides a step list, which will be transformed into Metadatas
      * @param item is the freshly created item for a workflow
-     * @throws PersistenceException 
+     * @throws LogicException
      */
-    public void initiateItem(Workflow workflow, Item item) throws PersistenceException {
+    public void initiateItem(Workflow workflow, Item item) throws LogicException {
         StartStep startStep = null;
         
         for (Step s: workflow.getSteps()) {
@@ -83,13 +84,12 @@ public class StartProcessor {
             item.setFirstStepState(Integer.parseInt(startStep.getId()) + 1 + "", MetaState.OPEN.toString());
         } 
         
-        item.applyForm(workflow.getForm());
-
-        try {
-            workflow.addItem(item);
-            p.storeWorkflow(workflow);
-        } catch (WorkflowNotExistentException e) {
-            e.printStackTrace();
+        if (workflow.getForm() != null) {
+            item.applyForm(workflow.getForm());
         }
+        
+        workflow.addItem(item);
+        p.storeWorkflow(workflow);
+        
     }
 }

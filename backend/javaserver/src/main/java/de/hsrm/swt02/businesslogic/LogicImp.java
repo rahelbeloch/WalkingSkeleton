@@ -731,24 +731,27 @@ public class LogicImp implements Logic {
             }
         }
         for (MetaEntry me : item.getMetadata()) {  
-            if (me.getGroup().equals(workflow.getForm().getId()) && !(me.getValue().equals(""))) {
-                final String datatype = workflow.getForm().getDataType(me.getKey());
-                if (datatype != null) {
-                    if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.STRING)) {
-                        if (!me.getValue().matches("[a-zA-Z]+")) {
-                            throw new StorageFailedException("[logic] invalid form entry --- used unconform String representation");
-                        }
-                    } else if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.INT)) {
-                        if (!me.getValue().matches("[0-9]+")) {
-                            throw new StorageFailedException("[logic] invalid form entry --- used unconform Integer representation");
-                        } 
-                    } else if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.DOUBLE)) {
-                        if (!me.getValue().matches("([0-9]|[1-9]+)\\.[0-9]+$")) {
-                            throw new StorageFailedException("[logic] invalid form entry --- used unconform Double representation");
+            if (workflow.getForm() != null) {
+                if (me.getGroup().equals(workflow.getForm().getId()) && !(me.getValue().equals(""))) {
+                    final String datatype = workflow.getForm().getDataType(me.getKey());
+                    if (datatype != null) {
+                        if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.STRING)) {
+                            if (!me.getValue().matches("[a-zA-Z]+")) {
+                                throw new StorageFailedException("[logic] invalid form entry --- used unconform String representation");
+                            }
+                        } else if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.INT)) {
+                            if (!me.getValue().matches("[0-9]+")) {
+                                throw new StorageFailedException("[logic] invalid form entry --- used unconform Integer representation");
+                            } 
+                        } else if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.DOUBLE)) {
+                            if (!me.getValue().matches("([0-9]|[1-9]+)\\.[0-9]+$")) {
+                                throw new StorageFailedException("[logic] invalid form entry --- used unconform Double representation");
+                            }
                         }
                     }
                 }
             }
+            
         }
         workflow.removeItem(itemId);
         workflow.addItem(item);
