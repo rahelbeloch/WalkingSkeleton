@@ -54,6 +54,7 @@ namespace DiagramDesigner
                 foreach (SelectableDesignerItemViewModelBase newItem in e.NewItems)
                 {
                     newItem.PropertyChanged += this.OnItemChanged;
+                    _selectesItemsCollection.Clear();
                 }
             }
             if (e.OldItems != null)
@@ -61,6 +62,7 @@ namespace DiagramDesigner
                 foreach (SelectableDesignerItemViewModelBase oldItem in e.OldItems)
                 {
                     oldItem.PropertyChanged -= this.OnItemChanged;
+                    _selectesItemsCollection.Clear();
                 }
             }
         }
