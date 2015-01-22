@@ -24,7 +24,7 @@ import de.hsrm.swt02.model.Workflow;
  * Class for Testing the models.
  *
  */
-public class ModelTests {
+public class ModelTest {
 
     /**
     * method for testing Action: a new Action is initializated and checked.
