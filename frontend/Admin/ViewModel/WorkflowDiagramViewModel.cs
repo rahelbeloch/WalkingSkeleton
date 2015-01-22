@@ -617,15 +617,17 @@ namespace Admin.ViewModel
 
                             if (activeItems)
                             {
-                                MessageBox.Show("Der Workflow besitzt noch unfertige Items! Es wird ein neuer Workflow mit dem ausgewählten Workflow als Vorlage erstellt.");
+                                if (MessageBox.Show("Der Workflow besitzt noch unfertige Items! Möchten Sie eine Kopie erstellen?", 
+                                    "Workflow kopieren", MessageBoxButton.OKCancel)  == MessageBoxResult.OK)
+                                {
+                                    DiagramViewModel.locked = false;
+                                    OnChanged("IsDiagramLocked");
+                                    displayView = Visibility.Collapsed;
+                                    editView = Visibility.Visible;
+                                    showDetails = Visibility.Collapsed;
+                                    actStepVisibility = Visibility.Collapsed;
+                                } 
                             }
-
-                            DiagramViewModel.locked = false;
-                            OnChanged("IsDiagramLocked");
-                            displayView = Visibility.Collapsed;
-                            editView = Visibility.Visible;
-                            showDetails = Visibility.Collapsed;
-                            actStepVisibility = Visibility.Collapsed;
                         }, canExecute => _actWorkflow != null);
                 }
                 return _editWorkflowCommand;
