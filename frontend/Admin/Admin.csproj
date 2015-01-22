@@ -85,7 +85,6 @@
     <Compile Include="ViewModel\ToolBoxViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="ViewModel\OLD_WorkflowViewModel.cs" />
     <Compile Include="View\FormUserControl.xaml.cs">
       <DependentUpon>FormUserControl.xaml</DependentUpon>
     </Compile>
@@ -94,9 +93,6 @@
     </Compile>
     <Compile Include="View\RoleUserControl.xaml.cs">
       <DependentUpon>RoleUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\OldWorkflowUserControl.xaml.cs">
-      <DependentUpon>OldWorkflowUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ToolBoxControl.xaml.cs">
       <DependentUpon>ToolBoxControl.xaml</DependentUpon>
@@ -137,10 +133,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\RoleUserControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\OldWorkflowUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
