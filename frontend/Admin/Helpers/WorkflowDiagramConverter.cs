@@ -124,9 +124,10 @@ namespace Admin.Helpers
         /// <param name="diagramViewModel">Corresponding diagram view model</param>
         public static void WorkflowToDesignerItems(Workflow workflow, DiagramViewModel diagramViewModel)
         {
-            // clear designer items
+            // clear any previous designer items
             diagramViewModel.Items.Clear();
 
+            // temporary list of designer items
             List<SelectableDesignerItemViewModelBase> designerItems = new List<SelectableDesignerItemViewModelBase>();
 
             // convert steps to designer items
@@ -217,7 +218,6 @@ namespace Admin.Helpers
                 {
                     connectors.Add(new FullyCreatedConnectorInfo((DesignerItemViewModelBase)designerItems.First(x => x.Id == nextId), ConnectorOrientation.Input));
                 } 
-                // TODO: check if type is a branch
             }
 
             return connectors;
