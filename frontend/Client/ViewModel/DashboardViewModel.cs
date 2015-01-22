@@ -76,6 +76,17 @@ namespace Client.ViewModel
                 AddWorkflowToModel(workflow);
                 _mainViewModel.myComLib.Listener.RegisterItemSource(workflow);
             }
+
+            if (_workflows.Count == 0 && startableList.Count == 0)
+            {
+                workflowMessage = "Keine Workflows vorhanden.";
+                workflowMessageVisibility = "Visible";
+
+            }
+            else
+            {
+                workflowMessageVisibility = "Collapsed";
+            }
         }
 
         /// <summary>
@@ -108,6 +119,17 @@ namespace Client.ViewModel
                 logger.Debug("active Step" + activeStep.ToString());
                 row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.form);
                 toUpdate.AddDashboardRow(row);
+            }
+
+            if (_workflows.Count == 0 && startableList.Count == 0)
+            {
+                workflowMessage = "Keine Workflows vorhanden.";
+                workflowMessageVisibility = "Visible";
+
+            }
+            else
+            {
+                workflowMessageVisibility = "Collapsed";
             }
 
             Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
@@ -254,6 +276,8 @@ namespace Client.ViewModel
             _startableWorkflows.Clear();
             _relevantItems.Clear();
             _dashboardWorkflows.Clear();
+            workflowMessage = "";
+            workflowMessageVisibility = "Collapsed";
         }
 
         /// <summary>
@@ -449,6 +473,34 @@ namespace Client.ViewModel
         private ObservableCollection<DashboardWorkflow> _dashboardWorkflows = new ObservableCollection<DashboardWorkflow>();
         
         private List<Item> _relevantItems = new List<Item>();
+
+        public String workflowMessage
+        {
+            get
+            {
+                return _workflowMessage;
+            }
+            set
+            {
+                _workflowMessage = value;
+                OnChanged("workflowMessage");
+            }
+        }
+        private String _workflowMessage = "";
+
+        public String workflowMessageVisibility
+        {
+            get
+            {
+                return _workflowMessageVisibility;
+            }
+            set
+            {
+                _workflowMessageVisibility = value;
+                OnChanged("workflowMessageVisibility");
+            }
+        }
+        private String _workflowMessageVisibility;
 
         #endregion
     }

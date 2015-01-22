@@ -27,8 +27,9 @@
             <Button Content="Ausloggen" Command="{Binding logoutCommand}" Width="100" Height="25" HorizontalAlignment="Right"/>
         </DockPanel>
         <DockPanel Width="500" DockPanel.Dock="Left" HorizontalAlignment="Center">
+            <Label Content="{Binding workflowMessage}" FontSize="24" Visibility="{Binding workflowMessageVisibility}" HorizontalAlignment="Center"/>
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
-                    <ItemsControl ItemsSource="{Binding dashboardWorkflows}" Margin="10">
+                <ItemsControl ItemsSource="{Binding dashboardWorkflows}" Margin="10">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border  HorizontalAlignment="Center" VerticalAlignment="Top" BorderBrush="#CCC" BorderThickness="1">
