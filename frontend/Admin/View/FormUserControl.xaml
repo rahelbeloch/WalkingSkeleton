@@ -5,106 +5,114 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900"
-             xmlns:view="clr-namespace:Admin.View">
+             xmlns:view="clr-namespace:Admin">
     <Grid>
         <DockPanel>
+            <DockPanel DockPanel.Dock="Top" Margin="10" Background="#E6E6E6">
+                <Label Content="Eingeloggt als:" VerticalAlignment="Center"/>
+                <Label Content="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:MainWindow}, Path=DataContext.admin}" Foreground="Crimson" FontSize="20"/>
+                <Label Content="(Administrator)" VerticalAlignment="Center"/>
+                <Button Content="Ausloggen" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:MainWindow}, Path=DataContext.LogoutCommand}" Width="100" Height="25" HorizontalAlignment="Right"/>
+            </DockPanel>
             <DockPanel DockPanel.Dock="Top">
                 <Label Content="Formular-Verwaltung" FontSize="16" FontWeight="Medium" HorizontalAlignment="Center"/>
             </DockPanel>
-        </DockPanel>
-        
-        <DockPanel DockPanel.Dock="Top" Margin="0,41,0,0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
 
-                <DockPanel Grid.Column="0">
-                    <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding formCollection}" SelectedValue="{Binding selectedForm, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
-                        <ListView.View>
-                            <GridView>
-                                <GridView.Columns >
-                                    <GridViewColumn Header="Formular" DisplayMemberBinding="{Binding id}"/>
-                                    <GridViewColumn Header="Beschreibung" DisplayMemberBinding="{Binding description}"/>
-                                </GridView.Columns>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </DockPanel>
-                <DockPanel Grid.Column="1" VerticalAlignment="Top">
-                    <DockPanel DockPanel.Dock="Top">
-                        <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neues Formular" Height="26" Margin="10" Command="{Binding addFormCommand}"/>
-                    </DockPanel>
-                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding visibleView}">
-                        <ListView DockPanel.Dock="Top" ItemsSource="{Binding selectedForm.formDef}" Visibility="{Binding visibleView, UpdateSourceTrigger=PropertyChanged}">
+            <DockPanel DockPanel.Dock="Top" Margin="0,20,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <DockPanel Grid.Column="0">
+                        <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding formCollection}" SelectedValue="{Binding selectedForm, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Feldname" Width="150" DisplayMemberBinding="{Binding id}"/>
-                                    <GridViewColumn Header="Inhalt" Width="150" DisplayMemberBinding="{Binding datatype}"/>
+                                    <GridView.Columns >
+                                        <GridViewColumn Header="Formular" DisplayMemberBinding="{Binding id}"/>
+                                        <GridViewColumn Header="Beschreibung" DisplayMemberBinding="{Binding description}"/>
+                                    </GridView.Columns>
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="Formular löschen" Height="26" Margin="10" Command="{Binding deleteFormCommand}"/>
                     </DockPanel>
-                    <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Visibility="{Binding visibleDefinition, UpdateSourceTrigger=PropertyChanged}">
-                        
+                    <DockPanel Grid.Column="1" VerticalAlignment="Top">
                         <DockPanel DockPanel.Dock="Top">
-                            
-                            <DockPanel.InputBindings>
-                                <KeyBinding Key="Enter" Command="{Binding addDefinitionCommand}" />
-                                <KeyBinding Key="Delete" Command="{Binding removeDefinitionCommand}" />
-                            </DockPanel.InputBindings>
-                            <ListView DockPanel.Dock="Top" ItemsSource="{Binding formDefModel}" SelectedValue="{Binding selectedDefinition, Mode=TwoWay}">
-                                <ListView.ItemContainerStyle>
-                                    <Style TargetType="ListViewItem">
-                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    </Style>
-                                </ListView.ItemContainerStyle>
+                            <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neues Formular" Height="26" Margin="10" Command="{Binding addFormCommand}"/>
+                        </DockPanel>
+                        <DockPanel DockPanel.Dock="Top" Visibility="{Binding visibleView}" Background="#E6E6E6">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding selectedForm.formDef}" Visibility="{Binding visibleView, UpdateSourceTrigger=PropertyChanged}">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Feldname" Width="150" >
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBox Text="{Binding key, UpdateSourceTrigger=PropertyChanged}"/>
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                        <GridViewColumn Header="Inhalt" Width="150">
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <ComboBox ItemsSource="{Binding datatypes}" SelectedValue="{Binding datatype, UpdateSourceTrigger=PropertyChanged}"/>
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
+                                        <GridViewColumn Header="Feldname" Width="150" DisplayMemberBinding="{Binding id}"/>
+                                        <GridViewColumn Header="Inhalt" Width="150" DisplayMemberBinding="{Binding datatype}"/>
                                     </GridView>
                                 </ListView.View>
                             </ListView>
-                            <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+" Height="30" Width="50" Margin="10" Command="{Binding addDefinitionCommand}"/>
+                            <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="Formular löschen" Height="26" Margin="10" Command="{Binding deleteFormCommand}"/>
                         </DockPanel>
-                        <DockPanel DockPanel.Dock="Top" Margin="10,10,10,10">
-                            <Label Content="Formularname: "  VerticalContentAlignment="Center"/>
-                            <TextBox Width="318" Height="20">
-                                <TextBox.Text>
-                                    <Binding Path="formDefModelId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
-                                </TextBox.Text>
-                            </TextBox>
+                        <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" Background="#E6E6E6" Visibility="{Binding visibleDefinition, UpdateSourceTrigger=PropertyChanged}">
+
+                            <DockPanel DockPanel.Dock="Top" >
+
+                                <DockPanel.InputBindings>
+                                    <KeyBinding Key="Enter" Command="{Binding addDefinitionCommand}" />
+                                    <KeyBinding Key="Delete" Command="{Binding removeDefinitionCommand}" />
+                                </DockPanel.InputBindings>
+                                <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding formDefModel}" SelectedValue="{Binding selectedDefinition, Mode=TwoWay}">
+                                    <ListView.ItemContainerStyle>
+                                        <Style TargetType="ListViewItem">
+                                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        </Style>
+                                    </ListView.ItemContainerStyle>
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="Feldname" Width="150" >
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Text="{Binding key, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <GridViewColumn Header="Inhalt" Width="150">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox ItemsSource="{Binding datatypes}" SelectedValue="{Binding datatype, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                                <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+" Height="30" Width="50" Margin="10" Command="{Binding addDefinitionCommand}"/>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top" Margin="10,10,10,10">
+                                <Label Content="Formularname: "  VerticalContentAlignment="Center"/>
+                                <TextBox Width="318" Height="20">
+                                    <TextBox.Text>
+                                        <Binding Path="formDefModelId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                    </TextBox.Text>
+                                </TextBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top" Margin="10,10,10,10">
+                                <Label Content="Beschreibung: " Margin="0,0,0,10" VerticalContentAlignment="Center"/>
+                                <TextBox Width="324" Height="50">
+                                    <TextBox.Text>
+                                        <Binding Path="formDefModelDescription" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                    </TextBox.Text>
+                                </TextBox>
+                            </DockPanel>
+                            <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Right">
+                                <Button Content="Abbrechen" Height="26" Command="{Binding resetFormCommand}"/>
+                                <Button Content="Formular speichern" Height="26" Command="{Binding submitFormCommand}"/>
+                            </DockPanel>
                         </DockPanel>
-                        <DockPanel DockPanel.Dock="Top" Margin="10,10,10,10">
-                            <Label Content="Beschreibung: " Margin="0,0,0,10" VerticalContentAlignment="Center"/>
-                            <TextBox Width="324" Height="50">
-                                <TextBox.Text>
-                                    <Binding Path="formDefModelDescription" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
-                                </TextBox.Text>
-                            </TextBox>
-                        </DockPanel>
-                        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Right">
-                            <Button Content="Abbrechen" Height="26" Command="{Binding resetFormCommand}"/>
-                            <Button Content="Formular speichern" Height="26" Command="{Binding submitFormCommand}"/>
-                        </DockPanel>     
                     </DockPanel>
-                </DockPanel>
-            </Grid>
+                </Grid>
+            </DockPanel>
         </DockPanel>
+        
+        
     </Grid>
 </UserControl>
