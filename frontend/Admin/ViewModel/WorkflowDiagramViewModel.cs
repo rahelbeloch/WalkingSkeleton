@@ -496,30 +496,34 @@ namespace Admin.ViewModel
         /// <param name="item">item to update</param>
         public void UpdateItemFromWorkflow(Item item)
         {
-            Workflow workflowToUpdate = null;
-
-            foreach (Workflow w in _workflows)
+            foreach (Workflow workflow in workflows)
             {
-                if (w.id.Equals(item.workflowId))
+                if (workflow.id.Equals(item.workflowId))
                 {
-                    workflowToUpdate = w;
+                    if (workflow.items.Contains(item))
+                    {
+                        workflow.items.Remove(item);
+                    }
+
+                    workflow.items.Add(item);
+
+                    // delete and add workflow at the same index
+                    // (this is neccessary, because otherwise the CollectionChanged-Event will not trigger)
+                    int oldIndex = workflows.IndexOf(workflow);
+                    workflows.Remove(workflow);
+                    workflows.Insert(oldIndex, workflow);
                     break;
                 }
             }
-            workflowToUpdate.items.Remove(item);
-            workflowToUpdate.items.Add(item);
+           
 
-            if (_actWorkflow != null)
+            if (actWorkflow != null)
             {
                 items.Clear();
-                actWorkflow.items.ForEach(_items.Add);
-
-                OnChanged("items");
+                actWorkflow.items.ForEach(items.Add);
             }
-            
-            OnChanged("workflows");
-            
         }
+
         private void OnSelectedItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             //if (editView == Visibility.Visible)
