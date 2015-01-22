@@ -474,6 +474,9 @@ namespace Client.ViewModel
         
         private List<Item> _relevantItems = new List<Item>();
 
+        /// <summary>
+        /// This property is used if no workflows are available (as label content).
+        /// </summary>
         public String workflowMessage
         {
             get
@@ -488,6 +491,9 @@ namespace Client.ViewModel
         }
         private String _workflowMessage = "";
 
+        /// <summary>
+        /// This property is used to hide/show workflowmessage.
+        /// </summary>
         public String workflowMessageVisibility
         {
             get
