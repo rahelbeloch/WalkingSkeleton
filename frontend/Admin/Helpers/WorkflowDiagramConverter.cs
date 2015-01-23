@@ -202,6 +202,12 @@ namespace Admin.Helpers
                 FinalStepViewModel finalStepViewModel = new FinalStepViewModel(step.id, diagramViewModel, step.left, step.top);
                 return finalStepViewModel;
             }
+            else if (step.GetType() == typeof(Fork))
+            {
+                Fork fork = step.Clone<Fork>();
+                ForkViewModel forkViewModel = new ForkViewModel(step.id, diagramViewModel, step.left, step.top, fork.script);
+                return forkViewModel;
+            }
 
             return null;
         }
