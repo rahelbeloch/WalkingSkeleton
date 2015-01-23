@@ -105,6 +105,19 @@ public class ProcessManagerImp implements ProcessManager {
 
         if (checkAuthorization(step, user.getUsername())) {
             itemId = stepProcessor.handle(item, step, user);
+            
+            // new:
+            //final Workflow workflow = persistence.loadWorkflow(item.getWorkflowId()); 
+            //final Step currentStep = workflow.getStepById(step.getId());
+            /*
+             * - check if currentStep is Action && DONE
+             * - check if nextStep is type of Fork
+             * - forkProcessor.handle(item, step) aufrufen 
+             * - cast return type to boolean (pythonmaessig)
+             * 
+             * - WorkflowValidator eval(script)
+             */
+            
             return itemId;
         } else {
             logger.log(Level.WARNING, "Access denied, Authorization failed.");

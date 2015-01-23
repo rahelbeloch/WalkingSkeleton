@@ -1,21 +1,25 @@
 package de.hsrm.swt02.businesslogic.processors;
 
-import java.util.logging.Level;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.HashMap;
+
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import com.google.inject.Inject;
 
-import de.hsrm.swt02.businesslogic.exceptions.ItemNotForwardableException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
-import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.logging.UseLogger;
-import de.hsrm.swt02.model.FinalStep;
+import de.hsrm.swt02.model.Fork;
 import de.hsrm.swt02.model.Item;
-import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * This class executes "Fork" step-objects.
@@ -25,7 +29,10 @@ public class ForkProcessor implements StepProcessor {
 
     private Persistence p;
     public static final UseLogger LOGGER = new UseLogger();
-
+    
+    final private ScriptEngineManager sm = new ScriptEngineManager();
+    final private ScriptEngine sEngine = sm.getEngineByName("jython");
+    
     /**
      * Constructor of ForkProcessor.
      * 
@@ -54,7 +61,31 @@ public class ForkProcessor implements StepProcessor {
         final String stepId = step.getId();
         final Step currentStep = workflow.getStepById(stepId);
         final String itemId = currentItem.getId();
+        final String script = ((Fork)step).getScript();
         
+        
+        
+        
+        try {
+            sEngine.eval(new FileReader(new File(script)));
+            
+            Invocable inv = (Invocable) sEngine;
+            Object o = inv.invokeFunction("check", new HashMap<String, String>());
+            o = (Boolean)o;
+            
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ScriptException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        
+        /*
         if (currentItem.getEntryValue("status", stepId + "").equals(MetaState.OPEN.toString())) {
             
             currentItem.setEntryOpener(stepId, user.getUsername());
@@ -84,7 +115,7 @@ public class ForkProcessor implements StepProcessor {
             p.storeWorkflow(workflow);
         } catch (WorkflowNotExistentException e) {
             e.printStackTrace();
-        }
+        }*/
         return itemId;
     }
 }
