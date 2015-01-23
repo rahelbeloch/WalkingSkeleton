@@ -60,7 +60,7 @@
                                             <Binding Path="DetailedUser.id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                         </TextBox.Text>
                                     </TextBox>
-                                    <TextBox Width="120" Height="25" HorizontalAlignment="Left" IsEnabled="{Binding EnableUserTextBox}">
+                                    <TextBox Width="120" Height="25" HorizontalAlignment="Left" IsEnabled="{Binding EnablePasswordTextBox}">
                                         <TextBox.Text>
                                             <Binding Path="DetailedUser.password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                         </TextBox.Text>
@@ -72,13 +72,13 @@
                             <DockPanel DockPanel.Dock="Top">
                                 <CheckBox IsChecked="{Binding DetailedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
                             </DockPanel>
-
-                            <DockPanel DockPanel.Dock="Top">
+                                
+                            <Expander DockPanel.Dock="Top" Header="Rollen" IsExpanded="True">
                                 <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding RoleCheckboxRows}">
                                     <ListView.View>
                                         <GridView>
                                             <GridView.Columns >
-                                                <GridViewColumn Header="Aktiv" Width="150">
+                                                <GridViewColumn Header="zugewiesen" Width="150">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -90,7 +90,7 @@
                                         </GridView>
                                     </ListView.View>
                                 </ListView>
-                            </DockPanel>
+                            </Expander>
 
                             <DockPanel DockPanel.Dock="Bottom">
                                 <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding PostUserButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="25" Margin="10" Command="{Binding AddUserCommand}"/>

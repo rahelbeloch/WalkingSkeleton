@@ -121,6 +121,8 @@ namespace Admin.ViewModel
                 }
 
                 EnableUserTextBox = _selectedUser == null;
+                EnablePasswordTextBox = _selectedUser != null;
+
                 OnChanged("SelectedUser");
             }
         }
@@ -165,6 +167,23 @@ namespace Admin.ViewModel
                 OnChanged("EnteredUsername");
             }
         }
+
+        /// <summary>
+        /// Property to enable the textbox to enter a password.
+        /// </summary>
+        public bool EnablePasswordTextBox
+        {
+            get
+            {
+                return _enablePasswordTextBox;
+            }
+            set
+            {
+                _enablePasswordTextBox = value;
+                OnChanged("EnablePasswordTextBox");
+            }
+        }
+        private bool _enablePasswordTextBox = true;
 
         /// <summary>
         /// Property to enable the textbox to enter a username.
