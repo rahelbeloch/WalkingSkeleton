@@ -48,9 +48,9 @@ public class WorkflowValidator {
      * @throws LogicException to catch InvalidWorkflowException and IncompleteEleException
      */
     public boolean isValid() throws LogicException {
-        if (checkActionsNextSteps()) {
+        if (!checkActionsNextSteps()) {
             throw new IncompleteEleException("[validator] invalid number of NextSteps in Action.");
-        } else if (checkForksNextSteps()) {
+        } else if (!checkForksNextSteps()) {
             throw new IncompleteEleException("[validator] invalid number of NextSteps in Fork.");
         } else if (numberOfStartSteps() != 1) {
             throw new ExpectedOneStartStepException();
@@ -104,6 +104,7 @@ public class WorkflowValidator {
         }
         return true;
     }
+    
     /**
      * checks if a given step has an assigned role.
      * 
