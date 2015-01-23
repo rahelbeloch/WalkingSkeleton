@@ -142,39 +142,38 @@
                             </ListView>
                         </Expander>
                     </StackPanel>
-                    <!--Buttons deaktivieren&bearbeiten-->
-                    <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center" Visibility="{Binding showDetails}">
-                        <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}"/>
-                        <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Edit Workflow"/>
-                    </DockPanel>
-                    <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding enableStepDetais}" >
-                        
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                           
-                            <Label Grid.Row="0"
+                    
+                    <StackPanel DockPanel.Dock="Top" Margin="10">
+                        <Expander Header="Elemente"
+                             IsExpanded="True">
+                            <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding enableStepDetais}" Height="200" >
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Row="0"
                                 Grid.Column="0"
                                  Content="Typ: "
                                  Margin="5" />
-                            <Label Grid.Row="0"
+                                    <Label Grid.Row="0"
                                 Grid.Column="1"
                                  Content="{Binding actStep}"
                                  Margin="5" />
-                            <Label Grid.Row="1"
+                                    <Label Grid.Row="1"
                                    Visibility="{Binding descriptionVisibility}" 
                                 Grid.Column="0"
                                  Content="Beschreibung"
                                  Margin="5" />
-                            <TextBox Grid.Row="1"
+                                    <TextBox Grid.Row="1"
                                 Visibility="{Binding descriptionVisibility}" 
                                 Grid.Column="1"
                                 HorizontalAlignment="Left"
@@ -183,20 +182,27 @@
                                 Width="150"
                                 Margin="5" />
 
-                            <Label Grid.Row="2"
+                                    <Label Grid.Row="2"
                                 Grid.Column="0"
                                    Visibility="{Binding roleVisibility}"
                                 Content="Rolle: "
                                 Margin="5" />
-                            <ComboBox Visibility="{Binding roleVisibility}" Grid.Row="2" Grid.Column="1"  Height="25" Width="120" HorizontalAlignment="Left"  
+                                    <ComboBox Visibility="{Binding roleVisibility}" Grid.Row="2" Grid.Column="1"  Height="25" Width="120" HorizontalAlignment="Left"  
                                       ItemsSource="{Binding roleCollection}" 
                                       DisplayMemberPath="rolename"
                                       SelectedItem="{Binding actStep.selectedRole}" />
 
 
-                        </Grid>
+                                </Grid>
+                            </DockPanel>
+                        </Expander>
+                    </StackPanel>
+
+                    <!--Buttons deaktivieren&bearbeiten-->
+                    <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right" Visibility="{Binding showDetails}">
+                        <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}" RenderTransformOrigin="0.563,7.733"/>
+                        <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Workflow Bearbeiten"/>
                     </DockPanel>
-                        
                 </DockPanel>
             </Grid>
         </DockPanel>
