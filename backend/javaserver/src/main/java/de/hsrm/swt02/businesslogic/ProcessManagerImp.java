@@ -107,7 +107,6 @@ public class ProcessManagerImp implements ProcessManager {
             Item newItem = persistence.loadItem(itemId);
             if(newItem.getEntryValue("status", step.getId()).equals(MetaState.DONE.toString())) {
             	Step newStep = persistence.loadStep(newItem.getId(), step.getNextStepIds().get(0));
-            	System.out.println("FORK PROCESSOR!");
             	ForkProcessor forkProcessor = new ForkProcessor(persistence);
             	forkProcessor.handle(newItem, newStep, user);
             }
