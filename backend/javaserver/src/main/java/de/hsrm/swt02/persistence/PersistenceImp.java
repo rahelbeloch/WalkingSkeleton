@@ -608,13 +608,16 @@ public class PersistenceImp implements Persistence {
 
         user1 = new User();
         user1.setUsername("Alex");
+        user1.setPassword("");
         user2 = new User();
         user2.setUsername("Dominik");
+        user2.setPassword("");
         user3 = new User();
         user3.setUsername("Tilman");
+        user3.setPassword("");
         user4 = new User();
         user4.setUsername(ConfigProperties.getInstance().getProperties().getProperty("AdminNameDefinition"));
-        user4.setPassword("");
+        user4.setPassword(ConfigProperties.getInstance().getProperties().getProperty("AdminPasswordDefinition"));
 
         role1 = new Role();
         // role1.setId("1");
@@ -726,7 +729,7 @@ public class PersistenceImp implements Persistence {
         storeForm(form1);
         storeForm(form2);
         workflow1.setForm(form1);
-        storeWorkflow(workflow1);
+        //storeWorkflow(workflow1);
     }
 
     @Override
