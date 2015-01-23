@@ -585,7 +585,7 @@ namespace Admin.ViewModel
         public SimpleCommand DeleteSelectedItemsCommand { get; private set; }
         private void ExecuteDeleteSelectedItemsCommand(object parameter)
         {
-            if (_mainViewModel.CurrentPageViewModel == this)
+            if (_mainViewModel.CurrentPageViewModel == this && !DiagramViewModel.locked)
             {
                 itemsToRemove = DiagramViewModel.SelectedItems;
                 List<SelectableDesignerItemViewModelBase> connectionsToAlsoRemove = new List<SelectableDesignerItemViewModelBase>();
@@ -601,7 +601,6 @@ namespace Admin.ViewModel
                     {
                         connectionsToAlsoRemove.Add(connector);
                     }
-
                 }
                 itemsToRemove.AddRange(connectionsToAlsoRemove);
 
