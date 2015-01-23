@@ -3,12 +3,17 @@ package de.hsrm.swt02.businesslogic.workflowValidator;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedAtLeastOneActionException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedAtLeastOneFinalStepException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedOneStartStepException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.InvalidFinalStepException;
+import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.InvalidPythonSyntaxException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.InvalidWorkflowException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.UnreachableStepException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.WorkflowCyclesException;
@@ -30,6 +35,10 @@ public class WorkflowValidator {
 
     private Workflow workflow;
     private Persistence persistence;
+    
+    final private ScriptEngineManager sm = new ScriptEngineManager();
+    final private ScriptEngine sEngine = sm.getEngineByName("jython");
+    
     /**
      * Constructor for WorkflowValidator.
      * 
@@ -47,7 +56,7 @@ public class WorkflowValidator {
      * @return boolean - returns true if valid and false if not
      * @throws LogicException to catch InvalidWorkflowException and IncompleteEleException
      */
-    public boolean isValid() throws LogicException {
+    public boolean isValid() throws LogicException  {
         if (!checkActionsNextSteps()) {
             throw new IncompleteEleException("[validator] invalid number of NextSteps in Action.");
         } else if (!checkForksNextSteps()) {
@@ -62,8 +71,8 @@ public class WorkflowValidator {
             throw new WorkflowCyclesException();
         } else {
             for (Step step : workflow.getSteps()) {
-                if (!((step instanceof FinalStep) || (step instanceof Fork)) && !hasRole(step)) {
-                    throw new IncompleteEleException(
+            	if (!((step instanceof FinalStep) || (step instanceof Fork)) && !hasRole(step)) { 
+            			throw new IncompleteEleException(
                             "Every step must have an assigned role.");
                 } else if (!isReachable(getStartStep(), step)) {
                     throw new UnreachableStepException("step " + step.getId()
@@ -72,6 +81,7 @@ public class WorkflowValidator {
             }
         }
         checkFinalSteps();
+        validatePythonScript();
         return true;
     }
 
@@ -155,11 +165,15 @@ public class WorkflowValidator {
      * @return boolean
      */
     private boolean isReachable(Step actStep, Step stepToReach) {
-        if (actStep.getNextSteps().contains(stepToReach)
-                || actStep.equals(stepToReach)) 
+        if (actStep.getNextSteps().contains(stepToReach) || actStep.equals(stepToReach)) 
         {
             return true;
         } else {
+        	// TODO: only temporary fix (unerreichbare endzustaende sind erlaubt)
+        	if(actStep.getNextSteps().isEmpty()) {
+        		return true;
+        	}
+        	
             for (Step s : actStep.getNextSteps()) {
                 return isReachable(s, stepToReach);
             }
@@ -246,4 +260,16 @@ public class WorkflowValidator {
         return null;
     }
 
+    private void validatePythonScript() throws InvalidPythonSyntaxException {
+    	for(Step step : this.workflow.getSteps()) {
+    		if(step instanceof Fork) {
+    			Fork fork = (Fork) step;
+    			try {
+					sEngine.eval(fork.getScript());
+				} catch (ScriptException e) {
+					throw new InvalidPythonSyntaxException();
+				}
+    		}
+    	}
+    }
 }

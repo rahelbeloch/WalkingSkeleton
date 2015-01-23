@@ -15,6 +15,7 @@ import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.Fork;
 import de.hsrm.swt02.model.Item;
+import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.User;
@@ -106,15 +107,18 @@ public class ProcessManagerImp implements ProcessManager {
         if (checkAuthorization(step, user.getUsername())) {
             itemId = stepProcessor.handle(item, step, user);
             
+            
+            //Workflow workflow = persistence.loadWorkflow(item.getWorkflowId()); 
+            if(item.getEntryValue("status", step.getId()).equals(MetaState.DONE.toString())) {
+            	ForkProcessor forkProcessor = new ForkProcessor(persistence);
+            	forkProcessor.handle(item, step, user);
+            }
+            
             // new:
             //final Workflow workflow = persistence.loadWorkflow(item.getWorkflowId()); 
             //final Step currentStep = workflow.getStepById(step.getId());
             /*
-             * - check if currentStep is Action && DONE
-             * - check if nextStep is type of Fork
-             * - forkProcessor.handle(item, step) aufrufen 
              * - cast return type to boolean (pythonmaessig)
-             * 
              * - WorkflowValidator eval(script)
              */
             
