@@ -11,8 +11,6 @@ import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
 import de.hsrm.swt02.persistence.Persistence;
-import de.hsrm.swt02.persistence.exceptions.PersistenceException;
-import de.hsrm.swt02.persistence.exceptions.WorkflowNotExistentException;
 
 /**
  * 
@@ -74,7 +72,6 @@ public class StartProcessor {
         }
         for (Step s : workflow.getSteps()) {
             if (s instanceof Action || s instanceof FinalStep) {
-//                item.set(s.getId() + "", "step", MetaState.INACTIVE.toString());
                 item.set(s.getId() + "", "step", "");
                 item.set("status", s.getId() + "", MetaState.INACTIVE.toString());
             }
