@@ -67,7 +67,8 @@ namespace Admin
         private void Init()
         {
             enableInputConnector = true;
-            enableRightConnector = true;
+            enableTopConnector = true;
+            enableBottomConnector = true;
             itemWidth = 80;
             itemHeight = 80;
             

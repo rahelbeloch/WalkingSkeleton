@@ -113,6 +113,12 @@ namespace Admin.Helpers
                 finalStep.id = getUniqueId();
                 return finalStep;
             }
+            else if (designerItem.GetType() == typeof(ForkViewModel))
+            {
+                Fork fork = step.Clone<Fork>();
+                fork.id = getUniqueId();
+                return fork;
+            }
 
             return null;
         }

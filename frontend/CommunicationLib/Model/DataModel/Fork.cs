@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunicationLib.Model.DataModel
+namespace CommunicationLib.Model
 {
-    class Fork : Step
+    public class Fork : Step
     {
         /// <summary>
         /// Used for (de)serialization. Do not change the property name.
