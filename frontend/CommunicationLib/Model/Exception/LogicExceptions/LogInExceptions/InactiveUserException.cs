@@ -21,7 +21,7 @@ namespace CommunicationLib.Exception
         /// Default constructor.
         /// </summary>
         public InactiveUserException()
-            : base("Der User wurde deaktiviert. Das Einloggen ist nicht mehr moeglich.")
+            : base("Der User wurde deaktiviert. \nDas Einloggen ist nicht mehr moeglich.")
         {
         }
 
