@@ -74,6 +74,7 @@ namespace CommunicationLib.Model
             
             //Error codes for logIn errors
             {11100, typeof(LogInException)},
+                {11130, typeof(InactiveUserException)},
 
             //Error code for persistence errors
             {11200, typeof(PersistenceException)},
