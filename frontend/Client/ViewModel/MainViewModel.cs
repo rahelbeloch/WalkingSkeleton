@@ -259,7 +259,20 @@ namespace Client.ViewModel
         /// <param name="e">the exception, which happened</param>
         public void HandleError(BasicException e)
         {
-            // Error handling here
+            Application.Current.Dispatcher.Invoke(new System.Action(() =>
+            {
+                if (e is LogInException)
+                {
+                    username = "";
+                    dashboardViewModel.DeleteModel();
+                    CurrentPageViewModel = loginViewModel;
+                    _restRequester = null;
+                    myComLib.Logout();
+                    _myComLib = null;
+                    MessageBox.Show(e.Message);
+                }
+            }));
+            
         }
 
         #endregion
