@@ -105,8 +105,22 @@ namespace DiagramDesigner
                         sinkDataItem.DataItem.Parent.RemoveItemCommand.Execute(sinkDataItem.DataItem.Parent.Items[indexOfLastTempConnection]);
                         sinkDataItem.DataItem.Parent.AddItemCommand.Execute(new ConnectorViewModel(sourceDataItem, sinkDataItem));
 
-                        sourceDataItem.DataItem.enableRightConnector = false;
-                        sinkDataItem.DataItem.enableInputConnector = false;
+                        if (sourceDataItem.DataItem.GetType().Name == "ForkViewModel")
+                        {
+                            if (sourceDataItem.Orientation == ConnectorOrientation.TrueOutput)
+                            {
+                                sourceDataItem.DataItem.enableTopConnector = false;
+                            }
+                            else if(sourceDataItem.Orientation == ConnectorOrientation.FalseOutput)
+                            {
+                                sourceDataItem.DataItem.enableBottomConnector = false;
+                            }
+                        }
+                        else
+                        {
+                            sourceDataItem.DataItem.enableRightConnector = false;
+                            sinkDataItem.DataItem.enableInputConnector = false;
+                        }
                     }
                 }
                 else
