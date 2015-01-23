@@ -21,7 +21,7 @@ namespace UnitTestProject1
         public static void ClassInit(TestContext context)
         {
             // initialize admin client requester
-            myRequester = new RestRequester("admin", "htp://localhost:18887");
+            myRequester = new RestRequester("admin", StaticRes.SERVER_URL);
             myRequester.InitializeClientProperties("TestAdmin", "abc123");
         }
 
