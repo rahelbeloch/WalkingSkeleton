@@ -113,7 +113,7 @@
                     <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
                             <Expander Header="Items"
                                     IsExpanded="True">
-                                <ListView DockPanel.Dock="Top"  ItemsSource="{Binding items}">
+                            <ListView DockPanel.Dock="Top"  ItemsSource="{Binding items}" MaxHeight="200" Height="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                                     <ListView.View>
                                         <GridView >
                                             <GridView.Columns>
@@ -130,7 +130,7 @@
                     <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
                         <Expander Header="Formular"
                                     IsExpanded="True">
-                            <ListView DockPanel.Dock="Top"  ItemsSource="{Binding actWorkflow.form.formDef}" >
+                            <ListView DockPanel.Dock="Top"  ItemsSource="{Binding actWorkflow.form.formDef}" MaxHeight="200" Height="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                                 <ListView.View>
                                     <GridView >
                                         <GridView.Columns>
@@ -142,55 +142,55 @@
                             </ListView>
                         </Expander>
                     </StackPanel>
-                    
-                    <StackPanel DockPanel.Dock="Top" Margin="10">
+
+                    <StackPanel DockPanel.Dock="Top" Margin="10" >
                         <Expander Header="Elemente"
                              IsExpanded="True">
-                            <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding enableStepDetais}" Height="200" >
+                            <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding enableStepDetais}"  >
 
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="80" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="200"/>
+                                        
                                     </Grid.ColumnDefinitions>
 
                                     <Label Grid.Row="0"
-                                Grid.Column="0"
-                                 Content="Typ: "
-                                 Margin="5" />
+                                           Grid.Column="0"
+                                           Content="Typ: "
+                                           Margin="5" />
                                     <Label Grid.Row="0"
-                                Grid.Column="1"
-                                 Content="{Binding actStep}"
-                                 Margin="5" />
+                                           Grid.Column="1"
+                                           Content="{Binding actStep}"
+                                           Margin="5" />
                                     <Label Grid.Row="1"
-                                   Visibility="{Binding descriptionVisibility}" 
-                                Grid.Column="0"
-                                 Content="Beschreibung"
-                                 Margin="5" />
+                                           Grid.Column="0"
+                                           Visibility="{Binding descriptionVisibility}" 
+                                           Content="{Binding StepLabelContent}"
+                                           Margin="5" />
                                     <TextBox Grid.Row="1"
-                                Visibility="{Binding descriptionVisibility}" 
-                                Grid.Column="1"
-                                HorizontalAlignment="Left"
-                                Text="{Binding actStep.description, Mode=TwoWay}"
-                                     
-                                Width="150"
-                                Margin="5" />
+                                             Grid.Column="1"
+                                             Visibility="{Binding descriptionVisibility}" 
+                                             Text="{Binding actStep.description, Mode=TwoWay}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True"
+                                             VerticalScrollBarVisibility="Visible"
+                                             />
 
                                     <Label Grid.Row="2"
-                                Grid.Column="0"
-                                   Visibility="{Binding roleVisibility}"
-                                Content="Rolle: "
-                                Margin="5" />
+                                           Grid.Column="0"
+                                           Visibility="{Binding roleVisibility}"
+                                           Content="Rolle: "
+                                           Margin="5" />
                                     <ComboBox Visibility="{Binding roleVisibility}" Grid.Row="2" Grid.Column="1"  Height="25" Width="120" HorizontalAlignment="Left"  
-                                      ItemsSource="{Binding roleCollection}" 
-                                      DisplayMemberPath="rolename"
-                                      SelectedItem="{Binding actStep.selectedRole}" />
+                                              ItemsSource="{Binding roleCollection}" 
+                                              DisplayMemberPath="rolename"
+                                              SelectedItem="{Binding actStep.selectedRole}" />
 
 
                                 </Grid>
