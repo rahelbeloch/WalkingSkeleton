@@ -328,7 +328,15 @@ namespace Admin.ViewModel
             }
             else if (sourceType == typeof(Role))
             {
-                Application.Current.Dispatcher.Invoke(new System.Action(() => userViewModel.RoleDeletion(sourceId)));
+                Application.Current.Dispatcher.Invoke(new System.Action(() => {
+                    userViewModel.RoleDeletion(sourceId);
+                    IList<User> allUsers = _restRequester.GetAllElements<User>();
+                    this.userCollection.Clear();
+                    foreach (User user in allUsers)
+                    {
+                        this.userCollection.Add(user);
+                    }
+                }));
             }
             else if(sourceType == typeof(Item))
             {

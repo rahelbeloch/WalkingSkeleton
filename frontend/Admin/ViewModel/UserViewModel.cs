@@ -462,6 +462,7 @@ namespace Admin.ViewModel
                             try
                             {
                                 _restRequester.DeleteObject<Role>(SelectedRole.rolename);
+
                             }
                             catch (BasicException be)
                             {
