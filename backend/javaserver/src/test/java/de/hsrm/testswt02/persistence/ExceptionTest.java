@@ -45,7 +45,7 @@ public class ExceptionTest {
      */
     @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowNotExistenExceptionOnItemsParentWorkflow() throws PersistenceException {
-        db.loadItem("4711");
+        db.loadItem("999001");
     }
     
     /**
