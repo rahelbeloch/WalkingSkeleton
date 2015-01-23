@@ -446,13 +446,24 @@ public class LogicImp implements Logic {
             boolean adminRequired) throws LogicException, LogInException
     {
         User user;
+        boolean activeUserItem = false;
+        
         try {
             user = persistence.loadUser(username);
         } catch (UserNotExistentException e) {
             throw new LogInException();
         }
+        for (Workflow workflow : getAllWorkflows()) {
+            if (workflow.unfinishedItems().size() != 0) {
+                for (Step step : workflow.getSteps()) {
+                    if (step.containsRole(user.getRoles())) {
+                        activeUserItem = true;
+                    }
+                }
+            }
+        }
         
-        if (!user.isActive()) {
+        if (!user.isActive() && !activeUserItem) {
             throw new LogInException();
         }
 
