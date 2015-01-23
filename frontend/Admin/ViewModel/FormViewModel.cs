@@ -235,9 +235,9 @@ namespace Admin.ViewModel
                         if (_selectedForm != null)
                         {
                             selectedForm = null;
-                            formDefModelId = "";
-                            formDefModelDescription = "";
                         }
+                        formDefModelId = "";
+                        formDefModelDescription = "";
                         FormEntry formEntry = new FormEntry();
                         formEntry.key = "";
                         formDefModel.Add(formEntry);
