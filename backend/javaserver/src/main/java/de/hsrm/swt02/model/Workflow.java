@@ -164,7 +164,7 @@ public class Workflow extends RootElement {
         }
         steps.add(step);
 
-        if (steps.size() >= 2) {
+        if (steps.size() > 1) {
             steps.get(steps.size() - 2).getNextSteps().add(step);
         }
     }
