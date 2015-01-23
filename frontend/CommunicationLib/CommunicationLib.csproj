@@ -74,6 +74,7 @@
     <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\ExpectedOneStartStepException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\ExpectedAtLeastOneFinalStepException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\ExpectedAtLeastOneActionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\InvalidPythonSyntaxException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\UnreachableStepException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\WorkflowMustTerminateException.cs" />
     <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\WorkflowCyclesException.cs" />
