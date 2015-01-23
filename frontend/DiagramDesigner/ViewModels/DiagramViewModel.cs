@@ -44,6 +44,12 @@ namespace DiagramDesigner
             items.CollectionChanged += this.OnCollectionItemChanged;
         }
 
+
+        /// <summary>
+        /// Callback-Method will be called if items collection changed.
+        /// </summary>
+        /// <param name="sender">Observable Collection items</param>
+        /// <param name="e">CollectionChanged Event</param>
         private void OnCollectionItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
@@ -64,6 +70,11 @@ namespace DiagramDesigner
             }
         }
 
+        /// <summary>
+        /// Callback-Method will be called if SelectedItems IsSelected changed.
+        /// </summary>
+        /// <param name="sender">A SelectableDesignerItemViewModel</param>
+        /// <param name="e">PropertyChanged Event</param>
         private void OnItemChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals("IsSelected"))
