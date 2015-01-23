@@ -60,8 +60,6 @@ public class LogicImp implements Logic {
         this.persistence = p;
         this.processManager = pm;
         this.logger = logger;
-        
-        loadData();
     }
 
     @Override
