@@ -9,12 +9,12 @@ using System.Windows.Data;
 namespace Admin.Helpers
 {
     /// <summary>
-    /// BooleanToGermanStringConverter class
+    /// BooleanToGermanStringConverter class.
     /// </summary>
     public class BooleanToGermanStringConverter :IValueConverter
     {
         /// <summary>
-        /// Convert Method for turning a Boolean into a String
+        /// Convert Method for turning a Boolean into a String.
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>
