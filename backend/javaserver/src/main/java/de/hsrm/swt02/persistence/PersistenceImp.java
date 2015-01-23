@@ -876,10 +876,11 @@ public class PersistenceImp implements Persistence {
         storeUser(user2);
         storeUser(user3);
         storeUser(user4);
+        storeUser(user5);
 
         // create Startstep
         startStep1 = new StartStep();
-        startStep1.setId("zu Pitch einladen");
+//        startStep1.setId("zu Pitch einladen");
         startStep1.getRoleIds().add(role1.getRolename());
 
         // display formatting for StartStep
@@ -892,7 +893,7 @@ public class PersistenceImp implements Persistence {
                 new ArrayList<String>(),
                 "Die Mitarbeiter der Agentur prüfen, ob sie die Anforderungen des Pitchs erfüllen und ob sie überhaupt "
                         + "Erfolgschancen hätten.");
-        proofSuccessChance.setId("Erfolgschancen prüfen");
+//        proofSuccessChance.setId("Erfolgschancen prüfen");
         proofSuccessChance.addRole(role2.getId());
 
         // display formatting for Action1
@@ -902,7 +903,7 @@ public class PersistenceImp implements Persistence {
 
         final Action informStaff = new Action(new ArrayList<String>(),
                 "Informieren der Mitarbeiter über den angenommenen Pitch.");
-        informStaff.setId("Mitarbeiter informieren");
+//        informStaff.setId("Mitarbeiter informieren");
         informStaff.addRole(role2.getId());
 
         // display formatting for action 2
@@ -913,7 +914,7 @@ public class PersistenceImp implements Persistence {
         // create Action Konzept ausarbeiten
         final Action prepareConcept = new Action(new ArrayList<String>(),
                 "Das Frontend arbeitet ein Konzept für den Pitch aus.");
-        prepareConcept.setId("Konzept ausarbeiten");
+//        prepareConcept.setId("Konzept ausarbeiten");
         prepareConcept.addRole(role4.getId());
 
         // display formatting for action 3
@@ -924,7 +925,7 @@ public class PersistenceImp implements Persistence {
         // create Action Konzept weitergeben
         final Action passForward = new Action(new ArrayList<String>(),
                 "Das Frontend gibt das Konzept weiter an das Backend.");
-        passForward.setId("Konzept weitergeben");
+//        passForward.setId("Konzept weitergeben");
         passForward.addRole(role4.getId());
 
         // display formatting for action 3
@@ -935,7 +936,7 @@ public class PersistenceImp implements Persistence {
         // create Action Konzept evaluieren
         final Action evaluateConcept = new Action(new ArrayList<String>(),
                 "Das Backend der Agentur evaluiert das Konzept.");
-        evaluateConcept.setId("Konzept evaluieren");
+//        evaluateConcept.setId("Konzept evaluieren");
         evaluateConcept.addRole(role5.getId());
 
         // display formatting for action 3
@@ -946,7 +947,7 @@ public class PersistenceImp implements Persistence {
         // create Action Konzept bestätigen
         final Action confirmConcept = new Action(new ArrayList<String>(),
                 "Das Backend der Agentur bestätigt das Konzept.");
-        confirmConcept.setId("Konzept bestätigen");
+//        confirmConcept.setId("Konzept bestätigen");
         confirmConcept.addRole(role5.getId());
 
         // display formatting for action 3
