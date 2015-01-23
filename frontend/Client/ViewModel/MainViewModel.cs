@@ -261,7 +261,7 @@ namespace Client.ViewModel
         {
             Application.Current.Dispatcher.Invoke(new System.Action(() =>
             {
-                if (e is LogInException)
+                if (e is InactiveUserException)
                 {
                     username = "";
                     dashboardViewModel.DeleteModel();
