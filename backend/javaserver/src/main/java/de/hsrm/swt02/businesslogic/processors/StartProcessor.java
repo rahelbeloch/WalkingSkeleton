@@ -59,7 +59,7 @@ public class StartProcessor {
      * 
      * @param workflow provides a step list, which will be transformed into Metadatas
      * @param item is the freshly created item for a workflow
-     * @throws LogicException
+     * @throws LogicException is thrown if there are problems while persisting
      */
     public void initiateItem(Workflow workflow, Item item) throws LogicException {
         StartStep startStep = null;

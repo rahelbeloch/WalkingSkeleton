@@ -957,7 +957,7 @@ public class PersistenceImp implements Persistence {
 
         // create FinalStep();
         finalStep = new FinalStep();
-        finalStep.addRole(role2.getId());
+        finalStep.addRole(role1.getId());
 
         // display formatting
         finalStep.setLeft(elementCounter * standardDistance);

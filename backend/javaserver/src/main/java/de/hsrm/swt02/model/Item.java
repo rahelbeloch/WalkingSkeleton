@@ -289,6 +289,20 @@ public class Item extends RootElement {
     }
     
     /**
+     * This method looks for entries which are open, inactive or busy.
+     * @return list of matched entries
+     */
+    public List<MetaEntry> getReachableEntries() {
+        final List<MetaEntry> reachableEntries = new ArrayList<MetaEntry>();
+        for (MetaEntry me : metadata) {
+            if (me.getValue().equals(MetaState.OPEN.toString()) || me.getValue().equals(MetaState.INACTIVE.toString()) || me.getValue().equals(MetaState.BUSY.toString())) {
+                reachableEntries.add(me);
+            }
+        }
+        return reachableEntries;
+    }
+    
+    /**
      * This methods applies a form from a workflow to an item.
      * @param form which is used by a workflow
      * @throws LogicException is thrown if no form is available

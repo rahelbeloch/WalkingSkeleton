@@ -440,6 +440,43 @@ public class LogicImp implements Logic {
         }
         return admins;
     }
+    
+    /**
+     * This method returns all unfinished items of its workflow.
+     * @param workflow which items are looked for
+     * @return list of unfinished (finished = false) items
+     */
+    public List<Item> unfinishedItems(Workflow workflow) {
+        final List<Item> unfinishedItems = new ArrayList<Item>();
+        for (Item item : workflow.getItems()) {
+            if (!(item.isFinished())) {
+                unfinishedItems.add(item);
+            }
+        }
+        return unfinishedItems;
+    }
+    
+    /**
+     * This method tells if there are steps which a user could possibly forward.
+     * @param workflow of current operation
+     * @param items which are unfinished (of workflow)
+     * @param user whose possible steps are looked for
+     * @return true if there are any false if not
+     */
+    public boolean openStepsForUser(Workflow workflow, List<Item> items, User user) {
+        for (Item item : items) {
+            for (MetaEntry me : item.getReachableEntries()) {
+                for (Step step : workflow.getSteps()) {
+                    if (step.getId().equals(me.getGroup())) {
+                        if (step.containsRole(user.getRoles())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 
     @Override
@@ -448,6 +485,7 @@ public class LogicImp implements Logic {
     {
         User user;
         boolean activeUserItem = false;
+        List<Item> unfinishedItems;
         
         try {
             user = persistence.loadUser(username);
@@ -455,11 +493,10 @@ public class LogicImp implements Logic {
             throw new LogInException();
         }
         for (Workflow workflow : getAllWorkflows()) {
-            if (workflow.unfinishedItems().size() != 0) {
-                for (Step step : workflow.getSteps()) {
-                    if (step.containsRole(user.getRoles())) {
-                        activeUserItem = true;
-                    }
+            unfinishedItems = unfinishedItems(workflow);
+            if (unfinishedItems.size() != 0) {
+                if (openStepsForUser(workflow, unfinishedItems, user)) {
+                    activeUserItem = true;
                 }
             }
         }
@@ -525,8 +562,8 @@ public class LogicImp implements Logic {
             return false;
         } else {
             final Step actStep = workflowToCheck.getStepById((item.getActStep().getGroup()));
-            if(actStep instanceof Fork) {
-            	return true;
+            if (actStep instanceof Fork) {
+                return true;
             }
             
             if (item.getEntryOpener(actStep.getId()) != null) {
