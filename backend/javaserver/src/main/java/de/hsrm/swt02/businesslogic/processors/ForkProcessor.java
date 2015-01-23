@@ -1,8 +1,5 @@
 package de.hsrm.swt02.businesslogic.processors;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.HashMap;
 import java.util.logging.Level;
 
