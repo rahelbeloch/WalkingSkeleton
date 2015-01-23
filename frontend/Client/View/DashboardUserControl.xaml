@@ -10,6 +10,7 @@
       xmlns:util="clr-namespace:Client.Util">
     <UserControl.Resources>
         <util:SelectedRowToVisbiltyConverter x:Key="converter" />
+        <util:StateConverter x:Key="stateconverter" />
     </UserControl.Resources>
     
     <DockPanel>
@@ -18,7 +19,7 @@
             <Label Content="{Binding userName}" Foreground="Crimson" FontSize="20"/>
             <Button Content="Ausloggen" Command="{Binding logoutCommand}" Width="100" Height="25" HorizontalAlignment="Right"/>
         </DockPanel>
-        <DockPanel Width="500" DockPanel.Dock="Left" HorizontalAlignment="Center">
+        <DockPanel  Background="#f9f9f9" Width="500" DockPanel.Dock="Left" HorizontalAlignment="Center">
             <Label Content="{Binding workflowMessage}" FontSize="24" Visibility="{Binding workflowMessageVisibility}" HorizontalAlignment="Center"/>
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding dashboardWorkflows}" Margin="10">
@@ -40,7 +41,7 @@
                                         <ListView.View>
                                             <GridView >
                                                 <GridView.Columns>
-                                                    <GridViewColumn Width="50" Header="Description" DisplayMemberBinding="{Binding actStep.description}"/>
+                                                    <GridViewColumn Width="200" Header="Beschreibung" DisplayMemberBinding="{Binding actStep.description}"/>
                                                     <GridViewColumn Width="100" Header="Item-Id" DisplayMemberBinding="{Binding actItem.id}" />
                                                 </GridView.Columns>
                                             </GridView>
@@ -53,8 +54,8 @@
                 </ItemsControl>
             </ScrollViewer>
         </DockPanel>
-        <DockPanel DockPanel.Dock="Top" Width="400" Visibility="{Binding selectedRow, Converter={StaticResource converter}}"  HorizontalAlignment="Center"  VerticalAlignment="Center">
-            <Label DockPanel.Dock="Top" Content="Details" FontSize="16" FontWeight="Bold"  HorizontalAlignment="Center"/>
+        <StackPanel Background="#f9f9f9" DockPanel.Dock="Top" Visibility="{Binding selectedRow, Converter={StaticResource converter}}"  HorizontalAlignment="Center"  VerticalAlignment="Center">
+            <Expander DockPanel.Dock="Top" IsExpanded="True" Header="{Binding selectedRow.actStep.description, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -68,21 +69,17 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Content="Description: "/>
-                <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"  Content="{Binding selectedRow.actStep.description, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Grid.Row="1" Content="Step-Id: "/>
-                <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Content="{Binding selectedRow.actStep.id, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Grid.Row="2" Content="State: "/>
-                <Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Content="{Binding selectedRow.actItem.State, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Grid.Row="3" Content="Annehmen" Height="25" Margin="10 0" Visibility="{Binding selectedRow.visibilityStepForwardButton}"
+                <Label Grid.Row="0" Content="Status: "/>
+                <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Content="{Binding selectedRow.actItem.State, Converter={StaticResource stateconverter}, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Grid.Row="1" Content="Annehmen" Height="25" Margin="10 0" Visibility="{Binding selectedRow.visibilityStepForwardButton}"
 
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
                                                             CommandParameter="{Binding selectedRow}" HorizontalAlignment="Left"/>
-                <GroupBox Grid.Row="4" Grid.ColumnSpan="2" Visibility="{Binding selectedRow.visibilityFinishButton}">
+                <GroupBox Grid.Row="2" Grid.ColumnSpan="2" Visibility="{Binding selectedRow.visibilityFinishButton}">
                     <GroupBox.Header>
                         <Label Content="{Binding selectedRow.form.description}"></Label>
                     </GroupBox.Header>
-                    <DataGrid ItemsSource="{Binding selectedRow.formRows}" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid  Width="450" ItemsSource="{Binding selectedRow.formRows}" AutoGenerateColumns="False" CanUserAddRows="False">
                         <DataGrid.RowValidationRules>
                             <util:FormValidator/>
                         </DataGrid.RowValidationRules>
@@ -95,9 +92,9 @@
                             </ControlTemplate>
                         </DataGrid.RowValidationErrorTemplate>
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Schlüssel" Binding="{Binding key}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Wert" Binding="{Binding value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <DataGridTextColumn Header="Datentyp" Binding="{Binding datatype}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Schlüssel" Width="130" Binding="{Binding key}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Wert" Width="200" Binding="{Binding value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="Datentyp" Width="100" Binding="{Binding datatype}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
@@ -108,6 +105,7 @@
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
                                                             CommandParameter="{Binding selectedRow}"/>
                 </Grid>
-            </DockPanel>
+                </Expander>
+        </StackPanel>
         </DockPanel>
 </UserControl>

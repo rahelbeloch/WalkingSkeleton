@@ -69,6 +69,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Util\StateConverter.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="ViewModel\DashboardRow.cs" />
     <Compile Include="ViewModel\DashboardWorkflow.cs" />
@@ -85,6 +86,10 @@
     <Compile Include="View\DashboardUserControl.xaml.cs">
       <DependentUpon>DashboardUserControl.xaml</DependentUpon>
     </Compile>
+    <Page Include="Resources\DesignerItems\Expander.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,6 +109,10 @@
     <Page Include="View\DashboardUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\DesignerItems\Shared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
