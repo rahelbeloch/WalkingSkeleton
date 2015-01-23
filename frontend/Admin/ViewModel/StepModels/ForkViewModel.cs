@@ -68,8 +68,8 @@ namespace Admin
         {
             enableInputConnector = true;
             enableRightConnector = true;
-            itemWidth = 100;
-            itemHeight = 52;
+            itemWidth = 80;
+            itemHeight = 80;
             
             this.ShowConnectors = false;
 
