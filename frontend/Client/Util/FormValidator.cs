@@ -50,15 +50,16 @@ namespace Client.Util
                             regex = new Regex("[0-9]+");
                             break;
                         case "double":
-                            regex = new Regex("-?\\d+(\\.\\d+)?");
+                            regex = new Regex("([0-9]|[1-9]+)\\.[0-9]+$");
                             break;
                     }
 
                     Match match = regex.Match(entry.value);
-                    if (match.Success)
+                    if (match.Success && match.Value.Equals(entry.value))
                     {
                         logger.Debug("match successfull");
                         logger.Debug(match.Value);
+                        entry.value = match.Value;
                     }
                     else
                     {
