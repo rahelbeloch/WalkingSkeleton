@@ -465,7 +465,7 @@ public class LogicImp implements Logic {
         }
         
         if (!user.isActive() && !activeUserItem) {
-            throw new LogInException(username + " ist inaktiv.");
+            throw new InactiveUserException(username + " ist inaktiv.");
         }
 
         // if (!user.getPassword().equals(password)) {
