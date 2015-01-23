@@ -11,16 +11,8 @@
     <UserControl.Resources>
         <util:SelectedRowToVisbiltyConverter x:Key="converter" />
     </UserControl.Resources>
-
-        <DockPanel>
-            <!--<Menu DockPanel.Dock="Top">
-                <MenuItem Header="Menü" >
-                    <MenuItem 
-        			Header="Logout" 
-        			Command="{Binding logoutCommand}"/>
-                </MenuItem>
-            </Menu>-->
-
+    
+    <DockPanel>
         <DockPanel DockPanel.Dock="Top" Margin="10" Background="#E6E6E6">
             <Label Content="Eingeloggt als:" VerticalAlignment="Center"/>
             <Label Content="{Binding userName}" Foreground="Crimson" FontSize="20"/>
