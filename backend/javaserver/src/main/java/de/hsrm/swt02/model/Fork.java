@@ -69,6 +69,7 @@ public class Fork extends Step {
      */
     public void init(Fork fork) {
         super.init(fork);
+        this.script = fork.getScript();
     }
     
     /**
