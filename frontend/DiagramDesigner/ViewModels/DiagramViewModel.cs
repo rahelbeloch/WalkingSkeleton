@@ -40,12 +40,9 @@ namespace DiagramDesigner
             ClearSelectedItemsCommand = new SimpleCommand(ExecuteClearSelectedItemsCommand);
             CreateNewDiagramCommand = new SimpleCommand(ExecuteCreateNewDiagramCommand);
             
-            
             Mediator.Instance.Register(this);
             items.CollectionChanged += this.OnCollectionItemChanged;
-
         }
-
 
         private void OnCollectionItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -66,6 +63,7 @@ namespace DiagramDesigner
                 }
             }
         }
+
         private void OnItemChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName.Equals("IsSelected"))
@@ -87,10 +85,8 @@ namespace DiagramDesigner
                             _selectesItemsCollection.Remove(step);
                         }
                     }
-
                 }
             }
-            
         }
 
         [MediatorMessageSink("DoneDrawingMessage")]
@@ -102,7 +98,6 @@ namespace DiagramDesigner
             }
         }
 
-        
         public SimpleCommand AddItemCommand { get; private set; }
         public SimpleCommand RemoveItemCommand { get; private set; }
         public SimpleCommand ClearSelectedItemsCommand { get; private set; }
@@ -127,8 +122,7 @@ namespace DiagramDesigner
         {
             if (parameter is SelectableDesignerItemViewModelBase)
             {
-                
-                //gehoert zu DiagrammDesigner
+                // belongs to DiagramDesigner
                 SelectableDesignerItemViewModelBase item = (SelectableDesignerItemViewModelBase)parameter;
                 item.Parent = this;
                 items.Add(item);
