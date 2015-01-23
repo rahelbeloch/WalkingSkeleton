@@ -191,7 +191,7 @@ namespace Client.ViewModel
         {
             logger.Info("Received Workflow for Update: ID=" + workflow.id);
             // route update-handling to subcomponents
-            _dashboardViewModel.AddWorkflowToModel(workflow);
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.AddWorkflowToModel(workflow)));
         }
         
         /// <summary>
@@ -210,7 +210,11 @@ namespace Client.ViewModel
         /// <param name="user">new/edited user</param>
         public void UserUpdate(User user)
         {
-            // update handling
+            Application.Current.Dispatcher.Invoke(new System.Action(() =>
+            {
+                dashboardViewModel.DeleteModel();
+                dashboardViewModel.InitModel();
+            }));
         }
 
         /// <summary>
@@ -219,7 +223,11 @@ namespace Client.ViewModel
         /// <param name="role">the new/updated role</param>
         public void RoleUpdate(Role role)
         {
-            // update handling
+            Application.Current.Dispatcher.Invoke(new System.Action(() =>
+            {
+                dashboardViewModel.DeleteModel();
+                dashboardViewModel.InitModel();
+            }));
         }
 
         /// <summary>
