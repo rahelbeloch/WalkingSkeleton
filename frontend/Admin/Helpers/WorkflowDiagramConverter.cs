@@ -133,6 +133,7 @@ namespace Admin.Helpers
             else if (designerItem.GetType() == typeof(ForkViewModel))
             {
                 Fork fork = step.Clone<Fork>();
+                fork.script = ((ForkViewModel)designerItem).description;
                 fork.id = getUniqueId();
                 return fork;
             }
