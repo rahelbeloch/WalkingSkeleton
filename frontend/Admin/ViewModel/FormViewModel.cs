@@ -305,6 +305,10 @@ namespace Admin.ViewModel
                             formDefModel.Add(formEntry);
                             OnChanged("formDefModel");
                         }
+                        else
+                        {
+                            MessageBox.Show("Nicht alle Felder des vorherigen Eintrages ausgefüllt!");
+                        }
 
                     }, canExecute => formDefModel.Count != 0);
                 }

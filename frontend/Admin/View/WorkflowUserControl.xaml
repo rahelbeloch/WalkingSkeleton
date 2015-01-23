@@ -173,6 +173,7 @@
                                            Visibility="{Binding descriptionVisibility}" 
                                            Content="{Binding StepLabelContent}"
                                            Margin="5" />
+                                    
                                     <TextBox Grid.Row="1"
                                              Grid.Column="1"
                                              Visibility="{Binding descriptionVisibility}" 
@@ -187,11 +188,11 @@
                                            Visibility="{Binding roleVisibility}"
                                            Content="Rolle: "
                                            Margin="5" />
+                                    
                                     <ComboBox Visibility="{Binding roleVisibility}" Grid.Row="2" Grid.Column="1"  Height="25" Width="120" HorizontalAlignment="Left"  
                                               ItemsSource="{Binding roleCollection}" 
                                               DisplayMemberPath="rolename"
                                               SelectedItem="{Binding actStep.selectedRole}" />
-
 
                                 </Grid>
                             </DockPanel>
