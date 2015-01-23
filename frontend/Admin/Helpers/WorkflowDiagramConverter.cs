@@ -48,14 +48,31 @@ namespace Admin.Helpers
                     referenceMapping[endItem] = DesignerItemToStep(endItem);
                 }
 
-                // connect next step ids
-                referenceMapping[startItem].nextStepIds.Add(referenceMapping[endItem].id);
+                // TODO: wenn typ fork: an anfang der liste bei true output und ans ende bei false output
+                if (referenceMapping[startItem].GetType() == typeof(Fork))
+                {
+                    Console.WriteLine("fork next step ids verwaltung...");
+                    if ((((ConnectorViewModel)designerConnection).SourceConnectorInfo).Orientation == ConnectorOrientation.TrueOutput)
+                    {
+                        Console.WriteLine("fork next step ids... true output");
+                        referenceMapping[startItem].nextStepIds.Insert(0, referenceMapping[endItem].id);
+                    }
+                    else if ((((ConnectorViewModel)designerConnection).SourceConnectorInfo).Orientation == ConnectorOrientation.FalseOutput) 
+                    {
+                        Console.WriteLine("fork next step ids... false output");
+                        referenceMapping[startItem].nextStepIds.Add(referenceMapping[endItem].id);
+                    }
+                }
+                else
+                {
+                    // connect next step ids
+                    referenceMapping[startItem].nextStepIds.Add(referenceMapping[endItem].id);
+                }
             }
 
             // add remaining designer items which are not connected
             foreach (DesignerItemViewModelBase designerItem in stepDesignerItems)
             {
-                Console.WriteLine("designer id: " + designerItem.Id);
                 if (referenceMapping[designerItem] == null)
                 {
                     referenceMapping[designerItem] = DesignerItemToStep(designerItem);
@@ -154,16 +171,36 @@ namespace Admin.Helpers
                 List<String> nextStepIds = s.nextStepIds;
 
                 DesignerItemViewModelBase self = (DesignerItemViewModelBase) designerItems.First(x => x.Id == s.id);
-                self.enableRightConnector = false;
-                
-                FullyCreatedConnectorInfo sourceConnectorInfo = new FullyCreatedConnectorInfo(self, ConnectorOrientation.Output);
-                List<FullyCreatedConnectorInfo> sinkConnectorInfos = GetSinkConnectors(s, designerItems);
-                foreach (FullyCreatedConnectorInfo sinkConnectorInfo in sinkConnectorInfos)
+
+                if (s.GetType() == typeof(StartStep) || s.GetType() == typeof(Action))
                 {
+                    self.enableRightConnector = false;
+
+                    FullyCreatedConnectorInfo sourceConnectorInfo = new FullyCreatedConnectorInfo(self, ConnectorOrientation.Output);
+                    FullyCreatedConnectorInfo sinkConnectorInfo = GetSinkConnector(s, designerItems);
                     ConnectorViewModel connector = new ConnectorViewModel("", diagramViewModel, sourceConnectorInfo, sinkConnectorInfo);
                     diagramViewModel.AddItemCommand.Execute(connector);
                     sinkConnectorInfo.DataItem.enableInputConnector = false;
-                } 
+                }
+                else if (s.GetType() == typeof(Fork))
+                {
+                    self.enableTopConnector = false;
+                    self.enableBottomConnector = false;
+
+                    // true case
+                    FullyCreatedConnectorInfo sourceConnectorInfo = new FullyCreatedConnectorInfo(self, ConnectorOrientation.TrueOutput);
+                    FullyCreatedConnectorInfo sinkConnectorInfo = GetTrueSinkConnector(s, designerItems);
+                    ConnectorViewModel connector = new ConnectorViewModel("", diagramViewModel, sourceConnectorInfo, sinkConnectorInfo);
+                    diagramViewModel.AddItemCommand.Execute(connector);
+                    sinkConnectorInfo.DataItem.enableInputConnector = false;
+
+                    // false case
+                    sourceConnectorInfo = new FullyCreatedConnectorInfo(self, ConnectorOrientation.FalseOutput);
+                    sinkConnectorInfo = GetFalseSinkConnector(s, designerItems);
+                    connector = new ConnectorViewModel("", diagramViewModel, sourceConnectorInfo, sinkConnectorInfo);
+                    diagramViewModel.AddItemCommand.Execute(connector);
+                    sinkConnectorInfo.DataItem.enableInputConnector = false;
+                }
             }
         }
 
@@ -213,26 +250,45 @@ namespace Admin.Helpers
         }
 
         /// <summary>
-        /// Returns a list of all outgoing sink connectors..
+        /// Returns outgoing sink connector.
         /// SinkConnectors are the "input connectors" of all next steps.
-        /// Mostly there will be only one sink connector, but possible future conditions-steps may have multiple next steps.
         /// </summary>
         /// <param name="step"></param>
         /// <param name="designerItems"></param>
         /// <returns></returns>
-        private static List<FullyCreatedConnectorInfo> GetSinkConnectors(Step step, List<SelectableDesignerItemViewModelBase> designerItems)
+        private static FullyCreatedConnectorInfo GetSinkConnector(Step step, List<SelectableDesignerItemViewModelBase> designerItems)
         {
-            List<FullyCreatedConnectorInfo> connectors = new List<FullyCreatedConnectorInfo>();
+            FullyCreatedConnectorInfo connector = null;
+            connector = new FullyCreatedConnectorInfo((DesignerItemViewModelBase)designerItems.First(x => x.Id == step.nextStepIds[0]), ConnectorOrientation.Input);
+            return connector;
+        }
 
-            foreach (String nextId in step.nextStepIds)
-            {
-                if (step.GetType() == typeof(StartStep) || step.GetType() == typeof(Action))
-                {
-                    connectors.Add(new FullyCreatedConnectorInfo((DesignerItemViewModelBase)designerItems.First(x => x.Id == nextId), ConnectorOrientation.Input));
-                } 
-            }
+        /// <summary>
+        /// Returns outgoing sink connector for true case at a fork.
+        /// SinkConnectors are the "input connectors" of all next steps.
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="designerItems"></param>
+        /// <returns></returns>
+        private static FullyCreatedConnectorInfo GetTrueSinkConnector(Step step, List<SelectableDesignerItemViewModelBase> designerItems)
+        {
+            FullyCreatedConnectorInfo connector = null;
+            connector = new FullyCreatedConnectorInfo((DesignerItemViewModelBase)designerItems.First(x => x.Id == step.nextStepIds[0]), ConnectorOrientation.Input);
+            return connector;
+        }
 
-            return connectors;
+        /// <summary>
+        /// Returns outgoing sink connector for false case at a fork.
+        /// SinkConnectors are the "input connectors" of all next steps.
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="designerItems"></param>
+        /// <returns></returns>
+        private static FullyCreatedConnectorInfo GetFalseSinkConnector(Step step, List<SelectableDesignerItemViewModelBase> designerItems)
+        {
+            FullyCreatedConnectorInfo connector = null;
+            connector = new FullyCreatedConnectorInfo((DesignerItemViewModelBase)designerItems.First(x => x.Id == step.nextStepIds[1]), ConnectorOrientation.Input);
+            return connector;
         }
 
         /// <summary>
