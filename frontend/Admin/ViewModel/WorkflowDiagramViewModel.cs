@@ -636,6 +636,7 @@ namespace Admin.ViewModel
                             editView = Visibility.Visible;
                             showDetails = Visibility.Collapsed;
                             actStepVisibility = Visibility.Collapsed;
+                            DiagramViewModel.ClearSelectedItemsCommand.Execute(this);
                         }, canExecute => _actWorkflow != null);
                 }
                 return _editWorkflowCommand;
@@ -761,6 +762,7 @@ namespace Admin.ViewModel
                 editView = Visibility.Collapsed;
                 actStepVisibility = Visibility.Collapsed;
                 showDetails = Visibility.Visible;
+                DiagramViewModel.locked = true;
                 MessageBox.Show("Der Workflow wurde erfolgreich gespeichert.");
             }
             catch (BasicException be)
