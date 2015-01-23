@@ -90,10 +90,10 @@
                                                 <Setter TargetName="selectedGrid"
                                                         Property="Effect">
                                                     <Setter.Value>
-                                                        <DropShadowEffect BlurRadius="30"
+                                                        <DropShadowEffect BlurRadius="10"
                                                                             ShadowDepth="0"
                                                                             Color="Black"
-                                                                            Opacity="0.6" />
+                                                                            Opacity="0.5" />
                                                     </Setter.Value>
                                                 </Setter>
                                             </DataTrigger>
