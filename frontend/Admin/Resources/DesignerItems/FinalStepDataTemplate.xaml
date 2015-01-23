@@ -2,20 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Admin">
 
-
     <!-- DataTemplate for DesignerCanvas look and feel -->
     <DataTemplate DataType="{x:Type local:FinalStepViewModel}">
         <Grid>
             <Image IsHitTestVisible="False"
                    Stretch="Fill"
                    Source="../../Images/End.png"
-                   Tag="setting" />
-            
+                   Tag="setting" />            
         </Grid>
     </DataTemplate>
-
-    
-
-
 
 </ResourceDictionary>

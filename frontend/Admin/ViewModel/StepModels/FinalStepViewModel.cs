@@ -9,31 +9,30 @@ using CommunicationLib.Model;
 namespace Admin
 {
     /// <summary>
-    /// Class for FinalStepViewModel
+    /// Class for FinalStepViewModel.
     /// </summary>
     public class FinalStepViewModel : DesignerItemViewModelBase
     {
         /// <summary>
-        /// Constructor for the FinalStepViewModel
+        /// Constructor for the FinalStepViewModel.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="parent"></param>
         /// <param name="left"></param>
         /// <param name="top"></param>
-        public FinalStepViewModel(string id, DiagramViewModel parent, double left, double top) : base(id,parent, left,top)
+        public FinalStepViewModel(string id, DiagramViewModel parent, double left, double top) : base(id, parent, left,top)
         {
-           Init();
+            Init();
         }
 
         /// <summary>
-        /// Default Constructor
+        /// Default Constructor.
         /// </summary>
         public FinalStepViewModel()
             : base()
         {
             Init();
         }
-
        
         private void Init()
         {
@@ -42,7 +41,6 @@ namespace Admin
             itemHeight = 66;
             
             this.ShowConnectors = false;
-
         }
     }
 }
