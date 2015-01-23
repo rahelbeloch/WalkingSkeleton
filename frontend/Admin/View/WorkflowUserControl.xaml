@@ -25,7 +25,7 @@
             <DockPanel DockPanel.Dock="Top">
                 <Label Content="Workflow-Verwaltung" FontSize="16" FontWeight="Medium" HorizontalAlignment="Center"/>
             </DockPanel>
-            
+
             <Grid>
 
                 <Grid.ColumnDefinitions>
@@ -33,10 +33,10 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="300"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <!--left Panel -->
                 <DockPanel Grid.Column="0" Background="#f9f9f9">
-                    
+
                     <!--Workflow Übersicht-->
                     <DockPanel DockPanel.Dock="Top" Visibility="{Binding displayView}">
                         <Label Content="Workflow-Übersicht"  FontSize="14" FontWeight="Medium" HorizontalAlignment="Center"/>
@@ -68,7 +68,7 @@
                     <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}">
                         <Label Content="Workflow-Bearbeiten"  FontSize="14" FontWeight="Medium" HorizontalAlignment="Center"/>
                     </DockPanel>
-                    
+
                     <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}" HorizontalAlignment="Left">
                         <Button x:Name="displayView" DockPanel.Dock="Bottom" Content="Zurück zur Übersicht" Margin="20" Command="{Binding displayViewCommand}" Height="26" Width="120"/>
                     </DockPanel>
@@ -103,29 +103,29 @@
 
                 <!--right Panel -->
                 <DockPanel Grid.Column="2" Background="#f9f9f9">
-                    
+
                     <!--Headline-->
                     <DockPanel DockPanel.Dock="Top">
                         <Label Content="Detail-Ansicht"  FontSize="14" FontWeight="Medium" HorizontalAlignment="Center" />
                     </DockPanel>
-                    
+
                     <!--Items-->
                     <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
-                            <Expander Header="Items"
+                        <Expander Header="Items"
                                     IsExpanded="True">
                             <ListView DockPanel.Dock="Top"  ItemsSource="{Binding items}" MaxHeight="200" Height="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                    <ListView.View>
-                                        <GridView >
-                                            <GridView.Columns>
-                                                <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
-                                                <GridViewColumn Width="120" Header="beendet" DisplayMemberBinding="{Binding finished, Converter={StaticResource converter}}" />
-                                            </GridView.Columns>
-                                        </GridView>
-                                    </ListView.View>
-                                </ListView>
-                            </Expander>
+                                <ListView.View>
+                                    <GridView >
+                                        <GridView.Columns>
+                                            <GridViewColumn Width="50" Header="Id" DisplayMemberBinding="{Binding id}"/>
+                                            <GridViewColumn Width="120" Header="beendet" DisplayMemberBinding="{Binding finished, Converter={StaticResource converter}}" />
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Expander>
                     </StackPanel>
-                    
+
                     <!--Formular-->
                     <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
                         <Expander Header="Formular"
@@ -146,56 +146,53 @@
                     <StackPanel DockPanel.Dock="Top" Margin="10" >
                         <Expander Header="Elemente"
                              IsExpanded="True">
-                            <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding enableStepDetais}"  >
 
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="80" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="200"/>
-                                        
-                                    </Grid.ColumnDefinitions>
+                            <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding enableStepDetais}" ScrollViewer.VerticalScrollBarVisibility="Visible" >
 
-                                    <Label Grid.Row="0"
-                                           Grid.Column="0"
+
+                                <Label DockPanel.Dock="Top"
                                            Content="Typ: "
                                            Margin="5" />
-                                    <Label Grid.Row="0"
-                                           Grid.Column="1"
+                                <Label DockPanel.Dock="Top"
+                                       Width="80"
+                                       Height="Auto"
+                                           HorizontalAlignment="Left"
                                            Content="{Binding actStep}"
                                            Margin="5" />
-                                    <Label Grid.Row="1"
-                                           Grid.Column="0"
+                                <Label DockPanel.Dock="Top"
                                            Visibility="{Binding descriptionVisibility}" 
                                            Content="{Binding StepLabelContent}"
                                            Margin="5" />
-                                    
-                                    <TextBox Grid.Row="1"
-                                             Grid.Column="1"
-                                             Visibility="{Binding descriptionVisibility}" 
-                                             Text="{Binding actStep.description, Mode=TwoWay}"
-                                             TextWrapping="Wrap"
-                                             AcceptsReturn="True"
-                                             VerticalScrollBarVisibility="Visible"
-                                             />
 
-                                    <Label Grid.Row="2"
-                                           Grid.Column="0"
+
+                                <TextBox 
+                                            DockPanel.Dock="Top"
+                                            Width="200"
+                                            Visibility="{Binding descriptionVisibility}" 
+                                            Text="{Binding actStep.description, Mode=TwoWay}"
+                                            TextWrapping="Wrap"
+                                            AcceptsReturn="True"
+                                            MaxHeight="100"
+                                            ScrollViewer.CanContentScroll="True"
+                                            VerticalScrollBarVisibility="Visible"    
+                            />
+
+
+                                <Label DockPanel.Dock="Top"
                                            Visibility="{Binding roleVisibility}"
                                            Content="Rolle: "
                                            Margin="5" />
-                                    
-                                    <ComboBox Visibility="{Binding roleVisibility}" Grid.Row="2" Grid.Column="1"  Height="25" Width="120" HorizontalAlignment="Left"  
+
+                                <ComboBox Visibility="{Binding roleVisibility}" DockPanel.Dock="Top"  Height="25" Width="120" HorizontalAlignment="Left"  
+
                                               ItemsSource="{Binding roleCollection}" 
                                               DisplayMemberPath="rolename"
                                               SelectedItem="{Binding actStep.selectedRole}" />
 
-                                </Grid>
+
+
                             </DockPanel>
+
                         </Expander>
                     </StackPanel>
 
