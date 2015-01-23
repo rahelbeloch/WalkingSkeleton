@@ -119,8 +119,8 @@ namespace DiagramDesigner
                         else
                         {
                             sourceDataItem.DataItem.enableRightConnector = false;
-                            sinkDataItem.DataItem.enableInputConnector = false;
                         }
+                        sinkDataItem.DataItem.enableInputConnector = false;
                     }
                 }
                 else
