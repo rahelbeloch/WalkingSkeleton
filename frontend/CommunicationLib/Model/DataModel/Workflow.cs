@@ -13,6 +13,12 @@ namespace CommunicationLib.Model
     public class Workflow : RootElement
     {
         /// <summary>
+        /// Name of the Workflow; Used for (de)serialization. Do not change the property name.
+        /// </summary>
+        public string name { get { return _name; } set { _name = value; } }
+        private string _name;
+
+        /// <summary>
         /// Used for (de)serialization. Do not change the property name.
         /// </summary>
         public List<Step> steps { get { return _steps; } set { _steps = value; } }
@@ -40,8 +46,14 @@ namespace CommunicationLib.Model
         /// Constructor for Workflow
         /// </summary>
         public Workflow()
+            : this("")
+        {
+        }
+
+        public Workflow(string name)
             : base()
         {
+            _name = name;
             _active = true;
             _steps = new List<Step>();
             _items = new List<Item>();
