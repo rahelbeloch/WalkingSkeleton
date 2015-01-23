@@ -22,6 +22,7 @@ import de.hsrm.swt02.businesslogic.protocol.MessageTopic;
 import de.hsrm.swt02.businesslogic.workflowValidator.WorkflowValidator;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.DataType;
+import de.hsrm.swt02.model.Fork;
 import de.hsrm.swt02.model.Form;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
@@ -369,7 +370,6 @@ public class LogicImp implements Logic {
 
         for (Item item : workflow.getItems()) {
             final MetaEntry me = item.getActStep();
-            System.out.println(me);
             if (me != null) {
                 final Step step = workflow.getStepById(me.getGroup());
                 if (checkAuthorization(step, username)) {
@@ -525,6 +525,10 @@ public class LogicImp implements Logic {
             return false;
         } else {
             final Step actStep = workflowToCheck.getStepById((item.getActStep().getGroup()));
+            if(actStep instanceof Fork) {
+            	return true;
+            }
+            
             if (item.getEntryOpener(actStep.getId()) != null) {
                 return item.getEntryOpener(actStep.getId()).equals(username);
             }

@@ -13,7 +13,6 @@ import de.hsrm.swt02.businesslogic.processors.StartProcessor;
 import de.hsrm.swt02.businesslogic.processors.StepProcessor;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
-import de.hsrm.swt02.model.Fork;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaState;
 import de.hsrm.swt02.model.StartStep;
@@ -91,9 +90,7 @@ public class ProcessManagerImp implements ProcessManager {
     public StepProcessor selectProcessor(Step step) {
         if (step instanceof Action) {
             return new ActionProcessor(persistence);
-        } else if (step instanceof Fork) {
-            return new ForkProcessor(persistence);
-        }
+        } 
         return null;
     }
 
@@ -106,12 +103,13 @@ public class ProcessManagerImp implements ProcessManager {
 
         if (checkAuthorization(step, user.getUsername())) {
             itemId = stepProcessor.handle(item, step, user);
-            
-            
-            //Workflow workflow = persistence.loadWorkflow(item.getWorkflowId()); 
-            if(item.getEntryValue("status", step.getId()).equals(MetaState.DONE.toString())) {
+  
+            Item newItem = persistence.loadItem(itemId);
+            Step newStep = persistence.loadStep(newItem.getId(), step.getNextStepIds().get(0));
+            if(newItem.getEntryValue("status", step.getId()).equals(MetaState.DONE.toString())) {
+            	System.out.println("FORK PROCESSOR!");
             	ForkProcessor forkProcessor = new ForkProcessor(persistence);
-            	forkProcessor.handle(item, step, user);
+            	forkProcessor.handle(newItem, newStep, user);
             }
             
             // new:
@@ -119,7 +117,6 @@ public class ProcessManagerImp implements ProcessManager {
             //final Step currentStep = workflow.getStepById(step.getId());
             /*
              * - cast return type to boolean (pythonmaessig)
-             * - WorkflowValidator eval(script)
              */
             
             return itemId;

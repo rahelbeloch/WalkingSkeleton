@@ -69,29 +69,34 @@ public class ForkProcessor implements StepProcessor {
         	Fork fork = (Fork) currentStep;
         	final String script = fork.getScript();
         	
-	        try {
-	            sEngine.eval(script);
-	            
-	            // todo: simons algorithmus
-	            
-	            Invocable inv = (Invocable) sEngine;
-	            Object o = inv.invokeFunction("check", new HashMap<String, String>());
-	            if (o instanceof Boolean) {
-	            	o = (Boolean)o;
-	            } 
-	        } catch (ScriptException e) {
-	            e.printStackTrace();
-	        } catch (NoSuchMethodException e) {
-	            e.printStackTrace();
-	        }
+        	if(script != null) {
+		        try {
+		            sEngine.eval(script);
+		            System.out.println("evaluated python script");
+		            // todo: simons algorithmus
+		            
+		            Invocable inv = (Invocable) sEngine;
+		            Object o = inv.invokeFunction("check", new HashMap<String, String>());
+		            if (o instanceof Boolean) {
+		            	o = (Boolean)o;
+		            	result = (boolean) o;
+		            } 
+		        } catch (ScriptException e) {
+		            e.printStackTrace();
+		        } catch (NoSuchMethodException e) {
+		            e.printStackTrace();
+		        }
+        	}
 	        
 	        currentItem.setStepState(stepId, MetaState.DONE.toString());
 	        
 	        Step nextStep = result ? fork.getTrueBranch() : fork.getFalseBranch();
 	        
 	        if (!(nextStep instanceof FinalStep)) {
+	        	System.out.println("FORK: next step is NOT final step");
                 currentItem.setStepState(nextStep.getId(), MetaState.OPEN.toString());
             } else {
+            	System.out.println("FORK: next step is final step...");
                 currentItem.setStepState(nextStep.getId(), MetaState.DONE.toString());
                 currentItem.setFinished(true);
                 LOGGER.log(Level.INFO, "[logic] Successfully finished item " + itemId + " from workflow " + currentItem.getWorkflowId());
