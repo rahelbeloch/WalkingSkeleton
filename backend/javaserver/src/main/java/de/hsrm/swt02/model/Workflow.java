@@ -27,17 +27,29 @@ public class Workflow extends RootElement {
     private boolean active;
 
     private Form form;
+
+    private String name;
+    
     /**
      * Constructor for Workflow without parameters.
      */
     public Workflow() {
+       this("No Name Workflow");
+    }
+    
+    /**
+     * Constructor for passing a name for this workflow.
+     * @param name of the workflow
+     */
+    public Workflow(String name) {
         super();
         steps = new ArrayList<Step>();
         items = new ArrayList<Item>();
         form = new Form();
         active = true;
+        this.name = name;
     }
-
+    
     /**
      * Steps getter. There is no setter because steps is an ArrayList.
      * @return steps is the list of steps of a workflow
@@ -316,5 +328,21 @@ public class Workflow extends RootElement {
         ret += "--- WORKFLOW ENDE ---";
 
         return ret;
+    }
+
+    /**
+     * Setter for name.
+     * @param name of workflow
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    /**
+     * Gettter for name.
+     * @return name of wf
+     */
+    public String getName() {
+        return this.name;
     }
 }
