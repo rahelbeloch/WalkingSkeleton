@@ -5,12 +5,18 @@
              xmlns:viewmodel="clr-namespace:Client.ViewModel">
              
     <Application.Resources>
-        <DataTemplate DataType="{x:Type viewmodel:DashboardViewModel}">
-            <view:DashboardUserControl />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
-            <view:LoginUserControl />
-        </DataTemplate>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type viewmodel:DashboardViewModel}">
+                <view:DashboardUserControl />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
+                <view:LoginUserControl />
+            </DataTemplate>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/DesignerItems/Expander.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
     
 </Application>
