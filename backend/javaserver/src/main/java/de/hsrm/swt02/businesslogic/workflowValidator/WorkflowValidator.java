@@ -15,6 +15,7 @@ import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.WorkflowCyclesEx
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.WorkflowMustTerminateException;
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
+import de.hsrm.swt02.model.Fork;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
 import de.hsrm.swt02.model.Workflow;
@@ -47,7 +48,11 @@ public class WorkflowValidator {
      * @throws LogicException to catch InvalidWorkflowException and IncompleteEleException
      */
     public boolean isValid() throws LogicException {
-        if (numberOfStartSteps() != 1) {
+        if (checkActionsNextSteps()) {
+            throw new IncompleteEleException("[validator] invalid number of NextSteps in Action.");
+        } else if (checkForksNextSteps()) {
+            throw new IncompleteEleException("[validator] invalid number of NextSteps in Fork.");
+        } else if (numberOfStartSteps() != 1) {
             throw new ExpectedOneStartStepException();
         } else if (numberOfFinalSteps() < 1) {
             throw new ExpectedAtLeastOneFinalStepException();
@@ -57,7 +62,7 @@ public class WorkflowValidator {
             throw new WorkflowCyclesException();
         } else {
             for (Step step : workflow.getSteps()) {
-                if (!(step instanceof FinalStep) && !hasRole(step)) {
+                if (!((step instanceof FinalStep) || (step instanceof Fork)) && !hasRole(step)) {
                     throw new IncompleteEleException(
                             "Every step must have an assigned role.");
                 } else if (!isReachable(getStartStep(), step)) {
@@ -70,6 +75,35 @@ public class WorkflowValidator {
         return true;
     }
 
+    /**
+     * checks number of Actions NextSteps.
+     * @return True is amount is valid, false if not
+     */
+    public boolean checkActionsNextSteps() {
+        for (Step step: workflow.getSteps()) {
+            if (step instanceof Action) {
+                if (step.getNextSteps().size() != 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * checks number of Forks NextSteps.
+     * @return True is amount is valid, false if not
+     */
+    public boolean checkForksNextSteps() {
+        for (Step step: workflow.getSteps()) {
+            if (step instanceof Fork) {
+                if (step.getNextSteps().size() != 2) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     /**
      * checks if a given step has an assigned role.
      * 
