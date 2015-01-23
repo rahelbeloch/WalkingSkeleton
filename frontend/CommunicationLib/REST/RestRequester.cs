@@ -198,6 +198,8 @@ namespace RestAPI
                 throw;
             }
 
+            Console.WriteLine(response.Content);
+
             //Deserialize JSON
             O desObj = JsonConvert.DeserializeObject<O>(response.Content, Constants.JSON_SETTINGS);
             if (desObj.GetType() == typeof(Workflow))
