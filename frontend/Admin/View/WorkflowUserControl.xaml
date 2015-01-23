@@ -169,19 +169,35 @@
                                 <Label DockPanel.Dock="Top"
                                        Width="80"
                                        Height="Auto"
-                                           HorizontalAlignment="Left"
-                                           Content="{Binding actStep}"
-                                           Margin="5" />
+                                       HorizontalAlignment="Left"
+                                       Content="{Binding actStep}"
+                                       Margin="5" />
                                 <Label DockPanel.Dock="Top"
                                            Visibility="{Binding descriptionVisibility}" 
-                                           Content="{Binding StepLabelContent}"
+                                           Content="Beschreibung"
+                                           Margin="5" />
+
+
+                                <TextBox 
+                                            DockPanel.Dock="Top"
+                                            TextWrapping="NoWrap"
+                                            AcceptsReturn="False"
+                                            Margin="5"
+                                            Visibility="{Binding descriptionVisibility}" 
+                                            Text="{Binding actStep.description, Mode=TwoWay}"
+                                             
+                            />
+                                <Label DockPanel.Dock="Top"
+                                           Visibility="{Binding pythonCodeVisibility}" 
+                                           Content="Python-Code"
                                            Margin="5" />
 
 
                                 <TextBox 
                                             DockPanel.Dock="Top"
                                             Width="200"
-                                            Visibility="{Binding descriptionVisibility}" 
+                                            Margin="5"
+                                            Visibility="{Binding pythonCodeVisibility}" 
                                             Text="{Binding actStep.description, Mode=TwoWay}"
                                             TextWrapping="Wrap"
                                             AcceptsReturn="True"
@@ -190,14 +206,13 @@
                                             VerticalScrollBarVisibility="Visible"    
                             />
 
-
                                 <Label DockPanel.Dock="Top"
                                            Visibility="{Binding roleVisibility}"
                                            Content="Rolle: "
                                            Margin="5" />
 
                                 <ComboBox Visibility="{Binding roleVisibility}" DockPanel.Dock="Top"  Height="25" Width="120" HorizontalAlignment="Left"  
-
+                                              Margin="5"
                                               ItemsSource="{Binding roleCollection}" 
                                               DisplayMemberPath="rolename"
                                               SelectedItem="{Binding actStep.selectedRole}" />
