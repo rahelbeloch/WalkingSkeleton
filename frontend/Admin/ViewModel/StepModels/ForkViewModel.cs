@@ -61,7 +61,14 @@ namespace Admin
                 NotifyChanged("description");
             }
         }
-        private String _description = "";
+        private String _description = "def check(metaData):\n" +
+                                      "    #metadata ist ein dict gefüllt mit den Formulardaten des Workflows\n"+
+                                      "    #return true, oberer Pfad, return false, unterer Pfad\n"+
+                                      "    if metaData:\n" +
+                                      "        return True\n" +
+                                      "    else:\n" +
+                                      "        return False\n";
+      
         
 
         private void Init()
