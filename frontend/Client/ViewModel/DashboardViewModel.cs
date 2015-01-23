@@ -105,7 +105,6 @@ namespace Client.ViewModel
                     break;
                 }
             }
-            if(updatedWorkflow.active) {
                 DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
                 IList<string> startableList = null;
@@ -130,7 +129,8 @@ namespace Client.ViewModel
                     row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.form);
                     toUpdate.AddDashboardRow(row);
                 }
-
+            if (updatedWorkflow.active || _relevantItems.Count > 0)
+                {
                 if (oldIndex >= 0)
                 {
                     dashboardWorkflows.Insert(oldIndex, toUpdate);
