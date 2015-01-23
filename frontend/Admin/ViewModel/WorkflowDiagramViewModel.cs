@@ -191,6 +191,23 @@ namespace Admin.ViewModel
         }
         private Visibility _roleVisibility;
 
+         /// <summary>
+        /// Property of the Python-Code Visibility
+        /// </summary>
+        public Visibility pythonCodeVisibility
+        {
+            get
+            {
+                return _pythonCodeVisibility;
+            }
+            set
+            {
+                _pythonCodeVisibility = value;
+                OnChanged("pythonCodeVisibility");
+            }
+        }
+        private Visibility _pythonCodeVisibility;
+        
         /// <summary>
         /// Propert of the Display View
         /// </summary>
@@ -392,19 +409,7 @@ namespace Admin.ViewModel
         }
         private string _stepDescription = "";
 
-        public string StepLabelContent
-        {
-            get
-            {
-                return _stepLabelContent;
-            }
-            set
-            {
-                _stepLabelContent = value;
-                OnChanged("StepLabelContent");
-            }
-        }
-        private string _stepLabelContent = "";
+       
 
         /// <summary>
         /// Property for the displayed Tab
@@ -553,24 +558,27 @@ namespace Admin.ViewModel
                 if (actStep is FinalStepViewModel)
                 {
                     descriptionVisibility = Visibility.Collapsed;
+                    pythonCodeVisibility = Visibility.Collapsed;
                     roleVisibility = Visibility.Collapsed;
                 }
                 if (actStep is StartStepViewModel)
                 {
                     descriptionVisibility = Visibility.Collapsed;
+                    pythonCodeVisibility = Visibility.Collapsed;
                     roleVisibility = Visibility.Visible;
                 }
                 if (actStep is ActionViewModel)
                 {
                     descriptionVisibility = Visibility.Visible;
+                    pythonCodeVisibility = Visibility.Collapsed;
                     roleVisibility = Visibility.Visible;
-                    StepLabelContent = "Beschreibung";
+                    
                 }
                 if (actStep is ForkViewModel)
                 {
-                    descriptionVisibility = Visibility.Visible;
+                    descriptionVisibility = Visibility.Collapsed;
+                    pythonCodeVisibility = Visibility.Visible;
                     roleVisibility = Visibility.Collapsed;
-                    StepLabelContent = "Python-Code";
                 }
             }
             
