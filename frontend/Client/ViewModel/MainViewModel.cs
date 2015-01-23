@@ -191,7 +191,7 @@ namespace Client.ViewModel
         {
             logger.Info("Received Workflow for Update: ID=" + workflow.id);
             // route update-handling to subcomponents
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.AddWorkflowToModel(workflow)));
+            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardViewModel.UpdateWorkflowToModel(workflow)));
         }
         
         /// <summary>
