@@ -106,6 +106,7 @@ namespace CommunicationLib.Model
                 {11550, typeof(ExpectedOneStartStepException​)},
                 {11560, typeof(ExpectedAtLeastOneFinalStepException)},
                 {11570, typeof(ExpectedAtLeastOneActionException)},
+                {11580, typeof(InvalidPythonSyntaxException)},
                 
             //Error codes for connection errors
             {12000,typeof(ConnectionException)},
