@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComLib.cs" />
+    <Compile Include="Model\DataModel\Fork.cs" />
     <Compile Include="Model\DataModel\Form.cs" />
     <Compile Include="Model\DataModel\FormEntry.cs" />
     <Compile Include="Model\Exception\ConnectionExceptions\InvalidAddressException.cs" />
