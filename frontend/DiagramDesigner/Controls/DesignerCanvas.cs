@@ -99,6 +99,13 @@ namespace DiagramDesigner
                         sourceDataItem.DataItem.Parent.RemoveItemCommand.Execute(sourceDataItem.DataItem.Parent.Items[indexOfLastTempConnection]);
                         MessageBox.Show("Die Verknüpfung an einen Ausgang ist nicht erlaubt.");
                     }
+                    else if (sourceDataItem.DataItem.GetType().Name == "StartStepViewModel" && sinkDataItem.DataItem.GetType().Name == "ForkViewModel") 
+                    {
+                        //Need to remove last item as we did not finish drawing the path
+                        int indexOfLastTempConnection = sourceDataItem.DataItem.Parent.Items.Count - 1;
+                        sourceDataItem.DataItem.Parent.RemoveItemCommand.Execute(sourceDataItem.DataItem.Parent.Items[indexOfLastTempConnection]);
+                        MessageBox.Show("Eine Bedingung darf nicht unmittelbar auf einen Startzustand folgen.");
+                    }
                     else
                     {
                         int indexOfLastTempConnection = sinkDataItem.DataItem.Parent.Items.Count - 1;
