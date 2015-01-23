@@ -228,6 +228,20 @@ public class Workflow extends RootElement {
         }
         return false;
     }
+    
+    /**
+     * This method returns all unfinished items of its workflow.
+     * @return list of unfinished (finished = false) items
+     */
+    public List<Item> unfinishedItems() {
+        final List<Item> unfinishedItems = new ArrayList<Item>();
+        for (Item item : items) {
+            if (!(item.isFinished())) {
+                unfinishedItems.add(item);
+            }
+        }
+        return unfinishedItems;
+    }
 
     /**
      * Deep Copy - Cloning method for Workflows.

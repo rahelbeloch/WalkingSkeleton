@@ -2,6 +2,7 @@ package de.hsrm.swt02.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -105,6 +106,24 @@ public class Step extends RootElement {
      */
     public void addRole(String rolename) {
         this.roleIds.add(rolename);
+    }
+    
+    /**
+     * This method check if the role list of step contains a role e. g. from a user.
+     * @param roleList role collection of e. g. a user
+     * @return true if there is a match else false
+     */
+    public boolean containsRole(Collection<Role> roleList) {
+        if (roleList != null) {
+            for (String roleids : roleIds) {
+                for (Role role : roleList) {
+                    if (role.getRolename().equals(roleids)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
    
     /**
