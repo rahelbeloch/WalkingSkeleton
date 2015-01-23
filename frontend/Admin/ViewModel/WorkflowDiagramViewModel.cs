@@ -351,21 +351,24 @@ namespace Admin.ViewModel
                         selectedForm = _actWorkflow.form.Clone<Form>();
                     }
 
+                    WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
+                    
                     showDetails = Visibility.Visible;
                     actStepVisibility = Visibility.Collapsed;
-                    WorkflowDiagramConverter.WorkflowToDesignerItems(_actWorkflow, DiagramViewModel);
                     DiagramViewModel.locked = true;
-                    OnChanged("enableStepDetais");
+                    
                 }
                 else
                 {
                     selectedForm = null;
+
                     showDetails = Visibility.Collapsed;
                     DiagramViewModel.Items.Clear();
                     DiagramViewModel.locked = false;
-                    OnChanged("enableStepDetais");
+                    
                 }
                 
+                OnChanged("enableStepDetais");
                 OnChanged("actWorkflow");
                 OnChanged("items");
             }
@@ -419,10 +422,7 @@ namespace Admin.ViewModel
             //ease if you wish just create a new IPathFinder class and pass it in right here
             ConnectorViewModel.PathFinder = new OrthogonalPathFinder();
             
-            _showDetails = Visibility.Collapsed;
-            _editView = Visibility.Collapsed;
-            _displayView = Visibility.Visible;
-            _actStepVisibility = Visibility.Collapsed;
+            showInfoView();
             
             try
             {
@@ -526,8 +526,7 @@ namespace Admin.ViewModel
 
         private void OnSelectedItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //if (editView == Visibility.Visible)
-            //{
+            
             if (diagramViewModel.SelectedItemsCollection.Count == 1)
             {
                 actStepVisibility = Visibility.Visible;
@@ -555,7 +554,7 @@ namespace Admin.ViewModel
                 descriptionVisibility = Visibility.Collapsed;
                 roleVisibility = Visibility.Collapsed;
             }
-            //}
+            
         }
 
         #region commands
@@ -630,13 +629,9 @@ namespace Admin.ViewModel
                                 } 
                             }
 
-                            DiagramViewModel.locked = false;
-                            OnChanged("enableStepDetais");
-                            displayView = Visibility.Collapsed;
-                            editView = Visibility.Visible;
-                            showDetails = Visibility.Collapsed;
-                            actStepVisibility = Visibility.Collapsed;
                             DiagramViewModel.ClearSelectedItemsCommand.Execute(this);
+                            showEditView();
+                            
                         }, canExecute => _actWorkflow != null);
                 }
                 return _editWorkflowCommand;
@@ -657,9 +652,7 @@ namespace Admin.ViewModel
                     {
                         actWorkflow = null;
                         DiagramViewModel.Items.Clear();
-                        displayView = Visibility.Collapsed;
-                        editView = Visibility.Visible;
-                        showDetails = Visibility.Collapsed;
+                        showEditView();
                     });
                 }
                 return _newWorkflowCommand;
@@ -678,11 +671,7 @@ namespace Admin.ViewModel
                 {
                     _displayViewCommand = new ActionCommand(execute =>
                     {
-                        editView = Visibility.Collapsed;
-                        displayView = Visibility.Visible;
-                        showDetails = Visibility.Visible;
-                        DiagramViewModel.locked = true;
-                        OnChanged("enableStepDetais");
+                        showInfoView();
                     });
                 }
                 return _displayViewCommand;
@@ -758,11 +747,8 @@ namespace Admin.ViewModel
                 }
 
                 _restRequester.PostObject(newWorkflow);
-                displayView = Visibility.Visible;
-                editView = Visibility.Collapsed;
-                actStepVisibility = Visibility.Collapsed;
-                showDetails = Visibility.Visible;
-                DiagramViewModel.locked = true;
+
+                showInfoView();
                 MessageBox.Show("Der Workflow wurde erfolgreich gespeichert.");
             }
             catch (BasicException be)
@@ -776,6 +762,34 @@ namespace Admin.ViewModel
         {
             return itemsToRemove.Contains(connector.DataItem);
         }
-        
+        /// <summary>
+        /// Method display Editing View.
+        /// </summary>
+        private void showEditView()
+        {
+
+            DiagramViewModel.locked = false;
+            OnChanged("enableStepDetais");
+
+            displayView = Visibility.Collapsed;
+            editView = Visibility.Visible;
+            showDetails = Visibility.Collapsed;
+            actStepVisibility = Visibility.Collapsed;
+
+        }
+        /// <summary>
+        /// Method display Info/Detail View.
+        /// </summary>
+        private void showInfoView()
+        {
+            DiagramViewModel.locked = true;
+            OnChanged("enableStepDetais");
+            
+            displayView = Visibility.Visible;
+            editView = Visibility.Collapsed;
+            actStepVisibility = Visibility.Collapsed;
+            showDetails = Visibility.Visible;
+            
+        }
     }   
 }
