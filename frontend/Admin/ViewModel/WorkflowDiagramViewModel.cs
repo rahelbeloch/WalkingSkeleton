@@ -671,6 +671,7 @@ namespace Admin.ViewModel
                 {
                     _displayViewCommand = new ActionCommand(execute =>
                     {
+                        DiagramViewModel.Items.Clear();
                         showInfoView();
                     });
                 }
