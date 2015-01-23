@@ -43,7 +43,6 @@ namespace Client.ViewModel
         {
             _restRequester = _mainViewModel.restRequester;
             logger.Debug("Init Model");
-            _workflows.Clear();
             IList<Workflow> workflowList = null;
             try
             {
@@ -54,7 +53,6 @@ namespace Client.ViewModel
             {
                 workflowList = new List<Workflow>();
             }
-            workflowList.ToList().ForEach(_workflows.Add);
 
             _startableWorkflows.Clear();
             IList<string> startableList = null;
@@ -71,13 +69,13 @@ namespace Client.ViewModel
             }
             startableList.ToList().ForEach(_startableWorkflows.Add);
             
-            foreach (Workflow workflow in _workflows)
+            foreach (Workflow workflow in workflowList)
             {
-                AddWorkflowToModel(workflow);
+                UpdateWorkflowToModel(workflow);
                 _mainViewModel.myComLib.Listener.RegisterItemSource(workflow);
             }
 
-            if (_workflows.Count == 0 && startableList.Count == 0)
+            if (dashboardWorkflows.Count == 0 && startableList.Count == 0)
             {
                 workflowMessage = "Keine Workflows vorhanden.";
                 workflowMessageVisibility = "Visible";
@@ -93,7 +91,7 @@ namespace Client.ViewModel
         /// Update a single workflow
         /// </summary>
         /// <param name="updatedWorkflow">workflow which has to be updated</param>
-        public void AddWorkflowToModel(Workflow updatedWorkflow)
+        public void UpdateWorkflowToModel(Workflow updatedWorkflow)
         {
             logger.Debug("addWorkflowtoModel");
 
@@ -107,33 +105,43 @@ namespace Client.ViewModel
                     break;
                 }
             }
+            if(updatedWorkflow.active) {
+                DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
-            DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
+                IList<string> startableList = null;
+                _startableWorkflows.Clear();
+                try
+                {
+                    startableList = _restRequester.GetStartablesByUser();
+                }
+                catch (BasicException exc) { MessageBox.Show(exc.Message); }
+                startableList.ToList().ForEach(_startableWorkflows.Add);
 
-            IList<string> startableList = null;
-            _startableWorkflows.Clear();
-            try
-            {
-                startableList = _restRequester.GetStartablesByUser();
+                toUpdate.startPermission = _startableWorkflows.Contains(updatedWorkflow.id);
+
+                _relevantItems.Clear();
+                _restRequester.GetRelevantItemsByUser(updatedWorkflow.id).ToList().ForEach(_relevantItems.Add);
+                Step activeStep;
+                DashboardRow row;
+                foreach (Item item in _relevantItems)
+                {
+                    activeStep = GetStepById(item.GetActiveStepId(), updatedWorkflow);
+                    logger.Debug("active Step" + activeStep.ToString());
+                    row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.form);
+                    toUpdate.AddDashboardRow(row);
+                }
+
+                if (oldIndex >= 0)
+                {
+                    dashboardWorkflows.Insert(oldIndex, toUpdate);
+                }
+                else
+                {
+                    dashboardWorkflows.Add(toUpdate);
+                }
+                logger.Debug("Workflow Update ID=" + toUpdate.actWorkflow.id + " ItemCount=" + toUpdate.dashboardRows.Count); 
             }
-            catch (BasicException exc) { MessageBox.Show(exc.Message); }
-            startableList.ToList().ForEach(_startableWorkflows.Add);
-
-            toUpdate.startPermission = _startableWorkflows.Contains(updatedWorkflow.id);
-
-            _relevantItems.Clear();
-            _restRequester.GetRelevantItemsByUser(updatedWorkflow.id).ToList().ForEach(_relevantItems.Add);
-            Step activeStep;
-            DashboardRow row;
-            foreach (Item item in _relevantItems)
-            {
-                activeStep = GetStepById(item.GetActiveStepId(), updatedWorkflow);
-                logger.Debug("active Step" + activeStep.ToString());
-                row = new DashboardRow(item, activeStep, _userName, updatedWorkflow.form);
-                toUpdate.AddDashboardRow(row);
-            }
-
-            if (_workflows.Count == 0 && startableList.Count == 0)
+            if (dashboardWorkflows.Count == 0)
             {
                 workflowMessage = "Keine Workflows vorhanden.";
                 workflowMessageVisibility = "Visible";
@@ -143,17 +151,6 @@ namespace Client.ViewModel
             {
                 workflowMessageVisibility = "Collapsed";
             }
-
-            if (oldIndex >= 0)
-            {
-                dashboardWorkflows.Insert(oldIndex, toUpdate);
-            }
-            else
-            {
-                dashboardWorkflows.Add(toUpdate);
-            }
-
-            logger.Debug("Workflow Update ID="+toUpdate.actWorkflow.id + " ItemCount="+toUpdate.dashboardRows.Count); 
         }
 
         /// <summary>
@@ -292,7 +289,6 @@ namespace Client.ViewModel
         public void DeleteModel()
         {
             logger.Info("Clear Model");
-            _workflows.Clear();
             _startableWorkflows.Clear();
             _relevantItems.Clear();
             _dashboardWorkflows.Clear();
@@ -473,12 +469,6 @@ namespace Client.ViewModel
             }
         }
         private String _userName = "";
-
-        /// <summary>
-        /// List of all workflows from server, displayed in this ViewModel.
-        /// </summary>
-        public ObservableCollection<Workflow> workflows { get { return _workflows; } }
-        private ObservableCollection<Workflow> _workflows = new ObservableCollection<Workflow>();
         
         /// <summary>
         /// List of all ids from workflows displayed in this ViewModel.
