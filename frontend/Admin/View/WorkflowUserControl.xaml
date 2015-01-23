@@ -71,7 +71,11 @@
                         <Button x:Name="displayView" DockPanel.Dock="Bottom" Content="Zurück zur Übersicht" Margin="20" Command="{Binding displayViewCommand}" Height="26" Width="120"/>
                     </DockPanel>
                     <DockPanel DockPanel.Dock="Top" Margin="20" Visibility="{Binding editView}">
-
+                        <Label Content="Name" FontSize="12" FontWeight="Medium" HorizontalAlignment="Left" />
+                        <TextBox  DockPanel.Dock="Top"
+                                  Text="{Binding actWorkflow.name, Mode=TwoWay}"
+                                  TextWrapping="Wrap"
+                                  AcceptsReturn="True" />
                         <tools:ToolBoxControl DockPanel.Dock="Top" Grid.Column="0"
                               DataContext="{Binding toolBoxViewModel}" />
                     </DockPanel>
@@ -109,11 +113,17 @@
                     </DockPanel>
 
                     <!--Items-->
-                    <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">                     
-                        <Label Content="Anzahl der Items: "  FontSize="12" FontWeight="Medium" HorizontalAlignment="Left" />
-                        <Label Content="{Binding items.Count}"  FontSize="12" FontWeight="Medium" HorizontalAlignment="Right" />
-                        <Label Content="Anzahl der Steps: "  FontSize="12" FontWeight="Medium" HorizontalAlignment="Left" />
-                        <Label Content="{Binding actWorkflow.steps.Count}"  FontSize="12" FontWeight="Medium" HorizontalAlignment="Right" />
+                    <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
+                                
+                        <DockPanel>
+                            <Label Content="Anzahl der Items: "  FontSize="12" FontWeight="Medium" HorizontalAlignment="Left" />
+                            <Label Content="{Binding items.Count}"  FontSize="12" FontWeight="Medium" HorizontalAlignment="Right" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label Content="Anzahl der Steps: "  FontSize="12" FontWeight="Medium" HorizontalAlignment="Left" />
+                            <Label Content="{Binding actWorkflow.steps.Count}"  FontSize="12" FontWeight="Medium" HorizontalAlignment="Right" />
+                        </DockPanel>
+                        
                         <Expander Header="Items"
                                     IsExpanded="True">
                             <ListView DockPanel.Dock="Top"  ItemsSource="{Binding items}" MaxHeight="200" Height="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
