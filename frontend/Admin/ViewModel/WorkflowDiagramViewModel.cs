@@ -526,11 +526,16 @@ namespace Admin.ViewModel
 
         private void OnSelectedItemChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            
-            if (diagramViewModel.SelectedItemsCollection.Count == 1)
+            if (diagramViewModel.SelectedItemsCollection.Count == 0)
+            {
+                actStepVisibility = Visibility.Collapsed;
+                descriptionVisibility = Visibility.Collapsed;
+                roleVisibility = Visibility.Collapsed;
+            } 
+            else
             {
                 actStepVisibility = Visibility.Visible;
-                actStep = diagramViewModel.SelectedItemsCollection.First();
+                actStep = diagramViewModel.SelectedItemsCollection.Last();
                 if (actStep is FinalStepViewModel)
                 {
                     descriptionVisibility = Visibility.Collapsed;
@@ -548,12 +553,7 @@ namespace Admin.ViewModel
 
                 }
             }
-            if (diagramViewModel.SelectedItemsCollection.Count == 0 || diagramViewModel.SelectedItemsCollection.Count > 1)
-            {
-                actStepVisibility = Visibility.Collapsed;
-                descriptionVisibility = Visibility.Collapsed;
-                roleVisibility = Visibility.Collapsed;
-            }
+            
             
         }
 
