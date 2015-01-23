@@ -23,6 +23,7 @@ namespace Admin
         {
             toolBoxItems.Add(new ToolBoxData("../Images/Start.png", typeof(StartStepViewModel)));
             toolBoxItems.Add(new ToolBoxData("../Images/Action.png", typeof(ActionViewModel)));
+            toolBoxItems.Add(new ToolBoxData("../Images/Condition.png", typeof(ForkViewModel)));
             toolBoxItems.Add(new ToolBoxData("../Images/End.png", typeof(FinalStepViewModel)));
         }
 

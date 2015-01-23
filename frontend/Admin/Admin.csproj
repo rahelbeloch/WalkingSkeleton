@@ -75,6 +75,7 @@
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="Helpers\BooleanToGermanStringConverter.cs" />
     <Compile Include="ViewModel\FormViewModel.cs" />
+    <Compile Include="ViewModel\StepModels\ForkViewModel.cs" />
     <Compile Include="ViewModel\WorkflowDiagramViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -117,6 +118,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\DesignerItems\FinalStepDataTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\DesignerItems\ForkDataTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
