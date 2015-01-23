@@ -392,6 +392,20 @@ namespace Admin.ViewModel
         }
         private string _stepDescription = "";
 
+        public string StepLabelContent
+        {
+            get
+            {
+                return _stepLabelContent;
+            }
+            set
+            {
+                _stepLabelContent = value;
+                OnChanged("StepLabelContent");
+            }
+        }
+        private string _stepLabelContent = "";
+
         /// <summary>
         /// Property for the displayed Tab
         /// </summary>
@@ -550,7 +564,13 @@ namespace Admin.ViewModel
                 {
                     descriptionVisibility = Visibility.Visible;
                     roleVisibility = Visibility.Visible;
-
+                    StepLabelContent = "Beschreibung";
+                }
+                if (actStep is ForkViewModel)
+                {
+                    descriptionVisibility = Visibility.Visible;
+                    roleVisibility = Visibility.Collapsed;
+                    StepLabelContent = "Python-Code";
                 }
             }
             
