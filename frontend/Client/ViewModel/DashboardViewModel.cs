@@ -39,7 +39,7 @@ namespace Client.ViewModel
         /// <summary>
         /// Init update-Methode used while the login.
         /// </summary>
-        private void InitModel()
+        public void InitModel()
         {
             _restRequester = _mainViewModel.restRequester;
             logger.Debug("Init Model");
@@ -96,6 +96,18 @@ namespace Client.ViewModel
         public void AddWorkflowToModel(Workflow updatedWorkflow)
         {
             logger.Debug("addWorkflowtoModel");
+
+            int oldIndex = -1;
+            foreach (DashboardWorkflow dashboardWorkflow in dashboardWorkflows)
+            {
+                if (dashboardWorkflow.actWorkflow.id == updatedWorkflow.id)
+                {
+                    oldIndex = dashboardWorkflows.IndexOf(dashboardWorkflow);
+                    dashboardWorkflows.Remove(dashboardWorkflow);
+                    break;
+                }
+            }
+
             DashboardWorkflow toUpdate = new DashboardWorkflow(updatedWorkflow);
 
             IList<string> startableList = null;
@@ -132,7 +144,15 @@ namespace Client.ViewModel
                 workflowMessageVisibility = "Collapsed";
             }
 
-            Application.Current.Dispatcher.Invoke(new System.Action(() => _dashboardWorkflows.Add(toUpdate)));
+            if (oldIndex >= 0)
+            {
+                dashboardWorkflows.Insert(oldIndex, toUpdate);
+            }
+            else
+            {
+                dashboardWorkflows.Add(toUpdate);
+            }
+
             logger.Debug("Workflow Update ID="+toUpdate.actWorkflow.id + " ItemCount="+toUpdate.dashboardRows.Count); 
         }
 
@@ -269,7 +289,7 @@ namespace Client.ViewModel
         /// <summary>
         /// ´Clears all data in the model.
         /// </summary>
-        private void DeleteModel()
+        public void DeleteModel()
         {
             logger.Info("Clear Model");
             _workflows.Clear();
