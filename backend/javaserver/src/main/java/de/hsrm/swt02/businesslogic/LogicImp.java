@@ -370,6 +370,7 @@ public class LogicImp implements Logic {
 
         for (Item item : workflow.getItems()) {
             final MetaEntry me = item.getActStep();
+            System.out.println(me);
             if (me != null) {
                 final Step step = workflow.getStepById(me.getGroup());
                 if (checkAuthorization(step, username)) {
@@ -405,6 +406,8 @@ public class LogicImp implements Logic {
         final List<Workflow> workflows = new LinkedList<Workflow>();
         for (Workflow wf : persistence.loadAllWorkflows()) {
             if (wf.isActive()) {
+                workflows.add(wf);
+            } else if (wf.hasUnfinishedItem()) {
                 workflows.add(wf);
             }
         }

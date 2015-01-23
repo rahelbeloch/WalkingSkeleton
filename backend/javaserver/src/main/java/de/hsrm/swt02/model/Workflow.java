@@ -213,6 +213,21 @@ public class Workflow extends RootElement {
             this.items.remove(itemToRemove);
         }
     }
+    
+    /**
+     * This method tells if a workflow has unfinished items.
+     * @return true if there are unfinished items else false
+     */
+    public boolean hasUnfinishedItem() {
+        if (items != null) {
+            for (Item item : items) {
+                if (!(item.isFinished())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Deep Copy - Cloning method for Workflows.
