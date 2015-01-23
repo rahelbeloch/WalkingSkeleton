@@ -2,15 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Admin">
 
-
     <!-- DataTemplate for DesignerCanvas look and feel -->
     <DataTemplate DataType="{x:Type local:StartStepViewModel}">
         <Grid>
             <Image IsHitTestVisible="False"
                    Stretch="Fill"
                    Source="../../Images/Start.png"
-                   Tag="setting" />
-            
+                   Tag="setting" />            
         </Grid>
     </DataTemplate>
 

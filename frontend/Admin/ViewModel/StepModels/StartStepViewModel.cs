@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DiagramDesigner;
@@ -12,12 +11,12 @@ using Admin.ViewModel;
 namespace Admin
 {
     /// <summary>
-    /// StartStepViewModel class
+    /// StartStepViewModel class.
     /// </summary>
     public class StartStepViewModel : DesignerItemViewModelBase
     {
         /// <summary>
-        /// Constructor for StartStepViewModel
+        /// Constructor for StartStepViewModel.
         /// </summary>
         public StartStepViewModel(string id, DiagramViewModel parent, double left, double top, Role selectedRole)
             : base(id, parent, left, top)
@@ -27,7 +26,7 @@ namespace Admin
         }
 
         /// <summary>
-        /// Constructor for StartStepViewModel
+        /// Constructor for StartStepViewModel.
         /// </summary>
         public StartStepViewModel()
             : base()
@@ -36,7 +35,7 @@ namespace Admin
         }
 
         /// <summary>
-        /// Property for the selected Role
+        /// Property for the selected Role.
         /// </summary>
         public Role selectedRole
         {

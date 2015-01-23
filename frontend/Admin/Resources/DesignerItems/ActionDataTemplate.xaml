@@ -3,19 +3,14 @@
                     xmlns:view="clr-namespace:Admin.View"
                     xmlns:local="clr-namespace:Admin">
         
-
     <!-- DataTemplate for DesignerCanvas look and feel -->
     <DataTemplate DataType="{x:Type local:ActionViewModel}">
         <Grid>
             <Image IsHitTestVisible="False"
                    Stretch="Fill"
                    Source="../../Images/Action.png"
-                   Tag="setting" />
-            
+                   Tag="setting" />    
         </Grid>
     </DataTemplate>
-
-
-
-
+    
 </ResourceDictionary>

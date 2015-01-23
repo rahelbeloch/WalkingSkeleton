@@ -12,17 +12,12 @@ using Admin.ViewModel;
 namespace Admin
 {
     /// <summary>
-    /// Class for the ActionViewModel
+    /// Class for the ActionViewModel.
     /// </summary>
     public class ActionViewModel : DesignerItemViewModelBase
     {
-       
-
-        //WorkflowDiagramViewModel workflowViewModel = null;
-        //public ObservableCollection<Role> roleCollection { get { return workflowViewModel.roleCollection; } }
-
         /// <summary>
-        /// Constructor for the ActionViewModel
+        /// Constructor for the ActionViewModel.
         /// </summary>
         /// <param name="id"></param>
         /// <param name="parent"></param>
@@ -37,17 +32,16 @@ namespace Admin
         }
 
         /// <summary>
-        /// Constructor for the ActionViewModel
+        /// Constructor for the ActionViewModel.
         /// </summary>
         public ActionViewModel()
             : base()
         {
             Init();
-            
         }
 
         /// <summary>
-        /// Property for the selected Role
+        /// Property for the selected Role.
         /// </summary>
         public Role selectedRole
         {
@@ -64,7 +58,7 @@ namespace Admin
         private Role _selectedRole = null;
 
         /// <summary>
-        /// Property for the description
+        /// Property for the description.
         /// </summary>
         public String description
         {
