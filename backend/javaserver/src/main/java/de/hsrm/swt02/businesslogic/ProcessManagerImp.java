@@ -8,10 +8,12 @@ import com.google.inject.Singleton;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.exceptions.UserHasNoPermissionException;
 import de.hsrm.swt02.businesslogic.processors.ActionProcessor;
+import de.hsrm.swt02.businesslogic.processors.ForkProcessor;
 import de.hsrm.swt02.businesslogic.processors.StartProcessor;
 import de.hsrm.swt02.businesslogic.processors.StepProcessor;
 import de.hsrm.swt02.logging.UseLogger;
 import de.hsrm.swt02.model.Action;
+import de.hsrm.swt02.model.Fork;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.StartStep;
 import de.hsrm.swt02.model.Step;
@@ -88,6 +90,8 @@ public class ProcessManagerImp implements ProcessManager {
     public StepProcessor selectProcessor(Step step) {
         if (step instanceof Action) {
             return new ActionProcessor(persistence);
+        } else if (step instanceof Fork) {
+            return new ForkProcessor(persistence);
         }
         return null;
     }
