@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import com.google.inject.Inject;
 
 import de.hsrm.swt02.businesslogic.exceptions.AdminRoleDeletionException;
+import de.hsrm.swt02.businesslogic.exceptions.InactiveUserException;
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.LastAdminDeletedException;
 import de.hsrm.swt02.businesslogic.exceptions.LogInException;
@@ -464,7 +465,7 @@ public class LogicImp implements Logic {
         }
         
         if (!user.isActive() && !activeUserItem) {
-            throw new LogInException();
+            throw new LogInException(username + " ist inaktiv.");
         }
 
         // if (!user.getPassword().equals(password)) {
