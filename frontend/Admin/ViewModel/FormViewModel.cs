@@ -363,8 +363,13 @@ namespace Admin.ViewModel
                         }
                         form.id = _formDefModelId;
                         form.description = _formDefModelDescription;
-                        _restRequester.PostObject(form);
+                        try
+                        {
+                            _restRequester.PostObject(form);
+                        } catch (BasicException exc) { MessageBox.Show(exc.Message); }
                         formDefModel.Clear();
+                        _formDefModelDescription = "";
+                        _formDefModelId = "";
                         visibleDefinition = "Collapsed";
                         OnChanged("formDefModel");
                     }, canExecute => 
