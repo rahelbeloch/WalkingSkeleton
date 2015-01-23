@@ -34,6 +34,7 @@
                 <ResourceDictionary Source="Resources/DesignerItems/ActionDataTemplate.xaml" />
                 <ResourceDictionary Source="Resources/DesignerItems/FinalStepDataTemplate.xaml" />
                 <ResourceDictionary Source="Resources/DesignerItems/StartStepDataTemplate.xaml" />
+                <ResourceDictionary Source="Resources/DesignerItems/ForkDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
