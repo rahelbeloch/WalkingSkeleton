@@ -5,7 +5,7 @@
         
 
     <!-- DataTemplate for DesignerCanvas look and feel -->
-    <DataTemplate DataType="{x:Type local:ActionViewModel}">
+    <DataTemplate DataType="{x:Type local:ForkViewModel}">
         <Grid>
             <Image IsHitTestVisible="False"
                    Stretch="Fill"
