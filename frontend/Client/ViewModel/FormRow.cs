@@ -13,8 +13,10 @@ namespace Client.ViewModel
     /// </summary>
     public class FormRow
     {
-        // for dataType presentation
-        private static Dictionary<string, string> _typeMap = new Dictionary<string, string>
+        /// <summary>
+        /// for dataType presentation
+        /// </summary>
+        public static Dictionary<string, string> _typeMap = new Dictionary<string, string>
         {
             {"int", "Ganzzahl"},
             {"double", "Fließkommazahl"},
