@@ -610,7 +610,23 @@ namespace Admin.ViewModel
                     if (selectedItem.GetType() == typeof(ConnectorViewModel))
                     {
                         ConnectorViewModel c = (ConnectorViewModel)selectedItem;
-                        c.SourceConnectorInfo.DataItem.enableRightConnector = true;
+
+                        if (c.SourceConnectorInfo.DataItem.GetType() == typeof(ForkViewModel))
+                        {
+                            if (c.SourceConnectorInfo.Orientation == ConnectorOrientation.TrueOutput)
+                            {
+                                c.SourceConnectorInfo.DataItem.enableTopConnector = true;
+                            }
+                            else if (c.SourceConnectorInfo.Orientation == ConnectorOrientation.FalseOutput)
+                            {
+                                c.SourceConnectorInfo.DataItem.enableBottomConnector = true;
+                            }
+                        }
+                        else
+                        {
+                            c.SourceConnectorInfo.DataItem.enableRightConnector = true;
+                        }
+
                         ((FullyCreatedConnectorInfo)c.SinkConnectorInfo).DataItem.enableInputConnector = true;
                     }
                     DiagramViewModel.RemoveItemCommand.Execute(selectedItem);
