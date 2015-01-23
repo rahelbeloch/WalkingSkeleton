@@ -37,11 +37,11 @@ namespace UnitTestProject1
         public static void ClassInit(TestContext context)
         {
             // initialize admin client requester
-            myRequester = new RestRequester("admin", "http://localhost:18887");
+            myRequester = new RestRequester("admin", StaticRes.SERVER_URL);
             myRequester.InitializeClientProperties("TestAdmin", "abc123");
 
             // initialize user client requester
-            myClientRequester = new RestRequester("client", "http://localhost:18887");
+            myClientRequester = new RestRequester("client", StaticRes.SERVER_URL);
             
             // Some Loggings
             myListener = new TextWriterTraceListener("../../CommunicationTestLog.log", "myListener");

@@ -74,6 +74,7 @@
     <Compile Include="ServerRunning\CommunicationTestClient.cs" />
     <Compile Include="ServerNotRunning\CommunicationExceptionTest1.cs" />
     <Compile Include="ServerRunning\CommunicationExceptionTest2.cs" />
+    <Compile Include="ServerRunning\StaticRes.cs" />
     <Compile Include="WorkflowLogicTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
