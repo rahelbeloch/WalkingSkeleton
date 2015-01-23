@@ -12,6 +12,7 @@
 
     <DockPanel VerticalAlignment="Center" HorizontalAlignment="Center">
         <DockPanel>
+            <Label DockPanel.Dock="Top" Content="User-Client" FontSize="16" FontWeight="Bold" Foreground="CadetBlue"/>
             <Grid x:Name="LoginLayer" Background="White" Margin="0,0,2,5" Grid.RowSpan="2" Visibility="Visible" >
                 <Label Content="Login" HorizontalAlignment="Left" Margin="46,24.666,0,0" VerticalAlignment="Top" Width="97" FontWeight="Bold" FontSize="26.667"/>
                 <Label Content="Nutzername" HorizontalAlignment="Left" Margin="43,77,0,0" VerticalAlignment="Top" Width="200" FontWeight="Bold" FontSize="10"/>
