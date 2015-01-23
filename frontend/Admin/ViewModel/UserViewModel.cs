@@ -73,6 +73,7 @@ namespace Admin.ViewModel
             SelectedRole = null;
             EnteredRolename = "";
             EnteredUsername = "";
+            DetailedUser.username = "";
         }
 
         # region USER PROPERTIES
