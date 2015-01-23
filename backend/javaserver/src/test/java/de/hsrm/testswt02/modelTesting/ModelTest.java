@@ -1,8 +1,7 @@
 package de.hsrm.testswt02.modelTesting;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
@@ -10,6 +9,7 @@ import org.junit.Test;
 
 import de.hsrm.swt02.model.Action;
 import de.hsrm.swt02.model.FinalStep;
+import de.hsrm.swt02.model.Fork;
 import de.hsrm.swt02.model.Item;
 import de.hsrm.swt02.model.MetaEntry;
 import de.hsrm.swt02.model.MetaState;
@@ -40,16 +40,37 @@ public class ModelTest {
     }
 
     /**
-     * method for testing FinalStep: a new FinalStep is initializated and checked.
+     * method for testing FinalStep: a new FinalStep is initialized and checked.
      */
     @Test 
     public void finalStepTest() {
         final FinalStep fs = new FinalStep();
         assertThat(fs, instanceOf(FinalStep.class));
     }
+    
+    @Test
+    public void testForkBranching() {
+        final Fork fork = new Fork();
+        final Step s1 = new Step();
+        final Step s2 = new Step();
+        fork.getNextSteps().add(s1);
+        fork.getNextSteps().add(s2);
+        
+        assertEquals(fork.getFalseBranch(), fork.getNextSteps().get(1));
+        assertEquals(fork.getTrueBranch(), fork.getNextSteps().get(0));
+    }
 
     /**
-     * method for testing Item: a new Item is initializated and checked.
+     * method for testing Fork: a new Fork is initialized checked.
+     */
+    @Test
+    public void testFork() {
+        final Fork fork = new Fork();
+        assertThat(fork, instanceOf(Fork.class));
+    }
+    
+    /**
+     * method for testing Item: a new Item is initialized and checked.
      */
     @Test
     public void itemTest() {
@@ -58,7 +79,7 @@ public class ModelTest {
     }
 
     /**
-     * method for testing MetaEntry: a new MetaEntry is initializated and checked.
+     * method for testing MetaEntry: a new MetaEntry is initialized and checked.
      */
     @Test
     public void metaEntryTest() {
@@ -67,7 +88,7 @@ public class ModelTest {
     }
 
     /**
-     * method for testing MetaState: a new MetaState is initializated and checked.
+     * method for testing MetaState: a new MetaState is initialized and checked.
      */
     @Test
     public void metaStateTest() {
@@ -76,7 +97,7 @@ public class ModelTest {
     }
 
     /**
-     * method for testing RootElement: a new RootElement is initializated and checked.
+     * method for testing RootElement: a new RootElement is initialized and checked.
      */
     @Test
     public void rootElementTest() {
@@ -85,7 +106,7 @@ public class ModelTest {
     }
 
     /**
-     * method for testing StartStep: a new StartStep is initializated and checked.
+     * method for testing StartStep: a new StartStep is initialized and checked.
      */
     @Test
     public void startStepTest() {
@@ -98,7 +119,7 @@ public class ModelTest {
     }
 
     /**
-     * method for testing Step: a new Step is initializated and checked.
+     * method for testing Step: a new Step is initialized and checked.
      */
     @Test
     public void stepTest() {
@@ -107,7 +128,7 @@ public class ModelTest {
     }
 
     /**
-     * method for testing User: a new User is initializated and checked.
+     * method for testing User: a new User is initialized and checked.
      */
     @Test
     public void userTest() {
@@ -116,7 +137,7 @@ public class ModelTest {
     }
 
     /**
-     * method for testing Workflow: a new Workflow is initializated and checked.
+     * method for testing Workflow: a new Workflow is initialized and checked.
      */
     @Test
     public void worfklowTest() {
@@ -125,7 +146,7 @@ public class ModelTest {
     }
     
     /**
-     * method for testing Workflow: a new Workflow is initializated and checked.
+     * method for testing Workflow: a new Workflow is initialized and checked.
      */
     @Test
     public void roleTest() {
