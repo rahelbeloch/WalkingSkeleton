@@ -17,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * the (de)serialization process of derived types works correctly.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
-@JsonSubTypes({@Type(value = StartStep.class, name = "StartStep"), @Type(value = Action.class, name = "Action"), @Type(value = FinalStep.class, name = "FinalStep")})
+@JsonSubTypes({@Type(value = StartStep.class, name = "StartStep"), @Type(value = Action.class, name = "Action"), 
+    @Type(value = FinalStep.class, name = "FinalStep"), @Type(value = Fork.class, name = "Fork")})
 public class Step extends RootElement {
 
     @JsonIgnore
