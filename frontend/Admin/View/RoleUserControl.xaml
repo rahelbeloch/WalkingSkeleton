@@ -47,16 +47,28 @@
                             </ListView>
                         </DockPanel>
 
-                        <DockPanel Grid.Column="1" VerticalAlignment="Top">
-                            <DockPanel DockPanel.Dock="Top">
-                                <Label Content="Nutzername: "  VerticalContentAlignment="Center"/>
-                                <TextBox Width="120" Height="25" IsEnabled="{Binding EnableUserTextBox}">
-                                    <TextBox.Text>
-                                        <Binding Path="DetailedUser.id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
-                                    </TextBox.Text>
-                                </TextBox>
-                                <Button HorizontalAlignment="Right"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10" Command="{Binding DeselectCommand}"/>
+                        <DockPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,10,10,0">
+                            <Border BorderThickness="1" Background="LightGray" DockPanel.Dock="Top" Margin="0,0,0,10">
+                                <DockPanel Margin="4">
+                                <StackPanel>
+                                    <Label Content="Nutzername: " Height="25"/>
+                                    <Label Content="Password: " Height="25"/>
+                                </StackPanel>
+                                    <StackPanel>
+                                    <TextBox Width="120" Height="25" HorizontalAlignment="Left" IsEnabled="{Binding EnableUserTextBox}">
+                                        <TextBox.Text>
+                                            <Binding Path="DetailedUser.id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <TextBox Width="120" Height="25" HorizontalAlignment="Left" IsEnabled="{Binding EnableUserTextBox}">
+                                        <TextBox.Text>
+                                            <Binding Path="DetailedUser.password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>                             
+                                <Button HorizontalAlignment="Center"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10" Command="{Binding DeselectCommand}"/>
                             </DockPanel>
+                            </Border>
                             <DockPanel DockPanel.Dock="Top">
                                 <CheckBox IsChecked="{Binding DetailedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
                             </DockPanel>
