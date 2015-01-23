@@ -6,7 +6,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
-import de.hsrm.swt02.persistence.exceptions.PersistenceException;
 
 /**
  * This class represents an Item. It extends the class RootElement, so it can
