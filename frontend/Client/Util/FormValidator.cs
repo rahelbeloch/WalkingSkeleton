@@ -34,11 +34,12 @@ namespace Client.Util
             {
                 StringConverter stringConverter = new StringConverter();
                 FormRow entry = bindingGroup.Items[0] as FormRow;
-                String datatype = entry.datatype;
+                String datatype = FormRow._typeMap.FirstOrDefault(x => x.Value == entry.datatype).Key; ;
+                logger.Debug(datatype);
                 if (!entry.value.Equals(""))
                 {
                     logger.Debug("validation for" + entry.value);
-                    logger.Debug("datatye: " + datatype);
+                   
                     Regex regex = null;
                     switch (datatype)
                     {
