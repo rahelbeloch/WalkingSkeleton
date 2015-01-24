@@ -7,6 +7,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.python.antlr.ast.boolopType;
+
 import de.hsrm.swt02.businesslogic.exceptions.IncompleteEleException;
 import de.hsrm.swt02.businesslogic.exceptions.LogicException;
 import de.hsrm.swt02.businesslogic.workflowValidator.exceptions.ExpectedAtLeastOneActionException;
@@ -71,8 +73,8 @@ public class WorkflowValidator {
             throw new WorkflowCyclesException();
         } else {
             for (Step step : workflow.getSteps()) {
-            	if (!((step instanceof FinalStep) || (step instanceof Fork)) && !hasRole(step)) { 
-            			throw new IncompleteEleException(
+                if (!((step instanceof FinalStep) || (step instanceof Fork)) && !hasRole(step)) { 
+                    throw new IncompleteEleException(
                             "Every step must have an assigned role.");
                 } else if (!isReachable(getStartStep(), step)) {
                     throw new UnreachableStepException("step " + step.getId()
@@ -165,20 +167,33 @@ public class WorkflowValidator {
      * @return boolean
      */
     private boolean isReachable(Step actStep, Step stepToReach) {
-        if (actStep.getNextSteps().contains(stepToReach) || actStep.equals(stepToReach)) 
-        {
-            return true;
-        } else {
-        	// TODO: only temporary fix (unerreichbare endzustaende sind erlaubt)
-        	if(actStep.getNextSteps().isEmpty()) {
-        		return true;
-        	}
-        	
-            for (Step s : actStep.getNextSteps()) {
-                return isReachable(s, stepToReach);
+        boolean reachable = false;
+        while (!reachable) {
+            if (actStep.getNextSteps().contains(stepToReach) || actStep.equals(stepToReach)) {
+                reachable = true;
+            } else {
+                for (Step s: actStep.getNextSteps()) {
+                    reachable = isReachable(s, stepToReach);
+                }
             }
-            return false;
         }
+        return reachable;       
+        
+        
+// wieder einkommentieren falls obige Lösung nicht korrekt validiert, ansonsten eliminieren.
+//        
+//        if (actStep.getNextSteps().contains(stepToReach) || actStep.equals(stepToReach)) {
+//            return true;
+//        } else {
+//            if(actStep.getNextSteps().isEmpty()) {
+//                return true;
+//                }
+//            for (Step s : actStep.getNextSteps()) {
+//                return isReachable(s, stepToReach);
+//            }
+//            return false;
+//        }
+        
     }
 
     /**
