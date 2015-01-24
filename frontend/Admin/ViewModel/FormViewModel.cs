@@ -271,7 +271,7 @@ namespace Admin.ViewModel
                             {
                                 if (be is StorageFailedException)
                                 {
-                                    MessageBox.Show(be.Message + "\n Form konnte nicht gelöscht werden!");
+                                    MessageBox.Show("Das Formular " + selectedForm.id + "wird derzeit benutzt und kann nicht gelöscht werden.");
                                 }
                                 
                             }
