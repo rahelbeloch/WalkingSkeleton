@@ -23,7 +23,7 @@
                 </TextBox>
                 <Label Content="Passwort" HorizontalAlignment="Left" Margin="43,117,0,0" VerticalAlignment="Top" Width="200" FontWeight="Bold" FontSize="10"/>
                 <!-- <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="46,135.666,0,0" VerticalAlignment="Top" Width="210" IsEnabled="False"/> -->
-                <TextBox x:Name="txtPassword" HorizontalAlignment="Left" Height="23" Margin="46,135.666,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210">
+                <TextBox x:Name="txtPassword" FontFamily="Wingdings" HorizontalAlignment="Left" Height="23" Margin="46,135.666,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="210">
                     <TextBox.Text>
                         <Binding Path="securePwd" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                     </TextBox.Text>
