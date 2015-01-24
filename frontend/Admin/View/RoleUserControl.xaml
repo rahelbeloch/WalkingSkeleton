@@ -96,11 +96,12 @@
                 <TabItem Header="Rollenverwaltung" Height="23" VerticalAlignment="Bottom">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="12*" />
+                            <ColumnDefinition Width="67*"/>
+                            <ColumnDefinition Width="79*" />
                         </Grid.ColumnDefinitions>
 
-                        <DockPanel Grid.Column="0">
+                        <DockPanel Grid.Column="0" Grid.ColumnSpan="2">
                             <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding RoleCollection}" SelectedValue="{Binding SelectedRole, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
                                 <ListView.View>
                                     <GridView>
@@ -112,46 +113,55 @@
                             </ListView>
                         </DockPanel>
 
-                        <DockPanel Grid.Column="1" VerticalAlignment="Top">
-                            <DockPanel DockPanel.Dock="Top">
-                                <Label Content="Rolle: "  VerticalContentAlignment="Center"/>
-                                <TextBox Width="230" Height="25">
-                                    <TextBox.Text>
-                                        <Binding Path="EnteredRolename" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
-                                    </TextBox.Text>
-                                </TextBox>
-                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle hinzufügen" Height="25" Margin="10" Command="{Binding AddRoleCommand}"/>
-                            </DockPanel>
-
+                        <DockPanel Grid.Column="2" VerticalAlignment="Top" Margin="0 10 10 0">
+                            <Expander Header="Neue Rolle anlegen" IsExpanded="True" DockPanel.Dock="Top">
+                                <DockPanel DockPanel.Dock="Top">
+                                    <Label Content="Rolle: "  VerticalContentAlignment="Center"/>
+                                    <TextBox Width="230" Height="25">
+                                        <TextBox.Text>
+                                            <Binding Path="EnteredRolename" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle hinzufügen" Height="25" Margin="10" Command="{Binding AddRoleCommand}"/>
+                                </DockPanel>
+                            </Expander>
+                            
                             <DockPanel DockPanel.Dock="Top" >
-                                <Label Content="Nutzer in dieser Rolle: " DockPanel.Dock="Top"/>
+                                <Expander Header="Ausgewählte Rolle" IsExpanded="True" Margin="0 10 0 0">
+                                    <DockPanel DockPanel.Dock="Top">
+                                        <DockPanel DockPanel.Dock="Top">
+                                        <Label Content="Nutzer in dieser Rolle: " DockPanel.Dock="Top"/>
 
-                                <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding UserInSelectedRole}">
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridView.Columns >
-                                                <GridViewColumn Header="Nutzer in dieser Rolle" DisplayMemberBinding="{Binding id}" Width="180"/>
-                                                <GridViewColumn Header="Nutzer aus Rolle entfernen" Width="170">
-                                                    <GridViewColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <Button
+                                        <ListView DockPanel.Dock="Left" Margin="5" ItemsSource="{Binding UserInSelectedRole}">
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridView.Columns >
+                                                        <GridViewColumn Header="Nutzer in dieser Rolle" DisplayMemberBinding="{Binding id}" Width="180"/>
+                                                        <GridViewColumn Header="Nutzer aus Rolle entfernen" Width="170">
+                                                            <GridViewColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Button
                                                                Content="Entfernen"
                                                                Margin="0"
                                                                VerticalAlignment="Center"
                                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:RoleUserControl}, Path=DataContext.DeleteRoleFromUserCommand}" 
                                                                CommandParameter="{Binding }"/>
-                                                        </DataTemplate>
-                                                    </GridViewColumn.CellTemplate>
-                                                </GridViewColumn>
-                                            </GridView.Columns>
-                                        </GridView>
-                                    </ListView.View>
-                                </ListView>
+                                                                </DataTemplate>
+                                                            </GridViewColumn.CellTemplate>
+                                                        </GridViewColumn>
+                                                    </GridView.Columns>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+                                        </DockPanel>
+                                        <DockPanel DockPanel.Dock="Top">
+                                            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle entfernen" Height="25" Margin="0 5 5 5" Width="95" Command="{Binding DeleteRoleCommand}">
+                                            </Button>
+                                        </DockPanel>
+                                    </DockPanel>
+                                </Expander>
                             </DockPanel>
-                            <DockPanel>
-                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle entfernen" Height="25" Margin="10" Width="95" Command="{Binding DeleteRoleCommand}">
-                                </Button>
-                            </DockPanel>
+                            
                         </DockPanel>
                     </Grid>
                 </TabItem>
