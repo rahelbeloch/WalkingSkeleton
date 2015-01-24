@@ -5,7 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="900"
+             xmlns:helpers="clr-namespace:Admin.Helpers"
              xmlns:view="clr-namespace:Admin">
+
+    <UserControl.Resources>
+        <helpers:DatatypeToGermanStringConverter x:Key="datatypeConverter" />
+    </UserControl.Resources>
+
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
@@ -40,7 +46,7 @@
                                 <ListView.View>
                                     <GridView>
                                         <GridViewColumn Header="Feldname" Width="150" DisplayMemberBinding="{Binding id}"/>
-                                        <GridViewColumn Header="Inhalt" Width="150" DisplayMemberBinding="{Binding datatype}"/>
+                                        <GridViewColumn Header="Inhalt" Width="150" DisplayMemberBinding="{Binding datatype, Converter={StaticResource datatypeConverter}}"/>
                                     </GridView>
                                 </ListView.View>
                             </ListView>

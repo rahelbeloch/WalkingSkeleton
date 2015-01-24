@@ -1,4 +1,5 @@
 ﻿using Client.ViewModel;
+using CommunicationLib.Model;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace Client.Util
             {
                 StringConverter stringConverter = new StringConverter();
                 FormRow entry = bindingGroup.Items[0] as FormRow;
-                String datatype = FormRow._typeMap.FirstOrDefault(x => x.Value == entry.datatype).Key; ;
+                String datatype = Constants.TYPE_MAP.FirstOrDefault(x => x.Value == entry.datatype).Key; ;
                 logger.Debug(datatype);
                 if (!entry.value.Equals(""))
                 {

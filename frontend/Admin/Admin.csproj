@@ -71,6 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\GridViewSort.cs" />
+    <Compile Include="Helpers\DatatypeToGermanStringConverter.cs" />
     <Compile Include="Helpers\WorkflowDiagramConverter.cs" />
     <Compile Include="ViewModel\ActionCommand.cs" />
     <Compile Include="Helpers\BooleanToGermanStringConverter.cs" />

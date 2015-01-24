@@ -51,15 +51,12 @@ namespace Admin.Helpers
                 // TODO: wenn typ fork: an anfang der liste bei true output und ans ende bei false output
                 if (referenceMapping[startItem].GetType() == typeof(Fork))
                 {
-                    Console.WriteLine("fork next step ids verwaltung...");
                     if ((((ConnectorViewModel)designerConnection).SourceConnectorInfo).Orientation == ConnectorOrientation.TrueOutput)
                     {
-                        Console.WriteLine("fork next step ids... true output");
                         referenceMapping[startItem].nextStepIds.Insert(0, referenceMapping[endItem].id);
                     }
                     else if ((((ConnectorViewModel)designerConnection).SourceConnectorInfo).Orientation == ConnectorOrientation.FalseOutput) 
                     {
-                        Console.WriteLine("fork next step ids... false output");
                         referenceMapping[startItem].nextStepIds.Add(referenceMapping[endItem].id);
                     }
                 }
