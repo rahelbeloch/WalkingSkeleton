@@ -9,7 +9,8 @@
             <Image IsHitTestVisible="False"
                    Stretch="Fill"
                    Source="../../Images/Action.png"
-                   Tag="setting" />    
+                   Tag="setting" 
+                   RenderOptions.BitmapScalingMode="HighQuality"/>    
         </Grid>
     </DataTemplate>
     
