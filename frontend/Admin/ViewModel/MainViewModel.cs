@@ -136,7 +136,18 @@ namespace Admin.ViewModel
         /// <summary>
         /// Property to store the currently logged in admin name.
         /// </summary>
-        public String admin { get { return _admin; } set { _admin = value; } }
+        public String admin
+        {
+            get
+            {
+                return _admin;
+            }
+            set
+            {
+                _admin = value; 
+                OnChanged("admin");
+            }
+        }
         private String _admin = "";
 
         /// <summary>
