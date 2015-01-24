@@ -790,7 +790,7 @@ public class LogicImp implements Logic {
                     final String datatype = workflow.getForm().getDataType(me.getKey());
                     if (datatype != null) {
                         if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.STRING)) {
-                            if (!me.getValue().matches("[a-zA-Z]+")) {
+                            if (!me.getValue().matches("[a-zA-ZäÄöÖüÜß\\s]+")) {
                                 throw new StorageFailedException("[logic] invalid form entry --- used unconform String representation");
                             }
                         } else if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.INT)) {
