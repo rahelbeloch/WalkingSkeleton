@@ -52,7 +52,7 @@
                                             <Binding Path="DetailedUser.id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                         </TextBox.Text>
                                     </TextBox>
-                                    <TextBox Width="120" Height="25" HorizontalAlignment="Left" IsEnabled="{Binding EnablePasswordTextBox}">
+                                    <TextBox Width="120" Height="25" HorizontalAlignment="Left">
                                         <TextBox.Text>
                                             <Binding Path="DetailedUser.password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
                                         </TextBox.Text>
