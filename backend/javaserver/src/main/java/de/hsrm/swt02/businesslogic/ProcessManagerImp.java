@@ -115,7 +115,7 @@ public class ProcessManagerImp implements ProcessManager {
             //final Workflow workflow = persistence.loadWorkflow(item.getWorkflowId()); 
             //final Step currentStep = workflow.getStepById(step.getId());
             /*
-             * - cast return type to boolean (pythonmaessig)
+             * - TODO: cast return type to boolean (pythonmaessig)
              */
             
             return itemId;

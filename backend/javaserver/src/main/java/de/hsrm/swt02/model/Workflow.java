@@ -31,23 +31,15 @@ public class Workflow extends RootElement {
     private String name;
     
     /**
-     * Constructor for Workflow without parameters.
-     */
-    public Workflow() {
-       this("No Name Workflow");
-    }
-    
-    /**
      * Constructor for passing a name for this workflow.
      * @param name of the workflow
      */
-    public Workflow(String name) {
+    public Workflow() {
         super();
         steps = new ArrayList<Step>();
         items = new ArrayList<Item>();
         form = new Form();
         active = true;
-        this.name = name;
     }
     
     /**
@@ -254,6 +246,7 @@ public class Workflow extends RootElement {
         final Workflow clone = new Workflow();
         clone.setActive(active);
         clone.setId(id);
+        clone.setName(name);
         for (Step step : this.steps) {
             final Step cloneStep = (Step) step.clone();
             clone.getSteps().add(cloneStep);
