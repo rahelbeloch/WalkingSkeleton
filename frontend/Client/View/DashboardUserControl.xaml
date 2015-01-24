@@ -14,10 +14,10 @@
     </UserControl.Resources>
     
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" Margin="10" Background="#E6E6E6">
-            <Label Content="Eingeloggt als:" VerticalAlignment="Center"/>
-            <Label Content="{Binding userName}" Foreground="Crimson" FontSize="20"/>
-            <Button Content="Ausloggen" Command="{Binding logoutCommand}" Width="100" Height="25" HorizontalAlignment="Right"/>
+        <DockPanel DockPanel.Dock="Top" Margin="0" Background="#E6E6E6">
+            <Label Content="Angemeldet als:" VerticalAlignment="Center" Margin="5 0 0 0"/>
+            <Label Content="{Binding userName}" Foreground="Crimson" FontWeight="Bold" VerticalAlignment="Center" />
+            <Button Content="Abmelden" Command="{Binding logoutCommand}" Width="100" Height="25" Margin="5" HorizontalAlignment="Right"/>
         </DockPanel>
         <DockPanel  Background="#f9f9f9" Width="500" DockPanel.Dock="Left" HorizontalAlignment="Center">
             <Label Content="{Binding workflowMessage}" FontSize="24" Visibility="{Binding workflowMessageVisibility}" HorizontalAlignment="Center"/>
@@ -64,24 +64,24 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Content="Status: "/>
-                <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Content="{Binding selectedRow.actItem.State, Converter={StaticResource stateconverter}, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Grid.Row="1" Content="Annehmen" Height="25" Margin="10 0" Visibility="{Binding selectedRow.visibilityStepForwardButton}"
+
+                    <DockPanel Grid.Row="0" >
+                        <Label Content="Status: "/>
+                        <Label  HorizontalAlignment="Left" Content="{Binding selectedRow.actItem.State, Converter={StaticResource stateconverter}, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DockPanel>
+                    <Button Grid.Row="1" Content="Annehmen" Height="25" Margin="10 0" Visibility="{Binding selectedRow.visibilityStepForwardButton}"
 
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
                                                             CommandParameter="{Binding selectedRow}" HorizontalAlignment="Left"/>
-                <GroupBox Grid.Row="2" Grid.ColumnSpan="2" Visibility="{Binding selectedRow.visibilityFinishButton}">
+                <GroupBox Grid.Row="2" Margin="5" Visibility="{Binding selectedRow.visibilityFinishButton}">
                     <GroupBox.Header>
                         <Label Content="{Binding selectedRow.form.description}"></Label>
                     </GroupBox.Header>
-                        <DataGrid  Width="450" ItemsSource="{Binding selectedRow.formRows}" AutoGenerateColumns="False" CanUserAddRows="False">
+                    <DataGrid  Width="450" RowHeight="25" ItemsSource="{Binding selectedRow.formRows}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="9 5 9 5">
                         <DataGrid.RowValidationRules>
                             <util:FormValidator/>
                         </DataGrid.RowValidationRules>
+                            
                         <DataGrid.RowValidationErrorTemplate>
                             <ControlTemplate>
                                 <Grid ToolTip="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}">
@@ -90,6 +90,7 @@
                                 </Grid>
                             </ControlTemplate>
                         </DataGrid.RowValidationErrorTemplate>
+                            
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Schlüssel" Width="130" Binding="{Binding key}" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Wert" Width="200" Binding="{Binding value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -97,12 +98,14 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
-                <Button Grid.Row="5" Content="Zwischenspeichern" Height="25" Margin="10" Visibility="{Binding selectedRow.visibilityFinishButton}"
+                    <DockPanel Grid.Row="5" HorizontalAlignment="Right">
+                        <Button  Content="Zwischenspeichern" Height="25" Margin="0 10 5 5" Visibility="{Binding selectedRow.visibilityFinishButton}"
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.saveItemCommand}" 
                                                             CommandParameter="{Binding selectedRow}" />
-                    <Button Grid.Row="5" Content="Abschließen" Grid.Column="1" Margin="10" Height="25" Visibility="{Binding selectedRow.visibilityFinishButton}"
+                        <Button  Content="Abschließen" Margin="5 10 5 5" Height="25" Visibility="{Binding selectedRow.visibilityFinishButton}"
                                                             Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:DashboardUserControl}, Path=DataContext.stepForwardCommand}" 
                                                             CommandParameter="{Binding selectedRow}"/>
+                    </DockPanel>
                 </Grid>
                 </Expander>
         </StackPanel>
