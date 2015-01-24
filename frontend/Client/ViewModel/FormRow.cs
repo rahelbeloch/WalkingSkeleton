@@ -13,16 +13,6 @@ namespace Client.ViewModel
     /// </summary>
     public class FormRow
     {
-        /// <summary>
-        /// for dataType presentation
-        /// </summary>
-        public static Dictionary<string, string> _typeMap = new Dictionary<string, string>
-        {
-            {"int", "Ganzzahl"},
-            {"double", "Fließkommazahl"},
-            {"String", "Text"}
-        };
-
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private Item actItem;
@@ -53,9 +43,9 @@ namespace Client.ViewModel
         { 
             get 
             {
-                if (_typeMap.ContainsKey(_datatype))
+                if (Constants.TYPE_MAP.ContainsKey(_datatype))
                 {
-                    return _typeMap[_datatype];
+                    return Constants.TYPE_MAP[_datatype];
                 }
                 else
                 {

@@ -43,6 +43,16 @@ namespace CommunicationLib.Model
             Formatting = Formatting.Indented,
             Binder = new CustomSerializationBinder()
         };
+
+        /// <summary>
+        /// Dictionary for dataType presentation.
+        /// </summary>
+        public static Dictionary<string, string> TYPE_MAP = new Dictionary<string, string>
+        {
+            {"int", "Ganzzahl"},
+            {"double", "Fließkommazahl"},
+            {"String", "Text"}
+        };
     }
 
     /// <summary>

@@ -12,6 +12,7 @@
     
     <UserControl.Resources>
         <helpers:BooleanToGermanStringConverter x:Key="converter" />
+        <helpers:DatatypeToGermanStringConverter x:Key="datatypeConverter" />
     </UserControl.Resources>
     
     <Grid>
@@ -156,7 +157,7 @@
                                     <GridView >
                                         <GridView.Columns>
                                             <GridViewColumn Width="100" Header="Inhalt" DisplayMemberBinding="{Binding key}"/>
-                                            <GridViewColumn Width="100" Header="Typ" DisplayMemberBinding="{Binding datatype}" />
+                                            <GridViewColumn Width="100" Header="Typ" DisplayMemberBinding="{Binding datatype, Converter={StaticResource datatypeConverter}}" />
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
