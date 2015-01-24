@@ -178,14 +178,13 @@
 
 
                                 <TextBox 
-                                            DockPanel.Dock="Top"
-                                            TextWrapping="NoWrap"
-                                            AcceptsReturn="False"
-                                            Margin="5"
-                                            Visibility="{Binding descriptionVisibility}" 
-                                            Text="{Binding actStep.description, Mode=TwoWay}"
-                                             
-                            />
+                                    DockPanel.Dock="Top"
+                                    TextWrapping="NoWrap"
+                                    AcceptsReturn="False"
+                                    Margin="5"
+                                    Visibility="{Binding descriptionVisibility}" 
+                                    Text="{Binding actStep.description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                
                                 <Label DockPanel.Dock="Top"
                                            Visibility="{Binding pythonCodeVisibility}" 
                                            Content="Python-Code"
@@ -197,12 +196,13 @@
                                             Width="200"
                                             Margin="5"
                                             Visibility="{Binding pythonCodeVisibility}" 
-                                            Text="{Binding actStep.description, Mode=TwoWay}"
+                                            Text="{Binding actStep.description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             TextWrapping="Wrap"
                                             AcceptsReturn="True"
                                             MaxHeight="100"
                                             ScrollViewer.CanContentScroll="True"
-                                            VerticalScrollBarVisibility="Visible"    
+                                            VerticalScrollBarVisibility="Visible"
+                                            FontFamily="Courier New"
                             />
 
                                 <Label DockPanel.Dock="Top"
