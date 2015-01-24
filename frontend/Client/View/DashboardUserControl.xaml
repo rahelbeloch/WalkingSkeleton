@@ -19,10 +19,14 @@
             <Label Content="{Binding userName}" Foreground="Crimson" FontWeight="Bold" VerticalAlignment="Center" />
             <Button Content="Abmelden" Command="{Binding logoutCommand}" Width="100" Height="25" Margin="5" HorizontalAlignment="Right"/>
         </DockPanel>
+        
         <DockPanel   Width="500" DockPanel.Dock="Left" HorizontalAlignment="Center">
-            <Label Content="{Binding workflowMessage}" FontSize="24" Visibility="{Binding workflowMessageVisibility}" HorizontalAlignment="Center"/>
-                <ScrollViewer HorizontalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding dashboardWorkflows}" Margin="10">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <DockPanel>
+                    <DockPanel DockPanel.Dock="Top">
+                        <Label Content="{Binding workflowMessage}" Margin="40" FontSize="18" Visibility="{Binding workflowMessageVisibility}" Foreground="DarkGray" HorizontalAlignment="Center"/>
+                    </DockPanel>
+                    <ItemsControl ItemsSource="{Binding dashboardWorkflows}" Margin="10">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Expander DockPanel.Dock="Top" IsExpanded="True" Header="{Binding actWorkflow.name, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Margin="0 0 0 10">
@@ -51,6 +55,7 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+                </DockPanel>
             </ScrollViewer>
         </DockPanel>
         <StackPanel Background="#f9f9f9" DockPanel.Dock="Top" Visibility="{Binding selectedRow, Converter={StaticResource converter}}"  HorizontalAlignment="Center"  VerticalAlignment="Center">
