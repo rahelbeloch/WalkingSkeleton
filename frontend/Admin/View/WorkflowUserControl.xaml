@@ -60,7 +60,7 @@
                         </Expander>
                     </StackPanel>
                     <DockPanel DockPanel.Dock="Top" Visibility="{Binding displayView}">
-                        <Button x:Name="newWorkflow" DockPanel.Dock="Bottom" Content="Neuer Workflow" Margin="0,0,0,0" Command="{Binding newWorkflowCommand}" Height="26" Width="216"/>
+                        <Button x:Name="newWorkflow" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Content="Neuer Workflow" Margin="0,10,5,0" Command="{Binding newWorkflowCommand}" Height="26" Width="216"/>
                     </DockPanel>
 
                     <!--Workflow Bearbeiten-->
@@ -172,11 +172,9 @@
 
                     <StackPanel DockPanel.Dock="Top" Margin="10" >
                         <Expander Header="Elemente"
-                             IsExpanded="True" >
+                             IsExpanded="True" MinHeight="50" >
 
-                            <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding enableStepDetais}" ScrollViewer.VerticalScrollBarVisibility="Visible" MinHeight="50">
-
-
+                            <DockPanel Visibility="{Binding actStepVisibility}" IsEnabled="{Binding enableStepDetais}" ScrollViewer.VerticalScrollBarVisibility="Visible">
                                 <Label DockPanel.Dock="Top"
                                            Content="Typ: " />
                                 <Label DockPanel.Dock="Top"
