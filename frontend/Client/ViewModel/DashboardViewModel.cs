@@ -77,7 +77,7 @@ namespace Client.ViewModel
 
             if (dashboardWorkflows.Count == 0 && startableList.Count == 0)
             {
-                workflowMessage = "Keine Workflows vorhanden.";
+                workflowMessage = "Keine Workflows vorhanden";
                 workflowMessageVisibility = "Visible";
 
             }
