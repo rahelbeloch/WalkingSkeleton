@@ -12,14 +12,14 @@
         <util:SelectedRowToVisbiltyConverter x:Key="converter" />
         <util:StateConverter x:Key="stateconverter" />
     </UserControl.Resources>
-    
-    <DockPanel>
+
+    <DockPanel Background="#f9f9f9">
         <DockPanel DockPanel.Dock="Top" Margin="0" Background="#E6E6E6">
             <Label Content="Angemeldet als:" VerticalAlignment="Center" Margin="5 0 0 0"/>
             <Label Content="{Binding userName}" Foreground="Crimson" FontWeight="Bold" VerticalAlignment="Center" />
             <Button Content="Abmelden" Command="{Binding logoutCommand}" Width="100" Height="25" Margin="5" HorizontalAlignment="Right"/>
         </DockPanel>
-        <DockPanel  Background="#f9f9f9" Width="500" DockPanel.Dock="Left" HorizontalAlignment="Center">
+        <DockPanel   Width="500" DockPanel.Dock="Left" HorizontalAlignment="Center">
             <Label Content="{Binding workflowMessage}" FontSize="24" Visibility="{Binding workflowMessageVisibility}" HorizontalAlignment="Center"/>
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding dashboardWorkflows}" Margin="10">
