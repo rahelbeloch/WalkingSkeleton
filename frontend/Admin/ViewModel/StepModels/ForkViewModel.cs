@@ -16,11 +16,6 @@ namespace Admin
     /// </summary>
     public class ForkViewModel : DesignerItemViewModelBase
     {
-       
-
-        //WorkflowDiagramViewModel workflowViewModel = null;
-        //public ObservableCollection<Role> roleCollection { get { return workflowViewModel.roleCollection; } }
-
         /// <summary>
         /// Constructor for the ActionViewModel
         /// </summary>
@@ -31,7 +26,7 @@ namespace Admin
         public ForkViewModel(string id, DiagramViewModel parent, double left, double top, String description)
             : base(id, parent, left, top)
         {
-            this._description = description;
+            this.description = description;
             Init();
         }
 
@@ -42,9 +37,7 @@ namespace Admin
             : base()
         {
             Init();
-            
         }
-
 
         /// <summary>
         /// Property for the description
@@ -68,8 +61,6 @@ namespace Admin
                                       "        return True\n" +
                                       "    else:\n" +
                                       "        return False\n";
-      
-        
 
         private void Init()
         {
@@ -80,7 +71,6 @@ namespace Admin
             itemHeight = 80;
             
             this.ShowConnectors = false;
-
         }
     }
 }

@@ -759,7 +759,6 @@ namespace Admin.ViewModel
                     _saveWorkflowCommand = new ActionCommand(execute =>
                     {
                         PostWorkflow();
-                        
                     }, canExecute => DiagramViewModel.Items.Any());
                 }
                 return _saveWorkflowCommand;
