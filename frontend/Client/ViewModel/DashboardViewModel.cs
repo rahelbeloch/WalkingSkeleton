@@ -305,9 +305,11 @@ namespace Client.ViewModel
             try
             {
                 _restRequester.StartWorkflow(id);
+                MessageBox.Show("Workflow " + id + " wurde erfolgreich gestartet.");
             }
             catch (Exception)
             {
+                MessageBox.Show("Workflow " + id + " konnte nicht gestartet werden.");
                 throw;
             }
         }
