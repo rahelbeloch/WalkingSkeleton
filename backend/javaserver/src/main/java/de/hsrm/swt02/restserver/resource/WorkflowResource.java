@@ -106,7 +106,6 @@ public class WorkflowResource {
 
         try {
             itemListString = JsonParser.marshall(itemList);
-            LOGGER.log(Level.FINE, loggingBody + itemListString);
         } catch (JacksonException e) {
             LOGGER.log(Level.INFO, loggingBody);
             LOGGER.log(Level.WARNING, e);
