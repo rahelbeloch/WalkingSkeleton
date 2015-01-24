@@ -1,8 +1,10 @@
 package de.hsrm.swt02.businesslogic.workflowValidator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -281,9 +283,19 @@ public class WorkflowValidator {
     			Fork fork = (Fork) step;
     			try {
 					sEngine.eval(fork.getScript());
+					
 				} catch (ScriptException e) {
 					throw new InvalidPythonSyntaxException();
 				}
+    			
+    			try {
+    				Invocable inv = (Invocable) sEngine;
+		            inv.invokeFunction("check", new HashMap<String, String>());
+    			} catch(NoSuchMethodException e) {
+    				throw new InvalidPythonSyntaxException();
+    			} catch (ScriptException e) {
+    				
+    			}
     		}
     	}
     }
