@@ -735,8 +735,8 @@ namespace Admin.ViewModel
                     _toggleActivity = new ActionCommand(execute =>
                     {
                         PostWorkflow(true);
-                        _workflowActivity = "Deaktivieren";
-                        OnChanged("workflowActivity");
+                        
+                        
                     }, canExecute => _actWorkflow != null);
                 }
                 return _toggleActivity;
@@ -787,7 +787,11 @@ namespace Admin.ViewModel
                     if (toggleActivity)
                     {
                         newWorkflow.active = !newWorkflow.active;
+                        actWorkflow.active = newWorkflow.active;
+                        //value decided in setter method of worklfowactivity
+                        workflowActivity = "";
                     }
+                    
                 }
 
                 _restRequester.PostObject(newWorkflow);
