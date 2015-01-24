@@ -392,8 +392,8 @@ namespace Admin.ViewModel
         }
         private Workflow _actWorkflow = null;
 
-        private String _enteredWorkflowName = "";
-        public String EnteredWorkflowName
+        private string _enteredWorkflowName = "";
+        public string EnteredWorkflowName
         {
             get
             {
@@ -688,7 +688,7 @@ namespace Admin.ViewModel
 
                             DiagramViewModel.ClearSelectedItemsCommand.Execute(this);
                             showEditView();
-                            
+                            EnteredWorkflowName = actWorkflow.name;
                         }, canExecute => _actWorkflow != null);
                 }
                 return _editWorkflowCommand;
@@ -750,8 +750,6 @@ namespace Admin.ViewModel
                     _toggleActivity = new ActionCommand(execute =>
                     {
                         PostWorkflow(true);
-                        
-                        
                     }, canExecute => _actWorkflow != null);
                 }
                 return _toggleActivity;
@@ -778,6 +776,25 @@ namespace Admin.ViewModel
         }
         private ICommand _saveWorkflowCommand;
 
+        /// <summary>
+        /// Command to deselect the currently selected form.
+        /// </summary>
+        public ICommand DeselectFormCommand
+        {
+            get
+            {
+                if (_deselectFormCommand == null)
+                {
+                    _deselectFormCommand = new ActionCommand(execute =>
+                    {
+                        selectedForm = null;
+                    }, canExecute => selectedForm != null);
+                }
+                return _deselectFormCommand;
+            }
+        }
+        private ICommand _deselectFormCommand;
+
         private void PostWorkflow(bool toggleActivity=false)
         {
             try
@@ -793,21 +810,21 @@ namespace Admin.ViewModel
                 {
                     newWorkflow.form = selectedForm.Clone<Form>();
                 }
+                newWorkflow.name = EnteredWorkflowName;
+                EnteredWorkflowName = "";
 
                 if (actWorkflow != null)
                 {
                     newWorkflow.id = actWorkflow.id;
                     newWorkflow.active = actWorkflow.active;
-                    newWorkflow.name = EnteredWorkflowName;
 
                     if (toggleActivity)
                     {
                         newWorkflow.active = !newWorkflow.active;
                         actWorkflow.active = newWorkflow.active;
-                        //value decided in setter method of worklfowactivity
+                        //value decided in setter method of workflowactivity
                         workflowActivity = "";
                     }
-                    
                 }
 
                 _restRequester.PostObject(newWorkflow);
