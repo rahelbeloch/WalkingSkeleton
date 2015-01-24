@@ -148,9 +148,10 @@ namespace Client.ViewModel
 
                                 // Register mainViewModel to CommunicationLib (if login worked)
                                 _mainViewModel.myComLib.Login(username, securePwd);
-                                logger.Info("Login successful for username=" + username + " password=" + securePwd);
+                                logger.Info("Login successful for username=" + username);
                                 _mainViewModel.CurrentPageViewModel = _mainViewModel.dashboardViewModel;
                                 _mainViewModel.username = _username;
+                                securePwd = "";
                             }
                         }
                         catch (BasicException exc)
@@ -161,7 +162,7 @@ namespace Client.ViewModel
                             }
                             else
                             {
-                                logger.Info("Login failed for username=" + username + " password=" + securePwd);
+                                logger.Info("Login failed for username=" + username);
                             }
                             MessageBox.Show(exc.Message);
                         }

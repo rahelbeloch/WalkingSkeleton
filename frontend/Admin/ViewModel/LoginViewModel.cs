@@ -142,6 +142,7 @@ namespace Admin.ViewModel
 
                                 _mainViewModel.CurrentPageViewModel = _mainViewModel.workflowViewModel;
                                 _mainViewModel.admin = _admin;
+                                securePwd = "";
                             }
                         }
                         catch (BasicException exc)
@@ -152,7 +153,7 @@ namespace Admin.ViewModel
                             }
                             else
                             {
-                                logger.Info("Login failed for username=" + _admin + " password=" + securePwd);
+                                logger.Info("Login failed for username=" + _admin);
                             }
                             MessageBox.Show(exc.Message, "Login fehlgeschlagen", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
