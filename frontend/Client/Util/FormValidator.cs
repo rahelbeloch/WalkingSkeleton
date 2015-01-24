@@ -44,7 +44,7 @@ namespace Client.Util
                     switch (datatype)
                     {
                         case "String":
-                            regex = new Regex("[a-zA-Z]+");
+                            regex = new Regex("[a-zA-ZäÄöÖüÜß\\s]+");
                             break;
                         case "int":
                             regex = new Regex("[0-9]+");
@@ -52,6 +52,8 @@ namespace Client.Util
                         case "double":
                             regex = new Regex("([0-9]|[1-9]+)\\.[0-9]+$");
                             break;
+                        default:
+                            return ValidationResult.ValidResult;
                     }
 
                     Match match = regex.Match(entry.value);
@@ -63,7 +65,7 @@ namespace Client.Util
                     }
                     else
                     {
-                        String message = entry.value + " entspricht nicht dem richtigen Datentyp!";
+                        String message = entry.value + " entspricht nicht dem richtigen Datentyp.";
                         return new ValidationResult(false,message);
                     }
                 }
