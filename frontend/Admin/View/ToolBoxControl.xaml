@@ -51,7 +51,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Image IsHitTestVisible="True"
-                                   Stretch="Fill"
+                                   Stretch="Uniform"
                                    Width="50"
                                    Height="50"
                                    Source="{Binding ImageUrl, Converter={x:Static s:ImageUrlConverter.Instance}}" />
