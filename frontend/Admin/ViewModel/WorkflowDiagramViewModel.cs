@@ -263,15 +263,13 @@ namespace Admin.ViewModel
         /// Property to enable StepDetails.
         /// </summary>
         public bool enableStepDetais
-
         { 
             get 
             { 
                 return !DiagramViewModel.locked; 
             }
-            
-           
         }
+
         /// <summary>
         /// Property, which indicates if a selected workflow is de-/active.
         /// This property is used for the de-/active button label.
@@ -393,6 +391,20 @@ namespace Admin.ViewModel
             }
         }
         private Workflow _actWorkflow = null;
+
+        private String _enteredWorkflowName = "";
+        public String EnteredWorkflowName
+        {
+            get
+            {
+                return _enteredWorkflowName;
+            }
+            set
+            {
+                _enteredWorkflowName = value;
+                OnChanged("EnteredWorkflowName");
+            }
+        }
 
         /// <summary>
         /// Property for input from step description text box.
@@ -786,6 +798,8 @@ namespace Admin.ViewModel
                 {
                     newWorkflow.id = actWorkflow.id;
                     newWorkflow.active = actWorkflow.active;
+                    newWorkflow.name = EnteredWorkflowName;
+
                     if (toggleActivity)
                     {
                         newWorkflow.active = !newWorkflow.active;

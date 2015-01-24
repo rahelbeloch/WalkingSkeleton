@@ -8,7 +8,7 @@
              xmlns:tools="clr-namespace:Admin"
              xmlns:helpers="clr-namespace:Admin.Helpers"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="900">
+             d:DesignHeight="800" d:DesignWidth="900">
     
     <UserControl.Resources>
         <helpers:BooleanToGermanStringConverter x:Key="converter" />
@@ -69,26 +69,36 @@
                     </DockPanel>
 
                     <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}" HorizontalAlignment="Left">
-                        <Button x:Name="displayView" DockPanel.Dock="Bottom" Content="Zurück zur Übersicht" Margin="20" Command="{Binding displayViewCommand}" Height="26" Width="120"/>
+                        <Button x:Name="displayView" DockPanel.Dock="Bottom" Content="Zurück zur Übersicht" Margin="10" Command="{Binding displayViewCommand}" Height="26" Width="120"/>
                     </DockPanel>
-                    <DockPanel DockPanel.Dock="Top" Margin="20" Visibility="{Binding editView}">
-                        <Label Content="Name" FontSize="12" FontWeight="Medium" HorizontalAlignment="Left" />
-                        <TextBox  DockPanel.Dock="Top"
-                                  Text="{Binding actWorkflow.name, Mode=TwoWay}"
-                                  TextWrapping="Wrap"
-                                  AcceptsReturn="True" />
+                    <DockPanel DockPanel.Dock="Top" Margin="10" Visibility="{Binding editView}">
                         <tools:ToolBoxControl DockPanel.Dock="Top" Grid.Column="0"
                               DataContext="{Binding toolBoxViewModel}" />
                     </DockPanel>
-                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}" Margin="20">
-                        <Label DockPanel.Dock="Left" Content="Formular: "  FontSize="14" FontWeight="Normal" HorizontalAlignment="Left"/>
-                        <ComboBox DockPanel.Dock="Left" Height="25" Width="120" HorizontalAlignment="Left"  
-                                      ItemsSource="{Binding formCollection}" 
-                                      DisplayMemberPath="id"
-                                      SelectedItem="{Binding selectedForm}" />
+                    <DockPanel DockPanel.Dock="Top" Margin="10">
+                        <Expander IsExpanded="True" Header="Eigenschaften" >
+                            <DockPanel>
+                                <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}" >
+                                    <Label DockPanel.Dock="Top" Content="Formular: "  HorizontalAlignment="Left"/>
+                                    <ComboBox  Width="120" HorizontalAlignment="Left" VerticalContentAlignment="Center"  
+                                                  ItemsSource="{Binding formCollection}" 
+                                                  DisplayMemberPath="id"
+                                                  Margin="5,0,0,0"
+                                                  SelectedItem="{Binding selectedForm}" />
+                                </DockPanel>
+                                <DockPanel>
+                                    <Label DockPanel.Dock="Top" Content="Name:"  HorizontalAlignment="Left" Margin="0, 10, 0, 0"/>
+                                        <TextBox  DockPanel.Dock="Top"
+                                          Text="{Binding EnteredWorkflowName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          TextWrapping="Wrap"
+                                                  Margin="5, 0, 0,0"
+                                          AcceptsReturn="True" />
+                                </DockPanel>
+                            </DockPanel>
+                        </Expander>
                     </DockPanel>
-                    <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}" Margin="20">
-                        <Button x:Name="saveWorkflow" DockPanel.Dock="Top" Content="Workflow speichern" Margin="0,0,0,0" Command="{Binding saveWorkflowCommand}" Height="26" Width="216"/>
+                <DockPanel DockPanel.Dock="Top" Visibility="{Binding editView}" Margin="10">
+                        <Button x:Name="saveWorkflow" VerticalAlignment="Top" HorizontalAlignment="Right" DockPanel.Dock="Top" Content="Workflow speichern" Margin="0,0,0,0" Command="{Binding saveWorkflowCommand}" Height="26" Width="216"/>
                     </DockPanel>
                     <!--
                 
@@ -167,18 +177,16 @@
 
 
                                 <Label DockPanel.Dock="Top"
-                                           Content="Typ: "
-                                           Margin="5" />
+                                           Content="Typ: " />
                                 <Label DockPanel.Dock="Top"
                                        Width="80"
                                        Height="Auto"
                                        HorizontalAlignment="Left"
-                                       Content="{Binding actStep}"
-                                       Margin="5" />
+                                       Content="{Binding actStep}"/>
                                 <Label DockPanel.Dock="Top"
                                            Visibility="{Binding descriptionVisibility}" 
                                            Content="Beschreibung"
-                                           Margin="5" />
+                                       Margin="0, 10, 0, 0"/>
 
 
                                 <TextBox 
@@ -192,7 +200,7 @@
                                 <Label DockPanel.Dock="Top"
                                            Visibility="{Binding pythonCodeVisibility}" 
                                            Content="Python-Code"
-                                           Margin="5" />
+                                            Margin="0, 10, 0, 0"/>
 
 
                                 <TextBox 
@@ -211,25 +219,22 @@
                                 <Label DockPanel.Dock="Top"
                                            Visibility="{Binding roleVisibility}"
                                            Content="Rolle: "
-                                           Margin="5" />
+                                           Margin="0, 10, 0, 0"/>
 
                                 <ComboBox Visibility="{Binding roleVisibility}" DockPanel.Dock="Top"  Height="25" Width="120" HorizontalAlignment="Left"  
-                                              Margin="5"
                                               ItemsSource="{Binding roleCollection}" 
                                               DisplayMemberPath="rolename"
+                                              Margin="5"
                                               SelectedItem="{Binding actStep.selectedRole}" />
 
-
-
                             </DockPanel>
-
                         </Expander>
                     </StackPanel>
 
                     <!--Buttons deaktivieren&bearbeiten-->
-                    <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right" Visibility="{Binding showDetails}">
-                        <Button Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}" RenderTransformOrigin="0.563,7.733"/>
-                        <Button HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Workflow Bearbeiten"/>
+                    <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Right" VerticalAlignment="Top" Visibility="{Binding showDetails}">
+                        <Button Margin="5,10,10,5" Height="30"  Width="120" Command="{Binding toggleActivity}" Content ="{Binding workflowActivity}" RenderTransformOrigin="0.563,7.733"/>
+                        <Button Margin="5,10,10,5" HorizontalAlignment="Left" Height="30"  Width="120" Command="{Binding editWorkflowCommand}" Content ="Workflow Bearbeiten"/>
                     </DockPanel>
                 </DockPanel>
             </Grid>
