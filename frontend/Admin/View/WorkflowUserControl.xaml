@@ -141,7 +141,7 @@
 
                     <!--Formular-->
                     <StackPanel DockPanel.Dock="Top" Visibility="{Binding showDetails}" Margin="10">
-                        <Expander Header="{Binding actWorkflow.form.id}" HeaderStringFormat="Formular {0}" IsExpanded="True">
+                        <Expander Header="{Binding actWorkflow.form.id, UpdateSourceTrigger=PropertyChanged, FallbackValue=' '}" HeaderStringFormat="Formular {0}" IsExpanded="True">
                             <ListView DockPanel.Dock="Top"  ItemsSource="{Binding actWorkflow.form.formDef}" MaxHeight="200" Height="Auto" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto">
                                 <ListView.View>
                                     <GridView >
