@@ -384,6 +384,8 @@ namespace Admin.ViewModel
                     DiagramViewModel.locked = false;
                     
                 }
+                //value setted in setter method of worfklowactivity
+                workflowActivity = "";
                 
                 OnChanged("enableStepDetais");
                 OnChanged("actWorkflow");
