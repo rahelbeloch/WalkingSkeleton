@@ -19,7 +19,8 @@
                                     Padding="{TemplateBinding Control.Padding}"
                                     BorderBrush="{TemplateBinding Border.BorderBrush}"
                                     Background="{TemplateBinding Panel.Background}"
-                                    SnapsToDevicePixels="True">
+                                    SnapsToDevicePixels="True"
+                                    RenderOptions.BitmapScalingMode="HighQuality">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                                     <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
                                 </ScrollViewer>
