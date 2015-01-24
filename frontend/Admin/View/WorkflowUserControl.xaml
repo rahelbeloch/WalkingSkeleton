@@ -46,7 +46,7 @@
                                 <ListView.View>
                                     <GridView >
                                         <GridView.Columns>
-                                            <GridViewColumn Width="50" Header="Name" DisplayMemberBinding="{Binding name}" helpers:GridViewSort.PropertyName="name"/>
+                                            <GridViewColumn Width="240" Header="Name" DisplayMemberBinding="{Binding name}" helpers:GridViewSort.PropertyName="name"/>
                                             <GridViewColumn Width="40" Header="Aktiv"  DisplayMemberBinding="{Binding active, Converter={StaticResource converter}}" helpers:GridViewSort.PropertyName="active"/>
                                         </GridView.Columns>
                                     </GridView>
