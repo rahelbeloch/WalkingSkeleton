@@ -29,13 +29,14 @@
             <Grid>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="350"/>
+                    <ColumnDefinition Width="331"/>
+                    <ColumnDefinition Width="19"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition MinWidth="300" Width="300" MaxWidth="600"/>
                 </Grid.ColumnDefinitions>
 
                 <!--left Panel -->
-                <DockPanel Grid.Column="0" Background="#f9f9f9">
+                <DockPanel Grid.Column="0" Background="#f9f9f9" Grid.ColumnSpan="2">
 
                     <!--Workflow Übersicht-->
                     <DockPanel DockPanel.Dock="Top" Visibility="{Binding displayView}">
@@ -96,15 +97,18 @@
                 </DockPanel>
 
                 <!-- center Panel Diagram Control -->
-                <DockPanel Grid.Column="1" >
+                <DockPanel Grid.Column="2" >
                     <s:DiagramControl DockPanel.Dock="Top" Grid.Column="1"
                                   DataContext="{Binding DiagramViewModel}"
                                   Margin="3,1,0.334,0" Grid.ColumnSpan="2" Loaded="DiagramControl_Loaded" />
                 </DockPanel>
 
-
+                <GridSplitter HorizontalAlignment="Right" 
+                  VerticalAlignment="Stretch" 
+                  Grid.Column="2"
+                  Width="5" Background="#FFBCBCBC"/>
                 <!--right Panel -->
-                <DockPanel Grid.Column="2" Background="#f9f9f9">
+                <DockPanel Grid.Column="3" Background="#f9f9f9">
 
                     <!--Headline-->
                     <DockPanel DockPanel.Dock="Top">
@@ -193,13 +197,12 @@
 
                                 <TextBox 
                                             DockPanel.Dock="Top"
-                                            Width="200"
                                             Margin="5"
                                             Visibility="{Binding pythonCodeVisibility}" 
                                             Text="{Binding actStep.description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             TextWrapping="Wrap"
                                             AcceptsReturn="True"
-                                            MaxHeight="100"
+                                            MaxHeight="150"
                                             ScrollViewer.CanContentScroll="True"
                                             VerticalScrollBarVisibility="Visible"
                                             FontFamily="Courier New"
