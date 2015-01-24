@@ -12,13 +12,7 @@ namespace Client.ViewModel
     /// ViewModel class which holds the data for one workflow in the view.
     /// </summary>
     public class DashboardWorkflow
-    {
-        private string _name;
-        /// <summary>
-        /// The displayed header for the workflow
-        /// </summary>
-        public string name { get { return _name; } set { _name = value; } }
-        
+    {       
         private Workflow _actWorkflow;
         /// <summary>
         /// the model of the workflow from the server
@@ -44,7 +38,6 @@ namespace Client.ViewModel
         public DashboardWorkflow(Workflow actWorkflow)
         {
             this._actWorkflow = actWorkflow;
-            name = "Workflow " + actWorkflow.id;
             this._dashboardRows = new ObservableCollection<DashboardRow>();
         }
         /// <summary>
