@@ -8,7 +8,6 @@
              xmlns:view="clr-namespace:Admin.View"
              xmlns:tools="clr-namespace:Admin">
 
-
     <Grid>
         <DockPanel>
             <DockPanel.InputBindings>
@@ -40,32 +39,34 @@
                         </DockPanel>
 
                         <DockPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,10,10,0">
-                            <Border BorderThickness="1" Background="LightGray" DockPanel.Dock="Top" Margin="0,0,0,10">
+                            <Button DockPanel.Dock="Right" HorizontalAlignment="Center"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10 0 0 0" Command="{Binding DeselectCommand}"/>
+                            <Expander Header="Details" IsExpanded="True" DockPanel.Dock="Top">
                                 <DockPanel Margin="4">
-                                <StackPanel>
-                                    <Label Content="Nutzername: " Height="25"/>
-                                    <Label Content="Password: " Height="25"/>
-                                </StackPanel>
-                                    <StackPanel>
-                                    <TextBox Width="120" Height="25" HorizontalAlignment="Left" IsEnabled="{Binding EnableUserTextBox}">
-                                        <TextBox.Text>
-                                            <Binding Path="DetailedUser.id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
-                                        </TextBox.Text>
-                                    </TextBox>
-                                    <TextBox Width="120" Height="25" HorizontalAlignment="Left">
-                                        <TextBox.Text>
-                                            <Binding Path="DetailedUser.password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
-                                        </TextBox.Text>
-                                    </TextBox>
-                                </StackPanel>                             
-                                <Button HorizontalAlignment="Center"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10" Command="{Binding DeselectCommand}"/>
-                            </DockPanel>
-                            </Border>
-                            <DockPanel DockPanel.Dock="Top">
-                                <CheckBox IsChecked="{Binding DetailedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
-                            </DockPanel>
+                                    <DockPanel DockPanel.Dock="Top">
+                                        <StackPanel>
+                                            <Label Content="Nutzername: " Height="25"/>
+                                            <Label Content="Password: " Height="25"/>
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <TextBox Width="120" Height="25" HorizontalAlignment="Left" IsEnabled="{Binding EnableUserTextBox}">
+                                                <TextBox.Text>
+                                                    <Binding Path="DetailedUser.id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                                </TextBox.Text>
+                                            </TextBox>
+                                            <TextBox Width="120" Height="25" HorizontalAlignment="Left">
+                                                <TextBox.Text>
+                                                    <Binding Path="DetailedUser.password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                                </TextBox.Text>
+                                            </TextBox>
+                                        </StackPanel>
+                                    </DockPanel>
+                                    <DockPanel DockPanel.Dock="Bottom">
+                                        <CheckBox IsChecked="{Binding DetailedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
+                                    </DockPanel>
+                                </DockPanel>
+                            </Expander>
                                 
-                            <Expander DockPanel.Dock="Top" Header="Rollen" IsExpanded="True">
+                            <Expander DockPanel.Dock="Top" Header="Rollen" IsExpanded="True" Margin="0 10 0 0">
                                 <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding RoleCheckboxRows}">
                                     <ListView.View>
                                         <GridView>
@@ -85,7 +86,7 @@
                             </Expander>
 
                             <DockPanel DockPanel.Dock="Bottom">
-                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding PostUserButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="25" Margin="10" Command="{Binding AddUserCommand}"/>
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding PostUserButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="25" Margin="0 10 0 0" Command="{Binding AddUserCommand}"/>
                             </DockPanel>
 
                         </DockPanel>
