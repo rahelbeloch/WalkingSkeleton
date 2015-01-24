@@ -249,7 +249,7 @@ namespace RestAPI
             
             // Serialize to JSON
             String serializedObj = JsonConvert.SerializeObject(sendObj, Constants.JSON_SETTINGS);
-            
+
             // Create request
             var request = createRequest(url, Method.POST);
             
