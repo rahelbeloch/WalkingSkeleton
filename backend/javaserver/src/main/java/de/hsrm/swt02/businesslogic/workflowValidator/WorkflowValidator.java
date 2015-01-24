@@ -168,34 +168,18 @@ public class WorkflowValidator {
      * @param stepToReach - step to check
      * @return boolean
      */
-    private boolean isReachable(Step actStep, Step stepToReach) {
-        boolean reachable = false;
-        while (!reachable) {
-            if (actStep.getNextSteps().contains(stepToReach) || actStep.equals(stepToReach)) {
-                reachable = true;
-            } else {
-                for (Step s: actStep.getNextSteps()) {
-                    reachable = isReachable(s, stepToReach);
+    private boolean isReachable(Step actStep, Step stepToReach) {     
+        if (actStep.getNextSteps().contains(stepToReach) || actStep.equals(stepToReach)) {
+            return true;
+        } else {
+            if(actStep.getNextSteps().isEmpty()) {
+                return true;
                 }
+            for (Step s : actStep.getNextSteps()) {
+                return isReachable(s, stepToReach);
             }
+            return false;
         }
-        return reachable;       
-        
-        
-// wieder einkommentieren falls obige Lösung nicht korrekt validiert, ansonsten eliminieren.
-//        
-//        if (actStep.getNextSteps().contains(stepToReach) || actStep.equals(stepToReach)) {
-//            return true;
-//        } else {
-//            if(actStep.getNextSteps().isEmpty()) {
-//                return true;
-//                }
-//            for (Step s : actStep.getNextSteps()) {
-//                return isReachable(s, stepToReach);
-//            }
-//            return false;
-//        }
-        
     }
 
     /**
