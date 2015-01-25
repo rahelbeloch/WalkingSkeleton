@@ -13,7 +13,7 @@ namespace Client.ViewModel
     /// <summary>
     /// ViewModel class which holds the data for one row of an item with the fitting step in the view.
     /// </summary>
-    public class DashboardRow
+    public class DashboardRow : ViewModelBase
     {
         private Item _actItem;
         /// <summary>
@@ -47,7 +47,18 @@ namespace Client.ViewModel
         /// <summary>
         /// the current Step
         /// </summary>
-        public Step actStep { get { return _actStep; } set { _actStep = value; } }
+        public Step actStep
+        {
+            get
+            {
+                return _actStep;
+            }
+            set
+            {
+                _actStep = value;
+                OnChanged("actStep");
+            }
+        }
 
         private String _username;
         /// <summary>
