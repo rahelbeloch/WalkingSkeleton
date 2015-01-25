@@ -23,6 +23,7 @@ namespace Admin
         /// <param name="parent"></param>
         /// <param name="left"></param>
         /// <param name="top"></param>
+        /// <param name="description">The script</param>
         public ForkViewModel(string id, DiagramViewModel parent, double left, double top, String description)
             : base(id, parent, left, top)
         {

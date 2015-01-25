@@ -393,6 +393,9 @@ namespace Admin.ViewModel
         private Workflow _actWorkflow = null;
 
         private string _enteredWorkflowName = "";
+        /// <summary>
+        /// Property for the entered workflow name.
+        /// </summary>
         public string EnteredWorkflowName
         {
             get
