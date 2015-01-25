@@ -36,7 +36,7 @@ public class ExceptionTest {
      */
     @Test(expected = WorkflowNotExistentException.class)
     public void testWorkflowNotExistenException() throws PersistenceException {
-        db.loadWorkflow("17");
+        db.loadWorkflow("1234");
     }
     
     /**
