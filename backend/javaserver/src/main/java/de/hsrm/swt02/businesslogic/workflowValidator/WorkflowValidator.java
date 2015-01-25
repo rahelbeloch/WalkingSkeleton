@@ -170,9 +170,9 @@ public class WorkflowValidator {
         if (actStep.getNextSteps().contains(stepToReach) || actStep.equals(stepToReach)) {
             return true;
         } else {
-            if(actStep.getNextSteps().isEmpty()) {
+            if (actStep.getNextSteps().isEmpty()) {
                 return true;
-                }
+            }
             for (Step s : actStep.getNextSteps()) {
                 return isReachable(s, stepToReach);
             }
@@ -262,7 +262,7 @@ public class WorkflowValidator {
     private void validatePythonScript() throws InvalidPythonSyntaxException {
     	for(Step step : this.workflow.getSteps()) {
     		if(step instanceof Fork) {
-    			Fork fork = (Fork) step;
+    			final Fork fork = (Fork) step;
     			try {
 					sEngine.eval(fork.getScript());
 					
@@ -271,7 +271,7 @@ public class WorkflowValidator {
 				}
     			
     			try {
-    				Invocable inv = (Invocable) sEngine;
+    				final Invocable inv = (Invocable) sEngine;
 		            inv.invokeFunction("check", new HashMap<String, String>());
     			} catch(NoSuchMethodException e) {
     				throw new InvalidPythonSyntaxException();
