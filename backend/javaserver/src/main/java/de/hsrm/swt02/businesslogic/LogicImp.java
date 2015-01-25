@@ -798,7 +798,7 @@ public class LogicImp implements Logic {
                                 throw new StorageFailedException("[logic] invalid form entry --- used unconform Integer representation");
                             } 
                         } else if (DataType.fromValue(datatype.toUpperCase()).equals(DataType.DOUBLE)) {
-                            if (!me.getValue().matches("([0-9]|[1-9]+[0-9]*)(\\.?(?<!0)[0-9]{1,2}(?<!000))?$")) {
+                            if (!me.getValue().matches("^-?[0-9]*([.][0-9]*)?$")) {
                                 throw new StorageFailedException("[logic] invalid form entry --- used unconform Double representation");
                             }
                         }
