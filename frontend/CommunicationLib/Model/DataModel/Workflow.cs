@@ -50,6 +50,10 @@ namespace CommunicationLib.Model
         {
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">The workflow name</param>
         public Workflow(string name)
             : base()
         {
