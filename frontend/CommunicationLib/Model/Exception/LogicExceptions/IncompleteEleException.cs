@@ -21,7 +21,7 @@ namespace CommunicationLib.Exception
         /// Default constructor.
         /// </summary>
         public IncompleteEleException()
-            : base("Das Element ist nicht vollständig.")
+            : base("Mindestens einem Element wurde keine Rolle zugewiesen.")
         {
         }
 
