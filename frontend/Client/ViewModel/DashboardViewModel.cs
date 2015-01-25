@@ -297,19 +297,19 @@ namespace Client.ViewModel
         }
 
         /// <summary>
-        /// Starts a workflow with the given id.
+        /// Starts a workflow with the given workflow.
         /// </summary>
-        /// <param name="id"></param>
-        public void CreateWorkflow(string id)
+        /// <param name="workflow"></param>
+        public void CreateWorkflow(Workflow workflow)
         {
             try
             {
-                _restRequester.StartWorkflow(id);
-                MessageBox.Show("Workflow " + id + " wurde erfolgreich gestartet.");
+                _restRequester.StartWorkflow(workflow.id);
+                MessageBox.Show("Workflow " + workflow.name + " wurde erfolgreich gestartet.");
             }
             catch (Exception)
             {
-                MessageBox.Show("Workflow " + id + " konnte nicht gestartet werden.");
+                MessageBox.Show("Workflow " + workflow.name + " konnte nicht gestartet werden.");
                 throw;
             }
         }
@@ -416,7 +416,7 @@ namespace Client.ViewModel
                     _startWorkflowCommand = new ActionCommand(execute =>
                     {
                         DashboardWorkflow param = (DashboardWorkflow)execute;
-                        CreateWorkflow(param.actWorkflow.id);
+                        CreateWorkflow(param.actWorkflow);
                     }, canExecute =>
                     {
                         return true;

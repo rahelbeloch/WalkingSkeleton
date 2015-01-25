@@ -26,7 +26,7 @@
                     <DockPanel DockPanel.Dock="Top">
                         <Label Content="{Binding workflowMessage}" Margin="40" FontSize="18" Visibility="{Binding workflowMessageVisibility}" Foreground="DarkGray" HorizontalAlignment="Center"/>
                     </DockPanel>
-                    <ItemsControl ItemsSource="{Binding dashboardWorkflows}" Margin="10">
+                    <ItemsControl ItemsSource="{Binding dashboardWorkflows, UpdateSourceTrigger=PropertyChanged}" Margin="10">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Expander DockPanel.Dock="Top" IsExpanded="True" Header="{Binding actWorkflow.name, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Margin="0 0 0 10">
@@ -40,8 +40,8 @@
                                             <ListView.View>
                                                 <GridView >
                                                     <GridView.Columns>
-                                                        <GridViewColumn Width="300" Header="Aufgabe" DisplayMemberBinding="{Binding actStep.description}"/>
-                                                        <GridViewColumn Width="100" Header="Item-ID" DisplayMemberBinding="{Binding actItem.id}" />
+                                                        <GridViewColumn Width="300" Header="Aufgabe" DisplayMemberBinding="{Binding actStep.description, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        <GridViewColumn Width="100" Header="Item-ID" DisplayMemberBinding="{Binding actItem.id, UpdateSourceTrigger=PropertyChanged}" />
                                                     </GridView.Columns>
                                                 </GridView>
                                             </ListView.View>
