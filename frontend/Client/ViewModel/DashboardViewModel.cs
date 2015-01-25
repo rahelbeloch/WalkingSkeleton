@@ -388,12 +388,12 @@ namespace Client.ViewModel
                 {
                     _logoutCommand = new ActionCommand(excute =>
                         {
-                            userName = "";
+                            _mainViewModel.username = "";
                             DeleteModel();
-                            _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
-
-                            // unregister mainViewModel from CommunicationLib (if logout worked)
+                            _mainViewModel.restRequester = null;
                             _mainViewModel.myComLib.Logout();
+                            _mainViewModel.myComLib = null;
+                            _mainViewModel.CurrentPageViewModel = _mainViewModel.loginViewModel;
                         }, canExecute =>
                             {
                                 return true;

@@ -61,6 +61,10 @@ namespace Client.ViewModel
                 }
                 return _myComLib;
             }
+            set
+            {
+                _myComLib = value;
+            }
         }
         private ComLib _myComLib;
         
@@ -77,6 +81,10 @@ namespace Client.ViewModel
                 }
                 return _restRequester; 
             }
+            set
+            {
+                _restRequester = value;
+            }
         }
         private IRestRequester _restRequester;
         
@@ -90,6 +98,7 @@ namespace Client.ViewModel
             {
                 _userName = value;
                 _dashboardViewModel.userName = value;
+                OnChanged("username");
             }
         }
         private String _userName = "";
@@ -266,9 +275,9 @@ namespace Client.ViewModel
                     username = "";
                     dashboardViewModel.DeleteModel();
                     CurrentPageViewModel = loginViewModel;
-                    _restRequester = null;
+                    restRequester = null;
                     myComLib.Logout();
-                    _myComLib = null;
+                    myComLib = null;
                     MessageBox.Show(e.Message);
                 }
             }));
