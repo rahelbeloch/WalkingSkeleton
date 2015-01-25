@@ -45,7 +45,7 @@ namespace Client.Util
                     switch (datatype)
                     {
                         case "String":
-                            regex = new Regex("[a-zA-ZäÄöÖüÜß\\s]+");
+                            regex = new Regex("^.*$");
                             break;
                         case "int":
                             regex = new Regex("[0-9]+");
