@@ -51,7 +51,7 @@ namespace Client.Util
                             regex = new Regex("[0-9]+");
                             break;
                         case "double":
-                            regex = new Regex("([0-9]|[1-9]+[0-9]*)(\\.?(?<!0)[0-9]{1,2}(?<!000))?$");
+                            regex = new Regex("^-?[0-9]*([.][0-9]*)?$");
                             break;
                         default:
                             return ValidationResult.ValidResult;
