@@ -822,6 +822,7 @@ namespace Admin.ViewModel
                     {
                         newWorkflow.active = !newWorkflow.active;
                         actWorkflow.active = newWorkflow.active;
+                        newWorkflow.name = actWorkflow.name;
                         //value decided in setter method of workflowactivity
                         workflowActivity = "";
                     }
