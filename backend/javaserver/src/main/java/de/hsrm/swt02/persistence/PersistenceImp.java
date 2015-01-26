@@ -665,7 +665,8 @@ public class PersistenceImp implements Persistence {
             try {
                 this.logger.log(Level.INFO, "[persistence] load test data.");
                 initTestdata();
-                initPitchWorkflow();
+                // additional test data; ATTENTION not validated by logic, might fail in some cases
+                //initPitchWorkflow();
             } catch (PersistenceException e) {
                 this.logger.log(Level.WARNING, e);
             }
@@ -785,7 +786,7 @@ public class PersistenceImp implements Persistence {
         final FormEntry fe4 = new FormEntry();
         fe4.setId("deliveryOnTime");
         fe4.setKey("onTime");
-        fe4.setValue("boolean");
+        fe4.setValue("String");
         final FormEntry fe5 = new FormEntry();
         fe5.setId("chargedCosts");
         fe5.setKey("cost");
