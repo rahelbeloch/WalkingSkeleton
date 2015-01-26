@@ -33,7 +33,7 @@ public class LoginFilterTest {
     public static String targetUrl;
     public static String clientUser = "Alex";
     public static String headerUsername = "TestAdmin";
-    public static String headerPW = "";
+    public static String headerPW = "admin";
     public static String headerClientID = "admin";
     final int okCode = 200;
     final int errorCode = 500;
