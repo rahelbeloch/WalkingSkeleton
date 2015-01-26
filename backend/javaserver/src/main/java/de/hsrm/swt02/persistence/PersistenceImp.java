@@ -691,13 +691,13 @@ public class PersistenceImp implements Persistence {
         Form form1, form2;
 
         user1 = new User();
-        user1.setUsername("Alex");
+        user1.setUsername("Max");
         user1.setPassword("");
         user2 = new User();
-        user2.setUsername("Dominik");
+        user2.setUsername("Rolf");
         user2.setPassword("");
         user3 = new User();
-        user3.setUsername("Tilman");
+        user3.setUsername("Lisa");
         user3.setPassword("");
         user4 = new User();
         user4.setUsername(ConfigProperties.getInstance().getProperties()
@@ -734,7 +734,7 @@ public class PersistenceImp implements Persistence {
 
         startStep1.getRoleIds().add(role1.getRolename());
 
-        action1 = new Action(new ArrayList<String>(), "Action von "
+        action1 = new Action(new ArrayList<String>(), "Aktion von "
                 + user1.getUsername());
 
         // display formatting
@@ -743,7 +743,7 @@ public class PersistenceImp implements Persistence {
         elementCounter++;
 
         action1.addRole(role1.getRolename());
-        action2 = new Action(new ArrayList<String>(), "Action von "
+        action2 = new Action(new ArrayList<String>(), "Aktion von "
                 + user2.getUsername());
 
         // display formatting
@@ -763,46 +763,47 @@ public class PersistenceImp implements Persistence {
         finalStep.getRoleIds().add(role1.getRolename());
 
         workflow1 = new Workflow();
+        workflow1.setName("Testworkflow Buchhandlung");
         workflow1.addStep(startStep1);
         workflow1.addStep(action1);
         workflow1.addStep(action2);
         workflow1.addStep(finalStep);
 
-        form1 = new Form("das ist ein Formular");
-        form2 = new Form("FORM");
+        form1 = new Form("Formular um Mitarbeiter, ihr Alter und ihre Ausgaben anzuzeigen.");
+        form2 = new Form("Formular zeigt die Bestellung eines Kundens an, sowie deren Status.");
 
         final FormEntry fe1 = new FormEntry();
         fe1.setId("nameEntry");
-        fe1.setKey("name");
+        fe1.setKey("Name");
         fe1.setValue("String");
         final FormEntry fe2 = new FormEntry();
         fe2.setId("ageEntry");
-        fe2.setKey("age");
+        fe2.setKey("Alter");
         fe2.setValue("int");
         final FormEntry fe3 = new FormEntry();
-        fe3.setId("deliveredBookCount");
-        fe3.setKey("bookCount");
+        fe3.setId("bookCount");
+        fe3.setKey("Gebuchte Artikel");
         fe3.setValue("int");
         final FormEntry fe4 = new FormEntry();
         fe4.setId("deliveryOnTime");
-        fe4.setKey("onTime");
+        fe4.setKey("Pünktliche Auslieferung");
         fe4.setValue("String");
         final FormEntry fe5 = new FormEntry();
         fe5.setId("chargedCosts");
-        fe5.setKey("cost");
+        fe5.setKey("Gesamtausgaben");
         fe5.setValue("double");
 
         final List<FormEntry> fd1 = form1.getFormDef();
         fd1.add(fe1);
         fd1.add(fe2);
         fd1.add(fe5);
-        form1.setId("form1");
+        form1.setId("Mitarbeiter");
 
         final List<FormEntry> fd2 = form2.getFormDef();
         fd2.add(fe3);
         fd2.add(fe4);
         fd2.add(fe5);
-        form2.setId("form2");
+        form2.setId("Bestellungen");
 
         storeForm(form1);
         storeForm(form2);
