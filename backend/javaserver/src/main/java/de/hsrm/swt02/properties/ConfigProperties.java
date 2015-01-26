@@ -63,6 +63,10 @@ public class ConfigProperties {
             properties.setProperty("ConsoleLogging", "true");
             properties.setProperty("StoragePath", "dataModel.ser");
             
+            properties.setProperty("AdminRoleDefinition", "admin");
+            properties.setProperty("AdminNameDefinition", "TestAdmin");
+            properties.setProperty("AdminPasswordDefinition", "admin");
+            
             // write default configuration file
             properties.store(new FileOutputStream(CONFIG_PATH), "");
         } catch (IOException e) {
