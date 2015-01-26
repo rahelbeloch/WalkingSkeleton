@@ -807,7 +807,7 @@ public class PersistenceImp implements Persistence {
         storeForm(form1);
         storeForm(form2);
         workflow1.setForm(form1);
-        //storeWorkflow(workflow1);
+        storeWorkflow(workflow1);
     }
     
     /**
