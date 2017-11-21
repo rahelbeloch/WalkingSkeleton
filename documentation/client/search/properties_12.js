@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['usercollection',['UserCollection',['../classAdmin_1_1ViewModel_1_1UserViewModel.html#a9f4f95c0888746736fad3793de60e1b4',1,'Admin.ViewModel.UserViewModel.UserCollection()'],['../classAdmin_1_1ViewModel_1_1MainViewModel.html#a4d56d597ccaa559ac3af4a7ff610a2f3',1,'Admin.ViewModel.MainViewModel.userCollection()'],['../classAdmin_1_1ViewModel_1_1WorkflowDiagramViewModel.html#a4d56d597ccaa559ac3af4a7ff610a2f3',1,'Admin.ViewModel.WorkflowDiagramViewModel.userCollection()']]],
+  ['userinselectedrole',['UserInSelectedRole',['../classAdmin_1_1ViewModel_1_1UserViewModel.html#ad44bfead0cfc184e48c3597a48c44627',1,'Admin::ViewModel::UserViewModel']]],
+  ['username',['userName',['../classClient_1_1ViewModel_1_1DashboardViewModel.html#a9c5ac02bc5e49774e41855c9f56801eb',1,'Client.ViewModel.DashboardViewModel.userName()'],['../classClient_1_1ViewModel_1_1DashboardRow.html#ae91c86c4d1584286de9492f51957ac23',1,'Client.ViewModel.DashboardRow.username()'],['../classClient_1_1ViewModel_1_1LoginViewModel.html#aad02f271a6536fa078c6d1369ffdadc4',1,'Client.ViewModel.LoginViewModel.username()'],['../classClient_1_1ViewModel_1_1MainViewModel.html#ae91c86c4d1584286de9492f51957ac23',1,'Client.ViewModel.MainViewModel.username()'],['../classCommunicationLib_1_1Model_1_1User.html#aad02f271a6536fa078c6d1369ffdadc4',1,'CommunicationLib.Model.User.username()']]],
+  ['userviewmodel',['userViewModel',['../classAdmin_1_1ViewModel_1_1MainViewModel.html#ab76b4f1da2921ac8b008fe75813dd0a7',1,'Admin::ViewModel::MainViewModel']]]
+];

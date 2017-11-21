@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['dashboardrows',['dashboardRows',['../classClient_1_1ViewModel_1_1DashboardWorkflow.html#a9c5b7a9832cf3e6d77ce2c52d33a8e73',1,'Client::ViewModel::DashboardWorkflow']]],
+  ['dashboardviewmodel',['dashboardViewModel',['../classClient_1_1ViewModel_1_1MainViewModel.html#af6e40e3dd1ba61edadeb208450db766e',1,'Client::ViewModel::MainViewModel']]],
+  ['dashboardworkflows',['dashboardWorkflows',['../classClient_1_1ViewModel_1_1DashboardViewModel.html#a4f8702edc5682debc1cfdad65b0c2606',1,'Client::ViewModel::DashboardViewModel']]],
+  ['dataitem',['DataItem',['../classDiagramDesigner_1_1FullyCreatedConnectorInfo.html#aad9a298dac76f85b0d94a7ba2ddf6260',1,'DiagramDesigner::FullyCreatedConnectorInfo']]],
+  ['datatype',['datatype',['../classClient_1_1ViewModel_1_1FormRow.html#a52e151700eb78a52e7564525e85d7900',1,'Client.ViewModel.FormRow.datatype()'],['../classCommunicationLib_1_1Model_1_1DataModel_1_1FormEntry.html#a1fefddf749a1bf939543a07bd2aa6fac',1,'CommunicationLib.Model.DataModel.FormEntry.datatype()']]],
+  ['datatypes',['datatypes',['../classCommunicationLib_1_1Model_1_1DataModel_1_1FormEntry.html#a941e95f1d0fb2473cfe3da54942be829',1,'CommunicationLib::Model::DataModel::FormEntry']]],
+  ['default',['Default',['../classAdmin_1_1Properties_1_1Settings.html#af44ce680f893da1cfe4575b306835697',1,'Admin.Properties.Settings.Default()'],['../classClient_1_1Properties_1_1Settings.html#af44ce680f893da1cfe4575b306835697',1,'Client.Properties.Settings.Default()'],['../classCommunicationLib_1_1Properties_1_1Settings.html#af44ce680f893da1cfe4575b306835697',1,'CommunicationLib.Properties.Settings.Default()'],['../classDiagramDesigner_1_1Properties_1_1Settings.html#af44ce680f893da1cfe4575b306835697',1,'DiagramDesigner.Properties.Settings.Default()']]],
+  ['deleteformcommand',['deleteFormCommand',['../classAdmin_1_1ViewModel_1_1FormViewModel.html#afc21e5481b15260661632d0eb5bb26f6',1,'Admin::ViewModel::FormViewModel']]],
+  ['deleterolecommand',['DeleteRoleCommand',['../classAdmin_1_1ViewModel_1_1UserViewModel.html#a94f913561ee874a590112fae6b757a0f',1,'Admin::ViewModel::UserViewModel']]],
+  ['deleterolefromusercommand',['DeleteRoleFromUserCommand',['../classAdmin_1_1ViewModel_1_1UserViewModel.html#a4523a43d15daf4d56c735b7bec9320f6',1,'Admin::ViewModel::UserViewModel']]],
+  ['deleteselecteditemscommand',['DeleteSelectedItemsCommand',['../classAdmin_1_1ViewModel_1_1WorkflowDiagramViewModel.html#a1750a737f252384453574d5731bfb5f9',1,'Admin::ViewModel::WorkflowDiagramViewModel']]],
+  ['description',['description',['../classAdmin_1_1ActionViewModel.html#a76d2b0133d83c43dfd8a19286ac55325',1,'Admin.ActionViewModel.description()'],['../classAdmin_1_1ForkViewModel.html#a76d2b0133d83c43dfd8a19286ac55325',1,'Admin.ForkViewModel.description()'],['../classCommunicationLib_1_1Model_1_1Action.html#a23af17c78302b71c14ef38ea40b8d1d7',1,'CommunicationLib.Model.Action.description()'],['../classCommunicationLib_1_1Model_1_1Form.html#a23af17c78302b71c14ef38ea40b8d1d7',1,'CommunicationLib.Model.Form.description()']]],
+  ['descriptionvisibility',['descriptionVisibility',['../classAdmin_1_1ViewModel_1_1WorkflowDiagramViewModel.html#a77ae36c67ac5a1b39e7e8d7461488258',1,'Admin::ViewModel::WorkflowDiagramViewModel']]],
+  ['deselectcommand',['DeselectCommand',['../classAdmin_1_1ViewModel_1_1UserViewModel.html#a22207aa730f8a38690e366bed98cdff7',1,'Admin::ViewModel::UserViewModel']]],
+  ['deselectformcommand',['DeselectFormCommand',['../classAdmin_1_1ViewModel_1_1WorkflowDiagramViewModel.html#a32c9404fbbacf405b823db915e39b0d1',1,'Admin::ViewModel::WorkflowDiagramViewModel']]],
+  ['designercanvas',['DesignerCanvas',['../classDiagramDesigner_1_1ZoomBox.html#a8ea11773251aa0fcb5126beba818efe6',1,'DiagramDesigner::ZoomBox']]],
+  ['designeritemleft',['DesignerItemLeft',['../structDiagramDesigner_1_1ConnectorInfo.html#a3f56ff4e93fb120015e115bd4d34a9bc',1,'DiagramDesigner::ConnectorInfo']]],
+  ['designeritemsize',['DesignerItemSize',['../structDiagramDesigner_1_1ConnectorInfo.html#aa7502b674d66652ad213680099b7171b',1,'DiagramDesigner::ConnectorInfo']]],
+  ['designeritemtop',['DesignerItemTop',['../structDiagramDesigner_1_1ConnectorInfo.html#a1458a99c7dc13784477db8e782fcf1d1',1,'DiagramDesigner::ConnectorInfo']]],
+  ['desiredsize',['DesiredSize',['../classDiagramDesigner_1_1DragObject.html#a04e94b964ce05eb83aed965f0d6c1e9e',1,'DiagramDesigner::DragObject']]],
+  ['detaileduser',['DetailedUser',['../classAdmin_1_1ViewModel_1_1UserViewModel.html#a057e32cae218f6dc26a1e6b7a60ae7a9',1,'Admin::ViewModel::UserViewModel']]],
+  ['diagramviewmodel',['DiagramViewModel',['../classAdmin_1_1ViewModel_1_1WorkflowDiagramViewModel.html#adca052e05c983a45c43870c9c418cce7',1,'Admin::ViewModel::WorkflowDiagramViewModel']]],
+  ['displayview',['displayView',['../classAdmin_1_1ViewModel_1_1WorkflowDiagramViewModel.html#a289e7225fb920673e2c2d9ce84bcb80c',1,'Admin::ViewModel::WorkflowDiagramViewModel']]],
+  ['displayviewcommand',['displayViewCommand',['../classAdmin_1_1ViewModel_1_1WorkflowDiagramViewModel.html#ad3c210b0b59cc462f33d0ed027df79fa',1,'Admin::ViewModel::WorkflowDiagramViewModel']]]
+];

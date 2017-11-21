@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4C425A0B-326A-40F3-B0F3-E5FCB73F47EF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CommunicationLib</RootNamespace>
+    <AssemblyName>CommunicationLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\CommunicationLib.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Apache.NMS">
+      <HintPath>..\packages\Apache.NMS.1.6.0.3083\lib\net40\Apache.NMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.NMS.ActiveMQ">
+      <HintPath>..\packages\Apache.NMS.ActiveMQ.1.6.3\lib\net40\Apache.NMS.ActiveMQ.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ComLib.cs" />
+    <Compile Include="Model\DataModel\Fork.cs" />
+    <Compile Include="Model\DataModel\Form.cs" />
+    <Compile Include="Model\DataModel\FormEntry.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\InvalidAddressException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\MessagingExceptions\ServerPublisherBrokerException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\JacksonException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\InvalidWorkflowException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\InvalidFinalStepException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\ExpectedOneStartStepException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\ExpectedAtLeastOneFinalStepException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\ExpectedAtLeastOneActionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\InvalidPythonSyntaxException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\UnreachableStepException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\WorkflowMustTerminateException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\InvalidWorkflowExceptions\WorkflowCyclesException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\InactiveUserException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\ItemNotForwardableException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\AdminRoleDeletionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\RoleStillInUseException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\LastAdminDeletedException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\UserHasNoPermissionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\FormNotExistentException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\StorageFailedException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleAlreadyExistsException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\StepNotExistentException.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="REST\RestRequester.cs" />
+    <Compile Include="Messaging\CommunicationManager.cs" />
+    <Compile Include="REST\CustomSerializationBinder.cs" />
+    <Compile Include="Model\DataModel\Role.cs" />
+    <Compile Include="Model\DataModel\RootElement.cs" />
+    <Compile Include="Model\Exception\BasicException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\ConnectionException.cs" />
+    <Compile Include="Model\Exception\UnknownException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\AlreadyExistsException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserHasAlreadyRoleException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\NotExistentException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\ElementChangedException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\IncompleteEleException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\LogicException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\LogInExceptions\LogInException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\MessagingExceptions\MessagingException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\ItemNotExistentException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\NoPermissionException\NoPermissionException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\PersistenceException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\RestExceptions\RestException.cs" />
+    <Compile Include="Model\Exception\ConnectionExceptions\ServerNotRuningException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\RoleNotExistentException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserAlreadyExistsException.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\UserNotExistentException.cs" />
+    <Compile Include="Messaging\IDataReceiver.cs" />
+    <Compile Include="REST\IRestRequester.cs" />
+    <Compile Include="Model\DataModel\Action.cs" />
+    <Compile Include="Model\DataModel\FinalStep.cs" />
+    <Compile Include="Model\DataModel\Item.cs" />
+    <Compile Include="Model\DataModel\MetaEntry.cs" />
+    <Compile Include="Model\DataModel\MetaState.cs" />
+    <Compile Include="Model\DataModel\StartStep.cs" />
+    <Compile Include="Model\DataModel\StaticRessources.cs" />
+    <Compile Include="Model\DataModel\Step.cs" />
+    <Compile Include="Model\DataModel\User.cs" />
+    <Compile Include="Model\DataModel\Workflow.cs" />
+    <Compile Include="Model\Exception\LogicExceptions\PersistenceExceptions\WorkflowNotExistentException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="REST\RestAPI.cs" />
+    <Compile Include="REST\URLRouter.cs" />
+    <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

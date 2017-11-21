@@ -1,0 +1,17 @@
+de.hsrm.swt02
+de.hsrm.swt02.businesslogic
+de.hsrm.swt02.businesslogic.exceptions
+de.hsrm.swt02.businesslogic.processors
+de.hsrm.swt02.businesslogic.protocol
+de.hsrm.swt02.businesslogic.workflowValidator
+de.hsrm.swt02.businesslogic.workflowValidator.exceptions
+de.hsrm.swt02.constructionfactory
+de.hsrm.swt02.logging
+de.hsrm.swt02.messaging
+de.hsrm.swt02.model
+de.hsrm.swt02.persistence
+de.hsrm.swt02.persistence.exceptions
+de.hsrm.swt02.properties
+de.hsrm.swt02.restserver
+de.hsrm.swt02.restserver.exceptions
+de.hsrm.swt02.restserver.resource
