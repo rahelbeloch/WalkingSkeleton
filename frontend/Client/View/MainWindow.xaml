@@ -1,0 +1,8 @@
+﻿<Window x:Class="Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        Title="Working Skeleton - Nutzer Client" Width="900" Height="500" ResizeMode="CanResize"
+        WindowState="Maximized">
+        <ContentControl Content="{Binding CurrentPageViewModel}" />
+</Window>

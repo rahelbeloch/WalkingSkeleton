@@ -1,0 +1,171 @@
+﻿<UserControl x:Class="Admin.View.RoleUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800"
+             xmlns:view="clr-namespace:Admin.View"
+             xmlns:tools="clr-namespace:Admin">
+
+    <Grid>
+        <DockPanel>
+            <DockPanel.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding AddUserCommand}" />
+            </DockPanel.InputBindings>
+
+            <DockPanel DockPanel.Dock="Top">
+                <Label Content="Nutzer -und Rollenverwaltung" FontSize="16" FontWeight="Medium"  HorizontalAlignment="Center"/>
+            </DockPanel>
+
+            <TabControl>
+                <TabItem Header="Nutzerverwaltung">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <DockPanel Grid.Column="0">
+                            <ListView DockPanel.Dock="Top" Margin="10" ItemsSource="{Binding UserCollection}" SelectedValue="{Binding SelectedUser, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridView.Columns >
+                                            <GridViewColumn Header="Nutzername" DisplayMemberBinding="{Binding username}"/>
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+
+                        <DockPanel Grid.Column="1" VerticalAlignment="Top" Margin="0,10,10,0">
+                            <Button DockPanel.Dock="Right" HorizontalAlignment="Center"  VerticalAlignment="Top" Content="+ Neuer Nutzer" Height="26" Margin="10 0 0 0" Command="{Binding DeselectCommand}"/>
+                            <Expander Header="Details" IsExpanded="True" DockPanel.Dock="Top">
+                                <DockPanel Margin="4">
+                                    <DockPanel DockPanel.Dock="Top">
+                                        <StackPanel>
+                                            <Label Content="Nutzername: " Height="25"/>
+                                            <Label Content="Password: " Height="25"/>
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <TextBox Width="120" Height="25" HorizontalAlignment="Left" IsEnabled="{Binding EnableUserTextBox}">
+                                                <TextBox.Text>
+                                                    <Binding Path="DetailedUser.id" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                                </TextBox.Text>
+                                            </TextBox>
+                                            <TextBox Width="120" Height="25" HorizontalAlignment="Left">
+                                                <TextBox.Text>
+                                                    <Binding Path="DetailedUser.password" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                                </TextBox.Text>
+                                            </TextBox>
+                                        </StackPanel>
+                                    </DockPanel>
+                                    <DockPanel DockPanel.Dock="Bottom">
+                                        <CheckBox IsChecked="{Binding DetailedUser.active, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Aktiv" Margin="10"/>
+                                    </DockPanel>
+                                </DockPanel>
+                            </Expander>
+                                
+                            <Expander DockPanel.Dock="Top" Header="Rollen" IsExpanded="True" Margin="0 10 0 0">
+                                <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding RoleCheckboxRows}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridView.Columns >
+                                                <GridViewColumn Header="zugewiesen" Width="150">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn Header="Rolle" Width="200" DisplayMemberBinding="{Binding Role.rolename}" />
+                                            </GridView.Columns>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </Expander>
+
+                            <DockPanel DockPanel.Dock="Bottom">
+                                <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{Binding PostUserButtonText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="25" Margin="0 10 0 0" Command="{Binding AddUserCommand}"/>
+                            </DockPanel>
+
+                        </DockPanel>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Rollenverwaltung" Height="23" VerticalAlignment="Bottom">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="12*" />
+                            <ColumnDefinition Width="67*"/>
+                            <ColumnDefinition Width="79*" />
+                        </Grid.ColumnDefinitions>
+
+                        <DockPanel Grid.Column="0" Grid.ColumnSpan="2">
+                            <ListView DockPanel.Dock="Left" Margin="10" ItemsSource="{Binding RoleCollection}" SelectedValue="{Binding SelectedRole, Mode=TwoWay}" IsSynchronizedWithCurrentItem="True">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridView.Columns >
+                                            <GridViewColumn Header="Rollen" DisplayMemberBinding="{Binding rolename}"/>
+                                        </GridView.Columns>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </DockPanel>
+
+                        <DockPanel Grid.Column="2" VerticalAlignment="Top" Margin="0 10 10 0">
+                            <Expander Header="Neue Rolle anlegen" IsExpanded="True" DockPanel.Dock="Top">
+                                <DockPanel DockPanel.Dock="Top">
+                                    <Label Content="Rolle: "  VerticalContentAlignment="Center"/>
+                                    <TextBox Width="230" Height="25">
+                                        <TextBox.Text>
+                                            <Binding Path="EnteredRolename" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" />
+                                        </TextBox.Text>
+                                    </TextBox>
+                                    <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle hinzufügen" Height="25" Margin="10" Command="{Binding AddRoleCommand}"/>
+                                </DockPanel>
+                            </Expander>
+                            
+                            <DockPanel DockPanel.Dock="Top" >
+                                <Expander Header="Ausgewählte Rolle" IsExpanded="True" Margin="0 10 0 0">
+                                    <DockPanel DockPanel.Dock="Top">
+                                        <DockPanel DockPanel.Dock="Top">
+                                        <Label Content="Nutzer in dieser Rolle: " DockPanel.Dock="Top"/>
+
+                                        <ListView DockPanel.Dock="Left" Margin="5" ItemsSource="{Binding UserInSelectedRole}">
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridView.Columns >
+                                                        <GridViewColumn Header="Nutzer in dieser Rolle" DisplayMemberBinding="{Binding id}" Width="180"/>
+                                                        <GridViewColumn Header="Nutzer aus Rolle entfernen" Width="170">
+                                                            <GridViewColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Button
+                                                               Content="Entfernen"
+                                                               Margin="0"
+                                                               VerticalAlignment="Center"
+                                                               Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=view:RoleUserControl}, Path=DataContext.DeleteRoleFromUserCommand}" 
+                                                               CommandParameter="{Binding }"/>
+                                                                </DataTemplate>
+                                                            </GridViewColumn.CellTemplate>
+                                                        </GridViewColumn>
+                                                    </GridView.Columns>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+                                        </DockPanel>
+                                        <DockPanel DockPanel.Dock="Top">
+                                            <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Rolle entfernen" Height="25" Margin="0 5 5 5" Width="95" Command="{Binding DeleteRoleCommand}">
+                                            </Button>
+                                        </DockPanel>
+                                    </DockPanel>
+                                </Expander>
+                            </DockPanel>
+                            
+                        </DockPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Grid>
+</UserControl>

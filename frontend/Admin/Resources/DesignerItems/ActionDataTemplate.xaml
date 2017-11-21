@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:view="clr-namespace:Admin.View"
+                    xmlns:local="clr-namespace:Admin">
+        
+    <!-- DataTemplate for DesignerCanvas look and feel -->
+    <DataTemplate DataType="{x:Type local:ActionViewModel}">
+        <Grid>
+            <Image IsHitTestVisible="False"
+                   Stretch="Fill"
+                   Source="../../Images/Action.png"
+                   Tag="setting" 
+                   RenderOptions.BitmapScalingMode="HighQuality"/>    
+        </Grid>
+    </DataTemplate>
+    
+</ResourceDictionary>
