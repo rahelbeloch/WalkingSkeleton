@@ -13,14 +13,14 @@ You can browse the [javadoc](https://redhilarious.github.io/WalkingSkeleton/docu
 ## Authors
 
 * **Simon Seyer** - *Project Owner*
-* **Elizabeth Schneiß** - **
-* **Kalle Hilsenbek** - **
-* **Tilman Ginzel** - **
-* **Jerome Knickers** - **
-* **Dominik Neu** - **
-* **Sebastian R.** - **
-* **Jane V.** - **
-* **Alexander König** - **
-* **Rahel Habacker** - **
+* **Elizabeth Schneiß** - *Frontend*
+* **Kalle Hilsenbek** - *Backend*
+* **Tilman Ginzel** - *Full Stack*
+* **Jerome Knickers** - *Full Stack*
+* **Dominik Neu** - *Backend*
+* **Sebastian R.** - *Full Stack*
+* **Jane V.** - *Frontend*
+* **Alexander König** - *Backend*
+* **Rahel Habacker** - *Full Stack*
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
